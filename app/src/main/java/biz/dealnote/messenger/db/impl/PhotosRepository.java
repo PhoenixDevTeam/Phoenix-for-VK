@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.db.DatabaseIdRange;
+import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.PhotosColumns;
 import biz.dealnote.messenger.db.interfaces.IPhotosRepository;
+import biz.dealnote.messenger.db.model.PhotoPatch;
 import biz.dealnote.messenger.db.model.entity.PhotoEntity;
 import biz.dealnote.messenger.db.model.entity.PhotoSizeEntity;
 import biz.dealnote.messenger.model.criteria.PhotoCriteria;
-import biz.dealnote.messenger.db.MessengerContentProvider;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
@@ -101,6 +102,26 @@ class PhotosRepository extends AbsRepository implements IPhotosRepository {
             }
 
             e.onSuccess(photos);
+        });
+    }
+
+    @Override
+    public Completable applyPatch(int accountId, int ownerId, int photoId, PhotoPatch patch) {
+        return Completable.fromAction(() -> {
+            ContentValues cv = new ContentValues();
+
+            if(nonNull(patch.getLike())){
+                cv.put(PhotosColumns.LIKES, patch.getLike().getCount());
+                cv.put(PhotosColumns.USER_LIKES, patch.getLike().isLiked());
+            }
+
+            if(cv.size() > 0){
+                final Uri uri = MessengerContentProvider.getPhotosContentUriFor(accountId);
+                final String where = PhotosColumns.PHOTO_ID + " = ? AND " + PhotosColumns.OWNER_ID + " = ?";
+                final String[] args = {String.valueOf(photoId), String.valueOf(ownerId)};
+
+                getContentResolver().update(uri, cv, where, args);
+            }
         });
     }
 

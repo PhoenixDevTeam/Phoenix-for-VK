@@ -1,14 +1,10 @@
 package biz.dealnote.messenger.mvp.presenter.search;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import com.foxykeep.datadroid.requestmanager.Request;
 
 import java.util.List;
 
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.model.PostUpdate;
 import biz.dealnote.messenger.fragment.search.criteria.WallSearchCriteria;
@@ -18,8 +14,6 @@ import biz.dealnote.messenger.interactor.IWalls;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.mvp.view.search.IBaseSearchView;
 import biz.dealnote.messenger.mvp.view.search.IWallSearchView;
-import biz.dealnote.messenger.service.RequestFactory;
-import biz.dealnote.messenger.service.operations.likes.LikeOperation;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
@@ -129,27 +123,6 @@ public class WallSearchPresenter extends BaseSearchPresenter<IWallSearchView, Wa
 
     public final void fireShowLikesClick(Post post) {
         fireCopiesLikesClick("post", post.getOwnerId(), post.getVkid(), ILikesInteractor.FILTER_LIKES);
-    }
-
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-        if (request.getRequestType() == RequestFactory.REQUEST_LIKE) {
-            int requestPostId = request.getInt(Extra.ID);
-            int requestPostOwnerId = request.getInt(Extra.OWNER_ID);
-
-            for (int i = 0; i < super.data.size(); i++) {
-                Post post = super.data.get(i);
-                if (post.getOwnerId() == requestPostOwnerId && post.getVkid() == requestPostId) {
-                    post.setUserLikes(resultData.getBoolean(LikeOperation.RESULT_USER_LIKES));
-                    post.setLikesCount(resultData.getInt(LikeOperation.RESULT_LIKE_COUNT));
-
-                    int finalI = i;
-                    callView(view -> view.notifyItemChanged(finalI));
-                    break;
-                }
-            }
-        }
     }
 
     public void fireLikeClick(Post post) {

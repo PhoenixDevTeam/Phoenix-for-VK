@@ -6,8 +6,6 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.SparseArray;
 
 import com.foxykeep.datadroid.requestmanager.Request;
 
@@ -15,15 +13,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import biz.dealnote.messenger.App;
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.exception.ServiceException;
-import biz.dealnote.messenger.service.RequestFactory;
 import biz.dealnote.messenger.service.RestRequestManager;
 import biz.dealnote.messenger.service.ServiceRequestAdapter;
-import biz.dealnote.messenger.service.operations.likes.LikeOperation;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Utils;
-import biz.dealnote.messenger.util.ViewUtils;
 
 public class BaseFragment extends Fragment {
 
@@ -32,7 +26,6 @@ public class BaseFragment extends Fragment {
     private ArrayList<Request> mCurrentRequests;
 
     private ServiceRequestAdapter mRequestAdapter;
-    private SparseArray<RequestInterceptor> mInterceptors;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,12 +40,6 @@ public class BaseFragment extends Fragment {
             @Override
             public void onRequestFinished(Request request, Bundle resultData) {
                 if(!mCurrentRequests.contains(request)) return;
-
-                RequestInterceptor interceptor = mInterceptors.get(request.getRequestType());
-                if(interceptor != null && interceptor.intercept(request, resultData)){
-                    // перехвачено
-                    return;
-                }
 
                 mCurrentRequests.remove(request);
                 BaseFragment.this.onRequestFinished(request, resultData);
@@ -70,28 +57,7 @@ public class BaseFragment extends Fragment {
             }
         };
 
-        mInterceptors = new SparseArray<>();
-
-        registerInterceptor(RequestFactory.REQUEST_LIKE, new RequestInterceptor() {
-            @Override
-            public boolean intercept(Request request, Bundle resultData) {
-                return interceptLike(request.getInt(Extra.OWNER_ID),
-                        request.getInt(Extra.ID),
-                        request.getString(Extra.TYPE),
-                        resultData.getInt(LikeOperation.RESULT_LIKE_COUNT),
-                        resultData.getBoolean(LikeOperation.RESULT_USER_LIKES));
-            }
-        });
-
         tryConnectToCurrentRequests();
-    }
-
-    protected boolean interceptLike(int ownerId, int itemId, String type, int likesCount, boolean userLikes){
-        return false;
-    }
-
-    private void registerInterceptor(int requestType, RequestInterceptor interceptor){
-        mInterceptors.put(requestType, interceptor);
     }
 
     @Override
@@ -258,9 +224,5 @@ public class BaseFragment extends Fragment {
 
     public App getApplicationContext(){
         return (App) getActivity().getApplicationContext();
-    }
-
-    protected void styleSwipeRefreshLayoutWithCurrentTheme(@NonNull SwipeRefreshLayout swipeRefreshLayout){
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), swipeRefreshLayout);
     }
 }

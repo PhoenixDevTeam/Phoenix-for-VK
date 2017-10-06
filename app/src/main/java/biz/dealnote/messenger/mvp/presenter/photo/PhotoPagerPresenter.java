@@ -16,19 +16,19 @@ import biz.dealnote.messenger.App;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.api.model.VKApiAttachment;
+import biz.dealnote.messenger.interactor.IPhotosInteractor;
+import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.Commented;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IPhotoPagerView;
-import biz.dealnote.messenger.service.RequestFactory;
 import biz.dealnote.messenger.service.factory.PhotoRequestFactory;
-import biz.dealnote.messenger.service.operations.likes.LikeOperation;
 import biz.dealnote.messenger.task.DownloadImageTask;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.AppTextUtils;
 import biz.dealnote.messenger.util.Objects;
+import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 
 /**
@@ -45,8 +45,12 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
     private boolean mLoadingNow;
     private boolean mFullScreen;
 
+    private final IPhotosInteractor photosInteractor;
+
     PhotoPagerPresenter(@NonNull ArrayList<Photo> photos, int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
+
+        this.photosInteractor = InteractorFactory.createPhotosInteractor();
 
         if (savedInstanceState == null) {
             mPhotos = photos;
@@ -206,22 +210,21 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
     }
 
     private void addOrRemoveLike() {
-        Photo photo = getCurrent();
-        Request request = RequestFactory.getLikeRequest(!photo.isUserLikes(), photo.getOwnerId(),
-                photo.getId(), VKApiAttachment.TYPE_PHOTO, photo.getAccessKey(), true);
-        executeRequest(request);
+        final Photo photo = getCurrent();
+
+        final int ownerId = photo.getOwnerId();
+        final int photoId = photo.getId();
+        final int accountId = super.getAccountId();
+        final boolean add = !photo.isUserLikes();
+
+        appendDisposable(photosInteractor.like(accountId, ownerId, photoId, add, photo.getAccessKey())
+        .compose(RxUtils.applySingleIOToMainSchedulers())
+        .subscribe(count -> interceptLike(ownerId, photoId, count, add), t -> showError(getView(), Utils.getCauseIfRuntime(t))));
     }
 
     @Override
     protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
         super.onRequestFinished(request, resultData);
-        if (request.getRequestType() == RequestFactory.REQUEST_LIKE) {
-            interceptLike(request.getInt(Extra.OWNER_ID),
-                    request.getInt(Extra.ID),
-                    request.getString(Extra.TYPE),
-                    resultData.getInt(LikeOperation.RESULT_LIKE_COUNT),
-                    resultData.getBoolean(LikeOperation.RESULT_USER_LIKES));
-        }
 
         if (request.getRequestType() == PhotoRequestFactory.REQUEST_COPY) {
             safeShowLongToast(getView(), R.string.photo_saved_yourself);
@@ -258,12 +261,10 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
         }
     }
 
-    private void interceptLike(int ownerId, int itemId, String type, int likesCount, boolean userLikes) {
-        if (!VKApiAttachment.TYPE_PHOTO.equals(type)) return;
-
+    private void interceptLike(int ownerId, int photoId, int count, boolean userLikes) {
         for (Photo photo : mPhotos) {
-            if (photo.getId() == itemId && photo.getOwnerId() == ownerId) {
-                photo.setLikesCount(likesCount);
+            if (photo.getId() == photoId && photo.getOwnerId() == ownerId) {
+                photo.setLikesCount(count);
                 photo.setUserLikes(userLikes);
                 resolveLikeView();
                 break;

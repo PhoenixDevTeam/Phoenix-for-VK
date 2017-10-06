@@ -17,4 +17,6 @@ public interface IPhotosInteractor {
     Single<PhotoAlbum> getAlbumById(int accountId, int ownerId, int albumId);
     Single<List<PhotoAlbum>> getCachedAlbums(int accountId, int ownerId);
     Single<List<PhotoAlbum>> getActualAlbums(int accountId, int ownerId, int count, int offset);
+
+    Single<Integer> like(int accountId, int ownerId, int photoId, boolean add, String accessKey);
 }
