@@ -6,6 +6,7 @@ First open-sourced VK client for Android inspired by Material Design.
             alt="Google Play">
             </a>
 
+<br>
 
 <b>Build guide:</b>
 Requirements:
