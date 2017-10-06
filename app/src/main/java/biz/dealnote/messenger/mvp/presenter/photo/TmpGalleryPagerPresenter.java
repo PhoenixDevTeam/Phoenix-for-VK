@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.serialize.Serializers;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.TmpSource;
-import biz.dealnote.messenger.serialize.Serializers;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.RxUtils;
 

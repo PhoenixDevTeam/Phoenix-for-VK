@@ -19,7 +19,6 @@ import static biz.dealnote.messenger.service.operations.AbsApiOperation.EXTRA_ST
 
 public final class RequestFactory {
 
-    public static final int REQUEST_DOCS_GET = 8;
     public static final int REQUEST_READ_MESSAGE = 9;
 
     public static final int REQUEST_DELETE_MESSAGES = 21;

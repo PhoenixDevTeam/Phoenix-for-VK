@@ -1,8 +1,7 @@
-package biz.dealnote.messenger.serialize;
+package biz.dealnote.messenger.db.serialize;
 
 import com.google.gson.Gson;
 
-import biz.dealnote.messenger.db.ISerializeAdapter;
 import biz.dealnote.messenger.model.Photo;
 
 /**

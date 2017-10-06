@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.serialize;
+package biz.dealnote.messenger.db.serialize;
 
 import android.net.Uri;
 

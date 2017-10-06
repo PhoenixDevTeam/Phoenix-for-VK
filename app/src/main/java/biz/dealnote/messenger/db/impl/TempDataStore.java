@@ -8,10 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.db.ISerializeAdapter;
 import biz.dealnote.messenger.db.TempDataHelper;
 import biz.dealnote.messenger.db.column.TempDataColumns;
 import biz.dealnote.messenger.db.interfaces.ITempDataStore;
+import biz.dealnote.messenger.db.serialize.ISerializeAdapter;
 import biz.dealnote.messenger.util.Exestime;
 import io.reactivex.Completable;
 import io.reactivex.Single;

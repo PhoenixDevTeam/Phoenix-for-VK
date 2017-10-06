@@ -23,7 +23,6 @@ import biz.dealnote.messenger.service.operations.audio.DeleteAudioOperation;
 import biz.dealnote.messenger.service.operations.audio.RestoreAudioOperation;
 import biz.dealnote.messenger.service.operations.audio.SetBroadcastAudioOperation;
 import biz.dealnote.messenger.service.operations.docs.DocsDeleteOperation;
-import biz.dealnote.messenger.service.operations.docs.DocsGetOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveGetLinksOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveRemoveLinkOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveRemoveUserOperation;
@@ -55,8 +54,6 @@ public class RestService extends RequestService {
     public Operation getOperationForType(int requestType) {
         switch (requestType) {
 
-            case RequestFactory.REQUEST_DOCS_GET:
-                return new DocsGetOperation();
             case RequestFactory.REQUEST_READ_MESSAGE:
                 return new ReadMessageOperation();
 

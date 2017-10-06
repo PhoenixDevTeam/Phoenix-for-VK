@@ -2,7 +2,7 @@ package biz.dealnote.messenger.db.interfaces;
 
 import java.util.List;
 
-import biz.dealnote.messenger.db.ISerializeAdapter;
+import biz.dealnote.messenger.db.serialize.ISerializeAdapter;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 

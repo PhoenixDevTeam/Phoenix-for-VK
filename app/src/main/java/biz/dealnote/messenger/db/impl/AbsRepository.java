@@ -13,15 +13,15 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.db.AttachmentsDboAdapter;
-import biz.dealnote.messenger.db.DboWrapperAdapter;
 import biz.dealnote.messenger.db.MapFunction;
 import biz.dealnote.messenger.db.interfaces.Cancelable;
 import biz.dealnote.messenger.db.interfaces.IRepositories;
 import biz.dealnote.messenger.db.interfaces.IRepository;
 import biz.dealnote.messenger.db.model.entity.AttachmentsEntity;
 import biz.dealnote.messenger.db.model.entity.EntityWrapper;
-import biz.dealnote.messenger.serialize.UriSerializer;
+import biz.dealnote.messenger.db.serialize.AttachmentsDboAdapter;
+import biz.dealnote.messenger.db.serialize.DboWrapperAdapter;
+import biz.dealnote.messenger.db.serialize.UriSerializer;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;

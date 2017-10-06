@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.db;
+package biz.dealnote.messenger.db.serialize;
 
 /**
  * Created by Ruslan Kolbasa on 20.06.2017.

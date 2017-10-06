@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.db;
+package biz.dealnote.messenger.db.serialize;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
