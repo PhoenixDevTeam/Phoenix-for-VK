@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.db.AttachToType;
+import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.AttachmentsColumns;
 import biz.dealnote.messenger.db.column.CommentsAttachmentsColumns;
 import biz.dealnote.messenger.db.column.PostAttachmentsColumns;
@@ -20,7 +21,6 @@ import biz.dealnote.messenger.db.model.AttachmentsTypes;
 import biz.dealnote.messenger.db.model.entity.Entity;
 import biz.dealnote.messenger.exception.DatabaseException;
 import biz.dealnote.messenger.exception.NotFoundException;
-import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.util.Pair;
 import io.reactivex.Completable;
 import io.reactivex.Single;

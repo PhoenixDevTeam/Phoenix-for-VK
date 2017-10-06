@@ -6,9 +6,9 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import biz.dealnote.messenger.api.model.musicbrainz.CoverSearchResult;
+import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.CoversColumns;
 import biz.dealnote.messenger.db.interfaces.IAudioCoversRepository;
-import biz.dealnote.messenger.db.MessengerContentProvider;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 

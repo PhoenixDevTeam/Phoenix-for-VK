@@ -12,8 +12,8 @@ import java.util.List;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.api.Apis;
 import biz.dealnote.messenger.api.model.FaveLinkDto;
-import biz.dealnote.messenger.db.column.FaveLinksColumns;
 import biz.dealnote.messenger.db.MessengerContentProvider;
+import biz.dealnote.messenger.db.column.FaveLinksColumns;
 import biz.dealnote.messenger.service.operations.AbsApiOperation;
 import biz.dealnote.messenger.util.Utils;
 

@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.model.SelectProfileCriteria;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.util.Logger;

@@ -11,7 +11,6 @@ import java.util.List;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
-import biz.dealnote.messenger.api.model.VKApiOwner;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.db.Repositories;
 import biz.dealnote.messenger.db.interfaces.IUploadQueueRepository;

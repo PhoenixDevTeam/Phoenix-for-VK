@@ -6,9 +6,6 @@ import android.support.annotation.NonNull;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.api.model.VKApiCommunity;
-import biz.dealnote.messenger.api.model.VKApiOwner;
-import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.interactor.IOwnersInteractor;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.Owner;

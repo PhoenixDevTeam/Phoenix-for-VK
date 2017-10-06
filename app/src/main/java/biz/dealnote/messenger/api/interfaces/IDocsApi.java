@@ -5,9 +5,9 @@ import android.support.annotation.CheckResult;
 import java.util.Collection;
 import java.util.List;
 
-import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.api.model.IdPair;
 import biz.dealnote.messenger.api.model.Items;
+import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.api.model.server.VkApiDocsUploadServer;
 import io.reactivex.Single;
 

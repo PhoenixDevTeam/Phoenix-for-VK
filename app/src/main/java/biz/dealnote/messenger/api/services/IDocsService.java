@@ -2,8 +2,8 @@ package biz.dealnote.messenger.api.services;
 
 import java.util.List;
 
-import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.api.model.Items;
+import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.api.model.response.BaseResponse;
 import biz.dealnote.messenger.api.model.server.VkApiDocsUploadServer;
 import io.reactivex.Single;

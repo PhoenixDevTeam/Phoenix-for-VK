@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import biz.dealnote.messenger.api.model.VKApiOwner;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.PhotoAlbum;
 import biz.dealnote.messenger.model.PhotoAlbumEditor;

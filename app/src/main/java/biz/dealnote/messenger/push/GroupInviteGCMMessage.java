@@ -13,8 +13,6 @@ import android.support.v4.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
-import biz.dealnote.messenger.api.model.VKApiCommunity;
-import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.longpoll.AppNotificationChannels;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
 import biz.dealnote.messenger.model.Community;

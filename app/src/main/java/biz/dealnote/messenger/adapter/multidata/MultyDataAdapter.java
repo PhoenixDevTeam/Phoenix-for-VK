@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
 
-import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.DataWrapper;
 
 public abstract class MultyDataAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {

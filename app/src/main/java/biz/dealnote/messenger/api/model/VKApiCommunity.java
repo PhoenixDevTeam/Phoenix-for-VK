@@ -2,8 +2,6 @@ package biz.dealnote.messenger.api.model;
 
 import android.text.TextUtils;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 /**

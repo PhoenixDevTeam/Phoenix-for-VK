@@ -15,6 +15,7 @@ import biz.dealnote.messenger.interactor.impl.LikesInteractor;
 import biz.dealnote.messenger.interactor.impl.MessagesInteractor;
 import biz.dealnote.messenger.interactor.impl.OwnersInteractor;
 import biz.dealnote.messenger.interactor.impl.PhotosInteractor;
+import biz.dealnote.messenger.interactor.impl.PollInteractor;
 import biz.dealnote.messenger.interactor.impl.RelationshipInteractor;
 import biz.dealnote.messenger.interactor.impl.UtilsInteractor;
 import biz.dealnote.messenger.interactor.impl.VideosInteractor;
@@ -25,6 +26,10 @@ import biz.dealnote.messenger.settings.Settings;
  * phoenix
  */
 public class InteractorFactory {
+
+    public static IPollInteractor createPollInteractor(){
+        return new PollInteractor(Injection.provideNetworkInterfaces());
+    }
 
     public static IDocsInteractor createDocsInteractor(){
         return new DocsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories().docs());

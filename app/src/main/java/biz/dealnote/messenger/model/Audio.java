@@ -3,8 +3,6 @@ package biz.dealnote.messenger.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import biz.dealnote.messenger.util.Utils;
-
 import static biz.dealnote.messenger.util.Utils.stringEmptyIfNull;
 
 /**

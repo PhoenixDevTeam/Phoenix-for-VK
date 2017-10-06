@@ -1,6 +1,5 @@
 package biz.dealnote.messenger.mvp.view;
 
-import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;
 import biz.dealnote.mvp.core.IMvpView;

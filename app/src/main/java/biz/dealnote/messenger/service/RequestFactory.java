@@ -9,11 +9,8 @@ import java.util.List;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.model.AccessIdPair;
-import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.service.operations.photo.GetPhotoByIdOperation;
-import biz.dealnote.messenger.service.operations.poll.AddVoteOperation;
 
-import static biz.dealnote.messenger.service.operations.AbsApiOperation.EXTRA_ANSWER_ID;
 import static biz.dealnote.messenger.service.operations.AbsApiOperation.EXTRA_MESSAGE_IDS;
 import static biz.dealnote.messenger.service.operations.AbsApiOperation.EXTRA_START_ID;
 
@@ -22,9 +19,6 @@ public final class RequestFactory {
     public static final int REQUEST_READ_MESSAGE = 9;
 
     public static final int REQUEST_DELETE_MESSAGES = 21;
-
-    public static final int REQUEST_ADD_VOTE = 29;
-    public static final int REQUEST_REMOVE_VOTE = 30;
 
     public static final int REQUEST_PHOTOS_BY_ID = 31;
 
@@ -69,22 +63,6 @@ public final class RequestFactory {
         Request request = new Request(REQUEST_DELETE_MESSAGES);
         request.put(EXTRA_MESSAGE_IDS, new IntArray(ids));
         request.put(Extra.ACCOUNT_ID, accountId);
-        return request;
-    }
-
-    public static Request getAddVoteRequest(Poll poll, int answerId) {
-        Request request = new Request(REQUEST_ADD_VOTE);
-        request.put(Extra.POLL, poll);
-        request.put(AddVoteOperation.EXTRA_ANSWER_ID, answerId);
-        //request.put(Extra.STORE_TO_DB, storeToDb);
-        return request;
-    }
-
-    public static Request getRemoveVoteRequest(Poll poll, int answerId) {
-        Request request = new Request(REQUEST_REMOVE_VOTE);
-        request.put(Extra.POLL, poll);
-        request.put(EXTRA_ANSWER_ID, answerId);
-        //request.put(Extra.STORE_TO_DB, storeToDb);
         return request;
     }
 

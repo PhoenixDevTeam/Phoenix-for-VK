@@ -3,9 +3,7 @@ package biz.dealnote.messenger.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import biz.dealnote.messenger.api.model.ChatUserDto;
 import biz.dealnote.messenger.api.model.Identificable;
-import biz.dealnote.messenger.api.model.VKApiUser;
 
 public final class AppChatUser implements Parcelable, Identificable {
 

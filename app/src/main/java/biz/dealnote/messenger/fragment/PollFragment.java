@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,9 +64,9 @@ public class PollFragment extends BasePresenterFragment<PollPresenter, IPollView
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_poll, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAnswersAdapter = new PollAnswersAdapter(getActivity(), Collections.emptyList());
@@ -76,10 +75,10 @@ public class PollFragment extends BasePresenterFragment<PollPresenter, IPollView
         View header = LayoutInflater.from(getActivity()).inflate(R.layout.header_poll, recyclerView, false);
         mAnswersAdapter.addHeader(header);
 
-        mQuestion = (TextView) header.findViewById(R.id.title);
-        mVotesCount = (TextView) header.findViewById(R.id.votes_count);
+        mQuestion = header.findViewById(R.id.title);
+        mVotesCount = header.findViewById(R.id.votes_count);
 
-        mButton = (ProgressButton) root.findViewById(R.id.button);
+        mButton = root.findViewById(R.id.button);
         mButton.setOnClickListener(view -> getPresenter().fireButtonClick());
 
         recyclerView.setAdapter(mAnswersAdapter);

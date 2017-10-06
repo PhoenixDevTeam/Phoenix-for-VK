@@ -3,7 +3,6 @@ package biz.dealnote.messenger.service.factory;
 import com.foxykeep.datadroid.requestmanager.Request;
 
 import biz.dealnote.messenger.Extra;
-import biz.dealnote.messenger.fragment.search.criteria.GroupSearchCriteria;
 import biz.dealnote.messenger.service.operations.groups.JoinGroupOperation;
 
 public class GroupsRequestFactory {

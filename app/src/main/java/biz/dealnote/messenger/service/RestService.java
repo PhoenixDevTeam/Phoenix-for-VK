@@ -14,7 +14,6 @@ import biz.dealnote.messenger.service.factory.FeedRequestFactory;
 import biz.dealnote.messenger.service.factory.GroupsRequestFactory;
 import biz.dealnote.messenger.service.factory.MessagesRequestFactory;
 import biz.dealnote.messenger.service.factory.PhotoRequestFactory;
-import biz.dealnote.messenger.service.factory.PollRequestFactory;
 import biz.dealnote.messenger.service.factory.UtilsRequestFactory;
 import biz.dealnote.messenger.service.operations.account.PushResolveOperation;
 import biz.dealnote.messenger.service.operations.audio.AddAudioOperation;
@@ -41,10 +40,6 @@ import biz.dealnote.messenger.service.operations.photo.DeletePhotoOpeation;
 import biz.dealnote.messenger.service.operations.photo.EditPhotoAlbumOperation;
 import biz.dealnote.messenger.service.operations.photo.GetPhotoByIdOperation;
 import biz.dealnote.messenger.service.operations.photo.RestorePhotoOpeation;
-import biz.dealnote.messenger.service.operations.poll.AddVoteOperation;
-import biz.dealnote.messenger.service.operations.poll.CreatePollOperation;
-import biz.dealnote.messenger.service.operations.poll.GetPollByIdOperation;
-import biz.dealnote.messenger.service.operations.poll.RemoveVoteOperation;
 import biz.dealnote.messenger.service.operations.utils.ResolveScreenNameOperation;
 import biz.dealnote.messenger.util.Objects;
 
@@ -60,10 +55,6 @@ public class RestService extends RequestService {
             case RequestFactory.REQUEST_DELETE_MESSAGES:
                 return new DeleteMessageOperation();
 
-            case RequestFactory.REQUEST_ADD_VOTE:
-                return new AddVoteOperation();
-            case RequestFactory.REQUEST_REMOVE_VOTE:
-                return new RemoveVoteOperation();
             case RequestFactory.REQUEST_PHOTOS_BY_ID:
                 return new GetPhotoByIdOperation();
 
@@ -94,11 +85,6 @@ public class RestService extends RequestService {
 
             case FaveRequestFactory.REQUEST_REMOVE_LINK:
                 return new FaveRemoveLinkOperation();
-
-            case PollRequestFactory.REQUEST_POLL_CREATE:
-                return new CreatePollOperation();
-            case PollRequestFactory.REQUEST_GET_POLL_BY_ID:
-                return new GetPollByIdOperation();
 
             case AudioRequestFactory.REQUEST_ADD:
                 return new AddAudioOperation();

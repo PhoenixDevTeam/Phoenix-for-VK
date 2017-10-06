@@ -26,7 +26,6 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.PhotosActivity;
 import biz.dealnote.messenger.adapter.BigVkPhotosAdapter;
-import biz.dealnote.messenger.api.model.VKApiOwner;
 import biz.dealnote.messenger.dialog.ImageSizeAlertDialog;
 import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
