@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +12,7 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.Apis;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
+import biz.dealnote.messenger.interactor.ICommunitiesInteractor;
 import biz.dealnote.messenger.interactor.IOwnersInteractor;
 import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.Community;
@@ -23,7 +22,6 @@ import biz.dealnote.messenger.model.PostFilter;
 import biz.dealnote.messenger.model.Token;
 import biz.dealnote.messenger.model.criteria.WallCriteria;
 import biz.dealnote.messenger.mvp.view.IGroupWallView;
-import biz.dealnote.messenger.service.factory.GroupsRequestFactory;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
@@ -49,16 +47,19 @@ public class GroupWallPresenter extends AbsWallPresenter<IGroupWallView> {
 
     private final IOwnersInteractor ownersInteractor;
 
+    private final ICommunitiesInteractor communitiesInteractor;
+
     public GroupWallPresenter(int accountId, int ownerId, @Nullable Community owner, @Nullable Bundle savedInstanceState) {
         super(accountId, ownerId, savedInstanceState);
         this.community = owner;
         this.details = new CommunityDetails();
 
-        if(isNull(this.community)){
+        if (isNull(this.community)) {
             this.community = new Community(Math.abs(ownerId));
         }
 
         this.ownersInteractor = InteractorFactory.createOwnerInteractor();
+        this.communitiesInteractor = InteractorFactory.createCommunitiesInteractor();
         this.settings = Injection.provideSettings().accounts();
 
         filters = new ArrayList<>();
@@ -71,15 +72,15 @@ public class GroupWallPresenter extends AbsWallPresenter<IGroupWallView> {
     }
 
     @OnGuiCreated
-    private void resolveBaseCommunityViews(){
-        if(isGuiReady()){
+    private void resolveBaseCommunityViews() {
+        if (isGuiReady()) {
             getView().displayBaseCommunityData(this.community);
         }
     }
 
     @OnGuiCreated
-    private void resolveCounters(){
-        if(isGuiReady()){
+    private void resolveCounters() {
+        if (isGuiReady()) {
             getView().displayCounters(details.getMembersCount(), details.getTopicsCount(),
                     details.getDocsCount(), details.getPhotosCount(),
                     details.getAudiosCount(), details.getVideosCount());
@@ -190,13 +191,21 @@ public class GroupWallPresenter extends AbsWallPresenter<IGroupWallView> {
     }
 
     private void leaveCommunity() {
-        Request request = GroupsRequestFactory.getLeaveGroupRequest(ownerId);
-        executeRequest(request);
+        final int accountid = super.getAccountId();
+        final int groupId = Math.abs(ownerId);
+
+        appendDisposable(communitiesInteractor.leave(accountid, groupId)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(this::onLeaveResult, t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
     private void joinCommunity() {
-        Request request = GroupsRequestFactory.getJoinGroupRequest(ownerId, null);
-        executeRequest(request);
+        final int accountid = super.getAccountId();
+        final int groupId = Math.abs(ownerId);
+
+        appendDisposable(communitiesInteractor.join(accountid, groupId)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(this::onJoinResult, t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
     public void fireHeaderPhotosClick() {
@@ -392,21 +401,6 @@ public class GroupWallPresenter extends AbsWallPresenter<IGroupWallView> {
 
         if (nonNull(resultMessage) && isGuiReady()) {
             getView().showSnackbar(resultMessage, true);
-        }
-    }
-
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-
-        switch (request.getRequestType()) {
-            case GroupsRequestFactory.REQUEST_JOIN:
-                onJoinResult();
-                break;
-
-            case GroupsRequestFactory.REQUEST_LEAVE:
-                onLeaveResult();
-                break;
         }
     }
 

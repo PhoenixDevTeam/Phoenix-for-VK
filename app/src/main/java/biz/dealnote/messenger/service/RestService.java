@@ -11,7 +11,6 @@ import biz.dealnote.messenger.service.factory.AccountRequestFactory;
 import biz.dealnote.messenger.service.factory.AudioRequestFactory;
 import biz.dealnote.messenger.service.factory.FaveRequestFactory;
 import biz.dealnote.messenger.service.factory.FeedRequestFactory;
-import biz.dealnote.messenger.service.factory.GroupsRequestFactory;
 import biz.dealnote.messenger.service.factory.MessagesRequestFactory;
 import biz.dealnote.messenger.service.factory.PhotoRequestFactory;
 import biz.dealnote.messenger.service.factory.UtilsRequestFactory;
@@ -26,8 +25,6 @@ import biz.dealnote.messenger.service.operations.fave.FaveGetLinksOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveRemoveLinkOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveRemoveUserOperation;
 import biz.dealnote.messenger.service.operations.feed.FeedGetListOperation;
-import biz.dealnote.messenger.service.operations.groups.JoinGroupOperation;
-import biz.dealnote.messenger.service.operations.groups.LeaveGroupOperation;
 import biz.dealnote.messenger.service.operations.message.DeleteDialogOperation;
 import biz.dealnote.messenger.service.operations.message.DeleteMessageOperation;
 import biz.dealnote.messenger.service.operations.message.EditChatOperation;
@@ -65,11 +62,6 @@ public class RestService extends RequestService {
                 return new MessagesRestoreOperation();
             case RequestFactory.REQUEST_DOCS_DELETE:
                 return new DocsDeleteOperation();
-
-            case GroupsRequestFactory.REQUEST_JOIN:
-                return new JoinGroupOperation();
-            case GroupsRequestFactory.REQUEST_LEAVE:
-                return new LeaveGroupOperation();
 
             case MessagesRequestFactory.REQUEST_DELETE_DIALOG:
                 return new DeleteDialogOperation();
