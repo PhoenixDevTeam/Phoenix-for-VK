@@ -7,8 +7,6 @@ import com.foxykeep.datadroid.requestmanager.Request;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.api.Apis;
-import biz.dealnote.messenger.bus.BusProvider;
-import biz.dealnote.messenger.bus.DeleteAudioEvent;
 import biz.dealnote.messenger.service.operations.AbsApiOperation;
 
 public class DeleteAudioOperation extends AbsApiOperation {
@@ -26,7 +24,6 @@ public class DeleteAudioOperation extends AbsApiOperation {
 
         if (success) {
             //AudioHelper.markAsDeleted(context, accountId, id, ownerId, true);
-            BusProvider.getInstance().post(new DeleteAudioEvent(id, ownerId, true));
         }
 
         return buildSimpleSuccessResult(success);

@@ -17,7 +17,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,20 +28,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.foxykeep.datadroid.requestmanager.Request;
-import com.squareup.otto.Subscribe;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
+import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.bus.AudioPlayerBindEvent;
-import biz.dealnote.messenger.bus.BusProvider;
 import biz.dealnote.messenger.exception.ServiceException;
 import biz.dealnote.messenger.fragment.base.AccountDependencyFragment;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
@@ -64,6 +61,7 @@ import biz.dealnote.messenger.view.CircleCounterButton;
 
 import static biz.dealnote.messenger.player.util.MusicUtils.isPlaying;
 import static biz.dealnote.messenger.player.util.MusicUtils.mService;
+import static biz.dealnote.messenger.player.util.MusicUtils.observeServiceBinding;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
 public class AudioPlayerFragment extends AccountDependencyFragment implements SeekBar.OnSeekBarChangeListener, PopupMenu.OnMenuItemClickListener {
@@ -136,7 +134,7 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        BusProvider.getInstance().register(this);
+
         // Initialize the handler used to update the current time
         mTimeHandler = new TimeHandler(this);
 
@@ -148,6 +146,15 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
         }
 
         mPlayerProgressStrings = getResources().getStringArray(R.array.player_progress_state);
+
+        appendDisposable(observeServiceBinding()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(ignore -> onServiceBindEvent()));
+    }
+
+    private void onServiceBindEvent() {
+        updatePlaybackControls();
+        updateNowPlayingInfo();
     }
 
     @Override
@@ -161,22 +168,22 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
 
         View root = inflater.inflate(layoutRes, container, false);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
-        ImageView mDefaultCover = (ImageView) root.findViewById(R.id.music_default_cover);
-        mCoverView = (ImageView) root.findViewById(R.id.cover);
-        mPlayPauseButton = (PlayPauseButton) root.findViewById(R.id.action_button_play);
-        mShuffleButton = (ShuffleButton) root.findViewById(R.id.action_button_shuffle);
-        mRepeatButton = (RepeatButton) root.findViewById(R.id.action_button_repeat);
+        ImageView mDefaultCover = root.findViewById(R.id.music_default_cover);
+        mCoverView = root.findViewById(R.id.cover);
+        mPlayPauseButton = root.findViewById(R.id.action_button_play);
+        mShuffleButton = root.findViewById(R.id.action_button_shuffle);
+        mRepeatButton = root.findViewById(R.id.action_button_repeat);
 
-        RepeatingImageButton mPreviousButton = (RepeatingImageButton) root.findViewById(R.id.action_button_previous);
-        RepeatingImageButton mNextButton = (RepeatingImageButton) root.findViewById(R.id.action_button_next);
+        RepeatingImageButton mPreviousButton = root.findViewById(R.id.action_button_previous);
+        RepeatingImageButton mNextButton = root.findViewById(R.id.action_button_next);
 
-        mCurrentTime = (TextView) root.findViewById(R.id.audio_player_current_time);
-        mTotalTime = (TextView) root.findViewById(R.id.audio_player_total_time);
-        mProgress = (SeekBar) root.findViewById(android.R.id.progress);
-        tvTitle = (TextView) root.findViewById(R.id.audio_player_title);
-        tvSubtitle = (TextView) root.findViewById(R.id.audio_player_subtitle);
+        mCurrentTime = root.findViewById(R.id.audio_player_current_time);
+        mTotalTime = root.findViewById(R.id.audio_player_total_time);
+        mProgress = root.findViewById(android.R.id.progress);
+        tvTitle = root.findViewById(R.id.audio_player_title);
+        tvSubtitle = root.findViewById(R.id.audio_player_subtitle);
 
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if (actionBar != null) {
@@ -188,18 +195,18 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
         mNextButton.setRepeatListener(mFastForwardListener);
         mProgress.setOnSeekBarChangeListener(this);
 
-        ivAdd = (CircleCounterButton) root.findViewById(R.id.audio_add);
+        ivAdd = root.findViewById(R.id.audio_add);
         ivAdd.setOnClickListener(v -> onAddButtonClick());
 
-        CircleCounterButton ivShare = (CircleCounterButton) root.findViewById(R.id.audio_share);
+        CircleCounterButton ivShare = root.findViewById(R.id.audio_share);
         ivShare.setOnClickListener(v -> shareAudio());
 
-        ivTranslate = (CircleCounterButton) root.findViewById(R.id.audio_translate);
+        ivTranslate = root.findViewById(R.id.audio_translate);
         ivTranslate.setActive(isAudioStreaming());
 
         ivTranslate.setOnClickListener(v -> onAudioBroadcastButtonClick());
 
-        ivMenu = (CircleCounterButton) root.findViewById(R.id.audio_menu);
+        ivMenu = root.findViewById(R.id.audio_menu);
         ivMenu.setOnClickListener(v -> showPopup(ivMenu));
 
         mDefaultCover.setColorFilter(CurrentTheme.getIconColorOnColoredBackgroundCode(getActivity()), PorterDuff.Mode.MULTIPLY);
@@ -213,7 +220,7 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
         return root;
     }
 
-    private void onAudioBroadcastButtonClick(){
+    private void onAudioBroadcastButtonClick() {
         ivTranslate.setActive(!ivTranslate.isActive());
 
         Settings.get()
@@ -225,7 +232,7 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
         }
     }
 
-    private boolean isAudioStreaming(){
+    private boolean isAudioStreaming() {
         return Settings.get()
                 .other()
                 .isAudioBroadcastActive();
@@ -337,9 +344,10 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
     @Override
     protected void onRequestError(Request request, ServiceException throwable) {
         super.onRequestError(request, throwable);
-        if(!BuildConfig.DEBUG && request.getRequestType() == AudioRequestFactory.REQUEST_FIND_COVER) return; //ignore
+        if (!BuildConfig.DEBUG && request.getRequestType() == AudioRequestFactory.REQUEST_FIND_COVER)
+            return; //ignore
 
-        if(isAdded()){
+        if (isAdded()) {
             Utils.showRedTopToast(getActivity(), throwable.getMessage());
         }
     }
@@ -472,7 +480,7 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
     @Override
     public void onDestroy() {
         super.onDestroy();
-        BusProvider.getInstance().unregister(this);
+
         mIsPaused = false;
         mTimeHandler.removeMessages(REFRESH_TIME);
 
@@ -550,24 +558,24 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
         }
 
         // Set the play and pause image
-        if(nonNull(mPlayPauseButton)){
+        if (nonNull(mPlayPauseButton)) {
             mPlayPauseButton.updateState();
         }
 
         // Set the shuffle image
-        if(nonNull(mShuffleButton)){
+        if (nonNull(mShuffleButton)) {
             mShuffleButton.updateShuffleState();
         }
 
         // Set the repeat image
-        if(nonNull(mRepeatButton)){
+        if (nonNull(mRepeatButton)) {
             mRepeatButton.updateRepeatState();
         }
     }
 
     private static final int REQUEST_EQ = 139;
 
-    private void startEffectsPanel(){
+    private void startEffectsPanel() {
         try {
             final Intent effects = new Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL);
             effects.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, getContext().getPackageName());
@@ -804,12 +812,6 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
         }
 
         return 500;
-    }
-
-    @Subscribe
-    public void handleAudioPlayerBindEvent(AudioPlayerBindEvent event) {
-        updatePlaybackControls();
-        updateNowPlayingInfo();
     }
 
     /**
