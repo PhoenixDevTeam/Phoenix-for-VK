@@ -15,10 +15,7 @@ import biz.dealnote.messenger.service.factory.MessagesRequestFactory;
 import biz.dealnote.messenger.service.factory.PhotoRequestFactory;
 import biz.dealnote.messenger.service.factory.UtilsRequestFactory;
 import biz.dealnote.messenger.service.operations.account.PushResolveOperation;
-import biz.dealnote.messenger.service.operations.audio.AddAudioOperation;
 import biz.dealnote.messenger.service.operations.audio.AlbumCoverFindOperation;
-import biz.dealnote.messenger.service.operations.audio.DeleteAudioOperation;
-import biz.dealnote.messenger.service.operations.audio.RestoreAudioOperation;
 import biz.dealnote.messenger.service.operations.audio.SetBroadcastAudioOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveGetLinksOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveRemoveLinkOperation;
@@ -75,16 +72,11 @@ public class RestService extends RequestService {
             case FaveRequestFactory.REQUEST_REMOVE_LINK:
                 return new FaveRemoveLinkOperation();
 
-            case AudioRequestFactory.REQUEST_ADD:
-                return new AddAudioOperation();
             case AudioRequestFactory.REQUEST_FIND_COVER:
                 return new AlbumCoverFindOperation();
-            case AudioRequestFactory.REQUEST_DELETE:
-                return new DeleteAudioOperation();
+
             case AudioRequestFactory.REQUEST_BROADCAST:
                 return new SetBroadcastAudioOperation();
-            case AudioRequestFactory.REQUEST_RESTORE:
-                return new RestoreAudioOperation();
 
             case UtilsRequestFactory.REQUEST_SCREEN_NAME:
                 return new ResolveScreenNameOperation();

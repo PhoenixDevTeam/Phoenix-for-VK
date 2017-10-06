@@ -2,6 +2,7 @@ package biz.dealnote.messenger.interactor;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.interactor.impl.AccountsInteractor;
+import biz.dealnote.messenger.interactor.impl.AudioInteractor;
 import biz.dealnote.messenger.interactor.impl.BoardInteractor;
 import biz.dealnote.messenger.interactor.impl.CommunitiesInteractor;
 import biz.dealnote.messenger.interactor.impl.DatabaseInteractor;
@@ -97,5 +98,9 @@ public class InteractorFactory {
 
     public static IFaveInteractor createFaveInteractor(){
         return new FaveInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories());
+    }
+
+    public static IAudioInteractor createAudioInteractor() {
+        return new AudioInteractor(Injection.provideNetworkInterfaces());
     }
 }
