@@ -162,8 +162,8 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
             return;
         }
 
-        if (fragment instanceof BaseSearchFragment) {
-            ((BaseSearchFragment) fragment).syncYourCriteriaWithParent();
+        if (fragment instanceof AbsSearchFragment) {
+            ((AbsSearchFragment) fragment).syncYourCriteriaWithParent();
         }
     }
 
@@ -224,8 +224,8 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
 
         Fragment fragment = mAdapter.findFragmentByPosition(mCurrentTab);
 
-        if (fragment instanceof BaseSearchFragment) {
-            ((BaseSearchFragment) fragment).fireTextQueryEdit(query);
+        if (fragment instanceof AbsSearchFragment) {
+            ((AbsSearchFragment) fragment).fireTextQueryEdit(query);
         }
 
         Exestime.log("fireNewQuery", start);
@@ -245,8 +245,8 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
     public void onAdditionalButtonClick() {
         Fragment fragment = mAdapter.findFragmentByPosition(mCurrentTab);
 
-        if (fragment instanceof BaseSearchFragment) {
-            BaseSearchFragment searchFragment = (BaseSearchFragment) fragment;
+        if (fragment instanceof AbsSearchFragment) {
+            AbsSearchFragment searchFragment = (AbsSearchFragment) fragment;
             searchFragment.openSearchFilter();
         }
     }
@@ -256,7 +256,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
         super.onActivityResult(requestCode, resultCode, data);
         String action = nonNull(data) ? data.getAction() : null;
 
-        if (BaseSearchFragment.ACTION_QUERY.equals(action)) {
+        if (AbsSearchFragment.ACTION_QUERY.equals(action)) {
             String q = data.getStringExtra(Extra.Q);
             mSearchView.setQuery(q);
             mSearchView.setSelection(Utils.safeLenghtOf(q));

@@ -16,7 +16,7 @@ import biz.dealnote.messenger.mvp.presenter.search.DocsSearchPresenter;
 import biz.dealnote.messenger.mvp.view.search.IDocSearchView;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-public class DocsSearchFragment extends BaseSearchFragment<DocsSearchPresenter, IDocSearchView, Document>
+public class DocsSearchFragment extends AbsSearchFragment<DocsSearchPresenter, IDocSearchView, Document>
         implements DocsAdapter.ActionListener, IDocSearchView {
 
     public static DocsSearchFragment newInstance(int accountId, @Nullable DocumentSearchCriteria initialCriteria){

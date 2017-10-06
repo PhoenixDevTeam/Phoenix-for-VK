@@ -31,7 +31,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 02.05.2017.
  * phoenix
  */
-public abstract class BaseSearchFragment<P extends BaseSearchPresenter<V, ?, T, ?>, V extends IBaseSearchView<T>, T>
+public abstract class AbsSearchFragment<P extends BaseSearchPresenter<V, ?, T, ?>, V extends IBaseSearchView<T>, T>
         extends PlaceSupportPresenterFragment<P, V> implements IBaseSearchView<T> {
 
     private static final int REQUEST_FILTER_EDIT = 19;
@@ -50,7 +50,7 @@ public abstract class BaseSearchFragment<P extends BaseSearchPresenter<V, ?, T, 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_search, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.list);
+        RecyclerView recyclerView = root.findViewById(R.id.list);
         RecyclerView.LayoutManager manager = createLayoutManager();
         recyclerView.setLayoutManager(manager);
         recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
@@ -63,11 +63,11 @@ public abstract class BaseSearchFragment<P extends BaseSearchPresenter<V, ?, T, 
         mAdapter = createAdapter(Collections.emptyList());
         recyclerView.setAdapter(mAdapter);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.refresh);
+        mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
         ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
 
-        mEmptyText = (TextView) root.findViewById(R.id.empty);
+        mEmptyText = root.findViewById(R.id.empty);
         mEmptyText.setText(getEmptyText());
         return root;
     }

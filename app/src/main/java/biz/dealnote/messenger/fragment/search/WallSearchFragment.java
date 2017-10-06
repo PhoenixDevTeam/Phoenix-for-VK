@@ -21,7 +21,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
  * Created by admin on 02.05.2017.
  * phoenix
  */
-public class WallSearchFragment extends BaseSearchFragment<WallSearchPresenter, IWallSearchView, Post>
+public class WallSearchFragment extends AbsSearchFragment<WallSearchPresenter, IWallSearchView, Post>
         implements IWallSearchView, WallAdapter.ClickListener {
 
     public static WallSearchFragment newInstance(int accountId, WallSearchCriteria criteria) {

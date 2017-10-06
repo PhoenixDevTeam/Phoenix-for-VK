@@ -18,7 +18,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
  * Created by admin on 02.05.2017.
  * phoenix
  */
-public class DialogsSearchFragment extends BaseSearchFragment<DialogsSearchPresenter, IDialogsSearchView, Object>
+public class DialogsSearchFragment extends AbsSearchFragment<DialogsSearchPresenter, IDialogsSearchView, Object>
         implements IDialogsSearchView, DialogPreviewAdapter.ActionListener {
 
     public static DialogsSearchFragment newInstance(int accountId, DialogsSearchCriteria criteria) {

@@ -16,7 +16,7 @@ import biz.dealnote.messenger.mvp.presenter.search.VideosSearchPresenter;
 import biz.dealnote.messenger.mvp.view.search.IVideosSearchView;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-public class VideoSearchFragment extends BaseSearchFragment<VideosSearchPresenter, IVideosSearchView, Video>
+public class VideoSearchFragment extends AbsSearchFragment<VideosSearchPresenter, IVideosSearchView, Video>
         implements VideosAdapter.VideoOnClickListener {
 
     public static VideoSearchFragment newInstance(int accountId, @Nullable VideoSearchCriteria initialCriteria){

@@ -17,7 +17,7 @@ import biz.dealnote.messenger.mvp.view.search.IPeopleSearchView;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-public class PeopleSearchFragment extends BaseSearchFragment<PeopleSearchPresenter, IPeopleSearchView, User>
+public class PeopleSearchFragment extends AbsSearchFragment<PeopleSearchPresenter, IPeopleSearchView, User>
         implements PeopleAdapter.ClickListener, IPeopleSearchView {
 
     public static PeopleSearchFragment newInstance(int accountId, @Nullable PeopleSearchCriteria initialCriteria){

@@ -21,7 +21,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
  * Created by admin on 28.06.2016.
  * phoenix
  */
-public class MessagesSearchFragment extends BaseSearchFragment<MessagesSearchPresenter, IMessagesSearchView, Message>
+public class MessagesSearchFragment extends AbsSearchFragment<MessagesSearchPresenter, IMessagesSearchView, Message>
         implements MessagesAdapter.OnMessageActionListener, IMessagesSearchView {
 
     public static MessagesSearchFragment newInstance(int accountId, @Nullable MessageSeachCriteria initialCriteria) {
