@@ -9,10 +9,12 @@ import com.foxykeep.datadroid.requestmanager.Request;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.Extra;
+import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.model.PostUpdate;
 import biz.dealnote.messenger.interactor.IFeedInteractor;
+import biz.dealnote.messenger.interactor.IWalls;
 import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.FeedSource;
 import biz.dealnote.messenger.model.FeedSourceCriteria;
@@ -21,9 +23,7 @@ import biz.dealnote.messenger.model.News;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
 import biz.dealnote.messenger.mvp.view.IFeedView;
-import biz.dealnote.messenger.service.RequestFactory;
 import biz.dealnote.messenger.service.factory.FeedRequestFactory;
-import biz.dealnote.messenger.service.operations.likes.LikeOperation;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.DisposableHolder;
@@ -51,8 +51,15 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
 
     private final IFeedInteractor feedInteractor;
 
+    private final IWalls walls;
+
     public FeedPresenter(int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
+
+        this.walls = Injection.provideWalls();
+        appendDisposable(this.walls.observeMinorChanges()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onPostUpdateEvent));
 
         this.feedInteractor = InteractorFactory.createFeedInteractor();
         this.mFeed = new ArrayList<>();
@@ -70,6 +77,19 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
                 .restoreFeedScrollState(accountId);
 
         loadCachedFeed(scrollState);
+    }
+
+    private void onPostUpdateEvent(PostUpdate update){
+        if(nonNull(update.getLikeUpdate())){
+            PostUpdate.LikeUpdate like = update.getLikeUpdate();
+
+            int index = indexOf(update.getOwnerId(), update.getPostId());
+            if(index != -1){
+                this.mFeed.get(index).setLikeCount(like.getCount());
+                this.mFeed.get(index).setUserLike(like.isLiked());
+                callView(view -> view.notifyItemChanged(index));
+            }
+        }
     }
 
     private boolean loadingNow;
@@ -94,7 +114,7 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
                 .subscribe(pair -> onActualFeedReceived(startFrom, pair.getFirst(), pair.getSecond()), this::onActualFeedGetError));
     }
 
-    private void onActualFeedGetError(Throwable t){
+    private void onActualFeedGetError(Throwable t) {
         this.loadingNow = false;
         this.loadingNowNextFrom = null;
 
@@ -203,19 +223,6 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
         super.onRequestFinished(request, resultData);
         if (request.getRequestType() == FeedRequestFactory.REQUEST_GET_LISTS) {
             loadFeedSources();
-        }
-
-        if (request.getRequestType() == RequestFactory.REQUEST_LIKE) {
-            int index = indexOf(request.getInt(Extra.OWNER_ID), request.getInt(Extra.ID));
-
-            if (index != -1) {
-                mFeed.get(index).setLikeCount(resultData.getInt(LikeOperation.RESULT_LIKE_COUNT));
-                mFeed.get(index).setUserLike(resultData.getBoolean(LikeOperation.RESULT_USER_LIKES));
-
-                if (isGuiReady()) {
-                    getView().notifyItemChanged(index);
-                }
-            }
         }
     }
 
@@ -412,9 +419,14 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
 
     public void fireLikeClick(News news) {
         if ("post".equalsIgnoreCase(news.getType())) {
-            boolean add = !news.isUserLike();
-            Request request = RequestFactory.getLikeRequest(add, news.getSourceId(), news.getPostId(), "post", null, true);
-            executeRequest(request);
+            final boolean add = !news.isUserLike();
+            int accountId = super.getAccountId();
+
+            appendDisposable(walls.like(accountId, news.getSourceId(), news.getPostId(), add)
+                    .compose(RxUtils.applySingleIOToMainSchedulers())
+                    .subscribe(count -> {
+                    }, t -> {
+                    })); // ignore error
         }
     }
 
