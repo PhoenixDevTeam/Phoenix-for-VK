@@ -23,14 +23,6 @@ public final class RequestFactory {
     public static final int REQUEST_PHOTOS_BY_ID = 31;
 
     public static final int REQUEST_MESSAGES_RESTORE = 41;
-    public static final int REQUEST_DOCS_DELETE = 42;
-
-    public static Request getDocsDeleteRequest(int docId, int ownerId) {
-        Request request = new Request(REQUEST_DOCS_DELETE);
-        request.put(Extra.ID, docId);
-        request.put(Extra.OWNER_ID, ownerId);
-        return request;
-    }
 
     public static Request getMessagesRestoreRequest(int accountId, int mid) {
         Request request = new Request(REQUEST_MESSAGES_RESTORE);

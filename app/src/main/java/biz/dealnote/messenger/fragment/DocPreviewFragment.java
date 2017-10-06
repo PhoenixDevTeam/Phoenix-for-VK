@@ -20,8 +20,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +29,6 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.exception.ServiceException;
 import biz.dealnote.messenger.fragment.base.AccountDependencyFragment;
 import biz.dealnote.messenger.interactor.IDocsInteractor;
 import biz.dealnote.messenger.interactor.InteractorFactory;
@@ -41,7 +38,6 @@ import biz.dealnote.messenger.model.EditingPostType;
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.place.PlaceUtil;
-import biz.dealnote.messenger.service.RequestFactory;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.AppTextUtils;
@@ -226,36 +222,6 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
     }
 
     @Override
-    protected void onRestoreConnectionToRequest(Request request) {
-        resolveAllViews();
-    }
-
-    @Override
-    protected void onRequestFinished(Request request, Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-
-        switch (request.getRequestType()) {
-            case RequestFactory.REQUEST_DOCS_DELETE:
-                if (isAdded() && rootView != null) {
-                    Snackbar.make(rootView, R.string.deleted, Snackbar.LENGTH_LONG).show();
-                }
-
-                deleted = true;
-                resolveButtons();
-
-                break;
-        }
-    }
-
-    @Override
-    protected void onRequestError(Request request, ServiceException throwable) {
-        super.onRequestError(request, throwable);
-        if (isAdded()) {
-            Utils.showRedTopToast(getActivity(), throwable.getMessage());
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         resolveActionBar();
@@ -312,8 +278,19 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
     }
 
     private void doRemove() {
-        Request request = RequestFactory.getDocsDeleteRequest(documentId, ownerId);
-        executeRequest(request);
+        final int accountId = super.getAccountId();
+        appendDisposable(docsInteractor.delete(accountId, documentId, ownerId)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(this::onDeleteSuccess, t -> {/*TODO*/}));
+    }
+
+    private void onDeleteSuccess() {
+        if (nonNull(rootView)) {
+            Snackbar.make(rootView, R.string.deleted, Snackbar.LENGTH_LONG).show();
+        }
+
+        deleted = true;
+        resolveButtons();
     }
 
     private void remove() {

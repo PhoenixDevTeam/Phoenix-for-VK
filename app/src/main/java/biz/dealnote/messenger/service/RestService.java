@@ -20,7 +20,6 @@ import biz.dealnote.messenger.service.operations.audio.AlbumCoverFindOperation;
 import biz.dealnote.messenger.service.operations.audio.DeleteAudioOperation;
 import biz.dealnote.messenger.service.operations.audio.RestoreAudioOperation;
 import biz.dealnote.messenger.service.operations.audio.SetBroadcastAudioOperation;
-import biz.dealnote.messenger.service.operations.docs.DocsDeleteOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveGetLinksOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveRemoveLinkOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveRemoveUserOperation;
@@ -60,8 +59,6 @@ public class RestService extends RequestService {
 
             case RequestFactory.REQUEST_MESSAGES_RESTORE:
                 return new MessagesRestoreOperation();
-            case RequestFactory.REQUEST_DOCS_DELETE:
-                return new DocsDeleteOperation();
 
             case MessagesRequestFactory.REQUEST_DELETE_DIALOG:
                 return new DeleteDialogOperation();

@@ -4,18 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.interactor.IDocsInteractor;
 import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IBasicDocumentView;
-import biz.dealnote.messenger.service.RequestFactory;
 import biz.dealnote.messenger.util.RxUtils;
-import biz.dealnote.messenger.util.Utils;
+
+import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
 /**
  * Created by admin on 27.09.2016.
@@ -52,23 +49,18 @@ public class BaseDocumentPresenter<V extends IBasicDocumentView> extends Account
 
         appendDisposable(docsInteractor.add(accountId, docId, ownerId, document.getAccessKey())
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(id -> onDocAddedSuccessfully(docId, ownerId, id), t -> showError(getView(), Utils.getCauseIfRuntime(t))));
+                .subscribe(id -> onDocAddedSuccessfully(docId, ownerId, id), t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
     protected void delete(int id, int ownerId) {
-        Request request = RequestFactory.getDocsDeleteRequest(id, ownerId);
-        executeRequest(request);
+        final int accountId = super.getAccountId();
+        appendDisposable(docsInteractor.delete(accountId, id, ownerId)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> onDocDeleteSuccessfully(id, ownerId), this::onDocDeleteError));
     }
 
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-
-        if (request.getRequestType() == RequestFactory.REQUEST_DOCS_DELETE && resultData.getBoolean(Extra.SUCCESS)) {
-            int id = request.getInt(Extra.ID);
-            int ownerId = request.getInt(Extra.OWNER_ID);
-            onDocDeleteSuccessfully(id, ownerId);
-        }
+    private void onDocDeleteError(Throwable t) {
+        showError(getView(), getCauseIfRuntime(t));
     }
 
     @SuppressWarnings("unused")
