@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package github.ankushsachdeva.emojicon;
+package biz.dealnote.messenger.view.emoji;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -25,18 +25,17 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import biz.dealnote.messenger.R;
-import github.ankushsachdeva.emojicon.EmojiconGridView.OnEmojiconClickedListener;
-import github.ankushsachdeva.emojicon.emoji.Emojicon;
+import biz.dealnote.messenger.view.emoji.section.Emojicon;
 
 class EmojiAdapter extends ArrayAdapter<Emojicon> {
 
-	private OnEmojiconClickedListener emojiClickListener;
+	private EmojiconGridView.OnEmojiconClickedListener emojiClickListener;
 
     public EmojiAdapter(Context context, Emojicon[] data) {
         super(context, R.layout.emojicon_item, data);
     }
     
-    public void setEmojiClickListener(@NonNull OnEmojiconClickedListener listener){
+    public void setEmojiClickListener(@NonNull EmojiconGridView.OnEmojiconClickedListener listener){
     	this.emojiClickListener = listener;
     }
     

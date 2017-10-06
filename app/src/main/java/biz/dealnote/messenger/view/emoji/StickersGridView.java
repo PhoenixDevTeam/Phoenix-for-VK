@@ -1,4 +1,4 @@
-package github.ankushsachdeva.emojicon;
+package biz.dealnote.messenger.view.emoji;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,7 +18,7 @@ public class StickersGridView {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         mEmojiconPopup = emojiconPopup;
         rootView = inflater.inflate(R.layout.stickers_grid, null);
-        GridView gridView = (GridView) rootView.findViewById(R.id.grid_stickers);
+        GridView gridView = rootView.findViewById(R.id.grid_stickers);
 
         StickersAdapter mAdapter = new StickersAdapter(rootView.getContext(), set);
         mAdapter.setStickerClickedListener(stickerId -> {

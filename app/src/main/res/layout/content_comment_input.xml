@@ -79,7 +79,7 @@
                     android:src="@drawable/emoticon"
                     android:tint="?icon_color_static" />
 
-                <github.ankushsachdeva.emojicon.EmojiconEditText
+                <biz.dealnote.messenger.view.emoji.EmojiconEditText
                     android:id="@+id/fragment_input_text"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

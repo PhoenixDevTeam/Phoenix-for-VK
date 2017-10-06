@@ -36,7 +36,7 @@
             android:textStyle="bold"
             tools:text="Name" />
 
-        <github.ankushsachdeva.emojicon.EmojiconTextView
+        <biz.dealnote.messenger.view.emoji.EmojiconTextView
             android:id="@+id/item_comment_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

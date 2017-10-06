@@ -74,7 +74,7 @@
                         android:src="@drawable/emoticon"
                         android:tint="?icon_color_static"/>
 
-                    <github.ankushsachdeva.emojicon.EmojiconEditText xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+                    <biz.dealnote.messenger.view.emoji.EmojiconEditText xmlns:emojicon="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/fragment_input_text"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"

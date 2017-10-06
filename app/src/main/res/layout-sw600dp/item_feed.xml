@@ -113,7 +113,7 @@
                     android:paddingBottom="6dp">
 
 
-                    <github.ankushsachdeva.emojicon.EmojiconTextView
+                    <biz.dealnote.messenger.view.emoji.EmojiconTextView
                         android:id="@+id/item_post_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

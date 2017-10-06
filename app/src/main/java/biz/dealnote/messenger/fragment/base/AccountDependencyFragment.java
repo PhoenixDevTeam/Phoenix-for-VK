@@ -23,7 +23,7 @@ import biz.dealnote.messenger.model.WikiPage;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.player.MusicPlaybackService;
 import biz.dealnote.messenger.settings.Settings;
-import github.ankushsachdeva.emojicon.EmojiconTextView;
+import biz.dealnote.messenger.view.emoji.EmojiconTextView;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 

@@ -34,7 +34,7 @@ import biz.dealnote.messenger.util.AppTextUtils;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.messenger.view.BubbleLinearLayout;
 import biz.dealnote.messenger.view.OnlineView;
-import github.ankushsachdeva.emojicon.EmojiconTextView;
+import biz.dealnote.messenger.view.emoji.EmojiconTextView;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 

@@ -1,4 +1,4 @@
-package github.ankushsachdeva.emojicon.section;
+package biz.dealnote.messenger.view.emoji;
 
 import android.graphics.drawable.Drawable;
 

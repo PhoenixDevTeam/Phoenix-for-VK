@@ -27,7 +27,6 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.adapter.AttachmentsHolder;
 import biz.dealnote.messenger.adapter.AttachmentsViewBinder;
-import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
 import biz.dealnote.messenger.fragment.search.SearchContentType;
 import biz.dealnote.messenger.fragment.search.criteria.NewsFeedCriteria;
@@ -46,8 +45,8 @@ import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.AppTextUtils;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.messenger.view.CircleCounterButton;
+import biz.dealnote.messenger.view.emoji.EmojiconTextView;
 import biz.dealnote.mvp.core.IPresenterFactory;
-import github.ankushsachdeva.emojicon.EmojiconTextView;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;

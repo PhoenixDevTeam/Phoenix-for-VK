@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package github.ankushsachdeva.emojicon.emoji;
+package biz.dealnote.messenger.view.emoji.section;
 
 /**
  * @author Hieu Rocker (rockerhieu@gmail.com)

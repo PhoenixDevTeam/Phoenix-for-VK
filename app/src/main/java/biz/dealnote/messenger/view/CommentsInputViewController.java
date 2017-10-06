@@ -18,8 +18,8 @@ import android.widget.TextView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.settings.CurrentTheme;
-import github.ankushsachdeva.emojicon.EmojiconsPopup;
-import github.ankushsachdeva.emojicon.StickersGridView;
+import biz.dealnote.messenger.view.emoji.EmojiconsPopup;
+import biz.dealnote.messenger.view.emoji.StickersGridView;
 
 public class CommentsInputViewController {
 

@@ -1,4 +1,4 @@
-package github.ankushsachdeva.emojicon.section;
+package biz.dealnote.messenger.view.emoji;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -13,14 +13,13 @@ import java.util.List;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.settings.CurrentTheme;
-import github.ankushsachdeva.emojicon.emoji.StickerSection;
 
-public class TopSectionAdapter extends RecyclerView.Adapter<TopSectionAdapter.Holder> {
+public class SectionsAdapter extends RecyclerView.Adapter<SectionsAdapter.Holder> {
 
     private Context mContext;
     private List<AbsSection> data;
 
-    public TopSectionAdapter(List<AbsSection> data, Context mContext) {
+    public SectionsAdapter(List<AbsSection> data, Context mContext) {
         this.data = data;
         this.mContext = mContext;
     }
@@ -88,7 +87,7 @@ public class TopSectionAdapter extends RecyclerView.Adapter<TopSectionAdapter.Ho
         public Holder(View itemView) {
             super(itemView);
             root = itemView.findViewById(R.id.root);
-            icon = (ImageView) itemView.findViewById(R.id.icon);
+            icon = itemView.findViewById(R.id.icon);
         }
     }
 
@@ -101,5 +100,4 @@ public class TopSectionAdapter extends RecyclerView.Adapter<TopSectionAdapter.Ho
     public interface Listener {
         void onClick(int position);
     }
-
 }

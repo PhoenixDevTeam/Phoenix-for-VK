@@ -87,7 +87,7 @@
                 android:fontFamily="sans-serif-light"
                 android:textSize="@dimen/font_size_subtitle" />
 
-            <github.ankushsachdeva.emojicon.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+            <biz.dealnote.messenger.view.emoji.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/fragment_user_profile_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

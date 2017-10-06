@@ -68,9 +68,9 @@ import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.view.InputViewController;
 import biz.dealnote.messenger.view.LoadMoreFooterHelper;
+import biz.dealnote.messenger.view.emoji.EmojiconTextView;
+import biz.dealnote.messenger.view.emoji.StickersGridView;
 import biz.dealnote.mvp.core.IPresenterFactory;
-import github.ankushsachdeva.emojicon.EmojiconTextView;
-import github.ankushsachdeva.emojicon.StickersGridView;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.safeIsEmpty;

@@ -36,7 +36,7 @@
             android:textSize="@dimen/font_size_subtitle"
             android:textStyle="bold"/>
 
-        <github.ankushsachdeva.emojicon.EmojiconTextView
+        <biz.dealnote.messenger.view.emoji.EmojiconTextView
             android:id="@+id/item_feedback_link_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

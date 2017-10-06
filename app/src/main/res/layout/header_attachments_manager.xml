@@ -72,7 +72,7 @@
 
         </LinearLayout>
 
-        <github.ankushsachdeva.emojicon.EmojiconEditText
+        <biz.dealnote.messenger.view.emoji.EmojiconEditText
             android:id="@+id/fragment_create_post_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
