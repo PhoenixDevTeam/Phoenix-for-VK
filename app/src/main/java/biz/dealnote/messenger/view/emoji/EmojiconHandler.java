@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package github.ankushsachdeva.emojicon;
+package biz.dealnote.messenger.view.emoji;
 
 import android.content.Context;
 import android.text.Spannable;
@@ -24,7 +24,7 @@ import biz.dealnote.messenger.util.Logger;
 
 /**
  * @author Hieu Rocker (rockerhieu@gmail.com)
- * Автор гандон
+
  * Короче, те смайлы, состоящие из emoji_*_0x1f3f(a/b/c/d/e) - нигерские. Официально не поддерживаются андроидом.
  * Смайлы, состоящие из emoji_*_* - обрабатываются отдельно
  *

@@ -69,7 +69,7 @@
             android:paddingRight="16dp"
             android:paddingTop="4dp">
 
-            <github.ankushsachdeva.emojicon.EmojiconTextView
+            <biz.dealnote.messenger.view.emoji.EmojiconTextView
                 android:id="@+id/item_post_copy_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

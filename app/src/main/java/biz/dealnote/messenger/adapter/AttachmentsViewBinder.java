@@ -49,7 +49,7 @@ import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.messenger.view.WaveFormView;
-import github.ankushsachdeva.emojicon.EmojiconTextView;
+import biz.dealnote.messenger.view.emoji.EmojiconTextView;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;

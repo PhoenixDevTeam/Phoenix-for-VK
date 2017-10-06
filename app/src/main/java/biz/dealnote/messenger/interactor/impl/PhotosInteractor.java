@@ -9,6 +9,7 @@ import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.VKApiPhotoAlbum;
 import biz.dealnote.messenger.db.column.PhotosColumns;
 import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.model.PhotoPatch;
 import biz.dealnote.messenger.db.model.entity.PhotoAlbumEntity;
 import biz.dealnote.messenger.db.model.entity.PhotoEntity;
 import biz.dealnote.messenger.exception.NotFoundException;
@@ -127,5 +128,27 @@ public class PhotosInteractor implements IPhotosInteractor {
                             .store(accountId, ownerId, dbos, offset == 0)
                             .andThen(Single.just(albums));
                 });
+    }
+
+    @Override
+    public Single<Integer> like(int accountId, int ownerId, int photoId, boolean add, String accessKey) {
+        Single<Integer> single;
+
+        if(add){
+            single = networker.vkDefault(accountId)
+                    .likes()
+                    .add("photo", ownerId, photoId, accessKey);
+        } else {
+            single = networker.vkDefault(accountId)
+                    .likes()
+                    .delete("photo", ownerId, photoId);
+        }
+
+        return single.flatMap(count -> {
+            final PhotoPatch patch = new PhotoPatch().setLike(new PhotoPatch.Like(count, add));
+            return cache.photos()
+                    .applyPatch(accountId, ownerId, photoId, patch)
+                    .andThen(Single.just(count));
+        });
     }
 }

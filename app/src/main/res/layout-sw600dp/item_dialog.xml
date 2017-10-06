@@ -89,7 +89,7 @@
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_title" />
 
-                <github.ankushsachdeva.emojicon.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+                <biz.dealnote.messenger.view.emoji.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/dialog_message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

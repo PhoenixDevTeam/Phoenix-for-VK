@@ -1,4 +1,4 @@
-package github.ankushsachdeva.emojicon;
+package biz.dealnote.messenger.view.emoji;
 
 import android.app.Activity;
 import android.graphics.PorterDuff;
@@ -32,19 +32,14 @@ import biz.dealnote.messenger.model.StickerSet;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Objects;
-import github.ankushsachdeva.emojicon.EmojiconGridView.OnEmojiconClickedListener;
-import github.ankushsachdeva.emojicon.emoji.Cars;
-import github.ankushsachdeva.emojicon.emoji.Electronics;
-import github.ankushsachdeva.emojicon.emoji.Emojicon;
-import github.ankushsachdeva.emojicon.emoji.Food;
-import github.ankushsachdeva.emojicon.emoji.Nature;
-import github.ankushsachdeva.emojicon.emoji.People;
-import github.ankushsachdeva.emojicon.emoji.Sport;
-import github.ankushsachdeva.emojicon.emoji.StickerSection;
-import github.ankushsachdeva.emojicon.emoji.Symbols;
-import github.ankushsachdeva.emojicon.section.AbsSection;
-import github.ankushsachdeva.emojicon.section.EmojiSection;
-import github.ankushsachdeva.emojicon.section.TopSectionAdapter;
+import biz.dealnote.messenger.view.emoji.section.Cars;
+import biz.dealnote.messenger.view.emoji.section.Electronics;
+import biz.dealnote.messenger.view.emoji.section.Emojicon;
+import biz.dealnote.messenger.view.emoji.section.Food;
+import biz.dealnote.messenger.view.emoji.section.Nature;
+import biz.dealnote.messenger.view.emoji.section.People;
+import biz.dealnote.messenger.view.emoji.section.Sport;
+import biz.dealnote.messenger.view.emoji.section.Symbols;
 
 public class EmojiconsPopup {
 
@@ -55,7 +50,7 @@ public class EmojiconsPopup {
 
     private boolean isOpened;
 
-    private OnEmojiconClickedListener onEmojiconClickedListener;
+    private EmojiconGridView.OnEmojiconClickedListener onEmojiconClickedListener;
     private StickersGridView.OnStickerClickedListener onStickerClickedListener;
     private OnEmojiconBackspaceClickedListener onEmojiconBackspaceClickedListener;
     private OnSoftKeyboardOpenCloseListener onSoftKeyboardOpenCloseListener;
@@ -84,7 +79,7 @@ public class EmojiconsPopup {
         this.onSoftKeyboardOpenCloseListener = listener;
     }
 
-    public void setOnEmojiconClickedListener(OnEmojiconClickedListener listener) {
+    public void setOnEmojiconClickedListener(EmojiconGridView.OnEmojiconClickedListener listener) {
         this.onEmojiconClickedListener = listener;
     }
 
@@ -96,7 +91,7 @@ public class EmojiconsPopup {
         this.onEmojiconBackspaceClickedListener = listener;
     }
 
-    public OnEmojiconClickedListener getOnEmojiconClickedListener() {
+    public EmojiconGridView.OnEmojiconClickedListener getOnEmojiconClickedListener() {
         return onEmojiconClickedListener;
     }
 
@@ -231,7 +226,7 @@ public class EmojiconsPopup {
 
         sections.get(emojisPager.getCurrentItem()).active = true;
 
-        final TopSectionAdapter topSectionAdapter = new TopSectionAdapter(sections, mContext);
+        final SectionsAdapter topSectionAdapter = new SectionsAdapter(sections, mContext);
         recyclerView.setAdapter(topSectionAdapter);
 
         view.findViewById(R.id.backspase).setOnTouchListener(new RepeatListener(700, 50, new OnClickListener() {

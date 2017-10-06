@@ -1,4 +1,4 @@
-package github.ankushsachdeva.emojicon.emoji;
+package biz.dealnote.messenger.view.emoji.section;
 
 /**
  * Created by sony on 17.06.2016.

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package github.ankushsachdeva.emojicon;
+package biz.dealnote.messenger.view.emoji;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

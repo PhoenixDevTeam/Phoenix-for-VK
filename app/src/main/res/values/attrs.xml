@@ -130,13 +130,6 @@
         <attr name="noenabled_background_color" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="FlowLayout">
-        <attr name="android:gravity" />
-    </declare-styleable>
-    <declare-styleable name="FlowLayout_Layout">
-        <attr name="android:layout_gravity" />
-    </declare-styleable>
-
     <declare-styleable name="AlternativeAspectRatioFrameLayout">
         <attr name="altAspectRatioWidth" format="integer" />
         <attr name="altAspectRatioHeight" format="integer" />

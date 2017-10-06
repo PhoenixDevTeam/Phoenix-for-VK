@@ -1,4 +1,4 @@
-package github.ankushsachdeva.emojicon;
+package biz.dealnote.messenger.view.emoji;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -42,7 +42,7 @@ public class StickersAdapter extends ArrayAdapter<Integer> {
         if (convertView == null) {
             holder = new ViewHolder();
             viewToUse = View.inflate(getContext(), R.layout.sticker_grid_item, null);
-            holder.icon = (ImageView) viewToUse.findViewById(R.id.sticker_grid_item_image);
+            holder.icon = viewToUse.findViewById(R.id.sticker_grid_item_image);
             viewToUse.setTag(holder);
         } else {
             viewToUse = convertView;

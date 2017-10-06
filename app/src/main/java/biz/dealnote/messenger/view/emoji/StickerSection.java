@@ -1,7 +1,6 @@
-package github.ankushsachdeva.emojicon.emoji;
+package biz.dealnote.messenger.view.emoji;
 
 import biz.dealnote.messenger.model.StickerSet;
-import github.ankushsachdeva.emojicon.section.AbsSection;
 
 public class StickerSection extends AbsSection {
 

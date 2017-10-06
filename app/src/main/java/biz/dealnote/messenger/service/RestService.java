@@ -34,7 +34,6 @@ import biz.dealnote.messenger.service.operations.fave.FaveRemoveUserOperation;
 import biz.dealnote.messenger.service.operations.feed.FeedGetListOperation;
 import biz.dealnote.messenger.service.operations.groups.JoinGroupOperation;
 import biz.dealnote.messenger.service.operations.groups.LeaveGroupOperation;
-import biz.dealnote.messenger.service.operations.likes.LikeOperation;
 import biz.dealnote.messenger.service.operations.message.DeleteDialogOperation;
 import biz.dealnote.messenger.service.operations.message.DeleteMessageOperation;
 import biz.dealnote.messenger.service.operations.message.EditChatOperation;
@@ -64,9 +63,6 @@ public class RestService extends RequestService {
                 return new DocsGetOperation();
             case RequestFactory.REQUEST_READ_MESSAGE:
                 return new ReadMessageOperation();
-
-            case RequestFactory.REQUEST_LIKE:
-                return new LikeOperation();
 
             case RequestFactory.REQUEST_DELETE_MESSAGES:
                 return new DeleteMessageOperation();

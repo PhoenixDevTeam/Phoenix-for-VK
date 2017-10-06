@@ -52,7 +52,7 @@
         app:arrowWidth="8dp"
         app:bubbleColor="?attr/message_bubble_color">
 
-        <github.ankushsachdeva.emojicon.EmojiconTextView
+        <biz.dealnote.messenger.view.emoji.EmojiconTextView
             android:id="@+id/item_message_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

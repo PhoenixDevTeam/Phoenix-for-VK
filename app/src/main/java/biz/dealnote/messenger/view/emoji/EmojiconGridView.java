@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package github.ankushsachdeva.emojicon;
+package biz.dealnote.messenger.view.emoji;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,8 +25,8 @@ import android.widget.GridView;
 import java.util.Arrays;
 
 import biz.dealnote.messenger.R;
-import github.ankushsachdeva.emojicon.emoji.Emojicon;
-import github.ankushsachdeva.emojicon.emoji.People;
+import biz.dealnote.messenger.view.emoji.section.Emojicon;
+import biz.dealnote.messenger.view.emoji.section.People;
 
 /**
  * @author Hieu Rocker (rockerhieu@gmail.com)

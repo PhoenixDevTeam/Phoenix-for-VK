@@ -21,7 +21,6 @@ public final class RequestFactory {
 
     public static final int REQUEST_DOCS_GET = 8;
     public static final int REQUEST_READ_MESSAGE = 9;
-    public static final int REQUEST_LIKE = 12;
 
     public static final int REQUEST_DELETE_MESSAGES = 21;
 
@@ -96,17 +95,6 @@ public final class RequestFactory {
         request.put(Extra.POLL, poll);
         request.put(EXTRA_ANSWER_ID, answerId);
         //request.put(Extra.STORE_TO_DB, storeToDb);
-        return request;
-    }
-
-    public static Request getLikeRequest(boolean add, int ownerId, int itemId, String type, String accessKey, boolean storeToDb) {
-        Request request = new Request(REQUEST_LIKE);
-        request.put(Extra.OWNER_ID, ownerId);
-        request.put("add", add);
-        request.put(Extra.ID, itemId);
-        request.put(Extra.TYPE, type);
-        request.put(Extra.ACCESS_KEY, accessKey);
-        request.put(Extra.STORE_TO_DB, storeToDb);
         return request;
     }
 
