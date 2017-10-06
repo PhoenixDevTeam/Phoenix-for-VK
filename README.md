@@ -1,11 +1,6 @@
 # Phoenix-for-VK
 First open-sourced VK client for Android inspired by Material Design.
 
-<a href="https://play.google.com/store/apps/details?id=biz.dealnote.messenger">
-       <img src="https://conversations.im/images/en-play-badge.png"
-            alt="Google Play">
-            </a>
-
 <b>Build guide:</b>
 Requirements:
   1) Android Studio 3.0 Beta 7 or higher
