@@ -19,7 +19,7 @@ import io.reactivex.Single;
  * Created by Ruslan Kolbasa on 06.10.2017.
  * Phoenix-for-VK
  */
-public class DocsSearchPresenter extends BaseSearchPresenter<IDocSearchView, DocumentSearchCriteria, Document, IntNextFrom> {
+public class DocsSearchPresenter extends AbsSearchPresenter<IDocSearchView, DocumentSearchCriteria, Document, IntNextFrom> {
 
     private final IDocsInteractor docsInteractor;
 

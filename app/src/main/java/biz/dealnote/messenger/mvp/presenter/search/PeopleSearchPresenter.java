@@ -18,7 +18,7 @@ import io.reactivex.Single;
  * Created by admin on 03.10.2017.
  * phoenix
  */
-public class PeopleSearchPresenter extends BaseSearchPresenter<IPeopleSearchView, PeopleSearchCriteria, User, IntNextFrom> {
+public class PeopleSearchPresenter extends AbsSearchPresenter<IPeopleSearchView, PeopleSearchCriteria, User, IntNextFrom> {
 
     private final IOwnersInteractor ownersInteractor;
 

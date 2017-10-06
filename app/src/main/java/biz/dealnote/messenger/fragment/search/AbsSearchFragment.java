@@ -21,7 +21,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
 import biz.dealnote.messenger.fragment.search.options.BaseOption;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
-import biz.dealnote.messenger.mvp.presenter.search.BaseSearchPresenter;
+import biz.dealnote.messenger.mvp.presenter.search.AbsSearchPresenter;
 import biz.dealnote.messenger.mvp.view.search.IBaseSearchView;
 import biz.dealnote.messenger.util.ViewUtils;
 
@@ -31,7 +31,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 02.05.2017.
  * phoenix
  */
-public abstract class AbsSearchFragment<P extends BaseSearchPresenter<V, ?, T, ?>, V extends IBaseSearchView<T>, T>
+public abstract class AbsSearchFragment<P extends AbsSearchPresenter<V, ?, T, ?>, V extends IBaseSearchView<T>, T>
         extends PlaceSupportPresenterFragment<P, V> implements IBaseSearchView<T> {
 
     private static final int REQUEST_FILTER_EDIT = 19;
