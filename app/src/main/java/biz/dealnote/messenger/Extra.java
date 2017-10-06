@@ -68,6 +68,7 @@ public class Extra {
     public static final String VIDEOS = "videos";
     public static final String DOCS = "docs";
     public static final String DOC = "doc";
+    public static final String DOC_ID = "doc_id";
     public static final String TAB = "tab";
     public static final String ALL = "all";
     public static final String CODE = "code";

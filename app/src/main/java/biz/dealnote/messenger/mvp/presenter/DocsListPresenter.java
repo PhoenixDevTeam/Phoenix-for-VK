@@ -13,7 +13,7 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.db.interfaces.IUploadQueueRepository;
 import biz.dealnote.messenger.interactor.IDocsInteractor;
-import biz.dealnote.messenger.interactor.impl.DocsInteractor;
+import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.DocFilter;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.LocalPhoto;
@@ -63,7 +63,7 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
 
     public DocsListPresenter(int accountId, int ownerId, @Nullable String action, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-        this.docsInteractor = new DocsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories().docs());
+        this.docsInteractor = InteractorFactory.createDocsInteractor();
 
         this.mOwnerId = ownerId;
 

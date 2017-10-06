@@ -162,13 +162,6 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
             return;
         }
 
-        if (fragment instanceof AbsSearchFragment) {
-            String query = ((AbsSearchFragment) fragment).getCurrentQuery();
-
-            mSearchView.setQuery(query);
-            mSearchView.setSelection(query.length());
-        }
-
         if (fragment instanceof BaseSearchFragment) {
             ((BaseSearchFragment) fragment).syncYourCriteriaWithParent();
         }
@@ -230,10 +223,6 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
         long start = System.currentTimeMillis();
 
         Fragment fragment = mAdapter.findFragmentByPosition(mCurrentTab);
-        if (fragment instanceof AbsSearchFragment) {
-            AbsSearchFragment absSearchFragment = (AbsSearchFragment) fragment;
-            absSearchFragment.setNewCriteria(query);
-        }
 
         if (fragment instanceof BaseSearchFragment) {
             ((BaseSearchFragment) fragment).fireTextQueryEdit(query);
@@ -255,11 +244,6 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
     @Override
     public void onAdditionalButtonClick() {
         Fragment fragment = mAdapter.findFragmentByPosition(mCurrentTab);
-
-        if (fragment instanceof AbsSearchFragment) {
-            AbsSearchFragment searchFragment = (AbsSearchFragment) fragment;
-            searchFragment.openSearchFilter();
-        }
 
         if (fragment instanceof BaseSearchFragment) {
             BaseSearchFragment searchFragment = (BaseSearchFragment) fragment;
@@ -309,7 +293,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
                     break;
 
                 case TAB_DOCUMENTS:
-                    fragment = DocumentsSearchFragment.newInstance(accountId,
+                    fragment = DocsSearchFragment.newInstance(accountId,
                             criteria instanceof DocumentSearchCriteria ? (DocumentSearchCriteria) criteria : null);
                     break;
 

@@ -11,7 +11,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +33,8 @@ import biz.dealnote.messenger.activity.SendAttachmentsActivity;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.exception.ServiceException;
 import biz.dealnote.messenger.fragment.base.AccountDependencyFragment;
+import biz.dealnote.messenger.interactor.IDocsInteractor;
+import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.EditingPostType;
@@ -41,25 +42,23 @@ import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.place.PlaceUtil;
 import biz.dealnote.messenger.service.RequestFactory;
-import biz.dealnote.messenger.service.factory.DocsRequestFactory;
-import biz.dealnote.messenger.service.operations.AbsApiOperation;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.AppTextUtils;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Objects;
+import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.CircleCounterButton;
 
-public class DocPreviewFragment extends AccountDependencyFragment implements View.OnClickListener {
+import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
-    private static final String EXTRA_DOC_ID = "doc_id";
-    private static final String TAG = DocPreviewFragment.class.getSimpleName();
+public class DocPreviewFragment extends AccountDependencyFragment implements View.OnClickListener {
 
     public static Bundle buildArgs(int accountId, int docId, int docOwnerId, @Nullable Document document) {
         Bundle args = new Bundle();
         args.putInt(Extra.ACCOUNT_ID, accountId);
-        args.putInt(EXTRA_DOC_ID, docId);
+        args.putInt(Extra.DOC_ID, docId);
         args.putInt(Extra.OWNER_ID, docOwnerId);
 
         if (document != null) {
@@ -75,10 +74,11 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
         return fragment;
     }
 
-    private View root;
+    private View rootView;
     private int ownerId;
     private int documentId;
     private Document document;
+
     private ImageView preview;
     private ImageView ivDocIcon;
     private TextView tvTitle;
@@ -89,38 +89,40 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        this.docsInteractor = InteractorFactory.createDocsInteractor();
+
         if (savedInstanceState != null) {
             restoreFromInstanceState(savedInstanceState);
         }
 
         this.ownerId = getArguments().getInt(Extra.OWNER_ID);
-        this.documentId = getArguments().getInt(EXTRA_DOC_ID);
+        this.documentId = getArguments().getInt(Extra.DOC_ID);
 
         if (getArguments().containsKey(Extra.DOC)) {
-            document = getArguments().getParcelable(Extra.DOC);
+            this.document = getArguments().getParcelable(Extra.DOC);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_document_preview, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
-        preview = (ImageView) root.findViewById(R.id.fragment_document_preview);
-        ivDocIcon = (ImageView) root.findViewById(R.id.no_preview_icon);
+        rootView = inflater.inflate(R.layout.fragment_document_preview, container, false);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(rootView.findViewById(R.id.toolbar));
+        preview = rootView.findViewById(R.id.fragment_document_preview);
+        ivDocIcon = rootView.findViewById(R.id.no_preview_icon);
         ivDocIcon.getBackground().setColorFilter(CurrentTheme.getIconColorActive(getActivity()), PorterDuff.Mode.MULTIPLY);
 
-        tvTitle = (TextView) root.findViewById(R.id.fragment_document_title);
-        tvSubtitle = (TextView) root.findViewById(R.id.fragment_document_subtitle);
+        tvTitle = rootView.findViewById(R.id.fragment_document_title);
+        tvSubtitle = rootView.findViewById(R.id.fragment_document_subtitle);
 
-        CircleCounterButton deleteOrAddButton = (CircleCounterButton) root.findViewById(R.id.add_or_delete_button);
+        CircleCounterButton deleteOrAddButton = rootView.findViewById(R.id.add_or_delete_button);
 
         deleteOrAddButton.setOnClickListener(this);
-        root.findViewById(R.id.download_button).setOnClickListener(this);
-        root.findViewById(R.id.share_button).setOnClickListener(this);
+        rootView.findViewById(R.id.download_button).setOnClickListener(this);
+        rootView.findViewById(R.id.share_button).setOnClickListener(this);
 
         deleteOrAddButton.setIcon(isMy() ? R.drawable.delete : R.drawable.plus);
 
-        return root;
+        return rootView;
     }
 
     private boolean isMy() {
@@ -130,11 +132,8 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            restoreFromInstanceState(savedInstanceState);
-        }
 
-        if (needToGetInfoFromService()) {
+        if (Objects.isNull(document) && !mLoadingNow) {
             requestVideoInfo();
         }
 
@@ -145,40 +144,35 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
         if (!isAdded()) return;
 
         if (document == null) {
-            root.findViewById(R.id.content_root).setVisibility(View.GONE);
-            root.findViewById(R.id.loading_root).setVisibility(View.VISIBLE);
+            rootView.findViewById(R.id.content_root).setVisibility(View.GONE);
+            rootView.findViewById(R.id.loading_root).setVisibility(View.VISIBLE);
 
-            boolean nowLoading = hasRequest(DocsRequestFactory.REQUEST_DOC_GET_BY_ID);
-            root.findViewById(R.id.progressBar).setVisibility(nowLoading ? View.VISIBLE : View.GONE);
-            root.findViewById(R.id.post_loading_text).setVisibility(nowLoading ? View.VISIBLE : View.GONE);
-            root.findViewById(R.id.try_again_button).setVisibility(nowLoading ? View.GONE : View.VISIBLE);
+            rootView.findViewById(R.id.progressBar).setVisibility(mLoadingNow ? View.VISIBLE : View.GONE);
+            rootView.findViewById(R.id.post_loading_text).setVisibility(mLoadingNow ? View.VISIBLE : View.GONE);
+            rootView.findViewById(R.id.try_again_button).setVisibility(mLoadingNow ? View.GONE : View.VISIBLE);
 
             return;
         }
 
-        root.findViewById(R.id.content_root).setVisibility(View.VISIBLE);
-        root.findViewById(R.id.loading_root).setVisibility(View.GONE);
+        rootView.findViewById(R.id.content_root).setVisibility(View.VISIBLE);
+        rootView.findViewById(R.id.loading_root).setVisibility(View.GONE);
 
-        if (Objects.nonNull(document.getGraffiti())) {
+        if (nonNull(document.getGraffiti())) {
             ivDocIcon.setVisibility(View.GONE);
             preview.setVisibility(View.VISIBLE);
 
             String graffitiUrl = document.getGraffiti().getSrc();
 
-            Logger.d(TAG, "hasGraffiti, graffitiUrl: " + graffitiUrl);
-
-            if (!TextUtils.isEmpty(graffitiUrl)) {
+            if (nonEmpty(graffitiUrl)) {
                 PicassoInstance.with()
                         .load(graffitiUrl)
                         .into(preview);
             }
-        } else if (Objects.nonNull(document.getPhotoPreview())) {
+        } else if (nonNull(document.getPhotoPreview())) {
             ivDocIcon.setVisibility(View.GONE);
             preview.setVisibility(View.VISIBLE);
 
             String previewUrl = document.getPhotoPreview().getUrlForSize(PhotoSize.X, true);
-
-            Logger.d(TAG, "hasPhotoPreview, previewUrl: " + previewUrl);
 
             if (!TextUtils.isEmpty(previewUrl)) {
                 PicassoInstance.with()
@@ -201,17 +195,34 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
             return;
         }
 
-        root.findViewById(R.id.add_or_delete_button).setVisibility(deleted ? View.INVISIBLE : View.VISIBLE);
-        root.findViewById(R.id.share_button).setVisibility(deleted ? View.INVISIBLE : View.VISIBLE);
+        rootView.findViewById(R.id.add_or_delete_button).setVisibility(deleted ? View.INVISIBLE : View.VISIBLE);
+        rootView.findViewById(R.id.share_button).setVisibility(deleted ? View.INVISIBLE : View.VISIBLE);
     }
 
-    private boolean needToGetInfoFromService() {
-        return !hasRequest(DocsRequestFactory.REQUEST_DOC_GET_BY_ID) && document == null;
-    }
+    private boolean mLoadingNow;
 
     private void requestVideoInfo() {
-        Request request = DocsRequestFactory.getGetDocByIdRequest(ownerId, documentId);
-        executeRequest(request);
+        final int accountId = super.getAccountId();
+
+        this.mLoadingNow = true;
+        appendDisposable(docsInteractor.findById(accountId, ownerId, documentId)
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::onDocumentInfoReceived, this::onDocumentInfoGetError));
+    }
+
+    private void onDocumentInfoGetError(Throwable t) {
+        this.mLoadingNow = false;
+        // TODO: 06.10.2017
+    }
+
+    private void onDocumentInfoReceived(Document document) {
+        this.mLoadingNow = false;
+        this.document = document;
+
+        getArguments().putParcelable(Extra.DOC, document);
+
+        resolveAllViews();
+        resolveActionBar();
     }
 
     @Override
@@ -224,29 +235,9 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
         super.onRequestFinished(request, resultData);
 
         switch (request.getRequestType()) {
-            case DocsRequestFactory.REQUEST_DOC_GET_BY_ID:
-                if (resultData.containsKey(AbsApiOperation.OUT_DOCUMENT)) {
-                    document = resultData.getParcelable(AbsApiOperation.OUT_DOCUMENT);
-                    getArguments().putParcelable(Extra.DOC, document);
-                }
-
-                resolveAllViews();
-                resolveActionBar();
-                break;
-
-            case RequestFactory.REQUEST_DOCS_ADD:
-                if (isAdded() && root != null) {
-                    Snackbar.make(root, R.string.added, Snackbar.LENGTH_LONG).show();
-                }
-
-                deleted = false;
-                resolveButtons();
-
-                break;
-
             case RequestFactory.REQUEST_DOCS_DELETE:
-                if (isAdded() && root != null) {
-                    Snackbar.make(root, R.string.deleted, Snackbar.LENGTH_LONG).show();
+                if (isAdded() && rootView != null) {
+                    Snackbar.make(rootView, R.string.deleted, Snackbar.LENGTH_LONG).show();
                 }
 
                 deleted = true;
@@ -259,7 +250,7 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
     @Override
     protected void onRequestError(Request request, ServiceException throwable) {
         super.onRequestError(request, throwable);
-        if(isAdded()){
+        if (isAdded()) {
             Utils.showRedTopToast(getActivity(), throwable.getMessage());
         }
     }
@@ -367,8 +358,6 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
         List<AbsModel> models = Collections.singletonList(document);
 
         PlaceUtil.goToPostCreation(getActivity(), accountId, accountId, EditingPostType.TEMP, models);
-        //PlaceFactory.getCreatePostPlace(getAccountId(), getAccountId(), EditingPostType.TEMP, Collections.singletonList(document), null)
-        //        .tryOpenWith(getActivity());
     }
 
     private String genLink() {
@@ -402,9 +391,30 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
         });
     }
 
-    private void doAddYourSelf(){
-        Request request = RequestFactory.getDocsAddRequest(document.getId(), document.getOwnerId(), document.getAccessKey());
-        executeRequest(request);
+    private IDocsInteractor docsInteractor;
+
+    private void doAddYourSelf() {
+        IDocsInteractor docsInteractor = InteractorFactory.createDocsInteractor();
+
+        final int accountId = super.getAccountId();
+        final String accessKey = nonNull(document) ? document.getAccessKey() : null;
+
+        appendDisposable(docsInteractor.add(accountId, documentId, ownerId, accessKey)
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(id -> onDocumentAdded(), this::onDocAddError));
+    }
+
+    private void onDocAddError(Throwable t) {
+        t.printStackTrace();
+    }
+
+    private void onDocumentAdded() {
+        if (nonNull(rootView)) {
+            Snackbar.make(rootView, R.string.added, Snackbar.LENGTH_LONG).show();
+        }
+
+        deleted = false;
+        resolveButtons();
     }
 
     private void addYourSelf() {

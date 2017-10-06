@@ -31,15 +31,6 @@ public final class RequestFactory {
 
     public static final int REQUEST_MESSAGES_RESTORE = 41;
     public static final int REQUEST_DOCS_DELETE = 42;
-    public static final int REQUEST_DOCS_ADD = 43;
-
-    public static Request getDocsAddRequest(int docId, int ownerId, String accessKey) {
-        Request request = new Request(REQUEST_DOCS_ADD);
-        request.put(Extra.ID, docId);
-        request.put(Extra.OWNER_ID, ownerId);
-        request.put(Extra.ACCESS_KEY, accessKey);
-        return request;
-    }
 
     public static Request getDocsDeleteRequest(int docId, int ownerId) {
         Request request = new Request(REQUEST_DOCS_DELETE);

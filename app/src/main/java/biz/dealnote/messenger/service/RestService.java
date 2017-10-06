@@ -9,7 +9,6 @@ import com.foxykeep.datadroid.service.RequestService;
 import biz.dealnote.messenger.exception.ServiceException;
 import biz.dealnote.messenger.service.factory.AccountRequestFactory;
 import biz.dealnote.messenger.service.factory.AudioRequestFactory;
-import biz.dealnote.messenger.service.factory.DocsRequestFactory;
 import biz.dealnote.messenger.service.factory.FaveRequestFactory;
 import biz.dealnote.messenger.service.factory.FeedRequestFactory;
 import biz.dealnote.messenger.service.factory.GroupsRequestFactory;
@@ -23,11 +22,8 @@ import biz.dealnote.messenger.service.operations.audio.AlbumCoverFindOperation;
 import biz.dealnote.messenger.service.operations.audio.DeleteAudioOperation;
 import biz.dealnote.messenger.service.operations.audio.RestoreAudioOperation;
 import biz.dealnote.messenger.service.operations.audio.SetBroadcastAudioOperation;
-import biz.dealnote.messenger.service.operations.docs.DocsAddOperation;
 import biz.dealnote.messenger.service.operations.docs.DocsDeleteOperation;
-import biz.dealnote.messenger.service.operations.docs.DocsGetByIdOperation;
 import biz.dealnote.messenger.service.operations.docs.DocsGetOperation;
-import biz.dealnote.messenger.service.operations.docs.DocsSearchOpearion;
 import biz.dealnote.messenger.service.operations.fave.FaveGetLinksOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveRemoveLinkOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveRemoveUserOperation;
@@ -81,8 +77,6 @@ public class RestService extends RequestService {
                 return new MessagesRestoreOperation();
             case RequestFactory.REQUEST_DOCS_DELETE:
                 return new DocsDeleteOperation();
-            case RequestFactory.REQUEST_DOCS_ADD:
-                return new DocsAddOperation();
 
             case GroupsRequestFactory.REQUEST_JOIN:
                 return new JoinGroupOperation();
@@ -123,17 +117,12 @@ public class RestService extends RequestService {
             case UtilsRequestFactory.REQUEST_SCREEN_NAME:
                 return new ResolveScreenNameOperation();
 
-            case DocsRequestFactory.REQUEST_DOC_GET_BY_ID:
-                return new DocsGetByIdOperation();
             case PhotoRequestFactory.REQUEST_COPY:
                 return new CopyPhotoOperation();
             case PhotoRequestFactory.REQUEST_DELETE:
                 return new DeletePhotoOpeation();
             case PhotoRequestFactory.REQUEST_RESTORE:
                 return new RestorePhotoOpeation();
-
-            case DocsRequestFactory.REQUEST_DOC_SEARCH:
-                return new DocsSearchOpearion();
 
             case AccountRequestFactory.REQUEST_RESOLVE_PUSH_REGISTRATION:
                 return new PushResolveOperation();
