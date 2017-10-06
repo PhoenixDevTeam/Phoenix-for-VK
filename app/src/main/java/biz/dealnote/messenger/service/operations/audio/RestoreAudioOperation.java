@@ -8,8 +8,6 @@ import com.foxykeep.datadroid.requestmanager.Request;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.api.Apis;
 import biz.dealnote.messenger.api.model.VKApiAudio;
-import biz.dealnote.messenger.bus.BusProvider;
-import biz.dealnote.messenger.bus.DeleteAudioEvent;
 import biz.dealnote.messenger.service.operations.AbsApiOperation;
 
 public class RestoreAudioOperation extends AbsApiOperation {
@@ -26,7 +24,7 @@ public class RestoreAudioOperation extends AbsApiOperation {
                 .blockingGet();
 
         if (restoredAudio != null) {
-            BusProvider.getInstance().post(new DeleteAudioEvent(id, ownerId, false));
+
         }
 
         return buildSimpleSuccessResult(restoredAudio != null);

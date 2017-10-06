@@ -20,7 +20,7 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  * Created by Ruslan Kolbasa on 20.09.2017.
  * phoenix
  */
-public class VideosSearchPresenter extends BaseSearchPresenter<IVideosSearchView, VideoSearchCriteria, Video, IntNextFrom> {
+public class VideosSearchPresenter extends AbsSearchPresenter<IVideosSearchView, VideoSearchCriteria, Video, IntNextFrom> {
 
     private final IVideosInteractor videosInteractor;
 

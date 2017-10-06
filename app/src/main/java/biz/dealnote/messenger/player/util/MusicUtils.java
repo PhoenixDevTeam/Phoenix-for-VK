@@ -29,6 +29,9 @@ import biz.dealnote.messenger.model.Audio;
 import biz.dealnote.messenger.player.IAudioPlayerService;
 import biz.dealnote.messenger.player.MusicPlaybackService;
 import biz.dealnote.messenger.util.Logger;
+import biz.dealnote.messenger.util.Optional;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 /**
  * A collection of helpers directly related to music or Apollo's service.
@@ -73,9 +76,12 @@ public final class MusicUtils {
         return null;
     }
 
+    private static final PublishSubject<Optional<IAudioPlayerService>> SERVICE_BIND_PUBLISHER = PublishSubject.create();
+
     public static ServiceToken bindToServiceWithoutStart(final Activity realActivity, final ServiceConnection callback) {
         final ContextWrapper contextWrapper = new ContextWrapper(realActivity);
         final ServiceBinder binder = new ServiceBinder(callback);
+
         if (contextWrapper.bindService(new Intent().setClass(contextWrapper, MusicPlaybackService.class), binder, 0)) {
             mConnectionMap.put(contextWrapper, binder);
             return new ServiceToken(contextWrapper);
@@ -99,12 +105,18 @@ public final class MusicUtils {
         }
 
         mContextWrapper.unbindService(mBinder);
+
         if (mConnectionMap.isEmpty()) {
             mService = null;
         }
     }
 
+    public static Observable<Optional<IAudioPlayerService>> observeServiceBinding(){
+        return SERVICE_BIND_PUBLISHER;
+    }
+
     public static final class ServiceBinder implements ServiceConnection {
+
         private final ServiceConnection mCallback;
 
 
@@ -115,6 +127,9 @@ public final class MusicUtils {
         @Override
         public void onServiceConnected(final ComponentName className, final IBinder service) {
             mService = IAudioPlayerService.Stub.asInterface(service);
+
+            SERVICE_BIND_PUBLISHER.onNext(Optional.wrap(mService));
+
             if (mCallback != null) {
                 mCallback.onServiceConnected(className, service);
             }
@@ -125,7 +140,10 @@ public final class MusicUtils {
             if (mCallback != null) {
                 mCallback.onServiceDisconnected(className);
             }
+
             mService = null;
+
+            SERVICE_BIND_PUBLISHER.onNext(Optional.empty());
         }
     }
 
@@ -137,7 +155,6 @@ public final class MusicUtils {
             mWrappedContext = context;
         }
     }
-
 
     public static String makeTimeString(final Context context, long secs) {
         long hours, mins;

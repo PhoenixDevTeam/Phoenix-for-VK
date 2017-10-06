@@ -21,7 +21,7 @@ import static biz.dealnote.messenger.util.Utils.trimmedNonEmpty;
  * Created by admin on 01.05.2017.
  * phoenix
  */
-public class MessagesSearchPresenter extends BaseSearchPresenter<IMessagesSearchView, MessageSeachCriteria, Message, IntNextFrom> {
+public class MessagesSearchPresenter extends AbsSearchPresenter<IMessagesSearchView, MessageSeachCriteria, Message, IntNextFrom> {
 
     private static final String TAG = MessagesSearchPresenter.class.getSimpleName();
 

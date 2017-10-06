@@ -163,14 +163,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
         }
 
         if (fragment instanceof AbsSearchFragment) {
-            String query = ((AbsSearchFragment) fragment).getCurrentQuery();
-
-            mSearchView.setQuery(query);
-            mSearchView.setSelection(query.length());
-        }
-
-        if (fragment instanceof BaseSearchFragment) {
-            ((BaseSearchFragment) fragment).syncYourCriteriaWithParent();
+            ((AbsSearchFragment) fragment).syncYourCriteriaWithParent();
         }
     }
 
@@ -230,13 +223,9 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
         long start = System.currentTimeMillis();
 
         Fragment fragment = mAdapter.findFragmentByPosition(mCurrentTab);
-        if (fragment instanceof AbsSearchFragment) {
-            AbsSearchFragment absSearchFragment = (AbsSearchFragment) fragment;
-            absSearchFragment.setNewCriteria(query);
-        }
 
-        if (fragment instanceof BaseSearchFragment) {
-            ((BaseSearchFragment) fragment).fireTextQueryEdit(query);
+        if (fragment instanceof AbsSearchFragment) {
+            ((AbsSearchFragment) fragment).fireTextQueryEdit(query);
         }
 
         Exestime.log("fireNewQuery", start);
@@ -260,11 +249,6 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
             AbsSearchFragment searchFragment = (AbsSearchFragment) fragment;
             searchFragment.openSearchFilter();
         }
-
-        if (fragment instanceof BaseSearchFragment) {
-            BaseSearchFragment searchFragment = (BaseSearchFragment) fragment;
-            searchFragment.openSearchFilter();
-        }
     }
 
     @Override
@@ -272,7 +256,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
         super.onActivityResult(requestCode, resultCode, data);
         String action = nonNull(data) ? data.getAction() : null;
 
-        if (BaseSearchFragment.ACTION_QUERY.equals(action)) {
+        if (AbsSearchFragment.ACTION_QUERY.equals(action)) {
             String q = data.getStringExtra(Extra.Q);
             mSearchView.setQuery(q);
             mSearchView.setSelection(Utils.safeLenghtOf(q));
@@ -309,7 +293,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
                     break;
 
                 case TAB_DOCUMENTS:
-                    fragment = DocumentsSearchFragment.newInstance(accountId,
+                    fragment = DocsSearchFragment.newInstance(accountId,
                             criteria instanceof DocumentSearchCriteria ? (DocumentSearchCriteria) criteria : null);
                     break;
 

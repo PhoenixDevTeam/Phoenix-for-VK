@@ -25,7 +25,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 01.05.2017.
  * phoenix
  */
-public abstract class BaseSearchPresenter<V extends IBaseSearchView<T>, C extends BaseSearchCriteria, T, N extends AbsNextFrom> extends PlaceSupportPresenter<V> {
+public abstract class AbsSearchPresenter<V extends IBaseSearchView<T>, C extends BaseSearchCriteria, T, N extends AbsNextFrom> extends PlaceSupportPresenter<V> {
 
     private static final String SAVE_CRITERIA = "save_criteria";
     private static final int MESSAGE = 67;
@@ -38,9 +38,9 @@ public abstract class BaseSearchPresenter<V extends IBaseSearchView<T>, C extend
     private C resultsForCriteria;
     private boolean endOfContent;
 
-    private WeakActionHandler<BaseSearchPresenter> actionHandler = new WeakActionHandler<>(this);
+    private WeakActionHandler<AbsSearchPresenter> actionHandler = new WeakActionHandler<>(this);
 
-    BaseSearchPresenter(int accountId, @Nullable C criteria, @Nullable Bundle savedInstanceState) {
+    AbsSearchPresenter(int accountId, @Nullable C criteria, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
 
         if (isNull(savedInstanceState)) {

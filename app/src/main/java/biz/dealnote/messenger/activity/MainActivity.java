@@ -43,8 +43,6 @@ import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.bus.AudioPlayerBindEvent;
-import biz.dealnote.messenger.bus.BusProvider;
 import biz.dealnote.messenger.dialog.ResolveDomainDialog;
 import biz.dealnote.messenger.fragment.AbsWallFragment;
 import biz.dealnote.messenger.fragment.AudioPlayerFragment;
@@ -1188,7 +1186,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     public void onServiceConnected(ComponentName name, IBinder service) {
         if (name.getClassName().equals(MusicPlaybackService.class.getName())) {
             Logger.d(TAG, "Connected to MusicPlaybackService");
-            BusProvider.getInstance().post(new AudioPlayerBindEvent());
         }
     }
 

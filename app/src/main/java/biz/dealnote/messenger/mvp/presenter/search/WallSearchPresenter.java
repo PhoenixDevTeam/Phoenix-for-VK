@@ -27,7 +27,7 @@ import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
  * Created by admin on 02.05.2017.
  * phoenix
  */
-public class WallSearchPresenter extends BaseSearchPresenter<IWallSearchView, WallSearchCriteria, Post, IntNextFrom> {
+public class WallSearchPresenter extends AbsSearchPresenter<IWallSearchView, WallSearchCriteria, Post, IntNextFrom> {
 
     private static final String TAG = WallSearchPresenter.class.getSimpleName();
 

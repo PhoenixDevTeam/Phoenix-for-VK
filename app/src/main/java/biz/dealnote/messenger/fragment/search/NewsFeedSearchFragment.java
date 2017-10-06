@@ -18,7 +18,7 @@ import biz.dealnote.messenger.mvp.view.search.INewsFeedSearchView;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-public class NewsFeedSearchFragment extends BaseSearchFragment<NewsFeedSearchPresenter, INewsFeedSearchView, Post>
+public class NewsFeedSearchFragment extends AbsSearchFragment<NewsFeedSearchPresenter, INewsFeedSearchView, Post>
         implements WallAdapter.ClickListener, INewsFeedSearchView {
 
     public static NewsFeedSearchFragment newInstance(int accountId, @Nullable NewsFeedCriteria initialCriteria){

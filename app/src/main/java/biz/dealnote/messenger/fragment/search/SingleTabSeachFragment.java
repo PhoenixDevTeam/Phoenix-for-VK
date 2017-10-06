@@ -96,12 +96,9 @@ public class SingleTabSeachFragment extends Fragment implements MySearchView.OnQ
 
     private void syncChildFragment(){
         Fragment fragment = getChildFragmentManager().findFragmentById(R.id.child_container);
-        //if(fragment instanceof AbsSearchFragment){
-        //    ((AbsSearchFragment) fragment).syncYourCriteriaWithParent();
-        //}
 
-        if(fragment instanceof BaseSearchFragment){
-            ((BaseSearchFragment) fragment).syncYourCriteriaWithParent();
+        if(fragment instanceof AbsSearchFragment){
+            ((AbsSearchFragment) fragment).syncYourCriteriaWithParent();
         }
     }
 
@@ -114,15 +111,9 @@ public class SingleTabSeachFragment extends Fragment implements MySearchView.OnQ
     private void fireNewQuery(String query) {
         Fragment fragment = getChildFragmentManager().findFragmentById(R.id.child_container);
 
-        // no-MVP
-        if(fragment instanceof AbsSearchFragment){
-            AbsSearchFragment absSearchFragment = (AbsSearchFragment) fragment;
-            absSearchFragment.setNewCriteria(query);
-        }
-
         // MVP
-        if(fragment instanceof BaseSearchFragment){
-            ((BaseSearchFragment) fragment).fireTextQueryEdit(query);
+        if(fragment instanceof AbsSearchFragment){
+            ((AbsSearchFragment) fragment).fireTextQueryEdit(query);
         }
     }
 

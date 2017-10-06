@@ -6,6 +6,7 @@ import biz.dealnote.messenger.interactor.impl.BoardInteractor;
 import biz.dealnote.messenger.interactor.impl.CommunitiesInteractor;
 import biz.dealnote.messenger.interactor.impl.DatabaseInteractor;
 import biz.dealnote.messenger.interactor.impl.DialogsInteractor;
+import biz.dealnote.messenger.interactor.impl.DocsInteractor;
 import biz.dealnote.messenger.interactor.impl.FaveInteractor;
 import biz.dealnote.messenger.interactor.impl.FeedInteractor;
 import biz.dealnote.messenger.interactor.impl.FeedbackInteractor;
@@ -24,6 +25,10 @@ import biz.dealnote.messenger.settings.Settings;
  * phoenix
  */
 public class InteractorFactory {
+
+    public static IDocsInteractor createDocsInteractor(){
+        return new DocsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories().docs());
+    }
 
     public static ILikesInteractor createLikesInteractor(){
         return new LikesInteractor(Injection.provideNetworkInterfaces());

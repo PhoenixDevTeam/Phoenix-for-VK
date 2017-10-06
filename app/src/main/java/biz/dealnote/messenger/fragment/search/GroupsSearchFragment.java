@@ -17,7 +17,7 @@ import biz.dealnote.messenger.mvp.view.search.ICommunitiesSearchView;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-public class GroupsSearchFragment extends BaseSearchFragment<CommunitiesSearchPresenter, ICommunitiesSearchView, Community>
+public class GroupsSearchFragment extends AbsSearchFragment<CommunitiesSearchPresenter, ICommunitiesSearchView, Community>
         implements ICommunitiesSearchView, PeopleAdapter.ClickListener {
 
     public static GroupsSearchFragment newInstance(int accountId, @Nullable GroupSearchCriteria initialCriteria) {

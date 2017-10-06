@@ -34,7 +34,7 @@ public class SearchFragmentFactory {
                         criteria instanceof VideoSearchCriteria ? (VideoSearchCriteria) criteria : null);
 
             case SearchContentType.DOCUMENTS:
-                return DocumentsSearchFragment.newInstance(accountId,
+                return DocsSearchFragment.newInstance(accountId,
                         criteria instanceof DocumentSearchCriteria ? (DocumentSearchCriteria) criteria : null);
 
             case SearchContentType.NEWS:

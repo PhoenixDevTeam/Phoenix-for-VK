@@ -1,6 +1,10 @@
 # Phoenix-for-VK
 First open-sourced VK client for Android inspired by Material Design.
 
+<b>Available at Google Play</b><br>
+  <b>Full:</b> https://play.google.com/store/apps/details?id=biz.dealnote.phoenix <br>
+  <b>Lite:</b> https://play.google.com/store/apps/details?id=biz.dealnote.messenger
+
 <b>Build guide:</b>
 Requirements:
   1) Android Studio 3.0 Beta 7 or higher
@@ -24,4 +28,12 @@ lite_vk_client_secret=""
 
 You can use one value for Lite and Full version if you wish.
 
-  2) Build APK via Android Studio
+  2) We also need to configure Google Services in order to get push-messages and crash reports. Following files you can find in your Google Play console.<br>
+  <b>Create files:</b><br>
+    - app/google-services.json <br>
+    - app/src/lite/google-services.json <br>
+    - app/src/full/google-services.json
+
+  All project variables are setup now.
+
+  3) Build APK via Android Studio

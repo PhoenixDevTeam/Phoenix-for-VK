@@ -11,12 +11,9 @@ import biz.dealnote.messenger.fragment.search.options.SpinnerOption;
 import biz.dealnote.messenger.interactor.ICommunitiesInteractor;
 import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.Community;
-import biz.dealnote.messenger.mvp.view.search.IBaseSearchView;
 import biz.dealnote.messenger.mvp.view.search.ICommunitiesSearchView;
 import biz.dealnote.messenger.util.Pair;
-import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Single;
-import io.reactivex.functions.Function;
 
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
@@ -24,7 +21,7 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  * Created by admin on 19.09.2017.
  * phoenix
  */
-public class CommunitiesSearchPresenter extends BaseSearchPresenter<ICommunitiesSearchView,
+public class CommunitiesSearchPresenter extends AbsSearchPresenter<ICommunitiesSearchView,
         GroupSearchCriteria, Community, IntNextFrom> {
 
     private final ICommunitiesInteractor communitiesInteractor;

@@ -2,6 +2,7 @@ package biz.dealnote.messenger.interactor;
 
 import java.util.List;
 
+import biz.dealnote.messenger.fragment.search.criteria.DocumentSearchCriteria;
 import biz.dealnote.messenger.model.Document;
 import io.reactivex.Single;
 
@@ -12,4 +13,10 @@ import io.reactivex.Single;
 public interface IDocsInteractor {
     Single<List<Document>> request(int accountId, int ownerId, int filter);
     Single<List<Document>> getCacheData(int accountId, int ownerId, int filter);
+
+    Single<Integer> add(int accountId, int docId, int ownerId, String accessKey);
+
+    Single<Document> findById(int accountId, int ownerId, int docId);
+
+    Single<List<Document>> search(int accountId, DocumentSearchCriteria criteria, int count, int offset);
 }
