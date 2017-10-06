@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:colorBackground">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp">
+
+        <EditText
+            android:id="@+id/input"
+            android:textColor="?android:attr/textColorPrimary"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/font_size_title"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/type_here_to_start_searching"
+            android:background="?messages_background_color"
+            android:padding="8dp" />
+
+        <TextView
+            android:textColor="?colorAccent"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/font_size_subtitle"
+            android:text="@string/results_in_a_network"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"/>
+
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+
+    android:background="?attr/messages_background_color">
+
+    <include
+        layout="@layout/toolbar_with_elevation"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!--<ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:choiceMode="singleChoice"
+        android:scrollbars="none"
+        android:id="@+id/fragment_fwds_list"
+        android:divider="@null"
+        android:dividerHeight="0.0dp"
+        android:background="?attr/messages_background_color"/>
+-->
+</LinearLayout>
+

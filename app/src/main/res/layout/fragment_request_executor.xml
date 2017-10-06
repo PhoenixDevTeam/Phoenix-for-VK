@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/list_divider_color">
+
+    <include layout="@layout/toolbar_with_elevation" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="?attr/android:colorBackground"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/request_params_title"
+                        android:textColor="?attr/textColorPrimary"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:labelFor="@+id/method"
+                        android:text="@string/request_method_title"
+                        android:textColor="?attr/textColorSecondary" />
+
+                    <EditText
+                        android:id="@+id/method"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/backgroud_rectangle_border"
+                        android:hint="store.getStockItems"
+                        android:inputType="textVisiblePassword"
+                        android:padding="8dp"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:labelFor="@+id/body"
+                        android:text="@string/request_body_title"
+                        android:textColor="?attr/textColorSecondary" />
+
+                    <EditText
+                        android:id="@+id/body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/backgroud_rectangle_border"
+                        android:gravity="top"
+                        android:hint="type=stickers"
+                        android:inputType="textVisiblePassword|textMultiLine"
+                        android:minHeight="80dp"
+                        android:padding="8dp"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText" />
+
+                    <Button
+                        android:id="@+id/button_execute"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="8dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:text="@string/button_execute" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="?attr/android:colorBackground"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/buttons"
+                            android:layout_toStartOf="@+id/buttons"
+                            android:text="@string/request_response_title"
+                            android:textColor="?attr/textColorPrimary"
+                            android:textSize="24sp" />
+
+                        <LinearLayout
+                            android:id="@+id/buttons"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:orientation="horizontal">
+
+                            <biz.dealnote.messenger.view.ColorFilterImageView
+                                android:id="@+id/button_copy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+
+                                android:padding="8dp"
+                                android:src="@drawable/content_copy"
+                                app:filter_color="?attr/colorAccent" />
+
+                            <biz.dealnote.messenger.view.ColorFilterImageView
+                                android:id="@+id/button_save"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:padding="8dp"
+                                android:src="@drawable/file"
+                                app:filter_color="?attr/colorAccent" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:fontFamily="monospace"
+                        android:id="@+id/response_body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/backgroud_rectangle_border"
+                        android:gravity="top"
+                        android:inputType="text|textMultiLine|textLongMessage|textNoSuggestions"
+                        android:minHeight="200dp"
+                        android:padding="8dp"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

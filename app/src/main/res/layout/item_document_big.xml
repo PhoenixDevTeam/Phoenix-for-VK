@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <ImageView
+        android:id="@+id/item_document_big_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="false"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/item_document_big_ext"
+        android:gravity="center"
+        android:scaleType="centerCrop"
+        android:textAllCaps="true" />
+
+    <TextView
+        android:id="@+id/item_document_big_ext"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/rectangle_back"
+        android:gravity="center"
+        android:scaleType="centerCrop"
+        android:text=".EXT"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font_size_additional"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/item_document_big_image"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <TextView
+            android:id="@+id/item_document_big_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="Title"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/font_size_title" />
+
+        <TextView
+            android:id="@+id/item_document_big_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="Size"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="@dimen/font_size_subtitle"
+            android:textStyle="italic" />
+    </LinearLayout>
+
+
+</RelativeLayout>
+
+

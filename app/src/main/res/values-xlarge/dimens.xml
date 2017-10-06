@@ -1,0 +1,25 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <dimen name="message_font_size">17sp</dimen>
+
+    <dimen name="navigation_drawer_width">328dp</dimen>
+
+    <dimen name="dialogs_title_font_size">18sp</dimen>
+    <dimen name="dialogs_last_message_font_size">16sp</dimen>
+
+    <dimen name="navi_drawer_font_size">16sp</dimen>
+    <dimen name="navi_drawer_item_height">50dp</dimen>
+    <dimen name="navi_drawer_icon_size">20dp</dimen>
+
+    <dimen name="navi_heared_font_size">18sp</dimen>
+    <dimen name="navi_header_height">160dp</dimen>
+    <dimen name="navi_heared_status_font_size">14sp</dimen>
+
+    <dimen name="pref_image_size">140dp</dimen>
+    <dimen name="max_single_image_height">600dp</dimen>
+
+    <dimen name="attachment_grid_column_size">150dp</dimen>
+    <dimen name="attachment_manager_button_size">48dp</dimen>
+    <dimen name="attachment_manager_button_padding">15dp</dimen>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:paddingTop="16dp">
+
+    <TextView
+        android:id="@+id/item_post_deleted_warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deleted_post"
+        android:textColor="?android:textColorPrimary"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/item_post_deleted_restore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_post_deleted_warning"
+        android:text="@string/restore"
+        android:textAllCaps="true"
+        android:textColor="?android:textColorPrimary"
+        android:layout_centerHorizontal="true"
+        style="?android:attr/borderlessButtonStyle"/>
+
+</RelativeLayout>

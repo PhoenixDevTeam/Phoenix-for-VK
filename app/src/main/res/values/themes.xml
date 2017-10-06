@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Light themes here-->
+
+    <!-- Blue -->
+    <style name="Theme1" parent="AppTheme">
+        <item name="colorPrimary">#527DAD</item>
+        <item name="colorPrimaryDark">#3B5973</item>
+        <item name="colorAccent">#487197</item>
+
+        <item name="icon_color_active">#487197</item>
+    </style>
+
+    <!--<style name="Theme2" parent="AppTheme">
+        <item name="colorPrimary">#0097a7</item>
+        <item name="colorPrimaryDark">#00838f</item>
+        <item name="colorAccent">#f44336</item>
+
+        <item name="icon_color_active">#1976D2</item>
+    </style>-->
+
+    <!-- Light Blue -->
+    <style name="Theme2" parent="AppTheme">
+        <item name="colorPrimary">#1976D2</item>
+        <item name="colorPrimaryDark">#1565C0</item>
+        <item name="colorAccent">#c2185b</item>
+
+        <item name="icon_color_active">#1976D2</item>
+    </style>
+
+    <!-- Grey -->
+    <style name="Theme3" parent="AppTheme">
+        <item name="colorPrimary">#2B5266</item>
+        <item name="colorPrimaryDark">#254659</item>
+        <item name="colorAccent">#387C9C</item>
+
+        <item name="icon_color_active">#387C9C</item>
+    </style>
+
+    <!-- Teal -->
+    <style name="Theme4" parent="AppTheme">
+        <item name="colorPrimary">#FF009688</item>
+        <item name="colorPrimaryDark">#00796B</item>
+        <item name="colorAccent">#C65954</item>
+
+        <item name="icon_color_active">#00897B</item>
+    </style>
+
+    <!-- Red -->
+    <style name="Theme5" parent="AppTheme">
+        <item name="colorPrimary">#d50000</item>
+        <item name="colorPrimaryDark">#FFB71C1C</item>
+        <item name="colorAccent">#00695c</item>
+
+        <item name="icon_color_active">#d50000</item>
+    </style>
+
+    <!-- Indigo -->
+    <style name="Theme6" parent="AppTheme">
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="colorPrimaryDark">#303F9F</item>
+        <item name="colorAccent">#E91E63</item>
+
+        <item name="icon_color_active">#3F51B5</item>
+    </style>
+
+    <!-- Pink -->
+    <style name="Theme7" parent="AppTheme">
+        <item name="colorPrimary">#E91E63</item>
+        <item name="colorPrimaryDark">#C2185B</item>
+        <item name="colorAccent">#3F51B5</item>
+
+        <item name="icon_color_active">#E91E63</item>
+    </style>
+
+    <!-- Orange -->
+    <style name="Theme8" parent="AppTheme">
+        <item name="colorPrimary">#FF5722</item>
+        <item name="colorPrimaryDark">#E64A19</item>
+        <item name="colorAccent">#00BCD4</item>
+
+        <item name="icon_color_active">#FF5722</item>
+    </style>
+
+    <style name="Theme9" parent="AppTheme">
+        <item name="colorPrimary">#674391</item>
+        <item name="colorPrimaryDark">#57397b</item>
+        <item name="colorAccent">#E91E63</item>
+
+        <item name="icon_color_active">#674391</item>
+    </style>
+
+    <!-- Monochrome-->
+    <style name="Theme10" parent="AppTheme">
+        <item name="colorPrimary">#FFF</item>
+        <item name="colorPrimaryDark">#aaaaaa</item>
+        <item name="colorAccent">#78909c</item>
+
+        <item name="icon_color_on_colored_back">#757575</item>
+
+        <item name="icon_color_active">#78909c</item>
+
+        <item name="textColorPrimaryOnColoredBack">#de000000</item>
+        <item name="textColorSecondaryOnColoredBack">#8a000000</item>
+        <item name="textColorDisabledOnColoredBack">#39000000</item>
+
+        <item name="toolbarElevation">@dimen/toolbar_no_elevation</item>
+        <item name="toolbarAppStyle">@style/Toolbar.White</item>
+        <item name="toolbarDrawerIcon">@drawable/phoenix_drawer_grey600</item>
+        <item name="toolbarBackIcon">@drawable/arrow_left_grey600</item>
+        <item name="toolbarSearchIcon">@drawable/magnify_grey600</item>
+        <item name="toolbarCopyIcon">@drawable/content_copy_grey600</item>
+        <item name="toolbarDeleteIcon">@drawable/delete_grey600</item>
+        <item name="toolbarUpIcon">@drawable/chevron_up_grey</item>
+        <item name="toolbarGraphicIcon">@drawable/chart_bar_grey600</item>
+        <item name="toolbarEditIcon">@drawable/pencil_grey600</item>
+        <item name="toolbarForwardIcon">@drawable/forward_grey600</item>
+        <item name="toolbarOKIcon">@drawable/check_grey600</item>
+        <item name="toolbarCloseIcon">@drawable/close_grey600</item>
+        <item name="toolbarPlusIcon">@drawable/ic_plus_gray</item>
+        <item name="toolbarLockIcon">@drawable/lock_grey600</item>
+        <item name="toolbarLockPlusIcon">@drawable/ic_crypt_plus_gray600_vector</item>
+        <item name="toolbarUnlockIcon">@drawable/unlock_grey600</item>
+        <item name="tabsTheme">@style/Theme.Tablayout</item>
+
+        <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash_inverse</item>
+    </style>
+
+    <!-- Green -->
+    <style name="Theme11" parent="AppTheme">
+        <item name="colorPrimary">#0F9D58</item>
+        <item name="colorPrimaryDark">#0C7E46</item>
+        <item name="colorAccent">#26be74</item>
+
+        <item name="icon_color_active">#0F9D58</item>
+    </style>
+
+    <!-- Pixel -->
+    <style name="Theme12" parent="AppTheme">
+        <item name="colorPrimary">#4285F4</item>
+        <item name="colorPrimaryDark">#2962FF</item>
+        <item name="colorAccent">#1E88E5</item>
+
+        <item name="icon_color_active">#1E88E5</item>
+    </style>
+
+    <!-- Dark themes here-->
+
+    <!-- Blue -->
+    <style name="DarkTheme1" parent="DarkAppTheme">
+        <item name="colorPrimary">#487197</item>
+        <item name="colorPrimaryDark">#3B5973</item>
+        <item name="colorAccent">#487197</item>
+
+        <item name="icon_color_active">#ff6196cd</item>
+    </style>
+
+    <!-- Light Blue -->
+    <style name="DarkTheme2" parent="DarkAppTheme">
+        <item name="colorPrimary">#1976D2</item>
+        <item name="colorPrimaryDark">#1565C0</item>
+        <item name="colorAccent">#c2185b</item>
+
+        <item name="icon_color_active">#1976D2</item>
+    </style>
+
+    <!-- Grey -->
+    <style name="DarkTheme3" parent="DarkAppTheme">
+        <item name="colorPrimary">#2B5266</item>
+        <item name="colorPrimaryDark">#254659</item>
+        <item name="colorAccent">#387C9C</item>
+
+        <item name="icon_color_active">#387C9C</item>
+    </style>
+
+    <!-- Teal -->
+    <style name="DarkTheme4" parent="DarkAppTheme">
+        <item name="colorPrimary">#FF009688</item>
+        <item name="colorPrimaryDark">#00796B</item>
+        <item name="colorAccent">#C65954</item>
+
+        <item name="icon_color_active">#00897B</item>
+    </style>
+
+    <!-- Red -->
+    <style name="DarkTheme5" parent="DarkAppTheme">
+        <item name="colorPrimary">#d50000</item>
+        <item name="colorPrimaryDark">#FFB71C1C</item>
+        <item name="colorAccent">#ff00877a</item>
+
+        <item name="icon_color_active">#d50000</item>
+    </style>
+
+    <!-- Indigo -->
+    <style name="DarkTheme6" parent="DarkAppTheme">
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="colorPrimaryDark">#303F9F</item>
+        <item name="colorAccent">#E91E63</item>
+
+        <item name="icon_color_active">#ff6773ff</item>
+    </style>
+
+    <!-- Pink -->
+    <style name="DarkTheme7" parent="DarkAppTheme">
+        <item name="colorPrimary">#E91E63</item>
+        <item name="colorPrimaryDark">#C2185B</item>
+        <item name="colorAccent">#3F51B5</item>
+
+        <item name="icon_color_active">#E91E63</item>
+    </style>
+
+    <!-- Orange -->
+    <style name="DarkTheme8" parent="DarkAppTheme">
+        <item name="colorPrimary">#FF5722</item>
+        <item name="colorPrimaryDark">#E64A19</item>
+        <item name="colorAccent">#00BCD4</item>
+
+        <item name="icon_color_active">#FF5722</item>
+    </style>
+
+    <style name="DarkTheme9" parent="DarkAppTheme">
+        <item name="colorPrimary">#674391</item>
+        <item name="colorPrimaryDark">#57397b</item>
+        <item name="colorAccent">#E91E63</item>
+
+        <item name="icon_color_active">#9160ca</item>
+    </style>
+
+    <style name="DarkTheme10" parent="DarkAppTheme">
+        <item name="colorPrimary">#1F2226</item>
+        <item name="colorPrimaryDark">#131313</item>
+        <item name="colorAccent">#78909c</item>
+
+        <item name="icon_color_active">#78909c</item>
+        <item name="toolbarElevation">@dimen/toolbar_no_elevation</item>
+    </style>
+
+    <!-- Green -->
+    <style name="DarkTheme11" parent="DarkAppTheme">
+        <item name="colorPrimary">#0F9D58</item>
+        <item name="colorPrimaryDark">#0C7E46</item>
+        <item name="colorAccent">#26be74</item>
+
+        <item name="icon_color_active">#0F9D58</item>
+    </style>
+
+    <!-- Pixel -->
+    <style name="DarkTheme12" parent="DarkAppTheme">
+        <item name="colorPrimary">#4285F4</item>
+        <item name="colorPrimaryDark">#2962FF</item>
+        <item name="colorAccent">#1E88E5</item>
+
+        <item name="icon_color_active">#1E88E5</item>
+    </style>
+
+    <!-- Lightgray themes here-->
+
+    <!-- Blue -->
+    <style name="LightGrayTheme1" parent="LightGrayAppTheme">
+        <item name="colorPrimary">#487197</item>
+        <item name="colorPrimaryDark">#3B5973</item>
+        <item name="colorAccent">#487197</item>
+
+        <item name="icon_color_active">#ff6196cd</item>
+    </style>
+
+    <!-- Light Blue -->
+    <style name="LightGrayTheme2" parent="LightGrayAppTheme">
+        <item name="colorPrimary">#1976D2</item>
+        <item name="colorPrimaryDark">#1565C0</item>
+        <item name="colorAccent">#c2185b</item>
+
+        <item name="icon_color_active">#1976D2</item>
+    </style>
+
+    <!-- Grey -->
+    <style name="LightGrayTheme3" parent="LightGrayAppTheme">
+        <item name="colorPrimary">#2B5266</item>
+        <item name="colorPrimaryDark">#254659</item>
+        <item name="colorAccent">#387C9C</item>
+
+        <item name="icon_color_active">#387C9C</item>
+    </style>
+
+    <!-- Teal -->
+    <style name="LightGrayTheme4" parent="LightGrayAppTheme">
+        <item name="colorPrimary">#FF009688</item>
+        <item name="colorPrimaryDark">#00796B</item>
+        <item name="colorAccent">#C65954</item>
+
+        <item name="icon_color_active">#00897B</item>
+    </style>
+
+    <!-- Red -->
+    <style name="LightGrayTheme5" parent="LightGrayAppTheme">
+        <item name="colorPrimary">#d50000</item>
+        <item name="colorPrimaryDark">#FFB71C1C</item>
+        <item name="colorAccent">#ff00877a</item>
+
+        <item name="icon_color_active">#d50000</item>
+    </style>
+
+    <!-- Indigo -->
+    <style name="LightGrayTheme6" parent="LightGrayAppTheme">
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="colorPrimaryDark">#303F9F</item>
+        <item name="colorAccent">#E91E63</item>
+
+        <item name="icon_color_active">#ff6773ff</item>
+    </style>
+
+    <!-- Pink -->
+    <style name="LightGrayTheme7" parent="LightGrayAppTheme">
+        <item name="colorPrimary">#E91E63</item>
+        <item name="colorPrimaryDark">#C2185B</item>
+        <item name="colorAccent">#3F51B5</item>
+
+        <item name="icon_color_active">#E91E63</item>
+    </style>
+
+    <!-- Orange -->
+    <style name="LightGrayTheme8" parent="LightGrayAppTheme">
+        <item name="colorPrimary">#FF5722</item>
+        <item name="colorPrimaryDark">#E64A19</item>
+        <item name="colorAccent">#00BCD4</item>
+
+        <item name="icon_color_active">#FF5722</item>
+    </style>
+
+    <style name="LightGrayTheme9" parent="LightGrayAppTheme">
+        <item name="colorPrimary">#674391</item>
+        <item name="colorPrimaryDark">#57397b</item>
+        <item name="colorAccent">#E91E63</item>
+
+        <item name="icon_color_active">#9160ca</item>
+    </style>
+
+    <style name="LightGrayTheme10" parent="LightGrayAppTheme">
+        <item name="colorPrimary">#2f383d</item>
+        <item name="colorPrimaryDark">#22292d</item>
+        <item name="colorAccent">#78909c</item>
+
+        <item name="icon_color_active">#78909c</item>
+        <item name="toolbarElevation">@dimen/toolbar_no_elevation</item>
+    </style>
+
+    <!-- Green -->
+    <style name="LightGrayTheme11" parent="LightGrayAppTheme">
+        <item name="colorPrimary">#0F9D58</item>
+        <item name="colorPrimaryDark">#0C7E46</item>
+        <item name="colorAccent">#26be74</item>
+
+        <item name="icon_color_active">#0F9D58</item>
+    </style>
+
+    <!-- Pixel -->
+    <style name="LightGrayTheme12" parent="LightGrayAppTheme">
+        <item name="colorPrimary">#4285F4</item>
+        <item name="colorPrimaryDark">#2962FF</item>
+        <item name="colorAccent">#1E88E5</item>
+
+        <item name="icon_color_active">#1E88E5</item>
+    </style>
+
+    <!-- Black themes here-->
+
+    <!-- Blue -->
+    <style name="BlackTheme1" parent="BlackAppTheme">
+        <item name="colorPrimary">#487197</item>
+        <item name="colorPrimaryDark">#3B5973</item>
+        <item name="colorAccent">#487197</item>
+
+        <item name="icon_color_active">#ff6196cd</item>
+    </style>
+
+    <!-- Light Blue -->
+    <style name="BlackTheme2" parent="BlackAppTheme">
+        <item name="colorPrimary">#1976D2</item>
+        <item name="colorPrimaryDark">#1565C0</item>
+        <item name="colorAccent">#c2185b</item>
+
+        <item name="icon_color_active">#1976D2</item>
+    </style>
+
+    <!-- Grey -->
+    <style name="BlackTheme3" parent="BlackAppTheme">
+        <item name="colorPrimary">#2B5266</item>
+        <item name="colorPrimaryDark">#254659</item>
+        <item name="colorAccent">#387C9C</item>
+
+        <item name="icon_color_active">#387C9C</item>
+    </style>
+
+    <!-- Teal -->
+    <style name="BlackTheme4" parent="BlackAppTheme">
+        <item name="colorPrimary">#FF009688</item>
+        <item name="colorPrimaryDark">#00796B</item>
+        <item name="colorAccent">#C65954</item>
+
+        <item name="icon_color_active">#00897B</item>
+    </style>
+
+    <!-- Red -->
+    <style name="BlackTheme5" parent="BlackAppTheme">
+        <item name="colorPrimary">#d50000</item>
+        <item name="colorPrimaryDark">#FFB71C1C</item>
+        <item name="colorAccent">#ff00877a</item>
+
+        <item name="icon_color_active">#d50000</item>
+    </style>
+
+    <!-- Indigo -->
+    <style name="BlackTheme6" parent="BlackAppTheme">
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="colorPrimaryDark">#303F9F</item>
+        <item name="colorAccent">#E91E63</item>
+
+        <item name="icon_color_active">#ff6773ff</item>
+    </style>
+
+    <!-- Pink -->
+    <style name="BlackTheme7" parent="BlackAppTheme">
+        <item name="colorPrimary">#E91E63</item>
+        <item name="colorPrimaryDark">#C2185B</item>
+        <item name="colorAccent">#3F51B5</item>
+
+        <item name="icon_color_active">#E91E63</item>
+    </style>
+
+    <!-- Orange -->
+    <style name="BlackTheme8" parent="BlackAppTheme">
+        <item name="colorPrimary">#FF5722</item>
+        <item name="colorPrimaryDark">#E64A19</item>
+        <item name="colorAccent">#00BCD4</item>
+
+        <item name="icon_color_active">#FF5722</item>
+    </style>
+
+    <style name="BlackTheme9" parent="BlackAppTheme">
+        <item name="colorPrimary">#674391</item>
+        <item name="colorPrimaryDark">#57397b</item>
+        <item name="colorAccent">#E91E63</item>
+
+        <item name="icon_color_active">#9160ca</item>
+    </style>
+
+    <style name="BlackTheme10" parent="BlackAppTheme">
+        <item name="colorPrimary">#000</item>
+        <item name="colorPrimaryDark">#000</item>
+        <item name="colorAccent">#78909c</item>
+
+        <item name="icon_color_active">#78909c</item>
+        <item name="toolbarElevation">@dimen/toolbar_no_elevation</item>
+    </style>
+
+    <!-- Green -->
+    <style name="BlackTheme11" parent="BlackAppTheme">
+        <item name="colorPrimary">#0F9D58</item>
+        <item name="colorPrimaryDark">#0C7E46</item>
+        <item name="colorAccent">#26be74</item>
+
+        <item name="icon_color_active">#0F9D58</item>
+    </style>
+
+    <!-- Pixel -->
+    <style name="BlackTheme12" parent="BlackAppTheme">
+        <item name="colorPrimary">#4285F4</item>
+        <item name="colorPrimaryDark">#2962FF</item>
+        <item name="colorAccent">#1E88E5</item>
+
+        <item name="icon_color_active">#1E88E5</item>
+    </style>
+
+</resources>

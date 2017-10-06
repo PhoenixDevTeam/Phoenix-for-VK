@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/forward"
+        android:icon="?toolbarForwardIcon"
+        android:title="@string/forward"
+        android:showAsAction="always"
+        tools:ignore="AppCompatResource" />
+    <item android:id="@+id/copy"
+        android:icon="?toolbarCopyIcon"
+        android:title="@string/copy"
+        android:showAsAction="always"
+        tools:ignore="AppCompatResource"/>
+    <item android:id="@+id/delete"
+        android:icon="?toolbarDeleteIcon"
+        android:title="@string/delete"
+        android:showAsAction="always"
+        tools:ignore="AppCompatResource"/>
+</menu>

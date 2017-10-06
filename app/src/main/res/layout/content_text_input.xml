@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/input_edittext_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:id="@+id/input_divider"
+        android:background="#3d999999"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+    <TextView
+        android:layout_marginTop="4dp"
+        android:text="description"
+        android:id="@+id/input_description_text"
+        android:layout_width="wrap_content"
+        android:textSize="8sp"
+        android:textColor="#8a000000"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

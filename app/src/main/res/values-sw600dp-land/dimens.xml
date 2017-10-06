@@ -1,0 +1,14 @@
+<resources>
+    <integer name="videos_column_count">3</integer>
+    <integer name="photos_column_count">4</integer>
+    <integer name="local_gallery_column_count">5</integer>
+    <integer name="photos_albums_column_count">4</integer>
+
+    <dimen name="navi_drawer_icon_size">20dp</dimen>
+    <dimen name="navi_drawer_item_height">52dp</dimen>
+    <integer name="privacy_entry_column_count">5</integer>
+
+    <dimen name="newsfeed_comments_card_side_margin">8dp</dimen>
+
+    <integer name="attchemtns_editor_column_count">6</integer>
+</resources>

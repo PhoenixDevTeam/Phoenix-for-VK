@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
+        app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
+        app:titleTextAppearance="@style/Theme.Title.Toolbar" />
+
+    <ScrollView
+        android:id="@+id/activity_quick_message_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:padding="4dp">
+
+                <ImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="@dimen/message_author_avatar_size"
+                    android:layout_height="@dimen/message_author_avatar_size"
+                    android:layout_marginLeft="4dp" />
+
+                <biz.dealnote.messenger.view.BubbleLinearLayout
+                    android:id="@+id/item_message_bubble"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_toRightOf="@+id/avatar"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp"
+                    app:angle="@dimen/message_bubble_corner_radius"
+                    app:arrowHeight="12dp"
+                    app:arrowLocation="left"
+                    app:arrowPosition="12dp"
+                    app:arrowWidth="8dp"
+                    app:bubbleColor="?attr/message_bubble_color">
+
+                    <github.ankushsachdeva.emojicon.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/item_message_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoLink="web"
+                        android:gravity="left"
+                        android:text="Message"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="@dimen/font_size_title"
+                        emojicon:emojiconSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/item_message_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="time"
+                        android:textColor="?android:textColorSecondary"
+                        android:textSize="@dimen/font_size_additional" />
+
+                </biz.dealnote.messenger.view.BubbleLinearLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp">
+
+                <ImageButton
+                    android:id="@+id/activity_quick_answer_to_dialog"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/reply"
+                    android:text="@string/go_to_dialog"
+                    android:tint="?quick_reply_icon_color" />
+
+                <EditText
+                    android:id="@+id/activity_quick_answer_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:layout_toLeftOf="@+id/activity_quick_answer_send"
+                    android:layout_toRightOf="@+id/activity_quick_answer_to_dialog"
+                    android:layout_toStartOf="@+id/activity_quick_answer_send"
+                    android:background="?message_bubble_color"
+                    android:gravity="center_vertical"
+                    android:hint="@string/text_hint"
+                    android:maxLines="3"
+                    android:minHeight="48dp"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="8dp"
+                    android:textColor="?android:textColorPrimary"
+                    android:textColorHint="?android:textColorSecondary"
+                    android:textSize="@dimen/font_size_title" />
+
+                <ImageButton
+                    android:id="@+id/activity_quick_answer_send"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/circle_back"
+                    android:clickable="true"
+                    android:padding="12dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/send"
+                    android:text="@string/send" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

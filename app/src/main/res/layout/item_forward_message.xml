@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/message_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="2dp">
+
+    <ImageView
+        android:id="@+id/item_fwd_message_avatar"
+        android:layout_width="@dimen/avatar_size_small"
+        android:layout_height="@dimen/avatar_size_small"
+        android:layout_marginTop="6dp" />
+
+    <RelativeLayout
+        android:id="@+id/item_message_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/item_fwd_message_avatar"
+        android:paddingBottom="2dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="2dp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/item_fwd_message_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="Name"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/font_size_subtitle"
+            android:textStyle="bold"/>
+
+        <github.ankushsachdeva.emojicon.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/item_fwd_message_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="false"
+            android:layout_below="@+id/item_fwd_message_username"
+            android:autoLink="web"
+            android:gravity="left"
+            android:text="Message"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/font_size_subtitle"
+            emojicon:emojiconSize="20sp" />
+
+        <TextView
+            android:id="@+id/item_fwd_message_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/item_forward_message_fwds"
+            android:maxLines="1"
+            android:text="time"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="@dimen/font_size_additional" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_fwd_message_text"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/fwd_attachment_links"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_forward_message_fwds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentRight="false"
+            android:layout_below="@+id/linearLayout6"
+            android:clickable="true"
+            android:text="@string/forward_messages"
+            android:textColor="?attr/colorAccent"
+            android:textSize="@dimen/font_size_subtitle" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+

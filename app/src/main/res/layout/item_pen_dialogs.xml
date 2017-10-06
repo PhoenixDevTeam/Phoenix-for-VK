@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_below="@+id/chat_members"
+    android:minHeight="64dp">
+
+    <RelativeLayout
+        android:id="@+id/item_friend_avatar_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp">
+
+        <ImageView
+            android:id="@+id/item_friend_avatar"
+            android:layout_width="@dimen/avatar_size_usual"
+            android:layout_height="@dimen/avatar_size_usual"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true" />
+
+        <biz.dealnote.messenger.view.OnlineView
+            android:id="@+id/item_friend_online"
+            android:layout_width="@dimen/online_dot_size"
+            android:layout_height="@dimen/online_dot_size"
+            android:layout_alignParentBottom="true"
+            android:padding="3dp"
+            app:circle_color="?icon_color_active"
+            app:stroke_color="?android:colorBackground" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/item_friend_selected"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/item_friend_oval_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circle_back"
+            android:padding="8dp"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/plus" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@id/item_friend_selected"
+        android:layout_toRightOf="@id/item_friend_avatar_container"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_friend_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="Name"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/font_size_title" />
+
+        <TextView
+            android:id="@+id/item_friend_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:text="Time"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="@dimen/font_size_subtitle" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+
+

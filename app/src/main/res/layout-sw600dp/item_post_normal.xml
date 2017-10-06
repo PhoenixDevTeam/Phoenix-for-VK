@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="?attr/android:colorBackground"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="2dp"
+        app:contentPadding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/item_post_normal_pin_root"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="8dp"
+                    android:text="@string/post_is_pinned"
+                    android:textAllCaps="true"
+                    android:textColor="?attr/textColorSecondary"
+                    android:textSize="@dimen/font_size_additional" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/dotted_back" />
+
+            </LinearLayout>
+
+            <include layout="@layout/content_post_header"/>
+
+            <include
+                android:id="@+id/top_divider"
+                layout="@layout/line_divider" />
+
+            <RelativeLayout
+                android:id="@+id/item_post_middle_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="6dp"
+                android:paddingTop="6dp">
+
+                <RelativeLayout
+                    android:id="@+id/item_text_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="8dp"
+                    android:paddingBottom="6dp">
+
+                    <github.ankushsachdeva.emojicon.EmojiconTextView
+                        android:id="@+id/item_post_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:linksClickable="false"
+                        android:text="Message"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="@dimen/font_size_title"
+                        app:displayHashTags="true"
+                        app:emojiconSize="20sp"
+                        app:hashTagColor="?attr/colorAccent" />
+
+                    <TextView
+                        android:id="@+id/item_post_show_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/item_post_text"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="@string/show_more"
+                        android:textAllCaps="true"
+                        android:textColor="?colorAccent"
+                        android:textSize="@dimen/font_size_title" />
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/item_post_attachments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/item_text_container"
+                    android:orientation="vertical">
+
+                    <include
+                        layout="@layout/post_attachment_links"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/item_post_signer_root"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/item_post_attachments"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/item_post_signer_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/human_child" />
+
+                    <TextView
+                        android:id="@+id/item_post_signer_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="Emin Guliev"
+                        android:textColor="?colorAccent"
+                        android:textSize="@dimen/font_size_subtitle" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <include
+                android:id="@+id/bottom_divider"
+                layout="@layout/line_divider" />
+
+            <RelativeLayout
+                android:id="@+id/buttons_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <biz.dealnote.messenger.view.CircleCounterButton
+                    android:id="@+id/like_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:active_background_color="?attr/icon_color_active"
+                    app:button_icon="@drawable/heart_outline"
+                    app:noactive_icon_color="?attr/icon_color_static" />
+
+                <biz.dealnote.messenger.view.CircleCounterButton
+                    android:id="@+id/comments_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/like_button"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:active_background_color="?attr/icon_color_active"
+                    app:always_counter="false"
+                    app:button_icon="@drawable/comment_outline"
+                    app:noactive_icon_color="?attr/icon_color_static" />
+
+                <biz.dealnote.messenger.view.CircleCounterButton
+                    android:id="@+id/share_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:active_background_color="?attr/icon_color_active"
+                    app:button_icon="@drawable/share_variant"
+                    app:noactive_icon_color="?attr/icon_color_static" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>
+
+
+
+

@@ -1,0 +1,122 @@
+<resources>
+
+    <dimen name="default_statusbar_height">25dp</dimen>
+
+    <dimen name="toolbar_no_elevation">0dp</dimen>
+    <dimen name="toolbar_with_elevation">5dp</dimen>
+    <dimen name="toolbar_with_little_elevation">2dp</dimen>
+    <dimen name="fab_size_normal">56dp</dimen>
+    <dimen name="fab_size_mini">40dp</dimen>
+    <dimen name="fab_shadow_size">12dp</dimen>
+
+    <dimen name="fab_scroll_threshold">4dp</dimen>
+    <dimen name="fab_elevation_lollipop">8dp</dimen>
+
+    <dimen name="message_font_size">16sp</dimen>
+
+    <dimen name="navigation_drawer_width">260dp</dimen>
+
+    <dimen name="dialogs_title_font_size">16sp</dimen>
+    <dimen name="dialogs_last_message_font_size">15sp</dimen>
+
+    <dimen name="navi_drawer_font_size">15sp</dimen>
+    <dimen name="navi_drawer_item_height">48dp</dimen>
+    <dimen name="navi_drawer_icon_size">24dp</dimen>
+
+    <dimen name="navi_heared_font_size">16sp</dimen>
+    <dimen name="navi_header_height">154dp</dimen>
+    <dimen name="navi_heared_status_font_size">12sp</dimen>
+
+    <dimen name="pref_image_size">130dp</dimen>
+    <dimen name="max_single_image_height">520dp</dimen>
+
+    <dimen name="max_single_image_height_in_messages">400dp</dimen>
+
+    <!-- Preference fragment padding, bottom -->
+    <dimen name="preference_fragment_padding_bottom">0dp</dimen>
+    <!-- Preference fragment padding, sides -->
+    <dimen name="preference_fragment_padding_side">16dp</dimen>
+
+    <integer name="preference_fragment_scrollbarStyle">0x02000000</integer> <!-- outsideOverlay -->
+
+    <integer name="videos_column_count">2</integer>
+    <integer name="photos_column_count">3</integer>
+    <integer name="local_gallery_column_count">3</integer>
+    <integer name="photos_albums_column_count">2</integer>
+    <integer name="privacy_entry_column_count">3</integer>
+
+    <!--Диаметр кнопки "Play" для вложенных аудиозаписей-->
+    <dimen name="audio_play_button_size">36dp</dimen>
+
+    <!--Диаметр изображения аватара владельца поста-->
+    <dimen name="post_owner_avatar_size">36dp</dimen>
+
+    <bool name="is_tablet">false</bool>
+
+    <dimen name="message_author_avatar_size">38dp</dimen>
+    <dimen name="message_bubble_corner_radius">4dp</dimen>
+
+    <dimen name="attachment_grid_column_size">100dp</dimen>
+    <dimen name="attachment_manager_button_size">48dp</dimen>
+    <dimen name="attachment_manager_button_padding">10dp</dimen>
+
+
+    <!-- Height of the shadow asset under the photo -->
+    <dimen name="profile_photo_shadow_height">10.0dip</dimen>
+    <!-- Height of the text label in the carousel -->
+    <dimen name="profile_carousel_label_height">45.0dip</dimen>
+    <dimen name="profile_indicator_height">5.0dip</dimen>
+    <dimen name="profile_label_padding">16.0dip</dimen>
+
+    <!-- Audio player -->
+    <dimen name="audio_player_header_height">60.0dip</dimen>
+    <dimen name="audio_player_header_padding_left">16.0dip</dimen>
+    <dimen name="audio_player_header_padding_right">16.0dip</dimen>
+    <dimen name="audio_player_switch_padding">10.0dip</dimen>
+    <dimen name="audio_player_time_width">52.0dip</dimen>
+    <dimen name="audio_player_seek_bar_margin_bottom">2.0dip</dimen>
+    <dimen name="audio_player_controls_end_button_width">50.0dip</dimen>
+    <dimen name="audio_player_controls_end_button_height">50.0dip</dimen>
+    <dimen name="audio_player_controls_main_button_width">58.0dip</dimen>
+    <dimen name="audio_player_controls_main_button_height">58.0dip</dimen>
+
+    <!-- Shadow height -->
+    <dimen name="shadow_height">5.0dip</dimen>
+
+    <!-- Colorstrip -->
+    <dimen name="colorstrip_height">2.0dip</dimen>
+
+    <!-- Drag and drop -->
+    <dimen name="drag_and_drop_handle">26.0dip</dimen>
+
+    <!-- Color scheme dialog -->
+    <dimen name="color_scheme_dialog_row_padding">8.0dip</dimen>
+    <dimen name="content_large_margin">16dp</dimen>
+    <dimen name="content_medium_margin">8dp</dimen>
+
+    <dimen name="keyboard_height">250dp</dimen>
+
+    <dimen name="pincode_row_height">64dp</dimen>
+    <dimen name="pincode_button_subtitle_text_size">8dp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="font_size_big_title">24sp</dimen>
+    <dimen name="font_size_title">17sp</dimen>
+    <dimen name="font_size_subtitle">15sp</dimen>
+    <dimen name="font_size_additional">12sp</dimen>
+
+    <dimen name="avatar_size_big">100dp</dimen>
+    <dimen name="avatar_size_usual">48dp</dimen>
+    <dimen name="avatar_size_small">40dp</dimen>
+    <dimen name="avatar_size_tiny">32dp</dimen>
+
+    <dimen name="online_dot_size">16dp</dimen>
+    <dimen name="online_dot_size_big">24dp</dimen>
+
+    <dimen name="newsfeed_comments_card_side_margin">0dp</dimen>
+    <dimen name="grid_horizontal_spacing">8dp</dimen>
+    <dimen name="grid_vertical_spacing">8dp</dimen>
+
+    <integer name="attchemtns_editor_column_count">3</integer>
+</resources>

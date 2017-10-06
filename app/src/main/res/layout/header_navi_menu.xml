@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/header_navi_menu_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/container"
+        android:layout_alignLeft="@+id/container"
+        android:layout_alignRight="@+id/container"
+        android:layout_alignTop="@+id/container"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/container"
+        android:layout_alignLeft="@+id/container"
+        android:layout_alignRight="@+id/container"
+        android:layout_alignTop="@+id/container"
+        android:background="#40000000" />
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:elevation="2dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/header_navi_menu_avatar_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="40dp"
+            android:clipToPadding="false"
+            android:elevation="2dp"
+            android:fitsSystemWindows="true">
+
+            <ImageView
+                android:id="@+id/header_navi_menu_avatar"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_centerInParent="true"
+                android:padding="1.5dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="16dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/header_navi_menu_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="User name"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/font_size_title" />
+
+            <TextView
+                android:id="@+id/header_navi_menu_usernick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:fontFamily="sans-serif"
+                android:text="\@nick"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/font_size_subtitle" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

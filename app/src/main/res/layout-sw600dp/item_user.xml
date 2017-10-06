@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/item_friend_divider_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="?android:colorBackground"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_friend_devider_text"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginLeft="16dp"
+                android:gravity="center_vertical"
+                android:text="divider"
+                android:textColor="?icon_color_active"
+                android:textSize="@dimen/font_size_subtitle"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_friend_divider_container"
+            android:background="?android:colorBackground"
+            android:orientation="vertical">
+
+            <include layout="@layout/line_divider" />
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:minHeight="72dp">
+
+                <LinearLayout
+                    android:id="@+id/relativeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="72dp"
+                    android:layout_toLeftOf="@+id/item_friend_selected"
+                    android:layout_toStartOf="@+id/item_friend_selected"
+                    android:orientation="vertical"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:id="@+id/item_friend_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="Name"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="@dimen/font_size_title" />
+
+                    <TextView
+                        android:id="@+id/item_friend_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:text="Status"
+                        android:textColor="?android:textColorSecondary"
+                        android:textSize="@dimen/font_size_additional" />
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/item_friend_avatar_container"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp">
+
+                    <ImageView
+                        android:id="@+id/item_friend_avatar"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true" />
+
+                    <biz.dealnote.messenger.view.OnlineView
+                        android:id="@+id/item_friend_online"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_alignParentBottom="true"
+                        android:padding="3dp"
+                        app:circle_color="?icon_color_active"
+                        app:stroke_color="?android:colorBackground" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/item_friend_selected"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true">
+
+                    <ImageView
+                        android:id="@+id/item_friend_oval_back"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/circle_back"
+                        android:padding="8dp"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:padding="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/plus" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>
+

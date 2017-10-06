@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme10" parent="AppTheme">
+        <item name="colorPrimary">#FFF</item>
+        <item name="colorPrimaryDark">#ededed</item>
+        <item name="colorAccent">#233446</item>
+
+        <item name="icon_color_on_colored_back">#757575</item>
+
+        <item name="icon_color_active">#233446</item>
+
+        <item name="textColorPrimaryOnColoredBack">#de000000</item>
+        <item name="textColorSecondaryOnColoredBack">#8a000000</item>
+        <item name="textColorDisabledOnColoredBack">#39000000</item>
+
+        <item name="toolbarElevation">@dimen/toolbar_with_little_elevation</item>
+        <item name="toolbarAppStyle">@style/Toolbar.White</item>
+        <item name="toolbarDrawerIcon">@drawable/phoenix_drawer_grey600</item>
+        <item name="toolbarBackIcon">@drawable/arrow_left_grey600</item>
+        <item name="toolbarSearchIcon">@drawable/magnify_grey600</item>
+        <item name="toolbarCopyIcon">@drawable/content_copy_grey600</item>
+        <item name="toolbarDeleteIcon">@drawable/delete_grey600</item>
+        <item name="toolbarUpIcon">@drawable/chevron_up_grey</item>
+        <item name="toolbarGraphicIcon">@drawable/chart_bar_grey600</item>
+        <item name="toolbarEditIcon">@drawable/pencil_grey600</item>
+        <item name="toolbarForwardIcon">@drawable/forward_grey600</item>
+        <item name="toolbarOKIcon">@drawable/check_grey600</item>
+        <item name="toolbarPlusIcon">@drawable/ic_plus_gray</item>
+        <item name="toolbarCloseIcon">@drawable/close_grey600</item>
+        <item name="toolbarLockIcon">@drawable/lock_grey600</item>
+        <item name="toolbarLockPlusIcon">@drawable/ic_crypt_plus_gray600_vector</item>
+        <item name="toolbarUnlockIcon">@drawable/unlock_grey600</item>
+        <item name="tabsTheme">@style/Theme.Tablayout</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash_inverse</item>
+    </style>
+
+</resources>

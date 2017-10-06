@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="10dp">
+
+    <ImageView
+        android:id="@+id/item_feedback_link_image"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/item_feedback_link_forward"
+        android:layout_toRightOf="@+id/item_feedback_link_image"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_feedback_link_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Small Text"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/font_size_subtitle"
+            android:textStyle="bold"/>
+
+        <github.ankushsachdeva.emojicon.EmojiconTextView
+            android:id="@+id/item_feedback_link_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:text="Medium Text"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="@dimen/font_size_additional"
+            app:emojiconSize="16sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/item_feedback_link_forward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/arrow_right_bold" />
+
+</RelativeLayout>

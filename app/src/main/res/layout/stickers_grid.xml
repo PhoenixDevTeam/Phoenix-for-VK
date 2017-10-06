@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/grid_stickers"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:cacheColorHint="@android:color/transparent"
+    android:columnWidth="86dip"
+    android:horizontalSpacing="0dip"
+    android:numColumns="auto_fit"
+    android:scrollbars="vertical"
+    android:verticalSpacing="0dip" />

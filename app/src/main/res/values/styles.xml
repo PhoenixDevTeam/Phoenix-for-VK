@@ -1,0 +1,241 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorBackground">@android:color/background_light</item>
+
+        <item name="windowActionModeOverlay">true</item>
+
+        <item name="textColorPrimary">#de000000</item>
+        <item name="textColorSecondary">#8a000000</item>
+        <item name="textColorDisabled">#39000000</item>
+
+        <item name="textColorPrimaryOnColoredBack">#ffffffff</item>
+        <item name="textColorSecondaryOnColoredBack">#b3ffffff</item>
+        <item name="textColorDisabledOnColoredBack">#4Dffffff</item>
+
+        <item name="dialogs_unread_color">#20b0b0b0</item>
+        <item name="icon_color_on_colored_back">#fff</item>
+        <item name="icon_color_static">#757575</item>
+        <item name="navi_menu_selector">@drawable/list_selector_white</item>
+        <item name="message_unread_color">#90234b81</item>
+        <item name="list_divider_color">@color/light_divider_color</item>
+
+        <item name="messages_background_color">#ECECEC</item>
+        <item name="oval_avatar_background">@xml/sel_button_round_4_white</item>
+
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+
+        <item name="message_bubble_color">@android:color/white</item>
+
+        <item name="toolbarElevation">@dimen/toolbar_with_elevation</item>
+        <item name="toolbarAppStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="toolbarDrawerIcon">@drawable/phoenix_drawer</item>
+        <item name="toolbarBackIcon">@drawable/arrow_left</item>
+        <item name="toolbarCloseIcon">@drawable/close</item>
+        <item name="toolbarOKIcon">@drawable/check</item>
+        <item name="toolbarPlusIcon">@drawable/plus</item>
+        <item name="toolbarSearchIcon">@drawable/magnify</item>
+        <item name="toolbarCopyIcon">@drawable/content_copy</item>
+        <item name="toolbarDeleteIcon">@drawable/delete</item>
+        <item name="toolbarUpIcon">@drawable/chevron_up</item>
+        <item name="toolbarGraphicIcon">@drawable/chart_bar</item>
+        <item name="toolbarEditIcon">@drawable/pencil</item>
+        <item name="toolbarForwardIcon">@drawable/forward</item>
+        <item name="toolbarLockIcon">@drawable/lock</item>
+        <item name="toolbarLockPlusIcon">@drawable/ic_crypt_plus_white_vector</item>
+        <item name="toolbarUnlockIcon">@drawable/unlock</item>
+        <item name="tabsTheme">@style/Theme.Tablayout.Dark</item>
+        <item name="statusbarNonColoredColor">#000</item>
+
+        <item name="chat_background_cookies">@drawable/cookies_white</item>
+        <item name="chat_background_lines">@drawable/lines_white</item>
+
+        <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash</item>
+    </style>
+
+    <style name="DarkAppTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:colorBackground">#1F2226</item>
+        <item name="windowActionModeOverlay">true</item>
+
+        <item name="dialogs_unread_color">#40909090</item>
+        <item name="icon_color_on_colored_back">#fff</item>
+        <item name="icon_color_static">@android:color/white</item>
+        <item name="navi_menu_selector">@drawable/list_selector_dark</item>
+
+        <item name="textColorPrimary">#ffffffff</item>
+        <item name="textColorSecondary">#b3ffffff</item>
+        <item name="textColorDisabled">#4Dffffff</item>
+        <item name="textColorPrimaryOnColoredBack">#ffffffff</item>
+        <item name="textColorSecondaryOnColoredBack">#b3ffffff</item>
+        <item name="textColorDisabledOnColoredBack">#4Dffffff</item>
+
+        <item name="list_divider_color">@color/dark_divider_color</item>
+
+        <item name="messages_background_color">#151515</item>
+        <item name="oval_avatar_background">@xml/sel_button_round_4</item>
+        <item name="message_unread_color">#f564b5f6</item>
+
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+
+        <item name="message_bubble_color">#30373F</item>
+
+        <item name="toolbarElevation">@dimen/toolbar_with_elevation</item>
+        <item name="toolbarAppStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarDrawerIcon">@drawable/phoenix_drawer</item>
+        <item name="toolbarBackIcon">@drawable/arrow_left</item>
+        <item name="toolbarCloseIcon">@drawable/close</item>
+        <item name="toolbarOKIcon">@drawable/check</item>
+        <item name="toolbarPlusIcon">@drawable/plus</item>
+        <item name="toolbarSearchIcon">@drawable/magnify</item>
+        <item name="toolbarCopyIcon">@drawable/content_copy</item>
+        <item name="toolbarDeleteIcon">@drawable/delete</item>
+        <item name="toolbarUpIcon">@drawable/chevron_up</item>
+        <item name="toolbarGraphicIcon">@drawable/chart_bar</item>
+        <item name="toolbarEditIcon">@drawable/pencil</item>
+        <item name="toolbarForwardIcon">@drawable/forward</item>
+        <item name="toolbarLockIcon">@drawable/lock</item>
+        <item name="toolbarLockPlusIcon">@drawable/ic_crypt_plus_white_vector</item>
+        <item name="toolbarUnlockIcon">@drawable/unlock</item>
+        <item name="tabsTheme">@style/Theme.Tablayout.Dark</item>
+        <item name="statusbarNonColoredColor">#000</item>
+
+        <item name="chat_background_cookies">@drawable/cookies_dark</item>
+        <item name="chat_background_lines">@drawable/lines_dark</item>
+        <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash</item>
+    </style>
+
+    <style name="LightGrayAppTheme" parent="DarkAppTheme">
+        <item name="android:colorBackground">#2f383d</item>
+
+        <item name="windowActionModeOverlay">true</item>
+
+        <item name="dialogs_unread_color">#40909090</item>
+        <item name="icon_color_on_colored_back">#fff</item>
+        <item name="icon_color_static">@android:color/white</item>
+        <item name="navi_menu_selector">@drawable/list_selector_dark</item>
+
+        <item name="list_divider_color">@color/light_dark_divider_color</item>
+
+        <item name="messages_background_color">#23292d</item>
+        <item name="oval_avatar_background">@xml/sel_button_round_4</item>
+        <item name="message_unread_color">#f564b5f6</item>
+
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+
+        <item name="message_bubble_color">#384248</item>
+
+        <item name="toolbarElevation">@dimen/toolbar_with_elevation</item>
+        <item name="toolbarAppStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="tabsTheme">@style/Theme.Tablayout.Dark</item>
+        <item name="statusbarNonColoredColor">#000</item>
+
+        <item name="chat_background_cookies">@drawable/cookies_light_grey</item>
+        <item name="chat_background_lines">@drawable/lines_light_grey</item>
+    </style>
+
+
+    <style name="BlackAppTheme" parent="DarkAppTheme">
+        <item name="android:colorBackground">@android:color/black</item>
+        <item name="windowActionModeOverlay">true</item>
+
+        <item name="dialogs_unread_color">#454545</item>
+        <item name="icon_color_on_colored_back">#fff</item>
+        <item name="icon_color_static">@android:color/white</item>
+        <item name="navi_menu_selector">@drawable/list_selector_dark</item>
+
+        <item name="list_divider_color">@color/black_divider_color</item>
+
+        <item name="messages_background_color">#000</item>
+        <item name="oval_avatar_background">@xml/sel_button_round_4</item>
+        <item name="message_unread_color">#6dbeff</item>
+
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+
+        <item name="message_bubble_color">#333333</item>
+
+        <item name="toolbarElevation">@dimen/toolbar_with_elevation</item>
+        <item name="toolbarAppStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="tabsTheme">@style/Theme.Tablayout.Dark</item>
+        <item name="statusbarNonColoredColor">#000</item>
+
+        <item name="chat_background_cookies">@drawable/cookies_black</item>
+        <item name="chat_background_lines">@drawable/lines_black</item>
+    </style>
+
+    <style name="QuickReply" parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="message_bubble_color">#ECECEC</item>
+        <item name="oval_avatar_background">@xml/sel_button_round_4_white</item>
+        <item name="quick_reply_icon_color">#151515</item>
+        <item name="toolbarBackIcon">@drawable/arrow_left_grey600</item>
+    </style>
+
+    <style name="DarkQuickReply" parent="Theme.AppCompat.Dialog">
+        <item name="android:background">#1F2226</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="oval_avatar_background">@xml/sel_button_round_4</item>
+        <item name="message_bubble_color">#151515</item>
+        <item name="quick_reply_icon_color">#FFF</item>
+        <item name="toolbarBackIcon">@drawable/arrow_left</item>
+    </style>
+
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="LoginTheme" parent="Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowActionBar">true</item>
+    </style>
+
+    <!-- Toolbar and toolbar_with_elevation-relative styles -->
+
+    <style name="Theme.Title.Toolbar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="Theme.Subtitle.Toolbar" parent="TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+        <item name="android:textSize">12dp</item>
+    </style>
+
+    <style name="Toolbar.White" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">#757575</item>
+    </style>
+
+    <style name="Theme.Tablayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">#757575</item>
+        <item name="tabGravity">center</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabIndicatorHeight">3dp</item>
+        <item name="android:bufferType">spannable</item>
+    </style>
+
+    <style name="Theme.Tablayout.Dark" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@android:color/white</item>
+        <item name="tabGravity">center</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabIndicatorHeight">3dp</item>
+        <item name="android:bufferType">spannable</item>
+    </style>
+
+    <style name="emojiDialog" parent="@android:style/Theme.Light">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+
+        <!-- No backgrounds, titles or window float-->
+        <item name="android:windowFrame">@drawable/popup_bg</item>
+        <item name="android:windowBackground">@drawable/popup_bg</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+</resources>

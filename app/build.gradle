@@ -1,0 +1,161 @@
+apply plugin: 'com.android.application'
+
+android {
+    packagingOptions {
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
+
+    defaultConfig {
+        applicationId "biz.dealnote.messenger"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 36910
+        versionName '3.6.10'
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    lintOptions {
+        warning 'InvalidPackage'
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    applicationVariants.all { variant ->
+        def flavor = variant.mergedFlavor
+        def versionCode = flavor.versionCode
+
+        def versionName = flavor.versionName
+        if (variant.buildType.isDebuggable()) {
+            versionCode += 1
+            versionName = versionCode + "-d"
+        }
+
+        flavor.versionCode = versionCode
+        flavor.versionName = versionName
+    }
+
+    flavorDimensions "type"
+
+    productFlavors {
+        full {
+            applicationId "biz.dealnote.phoenix"
+            dimension "type"
+            buildConfigField 'int', 'VK_API_APP_ID', getProps("full_vk_app_id")
+            buildConfigField 'String', 'GCM_SENDER_ID', getProps("full_gcm_sender_id")
+            buildConfigField 'boolean', 'FULL_APP', 'true'
+            buildConfigField 'String', 'SERVICE_TOKEN', getProps("full_vk_service_token")
+            buildConfigField 'String', 'VK_CLIENT_SECRET', getProps("full_vk_client_secret")
+        }
+        lite {
+            applicationId "biz.dealnote.messenger"
+            dimension "type"
+            buildConfigField 'int', 'VK_API_APP_ID', getProps("lite_vk_app_id")
+            buildConfigField 'String', 'GCM_SENDER_ID', getProps("lite_gcm_sender_id")
+            buildConfigField 'boolean', 'FULL_APP', 'false'
+            buildConfigField 'String', 'SERVICE_TOKEN', getProps("lite_vk_service_token")
+            buildConfigField 'String', 'VK_CLIENT_SECRET', getProps("lite_vk_client_secret")
+        }
+    }
+}
+
+def getProps(String propName) {
+    def propsFile = rootProject.file('build-config-fields.properties')
+
+    if (propsFile.exists()) {
+        def props = new Properties()
+
+        FileInputStream fis
+        try {
+            fis = new FileInputStream(propsFile)
+            props.load(fis)
+
+            def value = props[propName]
+            fis.close()
+            return value
+        } finally {
+            if(fis != null) fis.close()
+        }
+    } else {
+        throw new GradleException('File build-config-fields.properties not found')
+    }
+}
+
+allprojects {
+    repositories {
+        maven {
+            url "https://jitpack.io"
+        }
+
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
+
+        maven {
+            url 'https://maven.google.com'
+        }
+    }
+}
+
+ext.supportLibraryVersion = '26.1.0'
+ext.firebaseLibraryVersion = '11.4.2'
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    implementation "com.android.support:support-v4:$supportLibraryVersion"
+    implementation "com.android.support:cardview-v7:$supportLibraryVersion"
+    implementation "com.android.support:design:$supportLibraryVersion"
+    implementation "com.android.support:support-vector-drawable:$supportLibraryVersion"
+    implementation "com.android.support:support-media-compat:$supportLibraryVersion"
+
+    implementation 'com.squareup.picasso:picasso:3.0.0-SNAPSHOT'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation "com.google.android.gms:play-services-gcm:$firebaseLibraryVersion"
+    implementation 'com.github.chrisbanes:PhotoView:2.1.3'
+    implementation 'com.squareup:otto:1.3.8'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.scottyab:aescrypt:0.0.1'
+
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.4'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    implementation files('libs/YouTubeAndroidPlayerApi.jar') //
+    implementation project(':lvl')                           // may change to API. needs test
+    implementation project(':mvpcore')                       //
+
+    implementation 'com.squareup.retrofit2:retrofit:2.2.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    implementation "com.google.firebase:firebase-crash:$firebaseLibraryVersion"
+    implementation "com.google.firebase:firebase-database:$firebaseLibraryVersion"
+
+    implementation 'com.google.android.exoplayer:exoplayer:r2.5.3'
+    implementation "com.android.support:exifinterface:$supportLibraryVersion"
+}
+
+apply plugin: 'com.google.gms.google-services'

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:background="?android:colorBackground"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/toolbar_with_elevation"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/post_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:id="@+id/fragment_post_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/buttons_bar_container"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <github.ankushsachdeva.emojicon.EmojiconTextView
+                        android:id="@+id/fragment_post_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:autoLink="web"
+                        android:paddingTop="8dp"
+                        android:text="Message"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="16sp"
+                        custom:emojiconSize="20sp"
+                        custom:displayHashTags="true"
+                        custom:hashTagColor="?attr/colorAccent" />
+
+                    <LinearLayout
+                        android:id="@+id/fragment_post_attachments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include
+                            layout="@layout/post_attachment_links"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/item_post_signer_root"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="8dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="8dp">
+
+                        <ImageView
+                            android:id="@+id/item_post_signer_icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/human_child" />
+
+                        <TextView
+                            android:id="@+id/item_post_signer_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:text="Emin Guliev"
+                            android:textColor="?colorAccent"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/buttons_bar_container"
+                android:layout_alignParentBottom="true">
+
+                <include
+                    android:id="@+id/fragment_post_divider"
+                    layout="@layout/line_divider"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+
+                    <biz.dealnote.messenger.view.CircleCounterButton
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:id="@+id/like_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="8dp"
+                        custom:always_counter="true"
+                        custom:active_background_color="?attr/icon_color_active"
+                        custom:noactive_icon_color="?attr/icon_color_static"
+                        custom:button_icon="@drawable/heart_outline"/>
+
+                    <biz.dealnote.messenger.view.CircleCounterButton
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:id="@+id/comments_button"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/like_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        custom:always_counter="true"
+                        custom:active="false"
+                        custom:active_background_color="?attr/icon_color_active"
+                        custom:noactive_icon_color="?attr/icon_color_static"
+                        custom:button_icon="@drawable/comment_outline" />
+
+                    <biz.dealnote.messenger.view.CircleCounterButton
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:id="@+id/share_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        custom:always_counter="true"
+                        custom:active_background_color="?attr/icon_color_active"
+                        custom:noactive_icon_color="?attr/icon_color_static"
+                        custom:button_icon="@drawable/share_variant" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragment_post_deleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deleted_post" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/post_loading_root"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBar" />
+
+            <TextView
+                android:id="@+id/post_loading_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loading"
+                android:layout_marginTop="8dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="true"
+                android:id="@+id/try_again_button"
+                android:text="@string/try_again"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

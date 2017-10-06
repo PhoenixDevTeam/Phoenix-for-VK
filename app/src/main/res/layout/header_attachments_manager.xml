@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingBottom="8dp">
+
+    <LinearLayout
+        android:background="?android:windowBackground"
+        android:id="@+id/text_root"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp">
+
+        <LinearLayout
+            android:id="@+id/timer_root"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:padding="4dp"
+                android:id="@+id/post_schedule_info_root"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toStartOf="@+id/button_disable_postpone"
+                    android:layout_toLeftOf="@+id/button_disable_postpone"
+                    android:textSize="14sp"
+                    android:padding="8dp"
+                    android:id="@+id/post_schedule_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/will_be_post_at"
+                    android:textColor="?textColorSecondary" />
+
+                <biz.dealnote.messenger.view.ColorFilterImageView
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    app:filter_color="?attr/icon_color_active"
+                    android:src="@drawable/close"
+                    android:id="@+id/button_disable_postpone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/button_postpone"
+                android:layout_margin="4dp"
+                android:textColor="?attr/icon_color_active"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:text="@string/button_postpone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:background="?messages_background_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+        </LinearLayout>
+
+        <github.ankushsachdeva.emojicon.EmojiconEditText
+            android:id="@+id/fragment_create_post_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="top"
+            android:hint="@string/wall_text_hint"
+            android:inputType="textCapSentences|textMultiLine|textLongMessage"
+            android:minHeight="140dp"
+            android:padding="16dp"
+            android:textColor="?textColorPrimary"
+            android:textColorHint="?textColorSecondary"
+            android:textSize="16sp"
+            app:emojiconSize="20sp" />
+
+        <LinearLayout
+            android:id="@+id/under_body_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+
+    <biz.dealnote.messenger.view.SawView
+        app:sawBackground="?android:windowBackground"
+        app:sawToothPrefWidht="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="8dp" />
+
+    <include layout="@layout/attachments_buttons_bar"/>
+
+    <TextView
+        android:id="@+id/empty_text"
+        android:gravity="center"
+        android:text="@string/message_attachment_empty_text"
+        android:padding="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

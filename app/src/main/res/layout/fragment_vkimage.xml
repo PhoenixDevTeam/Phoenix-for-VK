@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_vkimage_container"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/fragment_vkimage_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+
+        <ProgressBar
+            android:id="@+id/fragment_vkimage_progress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:indeterminate="true" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottombar_semitransparent"
+        android:orientation="horizontal">
+
+        <biz.dealnote.messenger.view.CircleCounterButton
+            android:id="@+id/like_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            custom:active_background_color="?attr/icon_color_active"
+            custom:active_icon_color="#ffffff"
+            custom:always_counter="true"
+            custom:button_icon="@drawable/heart_outline"
+            custom:noactive_background_color="#45dcdcdc"
+            custom:noactive_icon_color="#ffffff"
+            custom:text_color="#ffffff" />
+
+        <biz.dealnote.messenger.view.CircleCounterButton
+            android:id="@+id/share_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            custom:active_background_color="?attr/icon_color_active"
+            custom:active_icon_color="#ffffff"
+            custom:button_icon="@drawable/share_variant"
+            custom:noactive_background_color="#45dcdcdc"
+            custom:noactive_icon_color="#fff"/>
+
+        <biz.dealnote.messenger.view.CircleCounterButton
+            android:id="@+id/comments_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            custom:active_background_color="?attr/icon_color_active"
+            custom:active_icon_color="#ffffff"
+            custom:button_icon="@drawable/comment_outline"
+            custom:noactive_background_color="#45dcdcdc"
+            custom:noactive_icon_color="#fff"
+            custom:text_color="#fff"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_restore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/register_button_selector"
+        android:minWidth="100dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/restore"
+        android:textAllCaps="true"
+        android:textColor="#ffffff"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>
+

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="?attr/android:colorBackground"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="2dp"
+        app:contentPadding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/item_post_normal_pin_root"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="8dp"
+                    android:text="@string/post_is_pinned"
+                    android:textAllCaps="true"
+                    android:textColor="?attr/textColorSecondary"
+                    android:textSize="@dimen/font_size_additional" />
+
+                <include layout="@layout/line_divider" />
+
+            </LinearLayout>
+
+            <include layout="@layout/content_post_header" />
+
+            <include
+                android:id="@+id/top_divider"
+                layout="@layout/line_divider" />
+
+
+            <include layout="@layout/content_post" />
+
+            <include
+                android:id="@+id/bottom_divider"
+                layout="@layout/line_divider" />
+
+            <RelativeLayout
+                android:id="@+id/buttons_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <biz.dealnote.messenger.view.CircleCounterButton
+                    android:id="@+id/like_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:active_background_color="?attr/icon_color_active"
+                    app:always_counter="false"
+                    app:button_icon="@drawable/heart_outline"
+                    app:noactive_icon_color="?attr/icon_color_static" />
+
+                <biz.dealnote.messenger.view.CircleCounterButton
+                    android:id="@+id/comments_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/like_button"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:active_background_color="?attr/icon_color_active"
+                    app:always_counter="false"
+                    app:button_icon="@drawable/comment_outline"
+                    app:noactive_icon_color="?attr/icon_color_static" />
+
+                <biz.dealnote.messenger.view.CircleCounterButton
+                    android:id="@+id/share_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:active_background_color="?attr/icon_color_active"
+                    app:button_icon="@drawable/share_variant"
+                    app:noactive_icon_color="?attr/icon_color_static" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>
+

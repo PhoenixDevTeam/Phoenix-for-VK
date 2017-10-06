@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/colorPrimary"
+        android:elevation="5dp"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="56dp"
+        android:paddingRight="16dp"
+        android:paddingTop="72dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_manager"
+            android:textColor="?textColorPrimaryOnColoredBack"
+            android:textSize="@dimen/font_size_big_title" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/fragment_input_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/fragment_input_send_container"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp">
+
+            <ImageView
+                android:id="@+id/fragment_input_send_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/circle_back_white" />
+
+            <ImageButton
+                android:id="@+id/fragment_input_send"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/send" />
+
+            <ImageView
+                android:id="@+id/author_avatar"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_width="18dp"
+                android:layout_height="18dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/message_input_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@+id/fragment_input_send_container"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/fragment_input_attach"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:src="@drawable/attachment"
+                android:tint="?icon_color_static" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?message_bubble_color"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/fragment_input_emoji"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="8dp"
+                    android:src="@drawable/emoticon"
+                    android:tint="?icon_color_static" />
+
+                <github.ankushsachdeva.emojicon.EmojiconEditText
+                    android:id="@+id/fragment_input_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/text_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapSentences|textMultiLine|textLongMessage"
+                    android:maxLines="8"
+                    android:minHeight="48dp"
+                    android:paddingBottom="4dp"
+                    android:paddingRight="4dp"
+                    android:paddingTop="4dp"
+                    android:saveEnabled="false"
+                    android:textColor="?android:textColorPrimary"
+                    android:textColorHint="?android:textColorHint"
+                    android:textSize="@dimen/font_size_subtitle"
+                    app:emojiconSize="20sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragment_input_emoji_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_input_container"
+        android:background="?android:colorBackground"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/fragment_input_att_count_conrainer"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:background="@drawable/circle_back_white">
+
+        <TextView
+            android:id="@+id/fragment_input_att_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="false"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</RelativeLayout>

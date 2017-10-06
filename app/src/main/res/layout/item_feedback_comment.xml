@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/header_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_feedback_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:padding="12dp"
+            android:gravity="center_vertical"
+            android:text="Today"
+            android:textColor="?icon_color_active"
+            android:textSize="@dimen/font_size_subtitle"
+            android:textStyle="bold" />
+
+        <include layout="@layout/line_divider" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/content_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="10dp">
+
+        <RelativeLayout
+            android:id="@+id/comment_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/item_comment_owner_avatar_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/item_comment_top_container">
+
+                <ImageView
+                    android:id="@+id/item_comment_owner_avatar"
+                    android:layout_width="@dimen/avatar_size_small"
+                    android:layout_height="@dimen/avatar_size_small"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true" />
+
+                <biz.dealnote.messenger.view.OnlineView
+                    android:id="@+id/item_circle_changable"
+                    android:layout_width="@dimen/online_dot_size"
+                    android:layout_height="@dimen/online_dot_size"
+                    android:layout_alignBottom="@id/item_comment_owner_avatar"
+                    android:layout_alignLeft="@id/item_comment_owner_avatar"
+                    android:layout_alignStart="@+id/item_comment_owner_avatar"
+                    android:padding="3dp"
+                    android:src="@drawable/plus"
+                    app:circle_color="?icon_color_active"
+                    app:stroke_color="?android:colorBackground" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/item_feedback_comment_attachment"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:id="@+id/item_comment_top_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="2dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="8dp"
+                android:weightSum="1"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/item_comment_owner_avatar_container"
+                android:layout_toLeftOf="@id/item_feedback_comment_attachment">
+
+                <TextView
+                    android:id="@+id/item_comment_owner_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:paddingRight="8dp"
+                    android:text="Name"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textStyle="bold"/>
+
+                <github.ankushsachdeva.emojicon.EmojiconTextView
+                    android:id="@+id/item_comment_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:gravity="left"
+                    android:paddingRight="8dp"
+                    android:text="Message"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle"
+                    app:emojiconSize="18sp" />
+
+                <LinearLayout
+                    android:id="@+id/item_feedback_comment_attachments_root"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="2dp"
+                    android:paddingTop="2dp">
+
+                    <include
+                        layout="@layout/feedback_attachment_links"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/item_comment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:maxLines="3"
+                    android:paddingRight="8dp"
+                    android:text="time"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="@dimen/font_size_additional" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/comment_reply_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/background_gray_round"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/item_comment_reply_owner_avatar"
+                android:layout_width="@dimen/avatar_size_small"
+                android:layout_height="@dimen/avatar_size_small"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="false"
+                android:layout_alignTop="@+id/item_comment_reply_top_container"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp" />
+
+            <biz.dealnote.messenger.view.OnlineView
+                android:id="@+id/item_circle_reply"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/online"
+                android:padding="3dp"
+                android:src="@drawable/reply"
+                app:circle_color="?icon_color_active"
+                app:stroke_color="?android:colorBackground" />
+
+            <LinearLayout
+                android:id="@+id/item_comment_reply_top_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/item_comment_reply_owner_avatar"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/item_comment_reply_owner_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="Name"
+                    android:textColor="?android:textColorPrimary"
+                    android:textIsSelectable="false"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textStyle="bold"/>
+
+                <github.ankushsachdeva.emojicon.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/item_comment_reply_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:gravity="left"
+                    android:text="Message"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle"
+                    emojicon:emojiconSize="18sp" />
+
+                <LinearLayout
+                    android:id="@+id/item_reply_comment_attachments_root"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="2dp"
+                    android:paddingTop="2dp">
+
+                    <include
+                        layout="@layout/feedback_attachment_links"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/item_comment_reply_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:maxLines="1"
+                    android:text="time"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="@dimen/font_size_additional" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
+

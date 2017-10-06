@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aspect="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="2dp"
+        app:contentPadding="0dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <biz.dealnote.messenger.view.AspectRatioImageView
+                android:id="@+id/item_local_album_cover"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:adjustViewBounds="false"
+                android:background="?attr/messages_background_color"
+                android:gravity="center"
+                android:scaleType="centerCrop"
+                aspect:aspect_ration_height="4"
+                aspect:aspect_ration_width="4" />
+
+            <LinearLayout
+                android:alpha="0.9"
+                android:background="?attr/message_bubble_color"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:layout_alignBottom="@+id/item_local_album_cover"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignEnd="@+id/item_local_album_cover"
+                android:layout_alignRight="@+id/item_local_album_cover"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:maxLines="2"
+                    android:id="@+id/item_local_album_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    tools:text="Album Name"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textColor="?android:textColorPrimary" />
+
+                <TextView
+                    android:id="@+id/counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    tools:text="5 photos"
+                    android:textSize="12sp"
+                    android:textColor="?android:textColorSecondary" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

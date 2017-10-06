@@ -1,0 +1,385 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/list_divider_color">
+
+    <RelativeLayout
+        android:id="@+id/r1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        android:paddingBottom="16dp">
+
+        <RelativeLayout
+            android:id="@+id/fragment_user_profile_avatar_container"
+            android:layout_width="@dimen/avatar_size_big"
+            android:layout_height="@dimen/avatar_size_big"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp">
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/avatar_size_big"
+                android:layout_height="@dimen/avatar_size_big"
+                android:background="@drawable/sel_button_round_5_white"
+                android:padding="1.5dp" />
+
+            <biz.dealnote.messenger.view.OnlineView
+                android:id="@+id/header_navi_menu_online"
+                android:layout_width="@dimen/online_dot_size_big"
+                android:layout_height="@dimen/online_dot_size_big"
+                android:layout_alignBottom="@+id/avatar"
+                android:layout_alignLeft="@+id/avatar"
+                android:layout_alignStart="@+id/avatar"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="4dp"
+                android:padding="4dp"
+                app:circle_color="?icon_color_active" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/fragment_user_profile_avatar_container"
+            android:layout_toRightOf="@+id/fragment_user_profile_avatar_container"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:paddingBottom="12dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:id="@+id/fragment_user_profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="right"
+                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textSize="@dimen/font_size_big_title" />
+
+
+            <TextView
+                android:id="@+id/fragment_user_profile_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="right"
+                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textSize="@dimen/font_size_subtitle" />
+
+            <TextView
+                android:id="@+id/fragment_user_profile_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-light"
+                android:gravity="right"
+                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textSize="@dimen/font_size_subtitle" />
+
+            <github.ankushsachdeva.emojicon.EmojiconTextView
+                android:id="@+id/fragment_user_profile_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-light"
+                android:gravity="right"
+                android:maxLines="6"
+                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textSize="@dimen/font_size_subtitle"
+                android:visibility="visible"
+                app:emojiconSize="20sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TableLayout
+        android:id="@+id/relativeLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/r1"
+        android:layout_marginBottom="2dp"
+        android:background="?android:colorBackground"
+        android:elevation="2dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="16dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/header_user_profile_friends_container"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/fragment_user_profile_bfriends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_big_title" />
+
+                <TextView
+                    android:id="@+id/fragment_user_profile_bfriends_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/counter_friends"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle" />
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:id="@+id/header_user_profile_followers_container"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/fragment_user_profile_bfollowers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_big_title" />
+
+                <TextView
+                    android:id="@+id/fragment_user_profile_bfollowers_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/counter_followers"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle" />
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:id="@+id/header_user_profile_groups_container"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/fragment_user_profile_bgroups"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_big_title" />
+
+                <TextView
+                    android:id="@+id/fragment_user_profile_bgroups_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/counter_groups"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle" />
+
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+
+                android:id="@+id/header_user_profile_photos_container"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/fragment_user_profile_bphotos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_big_title" />
+
+                <TextView
+                    android:id="@+id/fragment_user_profile_bphotos_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/counter_photos"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle" />
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:id="@+id/header_user_profile_audios_container"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/fragment_user_profile_baudios"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_big_title" />
+
+                <TextView
+                    android:id="@+id/fragment_user_profile_baudios_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/counter_audios"
+                    android:textColor="?android:textColorPrimary"
+                    android:textIsSelectable="false"
+                    android:textSize="@dimen/font_size_subtitle" />
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:id="@+id/header_user_profile_videos_container"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/fragment_user_profile_bvideos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_big_title" />
+
+                <TextView
+                    android:id="@+id/fragment_user_profile_bvideos_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/counter_videos"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle" />
+
+            </LinearLayout>
+        </TableRow>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_weight="50">
+
+                <Button
+                    android:id="@+id/subscribe_btn"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="Add to friends"
+                    android:textAllCaps="true"
+                    android:textColor="?icon_color_active"
+                    android:textSize="@dimen/font_size_additional" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="50">
+
+                <Button
+                    android:id="@+id/info_btn"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="@string/more_info"
+                    android:textAllCaps="true"
+                    android:textColor="?icon_color_active"
+                    android:textSize="@dimen/font_size_additional" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </TableLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/post_filter_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relativeLayout4"
+        android:scrollbars="none" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/header_user_profile_fab_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/r1"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="-38dp"
+        android:src="@drawable/email_small"
+        app:fabSize="mini"
+        app:useCompatPadding="true" />
+
+</RelativeLayout>

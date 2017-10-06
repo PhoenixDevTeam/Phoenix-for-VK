@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?messages_background_color">
+
+    <include layout="@layout/toolbar_no_elevation" />
+
+    <RelativeLayout
+        android:id="@+id/buttons_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/colorPrimary"
+        android:orientation="horizontal"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/fragment_create_post_photo"
+                android:layout_width="@dimen/attachment_manager_button_size"
+                android:layout_height="@dimen/attachment_manager_button_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/camera"
+                android:tint="?textColorPrimaryOnColoredBack" />
+
+            <ImageButton
+                android:id="@+id/fragment_create_post_audio"
+                android:layout_width="@dimen/attachment_manager_button_size"
+                android:layout_height="@dimen/attachment_manager_button_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/music_circle"
+                android:tint="?textColorPrimaryOnColoredBack" />
+
+            <ImageButton
+                android:id="@+id/fragment_create_post_video"
+                android:layout_width="@dimen/attachment_manager_button_size"
+                android:layout_height="@dimen/attachment_manager_button_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/video"
+                android:tint="?textColorPrimaryOnColoredBack" />
+
+            <ImageButton
+                android:id="@+id/fragment_create_post_doc"
+                android:layout_width="@dimen/attachment_manager_button_size"
+                android:layout_height="@dimen/attachment_manager_button_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/book"
+                android:tint="?textColorPrimaryOnColoredBack" />
+
+            <ImageButton
+                android:id="@+id/fragment_create_post_poll"
+                android:layout_width="@dimen/attachment_manager_button_size"
+                android:layout_height="@dimen/attachment_manager_button_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/chart_bar"
+                android:tint="?textColorPrimaryOnColoredBack" />
+
+            <ImageButton
+                android:id="@+id/fragment_create_post_timer"
+                android:layout_width="@dimen/attachment_manager_button_size"
+                android:layout_height="@dimen/attachment_manager_button_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/clock"
+                android:tint="?textColorPrimaryOnColoredBack" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttons_bar"
+        android:layout_below="@id/toolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/relativeLayout9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
+
+                <TextView
+                    android:id="@+id/post_schedule_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/will_be_post_at"
+                    android:textColor="?textColorPrimaryOnColoredBack"
+                    android:textStyle="italic"
+                    android:visibility="gone"/>
+
+                <github.ankushsachdeva.emojicon.EmojiconEditText
+                    android:id="@+id/fragment_create_post_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:background="#00ffffff"
+                    android:gravity="top"
+                    android:hint="@string/text_hint"
+                    android:inputType="textCapSentences|textMultiLine|textLongMessage"
+                    android:minHeight="100dp"
+                    android:textColor="?textColorPrimaryOnColoredBack"
+                    android:textColorHint="?textColorSecondaryOnColoredBack"
+                    android:textSize="16sp"
+                    emojicon:emojiconSize="20sp" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/under_body_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/item_attachment_color"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_below="@+id/relativeLayout9"
+                android:background="?attr/colorPrimary" />
+
+            <biz.dealnote.messenger.view.ExpandableHeightGridView
+                android:id="@android:id/list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativeLayout9"
+                android:columnWidth="@dimen/attachment_grid_column_size"
+                android:isScrollContainer="false"
+                android:longClickable="false"
+                android:numColumns="auto_fit"
+                android:scrollbars="none"
+                android:verticalSpacing="2dp" />
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
+

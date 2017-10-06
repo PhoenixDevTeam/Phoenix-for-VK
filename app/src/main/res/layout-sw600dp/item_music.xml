@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/list_divider_color"
+    android:orientation="vertical">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/item_music_divider_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="?android:colorBackground">
+
+            <TextView
+                android:id="@+id/item_music_devider_text"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:gravity="center_vertical"
+                android:text="My music"
+                android:textColor="?icon_color_active"
+                android:textSize="@dimen/font_size_title"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_music_divider_group"
+            android:background="?android:colorBackground"
+            android:orientation="vertical">
+
+            <include layout="@layout/line_divider" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:minHeight="?android:attr/listPreferredItemHeight"
+                android:paddingLeft="16dp">
+
+                <RelativeLayout
+                    android:id="@+id/item_music_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_toRightOf="@+id/item_music_play"
+                    android:padding="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/item_music_time"
+                        android:layout_toStartOf="@+id/item_music_time"
+                        android:orientation="vertical"
+                        android:paddingRight="16dp">
+
+                        <TextView
+                            android:id="@+id/item_music_artist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:text="Artist"
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="@dimen/font_size_title" />
+
+                        <TextView
+                            android:id="@+id/item_music_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:paddingRight="16dp"
+                            android:text="Title"
+                            android:textColor="?android:textColorSecondary"
+                            android:textSize="@dimen/font_size_subtitle" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/item_music_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="false"
+                        android:layout_alignParentRight="true"
+                        android:maxLines="1"
+                        android:text="Time"
+                        android:textColor="?android:textColorSecondary"
+                        android:textSize="@dimen/font_size_additional"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/item_music_play"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/circle_back_white"
+                    android:padding="8dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/play"
+                    android:tint="#FFF" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

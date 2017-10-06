@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:paddingBottom="12dp"
+    android:paddingTop="12dp">
+
+    <LinearLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/link_image"
+        android:orientation="vertical"
+        android:paddingRight="16dp">
+
+        <TextView
+            android:id="@+id/link_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="Name"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/font_size_title" />
+
+        <TextView
+            android:id="@+id/link_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="desc"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="@dimen/font_size_subtitle" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/link_image"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:scaleType="centerCrop" />
+
+</RelativeLayout>
+
+

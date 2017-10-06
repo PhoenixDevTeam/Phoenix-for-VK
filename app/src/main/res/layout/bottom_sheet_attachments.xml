@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?colorPrimary"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <biz.dealnote.messenger.view.AlternativeAspectRatioFrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/offset_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:altAspectRatioHeight="4"
+            app:altAspectRatioWidth="3" />
+
+        <LinearLayout
+            android:id="@+id/empty_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/offset_view"
+            android:layout_toRightOf="@+id/offset_view"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_sad_vector"
+                android:tint="?icon_color_on_colored_back" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:maxWidth="200dp"
+                android:text="@string/message_attachment_empty_text"
+                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!--<View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#14ffffff" />
+-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorPrimaryDark"
+        android:gravity="center|end"
+        android:orientation="horizontal"
+        android:paddingBottom="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp">
+
+        <ImageView
+            android:id="@+id/button_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:src="@drawable/ic_camera_oval_vector"
+            android:tint="?icon_color_on_colored_back" />
+
+        <ImageView
+            android:id="@+id/button_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:src="@drawable/video"
+            android:tint="?icon_color_on_colored_back" />
+
+        <ImageView
+            android:id="@+id/button_doc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:src="@drawable/book"
+            android:tint="?icon_color_on_colored_back" />
+
+        <ImageButton
+            android:id="@+id/button_hide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:src="@drawable/ic_arrow_down_vector"
+            android:tint="?textColorPrimaryOnColoredBack" />
+
+        <Button
+            android:id="@+id/button_send"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_short"
+            android:textColor="?textColorPrimaryOnColoredBack" />
+    </LinearLayout>
+
+</LinearLayout>

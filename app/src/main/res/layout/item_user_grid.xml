@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="100dp">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp">
+
+        <ImageView
+            android:id="@+id/item_user_grid_image"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+
+            android:adjustViewBounds="false"
+            android:background="@drawable/background_gray"
+            android:gravity="center"
+            android:scaleType="centerCrop" />
+
+        <RelativeLayout
+            android:id="@+id/item_user_grid_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#9b000000" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/item_user_grid_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="8dp"
+        android:background="#9b626262"
+        android:gravity="center"
+        android:maxLines="2"
+        android:padding="4dp"
+        android:text="text"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font_size_additional"
+        android:textStyle="bold" />
+
+
+    <RelativeLayout
+        android:id="@+id/item_user_grid_close_container"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="false"
+        android:background="@drawable/circle_back_white">
+
+        <RelativeLayout
+            android:id="@+id/item_user_grid_close_container_inner"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="false"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circle_back">
+
+            <ImageView
+                android:id="@+id/item_user_grid_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="2dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/close" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

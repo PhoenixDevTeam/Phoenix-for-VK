@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:windowBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:background="?attr/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:elevation="5dp">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_margin="12dp"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/pin_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:paddingLeft="56dp"
+            android:paddingRight="56dp"
+            android:text="@string/use_pin_title"
+            android:textColor="?attr/textColorPrimaryOnColoredBack"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/value_root"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/content_large_margin">
+
+            <include
+                android:id="@+id/pincode_digit_0_root"
+                layout="@layout/content_pin_digit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/pincode_digit_1_root"
+                layout="@layout/content_pin_digit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/pincode_digit_2_root"
+                layout="@layout/content_pin_digit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/pincode_digit_3_root"
+                layout="@layout/content_pin_digit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <biz.dealnote.messenger.view.KeyboardView
+            android:id="@+id/keyboard"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:keyboard_theme="fullscreen" />
+
+    </RelativeLayout>
+
+</LinearLayout>

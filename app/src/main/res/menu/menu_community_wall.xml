@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/action_add_to_bookmarks"
+        android:title="@string/add_to_bookmarks"/>
+
+    <item android:title="@string/community_control"
+        android:id="@+id/action_community_control"/>
+
+    <item android:id="@+id/action_community_messages"
+        android:title="@string/community_messages"/>
+
+
+</menu>

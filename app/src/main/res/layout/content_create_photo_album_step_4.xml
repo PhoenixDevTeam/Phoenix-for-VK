@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/root">
+
+    <TextView
+        android:text="@string/who_is_allowed_to_comment_photos"
+        android:textColor="?attr/textColorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/commenting_allowed"
+        android:textColor="?attr/colorAccent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="@string/who_is_not_allowed_to_comment_this_album"
+        android:textColor="?attr/textColorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/commenting_disabled"
+        android:textColor="?attr/colorAccent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

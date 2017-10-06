@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="4dp"
+    android:paddingTop="4dp">
+
+    <ImageView
+        android:id="@+id/item_audio_play"
+        android:layout_width="@dimen/audio_play_button_size"
+        android:layout_height="@dimen/audio_play_button_size"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="false"
+        android:layout_centerVertical="true"
+        android:background="@drawable/circle_back_white"
+        android:padding="6dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/play" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="12dp"
+        android:layout_toRightOf="@+id/item_audio_play"
+        android:orientation="vertical"
+        android:paddingRight="8dp">
+
+        <TextView
+            android:id="@+id/dialog_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="Title"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/font_size_subtitle" />
+
+        <TextView
+            android:id="@+id/item_audio_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="Title"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="@dimen/font_size_subtitle" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
+
+

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar_with_elevation"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="?android:colorBackground">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?android:textColorPrimary"
+                android:text="@string/poll_question"
+                android:id="@+id/textView5"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:textSize="@dimen/font_size_additional" />
+
+            <EditText
+                android:background="?attr/messages_background_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dialog_poll_create_question"
+                android:layout_marginTop="4dp"
+                android:padding="8dp"
+                android:textSize="@dimen/font_size_subtitle" />
+
+            <TextView
+                android:textColor="?android:textColorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/poll_options"
+                android:id="@+id/textView6"
+                android:padding="8dp"
+                android:layout_marginTop="8dp"
+                android:textSize="@dimen/font_size_additional" />
+
+            <LinearLayout
+                android:id="@+id/dialog_poll_create_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:background="?attr/messages_background_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:padding="8dp"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle" />
+
+                <EditText
+                    android:background="?attr/messages_background_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle" />
+
+                <EditText
+                    android:background="?attr/messages_background_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:hint="@string/add_option" />
+
+                <EditText
+                    android:background="?attr/messages_background_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textColor="?android:textColorPrimary"
+                    android:hint="@string/add_option"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:background="?attr/messages_background_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textColor="?android:textColorPrimary"
+                    android:hint="@string/add_option"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:background="?attr/messages_background_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textColor="?android:textColorPrimary"
+                    android:hint="@string/add_option"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:background="?attr/messages_background_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textColor="?android:textColorPrimary"
+                    android:hint="@string/add_option"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:background="?attr/messages_background_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textColor="?android:textColorPrimary"
+                    android:hint="@string/add_option"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:background="?attr/messages_background_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textColor="?android:textColorPrimary"
+                    android:hint="@string/add_option"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:background="?attr/messages_background_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textColor="?android:textColorPrimary"
+                    android:hint="@string/add_option"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <CheckBox
+                android:textColor="?android:textColorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/anonymous_poll"
+                android:id="@+id/dialog_poll_create_anonymous"
+                android:checked="false"
+                android:layout_marginTop="8dp" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>

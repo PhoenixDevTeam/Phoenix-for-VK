@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/navi_menu_selector">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="@dimen/navi_drawer_icon_size"
+        android:layout_height="@dimen/navi_drawer_icon_size"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/navi_drawer_item_height"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="72dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:text="Test action"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="@dimen/navi_drawer_font_size"
+        android:typeface="normal"/>
+
+    <TextView
+        android:id="@+id/counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingTop="4dp"
+        android:text="1"
+        android:textColor="?attr/icon_color_active"
+        android:textSize="@dimen/navi_drawer_font_size"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

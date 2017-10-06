@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/item_music_divider_group"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/item_audio_play"
+        android:padding="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/item_audio_time"
+            android:layout_toStartOf="@+id/item_audio_time"
+            android:orientation="vertical"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:id="@+id/dialog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="Artist"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="@dimen/font_size_title" />
+
+            <TextView
+                android:id="@+id/dialog_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:paddingRight="16dp"
+                android:text="Title"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="@dimen/font_size_subtitle" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_audio_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:maxLines="1"
+            android:text="Time"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="@dimen/font_size_additional"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/item_audio_play"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/circle_back_white"
+        android:padding="8dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/play" />
+
+</RelativeLayout>

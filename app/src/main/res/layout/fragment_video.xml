@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:colorBackground"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_with_elevation" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/buttons_bar"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <github.ankushsachdeva.emojicon.EmojiconTextView
+                        android:id="@+id/fragment_video_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:layout_marginTop="12dp"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="16sp"
+                        tools:text="Video" />
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        app:cardBackgroundColor="?android:colorBackground"
+                        app:cardCornerRadius="2dp"
+                        app:cardElevation="2dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <biz.dealnote.messenger.view.AspectRatioImageView
+                                android:id="@+id/fragment_video_preview_image"
+                                android:layout_width="match_parent"
+                                android:layout_height="800dp"
+                                android:layout_gravity="center_horizontal"
+                                android:scaleType="centerCrop"
+                                app:aspect_ration_height="9"
+                                app:aspect_ration_width="16" />
+
+                            <FrameLayout
+                                android:id="@+id/button_play"
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:layout_centerInParent="true"
+                                android:background="?attr/selectableItemBackgroundBorderless">
+
+                                <biz.dealnote.messenger.view.ColorFilterImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/circle_white"
+                                    app:filter_color="?attr/colorAccent" />
+
+                                <biz.dealnote.messenger.view.ColorFilterImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/play"
+                                    app:filter_color="?attr/textColorPrimaryOnColoredBack" />
+
+                            </FrameLayout>
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <github.ankushsachdeva.emojicon.EmojiconTextView
+                        android:autoLink="web"
+                        android:id="@+id/fragment_video_subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:textColor="?android:textColorSecondary"
+                        android:textSize="14sp"
+                        tools:text="Subvideo" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/buttons_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp">
+
+                <biz.dealnote.messenger.view.CircleCounterButton
+                    android:id="@+id/share_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:active_background_color="?attr/icon_color_active"
+                    app:always_counter="false"
+                    app:button_icon="@drawable/share_variant"
+                    app:noactive_icon_color="?attr/icon_color_static" />
+
+                <biz.dealnote.messenger.view.CircleCounterButton
+                    android:id="@+id/comments_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:active="false"
+                    app:active_background_color="?attr/icon_color_active"
+                    app:always_counter="false"
+                    app:button_icon="@drawable/comment_outline"
+                    app:noactive_icon_color="?attr/icon_color_static" />
+
+                <biz.dealnote.messenger.view.CircleCounterButton
+                    android:id="@+id/like_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:active_background_color="?attr/icon_color_active"
+                    app:always_counter="false"
+                    app:button_icon="@drawable/heart_outline"
+                    app:noactive_icon_color="?attr/icon_color_static" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/loading_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/post_loading_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/loading" />
+
+            <Button
+                android:id="@+id/try_again_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/try_again"
+                android:textAllCaps="true" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
+

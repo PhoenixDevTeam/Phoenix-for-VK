@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="@dimen/newsfeed_comments_card_side_margin"
+        android:layout_marginRight="@dimen/newsfeed_comments_card_side_margin"
+        android:layout_marginTop="4dp"
+        app:cardBackgroundColor="?attr/android:colorBackground"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="2dp"
+        app:contentPadding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:id="@+id/post_root"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/content_post_header" />
+
+                <include
+                    android:id="@+id/top_divider"
+                    layout="@layout/line_divider" />
+
+                <include layout="@layout/content_post" />
+
+            </LinearLayout>
+
+
+            <include
+                android:id="@+id/bottom_divider"
+                layout="@layout/line_divider" />
+
+            <include
+                android:id="@+id/comment_root"
+                layout="@layout/content_newsfeed_comment" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

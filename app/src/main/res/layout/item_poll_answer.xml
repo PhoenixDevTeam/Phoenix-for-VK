@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+
+    <RadioButton
+        android:id="@+id/item_poll_answer_radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:padding="8dp"
+        android:text="Title"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="@dimen/font_size_title" />
+
+    <LinearLayout
+        android:id="@+id/voted_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <TextView
+            android:id="@+id/item_poll_answer_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/font_size_title" />
+
+        <RelativeLayout
+            android:id="@+id/r1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp">
+
+            <ProgressBar
+                android:id="@+id/item_poll_answer_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:indeterminate="false"
+                android:progress="80"
+                android:progressDrawable="@drawable/progress_drawable" />
+
+            <TextView
+                android:id="@+id/item_poll_answer_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
+                android:text="34"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/font_size_additional"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

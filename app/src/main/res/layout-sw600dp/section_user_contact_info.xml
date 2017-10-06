@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        card_view:cardBackgroundColor="?attr/android:colorBackground"
+        card_view:cardCornerRadius="0dp"
+        card_view:cardElevation="2dp"
+        card_view:contentPadding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical"
+            android:paddingBottom="4dp">
+
+            <RelativeLayout
+                style='style="?android:attr/borderlessButtonStyle"'
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mail_information"
+                    android:textSize="@dimen/font_size_title"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="6dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <include
+                    android:id="@+id/birthday"
+                    layout="@layout/info_line" />
+
+                <include
+                    android:id="@+id/studied_at"
+                    layout="@layout/info_line" />
+
+                <include
+                    android:id="@+id/relationship_status"
+                    layout="@layout/info_line" />
+
+                <include
+                    android:id="@+id/relatives"
+                    layout="@layout/info_line" />
+
+                <include
+                    android:id="@+id/languages"
+                    layout="@layout/info_line" />
+
+                <include
+                    android:id="@+id/country"
+                    layout="@layout/info_line" />
+
+                <include
+                    android:id="@+id/city"
+                    layout="@layout/info_line" />
+
+                <include
+                    android:id="@+id/website"
+                    layout="@layout/info_line" />
+
+                <include
+                    android:id="@+id/primary_phone"
+                    layout="@layout/info_line" />
+
+                <include
+                    android:id="@+id/alternative_phone"
+                    layout="@layout/info_line" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</FrameLayout>

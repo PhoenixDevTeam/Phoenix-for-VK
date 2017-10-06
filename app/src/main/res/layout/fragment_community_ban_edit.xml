@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:background="?attr/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="?toolbarPopupStyle"
+            app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
+            app:theme="?toolbarAppStyle"
+            app:titleTextAppearance="@style/Theme.Title.Toolbar" />
+
+        <RelativeLayout
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/avatar_root"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true">
+
+                <ImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="@dimen/avatar_size_big"
+                    android:layout_height="@dimen/avatar_size_big"
+                    android:background="@drawable/sel_button_round_5_white"
+                    android:padding="1.5dp" />
+
+                <biz.dealnote.messenger.view.OnlineView
+                    android:id="@+id/online"
+                    android:layout_width="@dimen/online_dot_size_big"
+                    android:layout_height="@dimen/online_dot_size_big"
+                    android:layout_alignBottom="@+id/avatar"
+                    android:layout_alignLeft="@+id/avatar"
+                    android:layout_alignStart="@+id/avatar"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:padding="4dp"
+                    app:circle_color="?icon_color_active" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/avatar_root"
+                android:layout_toRightOf="@+id/avatar_root"
+                android:layout_toEndOf="@+id/avatar_root"
+                android:gravity="end"
+                android:orientation="vertical"
+                android:paddingBottom="12dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp">
+
+                <TextView
+                    tools:text="Алексей Иванов"
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="end"
+                    android:textColor="?textColorPrimaryOnColoredBack"
+                    android:textSize="@dimen/font_size_big_title" />
+
+                <TextView
+                    tools:text="id90456655"
+                    android:id="@+id/domain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="end"
+                    android:textColor="?textColorPrimaryOnColoredBack"
+                    android:textSize="@dimen/font_size_subtitle" />
+
+                <TextView
+                    android:textColorLink="?textColorPrimaryOnColoredBack"
+                    tools:text="Заблокирован Русланом Колбасой 20 мая 2017 в 16:13"
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="end"
+                    android:textColor="?textColorPrimaryOnColoredBack"
+                    android:textSize="@dimen/font_size_subtitle" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/community_ban_block_for_title"
+                android:textColor="?attr/textColorSecondary" />
+
+            <biz.dealnote.messenger.view.MySpinnerView
+                android:id="@+id/spinner_block_for"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:spinner_hint_color="?attr/textColorSecondary"
+                app:spinner_icon_color="?attr/colorAccent"
+                app:spinner_text_color="?attr/textColorPrimary" />
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/community_ban_reason_title"
+                android:textColor="?attr/textColorSecondary" />
+
+            <biz.dealnote.messenger.view.MySpinnerView
+                android:id="@+id/spinner_reason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:spinner_hint_color="?attr/textColorSecondary"
+                app:spinner_icon_color="?attr/colorAccent"
+                app:spinner_text_color="?attr/textColorPrimary" />
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/community_ban_comment_title"
+                android:textColor="?attr/textColorSecondary" />
+
+            <EditText
+                android:id="@+id/community_ban_comment"
+                android:gravity="top"
+                android:minHeight="80dp"
+                android:textSize="14sp"
+                android:inputType="text|textCapSentences|textMultiLine"
+                android:hint="@string/community_ban_comment_hint"
+                android:padding="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/backgroud_rectangle_border"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:layout_marginTop="8dp"
+                android:id="@+id/community_ban_show_comment_to_user"
+                android:text="@string/show_this_comment_to_the_blocked_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:minWidth="280dp"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <CheckBox
+        android:padding="8dp"
+        android:textSize="16sp"
+        android:id="@+id/check_from_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/post_from_group" />
+
+    <CheckBox
+        android:padding="8dp"
+        android:textSize="16sp"
+        android:id="@+id/check_friends_only"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/for_friends_only" />
+
+    <CheckBox
+        android:padding="8dp"
+        android:textSize="16sp"
+        android:id="@+id/check_show_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_signature" />
+
+    <LinearLayout
+        android:padding="8dp"
+        android:id="@+id/signer_root"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/signer_avatar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+
+        <TextView
+            android:id="@+id/signer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:textColor="?colorAccent"
+            android:textSize="16sp"
+            tools:text="Emin Guliev"/>
+
+    </LinearLayout>
+
+</LinearLayout>

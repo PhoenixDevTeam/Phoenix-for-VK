@@ -1,0 +1,1104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Phoenix Lite</string>
+
+    <!-- Dialogs-->
+    <string name="dialogs">Діалоги</string>
+    <string name="dialog_day_today">Cьогодні</string>
+    <string name="dialog_day_yesterday">Вчора</string>
+    <string name="dialog_day_ten_days">10 днів</string>
+    <string name="dialog_day_older">Старі</string>
+    <string name="dialog_me">Я</string>
+    <string name="attachments">[вкладення]</string>
+    <string name="forward_messages">[повідомлення]</string>
+    <string name="service_message">[службове повідомлення]</string>
+    <string name="title_mssages">Повідомлення</string>
+
+    <!-- Settings-->
+    <string name="settings">Налаштування</string>
+
+    <string-array name="night_back_names">
+        <item>Сірий</item>
+        <item>Темний</item>
+        <item>Чорний</item>
+    </string-array>
+
+    <string name="general_settings">Загальні</string>
+    <string name="other_settings">Iнші</string>
+    <string name="about_settings">Про програму</string>
+    <string name="choose_theme_title">Тема</string>
+    <string name="share_text">Поділитися програмою з друзями</string>
+    <string name="rate_text">Оцінити програму в Google Play</string>
+    <!-- Quick Reply-->
+    <string name="go_to_dialog">До діалогу</string>
+    <string name="send">Відправити</string>
+
+    <string name="text_hint">Введіть текст</string>
+    <!-- MessagesSending-->
+    <string name="sending">Відправка</string>
+    <string name="in_order">У черзі</string>
+    <string name="error">Помилка</string>
+    <!-- Welcome-->
+    <!-- Friends-->
+    <string name="friends">Друзі</string>
+
+    <string name="sending_message_failed">Відправка повідомлення не вдалася</string>
+    <string name="try_again">Повторити</string>
+    <string name="delete">Видалити</string>
+    <string name="select_attachments">Виберіть вкладення</string>
+
+    <string name="attachment_wall_post">Запис</string>
+    <string name="attachment_document">Документ</string>
+    <string name="attachment_documents">Документи</string>
+    <string name="attachment_link">Посилання</string>
+    <string name="new_message">Нове повідомлення</string>
+    <string name="user_type_message">набирає повідомлення…</string>
+
+    <string name="load_more">Завантажити ще</string>
+    <string name="last_seen_sex_man">був в мережі: %1$s</string>
+    <string name="last_seen_sex_woman">була в мережі: %1$s</string>
+    <string name="last_seen_sex_unknown">був(була) в мережі: %1$s</string>
+    <string name="online">Онлайн</string>
+    <string name="offline">Не в мережi</string>
+    <string name="thank_you">Спасибі</string>
+
+
+    <string name="notif_setting_title">Оповіщення</string>
+    <string name="messages_in_dialogs_tite">Повідомлення в діалогах</string>
+    <string name="enable_dialogs_notif_title">Включити оповіщення</string>
+    <string name="enable_dialogs_sound_title">Звук</string>
+    <string name="enable_dialogs_vibro_title">Вібро</string>
+    <string name="enable_dialogs_led_title">Світлодіод</string>
+
+    <string name="messages_in_groupchat_tite">Повідомлення в групових бесідах</string>
+    <string name="enable_groupchat_notif_title">Включити оповіщення</string>
+    <string name="enable_groupchat_sound_title">Звук</string>
+    <string name="enable_groupchat_vibro_title">Вібро</string>
+    <string name="enable_groupchat_led_title">Світлодіод</string>
+
+    <string name="enter_dir_name">Введіть ім\'я нової папки</string>
+    <string name="cannot_create_catalog">Каталог вже існує або Ви ввели неприпустиме ім\'я каталогу</string>
+    <string name="path_not_exist">Шлях не існує або не може бути прочитаний</string>
+    <string name="create_dir">Нова папка</string>
+    <string name="file_explorer">Менеджер файлів</string>
+
+    <string name="quick_answer_title">Швидка відповідь</string>
+
+    <string name="here">Сюди</string>
+    <string name="to_another_dialogue">В інший діалог</string>
+
+    <string name="music">Музика</string>
+    <string name="added_music">Додані аудіозаписи</string>
+    <string name="music_from_search">Композиції з глобального пошуку</string>
+    <string name="enter_to_search">Введіть для пошуку</string>
+
+    <string name="image_number">%1$d з %2$d</string>
+    <string name="image_load_error">Не вдалося завантажити зображення</string>
+
+    <string name="service_update_chat_photo">%1$s  оновив фотографію бесіди</string>
+    <string name="service_remove_chat_photo">%1$s видалив фотографію бесіди</string>
+    <string name="service_create_chat">%1$s створив бесіду «%2$s»</string>
+    <string name="service_changed_chat_name">%1$s змінив назву бесіди на «%2$s»</string>
+    <string name="service_return_to_chat">%1$s повернувся в бесіду</string>
+    <string name="service_invited">%1$s запросив %2$s</string>
+    <string name="service_removed">%1$s виключив %2$s</string>
+    <string name="service_left_this_chat">%1$s покинув бесіду</string>
+
+    <string name="unknown_first_name">Невідомий</string>
+    <string name="unknown_last_name">користувач</string>
+
+    <string name="click_back_to_exit">Натисніть ще раз для виходу</string>
+    <string name="show_more">Показати повністю</string>
+
+    <string name="counter_groups">групи</string>
+    <string name="counter_friends">друзі</string>
+    <string name="counter_followers">підписники</string>
+    <string name="counter_photos">фото</string>
+    <string name="counter_audios">аудіо</string>
+    <string name="counter_videos">відео</string>
+
+    <string name="refresh">Оновити</string>
+
+    <string name="pref_join_app_group_title">Відвідати групу додатки</string>
+    <string name="pref_join_app_group_summary">У групі Phoenix for VK Ви зможете спостерігати за розвитком програми, залишити свої зауваження чи ідеї</string>
+
+    <string name="set_groupchat_title">Вкажіть тему бесіди</string>
+
+    <string name="copied_to_clipboard">Скопійовано в буфер обмінуа</string>
+    <string name="visibility_mode_title">Режим видимості</string>
+
+    <string-array name="night_mode_names">
+        <item>Виключений</item>
+        <item>Включений</item>
+        <item>Автоматично</item>
+    </string-array>
+
+    <string name="select_image_size_summary">Виберіть розмір відправляється зображення (Рекомендований середній)</string>
+    <string name="select_image_size_title">Виберіть розмір зображення</string>
+    <string-array name="array_image_sizes_names">
+        <item>Маленький 800px</item>
+        <item>Середній 1200px</item>
+        <item>Оригінал</item>
+    </string-array>
+
+    <string-array name="array_image_sizes_settings_names">
+        <item>Маленький 800px</item>
+        <item>Середній 1200px</item>
+        <item>Оригінал</item>
+        <item>Питати кожного разу</item>
+    </string-array>
+
+    <string name="high_notif_priority_title">Високий пріоритет оповіщень</string>
+    <string name="high_notif_priority_summary">Оповіщення з програми будуть розташовуватися вище по відношенню до інших оповіщень. Для Android версії 5.0 і вище дана опція також включає спливаючі оповіщень</string>
+    <string name="night_background_title">Фон нічного режиму</string>
+    <string name="night_mode_title">Нічний режим</string>
+
+    <string name="photos">Фотографії</string>
+    <string name="from_vk_albums">З альбомів ВК</string>
+    <string name="from_local_albums">З локальних альбомів</string>
+    <string name="comments">Коментарі</string>
+    <string name="for_wall_post">до запису на стіні</string>
+    <string name="for_photo">до фото</string>
+
+    <string name="error_token_is_null">Аккаунт не авторизований. Перевірте авторизацію.</string>
+    <string name="title_activity_create_post">Новий запис</string>
+
+    <string name="chat_empty_text">Тут буде виводитися історія листування</string>
+
+    <string name="emojis_type_summary">Якщо включено, будуть використовуватися системні смайли</string>
+    <string name="emojis_type_title">Використовувати системні смайли</string>
+    <string name="appearance_settings">Зовнішній вигляд</string>
+
+    <string name="logging_categoty_title">Логування</string>
+    <string name="enable_log_title">Вести журнал подій</string>
+    <string name="enable_log_summary">Зберігати відомості про події програми в файл</string>
+    <string name="clear_log_title">Очистити журнал</string>
+    <string name="clear_log_summary">Видалити всі записи з журналу подій</string>
+
+    <string name="wall_post">Запис зі стіни</string>
+
+    <string name="repost_title">Надсилання запису</string>
+    <string name="repost_send_message">Надіслати приватним повідомленням</string>
+    <string name="repost_to_wall">Друзі і підписники</string>
+    <string name="pin">Закріпити</string>
+    <string name="unpin">Відкріпити</string>
+    <string name="restore">Відновити</string>
+
+    <string name="pin_result">Закріплено</string>
+    <string name="unpin_result">Відкріплено</string>
+    <string name="delete_result">Видалено</string>
+    <string name="restore_result">Відновлено</string>
+
+    <string name="publication">Публікація</string>
+
+    <string name="waiting_for_upload">Очікування завантаження</string>
+
+    <string name="deleted_post">Запис видалений</string>
+    <string name="comment_was_deleted">Коментар видалено</string>
+
+    <string name="unknown_error">Невідома помилка</string>
+
+    <string name="anonymous_poll">Анонімне опитування</string>
+    <string name="open_poll">Відкрите голосування</string>
+
+    <string name="drawer_categories_title">Елементи бокового меню</string>
+    <string name="drawer_categories_summary">Виберіть елементи, які будуть відображатися в бокового меню програми</string>
+
+    <string name="add_vote">Голосувати</string>
+    <string name="remove_vote">Видалити голос</string>
+
+    <string name="saved">Збережено</string>
+    <string name="save_to_drive">Зберегти на накопичувач</string>
+
+    <string name="reply">Відповісти</string>
+    <string name="reply_for">відповідь для %1$s</string>
+
+    <string name="feed">Новини</string>
+    <string name="feeds_empty_text">Тут Ви будете бачити новинну стрічку своїх друзів.</string>
+
+    <string name="profile">Профіль</string>
+    <string name="groups">Групи</string>
+    <string name="community">Спільнота</string>
+
+    <string name="api_error_1">Виникла невідома помилка</string>
+    <string name="api_error_2">Додаток вимкнено</string>
+    <string name="api_error_3">Передано невідомий метод</string>
+    <string name="api_error_4">Невірний підпис</string>
+    <string name="api_error_5">Авторизація користувача не вдалася</string>
+    <string name="api_error_6">Занадто багато запитів в секунду</string>
+    <string name="api_error_7">Немає прав для виконання цієї дії</string>
+    <string name="api_error_8">Невірний запит</string>
+    <string name="api_error_9">Занадто багато однотипних дій</string>
+    <string name="api_error_10">Внутрішня помилка сервера</string>
+    <string name="api_error_11">У тестовому режимі додаток має бути вимкнутий або користувач має авторизований</string>
+    <string name="api_error_14">Потрібне введення коду з картинки (Captcha)</string>
+    <string name="api_error_15">Доступ заборонено</string>
+    <string name="api_error_16">Потрібно виконання запитів по протоколу HTTPS, так як користувач включив настройку, що вимагає роботу через безпечне з\'єднання</string>
+    <string name="api_error_17">Потрібна валідація користувача</string>
+    <string name="api_error_18">Сторінка видалена або заблокована</string>
+    <string name="api_error_19">Контент недоступний</string>
+    <string name="api_error_20">Дана дія заборонена для не Standalone додатків</string>
+    <string name="api_error_21">Дана дія дозволена тільки для Standalone і Open API додатків</string>
+    <string name="api_error_23">Метод був вимкнений</string>
+    <string name="api_error_24">Потрібне підтвердження з боку користувача</string>
+    <string name="api_error_100">Один з необхідних параметрів був не переданий або невірний</string>
+    <string name="api_error_101">Невірний API ID додатку</string>
+    <string name="api_error_103">Перевищено обмеження на кількість вступів</string>
+    <string name="api_error_105">Неможливо зберегти файл</string>
+    <string name="api_error_113">Невірний ідентифікатор користувача</string>
+    <string name="api_error_114">Неприпустимий ідентифікатор альбому</string>
+    <string name="api_error_118">Неприпустимий сервер</string>
+    <string name="api_error_121">Невірний хеш</string>
+    <string name="api_error_150">Невірний timestamp</string>
+    <string name="api_error_174">Неможливо додати у друзі самого себе</string>
+    <string name="api_error_175">Неможливо додати у друзі користувача, який заніс Вас в свій чорний список</string>
+    <string name="api_error_176">Неможливо додати у друзі користувача, який занесений у Ваш чорний список</string>
+    <string name="api_error_200">Доступ до альбому заборонений</string>
+    <string name="api_error_201">Доступ до аудіо заборонений</string>
+    <string name="api_error_203">Доступ до групи заборонений</string>
+    <string name="api_error_210">Немає доступу до запису</string>
+    <string name="api_error_214">Перевищено ліміт на кількість публікацій на добу</string>
+    <string name="api_error_219">Рекламний пост вже недавно публікувався</string>
+    <string name="api_error_220">Занадто багато одержувачів</string>
+    <string name="api_error_221">Користувач вимкнув трансляцію назв аудіо в статус</string>
+    <string name="api_error_300">Альбом переповнений</string>
+    <string name="api_error_500">Дія заборонено. Ви повинні включити переклади голосів у налаштуваннях програми</string>
+    <string name="api_error_600">Немає прав на виконання даних операцій з рекламним кабінетом</string>
+    <string name="api_error_603">Сталася помилка при роботі з рекламним кабінетом</string>
+    <string name="api_error_1150">Невірний ідентифікатор документа</string>
+    <string name="api_error_1151">Немає доступу до видалення документів</string>
+
+    <string name="select_ringtone_title">Мелодія сповіщення</string>
+    <string name="ringtone_not_selected">Мелодія не вибрана</string>
+    <string name="ringtone_custom">Ще</string>
+    <string name="cancel">Скасувати</string>
+    <string name="ringtone_vk">VK</string>
+    <string name="videos">Відео</string>
+
+    <string name="send_on_enter_title">Відправити по ENTER</string>
+    <string name="send_on_enter_summary">Надіслати повідомлення після натискання на ENTER</string>
+
+    <string name="videos_my">Відеозаписи</string>
+    <string name="videos_albums">Альбоми</string>
+    <string name="videos_albums_videos_counter">%1$d відео</string>
+
+    <string name="view_count">переглядів: %1$d</string>
+    <string name="message_was_deleted">Повідомлення було видалено</string>
+    <string name="edit">Редагувати</string>
+    <string name="add_yourself">Додати собі</string>
+    <string name="added">Додано</string>
+
+    <string name="get_full_app_title">Отримати повний додаток</string>
+    <string name="get_full_app_summary">Якщо хочете отримати більше можливостей, спробуйте Phoenix для ВК</string>
+    <string name="buy_phoenix">Купити Phoenix</string>
+    <string name="default_category_summary">Виберіть сторінку , яка буде показана при запуску програми</string>
+    <string name="default_category_title">Стандартна сторінка</string>
+
+    <string name="drawer_feedback">Відповіді</string>
+
+    <string name="mentioned_in_post">згадав Вас в записі</string>
+
+    <string name="commented_to_post">прокоментував Ваш запис</string>
+    <string name="commented_to_photo">прокоментував Вашу фотографію</string>
+    <string name="commented_to_video">прокоментував Ваш відеозапис</string>
+
+    <string name="liked_comment">оцінив Ваш коментар</string>
+
+    <string name="shared_post">поділився Вашим записом</string>
+
+    <string name="and_users_count_more">і ще %1$d осіб</string>
+    <string name="from_date">від %1$s</string>
+    <string name="for_post">до запису</string>
+
+
+    <string name="keyword_for">до</string>
+    <string name="liked_your_photo_without_photo">оцінив Вашу</string>
+    <string name="liked_your_video_without_video">оцінив Ваш</string>
+    <string name="comment_your_photo_without_photo">прокоментував Вашу</string>
+    <string name="comment_your_video_without_video">прокоментував Ваш</string>
+    <string name="copy_your_photo_without_photo">поділився Вашою</string>
+    <string name="copy_your_video_without_video">поділився Вашим</string>
+    <string name="photo_dative">фотографії</string>
+    <string name="video_dative">відеозапису</string>
+    <string name="photo_accusative">фотографію</string>
+    <string name="video_accusative">відеозапис</string>
+    <string name="photo_ablative">фотографією</string>
+    <string name="video_ablative">відеозаписом</string>
+
+    <string name="in_reply_to_your_comment">у відповідь на Ваш коментар</string>
+    <string name="in_reply_to_your_message_in_topic">у відповідь на Ваше повідомлення в обговоренні</string>
+
+    <string name="subscribed_to_your_updates">підписався на Ваші оновлення</string>
+    <string name="liked_your_post">оцінив Ваш запис</string>
+
+    <string name="in_comments_for_post">в коментарях до запису</string>
+
+    <string name="for_your_post">на Ваш запис</string>
+    <string name="on_your_wall">на Вашій стіні</string>
+    <string name="postings_you_the_news">опублікована запропонована Вами новина</string>
+
+    <string name="mentioned_in_comment_photo_video">згадав Вас в коментарях до</string>
+
+    <string name="in_topic">в обговоренні</string>
+
+    <string name="published_post_on_your_wall">опублікував запис на Вашій стіні</string>
+
+    <string name="feedback_empty_text">Тут Ви будете бачити згадки, нові коментарі та відмітки «Мені подобається»</string>
+
+    <string name="end_of_list">Кінець списку</string>
+
+    <string name="open_profile">Відкрити профіль</string>
+
+    <string name="play">Відтворити</string>
+    <string name="play_small">Відтворити (MIN)</string>
+    <string name="play_with_coub">Відкрити в Coub</string>
+    <string name="play_with_outer_app">Відкрити з допомогою…</string>
+    <string name="for_video">до відеозапису</string>
+
+    <string name="more_info">Більше</string>
+    <string name="hide_info">Приховати</string>
+
+    <!--Основная информация о пользователе-->
+    <string name="mail_information">Основна інформація</string>
+    <string name="first_name">Ім\'я</string>
+    <string name="last_name">Прізвище</string>
+    <string name="sex">Стать</string>
+    <string name="studied_at">Місце навчання</string>
+
+    <string name="relationship_status">Сімейний стан</string>
+    <string name="relationship_partner">партнер</string>
+    <string name="relationship_man_single">неодружений</string>
+    <string name="relationship_man_in_relationship">є подруга</string>
+    <string name="relationship_man_engaged">заручений</string>
+    <string name="relationship_man_married">одружений</string>
+    <string name="relationship_man_in_love">закоханий</string>
+    <string name="relationship_man_its_complicated">все складно</string>
+    <string name="relationship_man_activelly_searching">в активному пошуку</string>
+
+    <string name="relationship_woman_single">незаміжня</string>
+    <string name="relationship_woman_in_relationship">є друг</string>
+    <string name="relationship_woman_engaged">заручена</string>
+    <string name="relationship_woman_married">заміжня</string>
+    <string name="relationship_woman_in_love">закохана</string>
+    <string name="relationship_woman_its_complicated">все складно</string>
+    <string name="relationship_woman_activelly_searching">в активному пошуку</string>
+
+    <string name="birthday">День народження</string>
+    <string name="hometown">Рідне місто</string>
+    <string name="languages">Мови</string>
+    <string name="relatives">Родичі</string>
+    <string name="relatives_grandparents">бабусі та дідусі</string>
+    <string name="relatives_parents">батьки</string>
+    <string name="relatives_siblings">брати і сестри</string>
+    <string name="relatives_children">діти</string>
+    <string name="relatives_grandchildren">онуки</string>
+    <string name="relatives_others">інші</string>
+
+    <!--Контактная информация пользователя-->
+    <string name="contact_information">Контактна інформація</string>
+    <string name="mobile_phone_number">Мобільний телефон</string>
+    <string name="home_phone_number">Домашній телефон</string>
+    <string name="college_or_university">ВНЗ</string>
+    <string name="department">Факультет</string>
+    <string name="study_program">Кафедра</string>
+    <string name="mode_of_study">Форма навчання</string>
+    <string name="status">Статус</string>
+    <string name="school">Школа</string>
+    <string name="website">Сайт</string>
+    <string name="alternative_phone">Додатковий телефон</string>
+    <string name="home">Дім</string>
+    <string name="country">Країна</string>
+    <string name="city">Місто</string>
+
+    <!--Жизненная позиция пользователя-->
+    <string name="beliefs">Життєва позиція</string>
+    <string name="political_views">Політ. вподобання</string>
+    <string name="political_views_communist">комуністичні</string>
+    <string name="political_views_socialist">соціалістичні</string>
+    <string name="political_views_moderate">помірковані</string>
+    <string name="political_views_liberal">ліберальні</string>
+    <string name="political_views_conservative">консервативні</string>
+    <string name="political_views_monarchist">монархічні</string>
+    <string name="political_views_ultraconservative">ультраконсервативні</string>
+    <string name="political_views_apathetic">індиферентні</string>
+    <string name="political_views_libertian">лібертаріанські</string>
+
+    <string name="world_view">Світогляд</string>
+    <string name="personal_priority">Головне в житті</string>
+    <string name="personal_priority_family_and_children">сім\'я і діти</string>
+    <string name="personal_priority_career_and_money">кар\'єра і гроші</string>
+    <string name="personal_priority_entertainment_and_leisure">розваги і відпочинок</string>
+    <string name="personal_priority_science_and_research">наука та дослідження</string>
+    <string name="personal_priority_improving_the_world">вдосконалення світу</string>
+    <string name="personal_priority_personal_development">саморозвиток</string>
+    <string name="personal_priority_beauty_and_art">краса і мистецтво</string>
+    <string name="personal_priority_fame_and_influence">слава і вплив</string>
+
+    <string name="important_in_others">Головне в людях</string>
+    <string name="important_in_others_intellect_and_creativity">розум і креативність</string>
+    <string name="important_in_others_kindness_and_honesty">доброта і чесність</string>
+    <string name="important_in_others_health_and_beauty">краса і здоров\'я</string>
+    <string name="important_in_others_wealth_and_power">влада і багатство</string>
+    <string name="important_in_others_courage_and_persistance">сміливість і завзятість</string>
+    <string name="important_in_others_humor_and_love_for_life">гумор і життєлюбність</string>
+
+    <string name="views_on_smoking">Ставлення до паління</string>
+    <string name="views_on_alcohol">Ставлення до алкоголю</string>
+    <string name="views_very_negative">різко негативне</string>
+    <string name="views_negative">негативне</string>
+    <string name="views_neutral">нейтральне</string>
+    <string name="views_compromisable">компромісне</string>
+    <string name="views_positive">позитивне</string>
+
+    <string name="inspired_by">Джерела натхнення</string>
+
+    <!--Интересы пользоватля-->
+    <string name="personal_information">Персональна інформація</string>
+    <string name="activities">Діяльність</string>
+    <string name="interests">Інтереси</string>
+    <string name="favorite_games">Улюблені ігри</string>
+    <string name="favorite_music">Улюблена музика</string>
+    <string name="favorite_movies">Улюблені фільми</string>
+    <string name="favorite_tv_shows">Улюблені телешоу</string>
+    <string name="favorite_books">Улюблені книги</string>
+    <string name="favorite_quotes">Улюблені цитати</string>
+    <string name="about_me">Про себе</string>
+
+    <!--Военная служба-->
+    <string name="military_service">Військова служба</string>
+    <string name="branch_unit">Військова частина</string>
+
+    <!--Карьера-->
+    <string name="career">Кар\'єра</string>
+    <string name="company">Компанія</string>
+    <string name="from">Рік початку</string>
+    <string name="to">Рік закінчення</string>
+    <string name="position">Посада</string>
+
+    <!--Образование-->
+    <string name="education">Освіта</string>
+    <string name="secondary_education">Середня освіта</string>
+    <string name="graduation_year">Рік випуску</string>
+    <string name="clazz">Клас</string>
+    <string name="specialization">Спеціалізація</string>
+    <string name="higher_education">Вища освіта</string>
+
+    <string name="application_not_licensed_title">Немає ліцензії</string>
+    <string name="application_not_licensed_message">У Вас немає ліцензії на використання цього додатку. Будь ласка, купіть його в Google Play</string>
+    <string name="exit">Вихід</string>
+    <string name="buy_app">Купити</string>
+    <string name="download">Завантаження</string>
+
+    <string name="like">Мені подобається</string>
+    <string name="dislike">Мені не подобається</string>
+
+    <string name="copy_url">Копіювати посилання</string>
+    <string name="copied_url">Посилання скопійоване</string>
+
+    <string name="goto_user">Перейти до власника</string>
+
+    <string name="add_to_friends">Додати у друзі</string>
+    <string name="accept_request">Прийняти запит</string>
+    <string name="delete_from_friends">Видалити з друзів</string>
+    <string name="edit_status">Змінити статус</string>
+    <string name="cancel_request">Скасувати заявку</string>
+
+    <string name="button_ok">OK</string>
+    <string name="button_yes">Так</string>
+    <string name="button_no">Ні</string>
+    <string name="button_cancel">Відміна</string>
+    <string name="field_is_required">Обов\'язкове поле для заповнення</string>
+    <string name="attach_message">Прикріпити повідомлення</string>
+    <string name="enter_your_status">Введіть свій статус</string>
+
+    <string name="friend_request_sent">Заявка на додавання в друзі відправлена</string>
+    <string name="friend_request_from_user_approved">Заявка на додавання в друзі схвалена</string>
+    <string name="request_resending">Повторна відправка заявки</string>
+
+    <string name="friend_deleted">Був видалений друг</string>
+    <string name="out_request_deleted">Скасована вихідна заявка</string>
+    <string name="in_request_deleted">Відхилена вхідна заявка</string>
+    <string name="suggestion_deleted">Відхилена рекомендація друга</string>
+
+    <string name="status_was_changed">Статус був змінений</string>
+    <string name="upload_new_photo">Завантажити нову фотографію</string>
+    <string name="open_photo_album">Відкрити альбом</string>
+
+    <string name="community_send_request">Відправити заявку</string>
+    <string name="community_join">Вступити в групу</string>
+    <string name="community_follow">Підписатися</string>
+    <string name="community_unsubscribe_from_news">Відписатися від новин</string>
+    <string name="community_leave">Покинути групу</string>
+
+    <string name="community_send_request_success">Заявку відправлено</string>
+    <string name="community_join_success">Ви вступили в групу</string>
+    <string name="community_follow_success">Підписку оформлено</string>
+    <string name="community_unsubscribe_from_news_success">Ви успішно відписалися від новин</string>
+    <string name="community_leave_success">Ви покинули групу</string>
+
+    <string name="counter_topics">обговорення</string>
+    <string name="counter_links">посилання</string>
+    <string name="members">Учасники</string>
+
+    <string name="topic_comments_counter">останнє оновлення: %1$s | %2$d коментарів</string>
+    <string name="topics">Обговорення</string>
+    <string name="group_chat_leave">Покинути бесіду</string>
+    <string name="post_from_group">Від імені групи</string>
+
+    <string name="publish">Готово</string>
+
+    <string name="for_friends_only">Тільки для друзів</string>
+    <string name="add_signature">Додати підпис автора</string>
+    <string name="change_chat_title">Змінити назву бесіди</string>
+    <string name="chat_users">Учасники чату</string>
+    <string name="creator_of_conversation">Організатор бесіди</string>
+    <string name="invited_by">Запросив %1$s</string>
+    <string name="remove_chat_user_commit">Ви дійсно хочете виключити користувача %1$s з бесіди?</string>
+    <string name="confirmation">Підтвердження</string>
+    <string name="add_to_home_screen">Додати на головний екран</string>
+    <string name="welcome_hint">Натисніть на птицю для авторизації :)</string>
+    <string name="poll">Опитування</string>
+    <string name="new_poll">Нове опитування</string>
+    <string name="poll_options">Варіанти відповіді</string>
+    <string name="poll_question">Тема опитування</string>
+    <string name="add_option">Додати варіант</string>
+    <string name="shared">Поділилися</string>
+    <string name="photo">Фото</string>
+    <string name="video">Відео</string>
+    <string name="share">Поділитися</string>
+    <string name="repeat">Повторити</string>
+    <string name="new_comment">Новий коментар</string>
+    <string name="editing">Редагування</string>
+    <string name="ready">Готово</string>
+    <string name="add_document_to_yourself_commit">Додати в свої документи?</string>
+    <string name="avatar_style_title">Стиль аватарок</string>
+    <string name="avatar_style_summary">Виберіть стиль аватарок, який буде використаний в додатку</string>
+    <string name="save_changes_question">Зберегти зміни ?</string>
+
+    <string name="illegal_content_message">Нелегальний контент. Відвідайте групу додатку (через настройки) або пройдіть за адресою phoenixvk.ru для докладної інформації</string>
+    <string name="developer">Розробники</string>
+    <string name="comment">Коментар</string>
+    <string name="up">Вгору</string>
+    <string name="search">Пошук</string>
+    <string name="attach_quick_photos_title">Ви можете прикріпити сюди альбом з фотографіями</string>
+    <string name="attach">Прикріпити</string>
+    <string name="input">Введення</string>
+    <string name="show_quick_photos_album_title">Показувати блок швидких фото</string>
+    <string name="select_quick_photos_album">Вибрати альбом швидких фотографій</string>
+    <string name="bookmarks">Закладки</string>
+    <string name="list_is_empty">Список порожній</string>
+    <string name="people">Люди</string>
+    <string name="links">Посилання</string>
+    <string name="posts">Записи</string>
+    <string name="loading_owner_photo_album">Завантаження фотоальбому</string>
+    <string name="no_photos_found">Фотографії не знайдені</string>
+    <string name="please_wait">Будь ласка, зачекайте</string>
+    <string name="permission_granted_text">Дозвіл успішно отримано. Повторіть дію ще раз</string>
+    <string name="permission_is_not_granted_text">Дозвіл не отримано. Дія не може бути виконана.</string>
+    <string name="add_to_bookmarks">Додати в закладки</string>
+    <string name="loading">Завантаження</string>
+    <string name="all_friends">Всі друзі</string>
+    <string name="share_link">Поділиться посиланням</string>
+    <string name="share_using">Поділиться з допомогою</string>
+    <string name="requests_to_friends">Заявки</string>
+    <string name="mutual_friends">Спільні друзі</string>
+    <string name="results_in_a_network">Знайдені в мережі</string>
+    <string name="results_in_the_cache">Результати з кешу</string>
+    <string name="type_here_to_start_searching">Введіть тут, щоб почати пошук…</string>
+    <string name="wiki_page">Вікі-сторінка</string>
+    <string name="size">Розмір: %1$s</string>
+    <string name="title">Назва: %1$s</string>
+    <string name="browser">Браузер</string>
+    <string name="share_document_title">Поділитися документом</string>
+    <string name="deleted">Видалено</string>
+    <string name="remove_confirm">Підтвердіть видалення</string>
+    <string name="doc_remove_confirm_message">Ви дійсно хочете видалити цей документ? Ця дія не може бути скасована.</string>
+    <string name="in_response_to">%1$s у відповідь на %2$s</string>
+    <string name="no_photos">Немає зображень</string>
+    <string name="select_directory">Виберіть каталог</string>
+    <string name="select_file">Виберіть файл</string>
+    <string name="invites_you_to_join_community">%1$s запрошує Вас вступити в групу</string>
+    <string name="add_new_document">Додати новий документ</string>
+    <string name="attachments_in_chat">Матеріали бесіди</string>
+    <string name="cancel_upload_confirm">Скасувати завантаження?</string>
+    <string name="photos_count">%1$d фото</string>
+    <string name="videos_count">%1$d відео</string>
+    <string name="communities">Спільноти</string>
+    <string name="share_photo_title">Поділитися фотографією</string>
+    <string name="save_yourself">Зберегти собі</string>
+    <string name="photo_saved_yourself">Збережено в альбом "Збережені фотографії"</string>
+    <string name="documents">Документи</string>
+    <string name="nothing_found">За запитом \"%1$s\" нічого не знайдено</string>
+    <string name="search_options">Опції пошуку</string>
+    <string name="clear">Очистити</string>
+    <string name="by_relevance">за релевантністю</string>
+    <string name="by_popularity">за популярністю</string>
+    <string name="by_duration">по тривалості</string>
+    <string name="by_date_added">по даті додавання</string>
+    <string name="august">Серпень</string>
+    <string name="april">Квітень</string>
+    <string name="age_from">Вік, з</string>
+    <string name="age_to">Вік, до</string>
+    <string name="december">Грудень</string>
+    <string name="default_sorting">сортування за замовчуванням</string>
+    <string name="directory_is_empty">Директорія порожня</string>
+    <string name="disable_safe_search">Відключити безпечний пошук</string>
+    <string name="event">Подія</string>
+    <string name="february">Лютий</string>
+    <string name="female">Жінка</string>
+    <string name="future_events_only">Тільки майбутні події</string>
+    <string name="group">Група</string>
+    <string name="hd_only">Тільки HD</string>
+    <string name="july">Липень</string>
+    <string name="january">Січень</string>
+    <string name="june">Червень</string>
+    <string name="long_videos">Довгі відео</string>
+    <string name="male">Чоловік</string>
+    <string name="march">Березень</string>
+    <string name="max_duration">Максимальна тривалість, сек</string>
+    <string name="may">Травень</string>
+    <string name="birthday_day">День народження</string>
+    <string name="birthday_month">Місяць народження</string>
+    <string name="birthday_year">Рік народження</string>
+    <string name="chair">Кафедра</string>
+    <string name="faculty">Факультет</string>
+    <string name="september">Вересень</string>
+    <string name="search_option_married">Одружений</string>
+    <string name="search_option_not_married">Не одружений / незаміжня</string>
+    <string name="search_option_in_love">закоханий / закохана</string>
+    <string name="search_option_in_relationship">Зустрічається</string>
+    <string name="search_option_its_complicated">Все складно</string>
+    <string name="search_option_engaged">Заручений / заручена</string>
+    <string name="search_option_by_rating">За рейтингом</string>
+    <string name="search_option_by_date_registered">За датою реєстрації</string>
+    <string name="search_option_actively_searching">В активному пошуку</string>
+    <string name="search_only_by_artist_name">Шукати тільки по виконавцю</string>
+    <string name="search_in_my_videos">Шукати в моїх відеозаписах</string>
+    <string name="search_in_my_audios">Шукати в моїх аудіозаписах</string>
+    <string name="short_videos">Короткі відео</string>
+    <string name="sorting">Сортування</string>
+    <string name="sorting_by_growth_speed">за швидкістю зростання</string>
+    <string name="sorting_by_day_attendance_members_number_ratio">по відношенню денної відвідуваності до кількості користувачів</string>
+    <string name="sorting_by_likes_number_members_number_ratio">по відношенню кількості лайків до кількості користувачів</string>
+    <string name="sorting_by_comments_number_members_number_ratio">по відношенню кількості коментарів до кількості користувачів</string>
+    <string name="type">Тип</string>
+    <string name="sorting_by_boards_entries_number_members_number_ratio">по відношенню кількості записів в обговореннях до кількості користувачів</string>
+    <string name="school_class">Клас</string>
+    <string name="year_of_graduation">Рік випуску</string>
+    <string name="with_photo_only">Тільки з фото</string>
+    <string name="with_lyrics_only">Тільки з текстами пісень</string>
+    <string name="relationship">Сімейний стан</string>
+    <string name="please_select_option">Будь ласка, вкажіть \"%1$s\"</string>
+    <string name="university_country">Країна, в якій закінчили ВНЗ</string>
+    <string name="school_city">Місто, в якому закінчили школу</string>
+    <string name="school_country">Країна, в якій закінчили школу</string>
+    <string name="religious_affiliation">Релігійна приналежність</string>
+    <string name="october">Жовтень</string>
+    <string name="november">Листопад</string>
+    <string name="online_only">Тільки онлайн</string>
+    <string name="page">Сторінка</string>
+    <string name="min_duration">Мінімальна тривалість, сек</string>
+    <string name="audios_count">%1$d аудіозаписів</string>
+    <string name="documents_count">%1$d документів</string>
+    <string name="equalizer">Еквалайзер</string>
+    <string name="cancel_invitation">Відхилити запрошення</string>
+    <string name="invitation_has_been_declined">Запрошення було відхилено</string>
+    <string name="request_canceled">Заявка скасована</string>
+    <string name="restored">Відновлено</string>
+    <string name="friend_request_accepted_notification">Прийняття запрошення в друзі</string>
+    <string name="group_invited_notification">Запрошення в групу</string>
+    <string name="new_comment_notification">Коментарі до записів/фотографій/відеозаписів</string>
+    <string name="new_follower_notification">Запит в друзі</string>
+    <string name="new_wall_post_notification">Новий запис на Вашій стіні</string>
+    <string name="other_notifications_settings">Інші повідомлення</string>
+    <string name="other_notifications_types">Типи повідомлень</string>
+    <string name="reply_notification">Відповіді в коментарях</string>
+    <string name="wall_publish_notification">Опублікований запропонований Вами запис</string>
+    <string name="set_default">Встановити за замовчуванням</string>
+    <string name="sidebar_settings">Бокове меню</string>
+    <string name="dark_background_image">Зображення для темної теми</string>
+    <string name="light_background_image">Зображення для світлої теми</string>
+    <string name="formatted_date_today">Сьогодні в %1$s</string>
+    <string name="formatted_date_tomorrow">Завтра в %1$s</string>
+    <string name="formatted_date_yesterday">Вчора в %1$s</string>
+    <string name="owner_s_posts">Записи власника</string>
+    <string name="scheduled">Відкладені</string>
+    <string name="all_posts">Всі записи</string>
+    <string name="news_feed">Стрічка </string>
+    <string name="subscriptions">Підписки</string>
+    <string name="account_manager">Менеджер акаунтів</string>
+    <string name="accounts">Акаунти</string>
+    <string name="album_cover">Обкладинка альбому</string>
+    <string name="cancelling">Відміна</string>
+    <string name="set_as_active">Зробити активним</string>
+    <string name="account_switched_to">Поточний аккаунт</string>
+    <string name="peer_notification_settings">Налаштування повідомлень</string>
+    <string name="wall_post_is_not_yet_initialized">Інформація про запис ще не отримана, будь ласка, зачекайте</string>
+    <string name="commented">прокоментував:</string>
+    <string name="post_is_pinned">Запис закріплений</string>
+    <string name="will_be_post_at">Буде опублікований %1$s</string>
+    <string name="date_is_invalid">Ви ввели невірну дату</string>
+    <string name="this_device_does_not_support_gcm">Це пристрій не підтримує GCM</string>
+    <string name="upload_does_not_finished_saving_cancelled">Завантаження не завершено. Збереження скасовано</string>
+    <string name="double_press_to_exit">Подвійне натискання для виходу з програми</string>
+    <string name="show_animation_transitions">Анімувати переходи</string>
+    <string name="posts_of_community">Записи групи</string>
+    <string name="from_list">Зі списку</string>
+    <string name="photo_size">Розмір фото</string>
+    <string name="preference_audio_notif_invert_title">Інвертувати кольори повідомлення аудіо-плеєра</string>
+    <string name="button_go">Перейти</string>
+    <string name="later">Пізніше</string>
+    <string name="never">Ніколи</string>
+    <string name="app_community_invite_title">Дякуємо, що Ви з нами!</string>
+    <string name="app_community_invite_message">Запрошуємо Вас долучитись до групи цього додатку. Там Ви можете знайти корисну інформацію про програму, дізнатися про нововведення і задати нам питання</string>
+    <string name="additional_settings">Додаткові параметри</string>
+    <string name="button_continue">Продовжити</string>
+    <string name="create_album">Створити новий альбом</string>
+    <string name="disallow_commenting">Відключити коментування</string>
+    <string name="description_hint">Опис</string>
+    <string name="finish">Завершити</string>
+    <string name="photos_can_be_added_only_to_editors_and_administrators">Фотографії можуть додавати лише редактори і адміністратори</string>
+    <string name="button_back">Назад</string>
+    <string name="enter_main_album_info">Основна інформація</string>
+    <string name="title_hint">Назва</string>
+    <string name="who_can_have_access">Кому дозволено доступ?</string>
+    <string name="who_cannot_have_access">Кому заборонений доступ?</string>
+    <string name="privacy_to_only_me">Тільки мені</string>
+    <string name="privacy_to_friends_only">Лише друзям</string>
+    <string name="privacy_to_all_users">Всім</string>
+    <string name="privacy_to_friends_and_friends_of_friends">Друзям і друзям друзів</string>
+    <string name="all_users">Всі користувачі</string>
+    <string name="and">та</string>
+    <string name="press_plus_for_add">Натисніть (+) щоб відмітити користувача</string>
+    <string name="privacy_view">Доступ до перегляду</string>
+    <string name="privacy_settings">Налаштування приватності</string>
+    <string name="album_remove_confirm_message">Ви дійсно хочете видалити цей альбом? Ця дія не може бути скасована..</string>
+    <string name="create_an_album">Створення альбому</string>
+    <string name="night_mode_interval">Інтервал нічного режиму</string>
+    <string name="privacy_comment">Доступ до коментування</string>
+    <string name="who_is_allowed_to_view_this_album">Кому доступний перегляд цього альбому?</string>
+    <string name="who_is_not_allowed_to_view_this_album">Кому перегляд цього альбому заборонений?</string>
+    <string name="who_is_allowed_to_comment_photos">Хто може коментувати фотографії?</string>
+    <string name="who_is_not_allowed_to_comment_this_album">Кому коментування цього альбому заборонено?</string>
+    <string name="title_start_time">Час початку</string>
+    <string name="title_end_time">Час закінчення</string>
+    <string name="album_edit">Редагування альбому</string>
+    <string name="copy">Копіювати</string>
+    <string name="forward">Переслати</string>
+    <string name="enter_captcha_text">Введіть текст з картинки</string>
+    <string name="from_camera">Зробити фото</string>
+    <string name="updated_profile_photo_at">оновив фотографію на сторінці: %1$s</string>
+    <string name="updated_status_at">оновив статус: %1$s</string>
+    <string name="messages">Повідомлення</string>
+    <string name="color_navigation_bar">Кольоровий навігаційний блок</string>
+    <string name="error_with_message">Помилка: %1$s</string>
+    <string name="gif_player">Gif-плеєр</string>
+    <string name="recording_time">Запис… %1$s</string>
+    <string name="unable_to_delete_temp_recording_file">Не вдалося видалити тимчасовий файл</string>
+    <string name="unable_to_play_file">Неможливо відтворити файл</string>
+    <string name="unable_to_prepare_media_recorder">Неможливо ініціалізувати диктофон</string>
+    <string name="viewing_messages">Перегляд повідомлень</string>
+    <string name="authorization">Авторизація</string>
+    <string name="pause_is_not_supported">Пауза не підтримується</string>
+    <string name="unknown_community_name">Невідома група</string>
+    <string name="jump_to_comment">Перейти до коментаря</string>
+    <string name="open_post">Показати запис</string>
+    <string name="show_photo">Показати фото</string>
+    <string name="open_topic">Відкрити обговорення</string>
+    <string name="show_video">Показати видео</string>
+    <string name="choose_action">Дії</string>
+    <string name="apply">Прийняти</string>
+    <string name="create_pin_code_title">Створіть ПІН-код</string>
+    <string name="entered_pin_codes_do_not_match">Введені PIN-коди не співпадають</string>
+    <string name="key_exchange">Обмін ключами</string>
+    <string name="key_exchange_content_text">Відбувається обмін ключами з %1$s</string>
+    <string name="key_exchange_request">Запит на обмін ключами</string>
+    <string name="key_exchange_request_content_text">%1$s просить дозвіл на обмін ключами шифрування</string>
+    <string name="limit_exceeded_number_of_attempts_message">Перевищено ліміт спроб введення</string>
+    <string name="not_yet_implemented_message">Ще не реалізовано</string>
+    <string name="pin_is_invalid_message">Неправильний PIN-код</string>
+    <string name="repeat_pin_code_title">Повторіть PIN-код</string>
+    <string name="session_already_created">Сесія вже активна</string>
+    <string name="skip">Пропустити</string>
+    <string name="use_pin_title">Використовуйте PIN-код або відбиток пальця</string>
+    <string name="key_exchange_failed">Обмін ключами не вдався</string>
+    <string name="you_have_successfully_exchanged_keys">Ви успішно обмінялися ключами, тепер можете включити шифрування повідомлень</string>
+    <string name="encryption_status">Статус шифрування</string>
+    <string name="no_encryption_keys">Нема ключів шифрування</string>
+    <string name="quick_reply">Швидка відповідь</string>
+    <string name="quick_reply_summary">Негайно відображати вікно швидкої відповіді</string>
+    <string name="you_dont_have_encryption_keys_stored_initiate_key_exchange">У Вас немає збережених ключів шифрування. Ініціювати обмін ключами?</string>
+    <string name="counter_documents">документи</string>
+    <string name="ask_for_pin_on_application_start_title">PIN-код при запуску</string>
+    <string name="ask_for_pin_on_application_start_summary">Запитувати PIN-код під час запуску програми</string>
+    <string name="you_have_received_request_for_key_exchange_from">Ви отримали запит на обмін ключами шифрування від</string>
+    <string name="use_pin_for_security_title">Використовувати PIN-код</string>
+    <string name="security">Безпека</string>
+    <string name="change_pin_title">Змінити PIN-код</string>
+    <string name="button_decline">Відхилити</string>
+    <string name="button_accept">Прийняти</string>
+    <string name="automatically_decrypt_all_messages_title">Автоматично розшифровувати всі повідомлення</string>
+    <string name="ask_for_pin_when_decrypting_messages_title">Запитувати PIN-код для розшифровки повідомлень</string>
+    <string name="accepted_friend_request">прийняв заявку в друзі</string>
+    <string name="choose_location_key_store">Вибери місце зберігання ключів</string>
+    <string name="clear_storage_of_encryption_keys">Очистити сховище ключів шифрування</string>
+    <string name="delete_keys">Видалити ключі</string>
+    <string name="encryption_terms_of_use_title">Умови використання</string>
+    <string name="for_all_accounts">Для всіх облікових записів</string>
+    <string name="for_the_current_account">Для поточного облікового запису</string>
+    <string name="phoenix_encryption">Шифрування Phoenix</string>
+    <string name="secured_messages">Захищені повідомлення</string>
+    <string name="store_in_ram">Зберігати в оперативній пам\'яті</string>
+    <string name="store_in_ram_summary">Ключі шифрування будуть поміщені в оперативну пам\'ять. ВАЖЛИВО. Після виходу з програми Ви назавжди втратите ці ключі і не зможете розшифрувати вхідні і вихідні повідомлення.</string>
+    <string name="store_on_disk">Зберегти на диск (рекомендується)</string>
+    <string name="store_on_disk_summary">Ключі шифрування будуть збережені в постійній пам\'яті пристрою.</string>
+    <string name="encryption_terms_of_use">
+        УМОВИ ВИКОРИСТАННЯ
+        \n   
+        \n1. ФУНКЦІОНАЛЬНІ ОСОБЛИВОСТІ
+        \n1.1. Опція має на увазі шифрування виключно тексту повідомлень, захист вкладень не реалізована.
+        \n1.2. Опція недоступна для групових бесід або діалогів з групами.
+        \n1.3. Зашифровані повідомлення можуть бути розшифровані виключно в додатку Phoenix або Phoenix Lite версії 2.8.0 і вище.
+        \n1.4. Для того, щоб почати обмін зашифрованими повідомленнями, співрозмовники повинні пройти процедуру обміну ключами.
+        \n1.5. Повідомлення можуть бути розшифровані тільки на тому пристрої, який брав участь у процедурі обміну конкретною парою ключів, на інших пристроях, в інших додатках або браузері користувач не зможе прочитати оригінальний текст повідомлень.
+        \n
+        \n2. ОБМІН КЛЮЧАМИ ШИФРУВАННЯ
+        \n2.1. Для передачі ключів додатком буде відправлено кілька службових повідомлень безпосередньо в діалог.
+        \n2.2. Компрометація службових повідомлень не несе загрози для безпеки, вони виконують виключно транспортну роль і не містять ключів шифрування у відкритому вигляді.
+        \n2.3. Видалення службових повідомлень з діалогу ніяк не вплине на функціонал шифрування.
+        \n2.4. Обмін ключами може бути виконаний повторно нескінченну кількість разів, при цьому нові повідомлення будуть зашифровані новими ключами, а старі повідомлення можуть бути розшифровані старими ключами.
+        \n
+        \n3. ЗБЕРІГАННЯ КЛЮЧІВ
+        \n3.1. Ключі шифрування зберігаються локально на пристроях співрозмовників в постійній або оперативної пам\'яті (в залежності від обраного режиму).
+        \n3.2. У разі втрати ключів шифрування користувач не зможе прочитати зашифровані вхідні і вихідні повідомлення.
+        \n3.3. Користувач втратить ключі шифрування в наступних випадках:
+        \n- видалення додатку з пристрою;
+        \n- очищення даних додатку;
+        \n- після використання опції \"Видалити ключі\" в налаштуваннях програми;
+        \n- після закриття програми (тільки для режиму зберігання ключів в оперативній пам\'яті);
+        \n- при видаленні облікового запису з програми.
+        \n
+        \n4. ВІДМОВА ВІД ВІДПОВІДАЛЬНОСТІ
+        \n4.1. Розробники програми Phoenix не несуть відповідальності за втрату даних користувача в випадком втрати їм ключів шифрування або неправильного використання даної опції.</string>
+    <string name="export_keys_summary">Зберегти всі ключі в файл phoenixkeys.json у внутрішній пам\'яті</string>
+    <string name="export_keys_title">Експорт ключів</string>
+    <string name="import_keys_summary">Імпортувати ключі з файлу phoenixkeys.json</string>
+    <string name="import_keys_title">Імпорт ключів</string>
+    <string name="successfully_imported_count_keys">Успішно імпортовано %1$d ключів</string>
+    <string name="successfully_exported_count_keys">Успішно збережено %1$d ключів</string>
+    <string name="new_post_title">Нова публікація</string>
+    <string name="new_post_was_published_in">"%1$s опублікував новий запис"</string>
+    <string name="for_topic">В обговоренні</string>
+    <string name="new_posts_of_users_and_communities">Нові записи користувачів і спільнот</string>
+    <string name="reached_maximum_count_of_attachments">Досягнуто максимальну кількість вкладень</string>
+    <string name="select">Виберіть варіант відповіді</string>
+    <string name="votes_count">"%1$d голосів"</string>
+
+    <string name="like_title">Мені подобається</string>
+    <string name="push_user_liked_your_photo">%1$s подобається Ваше фото</string>
+    <string name="push_user_liked_your_comment_on_the_photo">%1$s подобається Ваш коментар до фото</string>
+    <string name="push_user_liked_your_video">%1$s подобається Ваш відеозапис</string>
+    <string name="push_user_liked_your_comment_on_the_video">%1$s подобається Ваш коментар до відеозапису</string>
+    <string name="push_user_liked_your_post">%1$s подобається Ваш запис на стіні</string>
+    <string name="push_user_liked_your_comment_on_the_post">%1$s подобається Ваш коментар до запису</string>
+    <string name="likes">Відмітки \"Мені подобається\"</string>
+    <string name="go_to_post">Перейти до запису</string>
+    <string name="unauthorized">"Помилка авторизації"</string>
+    <string name="success">Успіх</string>
+    <string name="chat_background">Фон чату</string>
+    <string name="post_text">Текст запису</string>
+    <string name="allow_text_selection">Дозволити виділення тексту</string>
+    <string name="in_a_civil_union">У цивільному шлюбі</string>
+    <string name="copied_text">Текст скопійовано в буфер обміну</string>
+    <string name="copy_text">Скопіювати текст</string>
+    <string name="post_editing">Редагування запису</string>
+    <string name="privacy_policy">Політика конфіденційності</string>
+    <string name="upload_not_resolved_exception_message">Завантаження не завершено або перервано</string>
+    <string name="go_to_video">Перейти до відео</string>
+    <string name="go_to_photo">Перейти до фото</string>
+    <string name="wait_until_file_upload_is_complete">Дочекайтеся завершення завантаження файлу</string>
+    <string name="link">Посилання</string>
+    <string name="copied">Скопійовано</string>
+
+    <string-array name="array_vibration_length_names">
+        <item>Коротка</item>
+        <item>Нормальна</item>
+        <item>Довга</item>
+        <item>Коротка(двічі)</item>
+        <item>Нормальна(двічі)</item>
+        <item>Довга(двічі)</item>
+    </string-array>
+    <string name="vk_photos_tab_title">Фото ВК</string>
+    <string name="local_photos_tab_title">Локальні фото</string>
+    <string name="send_short">Відпр.</string>
+    <string name="message_attachment_empty_text">Вкладень поки немає</string>
+    <string name="button_add_photo">Додати фото</string>
+    <string name="search_option_empty_text">Опції пошуку недоступні</string>
+    <string name="counter_gifts">Подарунки</string>
+    <string name="comment_editing_title">Редагування</string>
+    <string name="saving">Збереження</string>
+    <string name="drawer_newsfeed_comments">Коментарі</string>
+    <string name="suggests">Запропоновані</string>
+    <string name="doc_filter_all">Всі документи</string>
+    <string name="doc_filter_text">Текст</string>
+    <string name="doc_filter_archive">Архіви</string>
+    <string name="doc_filter_image">Картинки</string>
+    <string name="doc_filter_audio">Аудіо</string>
+    <string name="doc_filter_video">Відео</string>
+    <string name="doc_filter_books">Книги</string>
+    <string name="doc_filter_other">Інші</string>
+    <string name="files_tab_title">Файли</string>
+    <string name="error_fingerprint_failed">Авторизація не вдалася</string>
+    <string name="error_fingerprint_not_blocked">Захист по відбитку пальця не встановлений. Для використання опції додайте відбиток пальця в налаштуваннях апарата.</string>
+    <string name="error_fingerprint_not_supported">Захист по відбитку пальця не підтримується пристроєм</string>
+    <string name="message_fingerprint_touch_sensor">Торкніться сенсора для авторизації</string>
+    <string name="add_to_launcer_shortcuts">Додати в ярлики додатка</string>
+    <string name="wall_text_hint">Введіть текст новини</string>
+    <string name="document_short">Док</string>
+    <string name="timer">Таймер</string>
+    <string name="button_postpone">Відкласти</string>
+    <string name="message_obtaining_owner_information">Отримання інформації про власника</string>
+    <string name="title_suggest_news">Запропонувати новину</string>
+    <string name="who_likes">Кому подобається?</string>
+    <string name="other">Інше</string>
+    <string name="hide_notif_message_body_summary">Не показувати текст повідомлення в сповіщенні</string>
+    <string name="hide_notif_message_body_title">Приховати тіло повідомлення</string>
+    <string name="message_text_is_not_available"><![CDATA[<текст повідомлення недоступний>]]></string>
+    <string name="comments_empty_text">Будьте першими, хто залишить тут коментар</string>
+    <string name="the_comment_is_not_in_the_list">Коментар відсутній в списку</string>
+    <string name="place_for_your_comment">• місце для Вашого коментаря •</string>
+
+    <string name="section_play_title">Відтворити</string>
+    <string name="play_in_external_player">Грати в сторонньому плеєрі</string>
+    <string name="title_play_fullscreen">Грати на весь екран</string>
+    <string name="title_play_in_dialog">Грати (min)</string>
+    <string name="title_play_in_coub">Грати в Coub</string>
+    <string name="title_play_in_another_software">Грати через стороннє ПЗ</string>
+    <string name="title_play_in_browser">Грати в браузері</string>
+    <string name="title_select_resolution">Оберіть якість</string>
+    <string name="no_compatible_software_installed">Сумісне ПЗ не встановлено</string>
+    <string name="saved_to_param_file_name">Збережено в %1$s</string>
+    <string name="community_options_main_info_title">"Основна інформація "</string>
+    <string name="community_options_name_title">Назва</string>
+    <string name="community_control">Управління</string>
+    <string name="community_settings_tab_title">Налаштування</string>
+    <string name="community_managers_tab_title">Управління</string>
+    <string name="community_options_description_title">Опис групи</string>
+    <string name="community_options_link_title">Адреса сторінки</string>
+    <string name="community_options_type_title">Тип групи</string>
+    <string name="community_options_additional_info_title">Додатково</string>
+    <string name="community_options_category_title">Категорія</string>
+    <string name="community_options_website_title">Веб-сайт</string>
+    <string name="community_options_age_restrictions_title">Вікові обмеження</string>
+    <string name="age_restriction_under_16_years">До 16 років</string>
+    <string name="age_restriction_16_years_and_over">16 років і старше</string>
+    <string name="age_restriction_18_years_and_over">18 років і старше</string>
+    <string name="community_options_date_created_title">Дата створення</string>
+    <string name="community_options_community_subject_title">Тематика</string>
+    <string name="select_category_hint">Оберіть категорію</string>
+    <string name="community_options_sections_title">Розділи</string>
+    <string name="community_options_comments_title">Коментарі</string>
+    <string name="community_options_feedback_title">Зворотній зв\'язок</string>
+    <string name="community_options_enable_comments">Коментарі включені</string>
+    <string name="community_options_enable_profanity_filter">Включити фільтр нецензурних слів</string>
+    <string name="community_options_comments_filter_title">Фільтр коментарів</string>
+    <string name="community_options_enable_keyword_filter">Включити фільтр за ключовими словами</string>
+    <string name="community_options_separate_keywords_by_commas">Перерахуйте ключові слова через кому.</string>
+    <string name="community_links_tab_title">Посилання</string>
+    <string name="community_blacklist_tab_title">Чорний список</string>
+    <string name="community_members_tab_title">Учасники</string>
+    <string name="add_new_link">Додати нове посилання</string>
+    <string name="role_moderator">Модератор</string>
+    <string name="role_editor">Редактор</string>
+    <string name="role_administrator">Адміністратор</string>
+    <string name="role_creator">Засновник</string>
+    <string name="role_unknown">Невідомо</string>
+    <string name="ban_comment_text">Коментар: %1$s</string>
+    <string name="ban_admin_and_date_text">Заблокував %1$s %2$s</string>
+    <string name="until_date_time">до %1$s %2$s</string>
+    <string name="forever">Назавжди</string>
+    <string name="community_messages">Повідомлення групи</string>
+    <string name="select_from_list_title">Виберіть зі списку</string>
+    <string name="day">День</string>
+    <string name="not_selected">Не вибрано</string>
+    <string name="month">Місяць</string>
+    <string name="year">Рік</string>
+    <string name="block_user">Блокування</string>
+    <string name="community_ban_block_for_title">Термін блокування</string>
+    <string name="community_ban_reason_title">Причина</string>
+    <string name="block_for_forever">Назавжди</string>
+    <string name="block_for_year">На рік</string>
+    <string name="block_for_month">На місяць</string>
+    <string name="block_for_week">На тиждень</string>
+    <string name="block_for_day">На день</string>
+    <string name="block_for_hour">На годину</string>
+    <string name="reason_spam">Спам</string>
+    <string name="reason_irrelevant_messages">Образа учасників</string>
+    <string name="reason_strong_language">Нецензурні вирази</string>
+    <string name="reason_verbal_abuse">Повідомлення не по темі</string>
+    <string name="reason_other">Інше</string>
+    <string name="community_ban_comment_title">Коментар</string>
+    <string name="show_this_comment_to_the_blocked_user">Показувати цей коментар заблокованого користувачеві</string>
+    <string name="community_ban_comment_hint">Тут Ви можете вказати короткий коментар</string>
+    <string name="save">Зберегти</string>
+    <string name="community_choose_access_level_title">Рівень повноважень</string>
+    <string name="community_moderator">Модератор</string>
+    <string name="community_editor">Редактор</string>
+    <string name="community_moderator_desc">Може видаляти додані користувачами матеріали, управляти чорним списком спільноти</string>
+    <string name="community_editor_desc">Може писати від імені групи, додавати, видаляти і редагувати контент, оновлювати головну фотографію</string>
+    <string name="community_administrator">Адміністратор</string>
+    <string name="community_administrator_desc">Може призначати і знімати адміністраторів, змінювати назву та адресу групи</string>
+    <string name="community_manager_show_in_contacts">Відображати як контакт</string>
+    <string name="community_manager_position">Посада</string>
+    <string name="community_manager_email">Email</string>
+    <string name="community_manager_phone">Телефон</string>
+    <string name="edit_manager_title">Керівник</string>
+    <string name="api_error_701">Користувач повинен бути учасником групи</string>
+    <string name="ban_author">Заблокувати автора</string>
+    <string name="community_creator_desc">Неможливо змінити права доступу до програми засновника</string>
+    <string name="community_creator">Засновник</string>
+    <string name="error_video_playback_is_not_possible">Відтворення відео неможливо</string>
+    <string name="request_executor_title">Тестування запитів</string>
+    <string name="request_body_title">Тіло запиту</string>
+    <string name="request_method_title">Метод</string>
+    <string name="request_params_title">Налаштування запиту</string>
+    <string name="button_execute">Виконати</string>
+    <string name="request_response_title">Відповідь</string>
+    <string name="waiting_for_response_message">Очікування відповіді</string>
+    <string name="dev_settings">Для розробників</string>
+    <string name="getting_list_loading_message">Отримання списку</string>
+    <string name="select_comment_author">Виберіть автора</string>
+    <string name="add_to_my_videos">Додати собі</string>
+    <string name="api_error_800">Це відео вже додано</string>
+    <string name="user_blacklist_title">Чорний список</string>
+    <string name="add_to_blacklist">До чорного списку</string>
+    <string name="button_activate">Активувати</string>
+    <string name="proxy_address_helper_text">Адреса сервера</string>
+    <string name="proxy_port_helper_text">Порт</string>
+    <string name="proxy_manager_title">Менеджер проксі</string>
+    <string name="http_proxy">HTTP Проксі</string>
+    <string name="proxy_password_helper_text">Пароль</string>
+    <string name="proxy_username_helper_text">Користувач</string>
+    <string name="button_save">Зберегти</string>
+    <string name="proxy_authorization">Авторизація</string>
+    <string name="button_disable">Вимкнути</string>
+    <string name="action_add">Додати</string>
+    <string name="proxy_restart_app_toast">Для застосування змін перезапустіть додаток</string>
+    <string name="error_timeout_message">Перевищено час очікування запиту</string>
+    <string name="button_close_now">Закрити зараз</string>
+    <string name="login_sms_code_hint">SMS-код</string>
+    <string name="button_proxy">Проксі</string>
+    <string name="login_password_hint">Пароль</string>
+    <string name="login_phone_or_email_hint">Телефон або email</string>
+    <string name="login_title">Авторизація</string>
+    <string name="button_login_via_web">Через Web</string>
+    <string name="button_login">Увійти</string>
+    <string name="drawer_edit_title">Меню навігації</string>
+    <string name="login_app_code_hint">"Код підтвердження "</string>
+    <string name="button_login_send_code_via_sms">Відправити код через SMS</string>
+    <string name="error_not_found_message">Об\'єкт не знайдено</string>
+    <string name="audios_disabled_summary_message">16 грудня 2016 року адміністрація \"ВКонтакте\" відключила доступ до свого музичного API для сторонніх додатків</string>
+    <string name="audios_disabled_title">Доступ заборонено :(</string>
+    <string name="button_details">Детальніше</string>
+</resources>

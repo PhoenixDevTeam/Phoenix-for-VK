@@ -1,0 +1,329 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/list_divider_color">
+
+    <RelativeLayout
+        android:id="@+id/r1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary">
+
+        <ImageView
+            android:id="@+id/header_group_avatar"
+            android:layout_width="@dimen/avatar_size_big"
+            android:layout_height="@dimen/avatar_size_big"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/sel_button_round_5_white"
+            android:padding="1.5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/header_group_avatar"
+            android:layout_toRightOf="@+id/header_group_avatar"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:id="@+id/header_group_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="right"
+                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textSize="@dimen/font_size_big_title" />
+
+            <TextView
+                android:id="@+id/header_group_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="right"
+                android:maxLines="6"
+                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textSize="@dimen/font_size_subtitle"
+                android:visibility="visible" />
+
+
+            <github.ankushsachdeva.emojicon.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/header_group_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-light"
+                android:gravity="right"
+                android:maxLines="6"
+                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textSize="@dimen/font_size_subtitle"
+                android:visibility="visible"
+                emojicon:emojiconSize="20sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <TableLayout
+        android:id="@+id/relativeLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/r1"
+        android:layout_marginBottom="2dp"
+        android:background="?android:colorBackground"
+        android:elevation="2dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="16dp">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+
+                android:id="@+id/header_group_members_container"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/header_group_bmembers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/header_group_bmembers_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/counter_followers"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/header_group_topics_container"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/header_group_btopics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/header_group_btopics_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/counter_topics"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:id="@+id/header_group_documents_container"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/header_group_bdocuments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/header_group_documents_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/counter_documents"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:id="@+id/header_group_photos_container"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/header_group_bphotos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/header_group_bphotos_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/counter_photos"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:id="@+id/header_group_audios_container"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/header_group_baudios"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/header_group_baudios_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/counter_audios"
+                    android:textColor="?android:textColorPrimary"
+                    android:textIsSelectable="false"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:id="@+id/header_group_videos_container"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/header_group_bvideos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/header_group_bvideos_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/counter_videos"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+        </TableRow>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/header_group_primary_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textAllCaps="true"
+                android:textColor="?icon_color_active"
+                android:textSize="@dimen/font_size_additional" />
+
+            <Button
+                android:id="@+id/header_group_secondary_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textAllCaps="true"
+                android:textColor="?icon_color_active"
+                android:textSize="@dimen/font_size_additional" />
+
+        </LinearLayout>
+    </TableLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/post_filter_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout4"
+        android:scrollbars="none" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/header_group_fab_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/r1"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="-38dp"
+        android:src="@drawable/email_small"
+        app:fabSize="mini"
+        app:useCompatPadding="true" />
+
+</RelativeLayout>
+
+

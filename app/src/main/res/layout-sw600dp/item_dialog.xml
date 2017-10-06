@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp">
+
+    <LinearLayout
+        android:id="@+id/header_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="?android:colorBackground"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:text="Today"
+            android:textColor="?icon_color_active"
+            android:textSize="@dimen/font_size_title"
+            android:textStyle="bold" />
+
+        <include layout="@layout/line_divider" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:colorBackground">
+
+        <RelativeLayout
+            android:id="@+id/content_root"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:paddingBottom="12dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="10dp">
+
+            <RelativeLayout
+                android:id="@+id/avatar_root"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+                <ImageView
+                    android:id="@+id/item_chat_avatar"
+                    android:layout_width="@dimen/avatar_size_usual"
+                    android:layout_height="@dimen/avatar_size_usual"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true" />
+
+                <biz.dealnote.messenger.view.OnlineView
+                    android:id="@+id/item_chat_online"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignBottom="@+id/item_chat_avatar"
+                    android:padding="3dp"
+                    app:circle_color="?icon_color_active"
+                    app:stroke_color="?android:colorBackground" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/name_message_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/avatar_root"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="6dp"
+                android:layout_toLeftOf="@+id/item_chat_date"
+                android:gravity="center_vertical"
+                android:minHeight="42dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dialog_title"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_title" />
+
+                <github.ankushsachdeva.emojicon.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/dialog_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:gravity="start"
+                    android:maxLines="3"
+                    android:text="Message"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="@dimen/font_size_subtitle"
+                    emojicon:emojiconSize="20sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/item_chat_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/name_message_container"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentRight="true"
+                android:text="11:20"
+                android:textColor="#999999"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/name_message_container"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/item_chat_unread_container"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/circle_back_white">
+
+                    <TextView
+                        android:id="@+id/item_chat_unread_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="2"
+                        android:textColor="#ffffff"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+    </FrameLayout>
+
+
+</LinearLayout>

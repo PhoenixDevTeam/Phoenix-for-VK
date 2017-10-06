@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <biz.dealnote.messenger.view.RoundedButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Button"
+        android:id="@+id/button"
+        android:text="@string/title"
+        custom:enabled_text_color="?textColorPrimaryOnColoredBack"
+        custom:noenabled_text_color="?attr/textColorSecondary"
+        custom:enabled_background_color="?colorPrimary"
+        custom:noenabled_background_color="?attr/message_bubble_color"
+        android:layout_margin="1dp" />
+
+</LinearLayout>

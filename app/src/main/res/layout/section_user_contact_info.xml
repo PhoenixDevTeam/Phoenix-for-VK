@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardBackgroundColor="?attr/android:colorBackground"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="2dp"
+    card_view:contentPadding="0dp">
+
+    <LinearLayout
+        android:descendantFocusability="blocksDescendants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="4dp">
+
+        <RelativeLayout
+            style='style="?android:attr/borderlessButtonStyle"'
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:text="@string/mail_information"
+                android:textColor="?icon_color_active"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="6dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <include layout="@layout/info_line" android:id="@+id/birthday"/>
+            <include layout="@layout/info_line" android:id="@+id/studied_at"/>
+            <include layout="@layout/info_line" android:id="@+id/relationship_status"/>
+            <include layout="@layout/info_line" android:id="@+id/relatives"/>
+            <include layout="@layout/info_line" android:id="@+id/languages"/>
+            <include layout="@layout/info_line" android:id="@+id/country"/>
+            <include layout="@layout/info_line" android:id="@+id/city"/>
+            <include layout="@layout/info_line" android:id="@+id/website"/>
+            <include layout="@layout/info_line" android:id="@+id/primary_phone"/>
+            <include layout="@layout/info_line" android:id="@+id/alternative_phone"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+
+

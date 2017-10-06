@@ -1,0 +1,69 @@
+<LinearLayout android:padding="16dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:textColor="?attr/textColorPrimary"
+        android:textSize="24sp"
+        android:text="@string/community_options_comments_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+
+    <LinearLayout
+        android:layout_marginBottom="16dp"
+        android:id="@+id/feedback_comments_root"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="?attr/textColorSecondary"
+            android:text="@string/community_options_feedback_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
+            android:id="@+id/feedback_comments"
+            android:layout_marginTop="8dp"
+            android:text="@string/community_options_enable_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:textColor="?attr/textColorSecondary"
+        android:text="@string/community_options_comments_filter_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:id="@+id/obscene_filter"
+        android:layout_marginTop="8dp"
+        android:text="@string/community_options_enable_profanity_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:id="@+id/obscene_stopwords"
+        android:text="@string/community_options_enable_keyword_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/obscene_stopwords_values"
+        android:gravity="top"
+        android:minHeight="80dp"
+        android:textSize="14sp"
+        android:inputType="textUri"
+        android:hint="@string/community_options_separate_keywords_by_commas"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/backgroud_rectangle_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

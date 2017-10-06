@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="biz.dealnote.messenger">
+
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+
+    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".MyGcmListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".activity.LoginActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:label="@string/authorization" />
+
+        <activity
+            android:name=".activity.ProxyManagerActivity"
+            android:theme="@style/AppTheme"
+            android:label="@string/proxy_manager_title" />
+
+        <activity
+            android:name=".activity.QuickAnswerActivity"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:theme="@style/QuickReply"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".activity.KeyExchangeCommitActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/QuickReply" />
+
+        <activity
+            android:windowSoftInputMode="adjustResize"
+            android:name=".activity.CaptchaActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/QuickReply" />
+
+        <provider
+            android:name=".db.MessengerContentProvider"
+            android:authorities="${applicationId}.providers.Messages"
+            android:exported="false"
+            android:multiprocess="true" />
+
+        <service
+            android:name=".service.SendService"
+            android:exported="false"/>
+
+        <service
+            android:name=".service.RestService"
+            android:exported="false" />
+
+        <service
+            android:name=".upload.UploadService"
+            android:exported="false"/>
+
+        <activity
+            android:name=".activity.PhotosActivity"
+            android:label="@string/photos" />
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="vk.com"
+                    android:scheme="http" />
+                <data
+                    android:host="vk.com"
+                    android:scheme="https" />
+
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.SelectProfilesActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".activity.SendAttachmentsActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <data android:mimeType="image/*" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="image/*" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="text/plain" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.AttachmentsActivity"
+            android:label="@string/attachments" />
+
+        <activity
+            android:name=".activity.VideoSelectActivity"
+            android:label="@string/videos" />
+
+        <activity
+            android:name=".activity.AccountsActivity"
+            android:label="@string/account_manager" />
+
+        <activity android:name=".activity.FileManagerActivity" />
+
+        <activity
+            android:name=".activity.PhotoAlbumsActivity"
+            android:label="@string/photos" />
+
+        <activity
+            android:name=".activity.VideoPlayerActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+
+        <service
+            android:name=".service.CheckLicenseService"
+            android:exported="false" />
+
+        <!-- Profile phone Activity -->
+        <!-- Shortcut launcher Activity -->
+        <!-- Search interface -->
+        <!-- Used to set options -->
+        <receiver android:name=".player.MediaButtonIntentReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".player.MusicPlaybackService"
+            android:exported="false"/>
+
+        <service android:name=".longpoll.LongpollService"/>
+
+        <provider
+            android:authorities="${applicationId}.fileprovider"
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+        <activity android:name=".activity.EnterPinActivity"/>
+
+        <activity android:name=".activity.EnterPinActivityPortraitOnly"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.CreatePinActivity"
+            android:screenOrientation="portrait"/>
+
+        <service android:name=".crypt.KeyExchangeService"/>
+
+        <activity android:name=".activity.DualTabPhotoActivity"
+            android:label="@string/photos"/>
+
+    </application>
+
+</manifest>

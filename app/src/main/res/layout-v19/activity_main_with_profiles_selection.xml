@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- The important thing to note here is the added fitSystemWindows -->
+    <biz.dealnote.messenger.view.ErrorIgnoreDrawerLayout
+        android:id="@+id/my_drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:fitsSystemWindows="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycleView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimary" />
+
+                <!-- Your normal content view -->
+
+                <FrameLayout
+                    android:id="@+id/fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?android:colorBackground" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/fake_statusbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/default_statusbar_height"
+                android:background="?attr/colorPrimaryDark" />
+
+        </RelativeLayout>
+
+        <!-- Your drawer view. This can be any view, LinearLayout is just an example. As we have set fitSystemWindows=true this will be displayed under the status bar. -->
+
+        <fragment xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation_drawer"
+            android:name="biz.dealnote.messenger.fragment.NavigationFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            tools:layout="@layout/fragment_navigation_drawer" />
+
+    </biz.dealnote.messenger.view.ErrorIgnoreDrawerLayout>
+
+</RelativeLayout>

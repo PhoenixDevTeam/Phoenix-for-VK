@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="WrapWidthTextView">
+        <attr name="fixWrapText" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomPreferenceCategory">
+        <attr name="category_icon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomAuthorPreference">
+        <attr name="avatar" format="reference" />
+    </declare-styleable>
+
+
+    <declare-styleable name="CircleRoadProgressWidget">
+        <attr name="circleCenterPointX" format="float" />
+        <attr name="circleCenterPointY" format="float" />
+
+        <attr name="roadColor" format="color" />
+        <attr name="roadStrokeWidth" format="dimension" />
+        <attr name="roadRadius" format="float" />
+
+        <attr name="arcLoadingColor" format="color" />
+        <attr name="arcLoadingStrokeWidth" format="dimension" />
+        <attr name="arcLoadingStartAngle" format="float" />
+
+        <attr name="textColor" format="color" />
+        <attr name="textSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageButton">
+        <attr name="backgroundColor" format="color" />
+        <attr name="iconColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="Emojicon">
+        <attr name="displayHashTags" format="boolean" />
+        <attr name="emojiconSize" format="dimension" />
+        <attr name="emojiconTextStart" format="integer" />
+        <attr name="emojiconTextLength" format="integer" />
+        <attr name="hashTagColor" format="color" />
+    </declare-styleable>
+
+    <attr name="navi_header_image" format="reference" />
+
+    <attr name="message_bubble_color" format="color" />
+    <attr name="dialogs_unread_color" format="color" />
+    <attr name="list_divider_color" format="color" />
+    <attr name="icon_color_active" format="color" />
+    <attr name="icon_color_static" format="color" />
+    <attr name="icon_color_on_colored_back" format="color" />
+
+    <attr name="navi_menu_selector" format="reference" />
+    <attr name="messages_background_color" format="color" />
+    <attr name="chat_background_cookies" format="reference" />
+    <attr name="chat_background_lines" format="reference" />
+    <attr name="chat_background_circular" format="reference" />
+    <attr name="message_unread_color" format="color" />
+    <attr name="buttonAddPhotoBackground" format="reference" />
+
+    <attr name="oval_avatar_background" format="reference" />
+
+    <attr name="textColorPrimary" format="color" />
+    <attr name="textColorSecondary" format="color" />
+    <attr name="textColorDisabled" format="color" />
+
+    <attr name="textColorPrimaryOnColoredBack" format="color" />
+    <attr name="textColorSecondaryOnColoredBack" format="color" />
+    <attr name="textColorDisabledOnColoredBack" format="color" />
+
+    <attr name="toolbarAppStyle" format="reference" />
+    <attr name="toolbarPopupStyle" format="reference" />
+    <attr name="toolbarDrawerIcon" format="reference" />
+    <attr name="toolbarBackIcon" format="reference" />
+    <attr name="toolbarCloseIcon" format="reference" />
+    <attr name="toolbarOKIcon" format="reference" />
+    <attr name="toolbarPlusIcon" format="reference" />
+    <attr name="toolbarSearchIcon" format="reference" />
+    <attr name="toolbarCopyIcon" format="reference" />
+    <attr name="toolbarDeleteIcon" format="reference" />
+    <attr name="toolbarUpIcon" format="reference" />
+    <attr name="toolbarGraphicIcon" format="reference" />
+    <attr name="toolbarEditIcon" format="reference" />
+    <attr name="toolbarForwardIcon" format="reference" />
+    <attr name="toolbarElevation" format="reference" />
+    <attr name="toolbarLockIcon" format="reference" />
+    <attr name="toolbarLockPlusIcon" format="reference" />
+    <attr name="toolbarUnlockIcon" format="reference" />
+    <attr name="statusbarNonColoredColor" format="color" />
+    <attr name="tabsTheme" format="reference" />
+
+    <!-- QuickReply-->
+    <attr name="quick_reply_primary_color" format="color" />
+    <attr name="quick_reply_icon_color" format="color" />
+
+
+    <declare-styleable name="MozaikLayout">
+        <attr name="maxSingleImageHeight" format="dimension" />
+        <attr name="prefImageSize" format="dimension" />
+        <attr name="spacing" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="AspectRatioImageView">
+        <attr name="aspect_ration_height" format="integer" />
+        <attr name="aspect_ration_width" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="AspectRatioFrameLayout">
+        <attr name="aspectRatioHeight" format="integer" />
+        <attr name="aspectRatioWidth" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleCounterButton">
+        <attr name="button_icon" format="reference" />
+        <attr name="always_counter" format="boolean" />
+        <attr name="active" format="boolean" />
+        <attr name="count" format="integer" />
+        <attr name="active_icon_color" format="color" />
+        <attr name="noactive_icon_color" format="color" />
+        <attr name="active_background_color" format="color" />
+        <attr name="noactive_background_color" format="color" />
+        <attr name="text_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundedButton">
+        <attr name="enabled_text_color" format="color" />
+        <attr name="noenabled_text_color" format="color" />
+        <attr name="enabled_background_color" format="color" />
+        <attr name="noenabled_background_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="FlowLayout">
+        <attr name="android:gravity" />
+    </declare-styleable>
+    <declare-styleable name="FlowLayout_Layout">
+        <attr name="android:layout_gravity" />
+    </declare-styleable>
+
+    <declare-styleable name="AlternativeAspectRatioFrameLayout">
+        <attr name="altAspectRatioWidth" format="integer" />
+        <attr name="altAspectRatioHeight" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="WaveFormView">
+        <attr name="waveform_active_color" format="color" />
+        <attr name="waveform_noactive_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="KeyboardView">
+        <attr name="keyboard_theme" format="enum">
+            <enum name="fullscreen" value="0" />
+            <enum name="dialog" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ProgressButton">
+        <attr name="button_layout" format="reference" />
+        <attr name="button_color" format="integer" />
+        <attr name="button_text" format="string" />
+        <attr name="button_all_caps" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="OnlineView">
+        <attr name="circle_color" format="color" />
+        <attr name="stroke_color" format="color" />
+        <attr name="stroke_width" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="ColorFilterImageView">
+        <attr name="filter_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="TextInputLayout">
+        <attr name="input_description" format="string" />
+        <attr name="input_description_text_size" format="dimension" />
+        <attr name="input_description_text_color" format="color" />
+        <attr name="input_divider_color" format="color"/>
+        <attr name="input_divider_height" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="SawView">
+        <attr name="sawToothPrefWidht" format="dimension" />
+        <attr name="sawBackground" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="YoutubeButton">
+        <attr name="youtube_button_icon" format="reference" />
+        <attr name="youtube_button_text" format="string" />
+        <attr name="youtube_button_text_color" format="color"/>
+        <attr name="youtube_button_icon_color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="MySpinnerView">
+        <attr name="spinner_hint" format="string"/>
+        <attr name="spinner_hint_color" format="color"/>
+        <attr name="spinner_text_color" format="color"/>
+        <attr name="spinner_icon_color" format="color"/>
+    </declare-styleable>
+</resources>

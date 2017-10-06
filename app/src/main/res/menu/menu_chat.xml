@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        app:showAsAction="always"
+        android:title="@string/encryption_status"
+        android:id="@+id/crypt_state"
+        android:icon="@drawable/unlock"/>
+
+    <item
+        android:id="@+id/action_refresh"
+        android:title="@string/refresh" />
+
+    <item
+        android:id="@+id/action_leave_chat"
+        android:title="@string/group_chat_leave" />
+
+    <item
+        android:id="@+id/action_change_chat_title"
+        android:title="@string/change_chat_title" />
+
+    <item
+        android:id="@+id/action_chat_members"
+        android:title="@string/chat_users" />
+
+    <item
+        android:id="@+id/action_attachments_in_conversation"
+        android:title="@string/attachments_in_chat" />
+
+    <item
+        android:id="@+id/messages_search"
+        android:title="@string/search"/>
+
+    <item
+        android:id="@+id/action_key_exchange"
+        android:title="@string/key_exchange"/>
+
+</menu>

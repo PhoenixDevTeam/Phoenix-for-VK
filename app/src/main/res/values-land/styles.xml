@@ -1,0 +1,11 @@
+<resources>
+
+    <style name="Theme.Title.Toolbar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="Theme.Subtitle.Toolbar" parent="TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+        <item name="android:textSize">12dp</item>
+    </style>
+
+</resources>

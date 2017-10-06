@@ -1,0 +1,21 @@
+<resources>
+    <integer name="videos_column_count">3</integer>
+    <integer name="photos_column_count">5</integer>
+    <integer name="local_gallery_column_count">4</integer>
+    <integer name="photos_albums_column_count">3</integer>
+    <integer name="privacy_entry_column_count">5</integer>
+
+    <!--Диаметр кнопки "Play" для вложенных аудиозаписей-->
+    <dimen name="audio_play_button_size">36dp</dimen>
+
+    <!--Диаметр изображения аватара владельца поста-->
+    <dimen name="post_owner_avatar_size">42dp</dimen>
+
+    <bool name="is_tablet">true</bool>
+
+    <dimen name="navigation_drawer_width">308dp</dimen>
+
+    <dimen name="newsfeed_comments_card_side_margin">16dp</dimen>
+
+    <integer name="attchemtns_editor_column_count">4</integer>
+</resources>

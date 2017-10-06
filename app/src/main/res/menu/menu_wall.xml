@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_search"
+        android:icon="?toolbarSearchIcon"
+        app:showAsAction="always"
+        android:title="@string/search"/>
+
+    <item android:title="@string/refresh"
+        android:id="@+id/action_refresh"/>
+
+    <item android:title="@string/copy_url"
+        android:id="@+id/action_copy_url"/>
+</menu>

@@ -1,0 +1,116 @@
+<LinearLayout android:padding="16dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:textColor="?attr/textColorPrimary"
+        android:textSize="24sp"
+        android:text="@string/community_options_main_info_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:labelFor="@+id/name"
+        android:textColor="?attr/textColorSecondary"
+        android:layout_marginTop="16dp"
+        android:text="@string/community_options_name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:textSize="14sp"
+        android:inputType="text|textCapSentences"
+        android:id="@+id/name"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/backgroud_rectangle_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:labelFor="@+id/description"
+        android:textColor="?attr/textColorSecondary"
+        android:layout_marginTop="16dp"
+        android:text="@string/community_options_description_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:gravity="top"
+        android:textSize="14sp"
+        android:minHeight="80dp"
+        android:inputType="text|textMultiLine|textCapSentences"
+        android:id="@+id/description"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/backgroud_rectangle_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/community_type_root"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="?attr/textColorSecondary"
+            android:text="@string/community_options_type_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            tools:text="Open"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:labelFor="@+id/link"
+        android:textColor="?attr/textColorSecondary"
+        android:layout_marginTop="16dp"
+        android:text="@string/community_options_link_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/backgroud_rectangle_border"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="?attr/textColorSecondary"
+            android:textSize="14sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="https://vk.com/"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:textSize="14sp"
+            android:background="@android:color/transparent"
+            android:inputType="text"
+            android:id="@+id/link"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

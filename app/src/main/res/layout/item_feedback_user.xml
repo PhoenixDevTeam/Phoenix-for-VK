@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/comment_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants">
+
+    <LinearLayout
+        android:id="@+id/header_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_feedback_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:padding="12dp"
+            android:gravity="center_vertical"
+            android:text="Today"
+            android:textColor="?icon_color_active"
+            android:textSize="@dimen/font_size_subtitle"
+            android:textStyle="bold" />
+
+        <include layout="@layout/line_divider" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/content_root"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header_root"
+        android:background="?attr/selectableItemBackground"
+        android:paddingBottom="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="10dp">
+
+        <RelativeLayout
+            android:id="@+id/item_friend_avatar_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/relativeLayout">
+
+            <ImageView
+                android:id="@+id/item_friend_avatar"
+                android:layout_width="@dimen/avatar_size_small"
+                android:layout_height="@dimen/avatar_size_small"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true" />
+
+            <biz.dealnote.messenger.view.OnlineView
+                android:id="@+id/item_circle_friend_changable"
+                android:layout_width="@dimen/online_dot_size"
+                android:layout_height="@dimen/online_dot_size"
+                android:layout_alignBottom="@+id/item_friend_avatar"
+                android:layout_alignLeft="@+id/item_friend_avatar"
+                android:layout_alignStart="@+id/item_friend_avatar"
+                android:padding="3dp"
+                android:src="@drawable/plus"
+                app:circle_color="?icon_color_active"
+                app:stroke_color="?android:colorBackground" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/item_feedback_user_attachment"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_toLeftOf="@+id/item_feedback_user_attachment"
+            android:layout_toRightOf="@id/item_friend_avatar_container"
+            android:orientation="vertical"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:id="@+id/item_friend_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="@dimen/font_size_subtitle"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/item_additional_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="comment for post..."
+                android:textColor="?android:textColorPrimary"
+                android:textSize="@dimen/font_size_subtitle" />
+
+            <TextView
+                android:id="@+id/item_friend_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:maxLines="2"
+                android:text="time"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="@dimen/font_size_additional" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+

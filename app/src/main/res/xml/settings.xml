@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="group_general"
+        android:title="@string/general_settings">
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/night_mode_names"
+            android:entryValues="@array/night_mode_values"
+            android:key="night_switch"
+            android:title="@string/night_mode_title" />
+
+        <ListPreference
+            android:key="default_category"
+            android:summary="@string/default_category_summary"
+            android:title="@string/default_category_title" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/array_image_sizes_settings_names"
+            android:entryValues="@array/array_image_sizes_settings_values"
+            android:key="image_size"
+            android:summary="@string/select_image_size_summary"
+            android:title="@string/select_image_size_title" />
+
+        <Preference
+            android:key="proxy"
+            android:title="@string/http_proxy" />
+
+        <Preference
+            android:key="notifications"
+            android:title="@string/notif_setting_title" />
+
+        <Preference
+            android:key="security"
+            android:title="@string/security" />
+
+        <Preference
+            android:key="blacklist"
+            android:title="@string/user_blacklist_title" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/input">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="emojis_type"
+            android:summary="@string/emojis_type_summary"
+            android:title="@string/emojis_type_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="send_by_enter"
+            android:summary="@string/send_on_enter_summary"
+            android:title="@string/send_on_enter_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/appearance_settings">
+
+        <ListPreference
+            android:defaultValue="theme6"
+            android:entries="@array/array_theme_names"
+            android:entryValues="@array/array_theme_values"
+            android:key="app_theme"
+            android:title="@string/choose_theme_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="navigation_colored"
+            android:title="@string/color_navigation_bar" />
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/array_chat_background_names"
+            android:entryValues="@array/array_chat_background_items"
+            android:key="chat_background"
+            android:title="@string/chat_background" />
+
+        <Preference
+            android:key="night_mode_time"
+            android:title="@string/night_mode_interval" />
+
+        <ListPreference
+            android:defaultValue="dark"
+            android:entries="@array/night_back_names"
+            android:entryValues="@array/night_back_values"
+            android:key="night_theme"
+            android:title="@string/night_background_title" />
+
+        <Preference
+            android:key="avatar_style"
+            android:summary="@string/avatar_style_summary"
+            android:title="@string/avatar_style_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="double_press_to_exit"
+            android:title="@string/double_press_to_exit" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/sidebar_settings">
+
+        <Preference
+            android:dialogTitle="@string/drawer_categories_title"
+            android:key="drawer_categories"
+            android:summary="@string/drawer_categories_summary"
+            android:title="@string/drawer_categories_title" />
+
+        <Preference
+            android:key="light_sidebar_background"
+            android:title="@string/light_background_image" />
+
+        <Preference
+            android:key="dark_sidebar_background"
+            android:title="@string/dark_background_image" />
+
+        <Preference
+            android:key="reset_sidebar_background"
+            android:title="@string/set_default" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:key="other" android:title="@string/other_settings">
+        <Preference
+            android:key="talk_about"
+            android:title="@string/share_text" />
+
+        <Preference
+            android:key="add_comment"
+            android:title="@string/rate_text" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:key="dev" android:title="@string/dev_settings">
+        <Preference
+            android:key="show_logs"
+            android:title="@string/settings_show_logs_title" />
+
+        <Preference
+            android:key="request_executor"
+            android:title="@string/request_executor_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about_settings">
+        <Preference
+            android:key="privacy_policy"
+            android:title="@string/privacy_policy" />
+        <Preference
+            android:key="join_app_group"
+            android:summary="@string/pref_join_app_group_summary"
+            android:title="@string/pref_join_app_group_title" />
+        <Preference
+            android:key="version"
+            android:title="@string/app_name" />
+    </PreferenceCategory>
+</PreferenceScreen>
