@@ -9,7 +9,6 @@ import com.foxykeep.datadroid.service.RequestService;
 import biz.dealnote.messenger.exception.ServiceException;
 import biz.dealnote.messenger.service.factory.AccountRequestFactory;
 import biz.dealnote.messenger.service.factory.AudioRequestFactory;
-import biz.dealnote.messenger.service.factory.FaveRequestFactory;
 import biz.dealnote.messenger.service.factory.FeedRequestFactory;
 import biz.dealnote.messenger.service.factory.MessagesRequestFactory;
 import biz.dealnote.messenger.service.factory.PhotoRequestFactory;
@@ -17,9 +16,6 @@ import biz.dealnote.messenger.service.factory.UtilsRequestFactory;
 import biz.dealnote.messenger.service.operations.account.PushResolveOperation;
 import biz.dealnote.messenger.service.operations.audio.AlbumCoverFindOperation;
 import biz.dealnote.messenger.service.operations.audio.SetBroadcastAudioOperation;
-import biz.dealnote.messenger.service.operations.fave.FaveGetLinksOperation;
-import biz.dealnote.messenger.service.operations.fave.FaveRemoveLinkOperation;
-import biz.dealnote.messenger.service.operations.fave.FaveRemoveUserOperation;
 import biz.dealnote.messenger.service.operations.feed.FeedGetListOperation;
 import biz.dealnote.messenger.service.operations.message.DeleteDialogOperation;
 import biz.dealnote.messenger.service.operations.message.DeleteMessageOperation;
@@ -62,15 +58,6 @@ public class RestService extends RequestService {
 
             case MessagesRequestFactory.REQUEST_EDIT_CHAT:
                 return new EditChatOperation();
-
-            case FaveRequestFactory.REQUEST_GET_LINKS:
-                return new FaveGetLinksOperation();
-
-            case FaveRequestFactory.REQUEST_REMOVE_USER:
-                return new FaveRemoveUserOperation();
-
-            case FaveRequestFactory.REQUEST_REMOVE_LINK:
-                return new FaveRemoveLinkOperation();
 
             case AudioRequestFactory.REQUEST_FIND_COVER:
                 return new AlbumCoverFindOperation();

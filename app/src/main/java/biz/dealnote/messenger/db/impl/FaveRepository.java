@@ -18,12 +18,12 @@ import biz.dealnote.messenger.db.column.FavePostsColumns;
 import biz.dealnote.messenger.db.column.FaveUsersColumns;
 import biz.dealnote.messenger.db.column.FaveVideosColumns;
 import biz.dealnote.messenger.db.interfaces.IFaveRepository;
+import biz.dealnote.messenger.db.model.entity.FaveLinkEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.PhotoEntity;
 import biz.dealnote.messenger.db.model.entity.PostEntity;
 import biz.dealnote.messenger.db.model.entity.UserEntity;
 import biz.dealnote.messenger.db.model.entity.VideoEntity;
-import biz.dealnote.messenger.model.FaveLink;
 import biz.dealnote.messenger.model.criteria.FavePhotosCriteria;
 import biz.dealnote.messenger.model.criteria.FavePostsCriteria;
 import biz.dealnote.messenger.model.criteria.FaveVideosCriteria;
@@ -102,13 +102,13 @@ class FaveRepository extends AbsRepository implements IFaveRepository {
     }
 
     @Override
-    public Single<List<FaveLink>> getFaveLinks(int accountId) {
+    public Single<List<FaveLinkEntity>> getFaveLinks(int accountId) {
         return Single.create(e -> {
             Uri uri = MessengerContentProvider.getFaveLinksContentUriFor(accountId);
             Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 
-            List<FaveLink> data = new ArrayList<>();
-            if (cursor != null) {
+            List<FaveLinkEntity> data = new ArrayList<>();
+            if (nonNull(cursor)) {
                 while (cursor.moveToNext()) {
                     if (e.isDisposed()) {
                         break;
@@ -121,6 +121,48 @@ class FaveRepository extends AbsRepository implements IFaveRepository {
             }
 
             e.onSuccess(data);
+        });
+    }
+
+    @Override
+    public Completable removeLink(int accountId, String id) {
+        return Completable.fromAction(() -> {
+            final Uri uri = MessengerContentProvider.getFaveLinksContentUriFor(accountId);
+            final String where = FaveLinksColumns.LINK_ID + " LIKE ?";
+            final String[] args = {id};
+            getContentResolver().delete(uri, where, args);
+        });
+    }
+
+    @Override
+    public Completable storeLinks(int accountId, List<FaveLinkEntity> entities, boolean clearBefore) {
+        return Completable.create(emitter -> {
+            Uri uri = MessengerContentProvider.getFaveLinksContentUriFor(accountId);
+
+            ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+            if (clearBefore) {
+                operations.add(ContentProviderOperation
+                        .newDelete(uri)
+                        .build());
+            }
+
+            for (FaveLinkEntity entity : entities) {
+                ContentValues cv = new ContentValues();
+                cv.put(FaveLinksColumns.LINK_ID, entity.getId());
+                cv.put(FaveLinksColumns.URL, entity.getUrl());
+                cv.put(FaveLinksColumns.TITLE, entity.getTitle());
+                cv.put(FaveLinksColumns.DESCRIPTION, entity.getDescription());
+                cv.put(FaveLinksColumns.PHOTO_50, entity.getPhoto50());
+                cv.put(FaveLinksColumns.PHOTO_100, entity.getPhoto100());
+
+                operations.add(ContentProviderOperation
+                        .newInsert(uri)
+                        .withValues(cv)
+                        .build());
+            }
+
+            getContentResolver().applyBatch(MessengerContentProvider.AUTHORITY, operations);
+            emitter.onComplete();
         });
     }
 
@@ -179,6 +221,16 @@ class FaveRepository extends AbsRepository implements IFaveRepository {
             }
 
             e.onSuccess(dbos);
+        });
+    }
+
+    @Override
+    public Completable removeUser(int accountId, int userId) {
+        return Completable.fromAction(() -> {
+            final Uri uri = MessengerContentProvider.getFaveUsersContentUriFor(accountId);
+            final String where = FaveUsersColumns._ID + " = ?";
+            final String[] args = {String.valueOf(userId)};
+            getContentResolver().delete(uri, where, args);
         });
     }
 
@@ -364,9 +416,10 @@ class FaveRepository extends AbsRepository implements IFaveRepository {
         return GSON.fromJson(json, PhotoEntity.class);
     }
 
-    private FaveLink mapFaveLink(Cursor cursor) {
-        return new FaveLink(cursor.getString(cursor.getColumnIndex(FaveLinksColumns.LINK_ID)))
-                .setUrl(cursor.getString(cursor.getColumnIndex(FaveLinksColumns.URL)))
+    private FaveLinkEntity mapFaveLink(Cursor cursor) {
+        String id = cursor.getString(cursor.getColumnIndex(FaveLinksColumns.LINK_ID));
+        String url = cursor.getString(cursor.getColumnIndex(FaveLinksColumns.URL));
+        return new FaveLinkEntity(id, url)
                 .setTitle(cursor.getString(cursor.getColumnIndex(FaveLinksColumns.TITLE)))
                 .setDescription(cursor.getString(cursor.getColumnIndex(FaveLinksColumns.DESCRIPTION)))
                 .setPhoto50(cursor.getString(cursor.getColumnIndex(FaveLinksColumns.PHOTO_50)))

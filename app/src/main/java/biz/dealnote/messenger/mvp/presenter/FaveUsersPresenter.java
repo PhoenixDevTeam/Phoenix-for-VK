@@ -8,12 +8,14 @@ import java.util.List;
 
 import biz.dealnote.messenger.interactor.IFaveInteractor;
 import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.model.EndlessData;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IFaveUsersView;
 import biz.dealnote.messenger.util.RxUtils;
 import io.reactivex.disposables.CompositeDisposable;
 
+import static biz.dealnote.messenger.util.Utils.findIndexById;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
@@ -63,22 +65,22 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
         resolveRefreshingView();
     }
 
-    private void onActualDataReceived(int offset, List<User> data) {
+    private void onActualDataReceived(int offset, EndlessData<User> data) {
         this.cacheDisposable.clear();
         this.cacheLoadingNow = false;
 
         this.actualDataLoading = false;
-        this.endOfContent = data.isEmpty();
+        this.endOfContent = !data.hasNext();
         this.actualDataReceived = true;
 
-        if(offset == 0){
+        if (offset == 0) {
             this.users.clear();
-            this.users.addAll(data);
+            this.users.addAll(data.get());
             callView(IFaveUsersView::notifyDataSetChanged);
         } else {
             int startSize = this.users.size();
-            this.users.addAll(data);
-            callView(view -> view.notifyDataAdded(startSize, data.size()));
+            this.users.addAll(data.get());
+            callView(view -> view.notifyDataAdded(startSize, data.get().size()));
         }
 
         resolveRefreshingView();
@@ -90,8 +92,8 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
         resolveRefreshingView();
     }
 
-    private void resolveRefreshingView(){
-        if(isGuiResumed()){
+    private void resolveRefreshingView() {
+        if (isGuiResumed()) {
             getView().showRefreshing(actualDataLoading);
         }
     }
@@ -129,7 +131,7 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
     }
 
     public void fireScrollToEnd() {
-        if(!endOfContent && nonEmpty(users) && actualDataReceived && !cacheLoadingNow && !actualDataLoading){
+        if (!endOfContent && nonEmpty(users) && actualDataReceived && !cacheLoadingNow && !actualDataLoading) {
             loadActualData(this.users.size());
         }
     }
@@ -147,7 +149,24 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
         getView().openUserWall(getAccountId(), user);
     }
 
+    private void onUserRemoved(int accountId, int userId) {
+        if (getAccountId() != accountId) {
+            return;
+        }
+
+        int index = findIndexById(this.users, userId);
+
+        if (index != -1) {
+            this.users.remove(index);
+            callView(view -> view.notifyItemRemoved(index));
+        }
+    }
+
     public void fireUserDelete(User user) {
-        // TODO: 11.09.2017
+        final int accountId = super.getAccountId();
+        final int userId = user.getId();
+        appendDisposable(faveInteractor.removeUser(accountId, userId)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> onUserRemoved(accountId, userId), t -> showError(getView(), getCauseIfRuntime(t))));
     }
 }

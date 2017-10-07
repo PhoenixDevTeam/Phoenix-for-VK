@@ -54,6 +54,11 @@ public class FaveLinksAdapter extends RecyclerView.Adapter<FaveLinksAdapter.Hold
         return data.size();
     }
 
+    public void setData(List<FaveLink> data) {
+        this.data = data;
+        notifyDataSetChanged();
+    }
+
     public class Holder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
         ImageView image;
@@ -64,9 +69,9 @@ public class FaveLinksAdapter extends RecyclerView.Adapter<FaveLinksAdapter.Hold
             super(itemView);
             itemView.setOnCreateContextMenuListener(this);
 
-            image = (ImageView) itemView.findViewById(R.id.link_image);
-            title = (TextView) itemView.findViewById(R.id.link_title);
-            description = (TextView) itemView.findViewById(R.id.link_description);
+            image = itemView.findViewById(R.id.link_image);
+            title = itemView.findViewById(R.id.link_title);
+            description = itemView.findViewById(R.id.link_description);
         }
 
         @Override
