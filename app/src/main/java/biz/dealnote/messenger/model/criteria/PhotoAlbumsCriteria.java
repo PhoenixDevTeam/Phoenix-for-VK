@@ -1,7 +1,5 @@
 package biz.dealnote.messenger.model.criteria;
 
-import biz.dealnote.messenger.model.Criteria;
-
 public class PhotoAlbumsCriteria extends Criteria {
 
     private int accountId;

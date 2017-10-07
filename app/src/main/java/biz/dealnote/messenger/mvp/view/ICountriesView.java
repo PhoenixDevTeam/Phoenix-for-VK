@@ -2,7 +2,7 @@ package biz.dealnote.messenger.mvp.view;
 
 import java.util.List;
 
-import biz.dealnote.messenger.model.Country;
+import biz.dealnote.messenger.model.database.Country;
 import biz.dealnote.mvp.core.IMvpView;
 
 /**

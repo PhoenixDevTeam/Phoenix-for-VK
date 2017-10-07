@@ -8,19 +8,19 @@ import com.google.android.gms.gcm.GcmListenerService;
 
 import biz.dealnote.messenger.db.Repositories;
 import biz.dealnote.messenger.push.CollapseKey;
-import biz.dealnote.messenger.push.CommentGCMMessage;
-import biz.dealnote.messenger.push.FriendAcceptedGCMMessage;
-import biz.dealnote.messenger.push.FriendGCMMessage;
-import biz.dealnote.messenger.push.GCMMessage;
-import biz.dealnote.messenger.push.GroupInviteGCMMessage;
-import biz.dealnote.messenger.push.LikeGcmMessage;
-import biz.dealnote.messenger.push.NewPostPushMessage;
-import biz.dealnote.messenger.push.ReplyGCMMessage;
-import biz.dealnote.messenger.push.WallPostGCMMessage;
-import biz.dealnote.messenger.push.WallPublishGCMMessage;
+import biz.dealnote.messenger.push.IPushRegistrationResolver;
+import biz.dealnote.messenger.push.message.CommentGCMMessage;
+import biz.dealnote.messenger.push.message.FriendAcceptedGCMMessage;
+import biz.dealnote.messenger.push.message.FriendGCMMessage;
+import biz.dealnote.messenger.push.message.GCMMessage;
+import biz.dealnote.messenger.push.message.GroupInviteGCMMessage;
+import biz.dealnote.messenger.push.message.LikeGcmMessage;
+import biz.dealnote.messenger.push.message.NewPostPushMessage;
+import biz.dealnote.messenger.push.message.ReplyGCMMessage;
+import biz.dealnote.messenger.push.message.WallPostGCMMessage;
+import biz.dealnote.messenger.push.message.WallPublishGCMMessage;
 import biz.dealnote.messenger.realtime.Processors;
 import biz.dealnote.messenger.realtime.QueueContainsException;
-import biz.dealnote.messenger.service.operations.account.PushResolveOperation;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Logger;
@@ -68,7 +68,9 @@ public class MyGcmListenerService extends GcmListenerService {
             return;
         }
 
-        if (!PushResolveOperation.validate(context)) {
+        final IPushRegistrationResolver registrationResolver = Injection.providePushRegistrationResolver();
+
+        if (!registrationResolver.canReceivePushNotification()) {
             Logger.d(TAG, "Invalid push registration on VK");
             return;
         }
@@ -120,7 +122,8 @@ public class MyGcmListenerService extends GcmListenerService {
     private void fireNewMessage(int accountId, final @NonNull GCMMessage dto) {
         try {
             Processors.realtimeMessages().process(accountId, dto.getMessageId(), true);
-        } catch (QueueContainsException ignored) {}
+        } catch (QueueContainsException ignored) {
+        }
 
         if (dto.getBadge() >= 0) {
             Repositories.getInstance()

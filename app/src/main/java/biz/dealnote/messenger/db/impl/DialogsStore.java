@@ -207,6 +207,16 @@ class DialogsStore extends AbsRepository implements IDialogsStore {
         });
     }
 
+    @Override
+    public Completable changeTitle(int accountId, int peedId, String title) {
+        return Completable.fromAction(() -> {
+            final Uri uri = MessengerContentProvider.getDialogsContentUriFor(accountId);
+            ContentValues cv = new ContentValues();
+            cv.put(DialogsColumns.TITLE, title);
+            getContentResolver().update(uri, cv, DialogsColumns._ID + " = ?", new String[]{String.valueOf(peedId)});
+        });
+    }
+
     private ContentValues createCv(DialogEntity dbo){
         ContentValues cv = new ContentValues();
         MessageEntity messageDbo = dbo.getMessage();

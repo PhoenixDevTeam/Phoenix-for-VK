@@ -302,6 +302,47 @@ class OwnersRepositiry extends AbsRepository implements IOwnersRepository {
     }
 
     @Override
+    public Single<Optional<UserEntity>> findUserByDomain(int accoutnId, String domain) {
+        return Single.create(emitter -> {
+            final Uri uri = MessengerContentProvider.getUserContentUriFor(accoutnId);
+            String where = UserColumns.DOMAIN + " LIKE ?";
+            String[] args = {domain};
+            Cursor cursor = getContentResolver().query(uri, null, where, args, null);
+
+            UserEntity entity = null;
+            if(nonNull(cursor)){
+                if(cursor.moveToNext()){
+                    entity = mapUserDbo(cursor);
+                }
+                cursor.close();
+            }
+
+            emitter.onSuccess(Optional.wrap(entity));
+        });
+    }
+
+    @Override
+    public Single<Optional<CommunityEntity>> findCommunityByDomain(int accountId, String domain) {
+        return Single.create(emitter -> {
+            final Uri uri = MessengerContentProvider.getGroupsContentUriFor(accountId);
+            String where = GroupColumns.SCREEN_NAME + " LIKE ?";
+            String[] args = {domain};
+
+            Cursor cursor = getContentResolver().query(uri, null, where, args, null);
+
+            CommunityEntity entity = null;
+            if(nonNull(cursor)){
+                if(cursor.moveToNext()){
+                    entity = mapCommunityDbo(cursor);
+                }
+                cursor.close();
+            }
+
+            emitter.onSuccess(Optional.wrap(entity));
+        });
+    }
+
+    @Override
     public Single<List<UserEntity>> findUserDbosByIds(int accountId, List<Integer> ids) {
         if (ids.isEmpty()) {
             return Single.just(Collections.emptyList());

@@ -10,8 +10,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.foxykeep.datadroid.requestmanager.RequestManager;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,9 +20,9 @@ import java.util.Map;
 import java.util.Set;
 
 import biz.dealnote.messenger.Extra;
-import biz.dealnote.messenger.service.RestRequestManager;
-import biz.dealnote.messenger.service.ServiceRequestAdapter;
-import biz.dealnote.messenger.service.factory.AccountRequestFactory;
+import biz.dealnote.messenger.Injection;
+import biz.dealnote.messenger.push.IPushRegistrationResolver;
+import biz.dealnote.messenger.util.RxUtils;
 import io.reactivex.Observable;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
@@ -39,7 +37,6 @@ class AccountsSettings implements ISettings.IAccountsSettings {
     private static final String WHAT_ACCOUNT_CHANGE = "biz.dealnote.messenger.WHAT_ACCOUNT_CHANGE";
     private static final String KEY_ACCOUNT_UIDS = "account_uids";
     private static final String KEY_CURRENT = "current_account_id";
-    private static final RequestManager.RequestListener DUMMY_REQUEST_ADAPTER = new ServiceRequestAdapter();
 
     private final Context app;
 
@@ -112,7 +109,12 @@ class AccountsSettings implements ISettings.IAccountsSettings {
     }
 
     private void fireAccountChange() {
-        RestRequestManager.from(app).execute(AccountRequestFactory.getResolvePushRegistrationRequest(), DUMMY_REQUEST_ADAPTER);
+        final IPushRegistrationResolver registrationResolver = Injection.providePushRegistrationResolver();
+        registrationResolver.resolvePushRegistration()
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> {}, Throwable::printStackTrace);
+
+        //RestRequestManager.from(app).execute(AccountRequestFactory.getResolvePushRegistrationRequest(), DUMMY_REQUEST_ADAPTER);
 
         Intent intent = new Intent(WHAT_ACCOUNT_CHANGE);
         intent.putExtra(Extra.ACCOUNT_ID, getCurrent());

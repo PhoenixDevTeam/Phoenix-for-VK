@@ -8,7 +8,6 @@ import biz.dealnote.messenger.api.impl.BlacklistRepository;
 import biz.dealnote.messenger.api.interfaces.IBlacklistRepository;
 import biz.dealnote.messenger.crypt.KeyLocationPolicy;
 import biz.dealnote.messenger.db.interfaces.IAttachmentsStore;
-import biz.dealnote.messenger.db.interfaces.IAudioCoversRepository;
 import biz.dealnote.messenger.db.interfaces.ICommentsRepository;
 import biz.dealnote.messenger.db.interfaces.IDatabaseStore;
 import biz.dealnote.messenger.db.interfaces.IDialogsStore;
@@ -69,7 +68,6 @@ public class AppRepositories extends ContextWrapper implements IRepositories {
     private IAttachmentsStore mMessageAttachmentsRepository;
     private volatile IVideoRepository mVideoRepository;
     private volatile IVideoAlbumsRepository mVideoAlbumsRepository;
-    private volatile IAudioCoversRepository mAudiosRepository;
     private volatile ICommentsRepository mCommentsRepository;
     private volatile IPhotoAlbumsRepository mPhotoAlbumsRepository;
     private volatile ITopicsRepository mTopicsRepository;
@@ -188,18 +186,6 @@ public class AppRepositories extends ContextWrapper implements IRepositories {
     @Override
     public ITempDataStore tempStore() {
         return tempDataStore;
-    }
-
-    public IAudioCoversRepository audioCovers(){
-        if(isNull(mAudiosRepository)){
-            synchronized (this){
-                if(isNull(mAudiosRepository)){
-                    mAudiosRepository = new AudioCoversRepository(this);
-                }
-            }
-        }
-
-        return mAudiosRepository;
     }
 
     public IVideoAlbumsRepository videoAlbums(){

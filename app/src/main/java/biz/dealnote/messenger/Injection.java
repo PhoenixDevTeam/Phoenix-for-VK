@@ -25,10 +25,16 @@ import biz.dealnote.messenger.interactor.impl.StickersInteractor;
 import biz.dealnote.messenger.interactor.impl.WallsImpl;
 import biz.dealnote.messenger.media.gif.AppGifPlayerFactory;
 import biz.dealnote.messenger.media.gif.IGifPlayerFactory;
+import biz.dealnote.messenger.push.GcmTokenProvider;
+import biz.dealnote.messenger.push.IDevideIdProvider;
+import biz.dealnote.messenger.push.IGcmTokenProvider;
+import biz.dealnote.messenger.push.IPushRegistrationResolver;
+import biz.dealnote.messenger.push.PushRegistrationResolver;
 import biz.dealnote.messenger.settings.IProxySettings;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.ProxySettingsImpl;
 import biz.dealnote.messenger.settings.SettingsImpl;
+import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -50,6 +56,23 @@ public class Injection {
 
     public static IGifPlayerFactory provideGifPlayerFactory(){
         return new AppGifPlayerFactory(proxySettings);
+    }
+
+    private static volatile IPushRegistrationResolver resolver;
+
+    public static IPushRegistrationResolver providePushRegistrationResolver(){
+        if(isNull(resolver)){
+            synchronized (Injection.class){
+                if(isNull(resolver)){
+                    final Context context = provideApplicationContext();
+                    final IDevideIdProvider devideIdProvider = () -> Utils.getDiviceId(context);
+                    final IGcmTokenProvider tokenProvider = new GcmTokenProvider(context);
+                    resolver = new PushRegistrationResolver(tokenProvider, devideIdProvider, provideSettings(), provideNetworkInterfaces());
+                }
+            }
+        }
+
+        return resolver;
     }
 
     public static ICaptchaProvider provideCaptchaProvider() {

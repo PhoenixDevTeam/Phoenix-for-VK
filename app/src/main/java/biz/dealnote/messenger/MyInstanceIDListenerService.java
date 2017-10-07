@@ -18,7 +18,8 @@ package biz.dealnote.messenger;
 
 import com.google.android.gms.iid.InstanceIDListenerService;
 
-import biz.dealnote.messenger.service.RequestHelper;
+import biz.dealnote.messenger.push.IPushRegistrationResolver;
+import biz.dealnote.messenger.util.RxUtils;
 
 public class MyInstanceIDListenerService extends InstanceIDListenerService {
 
@@ -30,8 +31,14 @@ public class MyInstanceIDListenerService extends InstanceIDListenerService {
     // [START refresh_token]
     @Override
     public void onTokenRefresh() {
+        final IPushRegistrationResolver registrationResolver = Injection.providePushRegistrationResolver();
+
+        registrationResolver.resolvePushRegistration()
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> {}, Throwable::printStackTrace);
+
         // Fetch updated Instance ID token and notify our app's server of any changes (if applicable).
-        RequestHelper.checkPushRegistration(this);
+        //RequestHelper.checkPushRegistration(this);
     }
     // [END refresh_token]
 }

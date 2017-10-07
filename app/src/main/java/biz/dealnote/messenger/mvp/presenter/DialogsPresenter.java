@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,7 +15,6 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.db.Repositories;
 import biz.dealnote.messenger.db.interfaces.IDialogsStore;
-import biz.dealnote.messenger.exception.ServiceException;
 import biz.dealnote.messenger.interactor.IMessagesInteractor;
 import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.longpoll.LongpollUtils;
@@ -198,7 +195,8 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     }
 
     private void removeDialog(final int peeId) {
-        final int accountId = super.getAccountId();
+        final int accountId = this.dialogsOwnerId;
+
         appendDisposable(messagesInteractor.deleteDialog(accountId, peeId, 0, 10000)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
                 .subscribe(() -> onDialogRemovedSuccessfully(accountId, peeId), t -> showError(getView(), getCauseIfRuntime(t))));
@@ -363,12 +361,6 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     public void fireSearchClick() {
         AssertUtils.assertPositive(dialogsOwnerId);
         getView().goToSearch(getAccountId());
-    }
-
-    @Override
-    protected void onRequestError(@NonNull Request request, @NonNull ServiceException e) {
-        super.onRequestError(request, e);
-        safeShowError(getView(), e.getMessage());
     }
 
     public void fireDialogClick(Dialog dialog) {

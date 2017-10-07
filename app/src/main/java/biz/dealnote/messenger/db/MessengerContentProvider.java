@@ -24,7 +24,6 @@ import biz.dealnote.messenger.db.column.AttachmentsColumns;
 import biz.dealnote.messenger.db.column.CommentsAttachmentsColumns;
 import biz.dealnote.messenger.db.column.CommentsColumns;
 import biz.dealnote.messenger.db.column.CountriesColumns;
-import biz.dealnote.messenger.db.column.CoversColumns;
 import biz.dealnote.messenger.db.column.DialogsColumns;
 import biz.dealnote.messenger.db.column.DocColumns;
 import biz.dealnote.messenger.db.column.FaveLinksColumns;
@@ -84,7 +83,6 @@ public class MessengerContentProvider extends ContentProvider {
     private static Map<String, String> sFavePostsProjectionMap;
     private static Map<String, String> sCountriesProjectionMap;
     private static Map<String, String> sFeedListsProjectionMap;
-    private static Map<String, String> sCoversProjectionMap;
     private static Map<String, String> sFriendListsProjectionMap;
     private static Map<String, String> sKeysProjectionMap;
 
@@ -132,7 +130,6 @@ public class MessengerContentProvider extends ContentProvider {
     static final int URI_FAVE_POSTS = 59;
     static final int URI_COUNTRIES = 61;
     static final int URI_FEED_LISTS = 62;
-    static final int URI_COVERS = 63;
     static final int URI_FRIEND_LISTS = 64;
     static final int URI_KEYS = 65;
 
@@ -165,7 +162,6 @@ public class MessengerContentProvider extends ContentProvider {
     static final String FAVE_POSTS_PATH = "fave_posts";
     static final String COUNTRIES_PATH = "countries";
     static final String FEED_LISTS_PATH = "feed_lists";
-    static final String COVERS_PATH = "covers";
     static final String FRIEND_LISTS_PATH = "friends_lists";
     static final String KEYS_PATH = "keys";
 
@@ -215,7 +211,6 @@ public class MessengerContentProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, FAVE_POSTS_PATH, URI_FAVE_POSTS);
         sUriMatcher.addURI(AUTHORITY, COUNTRIES_PATH, URI_COUNTRIES);
         sUriMatcher.addURI(AUTHORITY, FEED_LISTS_PATH, URI_FEED_LISTS);
-        sUriMatcher.addURI(AUTHORITY, COVERS_PATH, URI_COVERS);
         sUriMatcher.addURI(AUTHORITY, FRIEND_LISTS_PATH, URI_FRIEND_LISTS);
         sUriMatcher.addURI(AUTHORITY, KEYS_PATH, URI_KEYS);
     }
@@ -318,9 +313,6 @@ public class MessengerContentProvider extends ContentProvider {
 
     private static final Uri FEED_LISTS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FEED_LISTS_PATH);
     static final String FEED_LISTS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + FEED_LISTS_PATH;
-
-    private static final Uri COVERS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + COVERS_PATH);
-    static final String COVERS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + COVERS_PATH;
 
     private static final Uri FRIEND_LISTS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FRIEND_LISTS_PATH);
     static final String FRIEND_LISTS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + FRIEND_LISTS_PATH;
@@ -800,12 +792,6 @@ public class MessengerContentProvider extends ContentProvider {
         sFeedListsProjectionMap.put(FeedListsColumns.NO_REPOSTS, FeedListsColumns.FULL_NO_REPOSTS);
         sFeedListsProjectionMap.put(FeedListsColumns.SOURCE_IDS, FeedListsColumns.FULL_SOURCE_IDS);
 
-        sCoversProjectionMap = new HashMap<>();
-        sCoversProjectionMap.put(CoversColumns._ID, CoversColumns.FULL_ID);
-        sCoversProjectionMap.put(CoversColumns.AUDIO_ID, CoversColumns.FULL_AUDIO_ID);
-        sCoversProjectionMap.put(CoversColumns.OWNER_ID, CoversColumns.FULL_OWNER_ID);
-        sCoversProjectionMap.put(CoversColumns.DATA, CoversColumns.FULL_DATA);
-
         sFriendListsProjectionMap = new HashMap<>();
         sFriendListsProjectionMap.put(FriendListsColumns._ID, FriendListsColumns.FULL_ID);
         sFriendListsProjectionMap.put(FriendListsColumns.USER_ID, FriendListsColumns.FULL_USER_ID);
@@ -906,10 +892,6 @@ public class MessengerContentProvider extends ContentProvider {
 
     public static Uri getRelativeshipContentUriFor(int aid){
         return appendAccountId(RELATIVESHIP_CONTENT_URI, aid);
-    }
-
-    public static Uri getCoversContentUriFor(int aid){
-        return appendAccountId(COVERS_CONTENT_URI, aid);
     }
 
     public static Uri getUserContentUriFor(int aid){
@@ -1165,10 +1147,6 @@ public class MessengerContentProvider extends ContentProvider {
             case URI_FEED_LISTS:
                 rowId = db.insert(FeedListsColumns.TABLENAME, null, values);
                 resultUri = ContentUris.withAppendedId(FEED_LISTS_CONTENT_URI, rowId);
-                break;
-            case URI_COVERS:
-                rowId = db.insert(CoversColumns.TABLENAME, null, values);
-                resultUri = ContentUris.withAppendedId(COVERS_CONTENT_URI, rowId);
                 break;
             case URI_FRIEND_LISTS:
                 rowId = db.insert(FriendListsColumns.TABLENAME, null, values);
@@ -1503,11 +1481,6 @@ public class MessengerContentProvider extends ContentProvider {
                 _QB.setProjectionMap(sFeedListsProjectionMap);
                 _TableType = URI_FEED_LISTS;
                 break;
-            case URI_COVERS:
-                _QB.setTables(CoversColumns.TABLENAME);
-                _QB.setProjectionMap(sCoversProjectionMap);
-                _TableType = URI_COVERS;
-                break;
             case URI_FRIEND_LISTS:
                 _QB.setTables(FriendListsColumns.TABLENAME);
                 _QB.setProjectionMap(sFriendListsProjectionMap);
@@ -1634,9 +1607,6 @@ public class MessengerContentProvider extends ContentProvider {
                 case URI_FEED_LISTS:
                     _OrderBy = FeedListsColumns.FULL_ID + " ASC";
                     break;
-                case URI_COVERS:
-                    _OrderBy = CoversColumns.FULL_ID + " ASC";
-                    break;
                 case URI_FRIEND_LISTS:
                     _OrderBy = FriendListsColumns.FULL_ID + " ASC";
                     break;
@@ -1756,8 +1726,6 @@ public class MessengerContentProvider extends ContentProvider {
                 return COUNTRIES_CONTENT_TYPE;
             case URI_FEED_LISTS:
                 return FEED_LISTS_CONTENT_TYPE;
-            case URI_COVERS:
-                return COVERS_CONTENT_TYPE;
             case URI_FRIEND_LISTS:
                 return FRIEND_LISTS_CONTENT_TYPE;
             case URI_KEYS:
@@ -1900,9 +1868,6 @@ public class MessengerContentProvider extends ContentProvider {
                 break;
             case URI_FEED_LISTS:
                 tbName = FeedListsColumns.TABLENAME;
-                break;
-            case URI_COVERS:
-                tbName = CoversColumns.TABLENAME;
                 break;
             case URI_FRIEND_LISTS:
                 tbName = FriendListsColumns.TABLENAME;
@@ -2085,9 +2050,6 @@ public class MessengerContentProvider extends ContentProvider {
                 break;
             case URI_FEED_LISTS:
                 tbName = FeedListsColumns.TABLENAME;
-                break;
-            case URI_COVERS:
-                tbName = CoversColumns.TABLENAME;
                 break;
             case URI_FRIEND_LISTS:
                 tbName = FriendListsColumns.TABLENAME;

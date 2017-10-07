@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-import com.foxykeep.datadroid.requestmanager.RequestManager;
 import com.squareup.picasso.Transformation;
 
 import java.util.concurrent.TimeUnit;
@@ -32,9 +29,6 @@ import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.model.SaveMessageBuilder;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.service.IntArray;
-import biz.dealnote.messenger.service.RequestFactory;
-import biz.dealnote.messenger.service.RestRequestManager;
 import biz.dealnote.messenger.service.SendService;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
@@ -46,6 +40,8 @@ import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.ViewUtils;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
+
+import static biz.dealnote.messenger.util.Utils.isEmpty;
 
 public class QuickAnswerActivity extends AppCompatActivity {
 
@@ -60,14 +56,16 @@ public class QuickAnswerActivity extends AppCompatActivity {
     private EditText etText;
     private int peerId;
     private TextingNotifier notifier;
-    private int messageId;
     private int accountId;
 
     private boolean mMessageIsRead;
+    private IMessagesInteractor mMessagesInteractor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.mMessagesInteractor = InteractorFactory.createMessagesInteractor();
 
         boolean focusToField = getIntent().getBooleanExtra(EXTRA_FOCUS_TO_FIELD, true);
 
@@ -83,23 +81,23 @@ public class QuickAnswerActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_quick_answer);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setNavigationIcon(CurrentTheme.getDrawableFromAttribute(this, R.attr.toolbarBackIcon));
         }
 
         setSupportActionBar(toolbar);
 
-        messageId = getIntent().getIntExtra(PARAM_MESSAGE_ID, -1);
+        //int messageId = getIntent().getIntExtra(PARAM_MESSAGE_ID, -1);
 
-        TextView tvMessage = (TextView) findViewById(R.id.item_message_text);
-        TextView tvTime = (TextView) findViewById(R.id.item_message_time);
-        etText = (EditText) findViewById(R.id.activity_quick_answer_edit_text);
+        TextView tvMessage = findViewById(R.id.item_message_text);
+        TextView tvTime = findViewById(R.id.item_message_time);
+        etText = findViewById(R.id.activity_quick_answer_edit_text);
 
-        ImageView ivAvatar = (ImageView) findViewById(R.id.avatar);
+        ImageView ivAvatar = findViewById(R.id.avatar);
 
-        ImageButton btnToDialog = (ImageButton) findViewById(R.id.activity_quick_answer_to_dialog);
-        ImageButton btnSend = (ImageButton) findViewById(R.id.activity_quick_answer_send);
+        ImageButton btnToDialog = findViewById(R.id.activity_quick_answer_to_dialog);
+        ImageButton btnSend = findViewById(R.id.activity_quick_answer_send);
 
         String messageTime = AppTextUtils.getDateFromUnixTime(this, getIntent().getLongExtra(PARAM_MESSAGE_SENT_TIME, 0));
         String onlineTime = AppTextUtils.getDateFromUnixTime(this, getIntent().getLongExtra(PARAM_LAST_SEEN, 0));
@@ -123,7 +121,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (!mMessageIsRead) {
-                    setMessageAsRead(accountId, messageId);
+                    setMessageAsRead();
                     mMessageIsRead = true;
                 }
 
@@ -169,6 +167,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         mLiveSubscription.dispose();
+        mCompositeDisposable.dispose();
         super.onDestroy();
     }
 
@@ -197,7 +196,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
      */
     private void send() {
         String trimmedtext = etText.getText().toString().trim();
-        if (TextUtils.isEmpty(trimmedtext)) {
+        if (isEmpty(trimmedtext)) {
             Toast.makeText(QuickAnswerActivity.this, getString(R.string.text_hint), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -208,28 +207,28 @@ public class QuickAnswerActivity extends AppCompatActivity {
 
         @KeyLocationPolicy
         int policy = KeyLocationPolicy.PERSIST;
+
         if (requireEncryption) {
             policy = Settings.get()
                     .security()
                     .getEncryptionLocationPolicy(accountId, peerId);
         }
 
-        SaveMessageBuilder builder = new SaveMessageBuilder(accountId, peerId)
+        final SaveMessageBuilder builder = new SaveMessageBuilder(accountId, peerId)
                 .setBody(trimmedtext)
                 .setRequireEncryption(requireEncryption)
                 .setKeyLocationPolicy(policy);
 
-        final IMessagesInteractor messagesInteractor = InteractorFactory.createMessagesInteractor();
-
-        messagesInteractor.put(builder)
+        mCompositeDisposable.add(mMessagesInteractor.put(builder)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onMessageSaved, this::onSavingError);
+                .subscribe(this::onMessageSaved, this::onSavingError));
     }
 
     private void onSavingError(Throwable throwable) {
         Utils.showRedTopToast(this, throwable.toString());
     }
 
+    @SuppressWarnings("unused")
     private void onMessageSaved(Message message) {
         NotificationHelper.tryCancelNotificationForPeer(this, accountId, peerId);
 
@@ -238,9 +237,11 @@ public class QuickAnswerActivity extends AppCompatActivity {
         finish();
     }
 
-    private void setMessageAsRead(int accountId, final int mid) {
-        RequestManager manager = RestRequestManager.from(this);
-        Request request = RequestFactory.getReadMessageRequest(accountId, new IntArray(mid), peerId, 0);
-        manager.execute(request, null);
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+
+    private void setMessageAsRead() {
+        mCompositeDisposable.add(mMessagesInteractor.markAsRead(accountId, peerId)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> {/*ignore*/}, t -> {/*ignore*/}));
     }
 }

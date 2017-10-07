@@ -94,5 +94,9 @@ public interface IMessagesInteractor {
 
     Completable restoreMessage(int accountId, int messageId);
 
+    Completable changeChatTitle(int accountId, int chatId, String title);
+
     Single<Integer> createGroupChat(int accountId, Collection<Integer> users, String title);
+
+    Completable markAsRead(int accountId, int peerId);
 }

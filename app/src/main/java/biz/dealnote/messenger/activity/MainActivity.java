@@ -113,8 +113,8 @@ import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.place.PlaceProvider;
 import biz.dealnote.messenger.player.MusicPlaybackService;
 import biz.dealnote.messenger.player.util.MusicUtils;
+import biz.dealnote.messenger.push.IPushRegistrationResolver;
 import biz.dealnote.messenger.service.CheckLicenseService;
-import biz.dealnote.messenger.service.RequestHelper;
 import biz.dealnote.messenger.settings.AppPrefs;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.ISettings;
@@ -127,6 +127,7 @@ import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Pair;
+import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.StatusbarUtil;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.disposables.CompositeDisposable;
@@ -290,7 +291,13 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             return;
         }
 
-        RequestHelper.checkPushRegistration(this);
+        IPushRegistrationResolver resolver = Injection.providePushRegistrationResolver();
+
+        mCompositeDisposable.add(resolver.resolvePushRegistration()
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> {/*ignore*/}, Throwable::printStackTrace));
+
+        //RequestHelper.checkPushRegistration(this);
     }
 
     private void bindToUploadService() {
@@ -1161,9 +1168,9 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 attachFragment(UserBannedFragment.newInstance(place.getArgs().getInt(Extra.ACCOUNT_ID)), true, "user-blacklist");
                 break;
 
-                case Place.DRAWER_EDIT:
-                    attachFragment(DrawerEditFragment.newInstance(), true, "drawer-edit");
-                    break;
+            case Place.DRAWER_EDIT:
+                attachFragment(DrawerEditFragment.newInstance(), true, "drawer-edit");
+                break;
 
             default:
                 throw new IllegalArgumentException("Main activity can't open this place, type: " + place.type);

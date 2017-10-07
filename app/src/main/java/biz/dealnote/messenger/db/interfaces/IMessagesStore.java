@@ -84,4 +84,6 @@ public interface IMessagesStore extends IRepository {
     Observable<MessageUpdate> observeMessageUpdates();
 
     Single<List<Integer>> getMissingMessages(int accountId, Collection<Integer> ids);
+
+    Completable markAsRead(int accountId, int peerId);
 }

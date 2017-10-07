@@ -4,7 +4,6 @@ import android.content.Context;
 
 import biz.dealnote.messenger.api.ApiException;
 import biz.dealnote.messenger.api.model.Error;
-import biz.dealnote.messenger.exception.ApiServiceException;
 import biz.dealnote.messenger.service.ErrorLocalizer;
 
 /**
@@ -19,8 +18,6 @@ public class ErrorUtils {
         if (throwable instanceof ApiException) {
             Error error = ((ApiException) throwable).getError();
             return showApiError(context, error.errorCode, error.errorMsg);
-        } else if (throwable instanceof ApiServiceException) {
-            return showApiError(context, ((ApiServiceException) throwable).getCode(), throwable.getMessage());
         } else {
             return throwable.getMessage();
         }

@@ -4,16 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.util.ObjectUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.interactor.IDatabaseInteractor;
 import biz.dealnote.messenger.interactor.InteractorFactory;
-import biz.dealnote.messenger.model.Country;
+import biz.dealnote.messenger.model.database.Country;
 import biz.dealnote.messenger.mvp.presenter.base.RxSupportPresenter;
 import biz.dealnote.messenger.mvp.view.ICountriesView;
+import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
 
@@ -79,7 +78,7 @@ public class CountriesPresenter extends RxSupportPresenter<ICountriesView> {
     }
 
     public void fireFilterEdit(CharSequence text){
-        if(ObjectUtils.safeEquals(text.toString(), this.filter)){
+        if(Objects.safeEquals(text.toString(), this.filter)){
             return;
         }
 

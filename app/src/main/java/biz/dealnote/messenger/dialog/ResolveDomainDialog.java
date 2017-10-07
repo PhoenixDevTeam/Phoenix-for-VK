@@ -6,15 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.api.model.response.ResolveDomailResponse;
 import biz.dealnote.messenger.dialog.base.AccountDependencyDialogFragment;
-import biz.dealnote.messenger.exception.ServiceException;
+import biz.dealnote.messenger.interactor.IUtilsInteractor;
+import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.service.factory.UtilsRequestFactory;
+import biz.dealnote.messenger.util.Optional;
+import biz.dealnote.messenger.util.RxUtils;
+import biz.dealnote.messenger.util.Utils;
 
 public class ResolveDomainDialog extends AccountDependencyDialogFragment {
 
@@ -36,12 +37,16 @@ public class ResolveDomainDialog extends AccountDependencyDialogFragment {
         return domainDialog;
     }
 
+    private int mAccountId;
     private String url;
     private String domain;
+    private IUtilsInteractor mUtilsInteractor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.mAccountId = getArguments().getInt(Extra.ACCOUNT_ID);
+        this.mUtilsInteractor = InteractorFactory.createUtilsInteractor();
         this.url = getArguments().getString(Extra.URL);
         this.domain = getArguments().getString(Extra.DOMAIN);
     }
@@ -60,47 +65,23 @@ public class ResolveDomainDialog extends AccountDependencyDialogFragment {
     }
 
     private void request(){
-        Request request = UtilsRequestFactory.getResolveScreenNameRequest(domain);
-        executeRequest(request);
+        appendDisposable(mUtilsInteractor.resolveDomain(mAccountId, domain)
+        .compose(RxUtils.applySingleIOToMainSchedulers())
+        .subscribe(this::onResolveResult, this::onResolveError));
     }
 
-    private void openDomain(ResolveDomailResponse resolveDomailResult) {
-        if(!isAdded()) return;
+    private void onResolveError(Throwable t){
+        showErrorAlert(Utils.getCauseIfRuntime(t).getMessage());
+    }
+
+    private void onResolveResult(Optional<Owner> optionalOwner){
+        if(optionalOwner.isEmpty()){
+            PlaceFactory.getExternalLinkPlace(getAccountId(), url).tryOpenWith(getActivity());
+        } else {
+            PlaceFactory.getOwnerWallPlace(mAccountId, optionalOwner.get()).tryOpenWith(getActivity());
+        }
 
         dismiss();
-
-        if (resolveDomailResult == null) {
-            PlaceFactory.getExternalLinkPlace(getAccountId(), url).tryOpenWith(getActivity());
-            return;
-        }
-
-        if (ResolveDomailResponse.TYPE_GROUP.equals(resolveDomailResult.type)) {
-            int gid = -Math.abs(Integer.parseInt(resolveDomailResult.object_id));
-            PlaceFactory.getOwnerWallPlace(getAccountId(), gid, null).tryOpenWith(getActivity());
-        }
-
-        if (ResolveDomailResponse.TYPE_USER.equals(resolveDomailResult.type)) {
-            int uid = Integer.parseInt(resolveDomailResult.object_id);
-            PlaceFactory.getOwnerWallPlace(getAccountId(), uid, null).tryOpenWith(getActivity());
-        }
-    }
-
-    @Override
-    protected void onRequestFinished(@NonNull Request request, Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-
-        if (request.getRequestType() == UtilsRequestFactory.REQUEST_SCREEN_NAME) {
-            ResolveDomailResponse result = resultData.getParcelable(Extra.RESPONSE);
-            openDomain(result);
-        }
-    }
-
-    @Override
-    protected void onRequestError(@NonNull Request request, ServiceException throwable) {
-        super.onRequestError(request, throwable);
-        if(isAdded()){
-            showErrorAlert(throwable.getMessage());
-        }
     }
 
     private void showErrorAlert(String error){

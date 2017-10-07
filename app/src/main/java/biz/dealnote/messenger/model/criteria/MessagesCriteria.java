@@ -1,7 +1,5 @@
 package biz.dealnote.messenger.model.criteria;
 
-import biz.dealnote.messenger.model.Criteria;
-
 /**
  * Created by ruslan.kolbasa on 05.10.2016.
  * phoenix

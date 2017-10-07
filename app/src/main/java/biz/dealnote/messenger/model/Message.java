@@ -16,7 +16,7 @@ import biz.dealnote.messenger.util.ParcelUtils;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;
 
-public class Message extends AbsModel implements Parcelable, Identificable, Selectable {
+public class Message extends AbsModel implements Parcelable, Identificable, ISelectable {
 
     public static Creator<Message> CREATOR = new Creator<Message>() {
         public Message createFromParcel(Parcel source) {

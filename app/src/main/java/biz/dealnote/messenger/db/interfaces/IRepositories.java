@@ -13,8 +13,6 @@ public interface IRepositories {
 
     ITempDataStore tempStore();
 
-    IAudioCoversRepository audioCovers();
-
     IVideoAlbumsRepository videoAlbums();
 
     IVideoRepository videos();
