@@ -32,6 +32,10 @@ public interface IOwnersRepository extends IRepository {
 
     Single<Optional<CommunityEntity>> findCommunityDboById(int accountId, int ownerId);
 
+    Single<Optional<UserEntity>> findUserByDomain(int accoutnId, String domain);
+
+    Single<Optional<CommunityEntity>> findCommunityByDomain(int accountId, String domain);
+
     Single<List<UserEntity>> findUserDbosByIds(int accountId, List<Integer> ids);
 
     Single<List<CommunityEntity>> findCommunityDbosByIds(int accountId, List<Integer> ids);

@@ -17,7 +17,6 @@ import biz.dealnote.messenger.db.column.AttachmentsColumns;
 import biz.dealnote.messenger.db.column.CommentsAttachmentsColumns;
 import biz.dealnote.messenger.db.column.CommentsColumns;
 import biz.dealnote.messenger.db.column.CountriesColumns;
-import biz.dealnote.messenger.db.column.CoversColumns;
 import biz.dealnote.messenger.db.column.DialogsColumns;
 import biz.dealnote.messenger.db.column.DocColumns;
 import biz.dealnote.messenger.db.column.FaveLinksColumns;
@@ -186,7 +185,6 @@ public class DBHelper extends SQLiteOpenHelper {
         createFavePostsTable(db);
         createCountriesTable(db);
         createFeedListsTable(db);
-        createCoversTable(db);
         createFriendListsTable(db);
 
         //Triggers.createInsertPeerWithUserTrigger(db);
@@ -267,7 +265,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + "peers");
         db.execSQL("DROP TABLE IF EXISTS " + CountriesColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + FeedListsColumns.TABLENAME);
-        db.execSQL("DROP TABLE IF EXISTS " + CoversColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + FriendListsColumns.TABLENAME);
 
         db.setTransactionSuccessful();
@@ -545,16 +542,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 "  [" + FriendListsColumns.LIST_ID + "] INTEGER, " +
                 "  [" + FriendListsColumns.NAME + "] TEXT, " +
                 "  CONSTRAINT [] UNIQUE ([" + FriendListsColumns.USER_ID + "], [" + FriendListsColumns.LIST_ID + "]) ON CONFLICT REPLACE);";
-        db.execSQL(sql);
-    }
-
-    private void createCoversTable(SQLiteDatabase db) {
-        String sql = "CREATE TABLE [" + CoversColumns.TABLENAME + "] (\n" +
-                "  [" + CoversColumns._ID + "] INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "  [" + CoversColumns.AUDIO_ID + "] INTEGER, " +
-                "  [" + CoversColumns.OWNER_ID + "] INTEGER, " +
-                "  [" + CoversColumns.DATA + "] BLOB, " +
-                "  CONSTRAINT [] UNIQUE ([" + CoversColumns.AUDIO_ID + "], [" + CoversColumns.OWNER_ID + "]) ON CONFLICT REPLACE);";
         db.execSQL(sql);
     }
 

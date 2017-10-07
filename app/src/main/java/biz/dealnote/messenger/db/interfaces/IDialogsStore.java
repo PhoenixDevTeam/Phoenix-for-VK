@@ -35,6 +35,8 @@ public interface IDialogsStore extends IRepository {
 
     Completable insertDialogs(int accountId, List<DialogEntity> dbos, boolean clearBefore);
 
+    Completable changeTitle(int accountId, int peedId, String title);
+
     /**
      * Получение списка идентификаторов диалогов, информация о которых отсутствует в базе данных
      *

@@ -24,12 +24,10 @@ class PushSettings implements ISettings.IPushSettings {
 
     @Override
     public void savePushRegistations(Collection<VkPushRegistration> data) {
-        Set<String> target = new HashSet<>(data == null ? 0 : data.size());
+        Set<String> target = new HashSet<>(data.size());
 
-        if(data != null){
-            for(VkPushRegistration registration : data){
-                target.add(gson.toJson(registration));
-            }
+        for (VkPushRegistration registration : data) {
+            target.add(gson.toJson(registration));
         }
 
         PreferenceManager.getDefaultSharedPreferences(app)
@@ -44,8 +42,8 @@ class PushSettings implements ISettings.IPushSettings {
                 .getStringSet(KEY_REGISTERED_FOR, null);
 
         List<VkPushRegistration> result = new ArrayList<>(set == null ? 0 : set.size());
-        if(set != null){
-            for(String s : set){
+        if (set != null) {
+            for (String s : set) {
                 VkPushRegistration registration = gson.fromJson(s, VkPushRegistration.class);
                 result.add(registration);
             }

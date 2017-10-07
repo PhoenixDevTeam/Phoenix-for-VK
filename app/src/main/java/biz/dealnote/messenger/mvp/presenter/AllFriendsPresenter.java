@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.util.ObjectUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +15,7 @@ import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.UsersPart;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IAllFriendsView;
+import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
@@ -309,7 +308,7 @@ public class AllFriendsPresenter extends AccountDependencyPresenter<IAllFriendsV
     public void fireSearchRequestChanged(String q) {
         String query = q == null ? null : q.trim();
 
-        if (ObjectUtils.safeEquals(q, this.q)) {
+        if (Objects.safeEquals(q, this.q)) {
             return;
         }
 

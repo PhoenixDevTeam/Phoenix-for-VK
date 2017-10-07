@@ -10,7 +10,7 @@ import biz.dealnote.messenger.util.Objects;
  * Created by admin on 21.11.2016.
  * phoenix
  */
-public class Photo extends AbsModel implements Parcelable, Identificable, Someones {
+public class Photo extends AbsModel implements Parcelable, Identificable, ISomeones {
 
     private int id;
 

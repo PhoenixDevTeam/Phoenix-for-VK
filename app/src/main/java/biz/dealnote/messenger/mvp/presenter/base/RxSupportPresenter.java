@@ -14,7 +14,6 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.ApiException;
 import biz.dealnote.messenger.api.model.Error;
 import biz.dealnote.messenger.db.Repositories;
-import biz.dealnote.messenger.exception.ApiServiceException;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.mvp.view.IErrorView;
 import biz.dealnote.messenger.mvp.view.IToastView;
@@ -117,8 +116,6 @@ public abstract class RxSupportPresenter<V extends IMvpView> extends AbsPresente
         if (throwable instanceof ApiException) {
             Error error = ((ApiException) throwable).getError();
             showApiError(view, error.errorCode, error.errorMsg);
-        } else if (throwable instanceof ApiServiceException) {
-            showApiError(view, ((ApiServiceException) throwable).getCode(), throwable.getMessage());
         } else if(throwable instanceof SocketTimeoutException){
             view.showError(R.string.error_timeout_message);
         } else if(throwable instanceof NotFoundException){

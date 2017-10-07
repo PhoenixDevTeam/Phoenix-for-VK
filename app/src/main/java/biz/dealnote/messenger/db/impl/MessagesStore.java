@@ -420,7 +420,8 @@ class MessagesStore extends AbsRepository implements IMessagesStore {
         return dbo;
     }
 
-    private static final Type EXTRAS_TYPE = new TypeToken<HashMap<Integer, String>>() {}.getType();
+    private static final Type EXTRAS_TYPE = new TypeToken<HashMap<Integer, String>>() {
+    }.getType();
 
     private static MessageEntity baseMapDbo(Cursor cursor) {
         @MessageStatus
@@ -436,7 +437,7 @@ class MessagesStore extends AbsRepository implements IMessagesStore {
         HashMap<Integer, String> extras = null;
 
         String extrasText = cursor.getString(cursor.getColumnIndex(MessageColumns.EXTRAS));
-        if(nonEmpty(extrasText)){
+        if (nonEmpty(extrasText)) {
             extras = GSON.fromJson(extrasText, EXTRAS_TYPE);
         }
 
@@ -581,7 +582,7 @@ class MessagesStore extends AbsRepository implements IMessagesStore {
 
     @Override
     public Completable changeMessageStatus(int accountId, int messageId, @MessageStatus int status,
-                                               @Nullable Integer vkid) {
+                                           @Nullable Integer vkid) {
         return Completable.create(e -> {
             ContentValues contentValues = new ContentValues();
             contentValues.put(MessageColumns.STATUS, status);
@@ -654,6 +655,22 @@ class MessagesStore extends AbsRepository implements IMessagesStore {
         });
     }
 
+    private int markAsRead(Uri uri, String where, String[] args) {
+        ContentValues cv = new ContentValues();
+        cv.put(MessageColumns.READ_STATE, true);
+        return getContentResolver().update(uri, cv, where, args);
+    }
+
+    @Override
+    public Completable markAsRead(int accountId, int peerId) {
+        return Completable.fromAction(() -> {
+            final Uri uri = MessengerContentProvider.getMessageContentUriFor(accountId);
+            final String where = MessageColumns.PEER_ID + " = ? AND " + MessageColumns.OUT + " = ?";
+            final String[] args = {String.valueOf(peerId), "0"};
+            markAsRead(uri, where, args);
+        });
+    }
+
     private List<MessageEntity> getForwardMessages(int accountId, int attachTo, boolean withAttachments, @NonNull Cancelable cancelable) {
         Uri uri = MessengerContentProvider.getMessageContentUriFor(accountId);
         String where = MessageColumns.ATTACH_TO + " = ?";
@@ -691,7 +708,7 @@ class MessagesStore extends AbsRepository implements IMessagesStore {
             String where;
             String[] args;
 
-            if(ids.size() == 1){
+            if (ids.size() == 1) {
                 where = MessageColumns._ID + " = ?";
                 args = new String[]{String.valueOf(ids.get(0))};
             } else {
@@ -728,10 +745,10 @@ class MessagesStore extends AbsRepository implements IMessagesStore {
         return Single.create(emitter -> {
             final String where = MessageColumns.STATUS + " = ? OR " + MessageColumns.STATUS + " = ?";
             final String[] args = {String.valueOf(MessageStatus.QUEUE), String.valueOf(MessageStatus.SENDING)};
-            final String orderBy =  MessageColumns._ID + " ASC LIMIT 1";
+            final String orderBy = MessageColumns._ID + " ASC LIMIT 1";
 
-            for(int accountId : accountIds){
-                if(emitter.isDisposed()){
+            for (int accountId : accountIds) {
+                if (emitter.isDisposed()) {
                     break;
                 }
 
@@ -741,15 +758,15 @@ class MessagesStore extends AbsRepository implements IMessagesStore {
 
                 MessageEntity entity = null;
 
-                if(nonNull(cursor)){
-                    if(cursor.moveToNext()){
+                if (nonNull(cursor)) {
+                    if (cursor.moveToNext()) {
                         entity = fullMapDbo(accountId, cursor, withAtatchments, withForwardMessages, emitter::isDisposed);
                     }
 
                     cursor.close();
                 }
 
-                if(nonNull(entity)){
+                if (nonNull(entity)) {
                     emitter.onSuccess(Optional.wrap(Pair.create(accountId, entity)));
                     return;
                 }

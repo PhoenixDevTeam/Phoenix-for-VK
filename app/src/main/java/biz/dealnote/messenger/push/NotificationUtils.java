@@ -68,7 +68,7 @@ public class NotificationUtils {
         }
     }
 
-    static int optInt(Bundle extras, String name, int defaultValue) {
+    public static int optInt(Bundle extras, String name, int defaultValue) {
         String value = extras.getString(name);
 
         try {
@@ -78,11 +78,11 @@ public class NotificationUtils {
         }
     }
 
-    static int optInt(Bundle extras, String name) {
+    public static int optInt(Bundle extras, String name) {
         return optInt(extras, name, 0);
     }
 
-    static void configOtherPushNotification(Notification notification) {
+    public static void configOtherPushNotification(Notification notification) {
         int mask = Settings.get()
                 .notifications()
                 .getOtherNotificationMask();

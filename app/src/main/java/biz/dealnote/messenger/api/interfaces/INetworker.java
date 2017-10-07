@@ -10,8 +10,6 @@ public interface INetworker {
 
     IAccountApis vkManual(int accountId, String accessToken);
 
-    IMuzicBrainzApi musicBrains();
-
     IAuthApi vkDirectAuth();
 
     ILongpollApi longpoll();

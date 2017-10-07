@@ -58,9 +58,7 @@ import biz.dealnote.messenger.model.Sticker;
 import biz.dealnote.messenger.mvp.view.IChatView;
 import biz.dealnote.messenger.realtime.Processors;
 import biz.dealnote.messenger.realtime.TmpResult;
-import biz.dealnote.messenger.service.RequestFactory;
 import biz.dealnote.messenger.service.SendService;
-import biz.dealnote.messenger.service.factory.MessagesRequestFactory;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.task.TextingNotifier;
@@ -1091,7 +1089,11 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
         if (has) {
             safeNotifyDataChanged();
-            executeRequest(RequestFactory.getReadMessageRequest(messagesOwnerId, null, getPeerId(), 0));
+            final int peedId = getPeerId();
+
+            appendDisposable(messagesInteractor.markAsRead(messagesOwnerId, peedId)
+                    .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                    .subscribe(() -> {/*ignore*/}, t -> showError(getView(), getCauseIfRuntime(t))));
         }
     }
 
@@ -1100,8 +1102,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     }
 
     private void restoreMessage(final int messageId) {
-        final int accountId = super.getAccountId();
-        appendDisposable(messagesInteractor.restoreMessage(accountId, messageId)
+        appendDisposable(messagesInteractor.restoreMessage(this.messagesOwnerId, messageId)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
                 .subscribe(() -> onMessagesRestoredSuccessfully(messageId), t -> showError(getView(), getCauseIfRuntime(t))));
     }
@@ -1302,7 +1303,11 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     }
 
     public void fireChatTitleTyped(String newValue) {
-        executeRequest(MessagesRequestFactory.getEditChatRequest(Peer.toChatId(getPeerId()), newValue));
+        final int chatId = Peer.fromChatId(getPeerId());
+
+        appendDisposable(messagesInteractor.changeChatTitle(this.messagesOwnerId, chatId, newValue)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> {/*ignore*/}, t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
     public void fireForwardToHereClick(@NonNull ArrayList<Message> messages) {

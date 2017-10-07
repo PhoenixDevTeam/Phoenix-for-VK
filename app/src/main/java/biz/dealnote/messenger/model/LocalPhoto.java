@@ -6,7 +6,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-public class LocalPhoto implements Parcelable, Comparable<LocalPhoto>, Selectable {
+public class LocalPhoto implements Parcelable, Comparable<LocalPhoto>, ISelectable {
 
     private long imageId;
     private Uri fullImageUri;

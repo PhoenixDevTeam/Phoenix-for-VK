@@ -5,8 +5,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.util.ObjectUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -428,19 +426,19 @@ public class MagicKey implements Parcelable {
                     }
                     break;
                 case TYPE_STRING:
-                    if (!ObjectUtils.safeEquals(mBundle.getString(param),
+                    if (!Objects.safeEquals(mBundle.getString(param),
                             oParams.mBundle.getString(param))) {
                         return false;
                     }
                     break;
                 case TYPE_CHARSEQUENCE:
-                    if (!ObjectUtils.safeEquals(mBundle.getCharSequence(param),
+                    if (!Objects.safeEquals(mBundle.getCharSequence(param),
                             oParams.mBundle.getCharSequence(param))) {
                         return false;
                     }
                     break;
                 case TYPE_PARCELABLE:
-                    if (!ObjectUtils.safeEquals(mBundle.getParcelable(param),
+                    if (!Objects.safeEquals(mBundle.getParcelable(param),
                             oParams.mBundle.getParcelable(param))) {
                         return false;
                     }

@@ -99,10 +99,6 @@
             android:exported="false"/>
 
         <service
-            android:name=".service.RestService"
-            android:exported="false" />
-
-        <service
             android:name=".upload.UploadService"
             android:exported="false"/>
 

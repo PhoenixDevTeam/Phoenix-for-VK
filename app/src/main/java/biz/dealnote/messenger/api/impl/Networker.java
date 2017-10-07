@@ -10,7 +10,6 @@ import biz.dealnote.messenger.api.VkRetrofitProvider;
 import biz.dealnote.messenger.api.interfaces.IAccountApis;
 import biz.dealnote.messenger.api.interfaces.IAuthApi;
 import biz.dealnote.messenger.api.interfaces.ILongpollApi;
-import biz.dealnote.messenger.api.interfaces.IMuzicBrainzApi;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.interfaces.IUploadApi;
 import biz.dealnote.messenger.api.services.IAuthService;
@@ -40,11 +39,6 @@ public class Networker implements INetworker {
     @Override
     public IAccountApis vkManual(int accountId, String accessToken) {
         return VkApies.create(accountId, accessToken, vkRetrofitProvider);
-    }
-
-    @Override
-    public IMuzicBrainzApi musicBrains() {
-        return new MusicBrainzApi();
     }
 
     @Override

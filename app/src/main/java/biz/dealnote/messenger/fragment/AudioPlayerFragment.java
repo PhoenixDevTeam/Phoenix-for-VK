@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.PorterDuff;
 import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,37 +15,32 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.lang.ref.WeakReference;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
-import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.exception.ServiceException;
 import biz.dealnote.messenger.fragment.base.AccountDependencyFragment;
 import biz.dealnote.messenger.interactor.IAudioInteractor;
 import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.Audio;
-import biz.dealnote.messenger.model.Cover;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.player.MusicPlaybackService;
 import biz.dealnote.messenger.player.ui.PlayPauseButton;
@@ -54,20 +48,18 @@ import biz.dealnote.messenger.player.ui.RepeatButton;
 import biz.dealnote.messenger.player.ui.RepeatingImageButton;
 import biz.dealnote.messenger.player.ui.ShuffleButton;
 import biz.dealnote.messenger.player.util.MusicUtils;
-import biz.dealnote.messenger.service.IntArray;
-import biz.dealnote.messenger.service.factory.AudioRequestFactory;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.CircleCounterButton;
+import io.reactivex.disposables.CompositeDisposable;
 
 import static biz.dealnote.messenger.player.util.MusicUtils.isPlaying;
 import static biz.dealnote.messenger.player.util.MusicUtils.mService;
 import static biz.dealnote.messenger.player.util.MusicUtils.observeServiceBinding;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class AudioPlayerFragment extends AccountDependencyFragment implements SeekBar.OnSeekBarChangeListener, PopupMenu.OnMenuItemClickListener {
+public class AudioPlayerFragment extends AccountDependencyFragment implements SeekBar.OnSeekBarChangeListener {
 
     // Message to refresh the time
     private static final int REFRESH_TIME = 1;
@@ -93,11 +85,9 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
     // VK Additional action
     private CircleCounterButton ivAdd;
     private CircleCounterButton ivTranslate;
-    private CircleCounterButton ivMenu;
 
     private TextView tvTitle;
     private TextView tvSubtitle;
-    private ImageView mCoverView;
 
     // Broadcast receiver
     private PlaybackStatus mPlaybackStatus;
@@ -148,10 +138,6 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
         // Initialize the broadcast receiver
         mPlaybackStatus = new PlaybackStatus(this);
 
-        if (savedInstanceState != null) {
-            cover = savedInstanceState.getParcelable(SAVE_COVER);
-        }
-
         mPlayerProgressStrings = getResources().getStringArray(R.array.player_progress_state);
 
         appendDisposable(observeServiceBinding()
@@ -162,6 +148,33 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
     private void onServiceBindEvent() {
         updatePlaybackControls();
         updateNowPlayingInfo();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.audio_player_menu, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.eq).setVisible(isEqualizerAvailable());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.eq:
+                startEffectsPanel();
+                return true;
+
+            case R.id.playlist:
+                PlaceFactory.getPlaylistPlace().tryOpenWith(getActivity());
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -177,8 +190,6 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
-        ImageView mDefaultCover = root.findViewById(R.id.music_default_cover);
-        mCoverView = root.findViewById(R.id.cover);
         mPlayPauseButton = root.findViewById(R.id.action_button_play);
         mShuffleButton = root.findViewById(R.id.action_button_shuffle);
         mRepeatButton = root.findViewById(R.id.action_button_repeat);
@@ -213,11 +224,6 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
 
         ivTranslate.setOnClickListener(v -> onAudioBroadcastButtonClick());
 
-        ivMenu = root.findViewById(R.id.audio_menu);
-        ivMenu.setOnClickListener(v -> showPopup(ivMenu));
-
-        mDefaultCover.setColorFilter(CurrentTheme.getIconColorOnColoredBackgroundCode(getActivity()), PorterDuff.Mode.MULTIPLY);
-
         if (isAudioStreaming()) {
             broadcastAudio();
         }
@@ -245,15 +251,6 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
                 .isAudioBroadcastActive();
     }
 
-    public void showPopup(View v) {
-        PopupMenu popup = new PopupMenu(getActivity(), v);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.audio_player_menu, popup.getMenu());
-        popup.getMenu().findItem(R.id.eq).setVisible(isEqualizerAvailable());
-        popup.setOnMenuItemClickListener(this);
-        popup.show();
-    }
-
     private void onAddButtonClick() {
         Audio audio = MusicUtils.getCurrentAudio();
         if (audio == null) {
@@ -273,14 +270,14 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
         }
     }
 
-    private void add(int accountId, Audio audio){
+    private void add(int accountId, Audio audio) {
         appendDisposable(mAudioInteractor.add(accountId, audio, null, null)
-        .compose(RxUtils.applySingleIOToMainSchedulers())
-        .subscribe(this::onAudioAdded, t -> {/*TODO*/}));
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::onAudioAdded, t -> {/*TODO*/}));
     }
 
     @SuppressWarnings("unused")
-    private void onAudioAdded(Audio result){
+    private void onAudioAdded(Audio result) {
         safeToast(R.string.added);
         resolveAddButton();
     }
@@ -322,56 +319,6 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
     private void safeToast(int res) {
         if (isAdded()) {
             Toast.makeText(getActivity(), res, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void onRequestFinished(Request request, Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-        Audio current = MusicUtils.getCurrentAudio();
-
-        switch (request.getRequestType()) {
-            case AudioRequestFactory.REQUEST_FIND_COVER:
-                if (current != null
-                        && current.getId() == request.getInt(Extra.ID)
-                        && current.getOwnerId() == request.getInt(Extra.OWNER_ID)) {
-                    cover = resultData.getParcelable(Extra.COVER);
-                    updateCoverView();
-                }
-
-                break;
-        }
-    }
-
-    private boolean hasValidCover() {
-        Audio current = MusicUtils.getCurrentAudio();
-        return current != null && cover != null && current.getOwnerId() == cover.ownerId
-                && current.getId() == cover.audioId;
-    }
-
-    private void updateCoverView() {
-        if (!isAdded()) return;
-
-        if (!hasValidCover()) {
-            PicassoInstance.with().cancelRequest(mCoverView);
-            mCoverView.setImageDrawable(null);
-        } else {
-            PicassoInstance.with()
-                    .load(Utils.firstNonEmptyString(cover.large, cover.small))
-                    .into(mCoverView);
-        }
-    }
-
-    private Cover cover;
-
-    @Override
-    protected void onRequestError(Request request, ServiceException throwable) {
-        super.onRequestError(request, throwable);
-        if (!BuildConfig.DEBUG && request.getRequestType() == AudioRequestFactory.REQUEST_FIND_COVER)
-            return; //ignore
-
-        if (isAdded()) {
-            Utils.showRedTopToast(getActivity(), throwable.getMessage());
         }
     }
 
@@ -506,6 +453,7 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
 
         mIsPaused = false;
         mTimeHandler.removeMessages(REFRESH_TIME);
+        mBroadcastDisposable.dispose();
 
         // Unregister the receiver
         try {
@@ -519,8 +467,6 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
      * Sets the track name, album name, and album art.
      */
     private void updateNowPlayingInfo() {
-        updateCoverView();
-
         String artist = MusicUtils.getArtistName();
         String trackName = MusicUtils.getTrackName();
 
@@ -546,11 +492,6 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
         // Update the current time
         queueNextRefresh(1);
         resolveActionBar();
-
-        if (current != null && !hasValidCover()) {
-            Request request = AudioRequestFactory.getFindCoverRequest(current.getId(), current.getOwnerId(), current.getArtist(), current.getTitle());
-            executeRequest(request);
-        }
     }
 
 
@@ -562,14 +503,6 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
         if (MusicUtils.isInitialized()) {
             mTotalTime.setText(MusicUtils.makeTimeString(getActivity(), MusicUtils.duration() / 1000));
         }
-    }
-
-    private static final String SAVE_COVER = "save_cover";
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(SAVE_COVER, cover);
     }
 
     /**
@@ -640,17 +573,25 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
         ivAdd.setIcon(icon);
     }
 
+    private CompositeDisposable mBroadcastDisposable = new CompositeDisposable();
+
     private void broadcastAudio() {
+        mBroadcastDisposable.clear();
+
         Audio currentAudio = MusicUtils.getCurrentAudio();
 
         if (currentAudio == null) {
             return;
         }
 
-        IntArray intArray = new IntArray(getAccountId());
+        final int accountId = getAccountId();
+        final Collection<Integer> targetIds = Collections.singleton(accountId);
+        final int id = currentAudio.getId();
+        final int ownerId = currentAudio.getOwnerId();
 
-        Request request = AudioRequestFactory.getBroadcastRequest(currentAudio.getId(), currentAudio.getOwnerId(), intArray);
-        executeRequest(request);
+        mBroadcastDisposable.add(mAudioInteractor.sendBroadcast(accountId, ownerId, id, targetIds)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> {/*ignore*/}, t -> {/*ignore*/}));
     }
 
     /**
@@ -862,20 +803,6 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
             scanForward(repcnt, howlong);
         }
     };
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.eq:
-                startEffectsPanel();
-                return true;
-            case R.id.playlist:
-                PlaceFactory.getPlaylistPlace().tryOpenWith(getActivity());
-                return true;
-            default:
-                return false;
-        }
-    }
 
     /**
      * Used to update the current time string

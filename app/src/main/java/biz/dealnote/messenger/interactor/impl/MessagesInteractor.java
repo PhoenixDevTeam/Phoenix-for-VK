@@ -643,10 +643,29 @@ public class MessagesInteractor implements IMessagesInteractor {
     }
 
     @Override
+    public Completable changeChatTitle(int accountId, int chatId, String title) {
+        return networker.vkDefault(accountId)
+                .messages()
+                .editChat(chatId, title)
+                .flatMapCompletable(ignored -> stores.dialogs()
+                        .changeTitle(accountId, Peer.fromChatId(chatId), title));
+    }
+
+    @Override
     public Single<Integer> createGroupChat(int accountId, Collection<Integer> users, String title) {
         return networker.vkDefault(accountId)
                 .messages()
                 .createChat(users, title);
+    }
+
+    @Override
+    public Completable markAsRead(int accountId, int peerId) {
+        // TODO: 07.10.2017 Dialogs table update?
+        return networker.vkDefault(accountId)
+                .messages()
+                .markAsRead(null, peerId, null)
+                .flatMapCompletable(ignored -> stores.messages().markAsRead(accountId, peerId))
+                .andThen(fixDialogs(accountId, peerId));
     }
 
     private Single<Integer> internalSend(int accountId, MessageEntity dbo) {

@@ -38,8 +38,8 @@ import java.util.Map;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.Identificable;
-import biz.dealnote.messenger.model.Selectable;
-import biz.dealnote.messenger.model.Someones;
+import biz.dealnote.messenger.model.ISelectable;
+import biz.dealnote.messenger.model.ISomeones;
 import io.reactivex.disposables.Disposable;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
@@ -437,7 +437,7 @@ public class Utils {
         return -1;
     }
 
-    public static <T extends Someones> int findIndexById(@NonNull List<T> data, int id, int ownerId) {
+    public static <T extends ISomeones> int findIndexById(@NonNull List<T> data, int id, int ownerId) {
         for (int i = 0; i < data.size(); i++) {
             T t = data.get(i);
             if (t.getId() == id && t.getOwnerId() == ownerId) {
@@ -459,12 +459,12 @@ public class Utils {
     }
 
     @NonNull
-    public static <T extends Selectable> ArrayList<T> getSelected(@NonNull List<T> fullData) {
+    public static <T extends ISelectable> ArrayList<T> getSelected(@NonNull List<T> fullData) {
         return getSelected(fullData, false);
     }
 
     @NonNull
-    public static <T extends Selectable> ArrayList<T> getSelected(@NonNull List<T> fullData, boolean reverse) {
+    public static <T extends ISelectable> ArrayList<T> getSelected(@NonNull List<T> fullData, boolean reverse) {
         ArrayList<T> result = new ArrayList<>();
 
         if (reverse) {
@@ -485,9 +485,9 @@ public class Utils {
         return result;
     }
 
-    public static int countOfSelection(List<? extends Selectable> data) {
+    public static int countOfSelection(List<? extends ISelectable> data) {
         int count = 0;
-        for (Selectable selectable : data) {
+        for (ISelectable selectable : data) {
             if (selectable.isSelected()) {
                 count++;
             }

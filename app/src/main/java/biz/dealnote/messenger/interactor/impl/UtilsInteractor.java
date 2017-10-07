@@ -19,10 +19,15 @@ import biz.dealnote.messenger.db.model.entity.FriendListEntity;
 import biz.dealnote.messenger.interactor.IOwnersInteractor;
 import biz.dealnote.messenger.interactor.IUtilsInteractor;
 import biz.dealnote.messenger.interactor.mappers.Dto2Model;
+import biz.dealnote.messenger.interactor.mappers.Entity2Model;
+import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.FriendList;
+import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Privacy;
 import biz.dealnote.messenger.model.SimplePrivacy;
+import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.util.Objects;
+import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Single;
 
@@ -88,6 +93,53 @@ public class UtilsInteractor implements IUtilsInteractor {
 
                                         return privacies;
                                     }));
+                });
+    }
+
+    @Override
+    public Single<Optional<Owner>> resolveDomain(int accountId, String domain) {
+        return stores.owners()
+                .findUserByDomain(accountId, domain)
+                .<Optional<Owner>>flatMap(optionalUserEntity -> {
+                    if(optionalUserEntity.nonEmpty()){
+                        User user = Entity2Model.buildUserFromDbo(optionalUserEntity.get());
+                        return Single.just(Optional.wrap(user));
+                    }
+
+                    return stores.owners()
+                            .findCommunityByDomain(accountId, domain)
+                            .flatMap(optionalCommunityEntity -> {
+                                if(optionalCommunityEntity.isEmpty()){
+                                    Community community = Entity2Model.buildCommunityFromDbo(optionalCommunityEntity.get());
+                                    return Single.just(Optional.<Owner>wrap(community));
+                                }
+
+                                return Single.just(Optional.empty());
+                            });
+                })
+                .flatMap(optionalOwner -> {
+                    if(optionalOwner.nonEmpty()){
+                        return Single.just(optionalOwner);
+                    }
+
+                    return networker.vkDefault(accountId)
+                            .utils()
+                            .resolveScreenName(domain)
+                            .flatMap(response -> {
+                                if("user".equals(response.type)){
+                                    int userId = Integer.parseInt(response.object_id);
+                                    return ownersInteractor.getBaseOwnerInfo(accountId, userId, IOwnersInteractor.MODE_ANY)
+                                            .map(Optional::wrap);
+                                }
+
+                                if("group".equals(response.type)){
+                                    int ownerId = -Math.abs(Integer.parseInt(response.object_id));
+                                    return ownersInteractor.getBaseOwnerInfo(accountId, ownerId, IOwnersInteractor.MODE_ANY)
+                                            .map(Optional::wrap);
+                                }
+
+                                return Single.just(Optional.empty());
+                            });
                 });
     }
 

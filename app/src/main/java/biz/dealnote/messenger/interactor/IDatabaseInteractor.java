@@ -3,8 +3,8 @@ package biz.dealnote.messenger.interactor;
 import java.util.List;
 
 import biz.dealnote.messenger.model.City;
-import biz.dealnote.messenger.model.Country;
 import biz.dealnote.messenger.model.database.Chair;
+import biz.dealnote.messenger.model.database.Country;
 import biz.dealnote.messenger.model.database.Faculty;
 import biz.dealnote.messenger.model.database.School;
 import biz.dealnote.messenger.model.database.SchoolClazz;

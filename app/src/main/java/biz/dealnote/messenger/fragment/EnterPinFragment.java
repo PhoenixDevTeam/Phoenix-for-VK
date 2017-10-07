@@ -47,10 +47,10 @@ public class EnterPinFragment extends BasePresenterFragment<EnterPinPresenter, I
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_enter_pin, container, false);
 
-        KeyboardView keyboardView = (KeyboardView) root.findViewById(R.id.keyboard);
+        KeyboardView keyboardView = root.findViewById(R.id.keyboard);
         keyboardView.setOnKeyboardClickListener(this);
 
-        mAvatar = (ImageView) root.findViewById(R.id.avatar);
+        mAvatar = root.findViewById(R.id.avatar);
         mValuesRoot = root.findViewById(R.id.value_root);
 
         mValuesCircles = new View[Constants.PIN_DIGITS_COUNT];

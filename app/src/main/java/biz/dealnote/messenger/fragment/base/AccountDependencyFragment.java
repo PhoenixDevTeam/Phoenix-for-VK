@@ -186,7 +186,5 @@ public class AccountDependencyFragment extends BaseFragment
     public void onHashTagClicked(String hashTag) {
         NewsFeedCriteria criteria = new NewsFeedCriteria(hashTag);
         PlaceFactory.getSingleTabSearchPlace(getAccountId(), SearchContentType.NEWS, criteria).tryOpenWith(getActivity());
-        //PlaceFactory.getSearchPlace(getAccountId(), SeachTabsFragment.TAB_NEWS, criteria)
-         //       .tryOpenWith(getActivity());
     }
 }

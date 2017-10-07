@@ -20,7 +20,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.vkdatabase.CountriesAdapter;
 import biz.dealnote.messenger.fragment.base.BasePresenterDialogFragment;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
-import biz.dealnote.messenger.model.Country;
+import biz.dealnote.messenger.model.database.Country;
 import biz.dealnote.messenger.mvp.presenter.CountriesPresenter;
 import biz.dealnote.messenger.mvp.view.ICountriesView;
 import biz.dealnote.messenger.util.Objects;

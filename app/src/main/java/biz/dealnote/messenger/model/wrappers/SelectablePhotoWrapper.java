@@ -4,10 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import biz.dealnote.messenger.model.ISelectable;
 import biz.dealnote.messenger.model.Photo;
-import biz.dealnote.messenger.model.Selectable;
 
-public class SelectablePhotoWrapper implements Parcelable, Comparable<SelectablePhotoWrapper>, Selectable {
+public class SelectablePhotoWrapper implements Parcelable, Comparable<SelectablePhotoWrapper>, ISelectable {
 
     private final Photo photo;
     private boolean selected;
