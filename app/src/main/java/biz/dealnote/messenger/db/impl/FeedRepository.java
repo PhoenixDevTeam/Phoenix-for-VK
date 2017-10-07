@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import biz.dealnote.messenger.api.model.VkApiFeedList;
 import biz.dealnote.messenger.db.DatabaseIdRange;
 import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.FeedListsColumns;
@@ -21,12 +20,12 @@ import biz.dealnote.messenger.db.column.NewsColumns;
 import biz.dealnote.messenger.db.interfaces.IFeedRepository;
 import biz.dealnote.messenger.db.model.entity.AttachmentsEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
+import biz.dealnote.messenger.db.model.entity.FeedListEntity;
 import biz.dealnote.messenger.db.model.entity.NewsEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.PostEntity;
 import biz.dealnote.messenger.model.FeedSourceCriteria;
 import biz.dealnote.messenger.model.criteria.FeedCriteria;
-import biz.dealnote.messenger.util.Pair;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
@@ -177,7 +176,7 @@ class FeedRepository extends AbsRepository implements IFeedRepository {
     }
 
     @Override
-    public Completable storeLists(int accountid, @NonNull List<VkApiFeedList> data) {
+    public Completable storeLists(int accountid, @NonNull List<FeedListEntity> entities) {
         return Completable.create(e -> {
             Uri uri = MessengerContentProvider.getFeedListsContentUriFor(accountid);
 
@@ -185,9 +184,9 @@ class FeedRepository extends AbsRepository implements IFeedRepository {
             operations.add(ContentProviderOperation.newDelete(uri)
                     .build());
 
-            for (VkApiFeedList feedList : data) {
+            for (FeedListEntity entity : entities) {
                 operations.add(ContentProviderOperation.newInsert(uri)
-                        .withValues(FeedListsColumns.getCV(feedList))
+                        .withValues(FeedListsColumns.getCV(entity))
                         .build());
             }
 
@@ -197,12 +196,12 @@ class FeedRepository extends AbsRepository implements IFeedRepository {
     }
 
     @Override
-    public Single<List<Pair<Integer, String>>> getAllLists(@NonNull FeedSourceCriteria criteria) {
+    public Single<List<FeedListEntity>> getAllLists(@NonNull FeedSourceCriteria criteria) {
         return Single.create(e -> {
             Uri uri = MessengerContentProvider.getFeedListsContentUriFor(criteria.getAccountId());
             Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 
-            List<Pair<Integer, String>> data = new ArrayList<>(safeCountOf(cursor));
+            List<FeedListEntity> data = new ArrayList<>(safeCountOf(cursor));
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     if (e.isDisposed()) {
@@ -219,23 +218,28 @@ class FeedRepository extends AbsRepository implements IFeedRepository {
         });
     }
 
-    private static Pair<Integer, String> mapList(Cursor cursor) {
+    private static FeedListEntity mapList(Cursor cursor) {
         int id = cursor.getInt(cursor.getColumnIndex(FeedListsColumns._ID));
         String title = cursor.getString(cursor.getColumnIndex(FeedListsColumns.TITLE));
-        /*String sources = cursor.getString(cursor.getColumnIndex(FeedListsColumns.SOURCE_IDS));
+
+        FeedListEntity entity = new FeedListEntity(id).setTitle(title);
+
+        String sources = cursor.getString(cursor.getColumnIndex(FeedListsColumns.SOURCE_IDS));
 
         int[] sourceIds = null;
-        if (!TextUtils.isEmpty(sources)) {
-            String[] ids = TextUtils.split(sources, ",");
-            if (ids != null && ids.length > 0) {
-                sourceIds = new int[ids.length];
-                for (int i = 0; i < ids.length; i++) {
-                    sourceIds[i] = Integer.parseInt(ids[i]);
-                }
-            }
-        }*/
 
-        return Pair.create(id, title);
+        if (nonEmpty(sources)) {
+            String[] ids = sources.split(",");
+
+            sourceIds = new int[ids.length];
+
+            for (int i = 0; i < ids.length; i++) {
+                sourceIds[i] = Integer.parseInt(ids[i]);
+            }
+        }
+
+        return entity.setSourceIds(sourceIds)
+                .setNoReposts(cursor.getInt(cursor.getColumnIndex(FeedListsColumns.NO_REPOSTS)) == 1);
     }
 
     /*private void fillAttachmentsOperations(int accountId, @NonNull VKApiAttachment attachment, @NonNull List<ContentProviderOperation> target,

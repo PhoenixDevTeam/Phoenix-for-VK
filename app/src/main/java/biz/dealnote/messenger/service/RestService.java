@@ -9,13 +9,11 @@ import com.foxykeep.datadroid.service.RequestService;
 import biz.dealnote.messenger.exception.ServiceException;
 import biz.dealnote.messenger.service.factory.AccountRequestFactory;
 import biz.dealnote.messenger.service.factory.AudioRequestFactory;
-import biz.dealnote.messenger.service.factory.FeedRequestFactory;
 import biz.dealnote.messenger.service.factory.MessagesRequestFactory;
 import biz.dealnote.messenger.service.factory.UtilsRequestFactory;
 import biz.dealnote.messenger.service.operations.account.PushResolveOperation;
 import biz.dealnote.messenger.service.operations.audio.AlbumCoverFindOperation;
 import biz.dealnote.messenger.service.operations.audio.SetBroadcastAudioOperation;
-import biz.dealnote.messenger.service.operations.feed.FeedGetListOperation;
 import biz.dealnote.messenger.service.operations.message.DeleteDialogOperation;
 import biz.dealnote.messenger.service.operations.message.DeleteMessageOperation;
 import biz.dealnote.messenger.service.operations.message.EditChatOperation;
@@ -35,9 +33,6 @@ public class RestService extends RequestService {
 
             case RequestFactory.REQUEST_DELETE_MESSAGES:
                 return new DeleteMessageOperation();
-
-            case FeedRequestFactory.REQUEST_GET_LISTS:
-                return new FeedGetListOperation();
 
             case RequestFactory.REQUEST_MESSAGES_RESTORE:
                 return new MessagesRestoreOperation();

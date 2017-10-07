@@ -7,7 +7,9 @@ import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiNews;
 import biz.dealnote.messenger.api.model.VKApiPost;
+import biz.dealnote.messenger.api.model.VkApiFeedList;
 import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.model.entity.FeedListEntity;
 import biz.dealnote.messenger.db.model.entity.NewsEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.fragment.search.criteria.NewsFeedCriteria;
@@ -16,6 +18,8 @@ import biz.dealnote.messenger.interactor.IOwnersInteractor;
 import biz.dealnote.messenger.interactor.mappers.Dto2Entity;
 import biz.dealnote.messenger.interactor.mappers.Dto2Model;
 import biz.dealnote.messenger.interactor.mappers.Entity2Model;
+import biz.dealnote.messenger.model.FeedList;
+import biz.dealnote.messenger.model.FeedSourceCriteria;
 import biz.dealnote.messenger.model.News;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Post;
@@ -105,6 +109,49 @@ public class FeedInteractor implements IFeedInteractor {
                                 List<Post> posts = Dto2Model.transformPosts(dtos, ownersBundle);
                                 return Pair.create(posts, response.nextFrom);
                             });
+                });
+    }
+
+    @Override
+    public Single<List<FeedList>> getCachedFeedLists(int accountId) {
+        FeedSourceCriteria criteria = new FeedSourceCriteria(accountId);
+        return stores.feed()
+                .getAllLists(criteria)
+                .map(entities -> {
+                    List<FeedList> lists = new ArrayList<>(entities.size());
+                    for(FeedListEntity entity : entities){
+                        lists.add(createFeedListFromEntity(entity));
+                    }
+                    return lists;
+                });
+    }
+
+    private static FeedList createFeedListFromEntity(FeedListEntity entity){
+        return new FeedList(entity.getId(), entity.getTitle());
+    }
+
+    @Override
+    public Single<List<FeedList>> getActualFeedLists(int accountId) {
+        return networker.vkDefault(accountId)
+                .newsfeed()
+                .getLists(null)
+                .map(items -> Utils.listEmptyIfNull(items.getItems()))
+                .flatMap(dtos -> {
+                    List<FeedListEntity> entities = new ArrayList<>(dtos.size());
+                    List<FeedList> lists = new ArrayList<>();
+
+                    for(VkApiFeedList dto : dtos){
+                        FeedListEntity entity = new FeedListEntity(dto.id)
+                                .setTitle(dto.title)
+                                .setNoReposts(dto.no_reposts)
+                                .setSourceIds(dto.source_ids);
+                        entities.add(entity);
+                        lists.add(createFeedListFromEntity(entity));
+                    }
+
+                    return stores.feed()
+                            .storeLists(accountId, entities)
+                            .andThen(Single.just(lists));
                 });
     }
 
