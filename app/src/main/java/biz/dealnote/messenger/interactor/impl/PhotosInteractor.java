@@ -172,6 +172,30 @@ public class PhotosInteractor implements IPhotosInteractor {
     }
 
     @Override
+    public Completable deletePhoto(int accountId, int ownerId, int photoId) {
+        return networker.vkDefault(accountId)
+                .photos()
+                .delete(ownerId, photoId)
+                .flatMapCompletable(ignored -> {
+                    PhotoPatch patch = new PhotoPatch().setDeletion(new PhotoPatch.Deletion(true));
+                    return cache.photos()
+                            .applyPatch(accountId, ownerId, photoId, patch);
+                });
+    }
+
+    @Override
+    public Completable restorePhoto(int accountId, int ownerId, int photoId) {
+        return networker.vkDefault(accountId)
+                .photos()
+                .restore(ownerId, photoId)
+                .flatMapCompletable(ignored -> {
+                    PhotoPatch patch = new PhotoPatch().setDeletion(new PhotoPatch.Deletion(false));
+                    return cache.photos()
+                            .applyPatch(accountId, ownerId, photoId, patch);
+                });
+    }
+
+    @Override
     public Single<List<Photo>> getPhotosByIds(int accountId, Collection<AccessIdPair> ids) {
         List<biz.dealnote.messenger.api.model.AccessIdPair> dtoPairs = new ArrayList<>(ids.size());
 

@@ -52,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 153;
+    private static final int DATABASE_VERSION = 154;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -332,7 +332,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "  [" + PhotosColumns.WIDTH + "] INTEGER, " +
                 "  [" + PhotosColumns.HEIGHT + "] INTEGER, " +
                 "  [" + PhotosColumns.TEXT + "] TEXT, " +
-                "  [" + PhotosColumns.DATE + "] BIGINT, " +
+                "  [" + PhotosColumns.DATE + "] INTEGER, " +
                 "  [" + PhotosColumns.SIZES + "] TEXT, " +
                 "  [" + PhotosColumns.USER_LIKES + "] BOOLEAN, " +
                 "  [" + PhotosColumns.CAN_COMMENT + "] BOOLEAN, " +
@@ -340,6 +340,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "  [" + PhotosColumns.COMMENTS + "] INTEGER, " +
                 "  [" + PhotosColumns.TAGS + "] INTEGER, " +
                 "  [" + PhotosColumns.ACCESS_KEY + "] TEXT, " +
+                "  [" + PhotosColumns.DELETED + "] TEXT, " +
                 "  CONSTRAINT [] UNIQUE ([" + PhotosColumns.PHOTO_ID + "], [" + PhotosColumns.OWNER_ID + "]) ON CONFLICT REPLACE);";
         db.execSQL(sql);
     }

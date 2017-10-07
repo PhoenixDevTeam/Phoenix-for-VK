@@ -1,16 +1,6 @@
 package biz.dealnote.messenger.db.column;
 
-import android.content.ContentValues;
 import android.provider.BaseColumns;
-
-import com.google.gson.Gson;
-
-import biz.dealnote.messenger.api.model.VKApiPhoto;
-import biz.dealnote.messenger.interactor.mappers.Dto2Model;
-
-import static biz.dealnote.messenger.util.Objects.isNull;
-import static biz.dealnote.messenger.util.Objects.nonNull;
-import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
 
 public final class PhotosColumns implements BaseColumns {
 
@@ -32,35 +22,7 @@ public final class PhotosColumns implements BaseColumns {
     public static final String COMMENTS = "comments";
     public static final String TAGS = "tags";
     public static final String ACCESS_KEY = "access_key";
-
-    private static final Gson GSON = new Gson();
-
-    public static ContentValues getCV(VKApiPhoto p){
-        ContentValues cv = new ContentValues();
-        cv.put(PHOTO_ID, p.id);
-        cv.put(ALBUM_ID, p.album_id);
-        cv.put(OWNER_ID, p.owner_id);
-        cv.put(WIDTH, p.width);
-        cv.put(HEIGHT, p.height);
-        cv.put(TEXT, p.text);
-        cv.put(DATE, p.date);
-
-        if(nonNull(p.sizes)){
-            cv.put(SIZES, GSON.toJson(Dto2Model.transform(p.sizes)));
-        }
-
-        cv.put(USER_LIKES, p.user_likes);
-        cv.put(CAN_COMMENT, p.can_comment);
-        cv.put(LIKES, p.likes);
-        cv.put(COMMENTS, isNull(p.comments) ? 0 : p.comments.count);
-        cv.put(TAGS, p.tags);
-
-        if(!safeIsEmpty(p.access_key)){
-            cv.put(ACCESS_KEY, p.access_key);
-        }
-
-        return cv;
-    }
+    public static final String DELETED = "deleted";
 
     public static final String FULL_ID = TABLENAME + "." + _ID;
     public static final String FULL_PHOTO_ID = TABLENAME + "." + PHOTO_ID;
@@ -77,4 +39,5 @@ public final class PhotosColumns implements BaseColumns {
     public static final String FULL_COMMENTS = TABLENAME + "." + COMMENTS;
     public static final String FULL_TAGS = TABLENAME + "." + TAGS;
     public static final String FULL_ACCESS_KEY = TABLENAME + "." + ACCESS_KEY;
+    public static final String FULL_DELETED = TABLENAME + "." + DELETED;
 }

@@ -75,6 +75,7 @@ class PhotosRepository extends AbsRepository implements IPhotosRepository {
         cv.put(PhotosColumns.COMMENTS, dbo.getCommentsCount());
         cv.put(PhotosColumns.TAGS, dbo.getTagsCount());
         cv.put(PhotosColumns.ACCESS_KEY, dbo.getAccessKey());
+        cv.put(PhotosColumns.DELETED, dbo.isDeleted());
         return cv;
     }
 
@@ -113,6 +114,10 @@ class PhotosRepository extends AbsRepository implements IPhotosRepository {
             if(nonNull(patch.getLike())){
                 cv.put(PhotosColumns.LIKES, patch.getLike().getCount());
                 cv.put(PhotosColumns.USER_LIKES, patch.getLike().isLiked());
+            }
+
+            if(nonNull(patch.getDeletion())){
+                cv.put(PhotosColumns.DELETED, patch.getDeletion().isDeleted());
             }
 
             if(cv.size() > 0){
@@ -167,6 +172,6 @@ class PhotosRepository extends AbsRepository implements IPhotosRepository {
                 .setCommentsCount(cursor.getInt(cursor.getColumnIndex(PhotosColumns.COMMENTS)))
                 .setTagsCount(cursor.getInt(cursor.getColumnIndex(PhotosColumns.TAGS)))
                 .setAccessKey(cursor.getString(cursor.getColumnIndex(PhotosColumns.ACCESS_KEY)))
-                .setDeleted(false);
+                .setDeleted(cursor.getInt(cursor.getColumnIndex(PhotosColumns.DELETED)) == 1);
     }
 }

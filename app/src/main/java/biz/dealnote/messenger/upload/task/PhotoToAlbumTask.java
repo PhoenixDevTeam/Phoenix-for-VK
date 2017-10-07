@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.media.ExifInterface;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 import biz.dealnote.messenger.api.Apis;
@@ -13,8 +14,9 @@ import biz.dealnote.messenger.api.WeakPercentageListener;
 import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.api.model.upload.UploadPhotoToAlbumDto;
-import biz.dealnote.messenger.db.MessengerContentProvider;
-import biz.dealnote.messenger.db.column.PhotosColumns;
+import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.model.entity.PhotoEntity;
+import biz.dealnote.messenger.interactor.mappers.Dto2Entity;
 import biz.dealnote.messenger.interactor.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.upload.BaseUploadResponse;
@@ -108,10 +110,15 @@ public class PhotoToAlbumTask extends AbstractUploadTask<PhotoToAlbumTask.Respon
 
             if (nonEmpty(photos)) {
                 VKApiPhoto dto = photos.get(0);
+
+
                 result.photo = Dto2Model.transform(dto);
 
-                getContext().getContentResolver().insert(MessengerContentProvider
-                        .getPhotosContentUriFor(uploadObject.getAccountId()), PhotosColumns.getCV(dto));
+                final PhotoEntity photoEntity = Dto2Entity.buildPhotoDbo(dto);
+                Repositories.getInstance()
+                        .photos()
+                        .insertPhotosRx(accountId, photoEntity.getOwnerId(), photoEntity.getAlbumId(), Collections.singletonList(photoEntity), false)
+                        .blockingAwait();
             }
         } catch (Exception e) {
             e.printStackTrace();

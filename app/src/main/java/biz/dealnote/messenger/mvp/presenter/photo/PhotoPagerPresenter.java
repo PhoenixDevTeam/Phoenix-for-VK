@@ -6,15 +6,12 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import biz.dealnote.messenger.App;
 import biz.dealnote.messenger.Constants;
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.interactor.IPhotosInteractor;
 import biz.dealnote.messenger.interactor.InteractorFactory;
@@ -23,14 +20,15 @@ import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IPhotoPagerView;
-import biz.dealnote.messenger.service.factory.PhotoRequestFactory;
 import biz.dealnote.messenger.task.DownloadImageTask;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.AppTextUtils;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
+import io.reactivex.Completable;
 
+import static biz.dealnote.messenger.util.Utils.findIndexById;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
 /**
@@ -224,37 +222,15 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
                 .subscribe(count -> interceptLike(ownerId, photoId, count, add), t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-
-        if (request.getRequestType() == PhotoRequestFactory.REQUEST_DELETE) {
-            if (resultData.getBoolean(Extra.SUCCESS)) {
-                onDeleteOrRestoreResult(request.getInt(Extra.PHOTO_ID),
-                        request.getInt(Extra.OWNER_ID), true);
-            }
-        }
-
-        if (request.getRequestType() == PhotoRequestFactory.REQUEST_RESTORE) {
-            if (resultData.getBoolean(Extra.SUCCESS)) {
-                onDeleteOrRestoreResult(request.getInt(Extra.PHOTO_ID),
-                        request.getInt(Extra.OWNER_ID), false);
-            }
-        }
-    }
-
     private void onDeleteOrRestoreResult(int photoId, int ownerId, boolean deleted) {
-        for (int i = 0; i < mPhotos.size(); i++) {
-            Photo photo = mPhotos.get(i);
+        int index = findIndexById(this.mPhotos, photoId, ownerId);
 
-            if (photo.getId() == photoId && photo.getOwnerId() == ownerId) {
-                photo.setDeleted(deleted);
+        if(index != -1){
+            Photo photo = mPhotos.get(index);
+            photo.setDeleted(deleted);
 
-                if (mCurrentIndex == i) {
-                    resolveRestoreButtonVisibility();
-                }
-
-                break;
+            if (mCurrentIndex == index) {
+                resolveRestoreButtonVisibility();
             }
         }
     }
@@ -354,15 +330,28 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
     }
 
     private void restore() {
-        Photo photo = getCurrent();
-        Request request = PhotoRequestFactory.getRestoreRequest(photo.getId(), photo.getOwnerId());
-        executeRequest(request);
+        deleteOrRestore(false);
+    }
+
+    private void deleteOrRestore(boolean detele){
+        final Photo photo = getCurrent();
+        final int photoId = photo.getId();
+        final int ownerId = photo.getOwnerId();
+        final int accountId = super.getAccountId();
+
+        Completable completable;
+        if(detele){
+            completable = photosInteractor.deletePhoto(accountId, ownerId, photoId);
+        } else {
+            completable = photosInteractor.restorePhoto(accountId, ownerId, photoId);
+        }
+
+        appendDisposable(completable.compose(RxUtils.applyCompletableIOToMainSchedulers())
+        .subscribe(() -> onDeleteOrRestoreResult(photoId, ownerId, detele), t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
     private void delete() {
-        Photo photo = getCurrent();
-        Request request = PhotoRequestFactory.getDeleteRequest(photo.getId(), photo.getOwnerId());
-        executeRequest(request);
+        deleteOrRestore(true);
     }
 
     public void fireCommentsButtonClick() {

@@ -11,7 +11,6 @@ import biz.dealnote.messenger.service.factory.AccountRequestFactory;
 import biz.dealnote.messenger.service.factory.AudioRequestFactory;
 import biz.dealnote.messenger.service.factory.FeedRequestFactory;
 import biz.dealnote.messenger.service.factory.MessagesRequestFactory;
-import biz.dealnote.messenger.service.factory.PhotoRequestFactory;
 import biz.dealnote.messenger.service.factory.UtilsRequestFactory;
 import biz.dealnote.messenger.service.operations.account.PushResolveOperation;
 import biz.dealnote.messenger.service.operations.audio.AlbumCoverFindOperation;
@@ -22,10 +21,6 @@ import biz.dealnote.messenger.service.operations.message.DeleteMessageOperation;
 import biz.dealnote.messenger.service.operations.message.EditChatOperation;
 import biz.dealnote.messenger.service.operations.message.MessagesRestoreOperation;
 import biz.dealnote.messenger.service.operations.message.ReadMessageOperation;
-import biz.dealnote.messenger.service.operations.photo.CreatePhotoAlbumOperation;
-import biz.dealnote.messenger.service.operations.photo.DeletePhotoOpeation;
-import biz.dealnote.messenger.service.operations.photo.EditPhotoAlbumOperation;
-import biz.dealnote.messenger.service.operations.photo.RestorePhotoOpeation;
 import biz.dealnote.messenger.service.operations.utils.ResolveScreenNameOperation;
 import biz.dealnote.messenger.util.Objects;
 
@@ -62,18 +57,8 @@ public class RestService extends RequestService {
             case UtilsRequestFactory.REQUEST_SCREEN_NAME:
                 return new ResolveScreenNameOperation();
 
-            case PhotoRequestFactory.REQUEST_DELETE:
-                return new DeletePhotoOpeation();
-            case PhotoRequestFactory.REQUEST_RESTORE:
-                return new RestorePhotoOpeation();
-
             case AccountRequestFactory.REQUEST_RESOLVE_PUSH_REGISTRATION:
                 return new PushResolveOperation();
-            case PhotoRequestFactory.REQUEST_CREATE_ALBUM:
-                return new CreatePhotoAlbumOperation();
-
-            case PhotoRequestFactory.REQUEST_EDIT_ALBUM:
-                return new EditPhotoAlbumOperation();
 
             default:
                 return null;

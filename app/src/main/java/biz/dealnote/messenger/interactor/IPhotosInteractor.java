@@ -27,5 +27,9 @@ public interface IPhotosInteractor {
 
     Completable removedAlbum(int accountId, int ownerId, int albumId);
 
+    Completable deletePhoto(int accountId, int ownerId, int photoId);
+
+    Completable restorePhoto(int accountId, int ownerId, int photoId);
+
     Single<List<Photo>> getPhotosByIds(int accountId, Collection<AccessIdPair> ids);
 }
