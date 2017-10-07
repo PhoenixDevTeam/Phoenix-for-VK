@@ -69,6 +69,7 @@ public class ChatUsersFragment extends BasePresenterFragment<ChatMembersPresente
 
         mAdapter = new ChatMembersListAdapter(getActivity(), Collections.emptyList());
         mAdapter.setActionListener(this);
+        recyclerView.setAdapter(mAdapter);
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());

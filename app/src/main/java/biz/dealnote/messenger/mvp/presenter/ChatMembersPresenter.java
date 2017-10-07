@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -36,6 +37,12 @@ public class ChatMembersPresenter extends AccountDependencyPresenter<IChatMember
         this.messagesInteractor = InteractorFactory.createMessagesInteractor();
 
         requestData();
+    }
+
+    @Override
+    public void onGuiCreated(@NonNull IChatMembersView view) {
+        super.onGuiCreated(view);
+        view.displayData(this.users);
     }
 
     private boolean refreshing;

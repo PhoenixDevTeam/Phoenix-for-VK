@@ -66,7 +66,6 @@ import biz.dealnote.messenger.upload.experimental.UploadService;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Unixtime;
-import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.VKOwnIds;
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -518,7 +517,7 @@ public class MessagesInteractor implements IMessagesInteractor {
         return networker.vkDefault(accountId)
                 .messages()
                 .search(q, peerId, null, null, offset, count)
-                .map(items -> Utils.listEmptyIfNull(items.getItems()))
+                .map(items -> listEmptyIfNull(items.getItems()))
                 .flatMap(dtos -> {
                     VKOwnIds ids = new VKOwnIds().append(dtos);
 
@@ -550,7 +549,7 @@ public class MessagesInteractor implements IMessagesInteractor {
                     return chats.get(0);
                 })
                 .flatMap(chatDto -> {
-                    List<ChatUserDto> dtos = Utils.listEmptyIfNull(chatDto.users);
+                    List<ChatUserDto> dtos = listEmptyIfNull(chatDto.users);
 
                     VKOwnIds ids = new VKOwnIds();
                     List<Owner> owners = new ArrayList<>(dtos.size());
@@ -573,6 +572,8 @@ public class MessagesInteractor implements IMessagesInteractor {
                                     if (user.getInvitedBy() != 0) {
                                         user.setInvited((User) ownersBundle.getById(user.getInvitedBy()));
                                     }
+
+                                    models.add(user);
                                 }
 
                                 return models;
