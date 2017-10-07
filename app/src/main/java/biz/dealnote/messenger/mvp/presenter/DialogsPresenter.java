@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.db.Repositories;
@@ -30,7 +29,6 @@ import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IDialogsView;
-import biz.dealnote.messenger.service.factory.MessagesRequestFactory;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.CompareUtils;
@@ -194,16 +192,16 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         }
     }
 
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-        if (request.getRequestType() == MessagesRequestFactory.REQUEST_DELETE_DIALOG) {
-            boolean success = resultData.getBoolean(Extra.SUCCESS);
+    private void onDialogRemovedSuccessfully(int accountId, int peeId){
+        getView().showSnackbar(R.string.deleted, true);
+        onDialogDeleted(accountId, peeId);
+    }
 
-            if (success && isGuiReady()) {
-                getView().showSnackbar(R.string.deleted, true);
-            }
-        }
+    private void removeDialog(final int peeId) {
+        final int accountId = super.getAccountId();
+        appendDisposable(messagesInteractor.deleteDialog(accountId, peeId, 0, 10000)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> onDialogRemovedSuccessfully(accountId, peeId), t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
     private void resolveRefreshingView() {
@@ -440,11 +438,6 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
 
     public void fireRemoveDialogClick(Dialog dialog) {
         removeDialog(dialog.getPeerId());
-    }
-
-    private void removeDialog(int peeId) {
-        Request request = MessagesRequestFactory.getDeleteDialogRequest(dialogsOwnerId, peeId, 0, 10000);
-        executeRequest(request);
     }
 
     public void fireCreateShortcutClick(Dialog dialog) {

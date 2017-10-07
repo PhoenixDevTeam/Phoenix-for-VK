@@ -16,8 +16,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import biz.dealnote.messenger.App;
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.crypt.AesKeyPair;
@@ -163,7 +160,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
             mPeer = initialPeer;
             mOutConfig = config;
 
-            if(nonEmpty(config.getInitialText())){
+            if (nonEmpty(config.getInitialText())) {
                 mDraftMessageText = config.getInitialText();
             }
         } else {
@@ -173,7 +170,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         loadAllCachedData();
         requestAtStart();
 
-        if(isNull(savedInstanceState)){
+        if (isNull(savedInstanceState)) {
             tryToRestoreDraftMessage(nonEmpty(this.mDraftMessageText));
         }
 
@@ -435,20 +432,6 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
     private boolean isLoadingFromNetNow() {
         return netLoadingNow;
-    }
-
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-
-        switch (request.getRequestType()) {
-            case RequestFactory.REQUEST_MESSAGES_RESTORE:
-                boolean success = resultData.getBoolean(Extra.SUCCESS);
-                if (success) {
-                    onMessagesRestoredSuccessfully(request.getInt(Extra.ID));
-                }
-                break;
-        }
     }
 
     private void onMessagesRestoredSuccessfully(int id) {
@@ -1116,9 +1099,11 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         restoreMessage(message.getId());
     }
 
-    private void restoreMessage(int messageId) {
-        Request request = RequestFactory.getMessagesRestoreRequest(messagesOwnerId, messageId);
-        executeRequest(request);
+    private void restoreMessage(final int messageId) {
+        final int accountId = super.getAccountId();
+        appendDisposable(messagesInteractor.restoreMessage(accountId, messageId)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> onMessagesRestoredSuccessfully(messageId), t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
     public void fireEditMessageResult(ModelsBundle accompanyingModels) {
@@ -1178,7 +1163,9 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         }
 
         if (!sent.isEmpty()) {
-            executeRequest(RequestFactory.getDeleteMessageRequest(messagesOwnerId, sent));
+            appendDisposable(messagesInteractor.deleteMessages(messagesOwnerId, sent)
+                    .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                    .subscribe(() -> {/*ignore*/}, t -> showError(getView(), getCauseIfRuntime(t))));
         }
 
         if (hasChanged) {

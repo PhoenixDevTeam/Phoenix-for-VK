@@ -14,10 +14,7 @@ import biz.dealnote.messenger.service.factory.UtilsRequestFactory;
 import biz.dealnote.messenger.service.operations.account.PushResolveOperation;
 import biz.dealnote.messenger.service.operations.audio.AlbumCoverFindOperation;
 import biz.dealnote.messenger.service.operations.audio.SetBroadcastAudioOperation;
-import biz.dealnote.messenger.service.operations.message.DeleteDialogOperation;
-import biz.dealnote.messenger.service.operations.message.DeleteMessageOperation;
 import biz.dealnote.messenger.service.operations.message.EditChatOperation;
-import biz.dealnote.messenger.service.operations.message.MessagesRestoreOperation;
 import biz.dealnote.messenger.service.operations.message.ReadMessageOperation;
 import biz.dealnote.messenger.service.operations.utils.ResolveScreenNameOperation;
 import biz.dealnote.messenger.util.Objects;
@@ -30,15 +27,6 @@ public class RestService extends RequestService {
 
             case RequestFactory.REQUEST_READ_MESSAGE:
                 return new ReadMessageOperation();
-
-            case RequestFactory.REQUEST_DELETE_MESSAGES:
-                return new DeleteMessageOperation();
-
-            case RequestFactory.REQUEST_MESSAGES_RESTORE:
-                return new MessagesRestoreOperation();
-
-            case MessagesRequestFactory.REQUEST_DELETE_DIALOG:
-                return new DeleteDialogOperation();
 
             case MessagesRequestFactory.REQUEST_EDIT_CHAT:
                 return new EditChatOperation();
