@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -39,6 +40,13 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
         this.faveInteractor = InteractorFactory.createFaveInteractor();
 
         loadAllCachedData();
+        loadActualData(0);
+    }
+
+    @Override
+    public void onGuiCreated(@NonNull IFaveUsersView view) {
+        super.onGuiCreated(view);
+        view.displayData(this.users);
     }
 
     private boolean cacheLoadingNow;
@@ -139,6 +147,7 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
     public void fireRefresh() {
         this.cacheDisposable.clear();
         this.cacheLoadingNow = false;
+
         this.actualDataDisposable.clear();
         this.actualDataLoading = false;
 

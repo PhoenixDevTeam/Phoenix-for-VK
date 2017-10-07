@@ -196,11 +196,11 @@ public class FaveInteractor implements IFaveInteractor {
                     boolean hasNext = count + offset < items.count;
 
                     List<VKApiUser> dtos = listEmptyIfNull(items.getItems());
-                    List<UserEntity> dbos = Dto2Entity.buildUserDbos(dtos);
+                    List<UserEntity> entities = Dto2Entity.buildUserDbos(dtos);
                     List<User> users = Dto2Model.transformUsers(dtos);
 
                     return cache.fave()
-                            .storeUsers(accountId, dbos, offset == 0)
+                            .storeUsers(accountId, entities, offset == 0)
                             .andThen(Single.just(EndlessData.create(users, hasNext)));
                 });
     }
