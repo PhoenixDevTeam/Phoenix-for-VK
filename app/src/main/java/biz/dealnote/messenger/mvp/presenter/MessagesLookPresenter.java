@@ -4,26 +4,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.interactor.IMessagesInteractor;
 import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.mvp.view.IMessagesLookView;
-import biz.dealnote.messenger.service.IntArray;
-import biz.dealnote.messenger.service.RequestFactory;
-import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Observable;
 
-import static biz.dealnote.messenger.service.operations.AbsApiOperation.EXTRA_MESSAGE_IDS;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 import static biz.dealnote.messenger.util.Utils.getSelected;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
@@ -138,15 +132,16 @@ public class MessagesLookPresenter extends AbsMessageListPresenter<IMessagesLook
         super.onActionModeDeleteClick();
         final int accountId = super.getAccountId();
 
-        List<Integer> selectedIds = Observable.fromIterable(getData())
+        List<Integer> ids = Observable.fromIterable(getData())
                 .filter(Message::isSelected)
                 .map(Message::getId)
                 .toList()
                 .blockingGet();
 
-        if (nonEmpty(selectedIds)) {
-            Request request = RequestFactory.getDeleteMessageRequest(accountId, selectedIds);
-            executeRequest(request);
+        if (nonEmpty(ids)) {
+            appendDisposable(messagesInteractor.deleteMessages(accountId, ids)
+                    .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                    .subscribe(() -> onMessagesDeleteSuccessfully(ids), t -> showError(getView(), getCauseIfRuntime(t))));
         }
     }
 
@@ -190,8 +185,11 @@ public class MessagesLookPresenter extends AbsMessageListPresenter<IMessagesLook
     @SuppressWarnings("unused")
     public void fireMessageRestoreClick(@NonNull Message message, int position) {
         final int accountId = super.getAccountId();
-        Request request = RequestFactory.getMessagesRestoreRequest(accountId, message.getId());
-        executeRequest(request);
+        final int id = message.getId();
+
+        appendDisposable(messagesInteractor.restoreMessage(accountId, id)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> onMessageRestoredSuccessfully(id), t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
     private static class Side {
@@ -235,34 +233,19 @@ public class MessagesLookPresenter extends AbsMessageListPresenter<IMessagesLook
         getView().setupHeaders(headerState, footerState);
     }
 
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-
-        if (request.getRequestType() == RequestFactory.REQUEST_DELETE_MESSAGES) {
-            IntArray array = (IntArray) request.getParcelable(EXTRA_MESSAGE_IDS);
-            AssertUtils.requireNonNull(array);
-            onMessagesDeleteSuccessfully(array);
-        }
-
-        if (request.getRequestType() == RequestFactory.REQUEST_MESSAGES_RESTORE) {
-            int mid = request.getInt(Extra.ID);
-            onMessageRestoredSuccessfully(mid);
-        }
-    }
-
     private void onMessageRestoredSuccessfully(int id) {
         Message message = findById(id);
+
         if (Objects.nonNull(message)) {
             message.setDeleted(false);
             safeNotifyDataChanged();
         }
     }
 
-    private void onMessagesDeleteSuccessfully(@NonNull IntArray array) {
-        List<Integer> ids = array.asList();
+    private void onMessagesDeleteSuccessfully(Collection<Integer> ids) {
         for (Integer id : ids) {
             Message message = findById(id);
+
             if (Objects.nonNull(message)) {
                 message.setDeleted(true);
             }

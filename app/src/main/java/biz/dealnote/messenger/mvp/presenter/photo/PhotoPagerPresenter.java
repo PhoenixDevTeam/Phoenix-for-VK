@@ -6,15 +6,12 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import biz.dealnote.messenger.App;
 import biz.dealnote.messenger.Constants;
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.interactor.IPhotosInteractor;
 import biz.dealnote.messenger.interactor.InteractorFactory;
@@ -23,13 +20,16 @@ import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IPhotoPagerView;
-import biz.dealnote.messenger.service.factory.PhotoRequestFactory;
 import biz.dealnote.messenger.task.DownloadImageTask;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.AppTextUtils;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
+import io.reactivex.Completable;
+
+import static biz.dealnote.messenger.util.Utils.findIndexById;
+import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
 /**
  * Created by admin on 24.09.2016.
@@ -45,7 +45,7 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
     private boolean mLoadingNow;
     private boolean mFullScreen;
 
-    private final IPhotosInteractor photosInteractor;
+    final IPhotosInteractor photosInteractor;
 
     PhotoPagerPresenter(@NonNull ArrayList<Photo> photos, int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
@@ -134,7 +134,7 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
         afterPageChangedFromUi(old, position);
     }
 
-    protected void afterPageChangedFromUi(int oldPage, int newPage){
+    protected void afterPageChangedFromUi(int oldPage, int newPage) {
 
     }
 
@@ -183,7 +183,7 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
         resolveOptionMenu();
     }
 
-    public void fireInfoButtonClick(){
+    public void fireInfoButtonClick() {
         String info = getCurrent().getText();
         String time = AppTextUtils.getDateFromUnixTime(getCurrent().getDate());
         getView().showPhotoInfo(time, info);
@@ -218,45 +218,19 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
         final boolean add = !photo.isUserLikes();
 
         appendDisposable(photosInteractor.like(accountId, ownerId, photoId, add, photo.getAccessKey())
-        .compose(RxUtils.applySingleIOToMainSchedulers())
-        .subscribe(count -> interceptLike(ownerId, photoId, count, add), t -> showError(getView(), Utils.getCauseIfRuntime(t))));
-    }
-
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-
-        if (request.getRequestType() == PhotoRequestFactory.REQUEST_COPY) {
-            safeShowLongToast(getView(), R.string.photo_saved_yourself);
-        }
-
-        if (request.getRequestType() == PhotoRequestFactory.REQUEST_DELETE) {
-            if (resultData.getBoolean(Extra.SUCCESS)) {
-                onDeleteOrRestoreResult(request.getInt(Extra.PHOTO_ID),
-                        request.getInt(Extra.OWNER_ID), true);
-            }
-        }
-
-        if (request.getRequestType() == PhotoRequestFactory.REQUEST_RESTORE) {
-            if (resultData.getBoolean(Extra.SUCCESS)) {
-                onDeleteOrRestoreResult(request.getInt(Extra.PHOTO_ID),
-                        request.getInt(Extra.OWNER_ID), false);
-            }
-        }
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(count -> interceptLike(ownerId, photoId, count, add), t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
     private void onDeleteOrRestoreResult(int photoId, int ownerId, boolean deleted) {
-        for (int i = 0; i < mPhotos.size(); i++) {
-            Photo photo = mPhotos.get(i);
+        int index = findIndexById(this.mPhotos, photoId, ownerId);
 
-            if (photo.getId() == photoId && photo.getOwnerId() == ownerId) {
-                photo.setDeleted(deleted);
+        if(index != -1){
+            Photo photo = mPhotos.get(index);
+            photo.setDeleted(deleted);
 
-                if (mCurrentIndex == i) {
-                    resolveRestoreButtonVisibility();
-                }
-
-                break;
+            if (mCurrentIndex == index) {
+                resolveRestoreButtonVisibility();
             }
         }
     }
@@ -312,7 +286,7 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
         protected void onPostExecute(String s) {
             PhotoPagerPresenter presenter = ref.get();
 
-            if(Objects.isNull(presenter)) return;
+            if (Objects.isNull(presenter)) return;
 
             if (Objects.isNull(s)) {
                 presenter.safeShowLongToast(presenter.getView(), R.string.saved);
@@ -323,10 +297,16 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
     }
 
     public void fireSaveYourselfClick() {
-        Photo photo = getCurrent();
+        final Photo photo = getCurrent();
+        final int accountId = super.getAccountId();
 
-        Request request = PhotoRequestFactory.getCopyRequest(photo.getOwnerId(), photo.getId(), photo.getAccessKey());
-        executeRequest(request);
+        appendDisposable(photosInteractor.copy(accountId, photo.getOwnerId(), photo.getId(), photo.getAccessKey())
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(ignored -> onPhotoCopied(), t -> showError(getView(), getCauseIfRuntime(t))));
+    }
+
+    private void onPhotoCopied() {
+        safeShowLongToast(getView(), R.string.photo_saved_yourself);
     }
 
     public void fireDeleteClick() {
@@ -350,15 +330,28 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
     }
 
     private void restore() {
-        Photo photo = getCurrent();
-        Request request = PhotoRequestFactory.getRestoreRequest(photo.getId(), photo.getOwnerId());
-        executeRequest(request);
+        deleteOrRestore(false);
+    }
+
+    private void deleteOrRestore(boolean detele){
+        final Photo photo = getCurrent();
+        final int photoId = photo.getId();
+        final int ownerId = photo.getOwnerId();
+        final int accountId = super.getAccountId();
+
+        Completable completable;
+        if(detele){
+            completable = photosInteractor.deletePhoto(accountId, ownerId, photoId);
+        } else {
+            completable = photosInteractor.restorePhoto(accountId, ownerId, photoId);
+        }
+
+        appendDisposable(completable.compose(RxUtils.applyCompletableIOToMainSchedulers())
+        .subscribe(() -> onDeleteOrRestoreResult(photoId, ownerId, detele), t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
     private void delete() {
-        Photo photo = getCurrent();
-        Request request = PhotoRequestFactory.getDeleteRequest(photo.getId(), photo.getOwnerId());
-        executeRequest(request);
+        deleteOrRestore(true);
     }
 
     public void fireCommentsButtonClick() {
@@ -391,12 +384,12 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
         }
     }
 
-    int getCurrentIndex(){
+    int getCurrentIndex() {
         return mCurrentIndex;
     }
 
     public void fireLikeLongClick() {
-        if(!hasPhotos()) return;
+        if (!hasPhotos()) return;
 
         Photo photo = getCurrent();
         getView().goToLikesList(getAccountId(), photo.getOwnerId(), photo.getId());

@@ -16,4 +16,6 @@ public interface IFaveUsersView extends IAccountDependencyView, IMvpView, IError
     void notifyDataAdded(int position, int count);
     void showRefreshing(boolean refreshing);
     void openUserWall(int accountId, User user);
+
+    void notifyItemRemoved(int index);
 }

@@ -13,6 +13,17 @@ public class PhotoPatch {
         return this;
     }
 
+    private Deletion deletion;
+
+    public PhotoPatch setDeletion(Deletion deletion) {
+        this.deletion = deletion;
+        return this;
+    }
+
+    public Deletion getDeletion() {
+        return deletion;
+    }
+
     public Like getLike() {
         return like;
     }
@@ -34,6 +45,19 @@ public class PhotoPatch {
 
         public int getCount() {
             return count;
+        }
+    }
+
+    public static final class Deletion {
+
+        private final boolean deleted;
+
+        public Deletion(boolean deleted) {
+            this.deleted = deleted;
+        }
+
+        public boolean isDeleted() {
+            return deleted;
         }
     }
 }

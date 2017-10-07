@@ -4,7 +4,8 @@ import android.content.ContentValues;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 
-import biz.dealnote.messenger.api.model.VkApiFeedList;
+import biz.dealnote.messenger.db.model.entity.FeedListEntity;
+import biz.dealnote.messenger.util.Objects;
 
 public class FeedListsColumns implements BaseColumns {
 
@@ -16,22 +17,27 @@ public class FeedListsColumns implements BaseColumns {
     public static final String NO_REPOSTS = "no_reposts";
     public static final String SOURCE_IDS = "source_ids";
 
-    public static ContentValues getCV(@NonNull VkApiFeedList vkApiFeedList){
+    public static ContentValues getCV(@NonNull FeedListEntity entity){
         ContentValues cv = new ContentValues();
-        cv.put(_ID, vkApiFeedList.id);
-        cv.put(TITLE, vkApiFeedList.title);
-        cv.put(NO_REPOSTS, vkApiFeedList.no_reposts);
+        cv.put(_ID, entity.getId());
+        cv.put(TITLE, entity.getTitle());
+        cv.put(NO_REPOSTS, entity.isNoReposts());
 
         String sources = null;
-        if(vkApiFeedList.source_ids != null){
-            sources = "";
-            for(int i = 0; i < vkApiFeedList.source_ids.length; i++){
-                sources = sources + vkApiFeedList.source_ids[i];
+        int[] ids = entity.getSourceIds();
 
-                if(i != vkApiFeedList.source_ids.length - 1){
-                    sources = sources + ",";
+        if(Objects.nonNull(ids)){
+            StringBuilder builder = new StringBuilder();
+
+            for(int i = 0; i < ids.length; i++){
+                builder.append(ids[i]);
+
+                if(i != ids.length - 1){
+                    builder.append(",");
                 }
             }
+
+            sources = builder.toString();
         }
 
         cv.put(SOURCE_IDS, sources);

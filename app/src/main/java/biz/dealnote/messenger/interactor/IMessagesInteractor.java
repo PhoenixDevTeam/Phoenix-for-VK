@@ -88,5 +88,11 @@ public interface IMessagesInteractor {
 
     Single<List<AppChatUser>> addChatUsers(int accountId, int chatId, List<User> users);
 
+    Completable deleteDialog(int accountId, int peedId, int count, int offset);
+
+    Completable deleteMessages(int accountId, Collection<Integer> ids);
+
+    Completable restoreMessage(int accountId, int messageId);
+
     Single<Integer> createGroupChat(int accountId, Collection<Integer> users, String title);
 }

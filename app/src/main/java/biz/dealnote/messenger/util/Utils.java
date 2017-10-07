@@ -39,6 +39,7 @@ import java.util.Map;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.Identificable;
 import biz.dealnote.messenger.model.Selectable;
+import biz.dealnote.messenger.model.Someones;
 import io.reactivex.disposables.Disposable;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
@@ -429,6 +430,17 @@ public class Utils {
     public static <T extends Identificable> int findIndexById(@NonNull List<T> data, int id) {
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).getId() == id) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public static <T extends Someones> int findIndexById(@NonNull List<T> data, int id, int ownerId) {
+        for (int i = 0; i < data.size(); i++) {
+            T t = data.get(i);
+            if (t.getId() == id && t.getOwnerId() == ownerId) {
                 return i;
             }
         }

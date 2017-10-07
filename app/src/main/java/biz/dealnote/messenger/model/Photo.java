@@ -3,13 +3,14 @@ package biz.dealnote.messenger.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import biz.dealnote.messenger.api.model.Identificable;
 import biz.dealnote.messenger.util.Objects;
 
 /**
  * Created by admin on 21.11.2016.
  * phoenix
  */
-public class Photo extends AbsModel implements Parcelable {
+public class Photo extends AbsModel implements Parcelable, Identificable, Someones {
 
     private int id;
 

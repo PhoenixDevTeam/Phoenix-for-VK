@@ -467,6 +467,7 @@ public class MessengerContentProvider extends ContentProvider {
         sPhotosProjectionMap.put(PhotosColumns.COMMENTS, PhotosColumns.FULL_COMMENTS);
         sPhotosProjectionMap.put(PhotosColumns.TAGS, PhotosColumns.FULL_TAGS);
         sPhotosProjectionMap.put(PhotosColumns.ACCESS_KEY, PhotosColumns.FULL_ACCESS_KEY);
+        sPhotosProjectionMap.put(PhotosColumns.DELETED, PhotosColumns.FULL_DELETED);
 
         sDialogsProjectionMap = new HashMap<>();
         sDialogsProjectionMap.put(DialogsColumns._ID, DialogsColumns.FULL_ID);

@@ -4,30 +4,24 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.Repositories;
 import biz.dealnote.messenger.db.model.PostUpdate;
 import biz.dealnote.messenger.interactor.IFeedInteractor;
 import biz.dealnote.messenger.interactor.IWalls;
 import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.model.FeedList;
 import biz.dealnote.messenger.model.FeedSource;
-import biz.dealnote.messenger.model.FeedSourceCriteria;
 import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.News;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
 import biz.dealnote.messenger.mvp.view.IFeedView;
-import biz.dealnote.messenger.service.factory.FeedRequestFactory;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.DisposableHolder;
-import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
 
@@ -69,8 +63,7 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
 
         restoreNextFromAndFeedSources();
 
-        loadFeedSources();
-        requestFeedSources();
+        refreshFeedSources();
 
         String scrollState = Settings.get()
                 .other()
@@ -79,12 +72,30 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
         loadCachedFeed(scrollState);
     }
 
-    private void onPostUpdateEvent(PostUpdate update){
-        if(nonNull(update.getLikeUpdate())){
+    private void refreshFeedSources() {
+        final int accountId = super.getAccountId();
+
+        appendDisposable(feedInteractor.getCachedFeedLists(accountId)
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(lists -> {
+                    onFeedListsUpdated(lists);
+                    requestActualFeedLists();
+                }, ignored -> requestActualFeedLists()));
+    }
+
+    private void requestActualFeedLists() {
+        final int accountId = super.getAccountId();
+        appendDisposable(feedInteractor.getActualFeedLists(accountId)
+        .compose(RxUtils.applySingleIOToMainSchedulers())
+        .subscribe(this::onFeedListsUpdated, t -> {/*ignored*/}));
+    }
+
+    private void onPostUpdateEvent(PostUpdate update) {
+        if (nonNull(update.getLikeUpdate())) {
             PostUpdate.LikeUpdate like = update.getLikeUpdate();
 
             int index = indexOf(update.getOwnerId(), update.getPostId());
-            if(index != -1){
+            if (index != -1) {
                 this.mFeed.get(index).setLikeCount(like.getCount());
                 this.mFeed.get(index).setUserLike(like.isLiked());
                 callView(view -> view.notifyItemChanged(index));
@@ -213,42 +224,20 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
         }
     }
 
-    private void requestFeedSources() {
-        Request request = FeedRequestFactory.getFeedListsRequest();
-        executeRequest(request);
-    }
-
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-        if (request.getRequestType() == FeedRequestFactory.REQUEST_GET_LISTS) {
-            loadFeedSources();
-        }
-    }
-
     private boolean canLoadNextNow() {
         return nonEmpty(mNextFrom) && !cacheLoadingNow && !loadingNow;
     }
 
-    private void loadFeedSources() {
-        appendDisposable(Repositories.getInstance()
-                .feed()
-                .getAllLists(new FeedSourceCriteria(getAccountId()))
-                .map(pairs -> {
-                    List<FeedSource> sources = new ArrayList<>(pairs.size());
-                    for (Pair<Integer, String> pair : pairs) {
-                        sources.add(new FeedSource("list" + pair.getFirst(), pair.getSecond()));
-                    }
-                    return sources;
-                })
-                .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onFeedSourcesReceived, Analytics::logUnexpectedError));
-    }
+    private void onFeedListsUpdated(List<FeedList> lists) {
+        List<FeedSource> sources = new ArrayList<>(lists.size());
 
-    private void onFeedSourcesReceived(List<FeedSource> data) {
+        for (FeedList list : lists) {
+            sources.add(new FeedSource("list" + list.getId(), list.getTitle()));
+        }
+
         mFeedSources.clear();
         mFeedSources.addAll(createDefaultFeedSources());
-        mFeedSources.addAll(data);
+        mFeedSources.addAll(sources);
 
         int selected = refreshFeedSourcesSelection();
 

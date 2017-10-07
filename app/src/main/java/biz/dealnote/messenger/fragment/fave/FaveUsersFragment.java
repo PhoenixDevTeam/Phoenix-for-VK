@@ -122,6 +122,14 @@ public class FaveUsersFragment extends BasePresenterFragment<FaveUsersPresenter,
     }
 
     @Override
+    public void notifyItemRemoved(int index) {
+        if(nonNull(mAdapter)){
+            mAdapter.notifyItemRemoved(index);
+            resolveEmptyText();
+        }
+    }
+
+    @Override
     public IPresenterFactory<FaveUsersPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new FaveUsersPresenter(
                 getArguments().getInt(Extra.ACCOUNT_ID),

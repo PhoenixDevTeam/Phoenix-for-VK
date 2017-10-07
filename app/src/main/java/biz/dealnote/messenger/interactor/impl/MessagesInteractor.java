@@ -613,6 +613,36 @@ public class MessagesInteractor implements IMessagesInteractor {
     }
 
     @Override
+    public Completable deleteDialog(int accountId, int peedId, int count, int offset) {
+        // TODO: 07.10.2017 Fix this
+        return networker.vkDefault(accountId)
+                .messages()
+                .deleteDialog(peedId, offset, count)
+                .flatMapCompletable(ignored -> stores.dialogs()
+                        .removePeerWithId(accountId, peedId)
+                        .andThen(stores.messages()
+                                .insertPeerDbos(accountId, peedId, Collections.emptyList(), true)));
+    }
+
+    @Override
+    public Completable deleteMessages(int accountId, Collection<Integer> ids) {
+        // TODO: 07.10.2017 Remove from Cache?
+        return networker.vkDefault(accountId)
+                .messages()
+                .delete(ids, null)
+                .toCompletable();
+    }
+
+    @Override
+    public Completable restoreMessage(int accountId, int messageId) {
+        // TODO: 07.10.2017 Restore into Cache?
+        return networker.vkDefault(accountId)
+                .messages()
+                .restore(messageId)
+                .toCompletable();
+    }
+
+    @Override
     public Single<Integer> createGroupChat(int accountId, Collection<Integer> users, String title) {
         return networker.vkDefault(accountId)
                 .messages()

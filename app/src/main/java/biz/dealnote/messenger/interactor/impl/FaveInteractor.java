@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.api.interfaces.INetworker;
+import biz.dealnote.messenger.api.model.FaveLinkDto;
 import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.db.column.UserColumns;
 import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.model.entity.FaveLinkEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.PhotoEntity;
 import biz.dealnote.messenger.db.model.entity.PostEntity;
@@ -20,6 +22,8 @@ import biz.dealnote.messenger.interactor.IOwnersInteractor;
 import biz.dealnote.messenger.interactor.mappers.Dto2Entity;
 import biz.dealnote.messenger.interactor.mappers.Dto2Model;
 import biz.dealnote.messenger.interactor.mappers.Entity2Model;
+import biz.dealnote.messenger.model.EndlessData;
+import biz.dealnote.messenger.model.FaveLink;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.Post;
@@ -28,6 +32,7 @@ import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.model.criteria.FavePhotosCriteria;
 import biz.dealnote.messenger.model.criteria.FavePostsCriteria;
 import biz.dealnote.messenger.model.criteria.FaveVideosCriteria;
+import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.VKOwnIds;
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -183,18 +188,93 @@ public class FaveInteractor implements IFaveInteractor {
     }
 
     @Override
-    public Single<List<User>> getUsers(int accountId, int count, int offset) {
+    public Single<EndlessData<User>> getUsers(int accountId, int count, int offset) {
         return networker.vkDefault(accountId)
                 .fave()
                 .getUsers(offset, count, UserColumns.API_FIELDS)
                 .flatMap(items -> {
+                    boolean hasNext = count + offset < items.count;
+
                     List<VKApiUser> dtos = listEmptyIfNull(items.getItems());
-                    List<UserEntity> dbos = Dto2Entity.buildUserDbos(dtos);
+                    List<UserEntity> entities = Dto2Entity.buildUserDbos(dtos);
+                    List<User> users = Dto2Model.transformUsers(dtos);
 
                     return cache.fave()
-                            .storeUsers(accountId, dbos, offset == 0)
-                            .andThen(Single.just(Dto2Model.transformUsers(dtos)));
+                            .storeUsers(accountId, entities, offset == 0)
+                            .andThen(Single.just(EndlessData.create(users, hasNext)));
                 });
+    }
+
+    @Override
+    public Completable removeUser(int accountId, int userId) {
+        return networker.vkDefault(accountId)
+                .fave()
+                .removeUser(userId)
+                .flatMapCompletable(ignored -> cache.fave().removeUser(accountId, userId));
+    }
+
+    @Override
+    public Single<List<FaveLink>> getCachedLinks(int accountId) {
+        return cache.fave()
+                .getFaveLinks(accountId)
+                .map(entities -> {
+                    List<FaveLink> links = new ArrayList<>(entities.size());
+
+                    for(FaveLinkEntity entity : entities){
+                        links.add(createLinkFromEntity(entity));
+                    }
+
+                    return links;
+                });
+    }
+
+    private static FaveLink createLinkFromEntity(FaveLinkEntity entity){
+        return new FaveLink(entity.getId())
+                .setDescription(entity.getDescription())
+                .setPhoto50(entity.getPhoto50())
+                .setPhoto100(entity.getPhoto100())
+                .setTitle(entity.getTitle())
+                .setUrl(entity.getUrl());
+    }
+
+    private static FaveLinkEntity createLinkEntityFromDto(FaveLinkDto dto){
+        return new FaveLinkEntity(dto.id, dto.url)
+                .setDescription(dto.description)
+                .setTitle(dto.title)
+                .setPhoto50(dto.photo_50)
+                .setPhoto100(dto.photo_100);
+    }
+
+    @Override
+    public Single<EndlessData<FaveLink>> getLinks(int accountId, int count, int offset) {
+        return networker.vkDefault(accountId)
+                .fave()
+                .getLinks(offset, count)
+                .flatMap(items -> {
+                    boolean hasNext = offset + count < items.count;
+                    List<FaveLinkDto> dtos = Utils.listEmptyIfNull(items.getItems());
+                    List<FaveLink> links = new ArrayList<>(dtos.size());
+                    List<FaveLinkEntity> entities = new ArrayList<>(dtos.size());
+
+                    for(FaveLinkDto dto : dtos){
+                        FaveLinkEntity entity = createLinkEntityFromDto(dto);
+                        links.add(createLinkFromEntity(entity));
+                        entities.add(entity);
+                    }
+
+                    return cache.fave()
+                            .storeLinks(accountId, entities, offset == 0)
+                            .andThen(Single.just(EndlessData.create(links, hasNext)));
+                });
+    }
+
+    @Override
+    public Completable removeLink(int accountId, String id) {
+        return networker.vkDefault(accountId)
+                .fave()
+                .removeLink(id)
+                .flatMapCompletable(ignore -> cache.fave()
+                        .removeLink(accountId, id));
     }
 
     @Override
