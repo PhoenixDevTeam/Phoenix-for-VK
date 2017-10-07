@@ -6,8 +6,8 @@ import android.os.Bundle;
 import com.foxykeep.datadroid.requestmanager.Request;
 
 import biz.dealnote.messenger.api.Apis;
-import biz.dealnote.messenger.db.column.FaveLinksColumns;
 import biz.dealnote.messenger.db.MessengerContentProvider;
+import biz.dealnote.messenger.db.column.FaveLinksColumns;
 import biz.dealnote.messenger.service.operations.AbsApiOperation;
 
 public class FaveRemoveLinkOperation extends AbsApiOperation {

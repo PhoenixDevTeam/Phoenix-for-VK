@@ -13,6 +13,7 @@ import biz.dealnote.messenger.interactor.mappers.Dto2Model;
 import biz.dealnote.messenger.interactor.mappers.Entity2Model;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.util.Utils;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
@@ -62,5 +63,21 @@ public class CommunitiesInteractor implements ICommunitiesInteractor {
                     List<VKApiCommunity> dtos = Utils.listEmptyIfNull(items.getItems());
                     return Dto2Model.transformCommunities(dtos);
                 });
+    }
+
+    @Override
+    public Completable join(int accountId, int groupId) {
+        return networker.vkDefault(accountId)
+                .groups()
+                .join(groupId, null)
+                .toCompletable();
+    }
+
+    @Override
+    public Completable leave(int accountId, int groupId) {
+        return networker.vkDefault(accountId)
+                .groups()
+                .leave(groupId)
+                .toCompletable();
     }
 }

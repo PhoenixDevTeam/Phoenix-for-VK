@@ -17,8 +17,6 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.SelectProfilesActivity;
 import biz.dealnote.messenger.adapter.PrivacyAdapter;
-import biz.dealnote.messenger.api.model.VKApiUser;
-import biz.dealnote.messenger.api.model.VkApiFriendList;
 import biz.dealnote.messenger.api.model.VkApiPrivacy;
 import biz.dealnote.messenger.dialog.base.AccountDependencyDialogFragment;
 import biz.dealnote.messenger.model.FriendList;

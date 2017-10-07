@@ -2,13 +2,7 @@ package biz.dealnote.messenger.service.factory;
 
 import com.foxykeep.datadroid.requestmanager.Request;
 
-import java.util.List;
-
 import biz.dealnote.messenger.Extra;
-import biz.dealnote.messenger.service.IntArray;
-
-import static biz.dealnote.messenger.service.operations.AbsApiOperation.EXTRA_CHAT_IDS;
-import static biz.dealnote.messenger.util.Objects.nonNull;
 
 public class MessagesRequestFactory {
 

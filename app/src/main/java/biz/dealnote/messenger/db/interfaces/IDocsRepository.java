@@ -5,11 +5,9 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
-import biz.dealnote.messenger.api.model.VkApiDoc;
-import biz.dealnote.messenger.db.DatabaseIdRange;
-import biz.dealnote.messenger.model.Document;
+import biz.dealnote.messenger.db.model.entity.DocumentEntity;
 import biz.dealnote.messenger.model.criteria.DocsCriteria;
-import io.reactivex.Maybe;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 /**
@@ -19,8 +17,11 @@ import io.reactivex.Single;
 public interface IDocsRepository extends IRepository {
 
     @CheckResult
-    Single<List<Document>> get(@NonNull DocsCriteria criteria);
+    Single<List<DocumentEntity>> get(@NonNull DocsCriteria criteria);
 
     @CheckResult
-    Maybe<DatabaseIdRange> store(int accountId, int ownerId, List<VkApiDoc> dtos, boolean clearBeforeInsert);
+    Completable store(int accountId, int ownerId, List<DocumentEntity> entities, boolean clearBeforeInsert);
+
+    @CheckResult
+    Completable delete(int accountId, int docId, int ownerId);
 }

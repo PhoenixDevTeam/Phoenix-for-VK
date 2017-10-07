@@ -3,8 +3,6 @@ package biz.dealnote.messenger.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import biz.dealnote.messenger.api.model.VKApiOwner;
-
 /**
  * Created by admin on 04.12.2016.
  * phoenix

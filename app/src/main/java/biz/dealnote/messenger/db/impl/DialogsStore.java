@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import biz.dealnote.messenger.api.model.VKApiChat;
+import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.DialogsColumns;
 import biz.dealnote.messenger.db.interfaces.IDialogsStore;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
@@ -24,7 +25,6 @@ import biz.dealnote.messenger.db.model.entity.MessageEntity;
 import biz.dealnote.messenger.model.Chat;
 import biz.dealnote.messenger.model.ChatAction;
 import biz.dealnote.messenger.model.criteria.DialogsCriteria;
-import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.util.Exestime;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Pair;

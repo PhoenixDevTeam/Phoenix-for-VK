@@ -42,6 +42,8 @@ import biz.dealnote.messenger.activity.SendAttachmentsActivity;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.exception.ServiceException;
 import biz.dealnote.messenger.fragment.base.AccountDependencyFragment;
+import biz.dealnote.messenger.interactor.IAudioInteractor;
+import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.Audio;
 import biz.dealnote.messenger.model.Cover;
@@ -56,6 +58,7 @@ import biz.dealnote.messenger.service.IntArray;
 import biz.dealnote.messenger.service.factory.AudioRequestFactory;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
+import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.CircleCounterButton;
 
@@ -130,10 +133,14 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
 
     private String[] mPlayerProgressStrings;
 
+    private IAudioInteractor mAudioInteractor;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        mAudioInteractor = InteractorFactory.createAudioInteractor();
 
         // Initialize the handler used to update the current time
         mTimeHandler = new TimeHandler(this);
@@ -253,19 +260,63 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
             return;
         }
 
-        Request request;
+        final int accountId = super.getAccountId();
 
         if (audio.getOwnerId() == getAccountId()) {
             if (!audio.isDeleted()) {
-                request = AudioRequestFactory.getDeleteRequest(audio.getId(), audio.getOwnerId());
+                delete(accountId, audio);
             } else {
-                request = AudioRequestFactory.getRestoreRequest(audio.getId(), audio.getOwnerId());
+                restore(accountId, audio);
             }
         } else {
-            request = AudioRequestFactory.getAddRequest(audio, null, null);
+            add(accountId, audio);
+        }
+    }
+
+    private void add(int accountId, Audio audio){
+        appendDisposable(mAudioInteractor.add(accountId, audio, null, null)
+        .compose(RxUtils.applySingleIOToMainSchedulers())
+        .subscribe(this::onAudioAdded, t -> {/*TODO*/}));
+    }
+
+    @SuppressWarnings("unused")
+    private void onAudioAdded(Audio result){
+        safeToast(R.string.added);
+        resolveAddButton();
+    }
+
+    private void delete(final int accoutnId, Audio audio) {
+        final int id = audio.getId();
+        final int ownerId = audio.getOwnerId();
+
+        appendDisposable(mAudioInteractor.delete(accoutnId, id, ownerId)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> onAudioDeletedOrRestored(id, ownerId, true), t -> {/*TODO*/}));
+    }
+
+    private void restore(final int accountId, Audio audio) {
+        final int id = audio.getId();
+        final int ownerId = audio.getOwnerId();
+
+        appendDisposable(mAudioInteractor.restore(accountId, id, ownerId)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> onAudioDeletedOrRestored(id, ownerId, false), t -> {/*TODO*/}));
+    }
+
+    private void onAudioDeletedOrRestored(int id, int ownerId, boolean deleted) {
+        if (deleted) {
+            safeToast(R.string.deleted);
+        } else {
+            safeToast(R.string.restored);
         }
 
-        executeRequest(request);
+        Audio current = MusicUtils.getCurrentAudio();
+
+        if (nonNull(current) && current.getId() == id && current.getOwnerId() == ownerId) {
+            current.setDeleted(deleted);
+        }
+
+        resolveAddButton();
     }
 
     private void safeToast(int res) {
@@ -280,34 +331,6 @@ public class AudioPlayerFragment extends AccountDependencyFragment implements Se
         Audio current = MusicUtils.getCurrentAudio();
 
         switch (request.getRequestType()) {
-            case AudioRequestFactory.REQUEST_ADD:
-                safeToast(R.string.added);
-                resolveAddButton();
-                break;
-
-            case AudioRequestFactory.REQUEST_DELETE:
-                safeToast(R.string.deleted);
-
-                if (current != null && current.getId() == request.getInt(Extra.ID)
-                        && current.getOwnerId() == request.getInt(Extra.OWNER_ID)) {
-                    current.setDeleted(true);
-                }
-
-                resolveAddButton();
-                break;
-
-            case AudioRequestFactory.REQUEST_RESTORE:
-                safeToast(R.string.restored);
-
-                if (current != null
-                        && current.getId() == request.getInt(Extra.ID)
-                        && current.getOwnerId() == request.getInt(Extra.OWNER_ID)) {
-                    current.setDeleted(false);
-                }
-
-                resolveAddButton();
-                break;
-
             case AudioRequestFactory.REQUEST_FIND_COVER:
                 if (current != null
                         && current.getId() == request.getInt(Extra.ID)

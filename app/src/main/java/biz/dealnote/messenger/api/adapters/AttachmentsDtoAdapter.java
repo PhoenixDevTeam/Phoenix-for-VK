@@ -10,7 +10,6 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.api.model.VKApiAttachment;
 import biz.dealnote.messenger.api.model.VKApiAudio;
 import biz.dealnote.messenger.api.model.VKApiLink;
@@ -22,6 +21,7 @@ import biz.dealnote.messenger.api.model.VKApiSticker;
 import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.api.model.VKApiWikiPage;
 import biz.dealnote.messenger.api.model.VkApiAttachments;
+import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.util.Objects;
 
 /**

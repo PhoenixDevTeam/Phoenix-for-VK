@@ -4,8 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import biz.dealnote.messenger.api.model.VKApiOwner;
-
 /**
  * Created by admin on 04.06.2017.
  * phoenix

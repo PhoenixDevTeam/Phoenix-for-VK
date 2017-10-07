@@ -8,7 +8,6 @@ import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VkApiFriendList;
 import biz.dealnote.messenger.api.model.response.DeleteFriendResponse;
-import biz.dealnote.messenger.api.model.response.FriendsWithCountersResponse;
 import biz.dealnote.messenger.api.model.response.OnlineFriendsResponse;
 import biz.dealnote.messenger.api.services.IFriendsService;
 import biz.dealnote.messenger.util.Objects;

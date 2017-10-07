@@ -16,7 +16,6 @@ import java.util.List;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.settings.CurrentTheme;
 

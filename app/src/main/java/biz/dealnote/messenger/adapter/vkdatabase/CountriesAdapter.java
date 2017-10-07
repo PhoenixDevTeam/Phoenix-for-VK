@@ -10,7 +10,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.api.model.VKApiCountry;
 import biz.dealnote.messenger.model.Country;
 
 public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Holder> {

@@ -6,7 +6,6 @@ import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Ruslan Kolbasa on 11.09.2017.

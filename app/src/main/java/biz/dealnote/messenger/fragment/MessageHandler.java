@@ -9,8 +9,8 @@ import android.text.TextUtils;
 import java.util.Collection;
 
 import biz.dealnote.messenger.db.DialogsHelper;
-import biz.dealnote.messenger.db.column.MessageColumns;
 import biz.dealnote.messenger.db.MessengerContentProvider;
+import biz.dealnote.messenger.db.column.MessageColumns;
 
 import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
 

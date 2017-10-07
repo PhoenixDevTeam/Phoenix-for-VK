@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.api.model.VKApiOwner;
-import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Peer;

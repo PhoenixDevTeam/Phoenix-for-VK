@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.crypt.AesKeyPair;
+import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.KeyColumns;
 import biz.dealnote.messenger.db.interfaces.IKeysRepository;
 import biz.dealnote.messenger.exception.DatabaseException;
-import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Completable;

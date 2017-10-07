@@ -5,9 +5,9 @@ import java.util.List;
 
 import biz.dealnote.messenger.api.IServiceProvider;
 import biz.dealnote.messenger.api.interfaces.IDocsApi;
-import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.api.model.IdPair;
 import biz.dealnote.messenger.api.model.Items;
+import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.api.model.server.VkApiDocsUploadServer;
 import biz.dealnote.messenger.api.services.IDocsService;
 import io.reactivex.Single;

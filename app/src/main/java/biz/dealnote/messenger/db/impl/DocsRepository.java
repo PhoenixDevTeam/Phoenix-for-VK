@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.db.impl;
 
 import android.content.ContentProviderOperation;
-import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,22 +9,20 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.api.model.VkApiDoc;
-import biz.dealnote.messenger.db.DatabaseIdRange;
 import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.DocColumns;
 import biz.dealnote.messenger.db.interfaces.IDocsRepository;
-import biz.dealnote.messenger.interactor.mappers.Dto2Model;
+import biz.dealnote.messenger.db.model.entity.DocumentEntity;
+import biz.dealnote.messenger.db.model.entity.PhotoSizeEntity;
 import biz.dealnote.messenger.model.DocFilter;
-import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.criteria.DocsCriteria;
 import biz.dealnote.messenger.util.Exestime;
-import io.reactivex.Maybe;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
-import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
-import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
+import static biz.dealnote.messenger.util.Utils.nonEmpty;
+import static biz.dealnote.messenger.util.Utils.safeCountOf;
 
 /**
  * Created by admin on 25.12.2016.
@@ -38,7 +35,7 @@ class DocsRepository extends AbsRepository implements IDocsRepository {
     }
 
     @Override
-    public Single<List<Document>> get(@NonNull DocsCriteria criteria) {
+    public Single<List<DocumentEntity>> get(@NonNull DocsCriteria criteria) {
         return Single.create(e -> {
             long start = System.currentTimeMillis();
 
@@ -58,7 +55,19 @@ class DocsRepository extends AbsRepository implements IDocsRepository {
             }
 
             Cursor cursor = getContentResolver().query(uri, null, where, args, null);
-            List<Document> data = mapAll(e::isDisposed, cursor, cursor1 -> map(cursor), true);
+            List<DocumentEntity> data = new ArrayList<>(safeCountOf(cursor));
+
+            if(nonNull(cursor)){
+                while (cursor.moveToNext()){
+                    if(e.isDisposed()) {
+                        break;
+                    }
+
+                    data.add(map(cursor));
+                }
+
+                cursor.close();
+            }
 
             e.onSuccess(data);
 
@@ -67,8 +76,8 @@ class DocsRepository extends AbsRepository implements IDocsRepository {
     }
 
     @Override
-    public Maybe<DatabaseIdRange> store(int accountId, int ownerId, List<VkApiDoc> dtos, boolean clearBeforeInsert) {
-        return Maybe.create(e -> {
+    public Completable store(int accountId, int ownerId, List<DocumentEntity> entities, boolean clearBeforeInsert) {
+        return Completable.create(e -> {
             long start = System.currentTimeMillis();
 
             Uri uri = MessengerContentProvider.getDocsContentUriFor(accountId);
@@ -80,40 +89,50 @@ class DocsRepository extends AbsRepository implements IDocsRepository {
                         .build());
             }
 
-            for (VkApiDoc dto : dtos) {
+            for (DocumentEntity entity : entities) {
                 ContentValues cv = new ContentValues();
-                cv.put(DocColumns.DOC_ID, dto.id);
-                cv.put(DocColumns.OWNER_ID, dto.ownerId);
-                cv.put(DocColumns.TITLE, dto.title);
-                cv.put(DocColumns.SIZE, dto.size);
-                cv.put(DocColumns.EXT, dto.ext);
-                cv.put(DocColumns.URL, dto.url);
-                cv.put(DocColumns.DATE, dto.date);
-                cv.put(DocColumns.TYPE, dto.type);
-                cv.put(DocColumns.ACCESS_KEY, dto.accessKey);
-                cv.put(DocColumns.PREVIEW, isNull(dto.preview) ? null : GSON.toJson(dto.preview));
+                cv.put(DocColumns.DOC_ID, entity.getId());
+                cv.put(DocColumns.OWNER_ID, entity.getOwnerId());
+                cv.put(DocColumns.TITLE, entity.getTitle());
+                cv.put(DocColumns.SIZE, entity.getSize());
+                cv.put(DocColumns.EXT, entity.getExt());
+                cv.put(DocColumns.URL, entity.getUrl());
+                cv.put(DocColumns.DATE, entity.getDate());
+                cv.put(DocColumns.TYPE, entity.getType());
+                cv.put(DocColumns.ACCESS_KEY, entity.getAccessKey());
+
+                cv.put(DocColumns.PHOTO, nonNull(entity.getPhoto()) ? GSON.toJson(entity.getPhoto()) : null);
+                cv.put(DocColumns.GRAFFITI, nonNull(entity.getGraffiti()) ? GSON.toJson(entity.getGraffiti()) : null);
+                cv.put(DocColumns.VIDEO, nonNull(entity.getVideo()) ? GSON.toJson(entity.getVideo()) : null);
+                cv.put(DocColumns.AUDIO, nonNull(entity.getAudio()) ? GSON.toJson(entity.getAudio()) : null);
 
                 operations.add(ContentProviderOperation.newInsert(uri)
                         .withValues(cv)
                         .build());
             }
 
-            ContentProviderResult[] results = getContentResolver()
-                    .applyBatch(MessengerContentProvider.AUTHORITY, operations);
-
-            DatabaseIdRange range = DatabaseIdRange.createFromContentProviderResults(results);
-            if(nonNull(range)){
-                e.onSuccess(range);
-            }
-
+            getContentResolver().applyBatch(MessengerContentProvider.AUTHORITY, operations);
             e.onComplete();
 
-            Exestime.log("DocsRepository.store", start, "count: " + dtos.size());
+            Exestime.log("DocsRepository.store", start, "count: " + entities.size());
         });
     }
 
-    private static Document map(Cursor cursor) {
-        Document document = new Document(cursor.getInt(cursor.getColumnIndex(DocColumns.DOC_ID)), cursor.getInt(cursor.getColumnIndex(DocColumns.OWNER_ID)))
+    @Override
+    public Completable delete(int accountId, int docId, int ownerId) {
+        return Completable.fromAction(() -> {
+            final Uri uri = MessengerContentProvider.getDocsContentUriFor(accountId);
+            final String where = DocColumns.DOC_ID + " = ? AND " + DocColumns.OWNER_ID + " = ?";
+            final String[] args = {String.valueOf(docId), String.valueOf(ownerId)};
+            getContentResolver().delete(uri, where, args);
+        });
+    }
+
+    private static DocumentEntity map(Cursor cursor) {
+        final int id = cursor.getInt(cursor.getColumnIndex(DocColumns.DOC_ID));
+        final int ownerId = cursor.getInt(cursor.getColumnIndex(DocColumns.OWNER_ID));
+
+        DocumentEntity document = new DocumentEntity(id, ownerId)
                 .setTitle(cursor.getString(cursor.getColumnIndex(DocColumns.TITLE)))
                 .setSize(cursor.getLong(cursor.getColumnIndex(DocColumns.SIZE)))
                 .setExt(cursor.getString(cursor.getColumnIndex(DocColumns.EXT)))
@@ -122,24 +141,25 @@ class DocsRepository extends AbsRepository implements IDocsRepository {
                 .setDate(cursor.getLong(cursor.getColumnIndex(DocColumns.DATE)))
                 .setAccessKey(cursor.getString(cursor.getColumnIndex(DocColumns.ACCESS_KEY)));
 
-        String previewJson = cursor.getString(cursor.getColumnIndex(DocColumns.PREVIEW));
+        String photoJson = cursor.getString(cursor.getColumnIndex(DocColumns.PHOTO));
+        String graffitiJson = cursor.getString(cursor.getColumnIndex(DocColumns.GRAFFITI));
+        String videoJson = cursor.getString(cursor.getColumnIndex(DocColumns.VIDEO));
+        String audioJson = cursor.getString(cursor.getColumnIndex(DocColumns.AUDIO));
 
-        if (!safeIsEmpty(previewJson)) {
-            VkApiDoc.Preview preview = GSON.fromJson(previewJson, VkApiDoc.Preview.class);
+        if(nonEmpty(photoJson)){
+            document.setPhoto(GSON.fromJson(photoJson, PhotoSizeEntity.class));
+        }
 
-            if (nonNull(preview)) {
-                if (nonNull(preview.video)) {
-                    document.setVideoPreview(Dto2Model.transform(preview.video));
-                }
+        if(nonEmpty(graffitiJson)){
+            document.setGraffiti(GSON.fromJson(graffitiJson, DocumentEntity.GraffitiDbo.class));
+        }
 
-                if (nonNull(preview.photo) && nonNull(preview.photo.sizes)) {
-                    document.setPhotoPreview(Dto2Model.transform(preview.photo.sizes));
-                }
+        if(nonEmpty(videoJson)){
+            document.setVideo(GSON.fromJson(videoJson, DocumentEntity.VideoPreviewDbo.class));
+        }
 
-                if (nonNull(preview.graffiti)) {
-                    document.setGraffiti(Dto2Model.transform(preview.graffiti));
-                }
-            }
+        if(nonEmpty(audioJson)){
+            document.setAudio(GSON.fromJson(audioJson, DocumentEntity.AudioMessageDbo.class));
         }
 
         return document;

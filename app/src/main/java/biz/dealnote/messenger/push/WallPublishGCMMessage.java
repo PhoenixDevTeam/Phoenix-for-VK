@@ -13,7 +13,6 @@ import android.support.v4.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
-import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.link.VkLinkParser;
 import biz.dealnote.messenger.link.types.AbsLink;
 import biz.dealnote.messenger.link.types.WallPostLink;

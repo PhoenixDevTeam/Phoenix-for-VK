@@ -9,13 +9,13 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.PhotoAlbumsColumns;
 import biz.dealnote.messenger.db.interfaces.IPhotoAlbumsRepository;
 import biz.dealnote.messenger.db.model.entity.PhotoAlbumEntity;
 import biz.dealnote.messenger.db.model.entity.PhotoSizeEntity;
 import biz.dealnote.messenger.db.model.entity.PrivacyEntity;
 import biz.dealnote.messenger.model.criteria.PhotoAlbumsCriteria;
-import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Optional;
 import io.reactivex.Completable;

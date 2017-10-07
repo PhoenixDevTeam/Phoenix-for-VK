@@ -11,24 +11,16 @@ import biz.dealnote.messenger.service.factory.AccountRequestFactory;
 import biz.dealnote.messenger.service.factory.AudioRequestFactory;
 import biz.dealnote.messenger.service.factory.FaveRequestFactory;
 import biz.dealnote.messenger.service.factory.FeedRequestFactory;
-import biz.dealnote.messenger.service.factory.GroupsRequestFactory;
 import biz.dealnote.messenger.service.factory.MessagesRequestFactory;
 import biz.dealnote.messenger.service.factory.PhotoRequestFactory;
-import biz.dealnote.messenger.service.factory.PollRequestFactory;
 import biz.dealnote.messenger.service.factory.UtilsRequestFactory;
 import biz.dealnote.messenger.service.operations.account.PushResolveOperation;
-import biz.dealnote.messenger.service.operations.audio.AddAudioOperation;
 import biz.dealnote.messenger.service.operations.audio.AlbumCoverFindOperation;
-import biz.dealnote.messenger.service.operations.audio.DeleteAudioOperation;
-import biz.dealnote.messenger.service.operations.audio.RestoreAudioOperation;
 import biz.dealnote.messenger.service.operations.audio.SetBroadcastAudioOperation;
-import biz.dealnote.messenger.service.operations.docs.DocsDeleteOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveGetLinksOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveRemoveLinkOperation;
 import biz.dealnote.messenger.service.operations.fave.FaveRemoveUserOperation;
 import biz.dealnote.messenger.service.operations.feed.FeedGetListOperation;
-import biz.dealnote.messenger.service.operations.groups.JoinGroupOperation;
-import biz.dealnote.messenger.service.operations.groups.LeaveGroupOperation;
 import biz.dealnote.messenger.service.operations.message.DeleteDialogOperation;
 import biz.dealnote.messenger.service.operations.message.DeleteMessageOperation;
 import biz.dealnote.messenger.service.operations.message.EditChatOperation;
@@ -41,10 +33,6 @@ import biz.dealnote.messenger.service.operations.photo.DeletePhotoOpeation;
 import biz.dealnote.messenger.service.operations.photo.EditPhotoAlbumOperation;
 import biz.dealnote.messenger.service.operations.photo.GetPhotoByIdOperation;
 import biz.dealnote.messenger.service.operations.photo.RestorePhotoOpeation;
-import biz.dealnote.messenger.service.operations.poll.AddVoteOperation;
-import biz.dealnote.messenger.service.operations.poll.CreatePollOperation;
-import biz.dealnote.messenger.service.operations.poll.GetPollByIdOperation;
-import biz.dealnote.messenger.service.operations.poll.RemoveVoteOperation;
 import biz.dealnote.messenger.service.operations.utils.ResolveScreenNameOperation;
 import biz.dealnote.messenger.util.Objects;
 
@@ -60,10 +48,6 @@ public class RestService extends RequestService {
             case RequestFactory.REQUEST_DELETE_MESSAGES:
                 return new DeleteMessageOperation();
 
-            case RequestFactory.REQUEST_ADD_VOTE:
-                return new AddVoteOperation();
-            case RequestFactory.REQUEST_REMOVE_VOTE:
-                return new RemoveVoteOperation();
             case RequestFactory.REQUEST_PHOTOS_BY_ID:
                 return new GetPhotoByIdOperation();
 
@@ -72,13 +56,6 @@ public class RestService extends RequestService {
 
             case RequestFactory.REQUEST_MESSAGES_RESTORE:
                 return new MessagesRestoreOperation();
-            case RequestFactory.REQUEST_DOCS_DELETE:
-                return new DocsDeleteOperation();
-
-            case GroupsRequestFactory.REQUEST_JOIN:
-                return new JoinGroupOperation();
-            case GroupsRequestFactory.REQUEST_LEAVE:
-                return new LeaveGroupOperation();
 
             case MessagesRequestFactory.REQUEST_DELETE_DIALOG:
                 return new DeleteDialogOperation();
@@ -95,21 +72,11 @@ public class RestService extends RequestService {
             case FaveRequestFactory.REQUEST_REMOVE_LINK:
                 return new FaveRemoveLinkOperation();
 
-            case PollRequestFactory.REQUEST_POLL_CREATE:
-                return new CreatePollOperation();
-            case PollRequestFactory.REQUEST_GET_POLL_BY_ID:
-                return new GetPollByIdOperation();
-
-            case AudioRequestFactory.REQUEST_ADD:
-                return new AddAudioOperation();
             case AudioRequestFactory.REQUEST_FIND_COVER:
                 return new AlbumCoverFindOperation();
-            case AudioRequestFactory.REQUEST_DELETE:
-                return new DeleteAudioOperation();
+
             case AudioRequestFactory.REQUEST_BROADCAST:
                 return new SetBroadcastAudioOperation();
-            case AudioRequestFactory.REQUEST_RESTORE:
-                return new RestoreAudioOperation();
 
             case UtilsRequestFactory.REQUEST_SCREEN_NAME:
                 return new ResolveScreenNameOperation();

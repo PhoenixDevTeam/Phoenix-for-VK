@@ -19,8 +19,6 @@ import java.util.EventListener;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.api.model.VKApiUser;
-import biz.dealnote.messenger.api.model.VkApiFriendList;
 import biz.dealnote.messenger.api.model.VkApiPrivacy;
 import biz.dealnote.messenger.model.FriendList;
 import biz.dealnote.messenger.model.Privacy;

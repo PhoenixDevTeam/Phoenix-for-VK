@@ -7,16 +7,20 @@ import java.util.List;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.IdPair;
 import biz.dealnote.messenger.api.model.VkApiDoc;
-import biz.dealnote.messenger.db.DatabaseIdRange;
 import biz.dealnote.messenger.db.interfaces.IDocsRepository;
+import biz.dealnote.messenger.db.model.entity.DocumentEntity;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.fragment.search.criteria.DocumentSearchCriteria;
 import biz.dealnote.messenger.interactor.IDocsInteractor;
+import biz.dealnote.messenger.interactor.mappers.Dto2Entity;
 import biz.dealnote.messenger.interactor.mappers.Dto2Model;
+import biz.dealnote.messenger.interactor.mappers.Entity2Model;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.criteria.DocsCriteria;
-import biz.dealnote.messenger.util.Utils;
+import io.reactivex.Completable;
 import io.reactivex.Single;
+
+import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 
 /**
  * Created by Ruslan Kolbasa on 17.05.2017.
@@ -37,20 +41,31 @@ public class DocsInteractor implements IDocsInteractor {
         return networker.vkDefault(accountId)
                 .docs()
                 .get(ownerId, null, null, filter)
-                .flatMap(dtos -> cache.store(accountId, ownerId, dtos.getItems(), true)
-                        .toSingle(DatabaseIdRange.create(0, 0)) // because range not used
-                        .map(ignored -> {
-                            List<Document> documents = new ArrayList<>(dtos.getItems().size());
-                            for (VkApiDoc dto : dtos.getItems()) {
-                                documents.add(Dto2Model.transform(dto));
-                            }
-                            return documents;
-                        }));
+                .map(items -> listEmptyIfNull(items.getItems()))
+                .flatMap(dtos -> {
+                    List<Document> documents = new ArrayList<>(dtos.size());
+                    List<DocumentEntity> entities = new ArrayList<>(dtos.size());
+
+                    for(VkApiDoc dto : dtos){
+                        documents.add(Dto2Model.transform(dto));
+                        entities.add(Dto2Entity.buildDocumentDbo(dto));
+                    }
+
+                    return cache.store(accountId, ownerId, entities, true)
+                            .andThen(Single.just(documents));
+                });
     }
 
     @Override
     public Single<List<Document>> getCacheData(int accountId, int ownerId, int filter) {
-        return cache.get(new DocsCriteria(accountId, ownerId).setFilter(filter));
+        return cache.get(new DocsCriteria(accountId, ownerId).setFilter(filter))
+                .map(entities -> {
+                    List<Document> documents = new ArrayList<>(entities.size());
+                    for(DocumentEntity entity : entities){
+                        documents.add(Entity2Model.buildDocumentFromDbo(entity));
+                    }
+                    return documents;
+                });
     }
 
     @Override
@@ -80,7 +95,7 @@ public class DocsInteractor implements IDocsInteractor {
                 .docs()
                 .search(criteria.getQuery(), count, offset)
                 .map(items -> {
-                    List<VkApiDoc> dtos = Utils.listEmptyIfNull(items.getItems());
+                    List<VkApiDoc> dtos = listEmptyIfNull(items.getItems());
                     List<Document> documents = new ArrayList<>();
 
                     for(VkApiDoc dto : dtos){
@@ -89,5 +104,13 @@ public class DocsInteractor implements IDocsInteractor {
 
                     return documents;
                 });
+    }
+
+    @Override
+    public Completable delete(int accountId, int docId, int ownerId) {
+        return networker.vkDefault(accountId)
+                .docs()
+                .delete(ownerId, docId)
+                .flatMapCompletable(ignored -> cache.delete(accountId, docId, ownerId));
     }
 }

@@ -4,20 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.exception.ServiceException;
+import biz.dealnote.messenger.interactor.IPollInteractor;
+import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IPollView;
-import biz.dealnote.messenger.service.RequestFactory;
-import biz.dealnote.messenger.service.factory.PollRequestFactory;
-import biz.dealnote.messenger.util.Logger;
+import biz.dealnote.messenger.util.RxUtils;
+import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
-
-import static biz.dealnote.messenger.util.Objects.nonNull;
 
 /**
  * Created by admin on 19.12.2016.
@@ -30,16 +25,52 @@ public class PollPresenter extends AccountDependencyPresenter<IPollView> {
     private Poll mPoll;
     private int mTempCheckedId;
 
+    private final IPollInteractor pollInteractor;
+
     public PollPresenter(int accountId, @NonNull Poll poll, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-        mPoll = poll;
+        this.mPoll = poll;
+        this.pollInteractor = InteractorFactory.createPollInteractor();
 
         refreshPollData();
     }
 
-    private void refreshPollData(){
-        Request request = PollRequestFactory.getGetPollById(mPoll.getId(), mPoll.getOwnerId(), mPoll.isBoard());
-        executeRequest(request);
+    private boolean loadingNow;
+
+    private void setLoadingNow(boolean loadingNow) {
+        this.loadingNow = loadingNow;
+        resolveButtonView();
+    }
+
+    private void refreshPollData() {
+        if (loadingNow) return;
+
+        final int accountId = super.getAccountId();
+
+        setLoadingNow(true);
+        appendDisposable(pollInteractor.getPollById(accountId, mPoll.getOwnerId(), mPoll.getId(), mPoll.isBoard())
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::onPollInfoUpdated, this::onLoadingError));
+    }
+
+    private void onLoadingError(Throwable t) {
+        showError(getView(), Utils.getCauseIfRuntime(t));
+        setLoadingNow(false);
+    }
+
+    private void onPollInfoUpdated(Poll poll) {
+        setLoadingNow(false);
+
+        mPoll = poll;
+
+        if (mPoll.getMyAnswerId() != 0) {
+            mTempCheckedId = 0;
+        }
+
+        resolveQuestionView();
+        resolveVotesCountView();
+        resolvePollTypeView();
+        resolveVotesListView();
     }
 
     @Override
@@ -50,14 +81,9 @@ public class PollPresenter extends AccountDependencyPresenter<IPollView> {
     @OnGuiCreated
     private void resolveButtonView() {
         if (isGuiReady()) {
-            getView().displayLoading(isLoadingNow());
+            getView().displayLoading(loadingNow);
             getView().setupButton(mPoll.getMyAnswerId() != 0);
         }
-    }
-
-    private boolean isLoadingNow() {
-        return hasRequest(RequestFactory.REQUEST_ADD_VOTE, RequestFactory.REQUEST_REMOVE_VOTE,
-                PollRequestFactory.REQUEST_GET_POLL_BY_ID);
     }
 
     @OnGuiCreated
@@ -99,60 +125,32 @@ public class PollPresenter extends AccountDependencyPresenter<IPollView> {
         mTempCheckedId = newid;
     }
 
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-
-        switch (request.getRequestType()){
-            case RequestFactory.REQUEST_ADD_VOTE:
-            case RequestFactory.REQUEST_REMOVE_VOTE:
-            case PollRequestFactory.REQUEST_GET_POLL_BY_ID:
-                Poll result = resultData.getParcelable(Extra.POLL);
-                if(nonNull(result)){
-                    onPollUpdated(result);
-                }
-                break;
-        }
-
-        resolveButtonView();
-    }
-
-    @Override
-    protected void onRequestError(@NonNull Request request, @NonNull ServiceException e) {
-        super.onRequestError(request, e);
-        safeShowError(getView(), e.getMessage());
-        resolveButtonView();
-    }
-
-    private void onPollUpdated(@NonNull Poll poll) {
-        Logger.d(TAG, "onPollUpdated, poll: " + poll);
-
-        mPoll = poll;
-
-        if(mPoll.getMyAnswerId() != 0){
-            mTempCheckedId = 0;
-        }
-
-        resolveQuestionView();
-        resolveVotesCountView();
-        resolvePollTypeView();
-        resolveVotesListView();
-    }
-
     private void remove() {
-        Request request = RequestFactory.getRemoveVoteRequest(mPoll, mPoll.getMyAnswerId());
-        executeRequest(request);
-        resolveButtonView();
+        if (loadingNow) return;
+
+        final int accountId = super.getAccountId();
+        final int answerId = this.mPoll.getMyAnswerId();
+
+        setLoadingNow(true);
+        appendDisposable(pollInteractor.removeVote(accountId, this.mPoll, answerId)
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::onPollInfoUpdated, this::onLoadingError));
     }
 
     private void vote() {
-        Request request = RequestFactory.getAddVoteRequest(mPoll, mTempCheckedId);
-        executeRequest(request);
-        resolveButtonView();
+        if (loadingNow) return;
+
+        final int accountId = super.getAccountId();
+        final int voteId = this.mTempCheckedId;
+
+        setLoadingNow(true);
+        appendDisposable(pollInteractor.addVote(accountId, this.mPoll, voteId)
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::onPollInfoUpdated, this::onLoadingError));
     }
 
     public void fireButtonClick() {
-        if (isLoadingNow()) return;
+        if (loadingNow) return;
 
         if (mPoll.getMyAnswerId() == 0) {
             if (mTempCheckedId == 0) {

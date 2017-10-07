@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.List;
 
 import biz.dealnote.messenger.crypt.KeyLocationPolicy;
-import biz.dealnote.messenger.model.IdPair;
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.model.SwitchableCategory;
 import biz.dealnote.messenger.model.drawer.AbsDrawerItem;

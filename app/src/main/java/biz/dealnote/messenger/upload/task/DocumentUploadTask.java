@@ -20,6 +20,8 @@ import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.api.model.upload.UploadDocDto;
 import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.model.entity.DocumentEntity;
+import biz.dealnote.messenger.interactor.mappers.Dto2Entity;
 import biz.dealnote.messenger.interactor.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.upload.BaseUploadResponse;
@@ -158,10 +160,12 @@ public class DocumentUploadTask extends AbstractUploadTask<DocumentUploadTask.Re
         }
 
         for (VkApiDoc dto : documents) {
+            DocumentEntity entity = Dto2Entity.buildDocumentDbo(dto);
+
             Repositories.getInstance()
                     .docs()
-                    .store(aid, dto.ownerId, Collections.singletonList(dto), false)
-                    .blockingGet();
+                    .store(aid, dto.ownerId, Collections.singletonList(entity), false)
+                    .blockingAwait();
         }
     }
 

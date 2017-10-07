@@ -4,9 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.Collection;
-import java.util.List;
-
-import biz.dealnote.messenger.api.model.VKApiOwner;
 
 /**
  * Created by admin on 04.12.2016.

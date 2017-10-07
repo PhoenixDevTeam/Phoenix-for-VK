@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.api.model.VKApiStickerSet;
+import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.StikerSetColumns;
 import biz.dealnote.messenger.db.interfaces.IStickersRepository;
 import biz.dealnote.messenger.model.StickerSet;
-import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Exestime;
 import io.reactivex.Completable;

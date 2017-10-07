@@ -4,22 +4,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.exception.ServiceException;
+import biz.dealnote.messenger.interactor.IPollInteractor;
+import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.ICreatePollView;
-import biz.dealnote.messenger.service.factory.PollRequestFactory;
-import biz.dealnote.messenger.util.AssertUtils;
+import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
+import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
 
 /**
@@ -35,9 +33,12 @@ public class CreatePollPresenter extends AccountDependencyPresenter<ICreatePollV
     private int mOwnerId;
     private boolean mAnonymous;
 
+    private final IPollInteractor pollInteractor;
+
     public CreatePollPresenter(int accountId, int ownerId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.mOwnerId = ownerId;
+        this.pollInteractor = InteractorFactory.createPollInteractor();
 
         if (isNull(savedInstanceState)) {
             mOptions = new String[10];
@@ -52,25 +53,10 @@ public class CreatePollPresenter extends AccountDependencyPresenter<ICreatePollV
         viewHost.displayOptions(mOptions);
     }
 
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-        if(request.getRequestType() == PollRequestFactory.REQUEST_POLL_CREATE){
-            Poll poll = resultData.getParcelable(Extra.POLL);
-            AssertUtils.requireNonNull(poll);
+    private boolean creationNow;
 
-            resolveProgressDialog();
-
-            if(isGuiReady()){
-                getView().sendResultAndGoBack(poll);
-            }
-        }
-    }
-
-    @Override
-    protected void onRequestError(@NonNull Request request, @NonNull ServiceException e) {
-        super.onRequestError(request, e);
-        safeShowError(getView(), e.getMessage());
+    private void setCreationNow(boolean creationNow) {
+        this.creationNow = creationNow;
         resolveProgressDialog();
     }
 
@@ -92,20 +78,31 @@ public class CreatePollPresenter extends AccountDependencyPresenter<ICreatePollV
             return;
         }
 
-        Request request = PollRequestFactory.getCreatePollRequest(mQuestion, mAnonymous, mOwnerId, nonEmptyOptions);
-        executeRequest(request);
+        setCreationNow(true);
+        final int accountId = super.getAccountId();
 
-        resolveProgressDialog();
+        appendDisposable(pollInteractor.createPoll(accountId, mQuestion, mAnonymous, mOwnerId, nonEmptyOptions)
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::onPollCreated, this::onPollCreateError));
+    }
+
+    private void onPollCreateError(Throwable t) {
+        setCreationNow(false);
+        showError(getView(), getCauseIfRuntime(t));
+    }
+
+    private void onPollCreated(Poll poll) {
+        setCreationNow(false);
+        callView(view -> view.sendResultAndGoBack(poll));
     }
 
     @OnGuiCreated
     private void resolveProgressDialog() {
         if (isGuiReady()) {
-            if (hasRequest(PollRequestFactory.REQUEST_POLL_CREATE)) {
+            if (creationNow)
                 getView().displayProgressDialog(R.string.please_wait, R.string.publication, false);
-            } else {
-                getView().dismissProgressDialog();
-            }
+        } else {
+            getView().dismissProgressDialog();
         }
     }
 
