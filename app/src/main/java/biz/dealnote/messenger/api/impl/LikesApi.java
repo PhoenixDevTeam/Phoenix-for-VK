@@ -18,11 +18,13 @@ class LikesApi extends AbsApi implements ILikesApi {
     }
 
     @Override
-    public Single<LikesListResponse> getList(String type, Integer ownerId, Integer itemId, String pageUrl, String filter, Boolean friendsOnly, Integer offset, Integer count, Boolean skipOwn) {
+    public Single<LikesListResponse> getList(String type, Integer ownerId, Integer itemId, String pageUrl,
+                                             String filter, Boolean friendsOnly, Integer offset,
+                                             Integer count, Boolean skipOwn, String fields) {
         return provideService(ILikesService.class, TokenType.USER)
                 .flatMap(service -> service
                         .getList(type, ownerId, itemId, pageUrl, filter, integerFromBoolean(friendsOnly),
-                                1, offset, count, integerFromBoolean(skipOwn))
+                                1, offset, count, integerFromBoolean(skipOwn), fields)
                         .map(extractResponseWithErrorHandling()));
     }
 
