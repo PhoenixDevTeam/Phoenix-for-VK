@@ -1101,4 +1101,16 @@
     <string name="audios_disabled_summary_message">16 грудня 2016 року адміністрація \"ВКонтакте\" відключила доступ до свого музичного API для сторонніх додатків</string>
     <string name="audios_disabled_title">Доступ заборонено :(</string>
     <string name="button_details">Детальніше</string>
+    <string name="my_communities_title">Мої спільноти</string>
+    <string name="quick_search_title">Швидкий пошук</string>
+    <string name="countries_title">Країни</string>
+    <string name="message_channel">Повідомлення</string>
+    <string name="group_message_channel">Групові бесіди</string>
+    <string name="key_exchange_channel">Обмін ключами</string>
+    <string name="audio_channel">Плеєр</string>
+    <string name="comment_channel">Коментарі</string>
+    <string name="friend_requests_channel">Заявки в друзі</string>
+    <string name="group_invites_channel">Запрошення в групи</string>
+    <string name="likes_channel">Мені подобається</string>
+    <string name="new_posts_channel">Нові записи</string>
 </resources>
