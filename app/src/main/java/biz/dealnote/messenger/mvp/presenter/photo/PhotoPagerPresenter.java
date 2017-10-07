@@ -31,6 +31,8 @@ import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 
+import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
+
 /**
  * Created by admin on 24.09.2016.
  * phoenix
@@ -45,7 +47,7 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
     private boolean mLoadingNow;
     private boolean mFullScreen;
 
-    private final IPhotosInteractor photosInteractor;
+    final IPhotosInteractor photosInteractor;
 
     PhotoPagerPresenter(@NonNull ArrayList<Photo> photos, int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
@@ -134,7 +136,7 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
         afterPageChangedFromUi(old, position);
     }
 
-    protected void afterPageChangedFromUi(int oldPage, int newPage){
+    protected void afterPageChangedFromUi(int oldPage, int newPage) {
 
     }
 
@@ -183,7 +185,7 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
         resolveOptionMenu();
     }
 
-    public void fireInfoButtonClick(){
+    public void fireInfoButtonClick() {
         String info = getCurrent().getText();
         String time = AppTextUtils.getDateFromUnixTime(getCurrent().getDate());
         getView().showPhotoInfo(time, info);
@@ -218,17 +220,13 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
         final boolean add = !photo.isUserLikes();
 
         appendDisposable(photosInteractor.like(accountId, ownerId, photoId, add, photo.getAccessKey())
-        .compose(RxUtils.applySingleIOToMainSchedulers())
-        .subscribe(count -> interceptLike(ownerId, photoId, count, add), t -> showError(getView(), Utils.getCauseIfRuntime(t))));
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(count -> interceptLike(ownerId, photoId, count, add), t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
     @Override
     protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
         super.onRequestFinished(request, resultData);
-
-        if (request.getRequestType() == PhotoRequestFactory.REQUEST_COPY) {
-            safeShowLongToast(getView(), R.string.photo_saved_yourself);
-        }
 
         if (request.getRequestType() == PhotoRequestFactory.REQUEST_DELETE) {
             if (resultData.getBoolean(Extra.SUCCESS)) {
@@ -312,7 +310,7 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
         protected void onPostExecute(String s) {
             PhotoPagerPresenter presenter = ref.get();
 
-            if(Objects.isNull(presenter)) return;
+            if (Objects.isNull(presenter)) return;
 
             if (Objects.isNull(s)) {
                 presenter.safeShowLongToast(presenter.getView(), R.string.saved);
@@ -323,10 +321,16 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
     }
 
     public void fireSaveYourselfClick() {
-        Photo photo = getCurrent();
+        final Photo photo = getCurrent();
+        final int accountId = super.getAccountId();
 
-        Request request = PhotoRequestFactory.getCopyRequest(photo.getOwnerId(), photo.getId(), photo.getAccessKey());
-        executeRequest(request);
+        appendDisposable(photosInteractor.copy(accountId, photo.getOwnerId(), photo.getId(), photo.getAccessKey())
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(ignored -> onPhotoCopied(), t -> showError(getView(), getCauseIfRuntime(t))));
+    }
+
+    private void onPhotoCopied() {
+        safeShowLongToast(getView(), R.string.photo_saved_yourself);
     }
 
     public void fireDeleteClick() {
@@ -391,12 +395,12 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
         }
     }
 
-    int getCurrentIndex(){
+    int getCurrentIndex() {
         return mCurrentIndex;
     }
 
     public void fireLikeLongClick() {
-        if(!hasPhotos()) return;
+        if (!hasPhotos()) return;
 
         Photo photo = getCurrent();
         getView().goToLikesList(getAccountId(), photo.getOwnerId(), photo.getId());

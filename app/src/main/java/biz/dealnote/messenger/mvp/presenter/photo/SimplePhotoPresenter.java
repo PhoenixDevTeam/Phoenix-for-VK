@@ -4,19 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.model.AccessIdPair;
 import biz.dealnote.messenger.model.Photo;
-import biz.dealnote.messenger.service.RequestFactory;
-import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Logger;
+import biz.dealnote.messenger.util.RxUtils;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
+import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
 /**
  * Created by admin on 24.09.2016.
@@ -42,25 +39,21 @@ public class SimplePhotoPresenter extends PhotoPagerPresenter {
     }
 
     private void refreshData(){
-        ArrayList<AccessIdPair> ids = new ArrayList<>(getData().size());
+        final ArrayList<AccessIdPair> ids = new ArrayList<>(getData().size());
+        final int accountId = super.getAccountId();
+
         for(Photo photo : getData()){
             ids.add(new AccessIdPair(photo.getId(), photo.getOwnerId(), photo.getAccessKey()));
         }
 
-        Request request = RequestFactory.getPhotosByIdRequest(ids, true);
-        executeRequest(request);
+        appendDisposable(photosInteractor.getPhotosByIds(accountId, ids)
+        .compose(RxUtils.applySingleIOToMainSchedulers())
+        .subscribe(this::onPhotosReceived, t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-        if(request.getRequestType() == RequestFactory.REQUEST_PHOTOS_BY_ID){
-            ArrayList<Photo> result = resultData.getParcelableArrayList(Extra.PHOTOS);
-            AssertUtils.requireNonNull(result);
-            mDataRefreshSuccessfull = true;
-
-            onPhotoListRefresh(result);
-        }
+    private void onPhotosReceived(List<Photo> photos){
+        mDataRefreshSuccessfull = true;
+        onPhotoListRefresh(photos);
     }
 
     private static final String TAG = SimplePhotoPresenter.class.getSimpleName();
@@ -70,7 +63,7 @@ public class SimplePhotoPresenter extends PhotoPagerPresenter {
         return TAG;
     }
 
-    private void onPhotoListRefresh(@NonNull ArrayList<Photo> photos){
+    private void onPhotoListRefresh(@NonNull List<Photo> photos){
         List<Photo> originalData = super.getData();
 
         for(Photo photo : photos){

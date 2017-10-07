@@ -5,14 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.fragment.VKPhotoAlbumsFragment;
 import biz.dealnote.messenger.interactor.IOwnersInteractor;
@@ -26,13 +23,13 @@ import biz.dealnote.messenger.model.PhotoAlbumEditor;
 import biz.dealnote.messenger.model.SimplePrivacy;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IPhotoAlbumsView;
-import biz.dealnote.messenger.service.factory.PhotoRequestFactory;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
 import io.reactivex.disposables.CompositeDisposable;
 
+import static biz.dealnote.messenger.util.Utils.findIndexById;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
 /**
@@ -189,27 +186,6 @@ public class PhotoAlbumsPresenter extends AccountDependencyPresenter<IPhotoAlbum
         super.onDestroyed();
     }
 
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
-
-        if (request.getRequestType() == PhotoRequestFactory.REQUEST_DELETE_ALBUM) {
-            int albumId = request.getInt(Extra.ALBUM_ID);
-
-            for (int i = 0; i < mData.size(); i++) {
-                if (mData.get(i).getId() == albumId) {
-                    mData.remove(i);
-
-                    if (isGuiReady()) {
-                        getView().notifyItemRemoved(i);
-                    }
-
-                    break;
-                }
-            }
-        }
-    }
-
     @OnGuiCreated
     private void resolveProgressView() {
         if (isGuiReady()) {
@@ -238,9 +214,20 @@ public class PhotoAlbumsPresenter extends AccountDependencyPresenter<IPhotoAlbum
     }
 
     private void doAlbumRemove(@NonNull PhotoAlbum album) {
-        Integer groupId = mOwnerId < 0 ? -Math.abs(album.getOwnerId()) : null;
-        Request request = PhotoRequestFactory.getDeleteAlbumRequest(album.getId(), groupId);
-        executeRequest(request);
+        final int accountId = super.getAccountId();
+        final int albumId = album.getId();
+        final int ownerId = album.getOwnerId();
+
+        appendDisposable(photosInteractor.removedAlbum(accountId, album.getOwnerId(), album.getId())
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> onAlbumRemoved(albumId, ownerId), t -> showError(getView(), getCauseIfRuntime(t))));
+    }
+
+    private void onAlbumRemoved(int albumId, int ownerId) {
+        int index = findIndexById(this.mData, albumId, ownerId);
+        if (index != -1) {
+            callView(view -> view.notifyItemRemoved(index));
+        }
     }
 
     public void fireCreateAlbumClick() {

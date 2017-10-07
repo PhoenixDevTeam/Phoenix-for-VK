@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.interactor.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,11 +18,13 @@ import biz.dealnote.messenger.interactor.IPhotosInteractor;
 import biz.dealnote.messenger.interactor.mappers.Dto2Entity;
 import biz.dealnote.messenger.interactor.mappers.Dto2Model;
 import biz.dealnote.messenger.interactor.mappers.Entity2Model;
+import biz.dealnote.messenger.model.AccessIdPair;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.PhotoAlbum;
 import biz.dealnote.messenger.model.criteria.PhotoAlbumsCriteria;
 import biz.dealnote.messenger.model.criteria.PhotoCriteria;
 import biz.dealnote.messenger.util.Utils;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 /**
@@ -150,5 +153,42 @@ public class PhotosInteractor implements IPhotosInteractor {
                     .applyPatch(accountId, ownerId, photoId, patch)
                     .andThen(Single.just(count));
         });
+    }
+
+    @Override
+    public Single<Integer> copy(int accountId, int ownerId, int photoId, String accessKey) {
+        return networker.vkDefault(accountId)
+                .photos()
+                .copy(ownerId, photoId, accessKey);
+    }
+
+    @Override
+    public Completable removedAlbum(int accountId, int ownerId, int albumId) {
+        return networker.vkDefault(accountId)
+                .photos()
+                .deleteAlbum(albumId, ownerId < 0 ? Math.abs(ownerId) : null)
+                .flatMapCompletable(ignored -> cache.photoAlbums()
+                        .removeAlbumById(accountId, ownerId, albumId));
+    }
+
+    @Override
+    public Single<List<Photo>> getPhotosByIds(int accountId, Collection<AccessIdPair> ids) {
+        List<biz.dealnote.messenger.api.model.AccessIdPair> dtoPairs = new ArrayList<>(ids.size());
+
+        for(AccessIdPair pair : ids){
+            dtoPairs.add(new biz.dealnote.messenger.api.model.AccessIdPair(pair.getId(),
+                    pair.getOwnerId(), pair.getAccessKey()));
+        }
+
+        return networker.vkDefault(accountId)
+                .photos()
+                .getById(dtoPairs)
+                .map(dtos -> {
+                    List<Photo> photos = new ArrayList<>(dtos.size());
+                    for(VKApiPhoto dto : dtos){
+                        photos.add(Dto2Model.transform(dto));
+                    }
+                    return photos;
+                });
     }
 }

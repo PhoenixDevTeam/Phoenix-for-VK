@@ -4,15 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.foxykeep.datadroid.requestmanager.Request;
-
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.model.AccessIdPair;
 import biz.dealnote.messenger.model.Photo;
-import biz.dealnote.messenger.service.RequestFactory;
+import biz.dealnote.messenger.util.RxUtils;
+
+import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
 /**
  * Created by admin on 28.09.2016.
@@ -23,10 +23,13 @@ public class FavePhotoPagerPresenter extends PhotoPagerPresenter {
     private static final String SAVE_UPDATED = "save_updated";
 
     private boolean[] mUpdated;
+    private boolean[] refreshing;
 
     public FavePhotoPagerPresenter(@NonNull ArrayList<Photo> photos, int index, int accountId, @Nullable Bundle savedInstanceState) {
         super(photos, accountId, savedInstanceState);
-        if(savedInstanceState == null){
+        this.refreshing = new boolean[photos.size()];
+
+        if (savedInstanceState == null) {
             mUpdated = new boolean[photos.size()];
             setCurrentIndex(index);
             refresh(index);
@@ -35,37 +38,39 @@ public class FavePhotoPagerPresenter extends PhotoPagerPresenter {
         }
     }
 
-    private void refresh(int index){
-        if(mUpdated[index]){
+    private void refresh(int index) {
+        if (mUpdated[index] || refreshing[index]) {
             return;
         }
 
-        Photo photo = getData().get(index);
-        ArrayList<AccessIdPair> forUpdate = new ArrayList<>(Collections.singletonList(new AccessIdPair(photo.getId(), photo.getOwnerId(), photo.getAccessKey())));
-        Request request = RequestFactory.getPhotosByIdRequest(forUpdate, false);
+        this.refreshing[index] = true;
 
-        request.put(Extra.INDEX, index); // optimize
-        executeRequest(request);
+        final Photo photo = getData().get(index);
+        final int accountId = super.getAccountId();
+
+        List<AccessIdPair> forUpdate = Collections.singletonList(new AccessIdPair(photo.getId(), photo.getOwnerId(), photo.getAccessKey()));
+        appendDisposable(photosInteractor.getPhotosByIds(accountId, forUpdate)
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(photos -> onPhotoUpdateReceived(photos, index), t -> onRefreshFailed(index, t)));
     }
 
-    @Override
-    protected void onRequestFinished(@NonNull Request request, @NonNull Bundle resultData) {
-        super.onRequestFinished(request, resultData);
+    private void onRefreshFailed(int index, Throwable t) {
+        this.refreshing[index] = false;
+        showError(getView(), getCauseIfRuntime(t));
+    }
 
-        if(request.getRequestType() == RequestFactory.REQUEST_PHOTOS_BY_ID){
-            int index = request.getInt(Extra.INDEX);
+    private void onPhotoUpdateReceived(List<Photo> result, int index) {
+        this.refreshing[index] = false;
 
-            ArrayList<Photo> result = resultData.getParcelableArrayList(Extra.PHOTOS);
-            if(result != null && result.size() == 1){
-                Photo p = result.get(0);
+        if (result.size() == 1) {
+            final Photo p = result.get(0);
 
-                getData().set(index, p);
+            getData().set(index, p);
 
-                mUpdated[index] = true;
+            mUpdated[index] = true;
 
-                if(getCurrentIndex() == index){
-                    refreshInfoViews();
-                }
+            if (getCurrentIndex() == index) {
+                refreshInfoViews();
             }
         }
     }
