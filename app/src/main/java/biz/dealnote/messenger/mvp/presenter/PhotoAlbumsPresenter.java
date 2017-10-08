@@ -10,12 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import biz.dealnote.messenger.Injection;
+import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IPhotosInteractor;
+import biz.dealnote.messenger.domain.IUtilsInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.VKPhotoAlbumsFragment;
-import biz.dealnote.messenger.interactor.IOwnersInteractor;
-import biz.dealnote.messenger.interactor.IPhotosInteractor;
-import biz.dealnote.messenger.interactor.IUtilsInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.PhotoAlbum;
@@ -52,7 +51,7 @@ public class PhotoAlbumsPresenter extends AccountDependencyPresenter<IPhotoAlbum
     public PhotoAlbumsPresenter(int accountId, int ownerId, @Nullable AdditionalParams params, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
 
-        this.ownersInteractor = Injection.provideOwnersInteractor();
+        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
         this.photosInteractor = InteractorFactory.createPhotosInteractor();
         this.utilsInteractor = InteractorFactory.createUtilsInteractor();
 

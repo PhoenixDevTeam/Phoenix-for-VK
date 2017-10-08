@@ -5,10 +5,10 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
+import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.search.criteria.PeopleSearchCriteria;
 import biz.dealnote.messenger.fragment.search.nextfrom.IntNextFrom;
-import biz.dealnote.messenger.interactor.IOwnersInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.view.search.IPeopleSearchView;
 import biz.dealnote.messenger.util.Pair;

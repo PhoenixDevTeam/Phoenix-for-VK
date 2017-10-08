@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.model.LocalImageAlbum;
 import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.mvp.presenter.base.RxSupportPresenter;
@@ -44,7 +44,7 @@ public class LocalPhotosPresenter extends RxSupportPresenter<ILocalPhotosView> {
         if (mLoadingNow) return;
 
         changeLoadingState(true);
-        appendDisposable(Repositories.getInstance()
+        appendDisposable(Stores.getInstance()
                 .localPhotos()
                 .getPhotos(mLocalImageAlbum.getId())
                 .compose(RxUtils.applySingleIOToMainSchedulers())

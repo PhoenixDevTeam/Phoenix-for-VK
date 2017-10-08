@@ -15,7 +15,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.db.interfaces.IMessagesStore;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueRepository;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
 import biz.dealnote.messenger.model.MessageStatus;
 import biz.dealnote.messenger.service.SendService;
 import biz.dealnote.messenger.upload.task.AbstractUploadTask;
@@ -47,7 +47,7 @@ public class UploadService extends Service implements UploadCallback {
 
     private final IBinder mBinder = new ServiceStub(this);
 
-    private IUploadQueueRepository uploadsRepository;
+    private IUploadQueueStore uploadsRepository;
     private IMessagesStore messagesStore;
 
     private AbstractUploadTask<?> mCurrenTask;
@@ -56,8 +56,8 @@ public class UploadService extends Service implements UploadCallback {
     @Override
     public void onCreate() {
         super.onCreate();
-        this.uploadsRepository = Injection.provideRepositories().uploads();
-        this.messagesStore = Injection.provideRepositories().messages();
+        this.uploadsRepository = Injection.provideStores().uploads();
+        this.messagesStore = Injection.provideStores().messages();
     }
 
     private void uploadFirstInQueue() {

@@ -13,7 +13,7 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.db.model.PostUpdate;
-import biz.dealnote.messenger.interactor.IWalls;
+import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.model.EditingPostType;
 import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.Post;

@@ -15,7 +15,7 @@ import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.api.model.upload.UploadPhotoToMessageDto;
 import biz.dealnote.messenger.db.AttachToType;
-import biz.dealnote.messenger.interactor.mappers.Dto2Model;
+import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.upload.BaseUploadResponse;
 import biz.dealnote.messenger.upload.UploadCallback;

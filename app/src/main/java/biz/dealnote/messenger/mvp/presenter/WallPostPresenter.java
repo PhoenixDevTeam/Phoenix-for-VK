@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.model.PostUpdate;
-import biz.dealnote.messenger.interactor.IOwnersInteractor;
-import biz.dealnote.messenger.interactor.IWalls;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Commented;
 import biz.dealnote.messenger.model.CommentedType;
 import biz.dealnote.messenger.model.Community;

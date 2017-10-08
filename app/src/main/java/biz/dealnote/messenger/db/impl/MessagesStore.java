@@ -56,11 +56,11 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
  * Created by hp-dv6 on 01.06.2016.
  * VKMessenger
  */
-class MessagesStore extends AbsRepository implements IMessagesStore {
+class MessagesStore extends AbsStore implements IMessagesStore {
 
     private static final String ORDER_BY = MessageColumns.FULL_STATUS + ", " + MessageColumns.FULL_ID;
 
-    MessagesStore(@NonNull AppRepositories base) {
+    MessagesStore(@NonNull AppStores base) {
         super(base);
     }
 
@@ -352,7 +352,7 @@ class MessagesStore extends AbsRepository implements IMessagesStore {
 
     @Override
     public Single<Integer> applyPatch(int accountId, int messageId, @NonNull MessagePatch patch) {
-        return getRepositories().attachments()
+        return getStores().attachments()
                 .getCount(accountId, AttachToType.MESSAGE, messageId)
                 .flatMap(count -> Single
                         .create(emitter -> {
@@ -401,7 +401,7 @@ class MessagesStore extends AbsRepository implements IMessagesStore {
         final MessageEntity dbo = baseMapDbo(cursor);
 
         if (withAttachments && dbo.getAttachmentsCount() > 0) {
-            List<Entity> attachments = getRepositories()
+            List<Entity> attachments = getStores()
                     .attachments()
                     .getAttachmentsDbosSync(accountId, AttachToType.MESSAGE, dbo.getId(), cancelable);
 
@@ -494,7 +494,7 @@ class MessagesStore extends AbsRepository implements IMessagesStore {
             }
 
             if (nonNull(message)) {
-                Integer count = getRepositories().attachments()
+                Integer count = getStores().attachments()
                         .getCount(accountId, AttachToType.MESSAGE, message.getId())
                         .blockingGet();
 

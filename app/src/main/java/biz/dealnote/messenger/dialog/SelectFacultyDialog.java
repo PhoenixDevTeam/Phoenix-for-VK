@@ -18,8 +18,8 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.vkdatabase.FacultiesAdapter;
 import biz.dealnote.messenger.dialog.base.AccountDependencyDialogFragment;
-import biz.dealnote.messenger.interactor.IDatabaseInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IDatabaseInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.database.Faculty;
 import biz.dealnote.messenger.util.RxUtils;
 

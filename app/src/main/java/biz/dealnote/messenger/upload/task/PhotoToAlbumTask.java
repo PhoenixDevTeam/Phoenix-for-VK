@@ -14,10 +14,10 @@ import biz.dealnote.messenger.api.WeakPercentageListener;
 import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.api.model.upload.UploadPhotoToAlbumDto;
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.db.model.entity.PhotoEntity;
-import biz.dealnote.messenger.interactor.mappers.Dto2Entity;
-import biz.dealnote.messenger.interactor.mappers.Dto2Model;
+import biz.dealnote.messenger.domain.mappers.Dto2Entity;
+import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.upload.BaseUploadResponse;
 import biz.dealnote.messenger.upload.UploadCallback;
@@ -115,7 +115,7 @@ public class PhotoToAlbumTask extends AbstractUploadTask<PhotoToAlbumTask.Respon
                 result.photo = Dto2Model.transform(dto);
 
                 final PhotoEntity photoEntity = Dto2Entity.buildPhotoDbo(dto);
-                Repositories.getInstance()
+                Stores.getInstance()
                         .photos()
                         .insertPhotosRx(accountId, photoEntity.getOwnerId(), photoEntity.getAlbumId(), Collections.singletonList(photoEntity), false)
                         .blockingAwait();

@@ -9,8 +9,8 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.interactor.IGroupSettingsInteractor;
-import biz.dealnote.messenger.interactor.impl.GroupSettingsInteractor;
+import biz.dealnote.messenger.domain.IGroupSettingsInteractor;
+import biz.dealnote.messenger.domain.impl.GroupSettingsInteractor;
 import biz.dealnote.messenger.model.Manager;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
@@ -35,11 +35,11 @@ public class CommunityManagersPresenter extends AccountDependencyPresenter<IComm
 
     public CommunityManagersPresenter(int accountId, int groupId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-        this.interactor = new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories().owners());
+        this.interactor = new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().owners());
         this.groupId = groupId;
         this.data = new ArrayList<>();
 
-        appendDisposable(Injection.provideRepositories()
+        appendDisposable(Injection.provideStores()
                 .owners()
                 .observeManagementChanges()
                 .filter(pair -> pair.getFirst() == groupId)

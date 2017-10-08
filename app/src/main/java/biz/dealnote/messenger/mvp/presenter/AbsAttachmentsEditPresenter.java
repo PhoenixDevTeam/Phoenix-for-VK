@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueRepository;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.Audio;
@@ -127,10 +127,10 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
         }
     }
 
-    void onUploadProgressUpdate(List<IUploadQueueRepository.IProgressUpdate> updates){
+    void onUploadProgressUpdate(List<IUploadQueueStore.IProgressUpdate> updates){
         Logger.d(tag(), "onUploadProgressUpdate, updates:" + updates + ", class: " + updates.getClass());
 
-        for(IUploadQueueRepository.IProgressUpdate update : updates){
+        for(IUploadQueueStore.IProgressUpdate update : updates){
             Predicate<AttachmenEntry> predicate = entry -> entry.getAttachment() instanceof UploadObject
                     && ((UploadObject) entry.getAttachment()).getId() == update.getId();
 
@@ -163,21 +163,21 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
         return false;
     }
 
-    void onUploadQueueUpdates(List<IUploadQueueRepository.IQueueUpdate> updates, Predicate<UploadObject> predicate){
+    void onUploadQueueUpdates(List<IUploadQueueStore.IQueueUpdate> updates, Predicate<UploadObject> predicate){
         //boolean hasChanges = false;
-        List<IUploadQueueRepository.IQueueUpdate> added = Utils.copyListWithPredicate(updates,
+        List<IUploadQueueStore.IQueueUpdate> added = Utils.copyListWithPredicate(updates,
                 update -> update.isAdding() && predicate.test(update.object()));
 
         if(nonEmpty(added)){
             int startSize = this.data.size();
-            for(IUploadQueueRepository.IQueueUpdate update : added){
+            for(IUploadQueueStore.IQueueUpdate update : added){
                 this.data.add(new AttachmenEntry(true, update.object()));
             }
 
             safelyNotifyItemsAdded(startSize, added.size());
         }
 
-        for(IUploadQueueRepository.IQueueUpdate update : updates){
+        for(IUploadQueueStore.IQueueUpdate update : updates){
             if(!update.isAdding()){
                 onUploadObjectRemovedFromQueue(update.getId(), update.response());
             }
@@ -205,7 +205,7 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
         return data;
     }
 
-    void onUploadStatusUpdate(IUploadQueueRepository.IStatusUpdate update){
+    void onUploadStatusUpdate(IUploadQueueStore.IStatusUpdate update){
         Logger.d(tag(), "onUploadStatusUpdate, id: " + update.getId() + ", status: " + update.getStatus());
 
         int index = findUploadIndexById(update.getId());

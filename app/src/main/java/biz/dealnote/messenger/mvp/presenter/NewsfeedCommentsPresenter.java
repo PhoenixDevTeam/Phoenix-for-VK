@@ -7,8 +7,8 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.Injection;
-import biz.dealnote.messenger.interactor.INewsfeedInteractor;
+import biz.dealnote.messenger.domain.INewsfeedInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Comment;
 import biz.dealnote.messenger.model.NewsfeedComment;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
@@ -36,7 +36,7 @@ public class NewsfeedCommentsPresenter extends PlaceSupportPresenter<INewsfeedCo
     public NewsfeedCommentsPresenter(int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.data = new ArrayList<>();
-        this.interactor = Injection.provideNewsfeedInteractor();
+        this.interactor = InteractorFactory.createNewsfeedInteractor();
 
         loadAtLast();
     }

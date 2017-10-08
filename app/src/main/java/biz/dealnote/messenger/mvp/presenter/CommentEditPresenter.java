@@ -9,9 +9,9 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueRepository;
-import biz.dealnote.messenger.interactor.ICommentsInteractor;
-import biz.dealnote.messenger.interactor.impl.CommentsInteractor;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
+import biz.dealnote.messenger.domain.ICommentsInteractor;
+import biz.dealnote.messenger.domain.impl.CommentsInteractor;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.Comment;
@@ -49,11 +49,11 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
 
     public CommentEditPresenter(Comment comment, int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-        this.commentsInteractor = new CommentsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories());
+        this.commentsInteractor = new CommentsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
         this.orig = comment;
         this.destination = new UploadDestination(comment.getId(), comment.getCommented().getSourceOwnerId(), Method.PHOTO_TO_COMMENT);
 
-        IUploadQueueRepository uploadRepository = Injection.provideRepositories().uploads();
+        IUploadQueueStore uploadRepository = Injection.provideStores().uploads();
 
         if (isNull(savedInstanceState)) {
             super.setTextBody(orig.getText());
@@ -77,10 +77,10 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
                 .subscribe(this::onUploadProgressUpdate));
     }
 
-    private void onUploadsQueueChanged(List<IUploadQueueRepository.IQueueUpdate> updates) {
+    private void onUploadsQueueChanged(List<IUploadQueueStore.IQueueUpdate> updates) {
         boolean hasChanges = false;
 
-        for (IUploadQueueRepository.IQueueUpdate u : updates) {
+        for (IUploadQueueStore.IQueueUpdate u : updates) {
             if (u.isAdding()) {
                 UploadObject object = u.object();
                 AssertUtils.requireNonNull(object);

@@ -21,7 +21,7 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.CreatePinActivity;
 import biz.dealnote.messenger.crypt.KeyLocationPolicy;
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.SecuritySettings;
@@ -95,12 +95,12 @@ public class SecurityPreferencesFragment extends PreferenceFragment implements P
     }
 
     private void removeKeysFor(int accountId) {
-        Repositories.getInstance()
+        Stores.getInstance()
                 .keys(KeyLocationPolicy.PERSIST)
                 .deleteAll(accountId)
                 .blockingAwait();
 
-        Repositories.getInstance()
+        Stores.getInstance()
                 .keys(KeyLocationPolicy.RAM)
                 .deleteAll(accountId)
                 .blockingAwait();

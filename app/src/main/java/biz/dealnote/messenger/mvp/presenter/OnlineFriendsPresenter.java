@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import biz.dealnote.messenger.interactor.IRelationshipInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IRelationshipInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.view.ISimpleOwnersView;
 import biz.dealnote.messenger.util.RxUtils;

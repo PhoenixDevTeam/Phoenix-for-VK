@@ -38,7 +38,7 @@ import biz.dealnote.messenger.activity.KeyExchangeCommitActivity;
 import biz.dealnote.messenger.api.Apis;
 import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.crypt.ver.Version;
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.longpoll.AppNotificationChannels;
 import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.push.OwnerInfo;
@@ -480,7 +480,7 @@ public class KeyExchangeService extends Service {
                 .setStartMessageId(session.getStartMessageId())
                 .setEndMessageId(session.getEndMessageId());
 
-        Repositories.getInstance()
+        Stores.getInstance()
                 .keys(session.getKeyLocationPolicy())
                 .saveKeyPair(pair)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())

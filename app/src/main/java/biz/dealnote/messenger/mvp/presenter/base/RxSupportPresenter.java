@@ -13,7 +13,7 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.ApiException;
 import biz.dealnote.messenger.api.model.Error;
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.mvp.view.IErrorView;
 import biz.dealnote.messenger.mvp.view.IToastView;
@@ -91,7 +91,7 @@ public abstract class RxSupportPresenter<V extends IMvpView> extends AbsPresente
         compositeDisposable.dispose();
 
         if (tempDataUsage) {
-            Repositories.getInstance()
+            Stores.getInstance()
                     .tempStore()
                     .delete(getInstanceId())
                     .subscribeOn(Schedulers.io())

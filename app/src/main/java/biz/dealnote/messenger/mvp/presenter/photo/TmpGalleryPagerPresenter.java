@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.db.serialize.Serializers;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.TmpSource;
@@ -33,7 +33,7 @@ public class TmpGalleryPagerPresenter extends PhotoPagerPresenter {
 
     private void loadDataFromDatabase() {
         changeLoadingNowState(true);
-        appendDisposable(Repositories.getInstance()
+        appendDisposable(Stores.getInstance()
                 .tempStore()
                 .getData(source.getOwnerId(), source.getSourceId(), Serializers.PHOTOS_SERIALIZER)
                 .compose(RxUtils.applySingleIOToMainSchedulers())

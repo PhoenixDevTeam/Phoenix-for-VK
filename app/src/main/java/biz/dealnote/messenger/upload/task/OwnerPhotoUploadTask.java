@@ -12,7 +12,7 @@ import biz.dealnote.messenger.api.WeakPercentageListener;
 import biz.dealnote.messenger.api.model.response.UploadOwnerPhotoResponse;
 import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.api.model.upload.UploadOwnerPhotoDto;
-import biz.dealnote.messenger.interactor.IWalls;
+import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.upload.BaseUploadResponse;
 import biz.dealnote.messenger.upload.UploadCallback;

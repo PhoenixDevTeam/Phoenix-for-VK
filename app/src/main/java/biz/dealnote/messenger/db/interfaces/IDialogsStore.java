@@ -19,7 +19,7 @@ import io.reactivex.Single;
  * Created by hp-dv6 on 04.06.2016.
  * VKMessenger
  */
-public interface IDialogsStore extends IRepository {
+public interface IDialogsStore extends IStore {
 
     int getUnreadDialogsCount(int accountId);
 

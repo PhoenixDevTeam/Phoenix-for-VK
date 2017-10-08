@@ -12,9 +12,9 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.Apis;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
-import biz.dealnote.messenger.interactor.ICommunitiesInteractor;
-import biz.dealnote.messenger.interactor.IOwnersInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.ICommunitiesInteractor;
+import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.CommunityDetails;
 import biz.dealnote.messenger.model.Peer;
@@ -418,7 +418,7 @@ public class GroupWallPresenter extends AbsWallPresenter<IGroupWallView> {
         /*final int accountId = super.getAccountId();
         final int grouId = Math.abs(ownerId);
 
-        IGroupSettingsInteractor interactor = new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories().owners());
+        IGroupSettingsInteractor interactor = new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().owners());
         appendDisposable(interactor.getGroupSettings(accountId, grouId)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onSettingsReceived, throwable -> {

@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.interactor.IWalls;
+import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.mvp.view.IRepostView;

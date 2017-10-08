@@ -21,7 +21,7 @@ import biz.dealnote.messenger.db.column.FriendListsColumns;
 import biz.dealnote.messenger.db.column.GroupColumns;
 import biz.dealnote.messenger.db.column.UserColumns;
 import biz.dealnote.messenger.db.column.UsersDetColumns;
-import biz.dealnote.messenger.db.interfaces.IOwnersRepository;
+import biz.dealnote.messenger.db.interfaces.IOwnersStore;
 import biz.dealnote.messenger.db.model.BanAction;
 import biz.dealnote.messenger.db.model.UserPatch;
 import biz.dealnote.messenger.db.model.entity.CommunityEntity;
@@ -44,12 +44,12 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;
 
-class OwnersRepositiry extends AbsRepository implements IOwnersRepository {
+class OwnersRepositiry extends AbsStore implements IOwnersStore {
 
     private final PublishSubject<BanAction> banActionsPublisher;
     private final PublishSubject<Pair<Integer, Manager>> managementActionsPublisher;
 
-    OwnersRepositiry(@NonNull AppRepositories context) {
+    OwnersRepositiry(@NonNull AppStores context) {
         super(context);
         this.banActionsPublisher = PublishSubject.create();
         this.managementActionsPublisher = PublishSubject.create();

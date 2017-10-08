@@ -23,9 +23,9 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
  * Created by Ruslan Kolbasa on 20.09.2017.
  * phoenix
  */
-public class DatabaseStore extends AbsRepository implements IDatabaseStore {
+public class DatabaseStore extends AbsStore implements IDatabaseStore {
 
-    DatabaseStore(@NonNull AppRepositories base) {
+    DatabaseStore(@NonNull AppStores base) {
         super(base);
     }
 

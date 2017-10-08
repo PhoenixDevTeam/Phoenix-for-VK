@@ -13,10 +13,10 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.db.interfaces.IDialogsStore;
-import biz.dealnote.messenger.interactor.IMessagesInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IMessagesInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.longpoll.LongpollUtils;
 import biz.dealnote.messenger.longpoll.model.AbsRealtimeAction;
 import biz.dealnote.messenger.longpoll.model.RealtimeAction;
@@ -26,10 +26,10 @@ import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IDialogsView;
+import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.CompareUtils;
-import biz.dealnote.messenger.util.DisposableHolder;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.ShortcutUtils;
@@ -39,6 +39,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.HttpException;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
+import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 import static biz.dealnote.messenger.util.Utils.indexOf;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
@@ -53,7 +54,9 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     private static final String TAG = DialogsPresenter.class.getSimpleName();
     private static final int COUNT = 30;
 
-    private final int dialogsOwnerId;
+    private static final String SAVE_DIALOGS_OWNER_ID = "save-dialogs-owner-id";
+
+    private int dialogsOwnerId;
 
     private final ArrayList<Dialog> dialogs;
     private boolean endOfContent;
@@ -65,10 +68,16 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         setSupportAccountHotSwap(true);
 
         this.dialogs = new ArrayList<>();
-        this.dialogsOwnerId = dialogsOwnerId;
+
+        if(nonNull(savedInstanceState)){
+            this.dialogsOwnerId = savedInstanceState.getInt(SAVE_DIALOGS_OWNER_ID);
+        } else {
+            this.dialogsOwnerId = dialogsOwnerId;
+        }
+
         this.messagesInteractor = InteractorFactory.createMessagesInteractor();
 
-        final IDialogsStore store = Repositories.getInstance().dialogs();
+        final IDialogsStore store = Stores.getInstance().dialogs();
 
         appendDisposable(store
                 .observeDialogUpdates()
@@ -103,7 +112,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         this.cacheLoadingDisposable.clear();
         this.cacheNowLoading = false;
 
-        setGettingNow(false);
+        setNetLoadnigNow(false);
 
         this.endOfContent = false;
         this.dialogs.clear();
@@ -112,7 +121,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         safeNotifyDataSetChanged();
 
         try {
-            appendDisposable(Injection.provideStickersInteractor()
+            appendDisposable(InteractorFactory.createStickersInteractor()
                     .getAndStore(getAccountId())
                     .compose(RxUtils.applyCompletableIOToMainSchedulers())
                     .subscribe(() -> {/*ignore*/}, t -> {/*ignore*/}));
@@ -122,7 +131,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     }
 
     private void onDialogsGetError(Throwable throwable) {
-        setGettingNow(false);
+        setNetLoadnigNow(false);
         throwable.printStackTrace();
 
         if (throwable instanceof HttpException && ((HttpException) throwable).code() == 401) {
@@ -132,21 +141,21 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         showError(getView(), throwable);
     }
 
-    private boolean gettingNow;
+    private boolean netLoadnigNow;
 
-    private void setGettingNow(boolean gettingNow) {
-        this.gettingNow = gettingNow;
+    private void setNetLoadnigNow(boolean netLoadnigNow) {
+        this.netLoadnigNow = netLoadnigNow;
         resolveRefreshingView();
     }
 
     private void requestAtLast() {
-        if (gettingNow) {
+        if (netLoadnigNow) {
             return;
         }
 
-        setGettingNow(true);
+        setNetLoadnigNow(true);
 
-        loadingHolder.append(messagesInteractor.getDialogs(dialogsOwnerId, COUNT, null)
+        netDisposable.add(messagesInteractor.getDialogs(dialogsOwnerId, COUNT, null)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onDialogsFisrtResponse,
                         throwable -> onDialogsGetError(getCauseIfRuntime(throwable))));
@@ -154,10 +163,10 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         resolveRefreshingView();
     }
 
-    private DisposableHolder<Boolean> loadingHolder = new DisposableHolder<>();
+    private CompositeDisposable netDisposable = new CompositeDisposable();
 
     private void requestNext() {
-        if (gettingNow) {
+        if (netLoadnigNow) {
             return;
         }
 
@@ -166,8 +175,8 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
             return;
         }
 
-        setGettingNow(true);
-        loadingHolder.append(messagesInteractor.getDialogs(dialogsOwnerId, COUNT, lastMid)
+        setNetLoadnigNow(true);
+        netDisposable.add(messagesInteractor.getDialogs(dialogsOwnerId, COUNT, lastMid)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onNextDialogsResponse,
                         throwable -> onDialogsGetError(getCauseIfRuntime(throwable))));
@@ -178,7 +187,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         this.cacheLoadingDisposable.clear();
         this.cacheNowLoading = false;
 
-        setGettingNow(false);
+        setNetLoadnigNow(false);
         this.endOfContent = isEmpty(dialogs);
 
         int startSize = this.dialogs.size();
@@ -205,12 +214,12 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     private void resolveRefreshingView() {
         // on resume only !!!
         if (isGuiResumed()) {
-            getView().showRefreshing(isNowLoading() || isNowRequesting() || gettingNow);
+            getView().showRefreshing(isNowLoading() || isNowRequesting() || netLoadnigNow);
         }
     }
 
     private boolean isNowRequesting() {
-        return gettingNow;
+        return netLoadnigNow;
     }
 
     private boolean isNowLoading() {
@@ -319,7 +328,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     @Override
     public void onDestroyed() {
         cacheLoadingDisposable.dispose();
-        loadingHolder.dispose();
+        netDisposable.dispose();
         super.onDestroyed();
     }
 
@@ -352,8 +361,8 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         this.cacheLoadingDisposable.dispose();
         this.cacheNowLoading = false;
 
-        loadingHolder.dispose();
-        gettingNow = false;
+        this.netDisposable.clear();
+        this.netLoadnigNow = false;
 
         requestAtLast();
     }
@@ -458,6 +467,19 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     @Override
     protected void afterAccountChange(int oldAid, int newAid) {
         super.afterAccountChange(oldAid, newAid);
+
+        // если на экране диалоги группы, то ничего не трогаем
+        if(this.dialogsOwnerId < 0 && this.dialogsOwnerId != ISettings.IAccountsSettings.INVALID_ID){
+            return;
+        }
+
+        this.dialogsOwnerId = newAid;
+
+        cacheLoadingDisposable.clear();
+        cacheNowLoading = false;
+
+        netDisposable.clear();
+        netLoadnigNow = false;
 
         loadCachedData();
         requestAtLast();

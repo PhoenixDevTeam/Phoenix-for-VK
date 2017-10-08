@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.interactor.IGroupSettingsInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IGroupSettingsInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Banned;
 import biz.dealnote.messenger.model.BlockReason;
 import biz.dealnote.messenger.model.IdOption;

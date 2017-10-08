@@ -12,9 +12,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.interactor.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.EditingPostType;
 import biz.dealnote.messenger.model.Post;
@@ -40,7 +40,7 @@ public class PlaceUtil {
         ids.add(accountId);
         ids.add(ownerId);
 
-        Disposable disposable = Injection.provideOwnersInteractor()
+        Disposable disposable = InteractorFactory.createOwnerInteractor()
                 .findBaseOwnersDataAsBundle(accountId, ids, IOwnersInteractor.MODE_NET)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(owners -> {
@@ -83,7 +83,7 @@ public class PlaceUtil {
         ids.add(accountId);
         ids.add(ownerId);
 
-        Disposable disposable = Injection.provideOwnersInteractor()
+        Disposable disposable = InteractorFactory.createOwnerInteractor()
                 .findBaseOwnersDataAsBundle(accountId, ids, IOwnersInteractor.MODE_NET)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(owners -> {

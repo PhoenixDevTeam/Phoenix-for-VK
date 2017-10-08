@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 
+import biz.dealnote.messenger.domain.ILikesInteractor;
 import biz.dealnote.messenger.fragment.search.SearchContentType;
 import biz.dealnote.messenger.fragment.search.criteria.NewsFeedCriteria;
-import biz.dealnote.messenger.interactor.ILikesInteractor;
 import biz.dealnote.messenger.model.Audio;
 import biz.dealnote.messenger.model.Commented;
 import biz.dealnote.messenger.model.Document;

@@ -7,10 +7,10 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.model.PostUpdate;
+import biz.dealnote.messenger.domain.ILikesInteractor;
+import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.fragment.search.criteria.WallSearchCriteria;
 import biz.dealnote.messenger.fragment.search.nextfrom.IntNextFrom;
-import biz.dealnote.messenger.interactor.ILikesInteractor;
-import biz.dealnote.messenger.interactor.IWalls;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.mvp.view.search.IBaseSearchView;
 import biz.dealnote.messenger.mvp.view.search.IWallSearchView;

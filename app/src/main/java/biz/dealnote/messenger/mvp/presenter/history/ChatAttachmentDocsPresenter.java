@@ -11,7 +11,7 @@ import biz.dealnote.messenger.api.Apis;
 import biz.dealnote.messenger.api.model.VKApiAttachment;
 import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.api.model.response.AttachmentsHistoryResponse;
-import biz.dealnote.messenger.interactor.mappers.Dto2Model;
+import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.mvp.view.IChatAttachmentDocsView;
 import biz.dealnote.messenger.util.Pair;

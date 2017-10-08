@@ -10,7 +10,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.Apis;
 import biz.dealnote.messenger.api.model.VKApiAudio;
 import biz.dealnote.messenger.api.model.response.AttachmentsHistoryResponse;
-import biz.dealnote.messenger.interactor.mappers.Dto2Model;
+import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Audio;
 import biz.dealnote.messenger.mvp.view.IChatAttachmentAudiosView;
 import biz.dealnote.messenger.util.Pair;

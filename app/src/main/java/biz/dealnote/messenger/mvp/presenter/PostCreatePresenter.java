@@ -13,9 +13,9 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.db.AttachToType;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueRepository;
-import biz.dealnote.messenger.interactor.IAttachmentsRepository;
-import biz.dealnote.messenger.interactor.IWalls;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
+import biz.dealnote.messenger.domain.IAttachmentsRepository;
+import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.Attachments;
@@ -65,7 +65,7 @@ public class PostCreatePresenter extends AbsPostEditPresenter<IPostCreateView> {
     private final WallEditorAttrs attrs;
 
     private final IAttachmentsRepository attachmentsRepository;
-    private final IUploadQueueRepository uploadsRepository;
+    private final IUploadQueueStore uploadsRepository;
     private final IWalls walls;
 
     public PostCreatePresenter(int accountId, int ownerId, @EditingPostType int editingType,
@@ -73,7 +73,7 @@ public class PostCreatePresenter extends AbsPostEditPresenter<IPostCreateView> {
         super(accountId, savedInstanceState);
 
         this.attachmentsRepository = Injection.provideAttachmentsRepository();
-        this.uploadsRepository = Injection.provideRepositories().uploads();
+        this.uploadsRepository = Injection.provideStores().uploads();
         this.walls = Injection.provideWalls();
 
         this.attrs = attrs;

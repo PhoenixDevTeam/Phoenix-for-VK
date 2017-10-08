@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.model.LocalImageAlbum;
 import biz.dealnote.messenger.mvp.presenter.base.RxSupportPresenter;
 import biz.dealnote.messenger.mvp.view.ILocalPhotoAlbumsView;
@@ -65,7 +65,7 @@ public class LocalPhotoAlbumsPresenter extends RxSupportPresenter<ILocalPhotoAlb
         if (mLoadingNow) return;
 
         changeLoadingNowState(true);
-        appendDisposable(Repositories.getInstance()
+        appendDisposable(Stores.getInstance()
                 .localPhotos()
                 .getImageAlbums()
                 .compose(RxUtils.applySingleIOToMainSchedulers())

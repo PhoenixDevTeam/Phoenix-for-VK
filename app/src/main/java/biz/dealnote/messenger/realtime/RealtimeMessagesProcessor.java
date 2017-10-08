@@ -17,11 +17,11 @@ import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.api.model.longpoll.AddMessageUpdate;
 import biz.dealnote.messenger.crypt.KeyExchangeService;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
-import biz.dealnote.messenger.interactor.IMessagesInteractor;
-import biz.dealnote.messenger.interactor.IOwnersInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
-import biz.dealnote.messenger.interactor.mappers.Dto2Model;
+import biz.dealnote.messenger.db.interfaces.IStores;
+import biz.dealnote.messenger.domain.IMessagesInteractor;
+import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.longpoll.FullAndNonFullUpdates;
 import biz.dealnote.messenger.longpoll.LongPollNotificationHelper;
 import biz.dealnote.messenger.model.Message;
@@ -54,7 +54,7 @@ class RealtimeMessagesProcessor implements IRealtimeMessagesProcessor {
     private static final AtomicInteger ID_GENERATOR = new AtomicInteger();
 
     private final PublishSubject<TmpResult> publishSubject;
-    private final IRepositories repositories;
+    private final IStores repositories;
     private final INetworker networker;
     private final Object stateLock = new Object();
     private final List<Entry> queue;
@@ -67,7 +67,7 @@ class RealtimeMessagesProcessor implements IRealtimeMessagesProcessor {
 
     RealtimeMessagesProcessor() {
         this.app = Injection.provideApplicationContext();
-        this.repositories = Injection.provideRepositories();
+        this.repositories = Injection.provideStores();
         this.networker = Injection.provideNetworkInterfaces();
         this.publishSubject = PublishSubject.create();
         this.queue = new LinkedList<>();

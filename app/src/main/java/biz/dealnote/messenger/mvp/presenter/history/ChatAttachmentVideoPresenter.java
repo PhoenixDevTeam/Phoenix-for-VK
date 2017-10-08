@@ -10,7 +10,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.Apis;
 import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.api.model.response.AttachmentsHistoryResponse;
-import biz.dealnote.messenger.interactor.mappers.Dto2Model;
+import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.mvp.view.IChatAttachmentVideoView;
 import biz.dealnote.messenger.util.Pair;

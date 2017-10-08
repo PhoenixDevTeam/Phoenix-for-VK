@@ -40,7 +40,7 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
  * Created by hp-dv6 on 04.06.2016.
  * VKMessenger
  */
-class DialogsStore extends AbsRepository implements IDialogsStore {
+class DialogsStore extends AbsStore implements IDialogsStore {
 
     private PublishSubject<IDialogUpdate> updatePublishSubject;
     private PublishSubject<IDeletedDialog> dialogsDeletingPublisher;
@@ -48,7 +48,7 @@ class DialogsStore extends AbsRepository implements IDialogsStore {
 
     private SharedPreferences preferences;
 
-    DialogsStore(@NonNull AppRepositories base) {
+    DialogsStore(@NonNull AppStores base) {
         super(base);
         this.updatePublishSubject = PublishSubject.create();
         this.dialogsDeletingPublisher = PublishSubject.create();

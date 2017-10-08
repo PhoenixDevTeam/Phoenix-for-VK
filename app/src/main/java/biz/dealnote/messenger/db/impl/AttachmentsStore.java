@@ -32,9 +32,9 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
  * Created by admin on 15.11.2016.
  * phoenix
  */
-class AttachmentsStore extends AbsRepository implements IAttachmentsStore {
+class AttachmentsStore extends AbsStore implements IAttachmentsStore {
 
-    AttachmentsStore(@NonNull AppRepositories base) {
+    AttachmentsStore(@NonNull AppStores base) {
         super(base);
     }
 

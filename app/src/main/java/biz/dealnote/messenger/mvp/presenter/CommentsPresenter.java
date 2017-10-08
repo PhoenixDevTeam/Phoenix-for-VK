@@ -14,11 +14,12 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.db.AttachToType;
+import biz.dealnote.messenger.domain.IAttachmentsRepository;
+import biz.dealnote.messenger.domain.ICommentsInteractor;
+import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.impl.CommentsInteractor;
 import biz.dealnote.messenger.exception.NotFoundException;
-import biz.dealnote.messenger.interactor.IAttachmentsRepository;
-import biz.dealnote.messenger.interactor.ICommentsInteractor;
-import biz.dealnote.messenger.interactor.IOwnersInteractor;
-import biz.dealnote.messenger.interactor.impl.CommentsInteractor;
 import biz.dealnote.messenger.model.Comment;
 import biz.dealnote.messenger.model.CommentIntent;
 import biz.dealnote.messenger.model.CommentUpdate;
@@ -78,8 +79,8 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
     public CommentsPresenter(int accountId, Commented commented, Integer focusToComment, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.authorId = accountId;
-        this.ownersInteractor = Injection.provideOwnersInteractor();
-        this.interactor = new CommentsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories());
+        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
+        this.interactor = new CommentsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
         this.commented = commented;
         this.focusToComment = focusToComment;
 
@@ -104,7 +105,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onAttchmentRemoveEvent));
 
-        appendDisposable(Injection.provideRepositories()
+        appendDisposable(Injection.provideStores()
                 .comments()
                 .observeMinorUpdates()
                 .filter(update -> update.getCommented().equals(commented))

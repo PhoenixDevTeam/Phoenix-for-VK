@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 import biz.dealnote.messenger.adapter.AttachmentsViewBinder;
 import biz.dealnote.messenger.adapter.listener.OwnerClickListener;
+import biz.dealnote.messenger.domain.ILikesInteractor;
 import biz.dealnote.messenger.fragment.AbsWallFragment;
 import biz.dealnote.messenger.fragment.search.SearchContentType;
 import biz.dealnote.messenger.fragment.search.criteria.BaseSearchCriteria;
-import biz.dealnote.messenger.interactor.ILikesInteractor;
 import biz.dealnote.messenger.link.LinkHelper;
 import biz.dealnote.messenger.model.Audio;
 import biz.dealnote.messenger.model.Commented;

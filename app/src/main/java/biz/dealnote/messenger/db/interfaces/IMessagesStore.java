@@ -24,7 +24,7 @@ import io.reactivex.Single;
  * Created by hp-dv6 on 01.06.2016.
  * VKMessenger
  */
-public interface IMessagesStore extends IRepository {
+public interface IMessagesStore extends IStore {
 
     Completable insertPeerDbos(int accountId, int peerId, @NonNull List<MessageEntity> dbos, boolean clearHistory);
 
