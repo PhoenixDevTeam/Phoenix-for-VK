@@ -13,7 +13,7 @@ public interface ILikesApi {
 
     @CheckResult
     Single<LikesListResponse> getList(String type, Integer ownerId, Integer itemId, String pageUrl, String filter,
-                                      Boolean friendsOnly, Integer offset, Integer count, Boolean skipOwn);
+                                      Boolean friendsOnly, Integer offset, Integer count, Boolean skipOwn, String fields);
 
     @CheckResult
     Single<Integer> delete(String type, Integer ownerId, int itemId);

@@ -3,6 +3,7 @@ package biz.dealnote.messenger.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,9 +37,15 @@ public abstract class AbsOwnersListFragment<P extends SimpleOwnersPresenter<V>, 
     protected OwnersAdapter mOwnersAdapter;
     protected LinearLayoutManager mLinearLayoutManager;
 
+    protected boolean mHasToolbar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_abs_friends, container, false);
+        View root = inflater.inflate(mHasToolbar ? R.layout.fragment_abs_friends_with_toolbar : R.layout.fragment_abs_friends, container, false);
+
+        if(mHasToolbar){
+            ((AppCompatActivity)getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        }
 
         mRecyclerView = root.findViewById(R.id.list);
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);

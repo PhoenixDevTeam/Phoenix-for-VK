@@ -89,6 +89,6 @@ public class PollInteractor implements IPollInteractor {
         return networker.vkDefault(accountId)
                 .polls()
                 .getById(ownerId, isBoard, pollId)
-                .map(Dto2Model::transform);
+                .map(dto -> Dto2Model.transform(dto).setBoard(isBoard));
     }
 }

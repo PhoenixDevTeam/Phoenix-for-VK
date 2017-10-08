@@ -25,6 +25,7 @@ import io.reactivex.Single;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 
 /**
  * Created by ruslan.kolbasa on 29.12.2016.
@@ -73,14 +74,7 @@ class MessagesApi extends AbsApi implements IMessagesApi {
                 .flatMap(service -> service
                         .getChat(chatId, join(chatIds, ","), fields, nameCase)
                         .map(extractResponseWithErrorHandling())
-                        .map(response -> {
-                            List<VKApiChat> chats = response.chats;
-                            if (isNull(chats)) {
-                                chats = Collections.emptyList();
-                            }
-
-                            return chats;
-                        }));
+                        .map(response -> listEmptyIfNull(response.chats)));
     }
 
     @Override

@@ -26,7 +26,8 @@ public interface ILikesService {
                                                     @Field("extended") Integer extended,
                                                     @Field("offset") Integer offset,
                                                     @Field("count") Integer count,
-                                                    @Field("skip_own") Integer skipOwn);
+                                                    @Field("skip_own") Integer skipOwn,
+                                                    @Field("fields") String fields);
 
     //https://vk.com/dev/likes.delete
     @FormUrlEncoded
