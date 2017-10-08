@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import biz.dealnote.messenger.interactor.IVideosInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IVideosInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Commented;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;

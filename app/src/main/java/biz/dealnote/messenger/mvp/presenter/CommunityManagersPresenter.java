@@ -9,8 +9,8 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.interactor.IGroupSettingsInteractor;
-import biz.dealnote.messenger.interactor.impl.GroupSettingsInteractor;
+import biz.dealnote.messenger.domain.IGroupSettingsInteractor;
+import biz.dealnote.messenger.domain.impl.GroupSettingsInteractor;
 import biz.dealnote.messenger.model.Manager;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;

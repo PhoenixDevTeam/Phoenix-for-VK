@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.interactor.IPhotosInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IPhotosInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.util.RxUtils;
 

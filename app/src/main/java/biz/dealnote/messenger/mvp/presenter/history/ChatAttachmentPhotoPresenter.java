@@ -12,7 +12,7 @@ import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.response.AttachmentsHistoryResponse;
 import biz.dealnote.messenger.db.Repositories;
 import biz.dealnote.messenger.db.serialize.Serializers;
-import biz.dealnote.messenger.interactor.mappers.Dto2Model;
+import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.TmpSource;
 import biz.dealnote.messenger.mvp.view.IChatAttachmentPhotosView;

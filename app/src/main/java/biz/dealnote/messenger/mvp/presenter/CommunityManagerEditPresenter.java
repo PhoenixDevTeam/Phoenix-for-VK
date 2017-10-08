@@ -9,8 +9,8 @@ import java.util.List;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
-import biz.dealnote.messenger.interactor.IGroupSettingsInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IGroupSettingsInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.ContactInfo;
 import biz.dealnote.messenger.model.Manager;
 import biz.dealnote.messenger.model.User;

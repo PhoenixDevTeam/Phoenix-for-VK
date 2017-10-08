@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.interactor.IPollInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IPollInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.ICreatePollView;

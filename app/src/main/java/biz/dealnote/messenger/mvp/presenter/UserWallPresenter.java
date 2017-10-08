@@ -9,16 +9,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiUser;
+import biz.dealnote.messenger.domain.IAccountsInteractor;
+import biz.dealnote.messenger.domain.IFaveInteractor;
+import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IPhotosInteractor;
+import biz.dealnote.messenger.domain.IRelationshipInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.friends.FriendsTabsFragment;
-import biz.dealnote.messenger.interactor.IAccountsInteractor;
-import biz.dealnote.messenger.interactor.IFaveInteractor;
-import biz.dealnote.messenger.interactor.IOwnersInteractor;
-import biz.dealnote.messenger.interactor.IPhotosInteractor;
-import biz.dealnote.messenger.interactor.IRelationshipInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.FriendsCounters;
 import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.model.PostFilter;
@@ -54,7 +53,7 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
     public UserWallPresenter(int accountId, int ownerId, @Nullable User owner, @Nullable Bundle savedInstanceState) {
         super(accountId, ownerId, savedInstanceState);
 
-        this.ownersInteractor = Injection.provideOwnersInteractor();
+        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
         this.relationshipInteractor = InteractorFactory.createRelationshipInteractor();
         this.accountInteractor = InteractorFactory.createAccountInteractor();
         this.photosInteractor = InteractorFactory.createPhotosInteractor();

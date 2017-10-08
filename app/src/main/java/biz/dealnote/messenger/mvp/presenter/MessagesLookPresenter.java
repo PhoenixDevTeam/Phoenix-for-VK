@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import biz.dealnote.messenger.interactor.IMessagesInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IMessagesInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.mvp.view.IMessagesLookView;

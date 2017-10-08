@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.interactor.IRelationshipInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IRelationshipInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.UsersPart;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;

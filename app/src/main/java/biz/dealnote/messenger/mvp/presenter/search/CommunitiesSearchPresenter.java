@@ -5,11 +5,11 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
+import biz.dealnote.messenger.domain.ICommunitiesInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.search.criteria.GroupSearchCriteria;
 import biz.dealnote.messenger.fragment.search.nextfrom.IntNextFrom;
 import biz.dealnote.messenger.fragment.search.options.SpinnerOption;
-import biz.dealnote.messenger.interactor.ICommunitiesInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.mvp.view.search.ICommunitiesSearchView;
 import biz.dealnote.messenger.util.Pair;

@@ -10,8 +10,8 @@ import java.util.List;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.adapter.WallAdapter;
+import biz.dealnote.messenger.domain.ILikesInteractor;
 import biz.dealnote.messenger.fragment.search.criteria.NewsFeedCriteria;
-import biz.dealnote.messenger.interactor.ILikesInteractor;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.mvp.presenter.search.NewsFeedSearchPresenter;
 import biz.dealnote.messenger.mvp.view.search.INewsFeedSearchView;

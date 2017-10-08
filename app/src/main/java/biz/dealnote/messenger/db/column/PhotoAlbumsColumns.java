@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 
 import biz.dealnote.messenger.api.model.VKApiPhotoAlbum;
-import biz.dealnote.messenger.interactor.mappers.Dto2Model;
+import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.util.Objects;
 
 public final class PhotoAlbumsColumns implements BaseColumns {

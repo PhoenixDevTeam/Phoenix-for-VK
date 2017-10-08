@@ -9,9 +9,9 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.model.PostUpdate;
-import biz.dealnote.messenger.interactor.IFaveInteractor;
-import biz.dealnote.messenger.interactor.IWalls;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IFaveInteractor;
+import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
 import biz.dealnote.messenger.mvp.view.IFavePostsView;

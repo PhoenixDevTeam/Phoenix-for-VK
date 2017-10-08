@@ -7,8 +7,8 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.interactor.ICommunitiesInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.ICommunitiesInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.DataWrapper;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;

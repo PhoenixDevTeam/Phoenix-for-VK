@@ -10,19 +10,11 @@ import biz.dealnote.messenger.db.impl.AppRepositories;
 import biz.dealnote.messenger.db.impl.LogsStore;
 import biz.dealnote.messenger.db.interfaces.ILogsStore;
 import biz.dealnote.messenger.db.interfaces.IRepositories;
-import biz.dealnote.messenger.interactor.IAttachmentsRepository;
-import biz.dealnote.messenger.interactor.IDialogsInteractor;
-import biz.dealnote.messenger.interactor.INewsfeedInteractor;
-import biz.dealnote.messenger.interactor.IOwnersInteractor;
-import biz.dealnote.messenger.interactor.IStickersInteractor;
-import biz.dealnote.messenger.interactor.IWalls;
-import biz.dealnote.messenger.interactor.InteractorFactory;
-import biz.dealnote.messenger.interactor.impl.AttachmentsRepository;
-import biz.dealnote.messenger.interactor.impl.DialogsInteractor;
-import biz.dealnote.messenger.interactor.impl.NewsfeedInteractor;
-import biz.dealnote.messenger.interactor.impl.OwnersInteractor;
-import biz.dealnote.messenger.interactor.impl.StickersInteractor;
-import biz.dealnote.messenger.interactor.impl.WallsImpl;
+import biz.dealnote.messenger.domain.IAttachmentsRepository;
+import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.impl.AttachmentsRepository;
+import biz.dealnote.messenger.domain.impl.WallsImpl;
 import biz.dealnote.messenger.media.gif.AppGifPlayerFactory;
 import biz.dealnote.messenger.media.gif.IGifPlayerFactory;
 import biz.dealnote.messenger.push.GcmTokenProvider;
@@ -128,18 +120,6 @@ public class Injection {
         return SettingsImpl.getInstance(App.getInstance());
     }
 
-    public static IDialogsInteractor provideDialogsInteractor(){
-        return new DialogsInteractor(provideNetworkInterfaces(), provideRepositories());
-    }
-
-    public static IStickersInteractor provideStickersInteractor(){
-        return new StickersInteractor(provideNetworkInterfaces(), provideRepositories().stickers());
-    }
-
-    public static IOwnersInteractor provideOwnersInteractor(){
-        return new OwnersInteractor(provideNetworkInterfaces(), provideRepositories().owners());
-    }
-
     private static volatile ILogsStore logsStore;
 
     public static ILogsStore provideLogsStore(){
@@ -159,9 +139,5 @@ public class Injection {
 
     public static Context provideApplicationContext() {
         return App.getInstance();
-    }
-
-    public static INewsfeedInteractor provideNewsfeedInteractor(){
-        return new NewsfeedInteractor(provideNetworkInterfaces(), provideOwnersInteractor());
     }
 }

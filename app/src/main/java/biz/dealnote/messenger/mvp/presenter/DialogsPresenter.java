@@ -15,8 +15,8 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.db.Repositories;
 import biz.dealnote.messenger.db.interfaces.IDialogsStore;
-import biz.dealnote.messenger.interactor.IMessagesInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
+import biz.dealnote.messenger.domain.IMessagesInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.longpoll.LongpollUtils;
 import biz.dealnote.messenger.longpoll.model.AbsRealtimeAction;
 import biz.dealnote.messenger.longpoll.model.RealtimeAction;
@@ -112,7 +112,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         safeNotifyDataSetChanged();
 
         try {
-            appendDisposable(Injection.provideStickersInteractor()
+            appendDisposable(InteractorFactory.createStickersInteractor()
                     .getAndStore(getAccountId())
                     .compose(RxUtils.applyCompletableIOToMainSchedulers())
                     .subscribe(() -> {/*ignore*/}, t -> {/*ignore*/}));

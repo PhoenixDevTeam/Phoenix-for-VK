@@ -5,10 +5,10 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
+import biz.dealnote.messenger.domain.IDocsInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.search.criteria.DocumentSearchCriteria;
 import biz.dealnote.messenger.fragment.search.nextfrom.IntNextFrom;
-import biz.dealnote.messenger.interactor.IDocsInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.mvp.view.search.IDocSearchView;
 import biz.dealnote.messenger.util.Pair;

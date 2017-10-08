@@ -7,9 +7,9 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import biz.dealnote.messenger.domain.IVideosInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.search.nextfrom.IntNextFrom;
-import biz.dealnote.messenger.interactor.IVideosInteractor;
-import biz.dealnote.messenger.interactor.InteractorFactory;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IVideosListView;

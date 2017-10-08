@@ -23,8 +23,9 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.MenuListAdapter;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
-import biz.dealnote.messenger.interactor.IOwnersInteractor;
 import biz.dealnote.messenger.model.Sex;
 import biz.dealnote.messenger.model.SwitchableCategory;
 import biz.dealnote.messenger.model.User;
@@ -120,7 +121,7 @@ public class NavigationFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.ownersInteractor = Injection.provideOwnersInteractor();
+        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
         this.mAccountId = Settings.get()
                 .accounts()
                 .getCurrent();

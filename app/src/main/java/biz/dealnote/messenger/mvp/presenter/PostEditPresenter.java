@@ -14,7 +14,7 @@ import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.db.Repositories;
 import biz.dealnote.messenger.db.interfaces.IUploadQueueRepository;
-import biz.dealnote.messenger.interactor.IWalls;
+import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.Community;
