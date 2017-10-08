@@ -14,7 +14,7 @@ import java.util.Set;
 
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VkApiFriendList;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.db.model.entity.FriendListEntity;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
 import biz.dealnote.messenger.domain.IUtilsInteractor;
@@ -42,10 +42,10 @@ import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 public class UtilsInteractor implements IUtilsInteractor {
 
     private final INetworker networker;
-    private final IRepositories stores;
+    private final IStores stores;
     private final IOwnersInteractor ownersInteractor;
 
-    public UtilsInteractor(INetworker networker, IRepositories stores) {
+    public UtilsInteractor(INetworker networker, IStores stores) {
         this.networker = networker;
         this.stores = stores;
         this.ownersInteractor = new OwnersInteractor(networker, stores.owners());

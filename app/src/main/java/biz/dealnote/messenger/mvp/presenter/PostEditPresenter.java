@@ -12,8 +12,8 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiPost;
-import biz.dealnote.messenger.db.Repositories;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueRepository;
+import biz.dealnote.messenger.db.Stores;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
 import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
@@ -208,7 +208,7 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
     }
 
     private void setupUploadListening() {
-        IUploadQueueRepository repository = Repositories.getInstance().uploads();
+        IUploadQueueStore repository = Stores.getInstance().uploads();
 
         appendDisposable(repository.observeQueue()
                 .observeOn(Injection.provideMainThreadScheduler())
@@ -267,7 +267,7 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
     private void save() {
         Logger.d(TAG, "save, author: " + post.getAuthor() + ", signer: " + post.getCreator());
 
-        appendDisposable(Repositories.getInstance()
+        appendDisposable(Stores.getInstance()
                 .uploads()
                 .getByDestination(getAccountId(), uploadDestination)
                 .compose(RxUtils.applySingleIOToMainSchedulers())

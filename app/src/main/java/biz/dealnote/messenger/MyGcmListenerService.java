@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.push.CollapseKey;
 import biz.dealnote.messenger.push.IPushRegistrationResolver;
 import biz.dealnote.messenger.push.message.CommentGCMMessage;
@@ -126,7 +126,7 @@ public class MyGcmListenerService extends GcmListenerService {
         }
 
         if (dto.getBadge() >= 0) {
-            Repositories.getInstance()
+            Stores.getInstance()
                     .dialogs()
                     .setUnreadDialogsCount(accountId, dto.getBadge());
         }

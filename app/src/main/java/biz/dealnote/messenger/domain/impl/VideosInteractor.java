@@ -9,7 +9,7 @@ import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.AccessIdPair;
 import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.api.model.VKApiVideoAlbum;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.db.model.entity.VideoAlbumEntity;
 import biz.dealnote.messenger.db.model.entity.VideoEntity;
 import biz.dealnote.messenger.domain.IVideosInteractor;
@@ -39,9 +39,9 @@ public class VideosInteractor implements IVideosInteractor {
 
     private final INetworker networker;
 
-    private final IRepositories cache;
+    private final IStores cache;
 
-    public VideosInteractor(INetworker networker, IRepositories cache) {
+    public VideosInteractor(INetworker networker, IStores cache) {
         this.networker = networker;
         this.cache = cache;
     }

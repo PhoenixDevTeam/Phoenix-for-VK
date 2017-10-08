@@ -10,7 +10,7 @@ import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.IAttachmentToken;
 import biz.dealnote.messenger.api.model.IdPair;
 import biz.dealnote.messenger.api.model.VKApiPost;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.db.interfaces.IWallStore;
 import biz.dealnote.messenger.db.model.PostPatch;
 import biz.dealnote.messenger.db.model.PostUpdate;
@@ -51,7 +51,7 @@ public class WallsImpl implements IWalls {
 
     private final INetworker networker;
 
-    private final IRepositories repositories;
+    private final IStores repositories;
 
     private final IOwnersInteractor ownersInteractor;
 
@@ -61,7 +61,7 @@ public class WallsImpl implements IWalls {
 
     private final PublishSubject<biz.dealnote.messenger.model.IdPair> postInvalidatePublisher;
 
-    public WallsImpl(INetworker networker, IRepositories repositories) {
+    public WallsImpl(INetworker networker, IStores repositories) {
         this.minorUpdatesPublisher = PublishSubject.create();
         this.majorUpdatesPublisher = PublishSubject.create();
         this.postInvalidatePublisher = PublishSubject.create();

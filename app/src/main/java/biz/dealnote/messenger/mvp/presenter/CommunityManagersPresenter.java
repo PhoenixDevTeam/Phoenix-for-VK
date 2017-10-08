@@ -35,11 +35,11 @@ public class CommunityManagersPresenter extends AccountDependencyPresenter<IComm
 
     public CommunityManagersPresenter(int accountId, int groupId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-        this.interactor = new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories().owners());
+        this.interactor = new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().owners());
         this.groupId = groupId;
         this.data = new ArrayList<>();
 
-        appendDisposable(Injection.provideRepositories()
+        appendDisposable(Injection.provideStores()
                 .owners()
                 .observeManagementChanges()
                 .filter(pair -> pair.getFirst() == groupId)

@@ -418,7 +418,7 @@ public class GroupWallPresenter extends AbsWallPresenter<IGroupWallView> {
         /*final int accountId = super.getAccountId();
         final int grouId = Math.abs(ownerId);
 
-        IGroupSettingsInteractor interactor = new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories().owners());
+        IGroupSettingsInteractor interactor = new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().owners());
         appendDisposable(interactor.getGroupSettings(accountId, grouId)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onSettingsReceived, throwable -> {

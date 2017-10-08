@@ -1,7 +1,7 @@
 package biz.dealnote.messenger.domain.impl;
 
 import biz.dealnote.messenger.api.interfaces.INetworker;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.domain.IDialogsInteractor;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.exception.NotFoundException;
@@ -19,9 +19,9 @@ public class DialogsInteractor implements IDialogsInteractor {
 
     private final INetworker networker;
 
-    private final IRepositories repositories;
+    private final IStores repositories;
 
-    public DialogsInteractor(INetworker networker, IRepositories repositories) {
+    public DialogsInteractor(INetworker networker, IStores repositories) {
         this.networker = networker;
         this.repositories = repositories;
     }

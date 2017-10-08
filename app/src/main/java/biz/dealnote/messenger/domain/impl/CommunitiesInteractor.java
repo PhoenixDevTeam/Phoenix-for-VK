@@ -5,7 +5,7 @@ import java.util.List;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.db.column.GroupColumns;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.db.model.entity.CommunityEntity;
 import biz.dealnote.messenger.domain.ICommunitiesInteractor;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
@@ -25,9 +25,9 @@ import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 public class CommunitiesInteractor implements ICommunitiesInteractor {
 
     private final INetworker networker;
-    private final IRepositories stores;
+    private final IStores stores;
 
-    public CommunitiesInteractor(INetworker networker, IRepositories repositories) {
+    public CommunitiesInteractor(INetworker networker, IStores repositories) {
         this.networker = networker;
         this.stores = repositories;
     }

@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.model.StickerSet;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
@@ -173,7 +173,7 @@ public class EmojiconsPopup {
                 .accounts()
                 .getCurrent();
 
-        List<StickerSet> stickerSets = Repositories.getInstance()
+        List<StickerSet> stickerSets = Stores.getInstance()
                 .stickers()
                 .getPurchasedAndActive(accountId)
                 .blockingGet();

@@ -26,7 +26,7 @@ import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.response.DefaultCommentsResponse;
 import biz.dealnote.messenger.db.AttachToType;
 import biz.dealnote.messenger.db.column.GroupColumns;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.db.model.entity.CommentEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
@@ -72,11 +72,11 @@ public class CommentsInteractor implements ICommentsInteractor {
 
     private final INetworker networker;
 
-    private final IRepositories cache;
+    private final IStores cache;
 
     private final IOwnersInteractor ownersInteractor;
 
-    public CommentsInteractor(INetworker networker, IRepositories cache) {
+    public CommentsInteractor(INetworker networker, IStores cache) {
         this.networker = networker;
         this.cache = cache;
         this.ownersInteractor = new OwnersInteractor(networker, cache.owners());

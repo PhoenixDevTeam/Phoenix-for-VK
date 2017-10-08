@@ -32,7 +32,7 @@ import biz.dealnote.messenger.crypt.KeyPairDoesNotExistException;
 import biz.dealnote.messenger.db.column.UserColumns;
 import biz.dealnote.messenger.db.interfaces.IDialogsStore;
 import biz.dealnote.messenger.db.interfaces.IMessagesStore;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.db.model.MessagePatch;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
@@ -85,11 +85,11 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
 public class MessagesInteractor implements IMessagesInteractor {
 
     private final IOwnersInteractor ownersInteractor;
-    private final IRepositories stores;
+    private final IStores stores;
     private final INetworker networker;
     private final IMessagesDecryptor decryptor;
 
-    public MessagesInteractor(INetworker networker, IOwnersInteractor ownersInteractor, IRepositories stores) {
+    public MessagesInteractor(INetworker networker, IOwnersInteractor ownersInteractor, IStores stores) {
         this.ownersInteractor = ownersInteractor;
         this.networker = networker;
         this.stores = stores;

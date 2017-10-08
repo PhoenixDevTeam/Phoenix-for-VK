@@ -8,7 +8,7 @@ import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiNews;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.api.model.VkApiFeedList;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.db.model.entity.FeedListEntity;
 import biz.dealnote.messenger.db.model.entity.NewsEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
@@ -39,11 +39,11 @@ import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 public class FeedInteractor implements IFeedInteractor {
 
     private final INetworker networker;
-    private final IRepositories stores;
+    private final IStores stores;
     private final IOwnersInteractor ownersInteractor;
     private final ISettings.IOtherSettings otherSettings;
 
-    public FeedInteractor(INetworker networker, IRepositories stores, ISettings.IOtherSettings otherSettings) {
+    public FeedInteractor(INetworker networker, IStores stores, ISettings.IOtherSettings otherSettings) {
         this.networker = networker;
         this.stores = stores;
         this.otherSettings = otherSettings;

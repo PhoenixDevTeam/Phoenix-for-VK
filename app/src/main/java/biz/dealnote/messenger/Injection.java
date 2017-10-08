@@ -6,14 +6,16 @@ import biz.dealnote.messenger.api.CaptchaProvider;
 import biz.dealnote.messenger.api.ICaptchaProvider;
 import biz.dealnote.messenger.api.impl.Networker;
 import biz.dealnote.messenger.api.interfaces.INetworker;
-import biz.dealnote.messenger.db.impl.AppRepositories;
+import biz.dealnote.messenger.db.impl.AppStores;
 import biz.dealnote.messenger.db.impl.LogsStore;
 import biz.dealnote.messenger.db.interfaces.ILogsStore;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
+import biz.dealnote.messenger.domain.IBlacklistRepository;
 import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.domain.impl.AttachmentsRepository;
+import biz.dealnote.messenger.domain.impl.BlacklistRepository;
 import biz.dealnote.messenger.domain.impl.WallsImpl;
 import biz.dealnote.messenger.media.gif.AppGifPlayerFactory;
 import biz.dealnote.messenger.media.gif.IGifPlayerFactory;
@@ -84,7 +86,7 @@ public class Injection {
         if(isNull(attachmentsRepository)){
             synchronized (Injection.class){
                 if(isNull(attachmentsRepository)){
-                    attachmentsRepository = new AttachmentsRepository(provideRepositories().attachments(), InteractorFactory.createOwnerInteractor());
+                    attachmentsRepository = new AttachmentsRepository(provideStores().attachments(), InteractorFactory.createOwnerInteractor());
                 }
             }
         }
@@ -98,7 +100,7 @@ public class Injection {
         if(isNull(walls)){
             synchronized (Injection.class){
                 if(isNull(walls)){
-                    walls = new WallsImpl(provideNetworkInterfaces(), provideRepositories());
+                    walls = new WallsImpl(provideNetworkInterfaces(), provideStores());
                 }
             }
         }
@@ -112,8 +114,21 @@ public class Injection {
         return networkerInstance;
     }
 
-    public static IRepositories provideRepositories(){
-        return AppRepositories.getInstance(App.getInstance());
+    public static IStores provideStores(){
+        return AppStores.getInstance(App.getInstance());
+    }
+
+    private static volatile IBlacklistRepository blacklistRepository;
+
+    public static IBlacklistRepository provideBlacklistRepository() {
+        if(isNull(blacklistRepository)){
+            synchronized (Injection.class){
+                if(isNull(blacklistRepository)){
+                    blacklistRepository = new BlacklistRepository();
+                }
+            }
+        }
+        return blacklistRepository;
     }
 
     public static ISettings provideSettings(){

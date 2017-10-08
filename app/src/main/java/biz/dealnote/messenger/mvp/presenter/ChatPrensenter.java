@@ -30,7 +30,7 @@ import biz.dealnote.messenger.crypt.AesKeyPair;
 import biz.dealnote.messenger.crypt.KeyExchangeService;
 import biz.dealnote.messenger.crypt.KeyLocationPolicy;
 import biz.dealnote.messenger.crypt.KeyPairDoesNotExistException;
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.domain.IMessagesInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
@@ -193,7 +193,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(event -> onRepositoryAttachmentsRemoved()));
 
-        appendDisposable(Repositories.getInstance()
+        appendDisposable(Stores.getInstance()
                 .messages()
                 .observeMessageUpdates()
                 .filter(update -> update.getAccountId() == messagesOwnerId && nonNull(update.getStatusUpdate()))
@@ -563,7 +563,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
     public void fireAttachButtonClick() {
         if (isNull(mDraftMessageId)) {
-            mDraftMessageId = Repositories.getInstance()
+            mDraftMessageId = Stores.getInstance()
                     .messages()
                     .saveDraftMessageBody(messagesOwnerId, getPeerId(), mDraftMessageText)
                     .blockingGet();
@@ -965,7 +965,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
                 resolveToolbarSubtitle();
                 break;
             case Peer.USER:
-                appendDisposable(Repositories.getInstance()
+                appendDisposable(Stores.getInstance()
                         .owners()
                         .getLocalizedUserActivity(messagesOwnerId, Peer.toUserId(getPeerId()))
                         .compose(RxUtils.applyMaybeIOToMainSchedulers())
@@ -1003,7 +1003,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     }
 
     private void tryToRestoreDraftMessage(boolean ignoreBody) {
-        appendDisposable(Repositories.getInstance()
+        appendDisposable(Stores.getInstance()
                 .messages()
                 .findDraftMessage(messagesOwnerId, getPeerId())
                 .compose(RxUtils.applyMaybeIOToMainSchedulers())
@@ -1061,7 +1061,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         final int peerId = getPeerId();
         final String body = mDraftMessageText;
 
-        Repositories.getInstance().messages()
+        Stores.getInstance().messages()
                 .saveDraftMessageBody(messagesOwnerId, peerId, body)
                 .subscribeOn(Schedulers.io())
                 .subscribe(ignore -> {
@@ -1180,7 +1180,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     }
 
     public void fireSendAgainClick(@NonNull Message message) {
-        appendDisposable(Repositories.getInstance()
+        appendDisposable(Stores.getInstance()
                 .messages()
                 .changeMessageStatus(messagesOwnerId, message.getId(), MessageStatus.QUEUE, null)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
@@ -1188,7 +1188,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     }
 
     private void deleteMessageFromDbAsync(@NonNull Message message) {
-        Repositories.getInstance()
+        Stores.getInstance()
                 .messages()
                 .deleteMessage(messagesOwnerId, message.getId())
                 .subscribeOn(Schedulers.io())
@@ -1272,7 +1272,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         }
 
         if (isNull(mDraftMessageId)) {
-            mDraftMessageId = Repositories.getInstance()
+            mDraftMessageId = Stores.getInstance()
                     .messages()
                     .saveDraftMessageBody(messagesOwnerId, getPeerId(), mDraftMessageText)
                     .blockingGet();
@@ -1400,7 +1400,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     }
 
     private void onEnableEncryptionKeyStoreSelected(@KeyLocationPolicy int policy) {
-        appendDisposable(Repositories.getInstance()
+        appendDisposable(Stores.getInstance()
                 .keys(policy)
                 .getKeys(messagesOwnerId, getPeerId())
                 .compose(RxUtils.applySingleIOToMainSchedulers())

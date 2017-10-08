@@ -9,7 +9,7 @@ import com.squareup.picasso.RequestHandler;
 
 import java.io.IOException;
 
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 
 public class LocalPhotoRequestHandler extends RequestHandler {
 
@@ -28,7 +28,7 @@ public class LocalPhotoRequestHandler extends RequestHandler {
     public RequestHandler.Result load(Request data, int arg1) throws IOException {
         long imageId = Long.parseLong(data.uri.getLastPathSegment());
 
-        Bitmap bm = Repositories.getInstance()
+        Bitmap bm = Stores.getInstance()
                 .localPhotos()
                 .getImageThumbnail(imageId);
 

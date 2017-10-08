@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import biz.dealnote.messenger.api.adapters.AttachmentsDtoAdapter;
-import biz.dealnote.messenger.api.adapters.AttachmentsEntryDtoAdapter;
 import biz.dealnote.messenger.api.adapters.BooleanAdapter;
 import biz.dealnote.messenger.api.adapters.ChatDtoAdapter;
 import biz.dealnote.messenger.api.adapters.ChatUserDtoAdapter;
@@ -80,7 +79,7 @@ public class VkRetrofitProvider implements IVkRetrofitProvider {
     private static final String API_METHOD_URL = "https://api.vk.com/method/";
 
     private static final Gson VKGSON = new GsonBuilder()
-            .registerTypeAdapter(VkApiAttachments.Entry.class, new AttachmentsEntryDtoAdapter())
+            //.registerTypeAdapter(VkApiAttachments.Entry.class, new AttachmentsEntryDtoAdapter())
             .registerTypeAdapter(VKApiPhoto.class, new PhotoDtoAdapter())
             .registerTypeAdapter(boolean.class, new BooleanAdapter())
             .registerTypeAdapter(VkApiPrivacy.class, new PrivacyDtoAdapter())

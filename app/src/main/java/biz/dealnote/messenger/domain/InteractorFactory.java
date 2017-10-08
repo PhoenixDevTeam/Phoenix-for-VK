@@ -35,7 +35,7 @@ public class InteractorFactory {
     }
 
     public static IStickersInteractor createStickersInteractor(){
-        return new StickersInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories().stickers());
+        return new StickersInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().stickers());
     }
 
     public static IPollInteractor createPollInteractor(){
@@ -43,7 +43,7 @@ public class InteractorFactory {
     }
 
     public static IDocsInteractor createDocsInteractor(){
-        return new DocsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories().docs());
+        return new DocsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().docs());
     }
 
     public static ILikesInteractor createLikesInteractor(){
@@ -51,63 +51,68 @@ public class InteractorFactory {
     }
 
     public static IFeedbackInteractor createFeedbackInteractor(){
-        return new FeedbackInteractor(Injection.provideRepositories(), Injection.provideNetworkInterfaces());
+        return new FeedbackInteractor(Injection.provideStores(), Injection.provideNetworkInterfaces());
     }
 
     public static IDatabaseInteractor createDatabaseInteractor(){
-        return new DatabaseInteractor(Injection.provideRepositories().database(), Injection.provideNetworkInterfaces());
+        return new DatabaseInteractor(Injection.provideStores().database(), Injection.provideNetworkInterfaces());
     }
 
     public static ICommunitiesInteractor createCommunitiesInteractor(){
-        return new CommunitiesInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories());
+        return new CommunitiesInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
     }
 
     public static IBoardInteractor createBoardInteractor(){
-        return new BoardInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories());
+        return new BoardInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
     }
 
     public static IUtilsInteractor createUtilsInteractor(){
-        return new UtilsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories());
+        return new UtilsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
     }
 
     public static IRelationshipInteractor createRelationshipInteractor(){
-        return new RelationshipInteractor(Injection.provideRepositories(), Injection.provideNetworkInterfaces());
+        return new RelationshipInteractor(Injection.provideStores(), Injection.provideNetworkInterfaces());
     }
 
     public static IFeedInteractor createFeedInteractor(){
-        return new FeedInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories(), Settings.get().other());
+        return new FeedInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores(), Settings.get().other());
     }
 
     public static IMessagesInteractor createMessagesInteractor(){
-        return new MessagesInteractor(Injection.provideNetworkInterfaces(), createOwnerInteractor(), Injection.provideRepositories());
+        return new MessagesInteractor(Injection.provideNetworkInterfaces(), createOwnerInteractor(), Injection.provideStores());
     }
 
     public static IGroupSettingsInteractor createGroupSettingsInteractor(){
-        return new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories().owners());
+        return new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().owners());
     }
 
     public static IDialogsInteractor createDialogsInteractor(){
-        return new DialogsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories());
+        return new DialogsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
     }
 
     public static IVideosInteractor createVideosInteractor(){
-        return new VideosInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories());
+        return new VideosInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
     }
 
     public static IAccountsInteractor createAccountInteractor(){
-        return new AccountsInteractor(Injection.provideRepositories(), Injection.provideNetworkInterfaces(), Settings.get().accounts());
+        return new AccountsInteractor(
+                Injection.provideStores(),
+                Injection.provideNetworkInterfaces(),
+                Injection.provideSettings().accounts(),
+                Injection.provideBlacklistRepository()
+        );
     }
 
     public static IPhotosInteractor createPhotosInteractor(){
-        return new PhotosInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories());
+        return new PhotosInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
     }
 
     public static IOwnersInteractor createOwnerInteractor() {
-        return new OwnersInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories().owners());
+        return new OwnersInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().owners());
     }
 
     public static IFaveInteractor createFaveInteractor(){
-        return new FaveInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories());
+        return new FaveInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
     }
 
     public static IAudioInteractor createAudioInteractor() {

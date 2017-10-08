@@ -8,8 +8,8 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.AttachToType;
-import biz.dealnote.messenger.db.Repositories;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueRepository;
+import biz.dealnote.messenger.db.Stores;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
@@ -41,7 +41,7 @@ public class CommentCreatePresenter extends AbsAttachmentsEditPresenter<ICreateC
 
     private final int commentId;
     private final UploadDestination destination;
-    private final IUploadQueueRepository uploads;
+    private final IUploadQueueStore uploads;
 
     private final IAttachmentsRepository attachmentsRepository;
 
@@ -49,7 +49,7 @@ public class CommentCreatePresenter extends AbsAttachmentsEditPresenter<ICreateC
         super(accountId, savedInstanceState);
 
         this.attachmentsRepository = Injection.provideAttachmentsRepository();
-        this.uploads = Repositories.getInstance().uploads();
+        this.uploads = Stores.getInstance().uploads();
         this.commentId = commentDbid;
         this.destination = UploadDestination.forComment(commentId, sourceOwnerId);
 

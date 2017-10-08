@@ -10,7 +10,7 @@ import biz.dealnote.messenger.api.model.GroupSettingsDto;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiUser;
-import biz.dealnote.messenger.db.interfaces.IOwnersRepository;
+import biz.dealnote.messenger.db.interfaces.IOwnersStore;
 import biz.dealnote.messenger.db.model.BanAction;
 import biz.dealnote.messenger.domain.IGroupSettingsInteractor;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
@@ -43,11 +43,11 @@ public class GroupSettingsInteractor implements IGroupSettingsInteractor {
 
     private final INetworker networker;
 
-    private final IOwnersRepository repository;
+    private final IOwnersStore repository;
 
     private final IOwnersInteractor ownersInteractor;
 
-    public GroupSettingsInteractor(INetworker networker, IOwnersRepository repository) {
+    public GroupSettingsInteractor(INetworker networker, IOwnersStore repository) {
         this.networker = networker;
         this.repository = repository;
         this.ownersInteractor = new OwnersInteractor(networker, repository);

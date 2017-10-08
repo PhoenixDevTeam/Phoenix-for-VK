@@ -9,7 +9,7 @@ import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.VKApiPhotoAlbum;
 import biz.dealnote.messenger.db.column.PhotosColumns;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.db.model.PhotoPatch;
 import biz.dealnote.messenger.db.model.entity.PhotoAlbumEntity;
 import biz.dealnote.messenger.db.model.entity.PhotoEntity;
@@ -34,9 +34,9 @@ import io.reactivex.Single;
 public class PhotosInteractor implements IPhotosInteractor {
 
     private final INetworker networker;
-    private final IRepositories cache;
+    private final IStores cache;
 
-    public PhotosInteractor(INetworker networker, IRepositories cache) {
+    public PhotosInteractor(INetworker networker, IStores cache) {
         this.networker = networker;
         this.cache = cache;
     }

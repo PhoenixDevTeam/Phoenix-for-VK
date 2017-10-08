@@ -14,7 +14,7 @@ import io.reactivex.Single;
  * Created by admin on 15.11.2016.
  * phoenix
  */
-public interface IAttachmentsStore extends IRepository {
+public interface IAttachmentsStore extends IStore {
 
     Completable remove(int accountId, @AttachToType int attachToType, int attachToDbid, int generatedAttachmentId);
 

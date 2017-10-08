@@ -17,7 +17,7 @@ import biz.dealnote.messenger.api.model.longpoll.MessageFlagsSetUpdate;
 import biz.dealnote.messenger.api.model.longpoll.VkApiLongpollUpdates;
 import biz.dealnote.messenger.db.LongPollOperation;
 import biz.dealnote.messenger.db.MessengerContentProvider;
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.domain.IMessagesInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.MessageFlag;
@@ -75,7 +75,7 @@ public class LongPollEventSaver {
 
             if(nonEmpty(updates.getBadgeCountChangeUpdates())){
                 for(BadgeCountChangeUpdate u : updates.getBadgeCountChangeUpdates()){
-                    Repositories.getInstance()
+                    Stores.getInstance()
                             .dialogs()
                             .setUnreadDialogsCount(accountId, u.getCount());
                 }

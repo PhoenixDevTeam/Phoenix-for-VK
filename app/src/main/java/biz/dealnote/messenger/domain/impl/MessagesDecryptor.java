@@ -8,7 +8,7 @@ import java.util.List;
 import biz.dealnote.messenger.crypt.AesKeyPair;
 import biz.dealnote.messenger.crypt.CryptHelper;
 import biz.dealnote.messenger.crypt.EncryptedMessage;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.domain.IMessagesDecryptor;
 import biz.dealnote.messenger.model.CryptStatus;
 import biz.dealnote.messenger.model.Message;
@@ -25,9 +25,9 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  */
 public class MessagesDecryptor implements IMessagesDecryptor {
 
-    private final IRepositories store;
+    private final IStores store;
 
-    public MessagesDecryptor(IRepositories store) {
+    public MessagesDecryptor(IStores store) {
         this.store = store;
     }
 

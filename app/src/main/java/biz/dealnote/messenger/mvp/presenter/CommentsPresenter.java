@@ -80,7 +80,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         super(accountId, savedInstanceState);
         this.authorId = accountId;
         this.ownersInteractor = InteractorFactory.createOwnerInteractor();
-        this.interactor = new CommentsInteractor(Injection.provideNetworkInterfaces(), Injection.provideRepositories());
+        this.interactor = new CommentsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
         this.commented = commented;
         this.focusToComment = focusToComment;
 
@@ -105,7 +105,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onAttchmentRemoveEvent));
 
-        appendDisposable(Injection.provideRepositories()
+        appendDisposable(Injection.provideStores()
                 .comments()
                 .observeMinorUpdates()
                 .filter(update -> update.getCommented().equals(commented))

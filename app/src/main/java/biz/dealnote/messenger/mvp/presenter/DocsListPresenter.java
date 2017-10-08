@@ -11,7 +11,7 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueRepository;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
 import biz.dealnote.messenger.domain.IDocsInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.DocFilter;
@@ -118,7 +118,7 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
     }
 
     private void connectToUploadRepository() {
-        IUploadQueueRepository repository = Injection.provideRepositories().uploads();
+        IUploadQueueStore repository = Injection.provideStores().uploads();
 
         appendDisposable(repository.getByDestination(getAccountId(), destination)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
@@ -135,7 +135,7 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
         appendDisposable(repository.observeProgress()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(updates -> {
-                    for (IUploadQueueRepository.IProgressUpdate update : updates) {
+                    for (IUploadQueueStore.IProgressUpdate update : updates) {
                         onProgressUpdates(update.getId(), update.getProgress());
                     }
                 }));
@@ -156,7 +156,7 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
         }
     }
 
-    private void onUploadStatusUpdate(IUploadQueueRepository.IStatusUpdate update) {
+    private void onUploadStatusUpdate(IUploadQueueStore.IStatusUpdate update) {
         int index = findIndexById(this.uploadsData, update.getId());
 
         if (index != -1) {
@@ -169,10 +169,10 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
         }
     }
 
-    private void onUploadQueueUpdates(List<IUploadQueueRepository.IQueueUpdate> updates) {
+    private void onUploadQueueUpdates(List<IUploadQueueStore.IQueueUpdate> updates) {
         boolean hasChanges = false;
 
-        for (IUploadQueueRepository.IQueueUpdate update : updates) {
+        for (IUploadQueueStore.IQueueUpdate update : updates) {
             if (update.isAdding()) {
                 UploadObject upload = update.object();
                 AssertUtils.requireNonNull(upload);

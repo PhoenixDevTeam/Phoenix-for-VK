@@ -7,7 +7,7 @@ import java.util.List;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.IdPair;
 import biz.dealnote.messenger.api.model.VkApiDoc;
-import biz.dealnote.messenger.db.interfaces.IDocsRepository;
+import biz.dealnote.messenger.db.interfaces.IDocsStore;
 import biz.dealnote.messenger.db.model.entity.DocumentEntity;
 import biz.dealnote.messenger.domain.IDocsInteractor;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
@@ -29,9 +29,9 @@ import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 public class DocsInteractor implements IDocsInteractor {
 
     private final INetworker networker;
-    private final IDocsRepository cache;
+    private final IDocsStore cache;
 
-    public DocsInteractor(INetworker networker, IDocsRepository cache) {
+    public DocsInteractor(INetworker networker, IDocsStore cache) {
         this.networker = networker;
         this.cache = cache;
     }

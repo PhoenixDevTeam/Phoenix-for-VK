@@ -7,7 +7,7 @@ import java.util.List;
 
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.feedback.VkApiBaseFeedback;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.db.model.IdPairEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.feedback.CopyEntity;
@@ -45,11 +45,11 @@ import static biz.dealnote.messenger.util.Utils.isEmpty;
  */
 public class FeedbackInteractor implements IFeedbackInteractor {
 
-    private final IRepositories cache;
+    private final IStores cache;
     private final INetworker networker;
     private final IOwnersInteractor ownersInteractor;
 
-    public FeedbackInteractor(IRepositories cache, INetworker networker) {
+    public FeedbackInteractor(IStores cache, INetworker networker) {
         this.cache = cache;
         this.networker = networker;
         this.ownersInteractor = new OwnersInteractor(networker, cache.owners());

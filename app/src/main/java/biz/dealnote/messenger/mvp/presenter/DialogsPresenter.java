@@ -13,7 +13,7 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.db.interfaces.IDialogsStore;
 import biz.dealnote.messenger.domain.IMessagesInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
@@ -68,7 +68,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         this.dialogsOwnerId = dialogsOwnerId;
         this.messagesInteractor = InteractorFactory.createMessagesInteractor();
 
-        final IDialogsStore store = Repositories.getInstance().dialogs();
+        final IDialogsStore store = Stores.getInstance().dialogs();
 
         appendDisposable(store
                 .observeDialogUpdates()

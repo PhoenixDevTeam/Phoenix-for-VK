@@ -8,9 +8,10 @@ import java.util.concurrent.TimeUnit;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.db.column.UserColumns;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.db.model.UserPatch;
 import biz.dealnote.messenger.domain.IAccountsInteractor;
+import biz.dealnote.messenger.domain.IBlacklistRepository;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Account;
@@ -29,15 +30,17 @@ import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
  */
 public class AccountsInteractor implements IAccountsInteractor {
 
-    private final IRepositories repositories;
+    private final IStores repositories;
     private final INetworker networker;
     private final ISettings.IAccountsSettings settings;
     private final IOwnersInteractor ownersInteractor;
+    private final IBlacklistRepository blacklistRepository;
 
-    public AccountsInteractor(IRepositories repositories, INetworker networker, ISettings.IAccountsSettings settings) {
+    public AccountsInteractor(IStores repositories, INetworker networker, ISettings.IAccountsSettings settings, IBlacklistRepository blacklistRepository) {
         this.repositories = repositories;
         this.networker = networker;
         this.settings = settings;
+        this.blacklistRepository = blacklistRepository;
         this.ownersInteractor = new OwnersInteractor(networker, repositories.owners());
     }
 
@@ -63,7 +66,7 @@ public class AccountsInteractor implements IAccountsInteractor {
                     .banUser(user.getId()))
                     .delay(1, TimeUnit.SECONDS) // чтобы не дергало UI
                     .toCompletable()
-                    .andThen(repositories.blacklist().fireAdd(accountId, user));
+                    .andThen(blacklistRepository.fireAdd(accountId, user));
         }
 
         return completable;
@@ -75,7 +78,7 @@ public class AccountsInteractor implements IAccountsInteractor {
                 .account()
                 .unbanUser(userId)
                 .toCompletable()
-                .andThen(repositories.blacklist().fireRemove(accountId, userId));
+                .andThen(blacklistRepository.fireRemove(accountId, userId));
     }
 
     @Override

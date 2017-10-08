@@ -19,7 +19,7 @@ import io.reactivex.Single;
  * Created by ruslan.kolbasa on 03-Jun-16.
  * phoenix
  */
-public interface IWallStore extends IRepository {
+public interface IWallStore extends IStore {
 
     @CheckResult
     Single<int[]> storeWallDbos(int accountId, @NonNull List<PostEntity> posts,

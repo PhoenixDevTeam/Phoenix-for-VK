@@ -39,9 +39,9 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
  * Created by ruslan.kolbasa on 03-Jun-16.
  * phoenix
  */
-class WallStore extends AbsRepository implements IWallStore {
+class WallStore extends AbsStore implements IWallStore {
 
-    WallStore(@NonNull AppRepositories base) {
+    WallStore(@NonNull AppStores base) {
         super(base);
     }
 
@@ -430,7 +430,7 @@ class WallStore extends AbsRepository implements IWallStore {
         final List<PostEntity> copiesDbos = new ArrayList<>(0);
 
         if (includeAttachments && (attachmentsMask > 0 || forceAttachments)) {
-            List<Entity> attachments = getRepositories()
+            List<Entity> attachments = getStores()
                     .attachments()
                     .getAttachmentsDbosSync(accountId, AttachToType.POST, dbid, cancelable);
 

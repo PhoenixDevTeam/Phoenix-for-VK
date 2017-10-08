@@ -6,7 +6,7 @@ import java.util.List;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiTopic;
-import biz.dealnote.messenger.db.interfaces.IRepositories;
+import biz.dealnote.messenger.db.interfaces.IStores;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.TopicEntity;
 import biz.dealnote.messenger.domain.IBoardInteractor;
@@ -28,10 +28,10 @@ import io.reactivex.Single;
 public class BoardInteractor implements IBoardInteractor {
 
     private final INetworker networker;
-    private final IRepositories stores;
+    private final IStores stores;
     private final IOwnersInteractor ownersInteractor;
 
-    public BoardInteractor(INetworker networker, IRepositories stores) {
+    public BoardInteractor(INetworker networker, IStores stores) {
         this.networker = networker;
         this.stores = stores;
         this.ownersInteractor = new OwnersInteractor(networker, stores.owners());

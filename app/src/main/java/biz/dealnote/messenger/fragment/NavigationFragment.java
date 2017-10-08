@@ -22,7 +22,7 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.MenuListAdapter;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
@@ -142,14 +142,14 @@ public class NavigationFragment extends BaseFragment {
                 .recentChats()
                 .get(mAccountId);
 
-        mCompositeDisposable.add(Repositories.getInstance()
+        mCompositeDisposable.add(Stores.getInstance()
                 .dialogs()
                 .observeUnreadDialogsCount()
                 .filter(pair -> pair.getFirst() == mAccountId)
                 .compose(RxUtils.applyObservableIOToMainSchedulers())
                 .subscribe(pair -> onUnreadDialogsCountChange(pair.getSecond())));
 
-        SECTION_ITEM_DIALOGS.setCount(Repositories.getInstance()
+        SECTION_ITEM_DIALOGS.setCount(Stores.getInstance()
                 .dialogs()
                 .getUnreadDialogsCount(mAccountId));
 
@@ -463,7 +463,7 @@ public class NavigationFragment extends BaseFragment {
         backupRecentChats();
 
         mAccountId = newAccountId;
-        SECTION_ITEM_DIALOGS.setCount(Repositories.getInstance()
+        SECTION_ITEM_DIALOGS.setCount(Stores.getInstance()
                 .dialogs()
                 .getUnreadDialogsCount(mAccountId));
 

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.WeakHashMap;
 
 import biz.dealnote.messenger.Extra;
-import biz.dealnote.messenger.db.Repositories;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.Logger;
@@ -35,7 +35,7 @@ public class UploadUtils {
     public static void upload(@NonNull Context context, List<UploadIntent> intents){
         final Context app = context.getApplicationContext();
 
-        Repositories.getInstance()
+        Stores.getInstance()
                 .uploads()
                 .put(intents)
                 .subscribeOn(Schedulers.io())
