@@ -109,7 +109,7 @@ public class UtilsInteractor implements IUtilsInteractor {
                     return stores.owners()
                             .findCommunityByDomain(accountId, domain)
                             .flatMap(optionalCommunityEntity -> {
-                                if(optionalCommunityEntity.isEmpty()){
+                                if(optionalCommunityEntity.nonEmpty()){
                                     Community community = Entity2Model.buildCommunityFromDbo(optionalCommunityEntity.get());
                                     return Single.just(Optional.<Owner>wrap(community));
                                 }
