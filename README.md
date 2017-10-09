@@ -1,4 +1,4 @@
-# Phoenix-for-VK
+# Phoenix for VK
 First open-sourced VK client for Android inspired by Material Design.
 
 <b>Screenshots:</b>

@@ -2,6 +2,9 @@ package biz.dealnote.messenger.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,9 +15,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,42 +63,6 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
     private static final int REQUEST_LOGIN_COMMUNITY = 14;
     private GroupHeaderHolder mHeaderHolder;
 
-    public void displayOwnerData(Community community) {
-        if(isNull(mHeaderHolder)) return;
-
-        /*mHeaderHolder.fabMessage.setVisibility(community.can_message ? View.VISIBLE : View.GONE);
-        mHeaderHolder.tvName.setText(community.name);
-
-        String statusText = null;
-        if (community.status_audio == null) {
-            if(!isEmpty(community.status)){
-                statusText = "\"" + community.status + "\"";
-            }
-        } else {
-            statusText = community.status_audio.artist + '-' + community.status_audio.title;
-        }
-
-        mHeaderHolder.tvStatus.setText(statusText);
-        mHeaderHolder.tvStatus.setVisibility(isEmpty(statusText) ? View.GONE : View.VISIBLE);
-
-        String screenName = "@" + community.screen_name;
-        mHeaderHolder.tvScreenName.setText(screenName);
-
-        String photoUrl = Utils.firstNonEmptyString(community.photo_200, community.photo_100, community.photo_50);
-        if (!isEmpty(photoUrl)) {
-            PicassoInstance.with()
-                    .load(photoUrl).transform(new RoundTransformation())
-                    .into(mHeaderHolder.ivAvatar);
-        }
-
-        setupCounter(mHeaderHolder.bTopics, community.counters == null ? NO_COUNTER : community.counters.topics);
-        setupCounter(mHeaderHolder.bMembers, community.members_count);
-        setupCounter(mHeaderHolder.bDocuments, community.counters == null ? NO_COUNTER : community.counters.docs);
-        setupCounter(mHeaderHolder.bPhotos, community.counters == null ? NO_COUNTER : community.counters.photos);
-        setupCounter(mHeaderHolder.bAudios, community.counters == null ? NO_COUNTER : community.counters.audios);
-        setupCounter(mHeaderHolder.bVideos, community.counters == null ? NO_COUNTER : community.counters.videos);*/
-    }
-
     @Override
     public void displayBaseCommunityData(Community community) {
         if(isNull(mHeaderHolder)) return;
@@ -110,15 +81,40 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
     }
 
     @Override
+    public void displayCommunityCover(boolean enabled, String resource) {
+        if (enabled) {
+            PicassoInstance.with()
+                    .load(resource)
+                    .into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+                            mHeaderHolder.vgCover.setBackground(drawable);
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                            //do nothing
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+                            //do nothing
+                        }
+                    });
+        }
+    }
+
+    @Override
     public IPresenterFactory<GroupWallPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int accoutnId = getArguments().getInt(Extra.ACCOUNT_ID);
+            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
             int ownerId = getArguments().getInt(Extra.OWNER_ID);
 
             ParcelableOwnerWrapper wrapper = getArguments().getParcelable(Extra.OWNER);
             AssertUtils.requireNonNull(wrapper);
 
-            return new GroupWallPresenter(accoutnId, ownerId, (Community) wrapper.get(), saveInstanceState);
+            return new GroupWallPresenter(accountId, ownerId, (Community) wrapper.get(), saveInstanceState);
         };
     }
 
@@ -289,7 +285,7 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
     }
 
     private class GroupHeaderHolder {
-
+        ViewGroup vgCover;
         ImageView ivAvatar;
         TextView tvName;
         TextView tvStatus;
@@ -308,6 +304,7 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
         HorizontalOptionsAdapter<PostFilter> mFiltersAdapter;
 
         GroupHeaderHolder(@NonNull View root) {
+            vgCover = root.findViewById(R.id.r1);
             ivAvatar = root.findViewById(R.id.header_group_avatar);
             tvName = root.findViewById(R.id.header_group_name);
             tvStatus = root.findViewById(R.id.header_group_status);
