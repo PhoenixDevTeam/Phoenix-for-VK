@@ -315,6 +315,8 @@ public class VKApiCommunity extends VKApiOwner {
      */
     public boolean can_message;
 
+    public VkApiCover cover;
+
     /**
      * VkApiPrivacy status of the group.
      */
