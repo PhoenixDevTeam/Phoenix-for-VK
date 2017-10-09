@@ -17,6 +17,7 @@ import biz.dealnote.messenger.model.PostFilter;
 public interface IGroupWallView extends IWallView {
 
     void displayBaseCommunityData(Community community);
+    void displayCommunityCover(boolean enabled, String resource);
 
     void setupPrimaryButton(@StringRes Integer title);
     void setupSecondaryButton(@StringRes Integer title);
