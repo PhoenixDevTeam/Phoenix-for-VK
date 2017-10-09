@@ -28,6 +28,7 @@ import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.api.model.VKApiWikiPage;
 import biz.dealnote.messenger.api.model.VkApiAttachments;
+import biz.dealnote.messenger.api.model.VkApiCover;
 import biz.dealnote.messenger.api.model.VkApiDialog;
 import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.api.model.VkApiFriendList;
@@ -152,6 +153,22 @@ public class Dto2Model {
                     .setPhotosCount(dto.counters.photos)
                     .setAudiosCount(dto.counters.audios)
                     .setVideosCount(dto.counters.videos);
+        }
+
+        if(nonNull(dto.cover)){
+            CommunityDetails.Cover cover = new CommunityDetails.Cover()
+                    .setEnabled(dto.cover.enabled)
+                    .setImages(new ArrayList<>(safeCountOf(dto.cover.images)));
+
+            if(nonNull(dto.cover.images)){
+                for(VkApiCover.Image imageDto : dto.cover.images){
+                    cover.getImages().add(new CommunityDetails.CoverImage(imageDto.url, imageDto.height, imageDto.width));
+                }
+            }
+
+            details.setCover(cover);
+        } else {
+            details.setCover(new CommunityDetails.Cover().setEnabled(false));
         }
 
         return details;

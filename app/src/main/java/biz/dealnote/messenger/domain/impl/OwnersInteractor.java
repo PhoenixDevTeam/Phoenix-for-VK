@@ -74,7 +74,7 @@ public class OwnersInteractor implements IOwnersInteractor {
             MAIN_ALBUM_ID, CAN_UPLOAD_DOC, CAN_CTARE_TOPIC, CAN_UPLOAD_VIDEO, BAN_INFO,
             CITY, COUNTRY, PLACE, DESCRIPTION, WIKI_PAGE, MEMBERS_COUNT, COUNTERS, START_DATE,
             FINISH_DATE, CAN_POST, CAN_SEE_ALL_POSTS, STATUS, CONTACTS, LINKS, FIXED_POST,
-            VERIFIED, BLACKLISTED, SITE, ACTIVITY, "member_status", "can_message");
+            VERIFIED, BLACKLISTED, SITE, ACTIVITY, "member_status", "can_message", "cover");
 
     private final INetworker networker;
     private final IOwnersStore cache;

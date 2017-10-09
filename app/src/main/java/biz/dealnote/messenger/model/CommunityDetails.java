@@ -1,5 +1,7 @@
 package biz.dealnote.messenger.model;
 
+import java.util.List;
+
 /**
  * Created by admin on 04.10.2017.
  * phoenix
@@ -31,6 +33,69 @@ public class CommunityDetails {
     private String status;
 
     private Audio statusAudio;
+
+    private Cover cover;
+
+    public static final class Cover {
+
+        private boolean enabled;
+
+        private List<CoverImage> images;
+
+        public Cover setEnabled(boolean enabled) {
+            this.enabled = enabled;
+            return this;
+        }
+
+        public Cover setImages(List<CoverImage> images) {
+            this.images = images;
+            return this;
+        }
+
+        public List<CoverImage> getImages() {
+            return images;
+        }
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+    }
+
+    public static final class CoverImage {
+
+        private final String url;
+
+        private final int height;
+
+        private final int width;
+
+        public CoverImage(String url, int height, int width) {
+            this.url = url;
+            this.height = height;
+            this.width = width;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+    }
+
+    public CommunityDetails setCover(Cover cover) {
+        this.cover = cover;
+        return this;
+    }
+
+    public Cover getCover() {
+        return cover;
+    }
 
     public int getAllWallCount() {
         return allWallCount;

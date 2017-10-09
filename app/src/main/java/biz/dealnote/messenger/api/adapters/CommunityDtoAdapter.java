@@ -14,6 +14,7 @@ import biz.dealnote.messenger.api.model.VKApiCity;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiCountry;
 import biz.dealnote.messenger.api.model.VKApiPlace;
+import biz.dealnote.messenger.api.model.VkApiCover;
 import biz.dealnote.messenger.api.util.VKStringUtils;
 
 import static biz.dealnote.messenger.api.model.VKApiCommunity.ACTIVITY;
@@ -136,6 +137,10 @@ public class CommunityDtoAdapter extends AbsAdapter implements JsonDeserializer<
         dto.site = optString(root, SITE);
         dto.activity = optString(root, ACTIVITY);
         dto.can_message = optIntAsBoolean(root, "can_message");
+
+        if(root.has("cover")){
+            dto.cover = context.deserialize(root.get("cover"), VkApiCover.class);
+        }
 
         return dto;
     }
