@@ -2,7 +2,7 @@
 First open-sourced VK client for Android inspired by Material Design.
 
 <b>Screenshots:</b>
-<img src="phoenix_screens.png"/>
+<img src="Screenshots.jpg"/>
 
 <b>Available at Google Play</b><br>
   <b>Full:</b> https://play.google.com/store/apps/details?id=biz.dealnote.phoenix <br>
