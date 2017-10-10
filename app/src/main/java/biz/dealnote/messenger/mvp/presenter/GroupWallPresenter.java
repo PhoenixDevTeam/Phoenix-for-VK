@@ -476,7 +476,7 @@ public class GroupWallPresenter extends AbsWallPresenter<IGroupWallView> {
 
     public void fireChatClick() {
         final Peer peer = new Peer(ownerId).setTitle(community.getFullName()).setAvaUrl(community.getMaxSquareAvatar());
-
-        getView().openChatWith(getAccountId(), getOwnerId(), peer);
+        final int accountId = super.getAccountId();
+        getView().openChatWith(accountId, accountId, peer);
     }
 }
