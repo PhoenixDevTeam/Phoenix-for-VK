@@ -165,6 +165,7 @@ public class WallPostPresenter extends PlaceSupportPresenter<IWallPostView> {
         resolveToolbarView();
         resolveCommentsView();
         resolveLikesView();
+        resolveRepostsView();
     }
 
     @OnGuiCreated
