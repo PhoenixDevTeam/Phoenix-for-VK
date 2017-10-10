@@ -151,7 +151,7 @@ public interface IMessageService {
      */
     @FormUrlEncoded
     @POST("messages.delete")
-    Single<BaseResponse<Integer>> delete(@Field("message_ids") String messageIds,
+    Single<BaseResponse<Map<String, Integer>>> delete(@Field("message_ids") String messageIds,
                                          @Field("spam") Integer spam);
 
     /**

@@ -333,6 +333,10 @@ public class Entity2Model {
             return buildAudioFromDbo((AudioEntity) entity);
         }
 
+        if(entity instanceof TopicEntity){
+            return buildTopicFromDbo((TopicEntity) entity, owners);
+        }
+
         throw new UnsupportedOperationException("Unsupported DBO class: " + entity.getClass());
     }
 

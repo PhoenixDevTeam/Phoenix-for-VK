@@ -50,7 +50,7 @@ public interface IMessagesApi {
     Single<Boolean> restore(int messageId);
 
     @CheckResult
-    Single<Boolean> delete(Collection<Integer> messageIds, Boolean spam);
+    Single<Map<String, Integer>> delete(Collection<Integer> messageIds, Boolean spam);
 
     @CheckResult
     Single<Boolean> markAsRead(Collection<Integer> messageIds, Integer peerId, Integer startMessageId);

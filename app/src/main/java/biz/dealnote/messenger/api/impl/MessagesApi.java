@@ -113,12 +113,11 @@ class MessagesApi extends AbsApi implements IMessagesApi {
     }
 
     @Override
-    public Single<Boolean> delete(Collection<Integer> messageIds, Boolean spam) {
+    public Single<Map<String, Integer>> delete(Collection<Integer> messageIds, Boolean spam) {
         return serviceRx(TokenType.USER, TokenType.COMMUNITY)
                 .flatMap(service -> service
-                        .delete(join(messageIds, ","), integerFromBoolean(spam))
-                        .map(extractResponseWithErrorHandling())
-                        .map(response -> response == 1));
+                        .delete(join(messageIds, ","), integerFromBoolean(spam)) //{"response":{"1173002":1,"1173001":1}}
+                        .map(extractResponseWithErrorHandling()));
     }
 
     @Override
