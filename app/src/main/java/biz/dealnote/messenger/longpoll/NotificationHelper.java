@@ -177,7 +177,7 @@ public class NotificationHelper {
     public static final int NOTIFICATION_NEW_POSTS_ID = 70;
     public static final int NOTIFICATION_LIKE = 71;
 
-    private static Uri findNotificationSound() {
+    public static Uri findNotificationSound() {
         try {
             return Uri.parse(Settings.get()
                     .notifications()
