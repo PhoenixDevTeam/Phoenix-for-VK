@@ -1217,9 +1217,8 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         final int accountId = super.getAccountId();
 
         appendDisposable(messagesInteractor.removeChatUser(accountId, chatId, accountId)
-                .observeOn(Schedulers.io())
-                .subscribe(() -> {
-                }, t -> showError(getView(), getCauseIfRuntime(t))));
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(() -> {}, t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
     public void fireChatTitleClick() {
@@ -1324,7 +1323,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     @Override
     public void onActionModeForwardClick() {
         ArrayList<Message> selected = getSelected(getData());
-        if (!safeIsEmpty(selected)) {
+        if (nonEmpty(selected)) {
             getView().diplayForwardTypeSelectDialog(selected);
         }
     }
