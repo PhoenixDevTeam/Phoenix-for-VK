@@ -258,7 +258,7 @@ public class FeedbackDtoAdapter extends AbsAdapter implements JsonDeserializer<V
                     break;
                 case "reply_comment_photo":
                     commentableClass = VKApiPhoto.class;
-                    parentCommentableField = "post";
+                    parentCommentableField = "photo";
                     break;
                 case "reply_comment_video":
                     commentableClass = VKApiVideo.class;
@@ -320,7 +320,7 @@ public class FeedbackDtoAdapter extends AbsAdapter implements JsonDeserializer<V
                     break;
                 case "like_comment_photo":
                     commentableClass = VKApiPhoto.class;
-                    parentJsonField = "post";
+                    parentJsonField = "photo";
                     break;
                 case "like_comment_video":
                     commentableClass = VKApiVideo.class;
