@@ -1,0 +1,182 @@
+[execute.getCommunityWallInfo]
+
+var group_id = Args.group_id;
+var fields =Args.fields;
+
+var negative_group_id = -group_id;
+
+var group_info = API.groups.getById({"group_id":group_id,
+    "fields":fields});
+
+var all_wall_count = API.wall.get({"owner_id":negative_group_id,
+    "count":1, "filter":"all"}).count;
+    
+var owner_wall_count = API.wall.get({"owner_id":negative_group_id,
+    "count":1, "filter":"owner"}).count;
+    
+var suggests_wall_count = API.wall.get({"owner_id":negative_group_id,
+    "count":1, "filter":"suggests"}).count;
+
+var postponed_wall_count = API.wall.get({"owner_id":negative_group_id,
+    "count":1, "filter":"postponed"}).count;
+
+return {"group_info": group_info, 
+    "all_wall_count":all_wall_count,
+    "owner_wall_count":owner_wall_count,
+    "suggests_wall_count":suggests_wall_count,
+    "postponed_wall_count":postponed_wall_count
+};
+
+
+[execute.getUserWallInfo]
+
+var user_id = Args.user_id;
+var fields =Args.fields;
+var name_case = Args.name_case;
+
+var user_info = API.users.get({"user_ids":user_id,
+    "fields":fields, "name_case":name_case});
+
+var all_wall_count =API.wall.get({"owner_id":user_id,
+    "count":1, "filter":"all"}).count;
+    
+var owner_wall_count =API.wall.get({"owner_id":user_id,
+    "count":1, "filter":"owner"}).count;
+
+var postponed_wall_count =API.wall.get({"owner_id":user_id,
+    "count":1, "filter":"postponed"}).count;
+
+return {"user_info": user_info, 
+    "all_wall_count":all_wall_count,
+    "owner_wall_count":owner_wall_count,
+    "postponed_wall_count":postponed_wall_count
+};
+
+
+[execute.getComments]
+
+var owner_id = Args.owner_id;
+var source_id = Args.source_id;
+var start_comment_id = Args.start_comment_id;
+var offset = Args.offset;
+var count = Args.count;
+var sort = Args.sort;
+var access_key = Args.access_key;
+var source_type = Args.source_type;
+var fields = Args.fields;
+
+var positive_group_id;
+if(owner_id < 0){
+    positive_group_id = -owner_id;
+} else {
+    positive_group_id = owner_id;
+}
+
+var admin_level = 0;
+if(owner_id < 0){
+    admin_level = API.groups.getById({"group_id":positive_group_id,
+        "fields":"admin_level"})[0].admin_level;
+}
+
+var result;
+if(source_type == "post"){
+    result = API.wall.getComments({"owner_id":owner_id, 
+        "post_id":source_id, 
+        "need_likes":"1", 
+        "start_comment_id":start_comment_id, 
+        "offset":offset, 
+        "count":count, 
+        "sort":sort, 
+        "preview_length":"0", 
+        "extended":"1",
+        "fields":fields
+    });
+}
+
+if(source_type == "photo"){
+    result = API.photos.getComments({"owner_id":owner_id, 
+        "photo_id":source_id, 
+        "need_likes":"1", 
+        "start_comment_id":start_comment_id, 
+        "offset":offset, 
+        "count":count, 
+        "sort":sort, 
+        "extended":"1",
+        "fields":fields,
+        "access_key":access_key});
+}
+
+if(source_type == "video"){
+    result = API.video.getComments({"owner_id":owner_id, 
+        "video_id":source_id, 
+        "need_likes":"1", 
+        "start_comment_id":start_comment_id, 
+        "offset":offset, 
+        "count":count, 
+        "sort":sort, 
+        "extended":"1",
+        "fields":fields
+    });
+}
+
+if(source_type == "topic"){
+    result = API.board.getComments({"group_id":positive_group_id, 
+        "topic_id":source_id, 
+        "need_likes":"1", 
+        "start_comment_id":start_comment_id, 
+        "offset":offset, 
+        "count":count, 
+        "sort":sort, 
+        "extended":"1"});
+}
+
+var first_id;
+if(source_type == "post"){
+   first_id = API.wall.getComments({"owner_id":owner_id, 
+        "post_id":source_id, "count":"1", "sort":"asc"}).items[0].id;
+}
+
+if(source_type == "photo"){
+   first_id = API.photos.getComments({
+        "owner_id":owner_id, 
+        "photo_id":source_id, 
+        "count":"1", 
+        "sort":"asc", 
+        "access_key":access_key}).items[0].id;
+}
+
+if(source_type == "video"){
+   first_id = API.video.getComments({"owner_id":owner_id, 
+        "video_id":source_id, "count":"1", "sort":"asc"}).items[0].id;
+}
+
+if(source_type == "topic"){
+    first_id = API.board.getComments({"group_id":positive_group_id, 
+        "topic_id":source_id, "count":"1", "sort":"asc"}).items[0].id;
+}
+
+var last_id;
+if(source_type == "post"){
+    last_id = API.wall.getComments({"owner_id":owner_id, 
+        "post_id":source_id, "count":"1", "sort":"desc"}).items[0].id;
+}
+
+if(source_type == "photo"){
+    last_id = API.photos.getComments({"owner_id":owner_id, 
+        "photo_id":source_id, "count":"1", "sort":"desc"}).items[0].id;
+}
+
+if(source_type == "video"){
+    last_id = API.video.getComments({"owner_id":owner_id, 
+        "video_id":source_id, "count":"1", "sort":"desc"}).items[0].id;
+}
+
+if(source_type == "topic"){
+    last_id = API.board.getComments({"group_id":positive_group_id, 
+        "topic_id":source_id, "count":"1", "sort":"desc"}).items[0].id;
+}
+
+return {"main": result, 
+    "first_id": first_id, 
+    "last_id": last_id, 
+    "admin_level": admin_level};
