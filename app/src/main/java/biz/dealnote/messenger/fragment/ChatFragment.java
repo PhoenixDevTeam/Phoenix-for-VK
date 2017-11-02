@@ -377,7 +377,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
 
         WeakReference<ChatFragment> fragmentWeakReference;
 
-        ActionModeCallback(ChatFragment fragment){
+        ActionModeCallback(ChatFragment fragment) {
             this.fragmentWeakReference = new WeakReference<>(fragment);
         }
 
@@ -389,7 +389,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             ChatFragment fragment = fragmentWeakReference.get();
-            if(Objects.isNull(fragment)){
+            if (Objects.isNull(fragment)) {
                 return true;
             }
 
@@ -420,7 +420,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
         public void onDestroyActionMode(ActionMode mode) {
             ChatFragment fragment = fragmentWeakReference.get();
 
-            if(nonNull(fragment)){
+            if (nonNull(fragment)) {
                 fragment.getPresenter().fireActionModeDestroy();
                 fragment.mActionMode = null;
             }
@@ -452,7 +452,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_EDIT_MESSAGE) {
-            if(nonNull(data) && data.hasExtra(Extra.BUNDLE)){
+            if (nonNull(data) && data.hasExtra(Extra.BUNDLE)) {
                 ModelsBundle bundle = data.getParcelableExtra(Extra.BUNDLE);
                 getPresenter().fireEditMessageResult(bundle);
             }
@@ -464,7 +464,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
             //    getPresenter().fireEditMessageResult(body, accompanyingState);
             //}
 
-            if(resultCode == Activity.RESULT_OK){
+            if (resultCode == Activity.RESULT_OK) {
                 getPresenter().fireSendClickFromAttachmens();
             }
         }
@@ -485,29 +485,29 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
     @Override
     public void goToMessageAttachmentsEditor(int accountId, int messageOwnerId, @NonNull UploadDestination destination,
                                              String body, @Nullable ModelsBundle attachments) {
-        //PlaceFactory.getMessageCreatePlace(accountId, destination, body, attachments)
-        //        .targetTo(this, REQUEST_EDIT_MESSAGE)
-        //        .tryOpenWith(getActivity());
-
         MessageAttachmentsFragment fragment = MessageAttachmentsFragment.newInstance(accountId, messageOwnerId, destination.getId(), attachments);
         fragment.setTargetFragment(this, REQUEST_EDIT_MESSAGE);
-        fragment.show(getFragmentManager(), "message_attachments");
+        fragment.show(getFragmentManager(), "message-attachments");
     }
 
     @Override
     public void showErrorSendDialog(@NonNull Message message) {
         String[] items = {getString(R.string.try_again), getString(R.string.delete)};
 
-        new AlertDialog.Builder(getActivity()).setTitle(R.string.sending_message_failed).setItems(items, (dialogInterface, i) -> {
-            switch (i) {
-                case 0:
-                    getPresenter().fireSendAgainClick(message);
-                    break;
-                case 1:
-                    getPresenter().fireErrorMessageDeleteClick(message);
-                    break;
-            }
-        }).setCancelable(true).show();
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.sending_message_failed)
+                .setItems(items, (dialogInterface, i) -> {
+                    switch (i) {
+                        case 0:
+                            getPresenter().fireSendAgainClick(message);
+                            break;
+                        case 1:
+                            getPresenter().fireErrorMessageDeleteClick(message);
+                            break;
+                    }
+                })
+                .setCancelable(true)
+                .show();
     }
 
     @Override
@@ -600,7 +600,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
                 (dialog, which) -> showConversationAttachments(accountId, peerId, types[which])).show();
     }
 
-    private void showConversationAttachments(int accountId, int peerId, String type){
+    private void showConversationAttachments(int accountId, int peerId, String type) {
         PlaceFactory.getConversationAttachmentsPlace(accountId, peerId, type).tryOpenWith(getActivity());
     }
 
@@ -743,7 +743,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
 
             try {
                 encryptionStatusItem.setIcon(CurrentTheme.getResIdFromAttribute(getActivity(), attrRes));
-            } catch (Exception e){
+            } catch (Exception e) {
                 //java.lang.NullPointerException: Attempt to invoke virtual method
                 // 'android.content.res.Resources$Theme android.app.Activity.getTheme()' on a null object reference
             }

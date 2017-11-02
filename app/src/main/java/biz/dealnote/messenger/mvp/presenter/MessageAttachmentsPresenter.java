@@ -291,7 +291,7 @@ public class MessageAttachmentsPresenter extends AccountDependencyPresenter<IMes
 
     public void fireRemoveClick(AttachmenEntry entry) {
         if (entry.getOptionalId() != 0) {
-            repositories.attachments()
+            attachmentsRepository
                     .remove(messageOwnerId, AttachToType.MESSAGE, messageId, entry.getOptionalId())
                     .compose(RxUtils.applyCompletableIOToMainSchedulers())
                     .subscribe(() -> {}, Analytics::logUnexpectedError);
