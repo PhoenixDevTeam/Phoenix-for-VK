@@ -1,9 +1,14 @@
 package biz.dealnote.messenger.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,15 +25,20 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.CommunitiesAdapter;
 import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.listener.AppStyleable;
+import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.DataWrapper;
 import biz.dealnote.messenger.mvp.presenter.CommunitiesPresenter;
 import biz.dealnote.messenger.mvp.view.ICommunitiesView;
 import biz.dealnote.messenger.place.PlaceFactory;
+import biz.dealnote.messenger.settings.CurrentTheme;
+import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.MySearchView;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
+import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
 /**
@@ -36,7 +46,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * phoenix
  */
 public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresenter, ICommunitiesView>
-        implements ICommunitiesView, MySearchView.OnQueryTextListener, CommunitiesAdapter.ActionListener {
+        implements ICommunitiesView, MySearchView.OnQueryTextListener, CommunitiesAdapter.ActionListener, BackPressCallback, MySearchView.OnBackButtonClickListener {
 
     public static CommunitiesFragment newInstance(int accountId, int userId) {
         Bundle args = new Bundle();
@@ -50,6 +60,8 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private CommunitiesAdapter mAdapter;
+
+    private MySearchView mSearchView;
 
     @Nullable
     @Override
@@ -74,14 +86,51 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
 
         recyclerView.setAdapter(mAdapter);
 
-        MySearchView mySearchView = root.findViewById(R.id.searchview);
-        mySearchView.setOnQueryTextListener(this);
+        mSearchView = root.findViewById(R.id.searchview);
+        mSearchView.setOnBackButtonClickListener(this);
+        mSearchView.setRightButtonVisibility(false);
+        mSearchView.setOnQueryTextListener(this);
+
+        resolveLeftButton();
         return root;
+    }
+
+    private void resolveLeftButton() {
+        FragmentActivity activity = getActivity();
+
+        try {
+            if (nonNull(activity) && nonNull(mSearchView)) {
+                int count = activity.getSupportFragmentManager().getBackStackEntryCount();
+                mSearchView.setLeftIcon(count == 1 && activity instanceof AppStyleable ?
+                        CurrentTheme.getResIdFromAttribute(activity, R.attr.toolbarDrawerIcon) :
+                        CurrentTheme.getResIdFromAttribute(activity, R.attr.toolbarBackIcon));
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    private FragmentManager.OnBackStackChangedListener backStackChangedListener = this::resolveLeftButton;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof AppCompatActivity) {
+            ((AppCompatActivity) context).getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        if (getActivity() != null) {
+            getActivity().getSupportFragmentManager().removeOnBackStackChangedListener(backStackChangedListener);
+        }
+
+        super.onDetach();
     }
 
     @Override
     public void displayData(DataWrapper<Community> own, DataWrapper<Community> filtered, DataWrapper<Community> seacrh) {
-        if(nonNull(mAdapter)){
+        if (nonNull(mAdapter)) {
             List<DataWrapper<Community>> wrappers = new ArrayList<>();
             wrappers.add(own);
             wrappers.add(filtered);
@@ -109,21 +158,21 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
 
     @Override
     public void notifyDataSetChanged() {
-        if(nonNull(mAdapter)){
+        if (nonNull(mAdapter)) {
             mAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void notifyOwnDataAdded(int position, int count) {
-        if(nonNull(mAdapter)){
+        if (nonNull(mAdapter)) {
             mAdapter.notifyItemRangeInserted(0, position, count);
         }
     }
 
     @Override
     public void displayRefreshing(boolean refreshing) {
-        if(nonNull(mSwipeRefreshLayout)){
+        if (nonNull(mSwipeRefreshLayout)) {
             mSwipeRefreshLayout.setRefreshing(refreshing);
         }
     }
@@ -135,7 +184,7 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
 
     @Override
     public void notifySeacrhDataAdded(int position, int count) {
-        if(nonNull(mAdapter)){
+        if (nonNull(mAdapter)) {
             mAdapter.notifyItemRangeInserted(2, position, count);
         }
     }
@@ -169,5 +218,28 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
     @Override
     public void onCommunityClick(Community community) {
         getPresenter().fireCommunityClick(community);
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        CharSequence query = mSearchView.getText();
+        if (Utils.isEmpty(query)) {
+            return true;
+        }
+
+        mSearchView.setQuery("");
+        return false;
+    }
+
+    @Override
+    public void onBackButtonClick() {
+        FragmentActivity activity = getActivity();
+        if (isNull(activity)) return;
+
+        if (activity.getSupportFragmentManager().getBackStackEntryCount() == 1 && activity instanceof AppStyleable) {
+            ((AppStyleable) activity).openDrawer(true, GravityCompat.START);
+        } else {
+            activity.onBackPressed();
+        }
     }
 }

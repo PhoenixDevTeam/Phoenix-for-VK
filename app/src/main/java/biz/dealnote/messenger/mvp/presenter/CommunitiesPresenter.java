@@ -40,6 +40,9 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
     private final DataWrapper<Community> filtered;
     private final DataWrapper<Community> search;
 
+    private boolean actualEndOfContent;
+    private boolean netSearchEndOfContent;
+
     private final ICommunitiesInteractor communitiesInteractor;
 
     public CommunitiesPresenter(int accountId, int userId, @Nullable Bundle savedInstanceState) {
@@ -57,16 +60,16 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
 
     private CompositeDisposable actualDisposable = new CompositeDisposable();
     private boolean actualLoadingNow;
-    private int actualLoadingOffset;
+    //private int actualLoadingOffset;
 
     private void requestActualData(int offset) {
         this.actualLoadingNow = true;
-        this.actualLoadingOffset = offset;
+        //this.actualLoadingOffset = offset;
 
         final int accountId = super.getAccountId();
 
         resolveRefreshing();
-        actualDisposable.add(communitiesInteractor.getActual(accountId, userId, 200, offset)
+        actualDisposable.add(communitiesInteractor.getActual(accountId, userId, 1000, offset)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(communities -> onActualDataReceived(offset, communities), this::onActualDataGetError));
     }
@@ -104,6 +107,7 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
         this.cacheLoadingNow = false;
 
         this.actualLoadingNow = false;
+        this.actualEndOfContent = communities.isEmpty();
 
         if (offset == 0) {
             this.own.get().clear();
@@ -132,7 +136,7 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
 
     private CompositeDisposable netSeacrhDisposable = new CompositeDisposable();
     private boolean netSeacrhNow;
-    private int netSeacrhOffset;
+    //private int netSearchOffset;
 
     private boolean isSearchNow() {
         return trimmedNonEmpty(filter);
@@ -175,7 +179,7 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
 
         filterDisposable.clear();
         netSeacrhDisposable.clear();
-        netSeacrhOffset = 0;
+        //netSearchOffset = 0;
         netSeacrhNow = false;
 
         if (searchNow) {
@@ -195,7 +199,7 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
 
         Single<List<Community>> single;
         Single<List<Community>> searchSingle = communitiesInteractor.search(accountId, filter, null,
-                null, null, null, null, 100, offset);
+                null, null, null, 0, 100, offset);
 
         if (withDelay) {
             single = Completable.complete()
@@ -206,7 +210,7 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
         }
 
         this.netSeacrhNow = true;
-        this.netSeacrhOffset = offset;
+        //this.netSearchOffset = offset;
 
         resolveRefreshing();
         netSeacrhDisposable.add(single
@@ -222,6 +226,8 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
 
     private void onSearchDataReceived(int offset, List<Community> communities){
         this.netSeacrhNow = false;
+        this.netSearchEndOfContent = communities.isEmpty();
+
         resolveRefreshing();
 
         if(offset == 0){
@@ -319,13 +325,23 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
 
             actualDisposable.clear();
             actualLoadingNow = false;
-            actualLoadingOffset = 0;
+            //actualLoadingOffset = 0;
 
             requestActualData(0);
         }
     }
 
     public void fireScrollToEnd() {
-
+        if(isSearchNow()){
+            if(!netSeacrhNow && !netSearchEndOfContent){
+                int offset = search.size();
+                startNetSearch(offset, false);
+            }
+        } else {
+            if(!actualLoadingNow && !cacheLoadingNow && !actualEndOfContent){
+                int offset = own.size();
+                requestActualData(offset);
+            }
+        }
     }
 }
