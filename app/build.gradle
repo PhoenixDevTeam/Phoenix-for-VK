@@ -8,14 +8,14 @@ android {
         exclude 'META-INF/NOTICE'
     }
 
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.1'
 
     defaultConfig {
         applicationId "biz.dealnote.messenger"
         minSdkVersion 16
-        targetSdkVersion 26
-        versionCode 40003
+        targetSdkVersion 27
+        versionCode 40004
         versionName '4'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -118,8 +118,8 @@ allprojects {
     }
 }
 
-ext.supportLibraryVersion = '26.1.0'
-ext.firebaseLibraryVersion = '11.4.2'
+ext.supportLibraryVersion = '27.0.1'
+ext.firebaseLibraryVersion = '11.6.0'
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
