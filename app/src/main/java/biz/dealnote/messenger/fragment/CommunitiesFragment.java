@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.CommunitiesAdapter;
 import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.DataWrapper;
 import biz.dealnote.messenger.mvp.presenter.CommunitiesPresenter;
@@ -51,7 +53,7 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_communities, container, false);
         //((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
@@ -60,6 +62,12 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+            @Override
+            public void onScrollToLastElement() {
+                getPresenter().fireScrollToEnd();
+            }
+        });
 
         mAdapter = new CommunitiesAdapter(getActivity(), Collections.emptyList(), new int[0]);
         mAdapter.setActionListener(this);
@@ -123,6 +131,13 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
     @Override
     public void showCommunityWall(int accountId, Community community) {
         PlaceFactory.getOwnerWallPlace(accountId, community).tryOpenWith(getActivity());
+    }
+
+    @Override
+    public void notifySeacrhDataAdded(int position, int count) {
+        if(nonNull(mAdapter)){
+            mAdapter.notifyItemRangeInserted(2, position, count);
+        }
     }
 
     @Override

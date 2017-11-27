@@ -1,5 +1,6 @@
 package biz.dealnote.messenger.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,5 +33,25 @@ public class DataWrapper<T> {
 
     public List<T> get() {
         return data;
+    }
+
+    public void clear(){
+        this.data.clear();
+    }
+
+    public void addAll(List<T> append){
+        this.data.addAll(append);
+    }
+
+    public void replace(List<T> data){
+        this.data.clear();
+        this.data.addAll(data);
+        tryTrimToSize();
+    }
+
+    private void tryTrimToSize(){
+        if(data instanceof ArrayList){
+            ((ArrayList) data).trimToSize();
+        }
     }
 }

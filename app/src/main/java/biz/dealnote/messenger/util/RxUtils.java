@@ -25,6 +25,12 @@ public class RxUtils {
                 .observeOn(Injection.provideMainThreadScheduler());
     }
 
+    public static <T> SingleTransformer<T, T> applySingleComputationToMainSchedulers() {
+        return upstream -> upstream
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Injection.provideMainThreadScheduler());
+    }
+
     public static <T> ObservableTransformer<T, T> applyObservableIOToMainSchedulers() {
         return upstream -> upstream
                 .subscribeOn(Schedulers.io())

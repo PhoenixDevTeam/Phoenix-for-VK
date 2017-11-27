@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import biz.dealnote.messenger.domain.ICommunitiesInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
@@ -14,8 +15,18 @@ import biz.dealnote.messenger.model.DataWrapper;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.ICommunitiesView;
 import biz.dealnote.messenger.util.Logger;
+import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.RxUtils;
+import biz.dealnote.messenger.util.Translit;
+import biz.dealnote.messenger.util.Utils;
+import io.reactivex.Completable;
+import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
+
+import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
+import static biz.dealnote.messenger.util.Utils.nonEmpty;
+import static biz.dealnote.messenger.util.Utils.trimmedIsEmpty;
+import static biz.dealnote.messenger.util.Utils.trimmedNonEmpty;
 
 /**
  * Created by admin on 19.09.2017.
@@ -66,9 +77,9 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
         resolveRefreshing();
     }
 
-    private void resolveRefreshing(){
-        if(isGuiResumed()){
-            getView().displayRefreshing(actualLoadingNow);
+    private void resolveRefreshing() {
+        if (isGuiResumed()) {
+            getView().displayRefreshing(actualLoadingNow || netSeacrhNow);
         }
     }
 
@@ -119,6 +130,14 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
                 .subscribe(this::onCachedDataReceived));
     }
 
+    private CompositeDisposable netSeacrhDisposable = new CompositeDisposable();
+    private boolean netSeacrhNow;
+    private int netSeacrhOffset;
+
+    private boolean isSearchNow() {
+        return trimmedNonEmpty(filter);
+    }
+
     private void onCachedDataReceived(List<Community> communities) {
         this.cacheLoadingNow = false;
 
@@ -132,22 +151,181 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
         return CommunitiesPresenter.class.getSimpleName();
     }
 
-    public void fireSearchQueryChanged(String query) {
+    private String filter;
 
+    public void fireSearchQueryChanged(String query) {
+        if (!Objects.safeEquals(filter, query)) {
+            this.filter = query;
+            onFilterChanged();
+        }
+    }
+
+    private void onFilterChanged() {
+        boolean searchNow = Utils.trimmedNonEmpty(this.filter);
+
+        own.setEnabled(!searchNow);
+
+        filtered.setEnabled(searchNow);
+        filtered.clear();
+
+        search.setEnabled(searchNow);
+        search.clear();
+
+        callView(ICommunitiesView::notifyDataSetChanged);
+
+        filterDisposable.clear();
+        netSeacrhDisposable.clear();
+        netSeacrhOffset = 0;
+        netSeacrhNow = false;
+
+        if (searchNow) {
+            filterDisposable.add(filter(own.get(), filter)
+                    .compose(RxUtils.applySingleComputationToMainSchedulers())
+                    .subscribe(this::onFilteredDataReceived, t -> {/*ignored*/}));
+
+            startNetSearch(0, true);
+        } else {
+            resolveRefreshing();
+        }
+    }
+
+    private void startNetSearch(int offset, boolean withDelay) {
+        final int accountId = super.getAccountId();
+        final String filter = this.filter;
+
+        Single<List<Community>> single;
+        Single<List<Community>> searchSingle = communitiesInteractor.search(accountId, filter, null,
+                null, null, null, null, 100, offset);
+
+        if (withDelay) {
+            single = Completable.complete()
+                    .delay(1, TimeUnit.SECONDS)
+                    .andThen(searchSingle);
+        } else {
+            single = searchSingle;
+        }
+
+        this.netSeacrhNow = true;
+        this.netSeacrhOffset = offset;
+
+        resolveRefreshing();
+        netSeacrhDisposable.add(single
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(data -> onSearchDataReceived(offset, data), this::onSeacrhError));
+    }
+
+    private void onSeacrhError(Throwable t){
+        this.netSeacrhNow = false;
+        resolveRefreshing();
+        showError(getView(), getCauseIfRuntime(t));
+    }
+
+    private void onSearchDataReceived(int offset, List<Community> communities){
+        this.netSeacrhNow = false;
+        resolveRefreshing();
+
+        if(offset == 0){
+            this.search.replace(communities);
+            callView(ICommunitiesView::notifyDataSetChanged);
+        } else {
+            int sizeBefore = this.search.size();
+            int count = communities.size();
+
+            this.search.addAll(communities);
+            callView(view -> view.notifySeacrhDataAdded(sizeBefore, count));
+        }
+    }
+
+    private void onFilteredDataReceived(List<Community> filteredData) {
+        this.filtered.replace(filteredData);
+        callView(ICommunitiesView::notifyDataSetChanged);
+    }
+
+    private CompositeDisposable filterDisposable = new CompositeDisposable();
+
+    private static Single<List<Community>> filter(final List<Community> orig, final String filter) {
+        return Single.create(emitter -> {
+            List<Community> result = new ArrayList<>(5);
+
+            for (Community community : orig) {
+                if (emitter.isDisposed()) {
+                    break;
+                }
+
+                if (isMatchFilter(community, filter)) {
+                    result.add(community);
+                }
+            }
+
+            emitter.onSuccess(result);
+        });
+    }
+
+    private static boolean isMatchFilter(Community community, String filter) {
+        if (trimmedIsEmpty(filter)) {
+            return true;
+        }
+
+        String lower = filter.toLowerCase().trim();
+
+        if (nonEmpty(community.getName())) {
+            String lowername = community.getName().toLowerCase();
+            if (lowername.contains(lower)) {
+                return true;
+            }
+
+            try {
+                if (lowername.contains(Translit.cyr2lat(lower))) {
+                    return true;
+                }
+            } catch (Exception ignored) {
+            }
+
+
+            try {
+                //Caused by java.lang.StringIndexOutOfBoundsException: length=3; index=3
+                if (lowername.contains(Translit.lat2cyr(lower))) {
+                    return true;
+                }
+            } catch (Exception ignored) {
+            }
+        }
+
+        return nonEmpty(community.getScreenName()) && community.getScreenName().toLowerCase().contains(lower);
     }
 
     public void fireCommunityClick(Community community) {
         getView().showCommunityWall(getAccountId(), community);
     }
 
+    @Override
+    public void onDestroyed() {
+        actualDisposable.dispose();
+        cacheDisposable.dispose();
+        filterDisposable.dispose();
+        netSeacrhDisposable.dispose();
+        super.onDestroyed();
+    }
+
     public void fireRefresh() {
-        cacheDisposable.clear();
-        cacheLoadingNow = false;
+        if(isSearchNow()){
+            netSeacrhDisposable.clear();
+            netSeacrhNow = false;
 
-        actualDisposable.clear();
-        actualLoadingNow = false;
-        actualLoadingOffset = 0;
+            startNetSearch(0, false);
+        } else {
+            cacheDisposable.clear();
+            cacheLoadingNow = false;
 
-        requestActualData(0);
+            actualDisposable.clear();
+            actualLoadingNow = false;
+            actualLoadingOffset = 0;
+
+            requestActualData(0);
+        }
+    }
+
+    public void fireScrollToEnd() {
+
     }
 }
