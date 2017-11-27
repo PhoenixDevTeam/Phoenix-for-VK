@@ -12,16 +12,18 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
+import biz.dealnote.messenger.media.voice.IVoicePlayer;
+import biz.dealnote.messenger.media.voice.PrepareException;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.VoiceMessage;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
 import biz.dealnote.messenger.mvp.view.IBasicMessageListView;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Lookup;
-import biz.dealnote.messenger.util.Objects;
+import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Utils;
-import biz.dealnote.messenger.util.record.VoicePlayer;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
 
 import static biz.dealnote.messenger.util.Utils.countOfSelection;
@@ -33,12 +35,12 @@ import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
  * phoenix
  */
 abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
-        PlaceSupportPresenter<V> implements VoicePlayer.Callback {
+        PlaceSupportPresenter<V> implements IVoicePlayer.IPlayerStatusListener {
 
     //private static final String SAVE_DATA = "save_data";
 
     private final ArrayList<Message> mData;
-    private VoicePlayer mVoicePlayer;
+    private IVoicePlayer mVoicePlayer;
     private Lookup mVoiceMessageLookup;
 
     AbsMessageListPresenter(int accountId, @Nullable Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
             mData = new ArrayList<>();
         //}
 
-        mVoicePlayer = new VoicePlayer();
+        mVoicePlayer = Injection.provideVoicePlayerFactory().createPlayer();
         mVoicePlayer.setCallback(this);
         mVoiceMessageLookup = new Lookup(500);
         mVoiceMessageLookup.setCallback(this::resolveVoiceMessagePlayingState);
@@ -204,7 +206,7 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
                 float progress = mVoicePlayer.getProgress();
                 getView().bindVoiceHolderById(voiceHolderId, true, paused, progress);
             }
-        } catch (VoicePlayer.PrepareException e) {
+        } catch (PrepareException e) {
             e.printStackTrace();
         }
 
@@ -213,15 +215,15 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
 
     private void resolveVoiceMessagePlayingState(){
         if(isGuiReady()){
-            Integer currentVoiceMessageId = mVoicePlayer.getPlayingVoiceId();
-            if(Objects.isNull(currentVoiceMessageId)){
+            Optional<Integer> optionalVoiceMessageId = mVoicePlayer.getPlayingVoiceId();
+            if(optionalVoiceMessageId.isEmpty()){
                 getView().disableVoicePlaying();
             } else {
                 float progress = mVoicePlayer.getProgress();
                 boolean paused = !mVoicePlayer.isSupposedToPlay();
                 Logger.d(tag(), "resolveVoiceMessagePlayingState, progress: " + progress + ", paused: " + paused);
 
-                getView().configNowVoiceMessagePlaying(currentVoiceMessageId, progress, paused);
+                getView().configNowVoiceMessagePlaying(optionalVoiceMessageId.get(), progress, paused);
             }
         }
     }
@@ -235,8 +237,8 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
     public void fireVoiceHolderCreated(int voiceMessageId, int voiceHolderId) {
         Logger.d(tag(), "fireVoiceHolderCreated, voiceMessageId: " + voiceMessageId + ", voiceHolderId: " + voiceHolderId);
 
-        Integer currentVoiceId = mVoicePlayer.getPlayingVoiceId();
-        boolean play = Objects.nonNull(currentVoiceId) && currentVoiceId == voiceMessageId;
+        Optional<Integer> currentVoiceId = mVoicePlayer.getPlayingVoiceId();
+        boolean play = currentVoiceId.nonEmpty() && currentVoiceId.get() == voiceMessageId;
         boolean paused = play && !mVoicePlayer.isSupposedToPlay();
 
         getView().bindVoiceHolderById(voiceHolderId, play, paused, mVoicePlayer.getProgress());
@@ -244,8 +246,8 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
 
     @Override
     public void onPlayerStatusChange(int status) {
-        Integer voiceMessageId = mVoicePlayer.getPlayingVoiceId();
-        Logger.d(tag(), "onPlayerStatusChange, voiceMessageId: " + voiceMessageId + ", status: " + status);
+        Optional<Integer> voiceMessageId = mVoicePlayer.getPlayingVoiceId();
+        Logger.d(tag(), "onPlayerStatusChange, voiceMessageId: " + voiceMessageId.get() + ", status: " + status);
     }
 
     @Override

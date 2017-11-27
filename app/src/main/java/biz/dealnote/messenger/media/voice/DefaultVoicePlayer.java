@@ -1,27 +1,25 @@
-package biz.dealnote.messenger.util.record;
+package biz.dealnote.messenger.media.voice;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
 import java.io.IOException;
 
-import biz.dealnote.messenger.App;
-import biz.dealnote.messenger.media.voice.AudioEntry;
 import biz.dealnote.messenger.model.VoiceMessage;
 import biz.dealnote.messenger.util.Objects;
+import biz.dealnote.messenger.util.Optional;
 
 /**
  * Created by admin on 09.10.2016.
  * phoenix
  */
-public class VoicePlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
+public class DefaultVoicePlayer implements IVoicePlayer, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
         MediaPlayer.OnCompletionListener {
 
     private int mStatus;
     private MediaPlayer mPlayer;
-    private Callback mCallback;
+    private IPlayerStatusListener mCallback;
     private int mDuration;
 
     public boolean toggle(int id, VoiceMessage audio) throws PrepareException {
@@ -49,7 +47,7 @@ public class VoicePlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.
         mPlayer.setOnCompletionListener(this);
 
         mSupposedToPlay = true;
-        changeStatusTo(Status.PREPARING);
+        changeStatusTo(STATUS_PREPARING);
 
         mPlayer.prepareAsync();
         return true;
@@ -60,7 +58,7 @@ public class VoicePlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.
             return 0f;
         }
 
-        if (mStatus != Status.PREPARED) {
+        if (mStatus != STATUS_PREPARED) {
             return 0f;
         }
 
@@ -70,14 +68,22 @@ public class VoicePlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.
         return (float) mPlayer.getCurrentPosition() / (float) mDuration;
     }
 
-    public void setCallback(@Nullable Callback callback) {
-        this.mCallback = callback;
+    @Override
+    public void setCallback(@Nullable IPlayerStatusListener listener) {
+        this.mCallback = listener;
+    }
+
+    private IErrorListener mErrorListener;
+
+    @Override
+    public void setErrorListener(@Nullable IErrorListener errorListener) {
+        this.mErrorListener = errorListener;
     }
 
     @Override
     public void onPrepared(MediaPlayer mp) {
         if (mp != mPlayer) return;
-        changeStatusTo(Status.PREPARED);
+        changeStatusTo(STATUS_PREPARED);
 
         if (mSupposedToPlay) {
             mPlayer.start();
@@ -91,7 +97,7 @@ public class VoicePlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.
             mPlayer = null;
         }
 
-        changeStatusTo(Status.NO_PLAYBACK);
+        changeStatusTo(STATUS_NO_PLAYBACK);
     }
 
     public void release() {
@@ -112,7 +118,9 @@ public class VoicePlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        Toast.makeText(App.getInstance(), "Unable to play message", Toast.LENGTH_SHORT).show();
+        if(Objects.nonNull(mErrorListener) && mPlayer == mp){
+            mErrorListener.onPlayError(new Exception("Unable to play message, what: " + what + ", extra: " + extra));
+        }
         return false;
     }
 
@@ -121,11 +129,7 @@ public class VoicePlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.
         if (mp != mPlayer) return;
 
         mSupposedToPlay = false;
-        changeStatusTo(Status.NO_PLAYBACK);
-    }
-
-    public class PrepareException extends Exception {
-
+        changeStatusTo(STATUS_NO_PLAYBACK);
     }
 
     public boolean isSupposedToPlay() {
@@ -139,7 +143,7 @@ public class VoicePlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.
 
         this.mSupposedToPlay = supposedToPlay;
 
-        if (mStatus == Status.PREPARED) {
+        if (mStatus == STATUS_PREPARED) {
             if (supposedToPlay) {
                 mPlayer.start();
             } else {
@@ -150,19 +154,9 @@ public class VoicePlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.
 
     private AudioEntry mPlayingEntry;
 
-    public Integer getPlayingVoiceId() {
-        return mPlayingEntry == null ? null : mPlayingEntry.getId();
+    public Optional<Integer> getPlayingVoiceId() {
+        return mPlayingEntry == null ? Optional.empty() : Optional.wrap(mPlayingEntry.getId());
     }
 
     private boolean mSupposedToPlay;
-
-    public interface Callback {
-        void onPlayerStatusChange(int status);
-    }
-
-    public static final class Status {
-        public static final int NO_PLAYBACK = 0;
-        public static final int PREPARING = 1;
-        public static final int PREPARED = 2;
-    }
 }

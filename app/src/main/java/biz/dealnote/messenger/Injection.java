@@ -19,6 +19,8 @@ import biz.dealnote.messenger.domain.impl.BlacklistRepository;
 import biz.dealnote.messenger.domain.impl.WallsImpl;
 import biz.dealnote.messenger.media.gif.AppGifPlayerFactory;
 import biz.dealnote.messenger.media.gif.IGifPlayerFactory;
+import biz.dealnote.messenger.media.voice.IVoicePlayerFactory;
+import biz.dealnote.messenger.media.voice.VoicePlayerFactory;
 import biz.dealnote.messenger.push.GcmTokenProvider;
 import biz.dealnote.messenger.push.IDevideIdProvider;
 import biz.dealnote.messenger.push.IGcmTokenProvider;
@@ -53,6 +55,10 @@ public class Injection {
     }
 
     private static volatile IPushRegistrationResolver resolver;
+
+    public static IVoicePlayerFactory provideVoicePlayerFactory(){
+        return new VoicePlayerFactory(provideApplicationContext(), provideProxySettings());
+    }
 
     public static IPushRegistrationResolver providePushRegistrationResolver(){
         if(isNull(resolver)){
