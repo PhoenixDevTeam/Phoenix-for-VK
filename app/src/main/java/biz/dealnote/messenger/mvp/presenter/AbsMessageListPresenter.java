@@ -59,7 +59,11 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
 
     @OnGuiCreated
     private void syncVoiceLookupState(){
-        if(mVoicePlayer.isSupposedToPlay() && isGuiReady()){
+        boolean needLookup = mVoicePlayer.isSupposedToPlay() && isGuiReady();
+
+        Logger.d(tag(), "syncVoiceLookupState, needLookup: " + needLookup);
+
+        if(needLookup){
             mVoiceMessageLookup.start();
         } else {
             mVoiceMessageLookup.stop();
@@ -68,7 +72,9 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
 
     @OnGuiCreated
     public void resolveListView(){
-        if(isGuiReady()) getView().displayMessages(mData);
+        if(isGuiReady()) {
+            getView().displayMessages(mData);
+        }
     }
 
     @Override
@@ -216,6 +222,7 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
     private void resolveVoiceMessagePlayingState(){
         if(isGuiReady()){
             Optional<Integer> optionalVoiceMessageId = mVoicePlayer.getPlayingVoiceId();
+
             if(optionalVoiceMessageId.isEmpty()){
                 getView().disableVoicePlaying();
             } else {

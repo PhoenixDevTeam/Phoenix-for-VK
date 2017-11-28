@@ -56,5 +56,4 @@ public class Lookup {
     public interface Callback {
         void onIterated();
     }
-
 }

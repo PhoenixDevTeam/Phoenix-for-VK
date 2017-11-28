@@ -5,4 +5,12 @@ package biz.dealnote.messenger.media.voice;
  * Phoenix-for-VK
  */
 public class PrepareException extends Exception {
+
+    public PrepareException() {
+
+    }
+
+    public PrepareException(Throwable cause) {
+        super(cause);
+    }
 }

@@ -13,7 +13,6 @@ import biz.dealnote.messenger.util.Objects;
  */
 public class VoicePlayerFactory implements IVoicePlayerFactory {
 
-    @SuppressWarnings("unused")
     private final Context app;
     private final IProxySettings proxySettings;
 
@@ -30,7 +29,7 @@ public class VoicePlayerFactory implements IVoicePlayerFactory {
         if(Objects.isNull(config)){
             return new DefaultVoicePlayer();
         } else {
-            throw new UnsupportedOperationException("Not yet implemented");
+            return new ExoVoicePlayer(app, config);
         }
     }
 }

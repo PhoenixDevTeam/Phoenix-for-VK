@@ -129,7 +129,9 @@ public class DefaultVoicePlayer implements IVoicePlayer, MediaPlayer.OnPreparedL
         if (mp != mPlayer) return;
 
         mSupposedToPlay = false;
-        changeStatusTo(STATUS_NO_PLAYBACK);
+        mPlayer.seekTo(0);
+
+        //changeStatusTo(STATUS_NO_PLAYBACK);
     }
 
     public boolean isSupposedToPlay() {

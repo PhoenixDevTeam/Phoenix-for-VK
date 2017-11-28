@@ -3,21 +3,16 @@ package biz.dealnote.messenger.media.gif;
 import android.net.Uri;
 import android.view.SurfaceHolder;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -32,6 +27,7 @@ import java.util.List;
 
 import biz.dealnote.messenger.App;
 import biz.dealnote.messenger.media.exo.CustomHttpDataSourceFactory;
+import biz.dealnote.messenger.media.exo.ExoEventAdapter;
 import biz.dealnote.messenger.model.ProxyConfig;
 import biz.dealnote.messenger.model.VideoSize;
 import biz.dealnote.messenger.util.AssertUtils;
@@ -128,50 +124,15 @@ public class ExoGifPlayer implements IGifPlayer {
         // FOR LIVESTREAM LINK:
         MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(url), factory, extractorsFactory, null, null);
         internalPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);
-        internalPlayer.addListener(new Player.EventListener() {
-            @Override
-            public void onTimelineChanged(Timeline timeline, Object o) {
-
-            }
-
-            @Override
-            public void onTracksChanged(TrackGroupArray trackGroupArray, TrackSelectionArray trackSelectionArray) {
-
-            }
-
-            @Override
-            public void onLoadingChanged(boolean b) {
-
-            }
-
+        internalPlayer.addListener(new ExoEventAdapter() {
             @Override
             public void onPlayerStateChanged(boolean b, int i) {
                 Logger.d("PhoenixExo", "onPlayerStateChanged, b: " + b + ", i: " + i);
                 onInternalPlayerStateChanged(i);
             }
-
-            @Override
-            public void onRepeatModeChanged(int i) {
-
-            }
-
-            @Override
-            public void onPlayerError(ExoPlaybackException e) {
-
-            }
-
-            @Override
-            public void onPositionDiscontinuity() {
-
-            }
-
-            @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-            }
         });
 
-        internalPlayer.setVideoListener(videoListener);
+        internalPlayer.addVideoListener(videoListener);
         internalPlayer.setPlayWhenReady(true);
         internalPlayer.prepare(mediaSource);
     }

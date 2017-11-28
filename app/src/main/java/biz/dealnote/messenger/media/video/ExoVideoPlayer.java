@@ -28,6 +28,7 @@ import java.util.List;
 
 import biz.dealnote.messenger.App;
 import biz.dealnote.messenger.media.exo.CustomHttpDataSourceFactory;
+import biz.dealnote.messenger.media.exo.ExoUtil;
 import biz.dealnote.messenger.model.ProxyConfig;
 import biz.dealnote.messenger.model.VideoSize;
 import biz.dealnote.messenger.util.Objects;
@@ -42,9 +43,11 @@ public class ExoVideoPlayer implements IVideoPlayer {
 
     private final MediaSource source;
 
+    private final OnVideoSizeChangedListener onVideoSizeChangedListener = new OnVideoSizeChangedListener(this);
+
     public ExoVideoPlayer(Context context, String url, ProxyConfig config) {
         this.player = createPlayer(context);
-        this.player.setVideoListener(new OnVideoSizeChangedListener(this));
+        this.player.addVideoListener(onVideoSizeChangedListener);
         this.source = createMediaSource(url, config);
     }
 
@@ -106,17 +109,7 @@ public class ExoVideoPlayer implements IVideoPlayer {
             prepareCalled = true;
         }
 
-        startPlayer(player);
-    }
-
-    private static void pausePlayer(SimpleExoPlayer internalPlayer) {
-        internalPlayer.setPlayWhenReady(false);
-        internalPlayer.getPlaybackState();
-    }
-
-    private static void startPlayer(SimpleExoPlayer internalPlayer) {
-        internalPlayer.setPlayWhenReady(true);
-        internalPlayer.getPlaybackState();
+        ExoUtil.startPlayer(player);
     }
 
     @Override
@@ -126,12 +119,12 @@ public class ExoVideoPlayer implements IVideoPlayer {
         }
 
         supposedToBePlaying = false;
-        pausePlayer(player);
+        ExoUtil.pausePlayer(player);
     }
 
     @Override
     public void release() {
-        player.setVideoListener(null);
+        player.removeVideoListener(onVideoSizeChangedListener);
         player.release();
     }
 
