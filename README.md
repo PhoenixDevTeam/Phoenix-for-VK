@@ -23,10 +23,12 @@ full_vk_app_id=
 full_gcm_sender_id=""
 full_vk_service_token=""
 full_vk_client_secret=""
+full_youtube_dev_key=""
 lite_vk_app_id=
 lite_gcm_sender_id=""
 lite_vk_service_token=""
 lite_vk_client_secret=""
+lite_youtube_dev_key=""
 ```
 
 You can use one value for Lite and Full version if you wish.
