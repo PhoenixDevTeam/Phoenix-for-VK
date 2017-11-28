@@ -121,7 +121,7 @@ allprojects {
 }
 
 ext.supportLibraryVersion = '27.0.1'
-ext.firebaseLibraryVersion = '11.6.0'
+ext.firebaseLibraryVersion = '11.6.2'
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -143,19 +143,19 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.4'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
-    implementation files('libs/YouTubeAndroidPlayerApi.jar') //
-    implementation project(':lvl')                           // may change to API. needs test
-    implementation project(':mvpcore')                       //
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation project(':lvl')
+    implementation project(':mvpcore')
 
-    implementation 'com.squareup.retrofit2:retrofit:2.2.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     implementation "com.google.firebase:firebase-crash:$firebaseLibraryVersion"
     implementation "com.google.firebase:firebase-database:$firebaseLibraryVersion"
 
-    implementation 'com.google.android.exoplayer:exoplayer:r2.5.3'
+    implementation 'com.google.android.exoplayer:exoplayer:2.6.0'
     implementation "com.android.support:exifinterface:$supportLibraryVersion"
 }
 
