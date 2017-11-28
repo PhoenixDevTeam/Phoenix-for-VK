@@ -5,7 +5,8 @@ import java.util.List;
 
 public class VKApiNews {
 
-    public String type;
+    public String type; //friends_recomm //post
+
     public int source_id;
     public long date;
     public int post_id;

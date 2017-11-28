@@ -29,7 +29,7 @@ public class NewsAdapter extends AbsAdapter implements JsonDeserializer<VKApiNew
         VKApiNews dto = new VKApiNews();
 
         dto.type = optString(root, "type");
-        dto.source_id = Integer.parseInt(root.get("source_id").getAsString());
+        dto.source_id = optInt(root, "source_id");
         dto.date = optLong(root, "date");
         dto.post_id = optInt(root, "post_id");
         dto.post_type = optString(root, "post_type");

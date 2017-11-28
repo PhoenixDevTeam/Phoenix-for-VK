@@ -65,6 +65,8 @@ public class FeedInteractor implements IFeedInteractor {
                     VKOwnIds ownIds = new VKOwnIds();
 
                     for(VKApiNews news : feed){
+                        if(!hasNewsSupport(news)) continue;
+
                         dbos.add(Dto2Entity.buildNewsDbo(news));
                         ownIds.appendNews(news);
                     }
@@ -80,7 +82,10 @@ public class FeedInteractor implements IFeedInteractor {
                                 return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersInteractor.MODE_ANY, owners)
                                         .map(owners1 -> {
                                             List<News> news = new ArrayList<>(feed.size());
+
                                             for(VKApiNews dto : feed){
+                                                if(!hasNewsSupport(dto)) continue;
+
                                                 news.add(Dto2Model.buildNews(dto, owners1));
                                             }
 
@@ -88,6 +93,10 @@ public class FeedInteractor implements IFeedInteractor {
                                         });
                             });
                 });
+    }
+
+    private static boolean hasNewsSupport(VKApiNews news){
+        return "post".equals(news.type);
     }
 
     @Override
