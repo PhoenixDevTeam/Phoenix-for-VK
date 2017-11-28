@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.util.record;
+package biz.dealnote.messenger.media.record;
 
 import android.content.Context;
 import android.os.Build;

@@ -67,6 +67,7 @@ android {
             buildConfigField 'boolean', 'FULL_APP', 'true'
             buildConfigField 'String', 'SERVICE_TOKEN', getProps("full_vk_service_token")
             buildConfigField 'String', 'VK_CLIENT_SECRET', getProps("full_vk_client_secret")
+            buildConfigField 'String', 'YOUTUBE_DEV_KEY', getProps("full_youtube_dev_key")
         }
         lite {
             applicationId "biz.dealnote.messenger"
@@ -76,6 +77,7 @@ android {
             buildConfigField 'boolean', 'FULL_APP', 'false'
             buildConfigField 'String', 'SERVICE_TOKEN', getProps("lite_vk_service_token")
             buildConfigField 'String', 'VK_CLIENT_SECRET', getProps("lite_vk_client_secret")
+            buildConfigField 'String', 'YOUTUBE_DEV_KEY', getProps("lite_youtube_dev_key")
         }
     }
 }

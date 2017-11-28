@@ -1,6 +1,6 @@
-// Copyright 2014 Google Inc. All Rights Reserved.
-
 package biz.dealnote.messenger.util;
+
+import biz.dealnote.messenger.BuildConfig;
 
 /**
  * Static container class for holding a reference to your YouTube Developer Key.
@@ -13,5 +13,5 @@ public class YoutubeDeveloperKey {
    * <a href="https://console.developers.google.com/">Google Developers Console</a>
    * to register a new developer key.
    */
-  public static final String DEVELOPER_KEY = "AIzaSyBocfnG6EB7yodZ3RZcVjVT6etSexFSOM8";
+  public static final String DEVELOPER_KEY = BuildConfig.YOUTUBE_DEV_KEY;
 }

@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.util.record;
+package biz.dealnote.messenger.media.record;
 
 /**
  * Created by ruslan.kolbasa on 05.10.2016.
