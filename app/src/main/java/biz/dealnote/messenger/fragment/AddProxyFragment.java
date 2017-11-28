@@ -1,9 +1,9 @@
 package biz.dealnote.messenger.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,14 +42,14 @@ public class AddProxyFragment extends BasePresenterFragment<AddProxyPresenter, I
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_proxy_add, container, false);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mAuthFieldsRoot = root.findViewById(R.id.auth_fields_root);
 
-        mAddress = (EditText) root.findViewById(R.id.address);
+        mAddress = root.findViewById(R.id.address);
         mAddress.addTextChangedListener(new TextWatcherAdapter(){
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -57,7 +57,7 @@ public class AddProxyFragment extends BasePresenterFragment<AddProxyPresenter, I
             }
         });
 
-        mPort = (EditText) root.findViewById(R.id.port);
+        mPort = root.findViewById(R.id.port);
         mPort.addTextChangedListener(new TextWatcherAdapter(){
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -65,10 +65,10 @@ public class AddProxyFragment extends BasePresenterFragment<AddProxyPresenter, I
             }
         });
 
-        mAuth = (CheckBox) root.findViewById(R.id.authorization);
+        mAuth = root.findViewById(R.id.authorization);
         mAuth.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().fireAuthChecked(isChecked));
 
-        mUsername = (EditText) root.findViewById(R.id.username);
+        mUsername = root.findViewById(R.id.username);
         mUsername.addTextChangedListener(new TextWatcherAdapter(){
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -76,7 +76,7 @@ public class AddProxyFragment extends BasePresenterFragment<AddProxyPresenter, I
             }
         });
 
-        mPassword = (EditText) root.findViewById(R.id.password);
+        mPassword = root.findViewById(R.id.password);
         mPassword.addTextChangedListener(new TextWatcherAdapter(){
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
