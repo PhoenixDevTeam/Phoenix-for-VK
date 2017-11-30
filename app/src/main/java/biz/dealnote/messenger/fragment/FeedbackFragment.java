@@ -66,7 +66,7 @@ public class FeedbackFragment extends PlaceSupportPresenterFragment<FeedbackPres
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_feedback, container, false);
         ((AppCompatActivity)getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 

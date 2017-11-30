@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -59,14 +60,14 @@ public class DualTabPhotosFragment extends Fragment implements BackPressCallback
     private int mCurrentTab;
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("mCurrentTab", mCurrentTab);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_dual_tab_photos, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 

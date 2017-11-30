@@ -2,6 +2,7 @@ package biz.dealnote.messenger.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -89,7 +90,7 @@ public class CommunityBanEditFragment extends BasePresenterFragment<CommunityBan
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_community_ban_edit, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 

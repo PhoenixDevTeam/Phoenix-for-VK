@@ -138,7 +138,7 @@ public class VideosFragment extends BasePresenterFragment<VideosListPresenter, I
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_videos, container, false);
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);

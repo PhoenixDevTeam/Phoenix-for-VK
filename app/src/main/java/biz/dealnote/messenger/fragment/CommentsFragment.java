@@ -113,7 +113,7 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
     private ImageView mAuthorAvatar;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (RelativeLayout) inflater.inflate(R.layout.fragment_comments, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 

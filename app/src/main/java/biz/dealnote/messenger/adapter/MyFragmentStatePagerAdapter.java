@@ -1,5 +1,6 @@
 package biz.dealnote.messenger.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -19,6 +20,7 @@ public abstract class MyFragmentStatePagerAdapter extends FragmentStatePagerAdap
         fragments = new SparseArray<>(3);
     }
 
+    @NonNull
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Fragment fragment = (Fragment) super.instantiateItem(container, position);

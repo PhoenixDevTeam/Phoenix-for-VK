@@ -44,7 +44,7 @@ public class EnterPinFragment extends BasePresenterFragment<EnterPinPresenter, I
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_enter_pin, container, false);
 
         KeyboardView keyboardView = root.findViewById(R.id.keyboard);

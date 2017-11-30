@@ -3,6 +3,7 @@ package biz.dealnote.messenger.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
@@ -41,7 +42,7 @@ public class CreatePinFragment extends BasePresenterFragment<CreatePinPresenter,
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_create_pin, container, false);
 
         KeyboardView keyboardView = (KeyboardView) root.findViewById(R.id.keyboard);

@@ -56,7 +56,7 @@ public class BrowserFragment extends AccountDependencyFragment implements BackPr
     protected WebView mWebView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_browser, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
         mWebView = (WebView) root.findViewById(R.id.webview);
@@ -134,7 +134,7 @@ public class BrowserFragment extends AccountDependencyFragment implements BackPr
     private static final String SAVE_TITLE = "save_title";
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(SAVE_TITLE, title);
         mWebView.saveState(outState);

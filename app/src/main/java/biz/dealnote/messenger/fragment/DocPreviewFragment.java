@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -100,7 +101,7 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_document_preview, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(rootView.findViewById(R.id.toolbar));
         preview = rootView.findViewById(R.id.fragment_document_preview);
@@ -247,7 +248,7 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
     private static final String SAVE_DELETED = "deleted";
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(SAVE_DELETED, deleted);
     }

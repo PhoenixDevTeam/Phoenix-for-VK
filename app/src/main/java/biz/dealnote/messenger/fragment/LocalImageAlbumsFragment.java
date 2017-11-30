@@ -40,7 +40,7 @@ public class LocalImageAlbumsFragment extends BasePresenterFragment<LocalPhotoAl
     private LocalPhotoAlbumsAdapter mAlbumsAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_local_albums_gallery, container, false);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);

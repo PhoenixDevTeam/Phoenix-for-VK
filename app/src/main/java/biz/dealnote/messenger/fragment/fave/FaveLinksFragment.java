@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.fragment.fave;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,7 +44,7 @@ public class FaveLinksFragment extends BasePresenterFragment<FaveLinksPresenter,
     private FaveLinksAdapter mAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_fave_links, container, false);
 
         RecyclerView recyclerView = root.findViewById(android.R.id.list);

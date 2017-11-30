@@ -120,7 +120,7 @@ public class WallPostFragment extends PlaceSupportPresenterFragment<WallPostPres
     private AttachmentsHolder mAttachmentsViews;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_post, container, false);
         mAttachmentsViews = AttachmentsHolder.forPost(root);
 

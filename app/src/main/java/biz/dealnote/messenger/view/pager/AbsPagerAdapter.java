@@ -10,6 +10,7 @@ import android.view.ViewGroup;
  * Created by ruslan.kolbasa on 19.10.2016.
  * phoenix
  */
+@SuppressWarnings("NullableProblems")
 public abstract class AbsPagerAdapter<H extends AbsPagerHolder> extends PagerAdapter {
 
     private SparseArray<H> mHolderSparseArray = new SparseArray<>();

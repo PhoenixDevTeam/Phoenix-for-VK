@@ -125,7 +125,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_chat, container, false);
         root.setBackground(CurrentTheme.getChatBackground(getActivity()));
 

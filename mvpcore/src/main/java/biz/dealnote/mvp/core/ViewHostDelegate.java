@@ -150,7 +150,7 @@ public class ViewHostDelegate<P extends IPresenter<V>, V extends IMvpView> {
 
     private Loader.OnLoadCompleteListener<P> mOnLoadCompleteListener = new Loader.OnLoadCompleteListener<P>() {
         @Override
-        public void onLoadComplete(Loader<P> loader, P data) {
+        public void onLoadComplete(@NonNull Loader<P> loader, P data) {
             Logger.d(mTag, "ViewHostDelegate.onLoadComplete, v: " + view());
             onPresenterReceived(data);
         }

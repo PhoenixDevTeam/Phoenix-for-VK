@@ -63,7 +63,7 @@ public class TopicsFragment extends BasePresenterFragment<TopicsPresenter, ITopi
     private FloatingActionButton fabCreate;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_topics, container, false);
         ((AppCompatActivity)getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 

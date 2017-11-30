@@ -3,6 +3,7 @@ package biz.dealnote.messenger.fragment.search;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -47,7 +48,7 @@ public abstract class AbsSearchFragment<P extends AbsSearchPresenter<V, ?, T, ?>
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_search, container, false);
 
         RecyclerView recyclerView = root.findViewById(R.id.list);

@@ -23,6 +23,7 @@ import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -90,8 +91,8 @@ public abstract class PreferenceFragment extends Fragment implements
 	}
 	
     @Override
-	public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup,
-			Bundle paramBundle) {
+	public View onCreateView(@NonNull LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup,
+                             Bundle paramBundle) {
 		return paramLayoutInflater.inflate(R.layout.preference_list_fragment, paramViewGroup,
 				false);
 	}
@@ -145,7 +146,7 @@ public abstract class PreferenceFragment extends Fragment implements
 	}
     
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         final PreferenceScreen preferenceScreen = getPreferenceScreen();

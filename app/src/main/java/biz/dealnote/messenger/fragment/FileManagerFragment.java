@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.StatFs;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -113,7 +114,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_file_explorer, container, false);
         //((AppCompatActivity)getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
 
@@ -164,7 +165,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
     private static final String SAVE_SCROLL_STATES = "scroll_states";
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(SAVE_DATA, fileList);
         outState.putSerializable(SAVE_PATH, path);

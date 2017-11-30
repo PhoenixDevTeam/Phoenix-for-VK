@@ -13,6 +13,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 
 public class BubbleDrawable extends Drawable {
 
@@ -47,7 +48,7 @@ public class BubbleDrawable extends Drawable {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(@NonNull Canvas canvas) {
         setUp(canvas);
     }
 

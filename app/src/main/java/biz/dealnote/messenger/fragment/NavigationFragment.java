@@ -169,7 +169,7 @@ public class NavigationFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView = root.findViewById(R.id.fragment_navigation_list);
         mDrawerListView.setOnItemClickListener((parent, view, position, id) -> selectItem(position, false));
@@ -422,7 +422,7 @@ public class NavigationFragment extends BaseFragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
     }

@@ -64,7 +64,7 @@ public class VKPhotoAlbumsFragment extends BasePresenterFragment<PhotoAlbumsPres
     private TextView mEmptyText;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_albums_gallery, container, false);
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);

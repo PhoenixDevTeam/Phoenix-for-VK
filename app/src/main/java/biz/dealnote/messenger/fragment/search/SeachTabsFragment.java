@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -90,7 +91,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_search_tabs, container, false);
         mViewPager = root.findViewById(R.id.viewpager);
 
@@ -170,7 +171,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
     private static final String SAVE_CURRENT_TAB = "save_current_tab";
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SAVE_CURRENT_TAB, mCurrentTab);
     }
