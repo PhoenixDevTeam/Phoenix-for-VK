@@ -383,6 +383,8 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
             body = (EmojiconTextView) itemView.findViewById(R.id.item_message_text);
             body.setMovementMethod(LinkMovementMethod.getInstance());
             body.setOnHashTagClickListener(onHashTagClickListener);
+            body.setOnLongClickListener(v -> this.itemView.performLongClick());
+            body.setOnClickListener(v -> this.itemView.performClick());
 
             root = itemView.findViewById(R.id.message_container);
             forwardMessagesRoot = (ViewGroup) itemView.findViewById(R.id.forward_messages);
