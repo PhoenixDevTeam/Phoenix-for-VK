@@ -72,12 +72,9 @@ public class CommentsAdapter extends RecyclerBindableAdapter<Comment, RecyclerVi
     }
 
     private void bindDeletedComment(DeletedHolder holder, final Comment comment){
-        holder.buttonRestore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onRestoreComment(comment.getId());
-                }
+        holder.buttonRestore.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onRestoreComment(comment.getId());
             }
         });
     }
@@ -130,21 +127,15 @@ public class CommentsAdapter extends RecyclerBindableAdapter<Comment, RecyclerVi
         holder.tvTime.setText(genTimeAndReplyText(comment), TextView.BufferType.SPANNABLE);
         holder.tvTime.setTextColor(colorTextSecondary);
 
-        holder.ivLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onCommentLikeClick(comment, !comment.isUserLikes());
-                }
+        holder.ivLike.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onCommentLikeClick(comment, !comment.isUserLikes());
             }
         });
 
-        holder.ivOwnerAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onAvatarClick(comment.getFromId());
-                }
+        holder.ivOwnerAvatar.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onAvatarClick(comment.getFromId());
             }
         });
     }

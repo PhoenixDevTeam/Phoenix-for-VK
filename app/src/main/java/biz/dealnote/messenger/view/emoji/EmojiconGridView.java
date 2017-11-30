@@ -48,13 +48,9 @@ public class EmojiconGridView {
             mData = Arrays.asList(emojicons).toArray(new Emojicon[emojicons.length]);
         }
         EmojiAdapter mAdapter = new EmojiAdapter(rootView.getContext(), mData);
-        mAdapter.setEmojiClickListener(new OnEmojiconClickedListener() {
-
-            @Override
-            public void onEmojiconClicked(Emojicon emojicon) {
-                if (mEmojiconPopup.getOnEmojiconClickedListener() != null) {
-                    mEmojiconPopup.getOnEmojiconClickedListener().onEmojiconClicked(emojicon);
-                }
+        mAdapter.setEmojiClickListener(emojicon -> {
+            if (mEmojiconPopup.getOnEmojiconClickedListener() != null) {
+                mEmojiconPopup.getOnEmojiconClickedListener().onEmojiconClicked(emojicon);
             }
         });
         gridView.setAdapter(mAdapter);

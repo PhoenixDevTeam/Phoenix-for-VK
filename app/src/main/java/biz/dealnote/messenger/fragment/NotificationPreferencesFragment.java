@@ -91,43 +91,31 @@ public class NotificationPreferencesFragment extends PreferenceFragment {
 
         selection = Arrays.asList(array).indexOf(selectionKey);
 
-        new AlertDialog.Builder(getActivity()).setSingleChoiceItems(array, selection, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                selection = which;
-                stopRingtoneIfExist();
-                String title = array[which];
-                String uri = ringrones.get(title);
-                Ringtone r = RingtoneManager.getRingtone(getActivity(), Uri.parse(uri));
-                current = r;
-                r.play();
-            }
-        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (selection == -1) {
-                    Toast.makeText(getActivity(), R.string.ringtone_not_selected, Toast.LENGTH_SHORT).show();
-                } else {
-                    String title = array[selection];
-                    Settings.get()
-                            .notifications()
-                            .setNotificationRingtoneUri(ringrones.get(title));
-                    stopRingtoneIfExist();
-                }
-            }
-        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        new AlertDialog.Builder(getActivity()).setSingleChoiceItems(array, selection, (dialog, which) -> {
+            selection = which;
+            stopRingtoneIfExist();
+            String title = array[which];
+            String uri = ringrones.get(title);
+            Ringtone r = RingtoneManager.getRingtone(getActivity(), Uri.parse(uri));
+            current = r;
+            r.play();
+        }).setPositiveButton("OK", (dialog, which) -> {
+            if (selection == -1) {
+                Toast.makeText(getActivity(), R.string.ringtone_not_selected, Toast.LENGTH_SHORT).show();
+            } else {
+                String title = array[selection];
+                Settings.get()
+                        .notifications()
+                        .setNotificationRingtoneUri(ringrones.get(title));
                 stopRingtoneIfExist();
             }
-        }).setNeutralButton(R.string.ringtone_custom, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("file/audio");
-                startActivityForResult(intent, REQUEST_CODE_RINGTONE);
-            }
-        }).setOnDismissListener(dialog -> stopRingtoneIfExist()).show();
+        })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> stopRingtoneIfExist())
+                .setNeutralButton(R.string.ringtone_custom, (dialog, which) -> {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("file/audio");
+                    startActivityForResult(intent, REQUEST_CODE_RINGTONE);
+                }).setOnDismissListener(dialog -> stopRingtoneIfExist()).show();
     }
 
     @Override

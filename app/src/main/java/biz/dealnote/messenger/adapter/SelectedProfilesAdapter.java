@@ -70,12 +70,9 @@ public class SelectedProfilesAdapter extends RecyclerView.Adapter<RecyclerView.V
             holder.counter.setText(String.valueOf(mData.size()));
         }
 
-        holder.root.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mActionListener != null){
-                    mActionListener.onCheckClick();
-                }
+        holder.root.setOnClickListener(v -> {
+            if(mActionListener != null){
+                mActionListener.onCheckClick();
             }
         });
     }
@@ -89,12 +86,9 @@ public class SelectedProfilesAdapter extends RecyclerView.Adapter<RecyclerView.V
                 .transform(mTransformation)
                 .into(holder.avatar);
 
-        holder.buttonRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mActionListener != null) {
-                    mActionListener.onClick(holder.getAdapterPosition(), user);
-                }
+        holder.buttonRemove.setOnClickListener(v -> {
+            if (mActionListener != null) {
+                mActionListener.onClick(holder.getAdapterPosition(), user);
             }
         });
     }

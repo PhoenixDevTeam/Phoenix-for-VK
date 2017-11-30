@@ -73,28 +73,17 @@ public class MySearchView extends LinearLayout {
             }
         });
 
-        mButtonClear.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clear();
+        mButtonClear.setOnClickListener(v -> clear());
+
+        mButtonBack.setOnClickListener(v -> {
+            if (mOnBackButtonClickListener != null) {
+                mOnBackButtonClickListener.onBackButtonClick();
             }
         });
 
-        mButtonBack.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnBackButtonClickListener != null) {
-                    mOnBackButtonClickListener.onBackButtonClick();
-                }
-            }
-        });
-
-        mButtonAdditional.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnAdditionalButtonClickListener != null) {
-                    mOnAdditionalButtonClickListener.onAdditionalButtonClick();
-                }
+        mButtonAdditional.setOnClickListener(v -> {
+            if (mOnAdditionalButtonClickListener != null) {
+                mOnAdditionalButtonClickListener.onAdditionalButtonClick();
             }
         });
 

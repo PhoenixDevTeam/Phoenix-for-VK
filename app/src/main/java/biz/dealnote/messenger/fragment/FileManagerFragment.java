@@ -89,27 +89,24 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
         showHiddenFilesAndDirs = getArguments().getBoolean(EXTRA_SHOW_CANNOT_READ, true);
         filterFileExtension = getArguments().getString(EXTRA_FILTER_EXTENSION);
 
-        filter = new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename) {
-                File sel = new File(dir, filename);
-                boolean showReadableFile = showHiddenFilesAndDirs || sel.canRead();
-                // Filters based on whether the file is hidden or not
-                if (currentAction == SELECT_DIRECTORY) {
-                    return sel.isDirectory() && showReadableFile;
-                }
-
-                if (currentAction == SELECT_FILE) {
-                    // If it is a file check the extension if provided
-                    if (sel.isFile() && filterFileExtension != null) {
-                        return showReadableFile && sel.getName().endsWith(filterFileExtension);
-                    }
-
-                    return (showReadableFile);
-                }
-
-                return true;
+        filter = (dir, filename) -> {
+            File sel = new File(dir, filename);
+            boolean showReadableFile = showHiddenFilesAndDirs || sel.canRead();
+            // Filters based on whether the file is hidden or not
+            if (currentAction == SELECT_DIRECTORY) {
+                return sel.isDirectory() && showReadableFile;
             }
+
+            if (currentAction == SELECT_FILE) {
+                // If it is a file check the extension if provided
+                if (sel.isFile() && filterFileExtension != null) {
+                    return showReadableFile && sel.getName().endsWith(filterFileExtension);
+                }
+
+                return (showReadableFile);
+            }
+
+            return true;
         };
     }
 

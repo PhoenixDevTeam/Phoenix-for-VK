@@ -98,26 +98,23 @@ public class PrivacyViewFragment extends AccountDependencyDialogFragment impleme
         };
 
         new AlertDialog.Builder(getActivity())
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case 0:
-                                mPrivacy.setType(VkApiPrivacy.Type.ALL);
-                                break;
-                            case 1:
-                                mPrivacy.setType(VkApiPrivacy.Type.FRIENDS);
-                                break;
-                            case 2:
-                                mPrivacy.setType(VkApiPrivacy.Type.FRIENDS_OF_FRIENDS);
-                                break;
-                            case 3:
-                                mPrivacy.setType(VkApiPrivacy.Type.ONLY_ME);
-                                break;
-                        }
-
-                        safeNotifyDatasetChanged();
+                .setItems(items, (dialog, which) -> {
+                    switch (which){
+                        case 0:
+                            mPrivacy.setType(VkApiPrivacy.Type.ALL);
+                            break;
+                        case 1:
+                            mPrivacy.setType(VkApiPrivacy.Type.FRIENDS);
+                            break;
+                        case 2:
+                            mPrivacy.setType(VkApiPrivacy.Type.FRIENDS_OF_FRIENDS);
+                            break;
+                        case 3:
+                            mPrivacy.setType(VkApiPrivacy.Type.ONLY_ME);
+                            break;
                     }
+
+                    safeNotifyDatasetChanged();
                 }).setNegativeButton(R.string.button_cancel, null).show();
     }
 

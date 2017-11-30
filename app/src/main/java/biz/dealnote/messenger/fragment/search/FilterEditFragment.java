@@ -283,12 +283,9 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
                 .setAllowEmpty(true)
                 .setInputType(InputType.TYPE_CLASS_NUMBER)
                 .setValue(option.value == null ? null : String.valueOf(option.value))
-                .setCallback(new InputTextDialog.Callback() {
-                    @Override
-                    public void onChanged(String newValue) {
-                        option.value = getIntFromEditable(newValue);
-                        mAdapter.notifyDataSetChanged();
-                    }
+                .setCallback(newValue -> {
+                    option.value = getIntFromEditable(newValue);
+                    mAdapter.notifyDataSetChanged();
                 })
                 .show();
     }
@@ -312,12 +309,9 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
                 .setInputType(InputType.TYPE_CLASS_TEXT)
                 .setValue(option.value)
                 .setAllowEmpty(true)
-                .setCallback(new InputTextDialog.Callback() {
-                    @Override
-                    public void onChanged(String newValue) {
-                        option.value = newValue;
-                        mAdapter.notifyDataSetChanged();
-                    }
+                .setCallback(newValue -> {
+                    option.value = newValue;
+                    mAdapter.notifyDataSetChanged();
                 })
                 .show();
     }

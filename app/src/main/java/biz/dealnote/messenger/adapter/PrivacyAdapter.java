@@ -116,15 +116,12 @@ public class PrivacyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             holder.title.setText(R.string.who_cannot_have_access);
         }
 
-        holder.buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mActionListener != null){
-                    if(position == 0){
-                        mActionListener.onAddToAllowedClick();
-                    } else {
-                        mActionListener.onAddToDisallowedClick();
-                    }
+        holder.buttonAdd.setOnClickListener(v -> {
+            if(mActionListener != null){
+                if(position == 0){
+                    mActionListener.onAddToAllowedClick();
+                } else {
+                    mActionListener.onAddToDisallowedClick();
                 }
             }
         });
@@ -151,15 +148,12 @@ public class PrivacyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 .into(holder.avatar);
 
         holder.title.setText(friendList.getName());
-        holder.buttonRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mActionListener != null){
-                    if(allow){
-                        mActionListener.onAllowedFriendsListRemove(friendList);
-                    } else {
-                        mActionListener.onDisallowedFriendsListRemove(friendList);
-                    }
+        holder.buttonRemove.setOnClickListener(v -> {
+            if(mActionListener != null){
+                if(allow){
+                    mActionListener.onAllowedFriendsListRemove(friendList);
+                } else {
+                    mActionListener.onDisallowedFriendsListRemove(friendList);
                 }
             }
         });
@@ -172,15 +166,12 @@ public class PrivacyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 .load(user.getMaxSquareAvatar())
                 .into(holder.avatar);
         holder.title.setText(user.getFullName());
-        holder.buttonRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mActionListener != null){
-                    if (allow){
-                        mActionListener.onAllowedUserRemove(user);
-                    } else {
-                        mActionListener.onDisallowedUserRemove(user);
-                    }
+        holder.buttonRemove.setOnClickListener(v -> {
+            if(mActionListener != null){
+                if (allow){
+                    mActionListener.onAllowedUserRemove(user);
+                } else {
+                    mActionListener.onDisallowedUserRemove(user);
                 }
             }
         });
