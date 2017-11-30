@@ -6,15 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
-import java.net.SocketTimeoutException;
-
 import biz.dealnote.messenger.App;
 import biz.dealnote.messenger.Injection;
-import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.api.ApiException;
-import biz.dealnote.messenger.api.model.Error;
 import biz.dealnote.messenger.db.Stores;
-import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.mvp.view.IErrorView;
 import biz.dealnote.messenger.mvp.view.IToastView;
 import biz.dealnote.messenger.service.ErrorLocalizer;
@@ -113,22 +107,7 @@ public abstract class RxSupportPresenter<V extends IMvpView> extends AbsPresente
 
         throwable = Utils.getCauseIfRuntime(throwable);
 
-        if (throwable instanceof ApiException) {
-            Error error = ((ApiException) throwable).getError();
-            showApiError(view, error.errorCode, error.errorMsg);
-        } else if(throwable instanceof SocketTimeoutException){
-            view.showError(R.string.error_timeout_message);
-        } else if(throwable instanceof NotFoundException){
-            view.showError(R.string.error_not_found_message);
-        } else {
-            view.showError(throwable.getMessage());
-        }
-    }
-
-    private void showApiError(IErrorView view, int code, String rawMessage) {
-        if (nonNull(view)) {
-            view.showError(ErrorLocalizer.api().getMessage(getApplicationContext(), code, rawMessage));
-        }
+        view.showError(ErrorLocalizer.localizeThrowable(getApplicationContext(), throwable));
     }
 
     protected void safeShowError(IErrorView view, @StringRes int text, Object... params) {
