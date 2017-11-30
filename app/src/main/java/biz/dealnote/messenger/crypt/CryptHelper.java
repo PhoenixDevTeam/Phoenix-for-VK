@@ -1,9 +1,9 @@
 package biz.dealnote.messenger.crypt;
 
+import android.annotation.SuppressLint;
 import android.util.Base64;
 
 import com.google.gson.Gson;
-import com.scottyab.aescrypt.AESCrypt;
 
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
@@ -58,6 +58,7 @@ public class CryptHelper {
      * @param text текст сообщения
      * @return true - если сообщение является служебным, использовалось для обмена ключами шифрования
      */
+    @SuppressLint("WrongConstant")
     private static boolean isKeyExchangeServiceMessage(String text){
         if(isEmpty(text)){
             return false;
@@ -166,9 +167,9 @@ public class CryptHelper {
             int keyLocationPolicy = Character.getNumericValue(body.charAt(3));
 
             long sessionId = Long.parseLong(body.substring(4, dividerLocation));
-            String origicalBody = body.substring(dividerLocation + 1);
+            String originalBody = body.substring(dividerLocation + 1);
 
-            return new EncryptedMessage(sessionId, origicalBody, keyLocationPolicy);
+            return new EncryptedMessage(sessionId, originalBody, keyLocationPolicy);
         } catch (Exception e){
             throw new EncryptedMessageParseException();
         }
