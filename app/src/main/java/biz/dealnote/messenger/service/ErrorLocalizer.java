@@ -19,7 +19,6 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
 public class ErrorLocalizer {
 
     private static ApiLocalizer sApiLocalizer = new ApiLocalizer();
-    private static AppLocalizer sAppLocalizer = new AppLocalizer();
 
     public interface Localizer {
         String getMessage(Context context, int code, String ifUnknown, Object... params);
@@ -116,15 +115,7 @@ public class ErrorLocalizer {
         }
     }
 
-    public static class AppLocalizer extends BaseLocazer {
-
-    }
-
     public static Localizer api(){
         return sApiLocalizer;
-    }
-
-    public static Localizer app(){
-        return sAppLocalizer;
     }
 }
