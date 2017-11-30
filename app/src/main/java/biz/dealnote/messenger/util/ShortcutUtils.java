@@ -7,11 +7,9 @@ import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.drawable.Icon;
 import android.os.Build;
-import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.squareup.picasso.Transformation;
 
@@ -21,15 +19,17 @@ import java.util.Collections;
 import java.util.List;
 
 import biz.dealnote.messenger.Extra;
+import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.model.Peer;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.Utils.isEmpty;
+import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
 public class ShortcutUtils {
 
@@ -39,42 +39,71 @@ public class ShortcutUtils {
         return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher).getWidth();
     }
 
-    public static void createAccountShurtcut(Context context, int aid, String title, String url) throws IOException {
-        Bitmap immutableIcon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
-        Bitmap mutableBitmap = immutableIcon.copy(Bitmap.Config.ARGB_8888, true);
+    public static void createAccountShurtcut(Context context, int accountId, String title, String url) throws IOException {
+        //Bitmap immutableIcon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
+        //Bitmap mutableBitmap = immutableIcon.copy(Bitmap.Config.ARGB_8888, true);
 
-        if (!TextUtils.isEmpty(url)) {
+        Bitmap avatar = null;
+
+        if (nonEmpty(url)) {
+            int size = getLauncherIconSize(context);
+
             //int size = getLauncherIconSize(mContext);
-            int size = mutableBitmap.getWidth();
-            int avatarSize = (int) (size / 2.6);
+            //int size = mutableBitmap.getWidth();
+            //int avatarSize = (int) (size / 2.6);
 
-            Bitmap avatar = PicassoInstance.with()
+            avatar = PicassoInstance.with()
                     .load(url)
                     .transform(new RoundTransformation())
-                    .resize(avatarSize, avatarSize)
+                    .resize(size, size)
                     .get();
 
-            Canvas canvas = new Canvas(mutableBitmap);
-            Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
-            canvas.drawBitmap(avatar, size - avatarSize, size - avatarSize, paint);
+            //Canvas canvas = new Canvas(mutableBitmap);
+            //Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
+            //canvas.drawBitmap(avatar, size - avatarSize, size - avatarSize, paint);
 
-            avatar.recycle();
+            //canvas.drawBitmap(avatar, 0, 0, paint);
+
+           // avatar.recycle();
         }
 
         Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
         intent.setAction(MainActivity.ACTION_SWITH_ACCOUNT);
-        intent.putExtra(Extra.ACCOUNT_ID, aid);
+        intent.putExtra(Extra.ACCOUNT_ID, accountId);
 
-        sendShortcutBroadcast(context, intent, title, mutableBitmap);
+        String id = "phoenix_account_" + accountId;
+
+        sendShortcutBroadcast(context, id, intent, title, avatar);
     }
 
-    private static void sendShortcutBroadcast(Context context, Intent shortcutIntent, String title, Bitmap bitmap) {
-        Intent intent = new Intent();
-        intent.setAction(SHURTCUT_ACTION);
-        intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-        intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
-        intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
-        context.sendBroadcast(intent);
+    private static void sendShortcutBroadcast(Context context, String shortcutId, Intent shortcutIntent, String title, Bitmap bitmap) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Icon icon = Icon.createWithBitmap(bitmap);
+
+            ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, shortcutId)
+                            .setIcon(icon)
+                            .setShortLabel(title)
+                            .setIntent(shortcutIntent)
+                            .build();
+
+            ShortcutManager manager = context.getSystemService(ShortcutManager.class);
+            if (manager != null) {
+                manager.requestPinShortcut(shortcutInfo, null);
+            }
+        } else {
+            final Context app = context.getApplicationContext();
+
+            Intent intent = new Intent();
+            intent.setAction(SHURTCUT_ACTION);
+            intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
+            intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
+            context.sendBroadcast(intent);
+
+            Completable.complete()
+                    .observeOn(Injection.provideMainThreadScheduler())
+                    .subscribe(() -> Toast.makeText(app, R.string.success, Toast.LENGTH_SHORT).show());
+        }
     }
 
     public static Intent chatOpenIntent(Context context, String url, int accoutnId, int peerId, String title) {
@@ -88,9 +117,11 @@ public class ShortcutUtils {
     }
 
     public static void createChatShortcut(Context context, String url, int accoutnId, int peerId, String title) throws IOException {
+        String id = "phoenix_peer_" + peerId + "_aid_" + accoutnId;
+
         Bitmap bm = createBitmap(context, url);
         Intent intent = chatOpenIntent(context, url, accoutnId, peerId, title);
-        sendShortcutBroadcast(context, intent, title, bm);
+        sendShortcutBroadcast(context, id, intent, title, bm);
     }
 
     public static Completable createChatShortcutRx(Context context, String url, int accoutnId, int peerId, String title) {
@@ -169,9 +200,10 @@ public class ShortcutUtils {
     private static Bitmap createBitmap(Context mContext, String url) throws IOException {
         int appIconSize = getLauncherIconSize(mContext);
         Bitmap bm;
-        Transformation transformation = CurrentTheme.createTransformationForAvatar(mContext);
 
-        if (TextUtils.isEmpty(url)) {
+        Transformation transformation = new RoundTransformation();
+
+        if (isEmpty(url)) {
             bm = PicassoInstance.with()
                     .load(R.drawable.ic_avatar_unknown)
                     .transform(transformation)
