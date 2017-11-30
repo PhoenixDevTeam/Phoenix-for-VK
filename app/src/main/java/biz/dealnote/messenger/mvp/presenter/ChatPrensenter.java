@@ -14,7 +14,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -1487,10 +1486,15 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
         if (isLongpollNeed()) {
             LongpollUtils.register(getApplicationContext(), newMessagesOwnerId, newPeerId, oldMessageOwnerId, oldPeerId);
+            Processors.realtimeMessages()
+                    .registerNotificationsInterceptor(getPresenterId(), Pair.create(messagesOwnerId, getPeerId()));
         }
 
         resolveAccountHotSwapSupport();
         resetDatabaseLoading();
+
+        super.getData().clear();
+        safeNotifyDataChanged();
 
         loadAllCachedData();
         requestAtStart();
@@ -1507,7 +1511,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         this.mDraftMessageText = null;
         this.mDraftMessageDbAttachmentsCount = 0;
 
-        boolean needToRestoreDraftMessageBody = TextUtils.isEmpty(mOutConfig.getInitialText());
+        boolean needToRestoreDraftMessageBody = isEmpty(mOutConfig.getInitialText());
         if (!needToRestoreDraftMessageBody) {
             this.mDraftMessageText = mOutConfig.getInitialText();
         }

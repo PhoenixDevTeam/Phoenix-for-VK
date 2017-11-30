@@ -17,6 +17,7 @@ import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.db.interfaces.IMessagesStore;
 import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
 import biz.dealnote.messenger.model.MessageStatus;
+import biz.dealnote.messenger.service.ErrorLocalizer;
 import biz.dealnote.messenger.service.SendService;
 import biz.dealnote.messenger.upload.task.AbstractUploadTask;
 import biz.dealnote.messenger.upload.task.DocumentUploadTask;
@@ -26,7 +27,6 @@ import biz.dealnote.messenger.upload.task.PhotoToAlbumTask;
 import biz.dealnote.messenger.upload.task.PhotoWallUploadTask;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.AssertUtils;
-import biz.dealnote.messenger.util.ErrorUtils;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.MagicKey;
 import biz.dealnote.messenger.util.RxUtils;
@@ -36,6 +36,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
 public class UploadService extends Service implements UploadCallback {
 
@@ -182,7 +183,7 @@ public class UploadService extends Service implements UploadCallback {
 
     @Override
     public void onError(UploadObject upload, Throwable throwable) {
-        String localizedMessage = ErrorUtils.getLocalizedErrorMessage(this, throwable);
+        String localizedMessage = ErrorLocalizer.localizeThrowable(this, getCauseIfRuntime(throwable));
 
         upload.setErrorText(localizedMessage);
         upload.setProgress(0);

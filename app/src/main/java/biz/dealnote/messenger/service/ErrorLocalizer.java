@@ -2,9 +2,15 @@ package biz.dealnote.messenger.service;
 
 import android.content.Context;
 
+import java.net.SocketTimeoutException;
+
 import biz.dealnote.messenger.R;
+import biz.dealnote.messenger.api.ApiException;
+import biz.dealnote.messenger.api.model.Error;
+import biz.dealnote.messenger.exception.NotFoundException;
 
 import static biz.dealnote.messenger.util.Utils.isEmpty;
+import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
 /**
  * Created by admin on 02.07.2016.
@@ -13,7 +19,6 @@ import static biz.dealnote.messenger.util.Utils.isEmpty;
 public class ErrorLocalizer {
 
     private static ApiLocalizer sApiLocalizer = new ApiLocalizer();
-    private static AppLocalizer sAppLocalizer = new AppLocalizer();
 
     public interface Localizer {
         String getMessage(Context context, int code, String ifUnknown, Object... params);
@@ -24,6 +29,23 @@ public class ErrorLocalizer {
         public String getMessage(Context context, int code, String ifUnknown, Object... params) {
             return isEmpty(ifUnknown) ? context.getString(R.string.unknown_error) : ifUnknown;
         }
+    }
+
+    public static String localizeThrowable(Context context, Throwable throwable){
+        if (throwable instanceof ApiException) {
+            Error error = ((ApiException) throwable).getError();
+            return api().getMessage(context, error.errorCode, error.errorMsg);
+        }
+
+        if(throwable instanceof SocketTimeoutException){
+            return context.getString(R.string.error_timeout_message);
+        }
+
+        if(throwable instanceof NotFoundException){
+            return context.getString(R.string.error_not_found_message);
+        }
+
+        return nonEmpty(throwable.getMessage()) ? throwable.getMessage() : throwable.toString();
     }
 
     public static class ApiLocalizer extends BaseLocazer {
@@ -77,6 +99,14 @@ public class ErrorLocalizer {
                 case 603: return context.getString(R.string.api_error_603);
                 case 701: return context.getString(R.string.api_error_701);
                 case 800: return context.getString(R.string.api_error_800);
+
+                case 900: return context.getString(R.string.api_error_900);
+                case 901: return context.getString(R.string.api_error_901);
+                case 902: return context.getString(R.string.api_error_902);
+                case 914: return context.getString(R.string.api_error_914);
+                case 913: return context.getString(R.string.api_error_913);
+                case 921: return context.getString(R.string.api_error_921);
+
                 case 1150: return context.getString(R.string.api_error_1150);
                 case 1151: return context.getString(R.string.api_error_1151);
             }
@@ -85,15 +115,7 @@ public class ErrorLocalizer {
         }
     }
 
-    public static class AppLocalizer extends BaseLocazer {
-
-    }
-
     public static Localizer api(){
         return sApiLocalizer;
-    }
-
-    public static Localizer app(){
-        return sAppLocalizer;
     }
 }
