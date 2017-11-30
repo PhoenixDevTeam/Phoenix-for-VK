@@ -26,6 +26,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -240,9 +241,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
         String pathString = path.getAbsolutePath();
         String[] parts = pathString.split("/");
 
-        for (int i = 0; i < parts.length; i++) {
-            pathDirsList.add(parts[i]);
-        }
+        pathDirsList.addAll(Arrays.asList(parts));
     }
 
     private void updateCurrentDirectoryTextView() {
