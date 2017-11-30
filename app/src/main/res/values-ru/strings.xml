@@ -1116,4 +1116,11 @@
     <string name="group_invites_channel">Приглашения в группы</string>
     <string name="likes_channel">Мне нравится</string>
     <string name="new_posts_channel">Новые записи</string>
+
+    <string name="api_error_900">Нельзя отправлять сообщение пользователю из черного списка</string>
+    <string name="api_error_901">Нельзя первым писать пользователю от имени сообщества</string>
+    <string name="api_error_902">Нельзя отправлять сообщения этому пользователю в связи с настройками приватности</string>
+    <string name="api_error_914">Слишком много пересланных сообщений</string>
+    <string name="api_error_913">Сообщение слишком длинное</string>
+    <string name="api_error_921">Невозможно переслать выбранные сообщения</string>
 </resources>

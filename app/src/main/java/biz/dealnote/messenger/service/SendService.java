@@ -124,15 +124,17 @@ public class SendService extends Service {
     }
 
     private void onMessageSendError(Throwable t){
+        Throwable cause = Utils.getCauseIfRuntime(t);
+
         this.mNowSending = false;
 
-        if(Utils.getCauseIfRuntime(t) instanceof NotFoundException){
+        if(cause instanceof NotFoundException){
             // no unsent messages
             stopSelf();
             return;
         }
 
-        Toast.makeText(SendService.this, t.getMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(SendService.this, ErrorLocalizer.localizeThrowable(this, cause), Toast.LENGTH_LONG).show();
     }
 
     private void sendMessage(Collection<Integer> accountIds) {
