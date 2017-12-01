@@ -20,11 +20,11 @@ public class DefaultVoicePlayer implements IVoicePlayer, MediaPlayer.OnPreparedL
     private int mStatus;
     private MediaPlayer mPlayer;
     private IPlayerStatusListener mCallback;
+    private IErrorListener mErrorListener;
     private int mDuration;
 
     public boolean toggle(int id, VoiceMessage audio) throws PrepareException {
         if (Objects.nonNull(mPlayingEntry) && mPlayingEntry.getId() == id) {
-            //changeStatusTo(Status.PREPARED); // ШТО??
             setSupposedToPlay(!isSupposedToPlay());
             return false;
         }
@@ -54,17 +54,9 @@ public class DefaultVoicePlayer implements IVoicePlayer, MediaPlayer.OnPreparedL
     }
 
     public float getProgress() {
-        if (Objects.isNull(mPlayer)) {
+        if (Objects.isNull(mPlayer) || mStatus != STATUS_PREPARED) {
             return 0f;
         }
-
-        if (mStatus != STATUS_PREPARED) {
-            return 0f;
-        }
-
-        //int currentPosition = mPlayer.getCurrentPosition();
-        //int duration = mPlayer.getDuration();
-        //Logger.d(TAG, "currentPosition: " + currentPosition + ", duration: " + duration);
         return (float) mPlayer.getCurrentPosition() / (float) mDuration;
     }
 
@@ -73,8 +65,6 @@ public class DefaultVoicePlayer implements IVoicePlayer, MediaPlayer.OnPreparedL
         this.mCallback = listener;
     }
 
-    private IErrorListener mErrorListener;
-
     @Override
     public void setErrorListener(@Nullable IErrorListener errorListener) {
         this.mErrorListener = errorListener;
@@ -82,7 +72,9 @@ public class DefaultVoicePlayer implements IVoicePlayer, MediaPlayer.OnPreparedL
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-        if (mp != mPlayer) return;
+        if (mp != mPlayer) {
+            return;
+        }
         changeStatusTo(STATUS_PREPARED);
 
         if (mSupposedToPlay) {
@@ -128,10 +120,8 @@ public class DefaultVoicePlayer implements IVoicePlayer, MediaPlayer.OnPreparedL
     public void onCompletion(MediaPlayer mp) {
         if (mp != mPlayer) return;
 
-        mSupposedToPlay = false;
-        mPlayer.seekTo(0);
-
-        //changeStatusTo(STATUS_NO_PLAYBACK);
+        setSupposedToPlay(false);
+        changeStatusTo(STATUS_PREPARED);
     }
 
     public boolean isSupposedToPlay() {
