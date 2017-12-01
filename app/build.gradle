@@ -122,7 +122,7 @@ allprojects {
     }
 }
 
-ext.supportLibraryVersion = '27.0.1'
+ext.supportLibraryVersion = '27.0.2'
 ext.firebaseLibraryVersion = '11.6.2'
 
 dependencies {
