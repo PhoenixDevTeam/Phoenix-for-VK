@@ -1250,6 +1250,7 @@
     <string name="api_error_900">Can\'t send messages for users from blacklist</string>
     <string name="api_error_901">Can\'t send messages for users without dialogs</string>
     <string name="api_error_902">Can\'t send messages to this user due to their privacy settings</string>
+    <string name="api_error_909">Can\'t edit this message, because it\'s too old</string>
     <string name="api_error_914">Too many forwarded messages</string>
     <string name="api_error_913">Message is too long</string>
     <string name="api_error_921">Can\'t forward these messages</string>

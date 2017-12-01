@@ -25,6 +25,13 @@ import retrofit2.http.POST;
  */
 public interface IMessageService {
 
+    @FormUrlEncoded
+    @POST("messages.edit")
+    Single<BaseResponse<Integer>> editMessage(@Field("peer_id") int peedId,
+                                              @Field("message_id") int messageId,
+                                              @Field("message") String message,
+                                              @Field("attchment") String attachment);
+
     /**
      * Allows the current user to leave a chat or, if the current user started the chat,
      * allows the user to remove another user from the chat.

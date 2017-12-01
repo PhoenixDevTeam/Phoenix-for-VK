@@ -21,6 +21,7 @@ import biz.dealnote.messenger.api.model.response.LongpollHistoryResponse;
 import biz.dealnote.messenger.api.model.response.MessageHistoryResponse;
 import biz.dealnote.messenger.api.model.response.SearchDialogsResponse;
 import biz.dealnote.messenger.api.services.IMessageService;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
@@ -39,6 +40,15 @@ class MessagesApi extends AbsApi implements IMessagesApi {
 
     private Single<IMessageService> serviceRx(int... tokenTypes) {
         return super.provideService(IMessageService.class, tokenTypes);
+    }
+
+    @Override
+    public Completable edit(int peerId, int messageIs, String message, Collection<IAttachmentToken> attachments) {
+        String atts = join(attachments, ",", AbsApi::formatAttachmentToken);
+        return serviceRx(TokenType.USER, TokenType.COMMUNITY)
+                .flatMapCompletable(service -> service
+                        .editMessage(peerId, messageIs, message, atts)
+                        .toCompletable());
     }
 
     @Override

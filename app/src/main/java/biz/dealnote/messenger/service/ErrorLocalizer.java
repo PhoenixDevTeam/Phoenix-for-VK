@@ -103,6 +103,7 @@ public class ErrorLocalizer {
                 case 900: return context.getString(R.string.api_error_900);
                 case 901: return context.getString(R.string.api_error_901);
                 case 902: return context.getString(R.string.api_error_902);
+                case 909: return context.getString(R.string.api_error_909);
                 case 914: return context.getString(R.string.api_error_914);
                 case 913: return context.getString(R.string.api_error_913);
                 case 921: return context.getString(R.string.api_error_921);
