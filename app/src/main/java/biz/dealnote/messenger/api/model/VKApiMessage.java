@@ -144,6 +144,11 @@ public class VKApiMessage {
     public String random_id;
 
     /**
+     * is edited?
+     */
+    public String payload; // "payload":"null"
+
+    /**
      * Creates empty Country instance.
      */
     public VKApiMessage() {

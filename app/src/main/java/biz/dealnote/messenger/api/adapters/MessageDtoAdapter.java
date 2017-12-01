@@ -94,6 +94,7 @@ public class MessageDtoAdapter extends AbsAdapter implements JsonDeserializer<VK
         dto.photo_100 = optString(root, "photo_100");
         dto.photo_200 = optString(root, "photo_200");
         dto.random_id = optString(root, "random_id");
+        dto.payload = optString(root, "payload");
         return dto;
     }
 }
