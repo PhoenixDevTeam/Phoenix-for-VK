@@ -1,12 +1,11 @@
 package biz.dealnote.messenger;
 
-import android.app.Application;
 import android.support.annotation.NonNull;
 
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.settings.Settings;
 
-public class App extends Application {
+public class App extends BaseApp {
 
     //noinspection ResourceType
     private static App sInstanse;
