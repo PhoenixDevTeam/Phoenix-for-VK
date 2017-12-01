@@ -45,6 +45,7 @@ public class DefaultVideoPlayer implements IVideoPlayer {
     }
 
     private void onPlayerPrepared() {
+        this.preparing = false;
         this.prepared = true;
 
         if (supposedToBePlaying) {
@@ -74,10 +75,13 @@ public class DefaultVideoPlayer implements IVideoPlayer {
 
         if (prepared) {
             player.start();
-        } else {
+        } else if (!preparing) {
+            preparing = true;
             player.prepareAsync();
         }
     }
+
+    private boolean preparing;
 
     @Override
     public void pause() {
@@ -181,7 +185,7 @@ public class DefaultVideoPlayer implements IVideoPlayer {
     }
 
     private void onVideoSizeChanged(int w, int h) {
-        for(IVideoSizeChangeListener listener : videoSizeChangeListeners){
+        for (IVideoSizeChangeListener listener : videoSizeChangeListeners) {
             listener.onVideoSizeChanged(this, new VideoSize(w, h));
         }
     }
