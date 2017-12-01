@@ -36,12 +36,9 @@ public class FileManagerAdapter extends RecyclerView.Adapter<FileManagerAdapter.
         holder.fileDetails.setText(item.details);
         holder.fileDetails.setVisibility(TextUtils.isEmpty(item.details) ? View.GONE : View.VISIBLE);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(clickListener != null){
-                    clickListener.onClick(holder.getAdapterPosition(), item);
-                }
+        holder.itemView.setOnClickListener(v -> {
+            if(clickListener != null){
+                clickListener.onClick(holder.getAdapterPosition(), item);
             }
         });
     }

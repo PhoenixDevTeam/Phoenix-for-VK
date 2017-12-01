@@ -413,18 +413,14 @@ public class VideoControllerView extends FrameLayout {
         return super.dispatchKeyEvent(event);
     }
 
-    private OnClickListener mPauseListener = new OnClickListener() {
-        public void onClick(View v) {
-            doPauseResume();
-            show(sDefaultTimeout);
-        }
+    private OnClickListener mPauseListener = v -> {
+        doPauseResume();
+        show(sDefaultTimeout);
     };
 
-    private OnClickListener mFullscreenListener = new OnClickListener() {
-        public void onClick(View v) {
-            doToggleFullscreen();
-            show(sDefaultTimeout);
-        }
+    private OnClickListener mFullscreenListener = v -> {
+        doToggleFullscreen();
+        show(sDefaultTimeout);
     };
 
     public void updatePausePlay() {

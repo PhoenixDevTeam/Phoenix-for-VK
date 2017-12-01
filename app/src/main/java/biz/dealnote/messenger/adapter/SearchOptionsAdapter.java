@@ -63,25 +63,19 @@ public class SearchOptionsAdapter extends RecyclerBindableAdapter<BaseOption, Re
         holder.value.setText(option.value == null ? null : option.value.title);
         holder.delete.setVisibility(option.value == null ? View.INVISIBLE : View.VISIBLE);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mOptionClickListener != null){
-                    mOptionClickListener.onDatabaseOptionClick(option);
-                }
+        holder.itemView.setOnClickListener(v -> {
+            if(mOptionClickListener != null){
+                mOptionClickListener.onDatabaseOptionClick(option);
             }
         });
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.value.setText(null);
-                holder.delete.setVisibility(View.INVISIBLE);
-                option.value = null;
+        holder.delete.setOnClickListener(v -> {
+            holder.value.setText(null);
+            holder.delete.setVisibility(View.INVISIBLE);
+            option.value = null;
 
-                if(mOptionClickListener != null){
-                    mOptionClickListener.onOptionCleared(option);
-                }
+            if(mOptionClickListener != null){
+                mOptionClickListener.onOptionCleared(option);
             }
         });
     }
@@ -92,13 +86,10 @@ public class SearchOptionsAdapter extends RecyclerBindableAdapter<BaseOption, Re
         holder.checkableView.setOnCheckedChangeListener(null);
         holder.checkableView.setChecked(option.checked);
 
-        holder.checkableView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                option.checked = isChecked;
-                if(mOptionClickListener != null){
-                    mOptionClickListener.onSimpleBooleanOptionChanged(option);
-                }
+        holder.checkableView.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            option.checked = isChecked;
+            if(mOptionClickListener != null){
+                mOptionClickListener.onSimpleBooleanOptionChanged(option);
             }
         });
     }
@@ -113,25 +104,19 @@ public class SearchOptionsAdapter extends RecyclerBindableAdapter<BaseOption, Re
         holder.delete.setVisibility(option.value == null ? View.INVISIBLE : View.VISIBLE);
 
         holder.title.setText(option.title);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mOptionClickListener != null){
-                    mOptionClickListener.onSpinnerOptionClick(option);
-                }
+        holder.itemView.setOnClickListener(v -> {
+            if(mOptionClickListener != null){
+                mOptionClickListener.onSpinnerOptionClick(option);
             }
         });
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.value.setText(null);
-                holder.delete.setVisibility(View.INVISIBLE);
-                option.value = null;
+        holder.delete.setOnClickListener(v -> {
+            holder.value.setText(null);
+            holder.delete.setVisibility(View.INVISIBLE);
+            option.value = null;
 
-                if(mOptionClickListener != null){
-                    mOptionClickListener.onOptionCleared(option);
-                }
+            if(mOptionClickListener != null){
+                mOptionClickListener.onOptionCleared(option);
             }
         });
     }
@@ -141,25 +126,19 @@ public class SearchOptionsAdapter extends RecyclerBindableAdapter<BaseOption, Re
         holder.title.setText(option.title);
         holder.delete.setVisibility(option.value == null ? View.INVISIBLE : View.VISIBLE);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mOptionClickListener != null){
-                    mOptionClickListener.onSimpleNumberOptionClick(option);
-                }
+        holder.itemView.setOnClickListener(v -> {
+            if(mOptionClickListener != null){
+                mOptionClickListener.onSimpleNumberOptionClick(option);
             }
         });
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.value.setText(null);
-                holder.delete.setVisibility(View.INVISIBLE);
-                option.value = null;
+        holder.delete.setOnClickListener(v -> {
+            holder.value.setText(null);
+            holder.delete.setVisibility(View.INVISIBLE);
+            option.value = null;
 
-                if(mOptionClickListener != null){
-                    mOptionClickListener.onOptionCleared(option);
-                }
+            if(mOptionClickListener != null){
+                mOptionClickListener.onOptionCleared(option);
             }
         });
     }
@@ -170,25 +149,19 @@ public class SearchOptionsAdapter extends RecyclerBindableAdapter<BaseOption, Re
 
         holder.delete.setVisibility(TextUtils.isEmpty(option.value) ? View.INVISIBLE : View.VISIBLE);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mOptionClickListener != null){
-                    mOptionClickListener.onSimpleTextOptionClick(option);
-                }
+        holder.itemView.setOnClickListener(v -> {
+            if(mOptionClickListener != null){
+                mOptionClickListener.onSimpleTextOptionClick(option);
             }
         });
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.value.setText(null);
-                holder.delete.setVisibility(View.INVISIBLE);
-                option.value = null;
+        holder.delete.setOnClickListener(v -> {
+            holder.value.setText(null);
+            holder.delete.setVisibility(View.INVISIBLE);
+            option.value = null;
 
-                if(mOptionClickListener != null){
-                    mOptionClickListener.onOptionCleared(option);
-                }
+            if(mOptionClickListener != null){
+                mOptionClickListener.onOptionCleared(option);
             }
         });
     }

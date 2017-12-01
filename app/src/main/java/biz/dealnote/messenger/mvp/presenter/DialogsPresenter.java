@@ -99,6 +99,12 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     }
 
     @Override
+    public void saveState(@NonNull Bundle outState) {
+        super.saveState(outState);
+        outState.putInt(SAVE_DIALOGS_OWNER_ID, dialogsOwnerId);
+    }
+
+    @Override
     public void onGuiCreated(@NonNull IDialogsView viewHost) {
         super.onGuiCreated(viewHost);
         viewHost.displayData(dialogs);

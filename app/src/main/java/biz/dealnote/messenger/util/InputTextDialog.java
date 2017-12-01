@@ -48,54 +48,45 @@ public class InputTextDialog {
         builder.setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
 
         final AlertDialog alertDialog = builder.create();
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        alertDialog.setOnShowListener(dialog -> {
+            Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
 
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        input.setError(null);
-                        String newValue = input.getText().toString().trim();
+            b.setOnClickListener(view1 -> {
+                input.setError(null);
+                String newValue = input.getText().toString().trim();
 
-                        if (TextUtils.isEmpty(newValue) && !allowEmpty) {
-                            input.setError(context.getString(R.string.field_is_required));
-                            input.requestFocus();
-                        } else {
-                            try {
-                                if (validator != null) {
-                                    validator.validate(newValue);
-                                }
-
-                                if (callback != null) {
-                                    callback.onChanged(newValue);
-                                }
-
-                                if (target != null) {
-                                    target.setText(newValue);
-                                }
-
-                                alertDialog.dismiss();
-                            } catch (IllegalArgumentException e) {
-                                input.setError(e.getMessage());
-                                input.requestFocus();
-                            }
+                if (TextUtils.isEmpty(newValue) && !allowEmpty) {
+                    input.setError(context.getString(R.string.field_is_required));
+                    input.requestFocus();
+                } else {
+                    try {
+                        if (validator != null) {
+                            validator.validate(newValue);
                         }
+
+                        if (callback != null) {
+                            callback.onChanged(newValue);
+                        }
+
+                        if (target != null) {
+                            target.setText(newValue);
+                        }
+
+                        alertDialog.dismiss();
+                    } catch (IllegalArgumentException e) {
+                        input.setError(e.getMessage());
+                        input.requestFocus();
                     }
-                });
-            }
+                }
+            });
         });
 
         alertDialog.setOnDismissListener(onDismissListener);
         alertDialog.show();
 
-        input.post(new Runnable() {
-            @Override
-            public void run() {
-                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
-            }
+        input.post(() -> {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
         });
     }
 

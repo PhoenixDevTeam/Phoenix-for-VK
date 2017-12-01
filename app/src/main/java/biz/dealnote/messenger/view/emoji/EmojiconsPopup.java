@@ -229,12 +229,9 @@ public class EmojiconsPopup {
         final SectionsAdapter topSectionAdapter = new SectionsAdapter(sections, mContext);
         recyclerView.setAdapter(topSectionAdapter);
 
-        view.findViewById(R.id.backspase).setOnTouchListener(new RepeatListener(700, 50, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onEmojiconBackspaceClickedListener != null) {
-                    onEmojiconBackspaceClickedListener.onEmojiconBackspaceClicked(v);
-                }
+        view.findViewById(R.id.backspase).setOnTouchListener(new RepeatListener(700, 50, v -> {
+            if (onEmojiconBackspaceClickedListener != null) {
+                onEmojiconBackspaceClickedListener.onEmojiconBackspaceClicked(v);
             }
         }));
 

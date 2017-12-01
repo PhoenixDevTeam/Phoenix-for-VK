@@ -14,12 +14,9 @@ public class LoadMoreFooterHelper {
         LoadMoreFooterHelper helper = new LoadMoreFooterHelper();
         helper.holder = new Holder(view);
         helper.callback = callback;
-        helper.holder.bLoadMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(callback != null){
-                    callback.onLoadMoreClick();
-                }
+        helper.holder.bLoadMore.setOnClickListener(v -> {
+            if(callback != null){
+                callback.onLoadMoreClick();
             }
         });
         return helper;

@@ -96,25 +96,22 @@ public class ImageSizeAlertDialog {
         if (Objects.isNull(size)) {
             AlertDialog dialog = new AlertDialog.Builder(activity)
                     .setTitle(activity.getString(R.string.select_image_size_title))
-                    .setItems(R.array.array_image_sizes_names, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int j) {
-                            int selectedSize = UploadObject.IMAGE_SIZE_FULL;
+                    .setItems(R.array.array_image_sizes_names, (dialogInterface, j) -> {
+                        int selectedSize = UploadObject.IMAGE_SIZE_FULL;
 
-                            switch (j) {
-                                case 0:
-                                    selectedSize = UploadObject.IMAGE_SIZE_800;
-                                    break;
-                                case 1:
-                                    selectedSize = UploadObject.IMAGE_SIZE_1200;
-                                    break;
-                                case 2:
-                                    selectedSize = UploadObject.IMAGE_SIZE_FULL;
-                                    break;
-                            }
-
-                            callback.onSizeSelected(selectedSize);
+                        switch (j) {
+                            case 0:
+                                selectedSize = UploadObject.IMAGE_SIZE_800;
+                                break;
+                            case 1:
+                                selectedSize = UploadObject.IMAGE_SIZE_1200;
+                                break;
+                            case 2:
+                                selectedSize = UploadObject.IMAGE_SIZE_FULL;
+                                break;
                         }
+
+                        callback.onSizeSelected(selectedSize);
                     }).setCancelable(true).create();
             dialog.show();
         } else {
