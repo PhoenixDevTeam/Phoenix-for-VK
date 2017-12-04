@@ -1120,4 +1120,6 @@
     <string name="api_error_914">Занадто багато пересланих повідомлень</string>
     <string name="api_error_913">Повідомлення занадто довге</string>
     <string name="api_error_921">Неможливо переслати вибрані повідомлення</string>
+    <string name="api_error_909">Не можна редагувати це повідомлення, тому що воно занадто застаріло</string>
+    <string name="api_error_917">У Вас немає доступу до цього чату</string>
 </resources>

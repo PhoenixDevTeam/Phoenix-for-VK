@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.crypt.ExchangeMessage;
 import biz.dealnote.messenger.crypt.KeyExchangeService;
 import biz.dealnote.messenger.model.User;
@@ -36,14 +35,16 @@ public class KeyExchangeCommitActivity extends AppCompatActivity {
 
         int accountId = getIntent().getExtras().getInt(Extra.ACCOUNT_ID);
         int peerId = getIntent().getExtras().getInt(Extra.PEER_ID);
-        VKApiUser user = getIntent().getParcelableExtra(Extra.OWNER);
+
+        User user = getIntent().getParcelableExtra(Extra.OWNER);
+
         int messageId = getIntent().getExtras().getInt(Extra.MESSAGE_ID);
         ExchangeMessage message = getIntent().getParcelableExtra(Extra.MESSAGE);
 
-        ImageView avatar = (ImageView) findViewById(R.id.avatar);
+        ImageView avatar = findViewById(R.id.avatar);
         ViewUtils.displayAvatar(avatar, CurrentTheme.createTransformationForAvatar(this), user.getMaxSquareAvatar(), null);
 
-        TextView userName = (TextView) findViewById(R.id.user_name);
+        TextView userName = findViewById(R.id.user_name);
         userName.setText(user.getFullName());
 
         findViewById(R.id.accept_button).setOnClickListener(v -> {
