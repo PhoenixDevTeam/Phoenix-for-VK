@@ -100,7 +100,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="33"
-                android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -120,7 +119,8 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/counter_followers"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:gravity="center"
+                    android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
 
@@ -130,7 +130,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="33"
-                android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -150,7 +149,8 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/counter_topics"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:gravity="center"
+                    android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
 
@@ -180,7 +180,8 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/counter_documents"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:gravity="center"
+                    android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
         </TableRow>
@@ -216,7 +217,8 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/counter_photos"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:gravity="center"
+                    android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
 
@@ -246,8 +248,8 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/counter_audios"
                     android:textColor="?android:textColorPrimary"
-                    android:textIsSelectable="false"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:gravity="center"
+                    android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
 
@@ -277,7 +279,8 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/counter_videos"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:gravity="center"
+                    android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
         </TableRow>

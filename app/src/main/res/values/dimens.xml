@@ -104,6 +104,7 @@
     <dimen name="font_size_big_title">24sp</dimen>
     <dimen name="font_size_title">17sp</dimen>
     <dimen name="font_size_subtitle">15sp</dimen>
+    <dimen name="font_size_counter">14sp</dimen>
     <dimen name="font_size_additional">12sp</dimen>
 
     <dimen name="avatar_size_big">100dp</dimen>

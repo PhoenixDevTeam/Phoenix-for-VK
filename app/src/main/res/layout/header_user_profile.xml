@@ -139,6 +139,7 @@
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
+                    android:gravity="center"
                     android:id="@+id/fragment_user_profile_bfriends_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -146,7 +147,7 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/counter_friends"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
 
@@ -169,6 +170,7 @@
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
+                    android:gravity="center"
                     android:id="@+id/fragment_user_profile_bfollowers_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -176,7 +178,7 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/counter_followers"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
 
@@ -199,6 +201,7 @@
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
+                    android:gravity="center"
                     android:id="@+id/fragment_user_profile_bgroups_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -206,7 +209,7 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/counter_groups"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
         </TableRow>
@@ -236,6 +239,7 @@
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
+                    android:gravity="center"
                     android:id="@+id/fragment_user_profile_bphotos_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -243,7 +247,7 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/counter_photos"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
 
@@ -266,6 +270,7 @@
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
+                    android:gravity="center"
                     android:id="@+id/fragment_user_profile_baudios_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -274,7 +279,7 @@
                     android:text="@string/counter_audios"
                     android:textColor="?android:textColorPrimary"
                     android:textIsSelectable="false"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
 
@@ -297,6 +302,7 @@
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
+                    android:gravity="center"
                     android:id="@+id/fragment_user_profile_bvideos_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -304,7 +310,7 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/counter_videos"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
         </TableRow>
