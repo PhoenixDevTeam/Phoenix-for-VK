@@ -249,7 +249,13 @@ public class AttachmentsViewBinder {
         mVoiceSharedHolders.put(voiceMessageId, holder);
 
         holder.mDurationText.setText(AppTextUtils.getDurationString(voice.getDuration()));
-        holder.mWaveFormView.setWaveForm(nonNull(voice.getWaveform()) ? voice.getWaveform() : DEFAUL_WAVEFORM); // can bee NULL
+
+        // can bee NULL/empty
+        if(nonNull(voice.getWaveform()) && voice.getWaveform().length > 0){
+            holder.mWaveFormView.setWaveForm(voice.getWaveform());
+        } else {
+            holder.mWaveFormView.setWaveForm(DEFAUL_WAVEFORM);
+        }
 
         holder.mButtonPlay.setOnClickListener(v -> {
             if(nonNull(mVoiceActionListener)){
