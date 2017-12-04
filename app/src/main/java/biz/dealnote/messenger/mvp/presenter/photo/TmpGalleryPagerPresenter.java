@@ -31,6 +31,16 @@ public class TmpGalleryPagerPresenter extends PhotoPagerPresenter {
         loadDataFromDatabase();
     }
 
+    @Override
+    void initPhotosData(@NonNull ArrayList<Photo> initialData, @Nullable Bundle savedInstanceState) {
+        super.mPhotos = initialData;
+    }
+
+    @Override
+    void savePhotosState(@NonNull Bundle outState) {
+        // no saving
+    }
+
     private void loadDataFromDatabase() {
         changeLoadingNowState(true);
         appendDisposable(Stores.getInstance()

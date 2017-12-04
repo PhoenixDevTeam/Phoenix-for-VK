@@ -27,31 +27,31 @@ public class SimplePhotoPresenter extends PhotoPagerPresenter {
                                 int accountId, @Nullable Bundle savedInstanceState) {
         super(photos, accountId, savedInstanceState);
 
-        if(savedInstanceState == null){
-            changePageTo(index);
+        if (savedInstanceState == null) {
+            setCurrentIndex(index);
         } else {
             mDataRefreshSuccessfull = savedInstanceState.getBoolean(SAVE_DATA_REFRESH_RESULT);
         }
 
-        if(needToRefreshData && !mDataRefreshSuccessfull){
+        if (needToRefreshData && !mDataRefreshSuccessfull) {
             refreshData();
         }
     }
 
-    private void refreshData(){
+    private void refreshData() {
         final ArrayList<AccessIdPair> ids = new ArrayList<>(getData().size());
         final int accountId = super.getAccountId();
 
-        for(Photo photo : getData()){
+        for (Photo photo : getData()) {
             ids.add(new AccessIdPair(photo.getId(), photo.getOwnerId(), photo.getAccessKey()));
         }
 
         appendDisposable(photosInteractor.getPhotosByIds(accountId, ids)
-        .compose(RxUtils.applySingleIOToMainSchedulers())
-        .subscribe(this::onPhotosReceived, t -> showError(getView(), getCauseIfRuntime(t))));
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::onPhotosReceived, t -> showError(getView(), getCauseIfRuntime(t))));
     }
 
-    private void onPhotosReceived(List<Photo> photos){
+    private void onPhotosReceived(List<Photo> photos) {
         mDataRefreshSuccessfull = true;
         onPhotoListRefresh(photos);
     }
@@ -63,19 +63,19 @@ public class SimplePhotoPresenter extends PhotoPagerPresenter {
         return TAG;
     }
 
-    private void onPhotoListRefresh(@NonNull List<Photo> photos){
+    private void onPhotoListRefresh(@NonNull List<Photo> photos) {
         List<Photo> originalData = super.getData();
 
-        for(Photo photo : photos){
+        for (Photo photo : photos) {
             //замена старых обьектов новыми
-            for(int i = 0; i < originalData.size(); i++){
+            for (int i = 0; i < originalData.size(); i++) {
                 Photo orig = originalData.get(i);
 
-                if(orig.getId() == photo.getId() && orig.getOwnerId() == photo.getOwnerId()){
+                if (orig.getId() == photo.getId() && orig.getOwnerId() == photo.getOwnerId()) {
                     originalData.set(i, photo);
 
                     // если у фото до этого не было ссылок на файлы
-                    if(isGuiReady() && (isNull(orig.getSizes()) || orig.getSizes().isEmpty())){
+                    if (isGuiReady() && (isNull(orig.getSizes()) || orig.getSizes().isEmpty())) {
                         Logger.d(TAG, "Rebind holder at " + i);
 
                         getView().rebindPhotoAt(i);
@@ -94,5 +94,5 @@ public class SimplePhotoPresenter extends PhotoPagerPresenter {
         outState.putBoolean(SAVE_DATA_REFRESH_RESULT, mDataRefreshSuccessfull);
     }
 
-    private static final String SAVE_DATA_REFRESH_RESULT = "save_data_refresh_result";
+    private static final String SAVE_DATA_REFRESH_RESULT = "save-data-refresh-result";
 }

@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.mvp.presenter.photo;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.util.RxUtils;
 
+import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
 /**
@@ -33,11 +35,24 @@ public class PhotoAlbumPagerPresenter extends PhotoPagerPresenter {
         this.photosInteractor = InteractorFactory.createPhotosInteractor();
         this.mOwnerId = ownerId;
         this.mAlbumId = albumId;
-        this.mFocusPhotoId = focusPhotoId;
 
-        if (savedInstanceState == null) {
-            loadDataFromDatabase();
+        if (nonNull(savedInstanceState)) {
+            this.mFocusPhotoId = null; // because has saved last view index
+        } else {
+            this.mFocusPhotoId = focusPhotoId;
         }
+
+        loadDataFromDatabase();
+    }
+
+    @Override
+    void initPhotosData(@NonNull ArrayList<Photo> initialData, @Nullable Bundle savedInstanceState) {
+        super.mPhotos = initialData;
+    }
+
+    @Override
+    void savePhotosState(@NonNull Bundle outState) {
+        //no saving state
     }
 
     private void loadDataFromDatabase() {

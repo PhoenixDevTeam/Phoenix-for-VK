@@ -23,6 +23,7 @@ import biz.dealnote.messenger.mvp.view.IPhotoPagerView;
 import biz.dealnote.messenger.task.DownloadImageTask;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.AppTextUtils;
+import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
@@ -38,24 +39,46 @@ import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerView> {
 
     private static final String TAG = PhotoPagerPresenter.class.getSimpleName();
-    private static final String SAVE_INDEX = "save_index";
 
-    private ArrayList<Photo> mPhotos;
+    private static final String SAVE_INDEX = "save-index";
+    private static final String SAVE_DATA = "save-data";
+
+    ArrayList<Photo> mPhotos;
     private int mCurrentIndex;
     private boolean mLoadingNow;
     private boolean mFullScreen;
 
     final IPhotosInteractor photosInteractor;
 
-    PhotoPagerPresenter(@NonNull ArrayList<Photo> photos, int accountId, @Nullable Bundle savedInstanceState) {
+    PhotoPagerPresenter(@NonNull ArrayList<Photo> initialData, int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-
         this.photosInteractor = InteractorFactory.createPhotosInteractor();
 
-        if (savedInstanceState == null) {
-            mPhotos = photos;
-        } else {
+        if(Objects.nonNull(savedInstanceState)){
             mCurrentIndex = savedInstanceState.getInt(SAVE_INDEX);
+        }
+
+        initPhotosData(initialData, savedInstanceState);
+
+        AssertUtils.requireNonNull(mPhotos, "'mPhotos' not initialized");
+    }
+
+    @Override
+    public void saveState(@NonNull Bundle outState) {
+        super.saveState(outState);
+        outState.putInt(SAVE_INDEX, mCurrentIndex);
+        savePhotosState(outState);
+    }
+
+    void savePhotosState(@NonNull Bundle outState){
+        outState.putParcelableArrayList(SAVE_DATA, mPhotos);
+    }
+
+    void initPhotosData(@NonNull ArrayList<Photo> initialData, @Nullable Bundle savedInstanceState){
+        if (savedInstanceState == null) {
+            mPhotos = initialData;
+        } else {
+            mPhotos = savedInstanceState.getParcelableArrayList(SAVE_DATA);
         }
     }
 
@@ -83,12 +106,6 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
     @NonNull
     protected ArrayList<Photo> getData() {
         return mPhotos;
-    }
-
-    @Override
-    public void saveState(@NonNull Bundle outState) {
-        super.saveState(outState);
-        outState.putInt(SAVE_INDEX, mCurrentIndex);
     }
 
     @Override
