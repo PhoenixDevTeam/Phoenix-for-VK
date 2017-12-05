@@ -15,6 +15,12 @@
         android:summary="@string/ask_for_pin_on_application_start_summary"
         android:title="@string/ask_for_pin_on_application_start_title" />
 
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:dependency="use_pin_for_entrance"
+        android:key="allow_fingerprint"
+        android:title="@string/allow_fingerprint_title" />
+
     <Preference
         android:dependency="use_pin_for_security"
         android:key="change_pin"

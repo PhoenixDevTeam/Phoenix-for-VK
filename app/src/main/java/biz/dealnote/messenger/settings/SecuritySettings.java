@@ -157,6 +157,11 @@ public class SecuritySettings implements ISettings.ISecuritySettings {
                 .getBoolean(KEY_USE_PIN_FOR_SECURITY, false);
     }
 
+    @Override
+    public boolean isEntranceByFingerprintAllowed() {
+        return PreferenceManager.getDefaultSharedPreferences(mApplication).getBoolean("allow_fingerprint", false);
+    }
+
     public boolean isUsePinForEntrance() {
         return hasPinHash() && PreferenceManager.getDefaultSharedPreferences(mApplication)
                 .getBoolean(KEY_USE_PIN_FOR_ENTRANCE, false);

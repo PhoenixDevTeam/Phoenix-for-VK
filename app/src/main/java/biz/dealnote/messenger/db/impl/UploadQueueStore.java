@@ -24,10 +24,10 @@ import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
 import biz.dealnote.messenger.upload.UploadObject;
 import biz.dealnote.messenger.util.Exestime;
+import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Predicate;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Completable;
-import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.subjects.PublishSubject;
@@ -350,8 +350,8 @@ class UploadQueueStore extends AbsStore implements IUploadQueueStore {
     };
 
     @Override
-    public Maybe<UploadObject> findFirstByStatus(int status) {
-        return Maybe.create(emitter -> {
+    public Single<Optional<UploadObject>> findFirstByStatus(int status) {
+        return Single.create(emitter -> {
             long start = System.currentTimeMillis();
 
             Cursor cursor = helper().getReadableDatabase()
@@ -364,13 +364,7 @@ class UploadQueueStore extends AbsStore implements IUploadQueueStore {
             }
 
             cursor.close();
-
-            if(nonNull(object)){
-                emitter.onSuccess(object);
-            }
-
-            emitter.onComplete();
-
+            emitter.onSuccess(Optional.wrap(object));
             Exestime.log("UploadQueueStore.findFirst", start, "object: " + object);
         });
     }

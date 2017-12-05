@@ -10,9 +10,9 @@ import biz.dealnote.messenger.upload.Method;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
 import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Predicate;
 import io.reactivex.Completable;
-import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -41,7 +41,7 @@ public interface IUploadQueueStore {
     @CheckResult
     Completable removeWithId(int id, BaseUploadResponse response);
 
-    Maybe<UploadObject> findFirstByStatus(int status);
+    Single<Optional<UploadObject>> findFirstByStatus(int status);
 
     @CheckResult
     Completable changeStatus(int id, int status);

@@ -1255,5 +1255,7 @@
     <string name="api_error_917">You don\'t have access to this chat</string>
     <string name="api_error_913">Message is too long</string>
     <string name="api_error_921">Can\'t forward these messages</string>
+    <string name="allow_fingerprint_title">Allow fingerprint</string>
+    <string name="error_login_by_fingerprint_not_allowed">Login via fingerprint is not allowed</string>
 
 </resources>

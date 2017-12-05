@@ -1122,4 +1122,6 @@
     <string name="api_error_921">Неможливо переслати вибрані повідомлення</string>
     <string name="api_error_909">Не можна редагувати це повідомлення, тому що воно занадто застаріло</string>
     <string name="api_error_917">У Вас немає доступу до цього чату</string>
+    <string name="allow_fingerprint_title">Дозволити відбиток пальця</string>
+    <string name="error_login_by_fingerprint_not_allowed">Вхід за допомогою відбитка пальця не дозволений</string>
 </resources>

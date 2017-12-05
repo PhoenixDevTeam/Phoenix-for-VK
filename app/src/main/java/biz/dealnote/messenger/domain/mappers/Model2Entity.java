@@ -249,7 +249,8 @@ public class Model2Entity {
                 .setCanPin(post.isCanPin())
                 .setPinned(post.isPinned())
                 .setDeleted(post.isDeleted())
-                .setViews(post.getViewCount());
+                .setViews(post.getViewCount())
+                .setDbid(post.getDbid());
 
         PostSource source = post.getSource();
         if(nonNull(source)){

@@ -1125,4 +1125,6 @@
     <string name="api_error_913">Сообщение слишком длинное</string>
     <string name="api_error_917">У Вас нет доступа к этому чату</string>
     <string name="api_error_921">Невозможно переслать выбранные сообщения</string>
+    <string name="allow_fingerprint_title">Разрешить отпечаток пальца</string>
+    <string name="error_login_by_fingerprint_not_allowed">Вход с помощью отпечатка пальца не разрешен</string>
 </resources>

@@ -181,6 +181,8 @@ public interface ISettings {
 
         boolean isUsePinForSecurity();
 
+        boolean isEntranceByFingerprintAllowed();
+
         @KeyLocationPolicy
         int getEncryptionLocationPolicy(int accountId, int peerId);
 

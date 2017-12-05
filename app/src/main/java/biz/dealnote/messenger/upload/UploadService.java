@@ -29,6 +29,7 @@ import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.MagicKey;
+import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.RxUtils;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -69,11 +70,8 @@ public class UploadService extends Service implements UploadCallback {
 
         compositeDisposable.add(uploadsRepository
                 .findFirstByStatus(UploadObject.STATUS_QUEUE)
-                .compose(RxUtils.applyMaybeIOToMainSchedulers())
-                .subscribe(this::uploadFirstInQueue, Analytics::logUnexpectedError, () -> {
-                    Logger.d(TAG, "No objects for upload. Stopself");
-                    stopSelf();
-                }));
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::uploadFirstInQueue, Analytics::logUnexpectedError));
     }
 
     @Override
@@ -82,15 +80,15 @@ public class UploadService extends Service implements UploadCallback {
         super.onDestroy();
     }
 
-    private void uploadFirstInQueue(@NonNull UploadObject first) {
-        //UploadObject uploadObject = getFirstInQueue();
+    private void uploadFirstInQueue(Optional<UploadObject> optionalFirst) {
+        if(optionalFirst.isEmpty()){
+            stopSelf();
+            return;
+        }
+
+        UploadObject first = optionalFirst.get();
 
         Logger.d(TAG, "uploadFirstInQueue, first: " + first);
-
-        //if (uploadObject == null) {
-        //    stopSelf();
-        //    return;
-        //}
 
         if (mCurrenTask != null) {
             Logger.e(TAG, "Current task is not null. Fix, please !!!");

@@ -21,7 +21,9 @@ public class FingerprintTools {
     public static boolean checkFingerprintCompatibility(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             FingerprintManager manager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
-            return manager.isHardwareDetected();
+            if (manager != null) {
+                return manager.isHardwareDetected();
+            }
         }
 
         /*if (manager.isHardwareDetected()) {

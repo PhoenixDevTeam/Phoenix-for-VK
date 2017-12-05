@@ -45,9 +45,11 @@ public class EnterPinPresenter extends RxSupportPresenter<IEnterPinView> {
 
     private int[] mValues;
     private final IOwnersInteractor ownersInteractor;
+    private final ISettings.ISecuritySettings securitySettings;
 
     public EnterPinPresenter(@Nullable Bundle savedState) {
         super(savedState);
+        this.securitySettings = Settings.get().security();
         this.ownersInteractor = InteractorFactory.createOwnerInteractor();
 
         if (savedState != null) {
@@ -61,7 +63,7 @@ public class EnterPinPresenter extends RxSupportPresenter<IEnterPinView> {
             loadOwnerInfo();
         }
 
-        if(FingerprintTools.checkFingerprintCompatibility(getApplicationContext())){
+        if(canUseFingerprint()){
             fingerprintCallback = new WeakFingerprintCallback(this);
         } else {
             fingerprintCallback = null;
@@ -88,6 +90,11 @@ public class EnterPinPresenter extends RxSupportPresenter<IEnterPinView> {
     private Owner mOwner;
 
     public void onFingerprintClicked() {
+        if(!securitySettings.isEntranceByFingerprintAllowed()){
+            safeShowError(getView(), R.string.error_login_by_fingerprint_not_allowed);
+            return;
+        }
+
         FingerprintTools.SensorState sensorState = FingerprintTools.checkSensorState(getApplicationContext());
         switch (sensorState){
             case NOT_BLOCKED:
@@ -175,6 +182,10 @@ public class EnterPinPresenter extends RxSupportPresenter<IEnterPinView> {
     }
 
     private boolean canUseFingerprint(){
+        if(!securitySettings.isEntranceByFingerprintAllowed()){
+            return false;
+        }
+
         FingerprintTools.SensorState sensorState = FingerprintTools.checkSensorState(getApplicationContext());
         return sensorState == FingerprintTools.SensorState.READY;
     }
