@@ -326,6 +326,14 @@ public class PreferencesFragment extends PreferenceFragment {
                     startActivity(new Intent(getActivity(), ProxyManagerActivity.class));
                     return true;
                 });
+
+        findPreference("source_code")
+                .setOnPreferenceClickListener(preference -> {
+                    String link = getString(R.string.source_code_link);
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    startActivity(browserIntent);
+                    return true;
+                });
     }
 
     private void onSecurityClick() {

@@ -1,189 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="@string/general_settings"/>
+    <PreferenceCategory android:title="@string/general_settings">
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="high_notif_priority"
-        android:summary="@string/high_notif_priority_summary"
-        android:title="@string/high_notif_priority_title"  />
-    />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="high_notif_priority"
+            android:summary="@string/high_notif_priority_summary"
+            android:title="@string/high_notif_priority_title" />
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="quick_reply_immediately"
-        android:summary="@string/quick_reply_summary"
-        android:title="@string/quick_reply"  />
-    />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="quick_reply_immediately"
+            android:summary="@string/quick_reply_summary"
+            android:title="@string/quick_reply" />
 
-    <Preference
-        android:key="notif_sound"
-        android:title="@string/select_ringtone_title"/>
+        <Preference
+            android:key="notif_sound"
+            android:title="@string/select_ringtone_title" />
 
-    <ListPreference
-        android:key="vibration_length"
-        android:title="Vibration length"
-        android:defaultValue="4"
-        android:entryValues="@array/array_vibration_length_value"
-        android:entries="@array/array_vibration_length_names"/>
+        <ListPreference
+            android:defaultValue="4"
+            android:entries="@array/array_vibration_length_names"
+            android:entryValues="@array/array_vibration_length_value"
+            android:key="vibration_length"
+            android:title="Vibration length" />
 
-    <PreferenceCategory
-        android:title="@string/messages_in_dialogs_tite"/>
+    </PreferenceCategory>
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="new_dialog_message_notif_enable"
-        android:title="@string/enable_dialogs_notif_title"/>
-    />
+    <PreferenceCategory android:title="@string/messages_in_dialogs_tite">
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="new_dialog_message_notif_enable"
-        android:key="new_dialog_message_notif_sound"
-        android:title="@string/enable_dialogs_sound_title"/>
-    />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="new_dialog_message_notif_enable"
+            android:title="@string/enable_dialogs_notif_title" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="new_dialog_message_notif_enable"
-        android:key="new_dialog_message_notif_vibration"
-        android:title="@string/enable_dialogs_vibro_title"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="new_dialog_message_notif_enable"
+            android:key="new_dialog_message_notif_sound"
+            android:title="@string/enable_dialogs_sound_title" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="new_dialog_message_notif_enable"
-        android:key="new_dialog_message_notif_led"
-        android:title="@string/enable_dialogs_led_title"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="new_dialog_message_notif_enable"
+            android:key="new_dialog_message_notif_vibration"
+            android:title="@string/enable_dialogs_vibro_title" />
 
-    <PreferenceCategory
-        android:title="@string/messages_in_groupchat_tite"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="new_dialog_message_notif_enable"
+            android:key="new_dialog_message_notif_led"
+            android:title="@string/enable_dialogs_led_title" />
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="new_groupchat_message_notif_enable"
-        android:title="@string/enable_groupchat_notif_title"/>
-    />
+    </PreferenceCategory>
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="new_groupchat_message_notif_enable"
-        android:key="new_groupchat_message_notif_sound"
-        android:title="@string/enable_groupchat_sound_title"/>
-    />
+    <PreferenceCategory android:title="@string/messages_in_groupchat_tite">
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="new_groupchat_message_notif_enable"
-        android:key="new_groupchat_message_notif_vibration"
-        android:title="@string/enable_groupchat_vibro_title"/>
-    />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="new_groupchat_message_notif_enable"
+            android:title="@string/enable_groupchat_notif_title" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="new_groupchat_message_notif_enable"
-        android:key="new_groupchat_message_notif_led"
-        android:title="@string/enable_groupchat_led_title"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="new_groupchat_message_notif_enable"
+            android:key="new_groupchat_message_notif_sound"
+            android:title="@string/enable_groupchat_sound_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="new_groupchat_message_notif_enable"
+            android:key="new_groupchat_message_notif_vibration"
+            android:title="@string/enable_groupchat_vibro_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="new_groupchat_message_notif_enable"
+            android:key="new_groupchat_message_notif_led"
+            android:title="@string/enable_groupchat_led_title" />
+
+    </PreferenceCategory>
 
     <!--Other notif-->
-    <PreferenceCategory
-        android:title="@string/other_notifications_settings"/>
+    <PreferenceCategory android:title="@string/other_notifications_settings">
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="other_notifications_enable"
-        android:title="@string/enable_dialogs_notif_title"/>
-    />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="other_notifications_enable"
+            android:title="@string/enable_dialogs_notif_title" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="other_notifications_enable"
-        android:key="other_notif_sound"
-        android:title="@string/enable_groupchat_sound_title"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="other_notif_sound"
+            android:title="@string/enable_groupchat_sound_title" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="other_notifications_enable"
-        android:key="other_notif_vibration"
-        android:title="@string/enable_groupchat_vibro_title"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="other_notif_vibration"
+            android:title="@string/enable_groupchat_vibro_title" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="other_notifications_enable"
-        android:key="other_notif_led"
-        android:title="@string/enable_groupchat_led_title"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="other_notif_led"
+            android:title="@string/enable_groupchat_led_title" />
 
-    <PreferenceCategory
-        android:title="@string/other_notifications_types"/>
+    </PreferenceCategory>
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="new_comment_notification"
-        android:dependency="other_notifications_enable"
-        android:title="@string/new_comment_notification"/>
-    />
+    <PreferenceCategory android:title="@string/other_notifications_types">
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="friend_request_accepted_notification"
-        android:dependency="other_notifications_enable"
-        android:title="@string/friend_request_accepted_notification"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="new_comment_notification"
+            android:title="@string/new_comment_notification" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="other_notifications_enable"
-        android:key="new_follower_notification"
-        android:title="@string/new_follower_notification"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="friend_request_accepted_notification"
+            android:title="@string/friend_request_accepted_notification" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="other_notifications_enable"
-        android:key="group_invited_notification"
-        android:title="@string/group_invited_notification"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="new_follower_notification"
+            android:title="@string/new_follower_notification" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="other_notifications_enable"
-        android:key="reply_notification"
-        android:title="@string/reply_notification"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="group_invited_notification"
+            android:title="@string/group_invited_notification" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="other_notifications_enable"
-        android:key="new_wall_post_notification"
-        android:title="@string/new_wall_post_notification"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="reply_notification"
+            android:title="@string/reply_notification" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="other_notifications_enable"
-        android:key="wall_publish_notification"
-        android:title="@string/wall_publish_notification"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="new_wall_post_notification"
+            android:title="@string/new_wall_post_notification" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="other_notifications_enable"
-        android:key="new_posts_notification"
-        android:title="@string/new_posts_of_users_and_communities"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="wall_publish_notification"
+            android:title="@string/wall_publish_notification" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="other_notifications_enable"
-        android:key="likes_notification"
-        android:title="@string/likes"/>
-    />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="new_posts_notification"
+            android:title="@string/new_posts_of_users_and_communities" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="likes_notification"
+            android:title="@string/likes" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="other_notifications_enable"
+            android:key="birtday_notification"
+            android:title="@string/birthdays" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

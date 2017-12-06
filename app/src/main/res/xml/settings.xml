@@ -156,6 +156,10 @@
             android:summary="@string/pref_join_app_group_summary"
             android:title="@string/pref_join_app_group_title" />
         <Preference
+            android:key="source_code"
+            android:title="@string/source_code_title"
+            android:summary="@string/source_code_link"/>
+        <Preference
             android:key="version"
             android:title="@string/app_name" />
     </PreferenceCategory>

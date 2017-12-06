@@ -144,6 +144,8 @@ public interface ISettings {
         long[] getVibrationLength();
 
         boolean isQuickReplyImmediately();
+
+        boolean isBirtdayNotifEnabled();
     }
 
     interface IRecentChats {

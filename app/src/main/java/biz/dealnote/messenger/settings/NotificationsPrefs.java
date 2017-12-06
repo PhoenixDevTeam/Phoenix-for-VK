@@ -105,6 +105,12 @@ public class NotificationsPrefs implements ISettings.INotificationSettings {
     }
 
     @Override
+    public boolean isBirtdayNotifEnabled() {
+        return isOtherNotificationsEnable() && PreferenceManager.getDefaultSharedPreferences(app)
+                .getBoolean("birtday_notification", true);
+    }
+
+    @Override
     public boolean isLikeNotificationEnable() {
         return isOtherNotificationsEnable() && PreferenceManager.getDefaultSharedPreferences(app)
                 .getBoolean("likes_notification", true);

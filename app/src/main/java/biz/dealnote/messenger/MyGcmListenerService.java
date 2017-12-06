@@ -9,6 +9,7 @@ import com.google.android.gms.gcm.GcmListenerService;
 import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.push.CollapseKey;
 import biz.dealnote.messenger.push.IPushRegistrationResolver;
+import biz.dealnote.messenger.push.message.BirtdayGcmMessage;
 import biz.dealnote.messenger.push.message.CommentGCMMessage;
 import biz.dealnote.messenger.push.message.FriendAcceptedGCMMessage;
 import biz.dealnote.messenger.push.message.FriendGCMMessage;
@@ -99,6 +100,9 @@ public class MyGcmListenerService extends GcmListenerService {
                 break;
             case CollapseKey.GROUP_INVITE:
                 GroupInviteGCMMessage.fromBundle(extras).notify(context, accountId);
+                break;
+            case CollapseKey.BIRTHDAY:
+                BirtdayGcmMessage.fromBundle(extras).notify(context, accountId);
                 break;
 
             case CollapseKey.NEW_POST:

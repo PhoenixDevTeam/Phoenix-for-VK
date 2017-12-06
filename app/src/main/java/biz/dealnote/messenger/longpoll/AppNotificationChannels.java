@@ -22,6 +22,7 @@ public class AppNotificationChannels {
     public static final String NEW_POST_CHANNEL_ID = "new_post_channel";
     public static final String GROUP_INVITES_CHANNEL_ID = "group_invites_channel";
     public static final String FRIEND_REQUESTS_CHANNEL_ID = "friend_requests_channel";
+    public static final String BIRTHDAYS_CHANNEL_ID = "birthdays_channel";
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static final AudioAttributes ATTRIBUTES = new AudioAttributes.Builder()
@@ -107,6 +108,15 @@ public class AppNotificationChannels {
     public static NotificationChannel getFriendRequestsChannel(Context context){
         String channelName = context.getString(R.string.friend_requests_channel);
         NotificationChannel channel = new NotificationChannel(FRIEND_REQUESTS_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_LOW);
+        channel.enableLights(true);
+        channel.enableVibration(true);
+        return channel;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static NotificationChannel getBirthdaysChannel(Context context){
+        String channelName = context.getString(R.string.birthdays);
+        NotificationChannel channel = new NotificationChannel(BIRTHDAYS_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_LOW);
         channel.enableLights(true);
         channel.enableVibration(true);
         return channel;

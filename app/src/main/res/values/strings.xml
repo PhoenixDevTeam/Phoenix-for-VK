@@ -1258,4 +1258,8 @@
     <string name="allow_fingerprint_title">Allow fingerprint</string>
     <string name="error_login_by_fingerprint_not_allowed">Login via fingerprint is not allowed</string>
 
+    <string name="source_code_title" translatable="false">Source code</string>
+    <string name="source_code_link" translatable="false">https://github.com/PhoenixDevTeam/Phoenix-for-VK</string>
+    <string name="birthdays">Birthdays</string>
+
 </resources>
