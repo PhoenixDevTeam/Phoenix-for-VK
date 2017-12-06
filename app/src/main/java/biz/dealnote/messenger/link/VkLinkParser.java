@@ -292,7 +292,7 @@ public class VkLinkParser {
             return null;
         }
 
-        Integer groupid = Integer.parseInt(matcher.group(6));
+        Integer groupid = Integer.parseInt(matcher.group(2));
         return new OwnerLink(-Math.abs(groupid));
     }
 
@@ -344,7 +344,7 @@ public class VkLinkParser {
             return null;
         }
 
-        return new TopicLink(Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(2)));
+        return new TopicLink(Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(1)));
     }
 
     private static AbsLink parseVideo(String string) {
