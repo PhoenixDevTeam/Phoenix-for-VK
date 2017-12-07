@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Objects;
 
 /**
@@ -18,7 +17,7 @@ import biz.dealnote.messenger.util.Objects;
  */
 public class SharedHolders<T extends IdentificableHolder> {
 
-    private static final String TAG = SharedHolders.class.getSimpleName();
+    //private static final String TAG = SharedHolders.class.getSimpleName();
 
     private SparseArray<Set<WeakReference<T>>> mHoldersCache;
 
@@ -72,7 +71,7 @@ public class SharedHolders<T extends IdentificableHolder> {
     }
 
     public void put(int entityId, @NonNull T holder) {
-        Logger.d(TAG, "TRY to put holder, entityId: " + entityId);
+        //Logger.d(TAG, "TRY to put holder, entityId: " + entityId);
 
         boolean success = false;
 
@@ -88,29 +87,29 @@ public class SharedHolders<T extends IdentificableHolder> {
                 T h = reference.get();
 
                 if (Objects.isNull(h)) {
-                    Logger.d(TAG, "WEAK reference expire, remove");
+                    //Logger.d(TAG, "WEAK reference expire, remove");
                     iterator.remove();
                     continue;
                 }
 
                 if (holder == h) {
                     if (!mustHaveInThisSet) {
-                        Logger.d(TAG, "THIS holder should not be here, remove");
+                        //Logger.d(TAG, "THIS holder should not be here, remove");
                         iterator.remove();
                     } else {
                         success = true;
-                        Logger.d(TAG, "THIS holder alredy exist there");
+                        //Logger.d(TAG, "THIS holder alredy exist there");
                     }
                 } else {
                     if(!mSupportManyHoldersForEntity && mustHaveInThisSet){
-                        Logger.d(TAG, "CACHE not support many holders for entity, remove other holder");
+                        //Logger.d(TAG, "CACHE not support many holders for entity, remove other holder");
                         iterator.remove();
                     }
                 }
             }
 
             if (mustHaveInThisSet && !success) {
-                Logger.d(TAG, "SET for entity already exist, but holder not found, added");
+                //Logger.d(TAG, "SET for entity already exist, but holder not found, added");
                 WeakReference<T> reference = new WeakReference<>(holder);
                 holders.add(reference);
                 success = true;
@@ -118,16 +117,16 @@ public class SharedHolders<T extends IdentificableHolder> {
         }
 
         if (!success) {
-            Logger.d(TAG, "SET for entity does not exist yes, created and added");
+            //Logger.d(TAG, "SET for entity does not exist yes, created and added");
             Set<WeakReference<T>> set = new HashSet<>(1);
             set.add(new WeakReference<>(holder));
             mHoldersCache.put(entityId, set);
         }
 
-        printDump();
+        //printDump();
     }
 
-    private void printDump(){
+    /*private void printDump(){
         Logger.d(TAG, "DUMP START ############################");
         for(int i = 0; i < mHoldersCache.size(); i++){
             int key = mHoldersCache.keyAt(i);
@@ -142,7 +141,7 @@ public class SharedHolders<T extends IdentificableHolder> {
         }
 
         Logger.d(TAG, "DUMP END ##############################");
-    }
+    }*/
 
     public void release(){
         mHoldersCache.clear();

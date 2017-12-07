@@ -317,7 +317,7 @@ class MessagesStore extends AbsStore implements IMessagesStore {
             cv.put(MessageColumns.IMPORTANT, patch.isImportant());
             cv.put(MessageColumns.DELETED, patch.isDeleted());
             cv.put(MessageColumns.FORWARD_COUNT, safeCountOf(patch.getForward()));
-            cv.put(MessageColumns.HAS_ATTACHMENTS, safeCountOf(patch.getAttachments()));
+            cv.put(MessageColumns.HAS_ATTACHMENTS, nonEmpty(patch.getAttachments()));
             cv.put(MessageColumns.STATUS, patch.getStatus());
             cv.put(MessageColumns.ATTACH_TO, MessageColumns.DONT_ATTACH);
             cv.put(MessageColumns.EXTRAS, isNull(patch.getExtras()) ? null : GSON.toJson(patch.getExtras()));
@@ -370,7 +370,7 @@ class MessagesStore extends AbsStore implements IMessagesStore {
                             cv.put(MessageColumns.IMPORTANT, patch.isImportant());
                             cv.put(MessageColumns.DELETED, patch.isDeleted());
                             cv.put(MessageColumns.FORWARD_COUNT, safeCountOf(patch.getForward()));
-                            cv.put(MessageColumns.HAS_ATTACHMENTS, count + safeCountOf(patch.getAttachments()));
+                            cv.put(MessageColumns.HAS_ATTACHMENTS, count + safeCountOf(patch.getAttachments()) > 0);
                             cv.put(MessageColumns.STATUS, patch.getStatus());
                             cv.put(MessageColumns.ATTACH_TO, MessageColumns.DONT_ATTACH);
                             cv.put(MessageColumns.EXTRAS, isNull(patch.getExtras()) ? null : GSON.toJson(patch.getExtras()));
