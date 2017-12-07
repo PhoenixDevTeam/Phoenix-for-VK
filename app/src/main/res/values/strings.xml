@@ -1092,7 +1092,7 @@
     <string name="other">Other</string>
     <string name="hide_notif_message_body_summary">Do not show the body of a message in a notification</string>
     <string name="hide_notif_message_body_title">Hide message body</string>
-    <string name="message_text_is_not_available"><![CDATA[<text is not available>]]></string>
+    <string name="message_text_is_not_available">New message</string>
     <string name="comments_empty_text">Be the first one to write a comment here</string>
     <string name="the_comment_is_not_in_the_list">The comment is not in the list</string>
     <string name="place_for_your_comment">• A place for your comment •</string>

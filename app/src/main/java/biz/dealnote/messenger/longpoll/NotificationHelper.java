@@ -162,7 +162,7 @@ public class NotificationHelper {
         }
     }
 
-    public static String createPeerTagFor(int aid, int peerId) {
+    private static String createPeerTagFor(int aid, int peerId) {
         return aid + "_" + peerId;
     }
 

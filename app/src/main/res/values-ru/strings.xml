@@ -966,7 +966,7 @@
     <string name="other">Другое</string>
     <string name="hide_notif_message_body_summary">Не показывать текст сообщения в уведомлении</string>
     <string name="hide_notif_message_body_title">Скрыть тело сообщения</string>
-    <string name="message_text_is_not_available"><![CDATA[<текст сообщения недоступен>]]></string>
+    <string name="message_text_is_not_available">Новое сообщение</string>
     <string name="comments_empty_text">Будьте первыми, кто оставит тут комментарий</string>
     <string name="the_comment_is_not_in_the_list">Комментарий отсутствует в списке</string>
     <string name="place_for_your_comment">• место для Вашего комментария •</string>

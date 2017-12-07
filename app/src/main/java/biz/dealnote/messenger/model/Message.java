@@ -586,10 +586,6 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         return this;
     }
 
-    public boolean hasAttachments() {
-        return safeCountOf(fwd) > 0 || (nonNull(attachments) && attachments.size() > 0);
-    }
-
     public boolean isSent() {
         return status == MessageStatus.SENT;
     }

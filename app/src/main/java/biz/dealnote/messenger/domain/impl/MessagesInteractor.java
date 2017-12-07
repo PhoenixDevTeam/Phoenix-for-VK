@@ -749,7 +749,7 @@ public class MessagesInteractor implements IMessagesInteractor {
     }
 
     private Single<Optional<String>> getFinalMessagesBody(SaveMessageBuilder builder) {
-        if (!builder.isRequireEncryption()) {
+        if (isEmpty(builder.getBody()) || !builder.isRequireEncryption()) {
             return Single.just(Optional.wrap(builder.getBody()));
         }
 

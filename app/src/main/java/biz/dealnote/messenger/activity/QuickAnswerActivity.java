@@ -88,8 +88,6 @@ public class QuickAnswerActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        //int messageId = getIntent().getIntExtra(PARAM_MESSAGE_ID, -1);
-
         TextView tvMessage = findViewById(R.id.item_message_text);
         TextView tvTime = findViewById(R.id.item_message_time);
         etText = findViewById(R.id.activity_quick_answer_edit_text);
@@ -159,9 +157,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
     private CompositeDisposable mLiveSubscription = new CompositeDisposable();
 
     private void cancelFinishWithDelay() {
-        if (!mLiveSubscription.isDisposed()) {
-            mLiveSubscription.dispose();
-        }
+        mLiveSubscription.dispose();
     }
 
     @Override

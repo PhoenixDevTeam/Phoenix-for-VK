@@ -31,6 +31,7 @@ import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.MessageStatus;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.AppTextUtils;
+import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.messenger.view.BubbleLinearLayout;
 import biz.dealnote.messenger.view.OnlineView;
@@ -203,9 +204,11 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
 
         holder.body.setText(OwnerLinkSpanFactory.withSpans(displayedBody, true, false, ownerLinkAdapter));
         holder.encryptedView.setVisibility(message.getCryptStatus() == CryptStatus.NO_ENCRYPTION ? View.GONE : View.VISIBLE);
-        holder.attachmentsRoot.setVisibility(message.hasAttachments() ? View.VISIBLE : View.GONE);
 
-        if (message.hasAttachments()) {
+        boolean hasAttachments = Utils.nonEmpty(message.getFwd()) || (nonNull(message.getAttachments()) && message.getAttachments().size() > 0);
+        holder.attachmentsRoot.setVisibility(hasAttachments ? View.VISIBLE : View.GONE);
+
+        if (hasAttachments) {
             attachmentsViewBinder.displayAttachments(message.getAttachments(), holder.attachmentsHolder, true);
             attachmentsViewBinder.displayForwards(message.getFwd(), holder.forwardMessagesRoot, context, true);
         }

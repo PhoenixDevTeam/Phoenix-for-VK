@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Phoenix Lite</string>
@@ -964,7 +964,7 @@
     <string name="other">Інше</string>
     <string name="hide_notif_message_body_summary">Не показувати текст повідомлення в сповіщенні</string>
     <string name="hide_notif_message_body_title">Приховати тіло повідомлення</string>
-    <string name="message_text_is_not_available"><![CDATA[<текст повідомлення недоступний>]]></string>
+    <string name="message_text_is_not_available">Нове повідомлення</string>
     <string name="comments_empty_text">Будьте першими, хто залишить тут коментар</string>
     <string name="the_comment_is_not_in_the_list">Коментар відсутній в списку</string>
     <string name="place_for_your_comment">• місце для Вашого коментаря •</string>
