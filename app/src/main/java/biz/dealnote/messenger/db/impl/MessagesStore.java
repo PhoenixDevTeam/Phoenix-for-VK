@@ -87,7 +87,7 @@ class MessagesStore extends AbsStore implements IMessagesStore {
         cv.put(MessageColumns.IMPORTANT, dbo.isImportant());
         cv.put(MessageColumns.DELETED, dbo.isDeleted());
         cv.put(MessageColumns.FORWARD_COUNT, dbo.getForwardCount());
-        cv.put(MessageColumns.ATTACHMENT_COUNT, dbo.getAttachmentsCount());
+        cv.put(MessageColumns.HAS_ATTACHMENTS, dbo.isHasAttachmens());
         cv.put(MessageColumns.STATUS, dbo.getStatus());
         cv.put(MessageColumns.ORIGINAL_ID, dbo.getOriginalId());
         cv.put(MessageColumns.CHAT_ACTIVE, dbo.getChatActive());
@@ -115,7 +115,7 @@ class MessagesStore extends AbsStore implements IMessagesStore {
 
         int index = addToListAndReturnIndex(target, builder.build());
 
-        if (dbo.getAttachmentsCount() > 0) {
+        if (dbo.isHasAttachmens()) {
             List<Entity> entities = dbo.getAttachments();
 
             for (Entity attachmentEntity : entities) {
@@ -317,7 +317,7 @@ class MessagesStore extends AbsStore implements IMessagesStore {
             cv.put(MessageColumns.IMPORTANT, patch.isImportant());
             cv.put(MessageColumns.DELETED, patch.isDeleted());
             cv.put(MessageColumns.FORWARD_COUNT, safeCountOf(patch.getForward()));
-            cv.put(MessageColumns.ATTACHMENT_COUNT, safeCountOf(patch.getAttachments()));
+            cv.put(MessageColumns.HAS_ATTACHMENTS, safeCountOf(patch.getAttachments()));
             cv.put(MessageColumns.STATUS, patch.getStatus());
             cv.put(MessageColumns.ATTACH_TO, MessageColumns.DONT_ATTACH);
             cv.put(MessageColumns.EXTRAS, isNull(patch.getExtras()) ? null : GSON.toJson(patch.getExtras()));
@@ -370,7 +370,7 @@ class MessagesStore extends AbsStore implements IMessagesStore {
                             cv.put(MessageColumns.IMPORTANT, patch.isImportant());
                             cv.put(MessageColumns.DELETED, patch.isDeleted());
                             cv.put(MessageColumns.FORWARD_COUNT, safeCountOf(patch.getForward()));
-                            cv.put(MessageColumns.ATTACHMENT_COUNT, count + safeCountOf(patch.getAttachments()));
+                            cv.put(MessageColumns.HAS_ATTACHMENTS, count + safeCountOf(patch.getAttachments()));
                             cv.put(MessageColumns.STATUS, patch.getStatus());
                             cv.put(MessageColumns.ATTACH_TO, MessageColumns.DONT_ATTACH);
                             cv.put(MessageColumns.EXTRAS, isNull(patch.getExtras()) ? null : GSON.toJson(patch.getExtras()));
@@ -400,7 +400,7 @@ class MessagesStore extends AbsStore implements IMessagesStore {
     private MessageEntity fullMapDbo(int accountId, Cursor cursor, boolean withAttachments, boolean withForwardMessages, @NonNull Cancelable cancelable) {
         final MessageEntity dbo = baseMapDbo(cursor);
 
-        if (withAttachments && dbo.getAttachmentsCount() > 0) {
+        if (withAttachments && dbo.isHasAttachmens()) {
             List<Entity> attachments = getStores()
                     .attachments()
                     .getAttachmentsDbosSync(accountId, AttachToType.MESSAGE, dbo.getId(), cancelable);
@@ -451,7 +451,7 @@ class MessagesStore extends AbsStore implements IMessagesStore {
                 .setOut(cursor.getInt(cursor.getColumnIndex(MessageColumns.OUT)) == 1)
                 .setStatus(status)
                 .setDate(cursor.getLong(cursor.getColumnIndex(MessageColumns.DATE)))
-                .setAttachmentsCount(cursor.getInt(cursor.getColumnIndex(MessageColumns.ATTACHMENT_COUNT)))
+                .setHasAttachmens(cursor.getInt(cursor.getColumnIndex(MessageColumns.HAS_ATTACHMENTS)) == 1)
                 .setForwardCount(cursor.getInt(cursor.getColumnIndex(MessageColumns.FORWARD_COUNT)))
                 .setDeleted(cursor.getInt(cursor.getColumnIndex(MessageColumns.DELETED)) == 1)
                 .setTitle(cursor.getString(cursor.getColumnIndex(MessageColumns.TITLE)))
@@ -773,6 +773,18 @@ class MessagesStore extends AbsStore implements IMessagesStore {
             }
 
             emitter.onSuccess(Optional.empty());
+        });
+    }
+
+    @Override
+    public Completable notifyMessageHasAttachments(int accountId, int messageId) {
+        return Completable.fromAction(() -> {
+            ContentValues cv = new ContentValues();
+            cv.put(MessageColumns.HAS_ATTACHMENTS, true);
+            Uri uri = MessengerContentProvider.getMessageContentUriFor(accountId);
+            String where = MessageColumns._ID + " = ?";
+            String[] args = {String.valueOf(messageId)};
+            getContentResolver().update(uri, cv, where, args);
         });
     }
 

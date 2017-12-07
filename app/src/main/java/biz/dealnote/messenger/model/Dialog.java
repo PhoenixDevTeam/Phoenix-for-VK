@@ -198,11 +198,7 @@ public class Dialog implements Identificable, Parcelable {
     }
 
     public boolean hasAttachments() {
-        return getAttachmentsCount() > 0;
-    }
-
-    public int getAttachmentsCount() {
-        return message == null ? 0 : message.getAttachmentsCount();
+        return message != null && message.hasAttachments();
     }
 
     public String getLastMessageBody() {

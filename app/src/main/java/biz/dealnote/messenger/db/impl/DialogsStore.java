@@ -348,7 +348,7 @@ class DialogsStore extends AbsStore implements IDialogsStore {
                 .setOut(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_OUT)) == 1)
                 .setTitle(cursor.getString(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_TITLE)))
                 .setRead(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_READ_STATE)) == 1)
-                .setAttachmentsCount(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_ATTACHMENT_COUNT)))
+                .setHasAttachmens(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_HAS_ATTACHMENTS)) == 1)
                 .setForwardCount(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_FWD_COUNT)))
                 .setAction(action)
                 .setEncrypted(encrypted);

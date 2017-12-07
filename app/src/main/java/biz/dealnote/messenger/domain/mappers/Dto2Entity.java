@@ -755,7 +755,7 @@ public class Dto2Entity {
                 .setImportant(dto.important)
                 .setDeleted(dto.deleted)
                 .setForwardCount(Utils.safeCountOf(dto.fwd_messages))
-                .setAttachmentsCount(nonNull(dto.attachments) ? dto.attachments.size() : 0)
+                .setHasAttachmens(nonNull(dto.attachments) && !dto.attachments.isEmpty())
                 .setStatus(MessageStatus.SENT) // only sent can be
                 .setOriginalId(dto.id)
                 .setChatActive(dto.chat_active)
@@ -770,7 +770,7 @@ public class Dto2Entity {
                 .setPhoto200(dto.photo_200)
                 .setRandomId(randomId);
 
-        if (dbo.getAttachmentsCount() > 0) {
+        if (dbo.isHasAttachmens()) {
             dbo.setAttachments(buildAttachmentsDbos(dto.attachments));
         } else {
             dbo.setAttachments(Collections.emptyList());

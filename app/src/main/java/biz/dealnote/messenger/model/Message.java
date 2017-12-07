@@ -100,7 +100,7 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
 
     private int forwardMessagesCount;
 
-    private int attachmentsCount;
+    private boolean hasAttachments;
 
     public Message(int id) {
         this.id = id;
@@ -155,21 +155,21 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         this.extras = ParcelUtils.readIntStringMap(in);
 
         this.forwardMessagesCount = in.readInt();
-        this.attachmentsCount = in.readInt();
+        this.hasAttachments = in.readInt() == 1;
     }
 
-    public Message setAttachmentsCount(int attachmentsCount) {
-        this.attachmentsCount = attachmentsCount;
+    public Message setHasAttachments(boolean hasAttachments) {
+        this.hasAttachments = hasAttachments;
         return this;
+    }
+
+    public boolean isHasAttachments() {
+        return hasAttachments;
     }
 
     public Message setForwardMessagesCount(int forwardMessagesCount) {
         this.forwardMessagesCount = forwardMessagesCount;
         return this;
-    }
-
-    public int getAttachmentsCount() {
-        return attachmentsCount;
     }
 
     public int getForwardMessagesCount() {
@@ -574,7 +574,7 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         dest.writeInt(randomId);
         ParcelUtils.writeIntStringMap(dest, extras);
         dest.writeInt(forwardMessagesCount);
-        dest.writeInt(attachmentsCount);
+        dest.writeInt(hasAttachments ? 1 : 0);
     }
 
     public int getAccountId() {

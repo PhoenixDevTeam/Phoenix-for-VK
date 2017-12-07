@@ -20,7 +20,7 @@ public final class MessageColumns implements BaseColumns {
     public static final String IMPORTANT = "important";
     public static final String DELETED = "deleted";
     public static final String FORWARD_COUNT = "fwd_count";
-    public static final String ATTACHMENT_COUNT = "attachments_count";
+    public static final String HAS_ATTACHMENTS = "has_attachments";
     public static final String STATUS = "status";
     public static final String ATTACH_TO = "attach_to";
     public static final String ORIGINAL_ID = "original_id";
@@ -68,7 +68,7 @@ public final class MessageColumns implements BaseColumns {
         cv.put(DELETED, message.deleted);
         cv.put(IMPORTANT, message.important);
         cv.put(FORWARD_COUNT, Utils.safeCountOf(message.fwd_messages));
-        cv.put(ATTACHMENT_COUNT, Objects.isNull(message.attachments) ? 0 : message.attachments.size());
+        cv.put(HAS_ATTACHMENTS, Objects.isNull(message.attachments) ? 0 : message.attachments.size());
         cv.put(STATUS, status);
         cv.put(ATTACH_TO, attachTo);
         cv.put(ORIGINAL_ID, message.id);
@@ -117,7 +117,7 @@ public final class MessageColumns implements BaseColumns {
             cv.put(FORWARD_COUNT, item.getFwd().size());
         }
 
-        cv.put(ATTACHMENT_COUNT, item.getAttachments() == null ? 0 : item.getAttachments().size());
+        cv.put(HAS_ATTACHMENTS, item.getAttachments() == null ? 0 : item.getAttachments().size());
         cv.put(STATUS, item.getStatus());
         cv.put(ATTACH_TO, item.getAttachTo());
         cv.put(ORIGINAL_ID, item.getOriginalId());
@@ -137,7 +137,7 @@ public final class MessageColumns implements BaseColumns {
     public static final String FULL_DELETED = TABLENAME + "." + DELETED;
     public static final String FULL_IMPORTANT = TABLENAME + "." + IMPORTANT;
     public static final String FULL_FORWARD_COUNT = TABLENAME + "." + FORWARD_COUNT;
-    public static final String FULL_ATTACHMENT_COUNT = TABLENAME + "." + ATTACHMENT_COUNT;
+    public static final String FULL_HAS_ATTACHMENTS = TABLENAME + "." + HAS_ATTACHMENTS;
     public static final String FULL_STATUS = TABLENAME + "." + STATUS;
     public static final String FULL_ATTACH_TO = TABLENAME + "." + ATTACH_TO;
     public static final String FULL_ORIGINAL_ID = TABLENAME + "." + ORIGINAL_ID;

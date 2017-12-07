@@ -57,7 +57,7 @@ public class Model2Entity {
                 .setImportant(message.isImportant())
                 .setDeleted(message.isDeleted())
                 .setForwardCount(message.getForwardMessagesCount())
-                .setAttachmentsCount(message.getAttachmentsCount())
+                .setHasAttachmens(message.isHasAttachments())
                 .setStatus(message.getStatus())
                 .setOriginalId(message.getOriginalId())
                 .setChatActive(message.getChatActive())

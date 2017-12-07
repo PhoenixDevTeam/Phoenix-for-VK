@@ -51,7 +51,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 154;
+    private static final int DATABASE_VERSION = 155;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -507,7 +507,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " [" + MessageColumns.DELETED + "] BOOLEAN, " +
                 " [" + MessageColumns.IMPORTANT + "] BOOLEAN, " +
                 " [" + MessageColumns.FORWARD_COUNT + "] INTEGER, " +
-                " [" + MessageColumns.ATTACHMENT_COUNT + "] INTEGER, " +
+                " [" + MessageColumns.HAS_ATTACHMENTS + "] BOOLEAN, " +
                 " [" + MessageColumns.ATTACH_TO + "] INTEGER REFERENCES " + MessageColumns.TABLENAME + "([" + MessageColumns._ID + "]) ON DELETE CASCADE ON UPDATE CASCADE, " +
                 " [" + MessageColumns.STATUS + "] INTEGER, " +
                 " [" + MessageColumns.CHAT_ACTIVE + "] TEXT, " +

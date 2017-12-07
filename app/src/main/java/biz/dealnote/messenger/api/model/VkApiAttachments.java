@@ -143,6 +143,10 @@ public class VkApiAttachments {
         return size() == 0;
     }
 
+    public boolean nonEmpty(){
+        return size() > 0;
+    }
+
     public int size() {
         return entries == null ? 0 : entries.size();
     }

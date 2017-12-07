@@ -291,7 +291,7 @@ public class Dto2Model {
                 .setOut(message.out)
                 .setStatus(MessageStatus.SENT)
                 .setDate(message.date)
-                .setAttachmentsCount(Objects.isNull(message.attachments) ? 0 : message.attachments.size())
+                .setHasAttachments(nonNull(message.attachments) && message.attachments.nonEmpty())
                 .setForwardMessagesCount(safeCountOf(message.fwd_messages))
                 .setDeleted(message.deleted)
                 .setOriginalId(message.id)
@@ -477,7 +477,7 @@ public class Dto2Model {
 
         if (dto.attachments != null) {
             comment.setAttachments(buildAttachments(dto.attachments, owners));
-            //comment.setAttachmentsCount(comment.getAttachments().count());
+            //comment.setHasAttachmens(comment.getAttachments().count());
         }
 
         return comment;

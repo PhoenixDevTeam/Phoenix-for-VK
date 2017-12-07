@@ -36,7 +36,7 @@ public class MessageEntity extends Entity {
 
     private int forwardCount;
 
-    private int attachmentsCount;
+    private boolean hasAttachmens;
 
     @MessageStatus
     private int status;
@@ -176,12 +176,12 @@ public class MessageEntity extends Entity {
         return this;
     }
 
-    public int getAttachmentsCount() {
-        return attachmentsCount;
+    public boolean isHasAttachmens() {
+        return hasAttachmens;
     }
 
-    public MessageEntity setAttachmentsCount(int attachmentsCount) {
-        this.attachmentsCount = attachmentsCount;
+    public MessageEntity setHasAttachmens(boolean hasAttachmens) {
+        this.hasAttachmens = hasAttachmens;
         return this;
     }
 

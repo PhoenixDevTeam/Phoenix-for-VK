@@ -249,7 +249,7 @@ public class Entity2Model {
                 .setOut(dbo.isOut())
                 .setStatus(dbo.getStatus())
                 .setDate(dbo.getDate())
-                .setAttachmentsCount(dbo.getAttachmentsCount())
+                .setHasAttachments(dbo.isHasAttachmens())
                 .setForwardMessagesCount(dbo.getForwardCount())
                 .setDeleted(dbo.isDeleted())
                 .setOriginalId(dbo.getOriginalId())

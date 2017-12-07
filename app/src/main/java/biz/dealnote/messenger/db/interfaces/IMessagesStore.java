@@ -64,6 +64,8 @@ public interface IMessagesStore extends IStore {
 
     Single<Optional<Pair<Integer, MessageEntity>>> findFirstUnsentMessage(Collection<Integer> accountIds, boolean withAtatchments, boolean withForwardMessages);
 
+    Completable notifyMessageHasAttachments(int accountId, int messageId);
+
     ///**
     // * Получить список сообщений, которые "приаттаччены" к сообщению с идентификатором attachTo
     // *
@@ -71,7 +73,7 @@ public interface IMessagesStore extends IStore {
     // * @param attachTo           идентификатор сообщения
     // * @param includeFwd         если true - рекурсивно загрузить всю иерархию сообщений (вложенные во вложенных и т.д.)
     // * @param includeAttachments - если true - включить вложения к пересланным сообщениям
-    // * @param forceAttachments   если true - то алгоритм проигнорирует значение в ATTACHMENT_COUNT
+    // * @param forceAttachments   если true - то алгоритм проигнорирует значение в HAS_ATTACHMENTS
     // *                           и в любом случае будет делать выборку из таблицы вложений
     // * @return список сообщений
     // */

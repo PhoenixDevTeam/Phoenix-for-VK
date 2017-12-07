@@ -15,6 +15,7 @@ import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.api.model.upload.UploadPhotoToMessageDto;
 import biz.dealnote.messenger.db.AttachToType;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.upload.BaseUploadResponse;
@@ -108,10 +109,12 @@ public class PhotoMessageUploadTask extends AbstractUploadTask<PhotoMessageUploa
 
     private void attachIntoDatabase(@NonNull VKApiPhoto dto) {
         int aid = uploadObject.getAccountId();
+        int mid = uploadObject.getDestination().getId();
         Photo photo = Dto2Model.transform(dto);
 
         Injection.provideAttachmentsRepository()
-                .attach(aid, AttachToType.MESSAGE, uploadObject.getDestination().getId(), Collections.singletonList(photo))
+                .attach(aid, AttachToType.MESSAGE, mid, Collections.singletonList(photo))
+                .andThen(Stores.getInstance().messages().notifyMessageHasAttachments(aid, mid))
                 .blockingAwait();
     }
 

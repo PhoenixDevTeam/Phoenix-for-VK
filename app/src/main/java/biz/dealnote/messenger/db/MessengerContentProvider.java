@@ -385,7 +385,7 @@ public class MessengerContentProvider extends ContentProvider {
         sMessagesProjectionMap.put(MessageColumns.DELETED, MessageColumns.FULL_DELETED);
         sMessagesProjectionMap.put(MessageColumns.IMPORTANT, MessageColumns.FULL_IMPORTANT);
         sMessagesProjectionMap.put(MessageColumns.FORWARD_COUNT, MessageColumns.FULL_FORWARD_COUNT);
-        sMessagesProjectionMap.put(MessageColumns.ATTACHMENT_COUNT, MessageColumns.FULL_ATTACHMENT_COUNT);
+        sMessagesProjectionMap.put(MessageColumns.HAS_ATTACHMENTS, MessageColumns.FULL_HAS_ATTACHMENTS);
         sMessagesProjectionMap.put(MessageColumns.STATUS, MessageColumns.FULL_STATUS);
         sMessagesProjectionMap.put(MessageColumns.ATTACH_TO, MessageColumns.FULL_ATTACH_TO);
         sMessagesProjectionMap.put(MessageColumns.ORIGINAL_ID, MessageColumns.FULL_ORIGINAL_ID);
@@ -477,7 +477,7 @@ public class MessengerContentProvider extends ContentProvider {
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_OUT, MessageColumns.FULL_OUT + " AS " + DialogsColumns.FOREIGN_MESSAGE_OUT);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_TITLE, MessageColumns.FULL_TITLE + " AS " + DialogsColumns.FOREIGN_MESSAGE_TITLE);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_READ_STATE, MessageColumns.FULL_READ_STATE + " AS " + DialogsColumns.FOREIGN_MESSAGE_READ_STATE);
-        sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_ATTACHMENT_COUNT, MessageColumns.FULL_ATTACHMENT_COUNT + " AS " + DialogsColumns.FOREIGN_MESSAGE_ATTACHMENT_COUNT);
+        sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_HAS_ATTACHMENTS, MessageColumns.FULL_HAS_ATTACHMENTS + " AS " + DialogsColumns.FOREIGN_MESSAGE_HAS_ATTACHMENTS);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_FWD_COUNT, MessageColumns.FULL_FORWARD_COUNT + " AS " + DialogsColumns.FOREIGN_MESSAGE_FWD_COUNT);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_ACTION, MessageColumns.FULL_ACTION + " AS " + DialogsColumns.FOREIGN_MESSAGE_ACTION);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_ENCRYPTED, MessageColumns.FULL_ENCRYPTED + " AS " + DialogsColumns.FOREIGN_MESSAGE_ENCRYPTED);

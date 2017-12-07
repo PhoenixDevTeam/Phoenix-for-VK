@@ -71,7 +71,7 @@ public final class DialogsColumns implements BaseColumns {
     public static final String FOREIGN_MESSAGE_OUT = "message_out";
     public static final String FOREIGN_MESSAGE_TITLE = "message_title";
     public static final String FOREIGN_MESSAGE_READ_STATE = "message_read_state";
-    public static final String FOREIGN_MESSAGE_ATTACHMENT_COUNT = "message_attachment_count";
+    public static final String FOREIGN_MESSAGE_HAS_ATTACHMENTS = "message_has_attachments";
     public static final String FOREIGN_MESSAGE_FWD_COUNT = "message_forward_count";
     public static final String FOREIGN_MESSAGE_ACTION = "message_action";
     public static final String FOREIGN_MESSAGE_ENCRYPTED = "message_encrypted";
