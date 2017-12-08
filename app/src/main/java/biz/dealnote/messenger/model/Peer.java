@@ -86,6 +86,10 @@ public class Peer implements Parcelable {
         return peerId - VKApiMessage.CHAT_PEER;
     }
 
+    public static int fromOwnerId(int ownerId){
+        return ownerId;
+    }
+
     public static int toOwnerId(int peerId){
         return peerId;
     }

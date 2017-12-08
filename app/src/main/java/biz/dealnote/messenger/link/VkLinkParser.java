@@ -1,7 +1,5 @@
 package biz.dealnote.messenger.link;
 
-import android.text.TextUtils;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,24 +23,27 @@ import biz.dealnote.messenger.link.types.WallLink;
 import biz.dealnote.messenger.link.types.WallPostLink;
 import biz.dealnote.messenger.model.Peer;
 
+import static biz.dealnote.messenger.util.Utils.nonEmpty;
+import static java.lang.Integer.parseInt;
+
 public class VkLinkParser {
 
-    private static final Pattern PATTERN_PHOTOS = Pattern.compile("vk\\.com/photos(-?\\d*)");
-    private static final Pattern PATTERN_PROFILE_ID = Pattern.compile("vk\\.com//id(\\d+)$");
+    private static final Pattern PATTERN_PHOTOS = Pattern.compile("vk\\.com/photos(-?\\d*)"); //+
+    private static final Pattern PATTERN_PROFILE_ID = Pattern.compile("vk\\.com//id(\\d+)$"); //+
     private static final Pattern PATTERN_DOMAIN = Pattern.compile("vk\\.com/([\\w.]+)");
     private static final Pattern PATTERN_WALL_POST = Pattern.compile("vk.com/(?:[\\w.\\d]+\\?(?:[\\w=&]+)?w=)?wall(-?\\d*)_(\\d*)");
     private static final Pattern PATTERN_AWAY = Pattern.compile("vk\\.com/away(\\.php)?\\?(.*)");
-    private static final Pattern PATTERN_DIALOG = Pattern.compile("vk\\.com/im\\?sel=(c?)(\\d+)");
+    private static final Pattern PATTERN_DIALOG = Pattern.compile("vk\\.com/im\\?sel=(c?)(-?\\d+)");
     private static final Pattern PATTERN_ALBUMS = Pattern.compile("vk\\.com/albums(-?\\d+)");
     private static final Pattern PATTERN_AUDIOS = Pattern.compile("vk\\.com/audios(-?\\d+)");
-    private static final Pattern PATTERN_ALBUM = Pattern.compile("vk\\.com/album(-)?(\\d*)_(\\d*)");
+    private static final Pattern PATTERN_ALBUM = Pattern.compile("vk\\.com/album(-?\\d*)_(\\d*)");
     private static final Pattern PATTERN_WALL = Pattern.compile("vk\\.com/wall(-?\\d*)");
-    private static final Pattern PATTERN_PHOTO = Pattern.compile("vk\\.com/(\\w)*(-)?(\\d)*(\\?z=)?photo(-?\\d*_\\d*)");
-    private static final Pattern PATTERN_VIDEO = Pattern.compile("vk\\.com/video(-?\\d*)_(\\d*)");
-    private static final Pattern PATTERN_DOC = Pattern.compile("vk\\.com/doc(-?\\d*)_(\\d*)");
-    private static final Pattern PATTERN_TOPIC = Pattern.compile("vk\\.com/topic-(\\d*)_(\\d*)");
+    private static final Pattern PATTERN_PHOTO = Pattern.compile("vk\\.com/(\\w)*(-)?(\\d)*(\\?z=)?photo(-?\\d*)_(\\d*)"); //+
+    private static final Pattern PATTERN_VIDEO = Pattern.compile("vk\\.com/video(-?\\d*)_(\\d*)"); //+
+    private static final Pattern PATTERN_DOC = Pattern.compile("vk\\.com/doc(-?\\d*)_(\\d*)"); //+
+    private static final Pattern PATTERN_TOPIC = Pattern.compile("vk\\.com/topic-(\\d*)_(\\d*)"); //+
     private static final Pattern PATTERN_FAVE = Pattern.compile("vk\\.com/fave");
-    private static final Pattern PATTERN_GROUP_ID = Pattern.compile("vk\\.com/(club|event|public)(\\d+)$");
+    private static final Pattern PATTERN_GROUP_ID = Pattern.compile("vk\\.com/(club|event|public)(\\d+)$"); //+
     private static final Pattern PATTERN_FAVE_WITH_SECTION = Pattern.compile("vk\\.com/fave\\?section=([\\w.]+)");
 
     //vk.com/wall-2345345_7834545?reply=15345346
@@ -126,8 +127,8 @@ public class VkLinkParser {
             return new DialogsLink();
         }
 
-       vkLink = VkLinkParser.parsePage(string);
-        if (vkLink != null){
+        vkLink = VkLinkParser.parsePage(string);
+        if (vkLink != null) {
             return vkLink;
         }
 
@@ -223,13 +224,8 @@ public class VkLinkParser {
             return null;
         }
 
-        String ownerId = matcher.group(2);
-        String divider = matcher.group(1);
-        String albumId = matcher.group(3);
-
-        if (!TextUtils.isEmpty(divider)) {
-            ownerId = "-" + ownerId;
-        }
+        String ownerId = matcher.group(1);
+        String albumId = matcher.group(2);
 
         if (albumId.equals("0")) {
             albumId = Long.toString(-6);
@@ -243,7 +239,7 @@ public class VkLinkParser {
             albumId = Long.toString(-15);
         }
 
-        return new PhotoAlbumLink(Integer.parseInt(ownerId), Integer.parseInt(albumId));
+        return new PhotoAlbumLink(parseInt(ownerId), parseInt(albumId));
     }
 
     private static AbsLink parseAlbums(String string) {
@@ -253,7 +249,7 @@ public class VkLinkParser {
         }
 
         String ownerId = matcher.group(1);
-        return new PhotoAlbumsLink(Integer.parseInt(ownerId));
+        return new PhotoAlbumsLink(parseInt(ownerId));
     }
 
     private static AbsLink parseAway(String string) {
@@ -266,15 +262,18 @@ public class VkLinkParser {
 
     private static AbsLink parseDialog(String string) {
         Matcher matcher = PATTERN_DIALOG.matcher(string);
-        if (!matcher.find()) {
-            return null;
+
+        try {
+            if(matcher.find()){
+                String chat = matcher.group(1);
+                int id = parseInt(matcher.group(2));
+                boolean isChat = nonEmpty(chat);
+                return new DialogLink(isChat ? Peer.fromChatId(id) : Peer.fromOwnerId(id));
+            }
+        } catch (Exception ignored){
         }
 
-        String chat = matcher.group(5);
-        int id = Integer.parseInt(matcher.group(6));
-        boolean isChat = !TextUtils.isEmpty(chat);
-
-        return new DialogLink(isChat ? Peer.fromChatId(id) : id);
+        return null;
     }
 
     private static AbsLink parseDomain(String string) {
@@ -288,12 +287,15 @@ public class VkLinkParser {
 
     private static AbsLink parseGroupById(String string) {
         Matcher matcher = PATTERN_GROUP_ID.matcher(string);
-        if (!matcher.find()) {
-            return null;
-        }
 
-        Integer groupid = Integer.parseInt(matcher.group(2));
-        return new OwnerLink(-Math.abs(groupid));
+        try {
+            if (matcher.find()) {
+                return new OwnerLink(-Math.abs(parseInt(matcher.group(2))));
+            }
+        } catch (Exception ignored) {
+
+        }
+        return null;
     }
 
     private static AbsLink parsePage(String string) {
@@ -311,55 +313,68 @@ public class VkLinkParser {
 
     private static AbsLink parsePhoto(String string) {
         Matcher matcher = PATTERN_PHOTO.matcher(string);
-        if (!matcher.find()) {
-            return null;
+
+        try {
+            if (matcher.find()) {
+                int ownerId = parseInt(matcher.group(5));
+                int photoId = parseInt(matcher.group(6));
+                return new PhotoLink(photoId, ownerId);
+            }
+        } catch (Exception ignored) {
+
         }
 
-        String path = matcher.group(9);
-        return new PhotoLink(path);
+        return null;
     }
 
     private static AbsLink parsePhotos(String string) {
         Matcher matcher = PATTERN_PHOTOS.matcher(string);
-        if (!matcher.find()) {
-            return null;
+        try {
+            if (matcher.find()) {
+                return new PhotoAlbumsLink(parseInt(matcher.group(1)));
+            }
+        } catch (Exception ignored) {
         }
 
-        return new PhotoAlbumsLink(Integer.parseInt(matcher.group(1)));
+        return null;
     }
 
     private static AbsLink parseProfileById(String string) {
         Matcher matcher = PATTERN_PROFILE_ID.matcher(string);
-        if (!matcher.find()) {
-            return null;
+        try {
+            if (matcher.find()) {
+                return new OwnerLink(parseInt(matcher.group(1)));
+            }
+        } catch (Exception ignored) {
         }
 
-        int ownerId = Integer.valueOf(matcher.group(1));
-        return new OwnerLink(ownerId);
+        return null;
     }
 
     private static AbsLink parseTopic(String string) {
         Matcher matcher = PATTERN_TOPIC.matcher(string);
-        if (!matcher.find()) {
-            return null;
-        }
+        try {
+            if (matcher.find()) {
+                return new TopicLink(parseInt(matcher.group(2)), parseInt(matcher.group(1)));
+            }
+        } catch (Exception ignored) {
 
-        return new TopicLink(Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(1)));
+        }
+        return null;
     }
 
     private static AbsLink parseVideo(String string) {
         Matcher matcher = PATTERN_VIDEO.matcher(string);
-        if (!matcher.find()) {
-            return null;
-        }
 
         try {
-            int ownerId = Integer.parseInt(matcher.group(1));
-            int videoId = Integer.parseInt(matcher.group(2));
-            return new VideoLink(ownerId, videoId);
-        } catch (NumberFormatException ignored){
-            return null;
+            if (matcher.find()) {
+                return new VideoLink(parseInt(matcher.group(1)), parseInt(matcher.group(2)));
+            }
+        } catch (NumberFormatException ignored) {
+
         }
+
+        return null;
     }
 
     private static AbsLink parseFave(String string) {
@@ -370,7 +385,7 @@ public class VkLinkParser {
             return new FaveLink(matcherWithSection.group(1));
         }
 
-        if(matcher.find()){
+        if (matcher.find()) {
             return new FaveLink();
         }
 
@@ -383,16 +398,21 @@ public class VkLinkParser {
             return null;
         }
 
-        return new AudiosLink(Integer.parseInt(matcher.group(1)));
+        return new AudiosLink(parseInt(matcher.group(1)));
     }
 
     private static AbsLink parseDoc(String string) {
         Matcher matcher = PATTERN_DOC.matcher(string);
-        if (!matcher.find()) {
-            return null;
+
+        try {
+            if (matcher.find()) {
+                return new DocLink(parseInt(matcher.group(1)), parseInt(matcher.group(2)));
+            }
+        } catch (Exception ignored) {
+
         }
 
-        return new DocLink(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
+        return null;
     }
 
     private static AbsLink parseWall(String string) {
@@ -401,16 +421,16 @@ public class VkLinkParser {
             return null;
         }
 
-        return new WallLink(Integer.parseInt(matcher.group(1)));
+        return new WallLink(parseInt(matcher.group(1)));
     }
 
-    private static AbsLink parseWallCommentLink(String string){
+    private static AbsLink parseWallCommentLink(String string) {
         Matcher matcher = PATTERN_WALL_POST_COMMENT.matcher(string);
         if (!matcher.find()) {
             return null;
         }
 
-        WallCommentLink link = new WallCommentLink(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)));
+        WallCommentLink link = new WallCommentLink(parseInt(matcher.group(1)), parseInt(matcher.group(2)), parseInt(matcher.group(3)));
         return link.isValid() ? link : null;
     }
 
@@ -420,6 +440,6 @@ public class VkLinkParser {
             return null;
         }
 
-        return new WallPostLink(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
+        return new WallPostLink(parseInt(matcher.group(1)), parseInt(matcher.group(2)));
     }
 }

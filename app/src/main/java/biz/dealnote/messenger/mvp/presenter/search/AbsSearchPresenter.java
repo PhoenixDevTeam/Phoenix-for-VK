@@ -51,7 +51,7 @@ public abstract class AbsSearchPresenter<V extends IBaseSearchView<T>, C extends
 
         this.nextFrom = getInitialNextFrom();
         this.data = new ArrayList<>();
-        this.actionHandler.setAction((what, object) -> doSearch());
+        this.actionHandler.setAction((what, object) -> object.doSearch());
     }
 
     @Override
@@ -80,8 +80,8 @@ public abstract class AbsSearchPresenter<V extends IBaseSearchView<T>, C extends
 
     @SuppressWarnings("unchecked")
     void doSearch() {
-        if(!canSearch(this.criteria)){
-            setLoadingNow(false);
+        if(!canSearch(this.criteria) || isNull(this.nextFrom)){
+            //setLoadingNow(false);
             return;
         }
 

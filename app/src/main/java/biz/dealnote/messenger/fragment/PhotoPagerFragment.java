@@ -540,7 +540,7 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
                 }
             });
 
-            mPhotoView.setOnPhotoTapListener((view, x, y) -> getPresenter().firePhotoTap());
+            mPhotoView.setOnPhotoTapListener((view, x, y) -> callPresenter(PhotoPagerPresenter::firePhotoTap));
         }
 
         private void animateImageViewAndGoBack(float distance) {

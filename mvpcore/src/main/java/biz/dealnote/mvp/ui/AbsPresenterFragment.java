@@ -115,6 +115,12 @@ public abstract class AbsPresenterFragment<P extends IPresenter<V>, V extends IM
 
     private List<PresenterAction<P, V>> onReceivePresenterActions = new ArrayList<>();
 
+    protected void callPresenter(PresenterAction<P, V> action){
+        if(isPresenterPrepared()){
+            action.call(getPresenter());
+        }
+    }
+
     protected void postPrenseterReceive(PresenterAction<P, V> action){
         if(isPresenterPrepared()){
             action.call(getPresenter());
