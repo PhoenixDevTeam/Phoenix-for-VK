@@ -19,15 +19,15 @@ In order to build this project you need to add missing file with several VK keys
   1) Create "build-config-fields.properties" file in the root of project with the following data
 
 ```
-full_vk_app_id=
+full_vk_app_id=6209567
 full_gcm_sender_id=""
-full_vk_service_token=""
-full_vk_client_secret=""
+full_vk_service_token="7915b3df7915b3df7915b3dfd9794b73c0779157915b3df20c283430d77571be482c8b3"
+full_vk_client_secret="FVstRaiX9SNaEPh0yo5N"
 full_youtube_dev_key=""
-lite_vk_app_id=
+lite_vk_app_id=6209567
 lite_gcm_sender_id=""
-lite_vk_service_token=""
-lite_vk_client_secret=""
+lite_vk_service_token="7915b3df7915b3df7915b3dfd9794b73c0779157915b3df20c283430d77571be482c8b3"
+lite_vk_client_secret="FVstRaiX9SNaEPh0yo5N"
 lite_youtube_dev_key=""
 ```
 
