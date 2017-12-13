@@ -1125,4 +1125,8 @@
     <string name="allow_fingerprint_title">Дозволити відбиток пальця</string>
     <string name="error_login_by_fingerprint_not_allowed">Вхід за допомогою відбитка пальця не дозволений</string>
     <string name="birthdays">Дні народження</string>
+    <string name="error_key_exchange_invalid_session_state">Неприпустимий статус сесії. Обмін ключами не вдався.</string>
+    <string name="error_key_exchange_cancelled_by_user">Обмін ключами був скасований користувачем</string>
+    <string name="error_key_exchange_session_expired">Сесія вже не активна. Повторіть обмін ще раз.</string>
+    <string name="error_activity_not_found">Сумісне ПЗ не встановлено</string>
 </resources>

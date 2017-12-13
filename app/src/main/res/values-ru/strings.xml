@@ -1128,4 +1128,8 @@
     <string name="allow_fingerprint_title">Разрешить отпечаток пальца</string>
     <string name="error_login_by_fingerprint_not_allowed">Вход с помощью отпечатка пальца не разрешен</string>
     <string name="birthdays">Дни рождения</string>
+    <string name="error_key_exchange_invalid_session_state">Недопустимый статус сессии. Обмен ключами не удался.</string>
+    <string name="error_key_exchange_cancelled_by_user">Обмен ключами был отменен пользователем</string>
+    <string name="error_key_exchange_session_expired">Сессия уже не активна. Повторите обмен еще раз.</string>
+    <string name="error_activity_not_found">Совместимое ПО не установлено</string>
 </resources>
