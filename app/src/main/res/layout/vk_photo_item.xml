@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aspect="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    card_view:cardBackgroundColor="?message_bubble_color"
-    card_view:cardCornerRadius="0dp"
-    card_view:cardUseCompatPadding="true">
+    app:cardBackgroundColor="?message_bubble_color"
+    app:cardCornerRadius="0dp"
+    app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -15,14 +15,16 @@
 
         <biz.dealnote.messenger.view.AspectRatioImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="500dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="false"
             android:background="?attr/messages_background_color"
             android:gravity="center"
             android:scaleType="centerCrop"
-            aspect:aspect_ration_height="4"
-            aspect:aspect_ration_width="4" />
+            app:aspectRatioEnabled="true"
+            app:aspectRatioH="1"
+            app:aspectRatioW="1"
+            app:dominantMeasurement="width" />
 
         <LinearLayout
             android:id="@+id/selected"
@@ -39,9 +41,9 @@
                 android:id="@+id/item_photo_index"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/font_size_big_title" />
+                android:textSize="@dimen/font_size_big_title"
+                tools:text="1" />
 
         </LinearLayout>
 
@@ -62,10 +64,10 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="2dp"
                 android:layout_toRightOf="@+id/vk_photo_item_like"
-                android:text="4000"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/font_size_additional"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="4000" />
 
             <TextView
                 android:id="@+id/vk_photo_item_comment_counter"
@@ -73,10 +75,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="1.5K"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/font_size_additional"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="1.5K" />
 
             <ImageView
                 android:id="@+id/vk_photo_item_comment"

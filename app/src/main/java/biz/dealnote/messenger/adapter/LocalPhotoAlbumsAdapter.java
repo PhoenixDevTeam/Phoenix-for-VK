@@ -81,9 +81,9 @@ public class LocalPhotoAlbumsAdapter extends RecyclerView.Adapter<LocalPhotoAlbu
 
         public Holder(View itemView) {
             super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.item_local_album_cover);
-            title = (TextView) itemView.findViewById(R.id.item_local_album_name);
-            subtitle = (TextView) itemView.findViewById(R.id.counter);
+            image = itemView.findViewById(R.id.item_local_album_cover);
+            title = itemView.findViewById(R.id.item_local_album_name);
+            subtitle = itemView.findViewById(R.id.counter);
         }
     }
 }

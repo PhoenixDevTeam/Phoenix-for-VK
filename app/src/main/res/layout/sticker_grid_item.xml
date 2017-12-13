@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aspect="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="4dp">
 
     <biz.dealnote.messenger.view.AspectRatioImageView
         android:id="@+id/sticker_grid_item_image"
-        android:layout_width="wrap_content"
-        android:layout_height="500dp"
-        aspect:aspect_ration_height="1"
-        aspect:aspect_ration_width="1" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        aspect:aspectRatioH="1"
+        aspect:aspectRatioW="1"
+        aspect:aspectRatioEnabled="true"
+        aspect:dominantMeasurement="width"/>
+
 </FrameLayout>

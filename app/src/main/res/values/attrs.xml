@@ -24,9 +24,6 @@
         <attr name="arcLoadingColor" format="color" />
         <attr name="arcLoadingStrokeWidth" format="dimension" />
         <attr name="arcLoadingStartAngle" format="float" />
-
-        <attr name="textColor" format="color" />
-        <attr name="textSize" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="CircleImageButton">
@@ -99,11 +96,6 @@
         <attr name="maxSingleImageHeight" format="dimension" />
         <attr name="prefImageSize" format="dimension" />
         <attr name="spacing" format="dimension" />
-    </declare-styleable>
-
-    <declare-styleable name="AspectRatioImageView">
-        <attr name="aspect_ration_height" format="integer" />
-        <attr name="aspect_ration_width" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="AspectRatioFrameLayout">
@@ -189,5 +181,15 @@
         <attr name="spinner_hint_color" format="color"/>
         <attr name="spinner_text_color" format="color"/>
         <attr name="spinner_icon_color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="AspectRatioImageView">
+        <attr name="aspectRatioW" format="integer"/>
+        <attr name="aspectRatioH" format="integer"/>
+        <attr name="aspectRatioEnabled" format="boolean"/>
+        <attr name="dominantMeasurement">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+        </attr>
     </declare-styleable>
 </resources>

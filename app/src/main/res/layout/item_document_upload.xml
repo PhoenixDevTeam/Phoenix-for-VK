@@ -16,8 +16,6 @@
         custom:arcLoadingStrokeWidth="4dp"
         custom:roadColor="?attr/colorAccent"
         custom:roadStrokeWidth="8dp"
-        custom:textSize="@dimen/font_size_additional"
-        custom:textColor="#00ffffff"
         android:layout_centerVertical="true" />
 
     <LinearLayout

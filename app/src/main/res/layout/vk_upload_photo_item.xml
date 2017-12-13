@@ -60,9 +60,7 @@
                         custom:arcLoadingStartAngle="270"
                         custom:arcLoadingStrokeWidth="4dp"
                         custom:roadColor="#ffffff"
-                        custom:roadStrokeWidth="8dp"
-                        custom:textColor="#00ffffff"
-                        custom:textSize="12sp" />
+                        custom:roadStrokeWidth="8dp"/>
 
                 </RelativeLayout>
 

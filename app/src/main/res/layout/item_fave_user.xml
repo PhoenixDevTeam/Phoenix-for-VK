@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        card_view:cardCornerRadius="0dp"
-        card_view:cardElevation="2dp"
-        card_view:contentPadding="0dp">
+        app:cardCornerRadius="0dp"
+        app:cardElevation="2dp"
+        app:contentPadding="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,11 +22,13 @@
             <biz.dealnote.messenger.view.AspectRatioImageView
                 android:id="@+id/avatar"
                 android:layout_width="match_parent"
-                android:layout_height="800dp"
+                android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                custom:aspect_ration_height="1"
-                custom:aspect_ration_width="1" />
+                app:aspectRatioEnabled="true"
+                app:aspectRatioH="1"
+                app:aspectRatioW="1"
+                app:dominantMeasurement="width" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,9 +48,9 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:paddingTop="4dp"
-                    android:text="User.Name"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/font_size_additional" />
+                    android:textSize="@dimen/font_size_additional"
+                    tools:text="User.Name" />
             </LinearLayout>
 
         </LinearLayout>

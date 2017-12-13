@@ -58,11 +58,13 @@
                             <biz.dealnote.messenger.view.AspectRatioImageView
                                 android:id="@+id/fragment_video_preview_image"
                                 android:layout_width="match_parent"
-                                android:layout_height="800dp"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:scaleType="centerCrop"
-                                app:aspect_ration_height="9"
-                                app:aspect_ration_width="16" />
+                                app:aspectRatioH="9"
+                                app:aspectRatioW="16"
+                                app:dominantMeasurement="width"
+                                app:aspectRatioEnabled="true"/>
 
                             <FrameLayout
                                 android:id="@+id/button_play"

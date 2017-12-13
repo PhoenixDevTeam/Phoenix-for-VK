@@ -68,9 +68,7 @@
                         app:arcLoadingStartAngle="270"
                         app:arcLoadingStrokeWidth="4dp"
                         app:roadColor="#ffffff"
-                        app:roadStrokeWidth="8dp"
-                        app:textColor="#00ffffff"
-                        app:textSize="12sp" />
+                        app:roadStrokeWidth="8dp" />
 
                 </RelativeLayout>
 

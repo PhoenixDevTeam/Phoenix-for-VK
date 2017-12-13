@@ -10,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
         android:layout_marginLeft="@dimen/newsfeed_comments_card_side_margin"
         android:layout_marginRight="@dimen/newsfeed_comments_card_side_margin"
+        android:layout_marginTop="4dp"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardBackgroundColor="?attr/android:colorBackground"
         app:cardCornerRadius="0dp"
@@ -24,8 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/item_top_container"
                 style='style="?android:attr/borderlessButtonStyle"'
@@ -37,14 +36,14 @@
                 android:paddingTop="8dp">
 
                 <LinearLayout
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:id="@+id/video_views_counter_root"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -68,20 +67,20 @@
 
                 <ImageView
                     android:id="@+id/video_owner_avatar"
-                    android:background="@drawable/circle_white"
                     android:layout_width="@dimen/avatar_size_small"
-                    android:layout_height="@dimen/avatar_size_small" />
+                    android:layout_height="@dimen/avatar_size_small"
+                    android:background="@drawable/circle_white" />
 
                 <LinearLayout
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@+id/video_owner_avatar"
-                    android:layout_toEndOf="@+id/video_owner_avatar"
                     android:id="@+id/linearLayout9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@+id/video_owner_avatar"
                     android:layout_toLeftOf="@+id/video_views_counter_root"
+                    android:layout_toRightOf="@+id/video_owner_avatar"
                     android:layout_toStartOf="@+id/video_views_counter_root"
                     android:orientation="vertical">
 
@@ -113,11 +112,13 @@
 
                 <biz.dealnote.messenger.view.AspectRatioImageView
                     android:id="@+id/video_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="500dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
-                    app:aspect_ration_height="9"
-                    app:aspect_ration_width="16" />
+                    app:aspectRatioEnabled="true"
+                    app:aspectRatioH="9"
+                    app:aspectRatioW="16"
+                    app:dominantMeasurement="width" />
 
                 <TextView
                     android:id="@+id/video_lenght"
@@ -145,14 +146,14 @@
             </RelativeLayout>
 
             <TextView
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:id="@+id/video_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:maxLines="1"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
                 android:textStyle="bold"

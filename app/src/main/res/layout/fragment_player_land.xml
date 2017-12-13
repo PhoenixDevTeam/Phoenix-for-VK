@@ -6,7 +6,7 @@
     android:background="?android:attr/windowBackground"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_with_elevation"/>
+    <include layout="@layout/toolbar_with_elevation" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -31,41 +31,23 @@
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/card_view"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardBackgroundColor="?attr/android:colorBackground"
+                    android:layout_margin="24dp"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="5dp"
                     app:contentPadding="0dp">
 
-                    <FrameLayout
-                        android:layout_width="wrap_content"
+                    <biz.dealnote.messenger.view.AspectRatioImageView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?attr/colorPrimary">
-
-                        <ImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_gravity="center"
-                            android:contentDescription="@string/album_cover"
-                            android:id="@+id/music_default_cover"
-                            android:gravity="center"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/itunes" />
-
-                        <biz.dealnote.messenger.view.AspectRatioImageView
-                            android:id="@+id/cover"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:scaleType="centerCrop"
-                            app:aspect_ration_height="1"
-                            app:aspect_ration_width="1" />
-
-                    </FrameLayout>
+                        android:background="?attr/colorPrimary"
+                        android:src="@drawable/itunes"
+                        android:scaleType="center"
+                        app:aspectRatioEnabled="true"
+                        app:aspectRatioH="1"
+                        app:aspectRatioW="1"
+                        app:dominantMeasurement="width" />
 
                 </android.support.v7.widget.CardView>
             </LinearLayout>
@@ -126,8 +108,8 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/seekbar_container"
                     android:layout_gravity="center_horizontal"
-                    android:padding="8dp"
-                    android:baselineAligned="false">
+                    android:baselineAligned="false"
+                    android:padding="8dp">
 
                     <FrameLayout
                         android:id="@+id/action_button_shuffle_cnt"
@@ -166,7 +148,7 @@
                             android:layout_gravity="center"
                             android:scaleType="centerInside"
                             android:src="@drawable/page_first"
-                            android:tint="#FFF"/>
+                            android:tint="#FFF" />
 
                     </FrameLayout>
 
@@ -207,7 +189,7 @@
                             android:layout_gravity="center"
                             android:scaleType="centerInside"
                             android:src="@drawable/page_last"
-                            android:tint="#FFF"/>
+                            android:tint="#FFF" />
                     </FrameLayout>
 
                     <FrameLayout

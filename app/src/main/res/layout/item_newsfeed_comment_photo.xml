@@ -75,10 +75,12 @@
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/photo_image"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
+                android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
-                app:aspect_ration_height="1"
-                app:aspect_ration_width="1" />
+                app:aspectRatioW="1"
+                app:aspectRatioH="1"
+                app:aspectRatioEnabled="true"
+                app:dominantMeasurement="width"/>
 
             <TextView
                 android:id="@+id/photo_title"

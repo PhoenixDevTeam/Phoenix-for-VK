@@ -24,13 +24,14 @@
             <biz.dealnote.messenger.view.AspectRatioImageView
                 android:id="@+id/item_local_album_cover"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:adjustViewBounds="false"
+                android:layout_height="wrap_content"
                 android:background="?attr/messages_background_color"
                 android:gravity="center"
                 android:scaleType="centerCrop"
-                aspect:aspect_ration_height="4"
-                aspect:aspect_ration_width="4" />
+                aspect:aspectRatioW="1"
+                aspect:aspectRatioH="1"
+                aspect:aspectRatioEnabled="true"
+                aspect:dominantMeasurement="width"/>
 
             <LinearLayout
                 android:alpha="0.9"

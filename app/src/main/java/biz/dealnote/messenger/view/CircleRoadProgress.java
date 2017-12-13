@@ -1,17 +1,15 @@
 package biz.dealnote.messenger.view;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Property;
 import android.view.View;
-
-import java.lang.ref.WeakReference;
 
 import biz.dealnote.messenger.R;
 
@@ -25,15 +23,11 @@ public class CircleRoadProgress extends View {
     private int arcLoadingColor;
     private float arcLoadingStrokeWidth;
     private float arcLoadingStartAngle;
-    private int textColor;
-    private float textSize;
 
     private int percent;
-    private ProgressHandler handler;
 
     public CircleRoadProgress(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.handler = new ProgressHandler(this);
         initializeAttributes(context, attrs);
     }
 
@@ -53,7 +47,6 @@ public class CircleRoadProgress extends View {
         super.onDraw(canvas);
         drawRoad(PAINT, canvas);
         drawArcLoading(PAINT, canvas);
-        drawPercents(canvas);
     }
 
     private void initializeAttributes(Context context, AttributeSet attrs) {
@@ -67,8 +60,7 @@ public class CircleRoadProgress extends View {
         arcLoadingStrokeWidth = ta.getDimensionPixelSize(R.styleable.CircleRoadProgressWidget_arcLoadingStrokeWidth, 3);
 
         arcLoadingStartAngle = ta.getFloat(R.styleable.CircleRoadProgressWidget_arcLoadingStartAngle, 270f);
-        textColor = ta.getColor(R.styleable.CircleRoadProgressWidget_textColor, Color.parseColor("#ffffff"));
-        textSize = ta.getDimensionPixelSize(R.styleable.CircleRoadProgressWidget_textSize, 20);
+
         ta.recycle();
     }
 
@@ -95,77 +87,34 @@ public class CircleRoadProgress extends View {
         canvas.drawArc(box, arcLoadingStartAngle, sweep, false, paint);
     }
 
-    private void drawPercents(Canvas canvas) {
-        String percentsString = String.valueOf(percent);
-
-        Paint textPaint = new Paint();
-        textPaint.setColor(textColor);
-        textPaint.setTextSize(textSize);
-        textPaint.setStyle(Paint.Style.FILL);
-        textPaint.setAntiAlias(true);
-        textPaint.setTextAlign(Paint.Align.CENTER);
-
-        int positionX = (getMeasuredWidth() / 2);
-        int positionY = (int) ((getMeasuredHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
-        canvas.drawText(percentsString, positionX, positionY, textPaint);
-    }
-
     public void changePercentage(int percent) {
         this.percent = percent;
         this.displayedPercentage = percent;
 
         invalidate();
-        //invalidateCircle();
-        //invalidate();
-
-        //invalidatePercentage();
     }
 
-    public void changePercentageSmoothly(int percent){
-        this.percent = percent;
-        invalidatePercentage();
-    }
-
-    private int displayedPercentage;
-
-    private void invalidatePercentage(){
-        if(!handler.hasMessages(M_UPDATE_PROGRESS)){
-            handler.sendEmptyMessage(M_UPDATE_PROGRESS);
-        }
-    }
-
-    private static final int M_UPDATE_PROGRESS = 1;
-
-    private static final class ProgressHandler extends Handler {
-
-        private WeakReference<CircleRoadProgress> reference;
-
-        public ProgressHandler(CircleRoadProgress circleRoadProgress) {
-            this.reference = new WeakReference<>(circleRoadProgress);
+    private static final Property<CircleRoadProgress, Float> PROGRESS_PROPERTY = new Property<CircleRoadProgress, Float>(Float.class, "displayed-precentage") {
+        @Override
+        public Float get(CircleRoadProgress view) {
+            return view.displayedPercentage;
         }
 
         @Override
-        public void handleMessage(Message msg) {
-            CircleRoadProgress instance = reference.get();
-            if(instance == null) return;
-
-            if(msg.what == M_UPDATE_PROGRESS){
-                if(instance.percent > instance.displayedPercentage){
-                    instance.displayedPercentage++;
-                }
-
-                if(instance.percent < instance.displayedPercentage){
-                    instance.displayedPercentage--;
-                }
-
-                try{
-                    instance.invalidate();
-                } catch (Exception ignored){}
-
-                if(instance.percent != instance.displayedPercentage){
-                    instance.handler.sendEmptyMessageDelayed(M_UPDATE_PROGRESS, 20);
-                }
-            }
+        public void set(CircleRoadProgress view, Float value) {
+            view.displayedPercentage = value;
+            view.invalidate();
         }
+    };
+
+    public void changePercentageSmoothly(int percent){
+        this.percent = percent;
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, PROGRESS_PROPERTY, percent);
+        animator.setDuration(750);
+        //animator.setInterpolator(new AccelerateInterpolator(1.75f));
+        animator.start();
     }
+
+    private float displayedPercentage;
 }

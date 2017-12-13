@@ -28,8 +28,10 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:scaleType="centerCrop"
-        app:aspectRatioHeight="50"
-        app:aspectRatioWidth="130"
+        app:aspectRatioEnabled="true"
+        app:aspectRatioH="50"
+        app:aspectRatioW="130"
+        app:dominantMeasurement="width"
         app:layout_constraintBottom_toTopOf="@+id/captcha_text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -38,7 +40,6 @@
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1" />
-
 
     <Button
         android:id="@+id/button_cancel"

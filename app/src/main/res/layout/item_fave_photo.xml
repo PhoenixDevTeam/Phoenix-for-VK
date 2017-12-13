@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aspect="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -16,15 +15,16 @@
 
         <biz.dealnote.messenger.view.AspectRatioImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="500dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="false"
             android:background="?attr/messages_background_color"
             android:gravity="center"
             android:scaleType="centerCrop"
-            aspect:aspect_ration_height="4"
-            aspect:aspect_ration_width="4" />
-
+            aspect:aspectRatioEnabled="true"
+            aspect:aspectRatioH="1"
+            aspect:aspectRatioW="1"
+            aspect:dominantMeasurement="width" />
 
         <RelativeLayout
             android:id="@+id/vk_photo_item_bottom"
@@ -88,4 +88,3 @@
 
 
 </android.support.v7.widget.CardView>
-

@@ -7,66 +7,115 @@ import android.util.AttributeSet;
 
 import biz.dealnote.messenger.R;
 
+/** Maintains an aspect ratio based on either width or height. Disabled by default. */
 public class AspectRatioImageView extends AppCompatImageView {
 
-    private static final int DEFAULT_PROPORTION_WIDTH = 16;
-    private static final int DEFAULT_PROPORTION_HEIGHT = 9;
+    // NOTE: These must be kept in sync with the AspectRatioImageView attributes in attrs.xml.
+    public static final int MEASUREMENT_WIDTH = 0;
+    public static final int MEASUREMENT_HEIGHT = 1;
 
-    private int proportionWidth;
-    private int proportionHeight;
+    private static final int DEFAULT_ASPECT_RATIO_W = 1;
+    private static final int DEFAULT_ASPECT_RATIO_H = 1;
+
+    private static final boolean DEFAULT_ASPECT_RATIO_ENABLED = false;
+
+    private static final int DEFAULT_DOMINANT_MEASUREMENT = MEASUREMENT_WIDTH;
+
+    private float aspectRatio;
+    private boolean aspectRatioEnabled;
+    private int dominantMeasurement;
 
     public AspectRatioImageView(Context context) {
-        super(context);
-        proportionWidth = DEFAULT_PROPORTION_WIDTH;
-        proportionHeight = DEFAULT_PROPORTION_HEIGHT;
+        this(context, null);
     }
 
     public AspectRatioImageView(Context context, AttributeSet attrs) {
-        super(context, attrs, 0);
-        TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.AspectRatioImageView,
-                0, 0);
+        super(context, attrs);
 
-        try {
-            proportionWidth = a.getInt(R.styleable.AspectRatioImageView_aspect_ration_width, DEFAULT_PROPORTION_WIDTH);
-            proportionHeight = a.getInt(R.styleable.AspectRatioImageView_aspect_ration_height, DEFAULT_PROPORTION_HEIGHT);
-        } finally {
-            a.recycle();
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AspectRatioImageView);
+
+        int aspectRatioW = a.getInt(R.styleable.AspectRatioImageView_aspectRatioW, DEFAULT_ASPECT_RATIO_W);
+        int aspectRatioH = a.getInt(R.styleable.AspectRatioImageView_aspectRatioH, DEFAULT_ASPECT_RATIO_H);
+
+        aspectRatio = (float) aspectRatioH / (float) aspectRatioW;
+        aspectRatioEnabled = a.getBoolean(R.styleable.AspectRatioImageView_aspectRatioEnabled, DEFAULT_ASPECT_RATIO_ENABLED);
+        dominantMeasurement = a.getInt(R.styleable.AspectRatioImageView_dominantMeasurement, DEFAULT_DOMINANT_MEASUREMENT);
+
+        a.recycle();
+    }
+
+    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (!aspectRatioEnabled) return;
+
+        int newWidth;
+        int newHeight;
+        switch (dominantMeasurement) {
+            case MEASUREMENT_WIDTH:
+                newWidth = getMeasuredWidth();
+                newHeight = (int) (newWidth * aspectRatio);
+                break;
+
+            case MEASUREMENT_HEIGHT:
+                newHeight = getMeasuredHeight();
+                newWidth = (int) (newHeight * aspectRatio);
+                break;
+
+            default:
+                throw new IllegalStateException("Unknown measurement with ID " + dominantMeasurement);
+        }
+
+        setMeasuredDimension(newWidth, newHeight);
+    }
+
+    /** Get the aspect ratio for this image view. */
+    public float getAspectRatio() {
+        return aspectRatio;
+    }
+
+    /** Set the aspect ratio for this image view. This will update the view instantly. */
+    public void setAspectRatio(float aspectRatio) {
+        this.aspectRatio = aspectRatio;
+        if (aspectRatioEnabled) {
+            requestLayout();
         }
     }
 
-    public void setAspectRatio(int w, int h){
-        this.proportionHeight = h;
-        this.proportionWidth = w;
-        invalidate();
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int originalWidth = MeasureSpec.getSize(widthMeasureSpec);
-
-        int originalHeight = MeasureSpec.getSize(heightMeasureSpec);
-
-        int calculatedHeight = originalWidth * proportionHeight / proportionWidth;
-
-        int finalWidth, finalHeight;
-
-        if (calculatedHeight > originalHeight) {
-            finalWidth = originalHeight * proportionWidth / proportionHeight;
-            finalHeight = originalHeight;
-        } else {
-            finalWidth = originalWidth;
-            finalHeight = calculatedHeight;
+    /** Set the aspect ratio for this image view. This will update the view instantly. */
+    public void setAspectRatio(int w, int h) {
+        this.aspectRatio = (float) h / (float) w;
+        if (aspectRatioEnabled) {
+            requestLayout();
         }
-
-        super.onMeasure(
-                MeasureSpec.makeMeasureSpec(finalWidth, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(finalHeight, MeasureSpec.EXACTLY));
-
-        //we save widthMeasureSpec in private field to use it for our child measurment in onLayout()
-        mWidthMeasureSpec = widthMeasureSpec;
     }
 
-    private int mWidthMeasureSpec;
+    /** Get whether or not forcing the aspect ratio is enabled. */
+    public boolean getAspectRatioEnabled() {
+        return aspectRatioEnabled;
+    }
+
+    /** set whether or not forcing the aspect ratio is enabled. This will re-layout the view. */
+    public void setAspectRatioEnabled(boolean aspectRatioEnabled) {
+        this.aspectRatioEnabled = aspectRatioEnabled;
+        requestLayout();
+    }
+
+    /** Get the dominant measurement for the aspect ratio. */
+    public int getDominantMeasurement() {
+        return dominantMeasurement;
+    }
+
+    /**
+     * Set the dominant measurement for the aspect ratio.
+     *
+     * @see #MEASUREMENT_WIDTH
+     * @see #MEASUREMENT_HEIGHT
+     */
+    public void setDominantMeasurement(int dominantMeasurement) {
+        if (dominantMeasurement != MEASUREMENT_HEIGHT && dominantMeasurement != MEASUREMENT_WIDTH) {
+            throw new IllegalArgumentException("Invalid measurement type.");
+        }
+        this.dominantMeasurement = dominantMeasurement;
+        requestLayout();
+    }
 }
