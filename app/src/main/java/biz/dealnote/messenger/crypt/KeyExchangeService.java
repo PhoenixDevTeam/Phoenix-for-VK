@@ -123,7 +123,7 @@ public class KeyExchangeService extends Service {
         return START_NOT_STICKY;
     }
 
-    public static boolean intercept(@NonNull Context context, int accountId, VKApiMessage dto){
+    public static boolean intercept(@NonNull Context context, int accountId, VKApiMessage dto) {
         return intercept(context, accountId, dto.peer_id, dto.id, dto.body, dto.out);
     }
 
@@ -245,7 +245,7 @@ public class KeyExchangeService extends Service {
         }
 
         KeyExchangeSession session = mCurrentActiveSessions.get(message.getSessionId());
-        finishSession(session, true);
+        finishSessionByOpponentFail(session, message);
     }
 
     private void sendSessionStateChangeBroadcast(@NonNull KeyExchangeSession session) {
@@ -309,7 +309,7 @@ public class KeyExchangeService extends Service {
     }
 
     private void displayUserConfirmNotificationImpl(int accountId, int peerId, int messageId, @NonNull ExchangeMessage message, @NonNull OwnerInfo ownerInfo) {
-        if (Utils.hasOreo()){
+        if (Utils.hasOreo()) {
             mNotificationManager.createNotificationChannel(AppNotificationChannels.getKeyExchangeChannel(this));
         }
 
@@ -340,7 +340,6 @@ public class KeyExchangeService extends Service {
 
     private void processKeyExchangeMessage(int accountId, int peerId, int messageId,
                                            @NonNull ExchangeMessage message, boolean needConfirmIfSessionNotStarted) {
-
         KeyExchangeSession session = mCurrentActiveSessions.get(message.getSessionId());
 
         if (nonNull(session) && session.isMessageProcessed(messageId)) {
@@ -358,7 +357,15 @@ public class KeyExchangeService extends Service {
             return;
         }
 
+        @SessionState
+        int opponentSessionState = message.getSenderSessionState();
+
         if (Objects.isNull(session)) {
+            if (opponentSessionState != SessionState.INITIATOR_STATE_1) {
+                notifyOpponentAboutSessionFail(accountId, peerId, message.getSessionId(), ErrorCodes.SESSION_EXPIRED);
+                return;
+            }
+
             if (needConfirmIfSessionNotStarted) {
                 displayUserConfirmNotification(accountId, peerId, messageId, message);
                 return;
@@ -373,11 +380,8 @@ public class KeyExchangeService extends Service {
         }
 
         session.appendMessageId(messageId);
-
-        @SessionState
-        int opponentSessionState = message.getSenderSessionState();
-
         session.setOppenentSessionState(opponentSessionState);
+
         fireSessionStateChanged(session);
 
         Logger.d(TAG, "processKeyExchangeMessage, opponentSessionState: " + opponentSessionState);
@@ -418,6 +422,22 @@ public class KeyExchangeService extends Service {
         finishSession(session, false);
     }
 
+    private void finishSessionByOpponentFail(@NonNull KeyExchangeSession session, @NonNull ExchangeMessage message){
+        session.setLocalSessionState(SessionState.CLOSED);
+
+        mCurrentActiveSessions.remove(session.getId());
+        mFinishedSessionsIds.add(session.getId());
+
+        mCurrentActiveNotifications.remove(session.getId());
+        mNotificationManager.cancel(String.valueOf(session.getId()), NOTIFICATION_KEY_EXCHANGE);
+
+        showError(localizeError(message.getErrorCode()));
+
+        Logger.d(TAG, "Session was released by opponent, id: " + session.getId() + ", error_code: " + message.getErrorCode());
+
+        toggleServiceLiveHandler();
+    }
+
     private void finishSession(@NonNull KeyExchangeSession session, boolean withError) {
         session.setLocalSessionState(SessionState.CLOSED);
 
@@ -436,6 +456,19 @@ public class KeyExchangeService extends Service {
         Logger.d(TAG, "Session was released, id: " + session.getId() + ", withError: " + withError);
 
         toggleServiceLiveHandler();
+    }
+
+    private String localizeError(int code) {
+        switch (code) {
+            case ErrorCodes.INVALID_SESSION_STATE:
+                return getString(R.string.error_key_exchange_invalid_session_state);
+            case ErrorCodes.CANCELED_BY_USER:
+                return getString(R.string.error_key_exchange_cancelled_by_user);
+            case ErrorCodes.SESSION_EXPIRED:
+                return getString(R.string.error_key_exchange_session_expired);
+            default:
+                return getString(R.string.key_exchange_failed);
+        }
     }
 
     private void showError(String text) {
@@ -592,7 +625,7 @@ public class KeyExchangeService extends Service {
     }
 
     private void refreshSessionNotification(@NonNull KeyExchangeSession session) {
-        if (Utils.hasOreo()){
+        if (Utils.hasOreo()) {
             mNotificationManager.createNotificationChannel(AppNotificationChannels.getKeyExchangeChannel(this));
         }
         NotificationCompat.Builder builder = findBuilder(session.getId());

@@ -126,6 +126,10 @@ public class ExchangeMessage implements Parcelable {
         ParcelUtils.writeObjectInteger(dest, keyLocationPolicy);
     }
 
+    public int getErrorCode() {
+        return errorCode;
+    }
+
     public static final class Builder {
 
         private String publicKey;

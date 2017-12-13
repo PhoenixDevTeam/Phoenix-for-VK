@@ -1261,5 +1261,9 @@
     <string name="source_code_title" translatable="false">Source code</string>
     <string name="source_code_link" translatable="false">https://github.com/PhoenixDevTeam/Phoenix-for-VK</string>
     <string name="birthdays">Birthdays</string>
+    <string name="error_key_exchange_invalid_session_state">Invalid session state</string>
+    <string name="error_key_exchange_cancelled_by_user">Key exchange was cancelled by user</string>
+    <string name="error_key_exchange_session_expired">The key exchange session is no longer active. Please try again.</string>
+    <string name="error_activity_not_found">No compatible software installed</string>
 
 </resources>

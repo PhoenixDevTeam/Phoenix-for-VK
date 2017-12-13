@@ -1,10 +1,13 @@
 package biz.dealnote.messenger.link;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.Toast;
 
+import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.VKPhotosFragment;
 import biz.dealnote.messenger.fragment.fave.FaveTabsFragment;
 import biz.dealnote.messenger.link.types.AbsLink;
@@ -152,9 +155,13 @@ public class LinkHelper {
     }
 
     public static void openLinkInBrowser(Context context, String url) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        context.startActivity(intent);
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e){
+            Toast.makeText(context, R.string.error_activity_not_found, Toast.LENGTH_LONG).show();
+        }
     }
 
     public static Commented findCommentedFrom(String url){

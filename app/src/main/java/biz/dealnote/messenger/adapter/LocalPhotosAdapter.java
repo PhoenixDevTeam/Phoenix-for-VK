@@ -36,7 +36,6 @@ public class LocalPhotosAdapter extends RecyclerView.Adapter<LocalPhotosAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder holder = new ViewHolder(LayoutInflater.from(context)
                 .inflate(R.layout.photo_item, parent, false));
-
         holders.add(holder);
         return holder;
     }
@@ -69,6 +68,12 @@ public class LocalPhotosAdapter extends RecyclerView.Adapter<LocalPhotosAdapter.
     public void updateHoldersSelectionAndIndexes() {
         for (ViewHolder holder : holders) {
             LocalPhoto photo = (LocalPhoto) holder.itemView.getTag();
+
+            if(photo == null){
+                // TODO: 13.12.2017 Photo can bee null !!!! WTF?
+                continue;
+            }
+
             resolveSelectionVisibility(photo, holder);
             resolveIndexText(photo, holder);
         }
@@ -105,9 +110,9 @@ public class LocalPhotosAdapter extends RecyclerView.Adapter<LocalPhotosAdapter.
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            this.photoImageView = (ImageView) itemView.findViewById(R.id.imageView);
+            this.photoImageView = itemView.findViewById(R.id.imageView);
             this.selectedRoot = itemView.findViewById(R.id.selected);
-            this.tvIndex = (TextView) itemView.findViewById(R.id.item_photo_index);
+            this.tvIndex = itemView.findViewById(R.id.item_photo_index);
         }
 
         private void attachPhoto(LocalPhoto photo) {
