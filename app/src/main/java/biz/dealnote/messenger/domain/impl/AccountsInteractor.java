@@ -16,6 +16,7 @@ import biz.dealnote.messenger.domain.IOwnersInteractor;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Account;
 import biz.dealnote.messenger.model.BannedPart;
+import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.settings.ISettings;
@@ -106,6 +107,7 @@ public class AccountsInteractor implements IAccountsInteractor {
                 }
 
                 Owner owner = ownersInteractor.getBaseOwnerInfo(id, id, IOwnersInteractor.MODE_ANY)
+                        .onErrorReturn(ignored -> id > 0 ? new User(id) : new Community(-id))
                         .blockingGet();
 
                 Account account = new Account(id, owner);
