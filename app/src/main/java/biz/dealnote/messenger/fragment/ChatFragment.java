@@ -219,16 +219,16 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
     }
 
     @Override
-    public void configNowVoiceMessagePlaying(int voiceId, float progress, boolean paused) {
+    public void configNowVoiceMessagePlaying(int voiceId, float progress, boolean paused, boolean amin) {
         if (nonNull(mAdapter)) {
-            mAdapter.configNowVoiceMessagePlaying(voiceId, progress, paused);
+            mAdapter.configNowVoiceMessagePlaying(voiceId, progress, paused, amin);
         }
     }
 
     @Override
-    public void bindVoiceHolderById(int holderId, boolean play, boolean paused, float progress) {
+    public void bindVoiceHolderById(int holderId, boolean play, boolean paused, float progress, boolean amin) {
         if (nonNull(mAdapter)) {
-            mAdapter.bindVoiceHolderById(holderId, play, paused, progress);
+            mAdapter.bindVoiceHolderById(holderId, play, paused, progress, amin);
         }
     }
 

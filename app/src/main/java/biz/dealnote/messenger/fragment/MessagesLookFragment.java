@@ -145,12 +145,12 @@ public class MessagesLookFragment extends PlaceSupportPresenterFragment<Messages
     }
 
     @Override
-    public void configNowVoiceMessagePlaying(int id, float progress, boolean paused) {
+    public void configNowVoiceMessagePlaying(int id, float progress, boolean paused, boolean amin) {
         // TODO: 09.10.2016
     }
 
     @Override
-    public void bindVoiceHolderById(int holderId, boolean play, boolean paused, float progress) {
+    public void bindVoiceHolderById(int holderId, boolean play, boolean paused, float progress, boolean amin) {
         // TODO: 09.10.2016
     }
 

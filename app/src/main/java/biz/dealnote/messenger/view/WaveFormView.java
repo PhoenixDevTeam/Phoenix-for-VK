@@ -1,5 +1,6 @@
 package biz.dealnote.messenger.view;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -7,7 +8,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
+import android.util.Property;
 import android.view.View;
+
+import java.lang.ref.WeakReference;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.util.Exestime;
@@ -19,8 +23,7 @@ import biz.dealnote.messenger.util.Exestime;
 public class WaveFormView extends View {
 
     public WaveFormView(Context context) {
-        super(context);
-        init(context, null);
+        this(context, null);
     }
 
     public WaveFormView(Context context, AttributeSet attrs) {
@@ -61,6 +64,8 @@ public class WaveFormView extends View {
 
     private float mCurrentActiveProgress;
 
+    private float mDisplayedProgress;
+
     private static final Paint PAINT = new Paint(Paint.FILTER_BITMAP_FLAG
             | Paint.DITHER_FLAG
             | Paint.ANTI_ALIAS_FLAG);
@@ -77,7 +82,57 @@ public class WaveFormView extends View {
         }
 
         this.mCurrentActiveProgress = progress;
+        this.mDisplayedProgress = progress;
+
+        releaseAnimation();
         invalidate();
+    }
+
+    private void releaseAnimation(){
+        ObjectAnimator animator = mAnimator.get();
+
+        if(animator != null){
+            animator.cancel();
+            mAnimator = new WeakReference<>(null);
+        }
+    }
+
+    private static final Property<WaveFormView, Float> PROGRESS_PROPERTY = new Property<WaveFormView, Float>(Float.class, "displayed-precentage") {
+        @Override
+        public Float get(WaveFormView view) {
+            return view.mDisplayedProgress;
+        }
+
+        @Override
+        public void set(WaveFormView view, Float value) {
+            view.mDisplayedProgress = value;
+            view.invalidate();
+        }
+    };
+
+    private WeakReference<ObjectAnimator> mAnimator = new WeakReference<>(null);
+
+    public void setCurrentActiveProgressSmoothly(float progress){
+        if (mCurrentActiveProgress == progress) {
+            return;
+        }
+
+        this.mCurrentActiveProgress = progress;
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, PROGRESS_PROPERTY, progress);
+        mAnimator = new WeakReference<>(animator);
+
+        animator.setDuration(750);
+        //animator.setInterpolator(new AccelerateInterpolator(1.75f));
+        animator.start();
+    }
+
+    public void setCurrentActiveProgress(float progress, boolean anim){
+        if(anim){
+            setCurrentActiveProgressSmoothly(progress);
+        } else {
+            setCurrentActiveProgress(progress);
+        }
     }
 
     public void setSectionCount(int sectionCount) {
@@ -95,7 +150,7 @@ public class WaveFormView extends View {
         float offset = 0;
 
         for (int i = 0; i < mWaveForm.length; i++) {
-            boolean active = (float) i / (float) mWaveForm.length <= mCurrentActiveProgress;
+            boolean active = (float) i / (float) mWaveForm.length <= mDisplayedProgress;
 
             @ColorInt
             int color = active ? mActiveColor : mNoactiveColor;
