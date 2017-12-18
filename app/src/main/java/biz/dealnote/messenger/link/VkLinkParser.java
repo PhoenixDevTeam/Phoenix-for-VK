@@ -55,7 +55,7 @@ public class VkLinkParser {
     //vk.com/wall-2345345_7834545?reply=15345346
     private static final Pattern PATTERN_WALL_POST_COMMENT = Pattern.compile("vk\\.com/wall(-?\\d*)_(\\d*)\\?reply=(\\d*)");
     private static final Pattern PATTERN_BOARD = Pattern.compile("vk\\.com/board(\\d+)");
-    private static final Pattern PATTERN_FEED_SEARCH = Pattern.compile("vk\\.com/feed\\?q=([^&#]*)&section=search");//https://vk.com/feed?q=%23Android_Apps_%D0%AE%D0%BC%D0%BE%D1%80&section=search
+    private static final Pattern PATTERN_FEED_SEARCH = Pattern.compile("vk\\.com/feed\\?q=([^&]*)&section=search");
 
     public static AbsLink parse(String string) {
         if (!string.contains("vk.com")) {
