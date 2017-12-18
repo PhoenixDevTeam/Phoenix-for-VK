@@ -3,8 +3,6 @@ package biz.dealnote.messenger.view;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import java.util.Calendar;
 import java.util.Date;

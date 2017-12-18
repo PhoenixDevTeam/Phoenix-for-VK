@@ -54,7 +54,7 @@ public abstract class AccountDependencyPresenter<V extends IMvpView & IAccountDe
             mInvalidAccountContext = true;
 
             if (isGuiReady()) {
-                getView().onUnsupportedAccountSelected();
+                getView().displayAccountNotSupported();
             }
         }
     }
@@ -64,7 +64,7 @@ public abstract class AccountDependencyPresenter<V extends IMvpView & IAccountDe
         super.onGuiCreated(view);
 
         if (mInvalidAccountContext) {
-            view.onUnsupportedAccountSelected();
+            view.displayAccountNotSupported();
         }
     }
 

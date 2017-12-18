@@ -32,7 +32,7 @@ import biz.dealnote.messenger.activity.SendAttachmentsActivity;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.domain.IDocsInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
-import biz.dealnote.messenger.fragment.base.AccountDependencyFragment;
+import biz.dealnote.messenger.fragment.base.BaseFragment;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.EditingPostType;
@@ -50,7 +50,7 @@ import biz.dealnote.messenger.view.CircleCounterButton;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
-public class DocPreviewFragment extends AccountDependencyFragment implements View.OnClickListener {
+public class DocPreviewFragment extends BaseFragment implements View.OnClickListener {
 
     public static Bundle buildArgs(int accountId, int docId, int docOwnerId, @Nullable Document document) {
         Bundle args = new Bundle();
@@ -71,6 +71,7 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
         return fragment;
     }
 
+    private int accountId;
     private View rootView;
     private int ownerId;
     private int documentId;
@@ -86,6 +87,7 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        this.accountId = getArguments().getInt(Extra.ACCOUNT_ID);
         this.docsInteractor = InteractorFactory.createDocsInteractor();
 
         if (savedInstanceState != null) {
@@ -123,7 +125,7 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
     }
 
     private boolean isMy() {
-        return getAccountId() == ownerId;
+        return accountId == ownerId;
     }
 
     @Override
@@ -199,8 +201,6 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
     private boolean mLoadingNow;
 
     private void requestVideoInfo() {
-        final int accountId = super.getAccountId();
-
         this.mLoadingNow = true;
         appendDisposable(docsInteractor.findById(accountId, ownerId, documentId)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
@@ -279,7 +279,6 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
     }
 
     private void doRemove() {
-        final int accountId = super.getAccountId();
         appendDisposable(docsInteractor.delete(accountId, documentId, ownerId)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
                 .subscribe(this::onDeleteSuccess, t -> {/*TODO*/}));
@@ -319,7 +318,7 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
                             Utils.shareLink(getActivity(), genLink(), document.getTitle());
                             break;
                         case 1:
-                            SendAttachmentsActivity.startForSendAttachments(getActivity(), getAccountId(), document);
+                            SendAttachmentsActivity.startForSendAttachments(getActivity(), accountId, document);
                             break;
                         case 2:
                             postToMyWall();
@@ -332,9 +331,7 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
     }
 
     private void postToMyWall() {
-        int accountId = super.getAccountId();
         List<AbsModel> models = Collections.singletonList(document);
-
         PlaceUtil.goToPostCreation(getActivity(), accountId, accountId, EditingPostType.TEMP, models);
     }
 
@@ -357,7 +354,7 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
     }
 
     private void openOwnerWall() {
-        PlaceFactory.getOwnerWallPlace(getAccountId(), ownerId, null).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, ownerId, null).tryOpenWith(getActivity());
     }
 
     @Override
@@ -374,7 +371,6 @@ public class DocPreviewFragment extends AccountDependencyFragment implements Vie
     private void doAddYourSelf() {
         IDocsInteractor docsInteractor = InteractorFactory.createDocsInteractor();
 
-        final int accountId = super.getAccountId();
         final String accessKey = nonNull(document) ? document.getAccessKey() : null;
 
         appendDisposable(docsInteractor.add(accountId, documentId, ownerId, accessKey)

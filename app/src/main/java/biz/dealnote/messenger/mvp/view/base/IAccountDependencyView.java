@@ -5,5 +5,6 @@ package biz.dealnote.messenger.mvp.view.base;
  * phoenix
  */
 public interface IAccountDependencyView {
-    void onUnsupportedAccountSelected();
+    void displayAccountNotSupported();
+    void displayAccountSupported();
 }

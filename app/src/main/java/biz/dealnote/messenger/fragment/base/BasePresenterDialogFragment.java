@@ -47,7 +47,12 @@ public abstract class BasePresenterDialogFragment<P extends AbsPresenter<V>, V e
     }
 
     @Override
-    public void onUnsupportedAccountSelected() {
+    public void displayAccountNotSupported() {
+        // TODO: 18.12.2017
+    }
 
+    @Override
+    public void displayAccountSupported() {
+        // TODO: 18.12.2017
     }
 }

@@ -258,11 +258,6 @@ public class MessagesLookFragment extends PlaceSupportPresenterFragment<Messages
     }*/
 
     @Override
-    public void onUnsupportedAccountSelected() {
-
-    }
-
-    @Override
     protected String tag() {
         return TAG;
     }

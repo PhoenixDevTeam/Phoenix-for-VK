@@ -23,7 +23,7 @@ import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.model.ModelsBundle;
 import biz.dealnote.messenger.model.Photo;
-import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
+import biz.dealnote.messenger.mvp.presenter.base.RxSupportPresenter;
 import biz.dealnote.messenger.mvp.view.IMessageAttachmentsView;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.upload.UploadDestination;
@@ -49,10 +49,11 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  * Created by admin on 14.04.2017.
  * phoenix
  */
-public class MessageAttachmentsPresenter extends AccountDependencyPresenter<IMessageAttachmentsView> {
+public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAttachmentsView> {
 
     private static final String TAG = MessageAttachmentsPresenter.class.getSimpleName();
 
+    private final int accountId;
     private final int messageOwnerId;
     private final int messageId;
     private final List<AttachmenEntry> entries;
@@ -64,7 +65,8 @@ public class MessageAttachmentsPresenter extends AccountDependencyPresenter<IMes
     private Uri currentPhotoCameraUri;
 
     public MessageAttachmentsPresenter(int accountId, int messageOwnerId, int messageId, @Nullable ModelsBundle bundle, @Nullable Bundle savedInstanceState) {
-        super(accountId, savedInstanceState);
+        super(savedInstanceState);
+        this.accountId = accountId;
         this.messageId = messageId;
         this.messageOwnerId = messageOwnerId;
         this.destination = UploadDestination.forMessage(messageId);
@@ -261,7 +263,7 @@ public class MessageAttachmentsPresenter extends AccountDependencyPresenter<IMes
 
     public void fireAddPhotoButtonClick() {
         // Если сообщения группы - предлагать фотографии сообщества, а не группы
-        getView().addPhoto(getAccountId(), messageOwnerId);
+        getView().addPhoto(accountId, messageOwnerId);
     }
 
     public void firePhotosSelected(ArrayList<Photo> photos, ArrayList<LocalPhoto> localPhotos) {
@@ -387,11 +389,11 @@ public class MessageAttachmentsPresenter extends AccountDependencyPresenter<IMes
     }
 
     public void fireButtonVideoClick() {
-        getView().startAddVideoActivity(getAccountId(), messageOwnerId);
+        getView().startAddVideoActivity(accountId, messageOwnerId);
     }
 
     public void fireButtonDocClick() {
-        getView().startAddDocumentActivity(getAccountId()); // TODO: 16.08.2017
+        getView().startAddDocumentActivity(accountId); // TODO: 16.08.2017
     }
 
     public void fireAttachmentsSelected(ArrayList<? extends AbsModel> attachments) {

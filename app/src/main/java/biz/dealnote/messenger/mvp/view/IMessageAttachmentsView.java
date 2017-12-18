@@ -8,14 +8,13 @@ import java.util.List;
 import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.model.ModelsBundle;
-import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;
 import biz.dealnote.mvp.core.IMvpView;
 
 /**
  * Created by admin on 14.04.2017.
  * phoenix
  */
-public interface IMessageAttachmentsView extends IMvpView, IAccountDependencyView, IErrorView {
+public interface IMessageAttachmentsView extends IMvpView, IErrorView {
 
     void displayAttachments(List<AttachmenEntry> entries);
 

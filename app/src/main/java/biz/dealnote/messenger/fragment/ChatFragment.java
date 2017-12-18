@@ -240,11 +240,6 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
     }
 
     @Override
-    public void onUnsupportedAccountSelected() {
-
-    }
-
-    @Override
     protected String tag() {
         return TAG;
     }

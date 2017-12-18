@@ -74,8 +74,13 @@ public abstract class BasePresenterFragment<P extends AbsPresenter<V>, V extends
     }
 
     @Override
-    public void onUnsupportedAccountSelected() {
+    public void displayAccountNotSupported() {
+        // TODO: 18.12.2017
+    }
 
+    @Override
+    public void displayAccountSupported() {
+        // TODO: 18.12.2017
     }
 
     protected static void safelySetCheched(CompoundButton button, boolean checked){

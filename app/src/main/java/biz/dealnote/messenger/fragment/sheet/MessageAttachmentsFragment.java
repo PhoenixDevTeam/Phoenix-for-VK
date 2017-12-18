@@ -94,11 +94,6 @@ public class MessageAttachmentsFragment extends AbsPresenterBottomSheetFragment<
     }
 
     @Override
-    public void onUnsupportedAccountSelected() {
-
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bundle extras = nonNull(data) ? data.getExtras() : null;

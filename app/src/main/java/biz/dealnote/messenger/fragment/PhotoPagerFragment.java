@@ -290,7 +290,7 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
     }
 
     @Override
-    public void onUnsupportedAccountSelected() {
+    public void displayAccountNotSupported() {
 
     }
 

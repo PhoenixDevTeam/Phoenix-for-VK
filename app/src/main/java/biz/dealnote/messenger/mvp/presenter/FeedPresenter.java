@@ -86,8 +86,8 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
     private void requestActualFeedLists() {
         final int accountId = super.getAccountId();
         appendDisposable(feedInteractor.getActualFeedLists(accountId)
-        .compose(RxUtils.applySingleIOToMainSchedulers())
-        .subscribe(this::onFeedListsUpdated, t -> {/*ignored*/}));
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::onFeedListsUpdated, t -> {/*ignored*/}));
     }
 
     private void onPostUpdateEvent(PostUpdate update) {
