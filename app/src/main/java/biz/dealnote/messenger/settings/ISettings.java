@@ -11,8 +11,8 @@ import java.util.List;
 import biz.dealnote.messenger.crypt.KeyLocationPolicy;
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.model.SwitchableCategory;
-import biz.dealnote.messenger.model.drawer.AbsDrawerItem;
 import biz.dealnote.messenger.model.drawer.RecentChat;
+import biz.dealnote.messenger.place.Place;
 import io.reactivex.Observable;
 
 /**
@@ -234,7 +234,9 @@ public interface ISettings {
 
         int getNightEndTime();
 
-        AbsDrawerItem getDefaultPage();
+        Place getDefaultPage(int accountId);
+
+        void notifyPlaceResumed(int type);
 
         boolean isSystemEmoji();
 

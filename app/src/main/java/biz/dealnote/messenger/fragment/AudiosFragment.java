@@ -14,7 +14,9 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
+import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
+import biz.dealnote.messenger.settings.Settings;
 
 /**
  * Audio is not supported :-(
@@ -45,6 +47,7 @@ public class AudiosFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Settings.get().ui().notifyPlaceResumed(Place.AUDIOS);
 
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if (actionBar != null) {

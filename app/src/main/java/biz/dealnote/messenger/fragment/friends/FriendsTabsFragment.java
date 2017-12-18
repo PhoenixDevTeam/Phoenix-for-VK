@@ -28,7 +28,9 @@ import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.FriendsCounters;
 import biz.dealnote.messenger.mvp.presenter.FriendsTabsPresenter;
 import biz.dealnote.messenger.mvp.view.IFriendsTabsView;
+import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.settings.CurrentTheme;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
 public class FriendsTabsFragment extends BasePresenterFragment<FriendsTabsPresenter, IFriendsTabsView> implements IFriendsTabsView {
@@ -105,6 +107,8 @@ public class FriendsTabsFragment extends BasePresenterFragment<FriendsTabsPresen
     @Override
     public void onResume() {
         super.onResume();
+        Settings.get().ui().notifyPlaceResumed(Place.FRIENDS_AND_FOLLOWERS);
+
         ActivityUtils.setToolbarTitle(this, R.string.friends);
 
         new ActivityFeatures.Builder()

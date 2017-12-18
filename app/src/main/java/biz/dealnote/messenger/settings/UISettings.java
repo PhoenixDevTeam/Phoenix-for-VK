@@ -7,9 +7,12 @@ import android.preference.PreferenceManager;
 import java.util.Calendar;
 
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.fragment.NavigationFragment;
 import biz.dealnote.messenger.fragment.PreferencesFragment;
-import biz.dealnote.messenger.model.drawer.AbsDrawerItem;
+import biz.dealnote.messenger.fragment.fave.FaveTabsFragment;
+import biz.dealnote.messenger.fragment.friends.FriendsTabsFragment;
+import biz.dealnote.messenger.fragment.search.SeachTabsFragment;
+import biz.dealnote.messenger.place.Place;
+import biz.dealnote.messenger.place.PlaceFactory;
 
 /**
  * Created by admin on 01.12.2016.
@@ -29,7 +32,6 @@ class UISettings implements ISettings.IUISettings {
     @Override
     public int getAvatarStyle() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(app);
-        //noinspection ResourceType
         return preferences.getInt(PreferencesFragment.KEY_AVATAR_STYLE, AvatarStyle.CIRCLE);
     }
 
@@ -235,33 +237,71 @@ class UISettings implements ISettings.IUISettings {
     }
 
     @Override
-    public AbsDrawerItem getDefaultPage() {
+    public Place getDefaultPage(int accountId) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(app);
-        String page = preferences.getString(PreferencesFragment.KEY_DEFAULT_CATEGORY, "2");
+        String page = preferences.getString(PreferencesFragment.KEY_DEFAULT_CATEGORY, "last_closed");
+
+        if("last_closed".equals(page)){
+            int type = PreferenceManager.getDefaultSharedPreferences(app).getInt("last_closed_place_type", Place.DIALOGS);
+            switch (type){
+                case Place.DIALOGS:
+                    return PlaceFactory.getDialogsPlace(accountId, accountId, null);
+                case Place.FEED:
+                    return PlaceFactory.getFeedPlace(accountId);
+                case Place.FRIENDS_AND_FOLLOWERS:
+                    return PlaceFactory.getFriendsFollowersPlace(accountId, accountId, FriendsTabsFragment.TAB_ALL_FRIENDS, null);
+                case Place.NOTIFICATIONS:
+                    return PlaceFactory.getNotificationsPlace(accountId);
+                case Place.NEWSFEED_COMMENTS:
+                    return PlaceFactory.getNewsfeedCommentsPlace(accountId);
+                case Place.COMMUNITIES:
+                    return PlaceFactory.getCommunitiesPlace(accountId, accountId);
+                case Place.VK_PHOTO_ALBUMS:
+                    return PlaceFactory.getVKPhotoAlbumsPlace(accountId, accountId, null, null);
+                case Place.AUDIOS:
+                    return PlaceFactory.getAudiosPlace(accountId, accountId);
+                case Place.DOCS:
+                    return PlaceFactory.getDocumentsPlace(accountId, accountId, null);
+                case Place.BOOKMARKS:
+                    return PlaceFactory.getBookmarksPlace(accountId, FaveTabsFragment.TAB_PHOTOS);
+                case Place.SEARCH:
+                    return PlaceFactory.getSearchPlace(accountId, SeachTabsFragment.TAB_PEOPLE, null);
+                case Place.PREFERENCES:
+                    return PlaceFactory.getPreferencesPlace(accountId);
+            }
+        }
+
         switch (page) {
             case "1":
-                return NavigationFragment.SECTION_ITEM_FRIENDS;
+                return PlaceFactory.getFriendsFollowersPlace(accountId, accountId, FriendsTabsFragment.TAB_ALL_FRIENDS, null);
             case "2":
-                return NavigationFragment.SECTION_ITEM_DIALOGS;
+                return PlaceFactory.getDialogsPlace(accountId, accountId, null);
             case "3":
-                return NavigationFragment.SECTION_ITEM_FEED;
+                return PlaceFactory.getFeedPlace(accountId);
             case "4":
-                return NavigationFragment.SECTION_ITEM_FEEDBACK;
+                return PlaceFactory.getNotificationsPlace(accountId);
             case "5":
-                return NavigationFragment.SECTION_ITEM_GROUPS;
+                return PlaceFactory.getCommunitiesPlace(accountId, accountId);
             case "6":
-                return NavigationFragment.SECTION_ITEM_PHOTOS;
+                return PlaceFactory.getVKPhotoAlbumsPlace(accountId, accountId, null, null);
             case "7":
-                return NavigationFragment.SECTION_ITEM_VIDEOS;
+                return PlaceFactory.getVideosPlace(accountId, accountId, null);
             case "8":
-                return NavigationFragment.SECTION_ITEM_AUDIOS;
+                return PlaceFactory.getAudiosPlace(accountId, accountId);
             case "9":
-                return NavigationFragment.SECTION_ITEM_DOCS;
+                return PlaceFactory.getDocumentsPlace(accountId, accountId, null);
             case "10":
-                return NavigationFragment.SECTION_ITEM_BOOKMARKS;
+                return PlaceFactory.getBookmarksPlace(accountId, FaveTabsFragment.TAB_PHOTOS);
             default:
-                return NavigationFragment.SECTION_ITEM_DIALOGS;
+                return PlaceFactory.getDialogsPlace(accountId, accountId, null);
         }
+    }
+
+    @Override
+    public void notifyPlaceResumed(int type) {
+        PreferenceManager.getDefaultSharedPreferences(app).edit()
+                .putInt("last_closed_place_type", type)
+                .apply();
     }
 
     @Override

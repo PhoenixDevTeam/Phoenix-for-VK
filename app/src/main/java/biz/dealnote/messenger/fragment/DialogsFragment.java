@@ -46,7 +46,9 @@ import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.DialogsPresenter;
 import biz.dealnote.messenger.mvp.view.IDialogsView;
+import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.InputTextDialog;
 import biz.dealnote.messenger.util.Utils;
@@ -307,6 +309,8 @@ public class DialogsFragment extends BasePresenterFragment<DialogsPresenter, IDi
     @Override
     public void onResume() {
         super.onResume();
+        Settings.get().ui().notifyPlaceResumed(Place.DIALOGS);
+
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if (actionBar != null) {
             actionBar.setTitle(R.string.dialogs);

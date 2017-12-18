@@ -36,7 +36,9 @@ import biz.dealnote.messenger.model.PhotoAlbum;
 import biz.dealnote.messenger.model.PhotoAlbumEditor;
 import biz.dealnote.messenger.mvp.presenter.PhotoAlbumsPresenter;
 import biz.dealnote.messenger.mvp.view.IPhotoAlbumsView;
+import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.mvp.core.IPresenterFactory;
@@ -102,6 +104,8 @@ public class VKPhotoAlbumsFragment extends BasePresenterFragment<PhotoAlbumsPres
     @Override
     public void onResume() {
         super.onResume();
+        Settings.get().ui().notifyPlaceResumed(Place.VK_PHOTO_ALBUMS);
+
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if(Objects.nonNull(actionBar)){
             actionBar.setTitle(R.string.photos);

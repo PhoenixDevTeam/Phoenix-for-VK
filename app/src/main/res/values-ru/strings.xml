@@ -295,7 +295,7 @@
     <string name="get_full_app_summary">Если хотите получить больше возможностей, попробуйте Phoenix для ВК</string>
     <string name="buy_phoenix">Купить Phoenix</string>
     <string name="default_category_summary">Выберите страницу, которая будет показана при запуске приложения</string>
-    <string name="default_category_title">Стандартная страница</string>
+    <string name="default_category_title">Стартовая страница</string>
 
     <string name="drawer_feedback">Ответы</string>
 
@@ -1132,4 +1132,5 @@
     <string name="error_key_exchange_cancelled_by_user">Обмен ключами был отменен пользователем</string>
     <string name="error_key_exchange_session_expired">Сессия уже не активна. Повторите обмен еще раз.</string>
     <string name="error_activity_not_found">Совместимое ПО не установлено</string>
+    <string name="last_closed_page">Последняя закрытая</string>
 </resources>

@@ -42,7 +42,9 @@ import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.News;
 import biz.dealnote.messenger.mvp.presenter.FeedPresenter;
 import biz.dealnote.messenger.mvp.view.IFeedView;
+import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.LoadMoreFooterHelper;
@@ -210,6 +212,8 @@ public class FeedFragment extends PlaceSupportPresenterFragment<FeedPresenter, I
     @Override
     public void onResume() {
         super.onResume();
+        Settings.get().ui().notifyPlaceResumed(Place.FEED);
+
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if (actionBar != null) {
             actionBar.setTitle(R.string.feed);

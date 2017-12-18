@@ -59,6 +59,7 @@ import biz.dealnote.messenger.link.LinkHelper;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.model.SwitchableCategory;
+import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.settings.AppPrefs;
 import biz.dealnote.messenger.settings.AvatarStyle;
@@ -602,6 +603,9 @@ public class PreferencesFragment extends PreferenceFragment {
         ArrayList<String> enabledCategoriesName = new ArrayList<>();
         ArrayList<String> enabledCategoriesValues = new ArrayList<>();
 
+        enabledCategoriesName.add(getString(R.string.last_closed_page));
+        enabledCategoriesValues.add("last_closed");
+
         if (drawerSettings.isCategoryEnabled(SwitchableCategory.FRIENDS)) {
             enabledCategoriesName.add(getString(R.string.friends));
             enabledCategoriesValues.add("1");
@@ -664,6 +668,8 @@ public class PreferencesFragment extends PreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Settings.get().ui().notifyPlaceResumed(Place.PREFERENCES);
+
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if (actionBar != null) {
             actionBar.setTitle(R.string.settings);

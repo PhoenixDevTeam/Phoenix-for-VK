@@ -33,7 +33,9 @@ import biz.dealnote.messenger.fragment.search.criteria.PeopleSearchCriteria;
 import biz.dealnote.messenger.fragment.search.criteria.VideoSearchCriteria;
 import biz.dealnote.messenger.listener.AppStyleable;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
+import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.settings.CurrentTheme;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Accounts;
 import biz.dealnote.messenger.util.Exestime;
 import biz.dealnote.messenger.util.Logger;
@@ -358,6 +360,8 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
     @Override
     public void onResume() {
         super.onResume();
+        Settings.get().ui().notifyPlaceResumed(Place.SEARCH);
+
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)

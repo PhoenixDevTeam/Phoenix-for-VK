@@ -32,8 +32,10 @@ import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.DataWrapper;
 import biz.dealnote.messenger.mvp.presenter.CommunitiesPresenter;
 import biz.dealnote.messenger.mvp.view.ICommunitiesView;
+import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.settings.CurrentTheme;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.MySearchView;
 import biz.dealnote.mvp.core.IPresenterFactory;
@@ -144,6 +146,7 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
     @Override
     public void onResume() {
         super.onResume();
+        Settings.get().ui().notifyPlaceResumed(Place.COMMUNITIES);
 
         ActivityUtils.setToolbarTitle(this, R.string.groups);
         ActivityUtils.setToolbarSubtitle(this, null); // TODO: 04.10.2017

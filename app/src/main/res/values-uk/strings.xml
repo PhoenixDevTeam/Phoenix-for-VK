@@ -1,4 +1,4 @@
-﻿﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Phoenix Lite</string>
@@ -292,8 +292,8 @@
     <string name="get_full_app_title">Отримати повний додаток</string>
     <string name="get_full_app_summary">Якщо хочете отримати більше можливостей, спробуйте Phoenix для ВК</string>
     <string name="buy_phoenix">Купити Phoenix</string>
-    <string name="default_category_summary">Виберіть сторінку , яка буде показана при запуску програми</string>
-    <string name="default_category_title">Стандартна сторінка</string>
+    <string name="default_category_summary">Виберіть сторінку, яка буде показана при запуску програми</string>
+    <string name="default_category_title">Стартова сторінка</string>
 
     <string name="drawer_feedback">Відповіді</string>
 
@@ -1129,4 +1129,5 @@
     <string name="error_key_exchange_cancelled_by_user">Обмін ключами був скасований користувачем</string>
     <string name="error_key_exchange_session_expired">Сесія вже не активна. Повторіть обмін ще раз.</string>
     <string name="error_activity_not_found">Сумісне ПЗ не встановлено</string>
+    <string name="last_closed_page">Остання закрита</string>
 </resources>

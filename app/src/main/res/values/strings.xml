@@ -177,7 +177,7 @@
     <string name="here">Here</string>
     <string name="to_another_dialogue">To another conversation</string>
 
-    <string name="default_category_title">Default page</string>
+    <string name="default_category_title">Start page</string>
     <string name="default_category_summary">Choose page that will be loaded on app start</string>
 
     <string name="music">Music</string>
@@ -1265,5 +1265,6 @@
     <string name="error_key_exchange_cancelled_by_user">Key exchange was cancelled by user</string>
     <string name="error_key_exchange_session_expired">The key exchange session is no longer active. Please try again.</string>
     <string name="error_activity_not_found">No compatible software installed</string>
+    <string name="last_closed_page">Last closed page</string>
 
 </resources>

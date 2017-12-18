@@ -25,7 +25,9 @@ import biz.dealnote.messenger.fragment.NavigationFragment;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
 import biz.dealnote.messenger.link.types.FaveLink;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
+import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.settings.CurrentTheme;
+import biz.dealnote.messenger.settings.Settings;
 
 public class FaveTabsFragment extends BaseFragment {
 
@@ -107,6 +109,8 @@ public class FaveTabsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Settings.get().ui().notifyPlaceResumed(Place.BOOKMARKS);
+
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
 
         if(actionBar != null){

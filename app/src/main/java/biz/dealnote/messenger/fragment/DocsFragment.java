@@ -43,7 +43,9 @@ import biz.dealnote.messenger.model.selection.LocalPhotosSelectableSource;
 import biz.dealnote.messenger.model.selection.Sources;
 import biz.dealnote.messenger.mvp.presenter.DocsListPresenter;
 import biz.dealnote.messenger.mvp.view.IDocListView;
+import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.upload.UploadObject;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.mvp.core.IPresenterFactory;
@@ -376,6 +378,8 @@ public class DocsFragment extends BasePresenterFragment<DocsListPresenter, IDocL
     @Override
     public void onResume() {
         super.onResume();
+        Settings.get().ui().notifyPlaceResumed(Place.DOCS);
+
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if (actionBar != null) {
             actionBar.setTitle(R.string.documents);

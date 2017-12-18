@@ -255,11 +255,10 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             boolean intentWasHandled = handleIntent(getIntent());
 
             if (!intentWasHandled) {
-                mCurrentFrontSection = Settings.get()
-                        .ui()
-                        .getDefaultPage();
+                Place place = Settings.get().ui().getDefaultPage(mAccountId);
+                place.tryOpenWith(this);
 
-                openDrawerPage(mCurrentFrontSection);
+                //openDrawerPage(mCurrentFrontSection);
             }
 
             if (AppPrefs.FULL_APP && !BuildConfig.DEBUG) {
@@ -373,12 +372,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         Logger.d(TAG, "handleIntent, extras: " + extras + ", action: " + action);
 
         if (extras != null) {
-            /*if (extras.containsKey(EXTRA_PAGE)) {
-                mCurrentFrontSection = intent.getParcelableExtra(EXTRA_PAGE);
-                openDrawerPage(mCurrentFrontSection);
-                return true;
-            }
-*/
             if (ActivityUtils.checkInputExist(this)) {
                 mCurrentFrontSection = NavigationFragment.SECTION_ITEM_DIALOGS;
                 openDrawerPage(mCurrentFrontSection);
@@ -877,7 +870,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     @Override
     public void openPlace(Place place) {
         final Bundle args = place.getArgs();
-
         switch (place.type) {
             case Place.VIDEO_PREVIEW:
                 attachFragment(VideoPreviewFragment.newInstance(place.getArgs()), true, "video_preview");
