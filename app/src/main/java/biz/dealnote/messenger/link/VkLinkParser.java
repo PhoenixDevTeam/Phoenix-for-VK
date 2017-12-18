@@ -1,16 +1,21 @@
 package biz.dealnote.messenger.link;
 
+import java.net.URLDecoder;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import biz.dealnote.messenger.link.types.AbsLink;
 import biz.dealnote.messenger.link.types.AudiosLink;
 import biz.dealnote.messenger.link.types.AwayLink;
+import biz.dealnote.messenger.link.types.BoardLink;
 import biz.dealnote.messenger.link.types.DialogLink;
 import biz.dealnote.messenger.link.types.DialogsLink;
 import biz.dealnote.messenger.link.types.DocLink;
 import biz.dealnote.messenger.link.types.DomainLink;
 import biz.dealnote.messenger.link.types.FaveLink;
+import biz.dealnote.messenger.link.types.FeedSearchLink;
 import biz.dealnote.messenger.link.types.OwnerLink;
 import biz.dealnote.messenger.link.types.PageLink;
 import biz.dealnote.messenger.link.types.PhotoAlbumLink;
@@ -22,6 +27,7 @@ import biz.dealnote.messenger.link.types.WallCommentLink;
 import biz.dealnote.messenger.link.types.WallLink;
 import biz.dealnote.messenger.link.types.WallPostLink;
 import biz.dealnote.messenger.model.Peer;
+import biz.dealnote.messenger.util.Optional;
 
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 import static java.lang.Integer.parseInt;
@@ -29,7 +35,7 @@ import static java.lang.Integer.parseInt;
 public class VkLinkParser {
 
     private static final Pattern PATTERN_PHOTOS = Pattern.compile("vk\\.com/photos(-?\\d*)"); //+
-    private static final Pattern PATTERN_PROFILE_ID = Pattern.compile("vk\\.com//id(\\d+)$"); //+
+    private static final Pattern PATTERN_PROFILE_ID = Pattern.compile("(m\\.)?vk\\.com/id(\\d+)$"); //+
     private static final Pattern PATTERN_DOMAIN = Pattern.compile("vk\\.com/([\\w.]+)");
     private static final Pattern PATTERN_WALL_POST = Pattern.compile("vk.com/(?:[\\w.\\d]+\\?(?:[\\w=&]+)?w=)?wall(-?\\d*)_(\\d*)");
     private static final Pattern PATTERN_AWAY = Pattern.compile("vk\\.com/away(\\.php)?\\?(.*)");
@@ -48,6 +54,8 @@ public class VkLinkParser {
 
     //vk.com/wall-2345345_7834545?reply=15345346
     private static final Pattern PATTERN_WALL_POST_COMMENT = Pattern.compile("vk\\.com/wall(-?\\d*)_(\\d*)\\?reply=(\\d*)");
+    private static final Pattern PATTERN_BOARD = Pattern.compile("vk\\.com/board(\\d+)");
+    private static final Pattern PATTERN_FEED_SEARCH = Pattern.compile("vk\\.com/feed\\?q=([^&#]*)&section=search");//https://vk.com/feed?q=%23Android_Apps_%D0%AE%D0%BC%D0%BE%D1%80&section=search
 
     public static AbsLink parse(String string) {
         if (!string.contains("vk.com")) {
@@ -67,7 +75,7 @@ public class VkLinkParser {
             return null;
         }
 
-        if (string.contains("vk.com/feed") && !string.contains("?z=photo") && !string.contains("w=wall") && !string.contains("?w=page")) {
+        if (string.contains("vk.com/feed") && !string.contains("?z=photo") && !string.contains("w=wall") && !string.contains("?w=page") && !string.contains("?q=")) {
             return null;
         }
 
@@ -92,10 +100,6 @@ public class VkLinkParser {
         }
 
         if (string.endsWith("vk.com/page")) {
-            return null;
-        }
-
-        if (string.contains("vk.com/board")) {
             return null;
         }
 
@@ -127,32 +131,47 @@ public class VkLinkParser {
             return new DialogsLink();
         }
 
-        vkLink = VkLinkParser.parsePage(string);
+        for(IParser parser : PARSERS){
+            try {
+                AbsLink link = parser.parse(string).get();
+                if(link != null){
+                    return link;
+                }
+            } catch (Exception ignored){
+            }
+        }
+
+        vkLink = parseBoard(string);
+        if(vkLink != null){
+            return vkLink;
+        }
+
+        vkLink = parsePage(string);
         if (vkLink != null) {
             return vkLink;
         }
 
-        vkLink = VkLinkParser.parsePhoto(string);
+        vkLink = parsePhoto(string);
         if (vkLink != null) {
             return vkLink;
         }
 
-        vkLink = VkLinkParser.parseAlbum(string);
+        vkLink = parseAlbum(string);
         if (vkLink != null) {
             return vkLink;
         }
 
-        vkLink = VkLinkParser.parseProfileById(string);
+        vkLink = parseProfileById(string);
         if (vkLink != null) {
             return vkLink;
         }
 
-        vkLink = VkLinkParser.parseGroupById(string);
+        vkLink = parseGroupById(string);
         if (vkLink != null) {
             return vkLink;
         }
 
-        vkLink = VkLinkParser.parseTopic(string);
+        vkLink = parseTopic(string);
         if (vkLink != null) {
             return vkLink;
         }
@@ -190,29 +209,60 @@ public class VkLinkParser {
             return vkLink;
         }
 
-        vkLink = VkLinkParser.parseAudios(string);
+        vkLink = parseAudios(string);
         if (vkLink != null) {
             return vkLink;
         }
 
-        vkLink = VkLinkParser.parseDoc(string);
+        vkLink = parseDoc(string);
         if (vkLink != null) {
             return vkLink;
         }
 
-        vkLink = VkLinkParser.parsePhotos(string);
+        vkLink = parsePhotos(string);
         if (vkLink != null) {
             return vkLink;
         }
 
-        vkLink = VkLinkParser.parseFave(string);
+        vkLink = parseFave(string);
         if (vkLink != null) {
             return vkLink;
         }
 
-        vkLink = VkLinkParser.parseDomain(string);
+        vkLink = parseDomain(string);
         if (vkLink != null) {
             return vkLink;
+        }
+
+        return null;
+    }
+
+    private static final List<IParser> PARSERS = new LinkedList<>();
+    static {
+        PARSERS.add(string -> {
+            Matcher matcher = PATTERN_FEED_SEARCH.matcher(string);
+            if(matcher.find()){
+                String q = URLDecoder.decode(matcher.group(1), "UTF-8");
+                return Optional.wrap(new FeedSearchLink(q));
+            }
+            return Optional.empty();
+        });
+    }
+
+    private interface IParser {
+        Optional<AbsLink> parse(String string) throws Exception;
+    }
+
+    private static AbsLink parseBoard(String string){
+        Matcher matcher = PATTERN_BOARD.matcher(string);
+
+        try {
+            if(matcher.find()){
+                String groupId = matcher.group(1);
+                return new BoardLink(Integer.parseInt(groupId));
+            }
+        } catch (Exception ignored){
+
         }
 
         return null;
@@ -301,10 +351,8 @@ public class VkLinkParser {
     private static AbsLink parsePage(String string) {
         if (string.contains("vk.com/pages")
                 || string.contains("vk.com/page")
-                || string.contains("vkontakte.ru/pages")
-                || string.contains("vkontakte.ru/page")
                 || string.contains("vk.com") && string.contains("w=page")) {
-            return new PageLink(string);
+            return new PageLink(string.replace("m.vk.com/", "vk.com/"));
         }
 
         return null;
@@ -343,7 +391,7 @@ public class VkLinkParser {
         Matcher matcher = PATTERN_PROFILE_ID.matcher(string);
         try {
             if (matcher.find()) {
-                return new OwnerLink(parseInt(matcher.group(1)));
+                return new OwnerLink(parseInt(matcher.group(2)));
             }
         } catch (Exception ignored) {
         }

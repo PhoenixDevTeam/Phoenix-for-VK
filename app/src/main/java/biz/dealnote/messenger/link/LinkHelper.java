@@ -10,12 +10,16 @@ import android.widget.Toast;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.VKPhotosFragment;
 import biz.dealnote.messenger.fragment.fave.FaveTabsFragment;
+import biz.dealnote.messenger.fragment.search.SearchContentType;
+import biz.dealnote.messenger.fragment.search.criteria.NewsFeedCriteria;
 import biz.dealnote.messenger.link.types.AbsLink;
 import biz.dealnote.messenger.link.types.AudiosLink;
+import biz.dealnote.messenger.link.types.BoardLink;
 import biz.dealnote.messenger.link.types.DialogLink;
 import biz.dealnote.messenger.link.types.DocLink;
 import biz.dealnote.messenger.link.types.DomainLink;
 import biz.dealnote.messenger.link.types.FaveLink;
+import biz.dealnote.messenger.link.types.FeedSearchLink;
 import biz.dealnote.messenger.link.types.OwnerLink;
 import biz.dealnote.messenger.link.types.PageLink;
 import biz.dealnote.messenger.link.types.PhotoAlbumLink;
@@ -42,7 +46,7 @@ public class LinkHelper {
         }
     }
 
-    public static boolean openVKLink(Activity activity, int accountId, AbsLink link){
+    public static boolean openVKLink(Activity activity, int accountId, AbsLink link) {
         switch (link.type) {
             case AbsLink.WALL_COMMENT:
                 WallCommentLink wallCommentLink = (WallCommentLink) link;
@@ -124,7 +128,7 @@ public class LinkHelper {
                 break;
 
             case AbsLink.PAGE:
-                PlaceFactory.getWikiPagePlace(accountId, ((PageLink) link).pageLink).tryOpenWith(activity);
+                PlaceFactory.getWikiPagePlace(accountId, ((PageLink) link).getLink()).tryOpenWith(activity);
                 break;
 
             case AbsLink.DOC:
@@ -135,11 +139,22 @@ public class LinkHelper {
             case AbsLink.FAVE:
                 FaveLink faveLink = (FaveLink) link;
                 int targetTab = FaveTabsFragment.getTabByLinkSection(faveLink.section);
-                if(targetTab == FaveTabsFragment.TAB_UNKNOWN){
+                if (targetTab == FaveTabsFragment.TAB_UNKNOWN) {
                     return false;
                 }
 
                 PlaceFactory.getBookmarksPlace(accountId, targetTab).tryOpenWith(activity);
+                break;
+
+            case AbsLink.BOARD:
+                BoardLink boardLink = (BoardLink) link;
+                PlaceFactory.getTopicsPlace(accountId, -Math.abs(boardLink.getGroupId())).tryOpenWith(activity);
+                break;
+
+            case AbsLink.FEED_SEARCH:
+                FeedSearchLink feedSearchLink = (FeedSearchLink) link;
+                NewsFeedCriteria criteria = new NewsFeedCriteria(feedSearchLink.getQ());
+                PlaceFactory.getSingleTabSearchPlace(accountId, SearchContentType.NEWS, criteria).tryOpenWith(activity);
                 break;
 
             default:
@@ -159,16 +174,16 @@ public class LinkHelper {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             context.startActivity(intent);
-        } catch (ActivityNotFoundException e){
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(context, R.string.error_activity_not_found, Toast.LENGTH_LONG).show();
         }
     }
 
-    public static Commented findCommentedFrom(String url){
+    public static Commented findCommentedFrom(String url) {
         AbsLink link = VkLinkParser.parse(url);
         Commented commented = null;
-        if(link != null){
-            switch (link.type){
+        if (link != null) {
+            switch (link.type) {
                 case AbsLink.WALL_POST:
                     WallPostLink wallPostLink = (WallPostLink) link;
                     commented = new Commented(wallPostLink.postId, wallPostLink.ownerId, CommentedType.POST, null);

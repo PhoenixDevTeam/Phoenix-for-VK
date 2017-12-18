@@ -354,7 +354,7 @@ public class PlaceFactory {
         return new Place(Place.WALL).setArguments(AbsWallFragment.buildArgs(accountId, ownerId, owner));
     }
 
-    public static Place getTopicPlace(int accountId, int ownerId){
+    public static Place getTopicsPlace(int accountId, int ownerId){
         return new Place(Place.TOPICS).setArguments(TopicsFragment.buildArgs(accountId, ownerId));
     }
 

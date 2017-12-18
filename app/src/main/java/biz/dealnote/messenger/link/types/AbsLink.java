@@ -20,6 +20,8 @@ public abstract class AbsLink {
     public static final int AUDIOS = 15;
     public static final int FAVE = 16;
     public static final int WALL_COMMENT = 17;
+    public static final int BOARD = 18;
+    public static final int FEED_SEARCH = 19;
 
     public int type;
 

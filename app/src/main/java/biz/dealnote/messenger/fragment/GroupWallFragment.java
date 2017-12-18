@@ -159,7 +159,7 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
 
     @Override
     public void openTopics(int accoundId, int ownerId, @Nullable Owner owner) {
-        PlaceFactory.getTopicPlace(accoundId, ownerId)
+        PlaceFactory.getTopicsPlace(accoundId, ownerId)
                 .withParcelableExtra(Extra.OWNER, owner)
                 .tryOpenWith(getActivity());
     }

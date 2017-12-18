@@ -78,7 +78,7 @@ public class BrowserFragment extends BaseFragment implements BackPressCallback {
             }
         });
 
-        //mWebView.getSettings().setJavaScriptEnabled(true); // из-за этого не срабатывал метод
+        mWebView.getSettings().setJavaScriptEnabled(true); // из-за этого не срабатывал метод
         // shouldOverrideUrlLoading в WebClient
 
         if (savedInstanceState != null) {
@@ -160,14 +160,25 @@ public class BrowserFragment extends BaseFragment implements BackPressCallback {
     private class VkLinkSupportWebClient extends WebViewClient {
 
         @Override
+        public void onLoadResource(WebView view, String url) {
+            super.onLoadResource(view, url);
+            Logger.d(TAG, "onLoadResource, url: " + url);
+        }
+
+        @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             AbsLink link = VkLinkParser.parse(url);
             Logger.d(TAG, "shouldOverrideUrlLoading, link: " + link + ", url: " + url);
 
             //link: null, url: https://vk.com/doc124456557_415878705
 
-            if (link == null || link instanceof PageLink) {
+            if (link == null) {
                 view.loadUrl(url);
+                return true;
+            }
+
+            if(link instanceof PageLink){
+                view.loadUrl(url + "?api_view=0df43cdc43a25550c6beb7357c9d41");
                 return true;
             }
 
