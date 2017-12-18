@@ -43,11 +43,13 @@ class MessagesApi extends AbsApi implements IMessagesApi {
     }
 
     @Override
-    public Completable edit(int peerId, int messageIs, String message, Collection<IAttachmentToken> attachments) {
+    public Completable edit(int peerId, int messageId, String message, List<IAttachmentToken> attachments, boolean keepFwd) {
         String atts = join(attachments, ",", AbsApi::formatAttachmentToken);
+
+        String fwd = keepFwd ? "-" + messageId : null; // todo not working!!!
         return serviceRx(TokenType.USER, TokenType.COMMUNITY)
                 .flatMapCompletable(service -> service
-                        .editMessage(peerId, messageIs, message, atts)
+                        .editMessage(peerId, messageId, message, atts, fwd)
                         .toCompletable());
     }
 
@@ -123,10 +125,10 @@ class MessagesApi extends AbsApi implements IMessagesApi {
     }
 
     @Override
-    public Single<Map<String, Integer>> delete(Collection<Integer> messageIds, Boolean spam) {
+    public Single<Map<String, Integer>> delete(Collection<Integer> messageIds, Boolean deleteForAll, Boolean spam) {
         return serviceRx(TokenType.USER, TokenType.COMMUNITY)
                 .flatMap(service -> service
-                        .delete(join(messageIds, ","), integerFromBoolean(spam)) //{"response":{"1173002":1,"1173001":1}}
+                        .delete(join(messageIds, ","), integerFromBoolean(deleteForAll), integerFromBoolean(spam)) //{"response":{"1173002":1,"1173001":1}}
                         .map(extractResponseWithErrorHandling()));
     }
 

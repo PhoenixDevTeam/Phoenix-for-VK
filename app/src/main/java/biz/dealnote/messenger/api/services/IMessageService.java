@@ -30,7 +30,8 @@ public interface IMessageService {
     Single<BaseResponse<Integer>> editMessage(@Field("peer_id") int peedId,
                                               @Field("message_id") int messageId,
                                               @Field("message") String message,
-                                              @Field("attchment") String attachment);
+                                              @Field("attchment") String attachment,
+                                              @Field("forward_messages") String forwardMessages);
 
     /**
      * Allows the current user to leave a chat or, if the current user started the chat,
@@ -159,7 +160,8 @@ public interface IMessageService {
     @FormUrlEncoded
     @POST("messages.delete")
     Single<BaseResponse<Map<String, Integer>>> delete(@Field("message_ids") String messageIds,
-                                         @Field("spam") Integer spam);
+                                                      @Field("delete_for_all") Integer deleteForAll,
+                                                      @Field("spam") Integer spam);
 
     /**
      * Marks messages as read.

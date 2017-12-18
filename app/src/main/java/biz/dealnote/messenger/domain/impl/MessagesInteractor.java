@@ -630,7 +630,7 @@ public class MessagesInteractor implements IMessagesInteractor {
         // TODO: 07.10.2017 Remove from Cache?
         return networker.vkDefault(accountId)
                 .messages()
-                .delete(ids, null)
+                .delete(ids, null, null)
                 .toCompletable();
     }
 

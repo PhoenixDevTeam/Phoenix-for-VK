@@ -27,7 +27,7 @@ import io.reactivex.Single;
 public interface IMessagesApi {
 
     @CheckResult
-    Completable edit(int peerId, int messageIs, String message, Collection<IAttachmentToken> attachments);
+    Completable edit(int peerId, int messageIs, String message, List<IAttachmentToken> attachments, boolean keepFwd);
 
     @CheckResult
     Single<Boolean> removeChatUser(int chatId, int userId);
@@ -54,7 +54,7 @@ public interface IMessagesApi {
     Single<Boolean> restore(int messageId);
 
     @CheckResult
-    Single<Map<String, Integer>> delete(Collection<Integer> messageIds, Boolean spam);
+    Single<Map<String, Integer>> delete(Collection<Integer> messageIds, Boolean deleteForAll, Boolean spam);
 
     @CheckResult
     Single<Boolean> markAsRead(Collection<Integer> messageIds, Integer peerId, Integer startMessageId);
