@@ -266,6 +266,8 @@ class UISettings implements ISettings.IUISettings {
                     return PlaceFactory.getBookmarksPlace(accountId, FaveTabsFragment.TAB_PHOTOS);
                 case Place.SEARCH:
                     return PlaceFactory.getSearchPlace(accountId, SeachTabsFragment.TAB_PEOPLE, null);
+                case Place.VIDEOS:
+                    return PlaceFactory.getVideosPlace(accountId, accountId, null);
                 case Place.PREFERENCES:
                     return PlaceFactory.getPreferencesPlace(accountId);
             }
