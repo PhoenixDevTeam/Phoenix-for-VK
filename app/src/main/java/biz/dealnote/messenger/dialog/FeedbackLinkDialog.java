@@ -18,7 +18,6 @@ import java.util.List;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.FeedbackLinkAdapter;
-import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.model.Comment;
 import biz.dealnote.messenger.model.Commented;
 import biz.dealnote.messenger.model.Photo;
@@ -90,7 +89,7 @@ public class FeedbackLinkDialog extends DialogFragment implements FeedbackLinkAd
     }
 
     private static boolean isSupport(Object o) {
-        return o instanceof VKApiUser ||
+        return o instanceof User ||
                 o instanceof Post ||
                 o instanceof Photo ||
                 o instanceof Comment ||
@@ -103,7 +102,7 @@ public class FeedbackLinkDialog extends DialogFragment implements FeedbackLinkAd
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = View.inflate(getActivity(), R.layout.fragment_feedback_links, null);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         FeedbackLinkAdapter adapter = new FeedbackLinkAdapter(getActivity(), getAllModels(mNotification), this);
@@ -128,22 +127,19 @@ public class FeedbackLinkDialog extends DialogFragment implements FeedbackLinkAd
     @Override
     public void onPostClick(@NonNull Post post) {
         close();
-        PlaceFactory.getPostPreviewPlace(getAccountId(), post.getVkid(), post.getOwnerId(), post)
-                .tryOpenWith(getActivity());
+        PlaceFactory.getPostPreviewPlace(getAccountId(), post.getVkid(), post.getOwnerId(), post).tryOpenWith(getActivity());
     }
 
     @Override
     public void onCommentClick(@NonNull Comment comment) {
         close();
-        PlaceFactory.getCommentsPlace(getAccountId(), comment.getCommented(), comment.getId())
-                .tryOpenWith(getActivity());
+        PlaceFactory.getCommentsPlace(getAccountId(), comment.getCommented(), comment.getId()).tryOpenWith(getActivity());
     }
 
     @Override
     public void onTopicClick(@NonNull Topic topic) {
         close();
-        PlaceFactory.getCommentsPlace(getAccountId(), Commented.from(topic), null)
-                .tryOpenWith(getActivity());
+        PlaceFactory.getCommentsPlace(getAccountId(), Commented.from(topic), null).tryOpenWith(getActivity());
     }
 
     @Override
@@ -155,14 +151,12 @@ public class FeedbackLinkDialog extends DialogFragment implements FeedbackLinkAd
     @Override
     public void onVideoClick(@NonNull Video video) {
         close();
-        PlaceFactory.getVideoPreviewPlace(getAccountId(), video)
-                .tryOpenWith(getActivity());
+        PlaceFactory.getVideoPreviewPlace(getAccountId(), video).tryOpenWith(getActivity());
     }
 
     @Override
     public void onUserClick(@NonNull User user) {
         close();
-        PlaceFactory.getOwnerWallPlace(getAccountId(), user)
-                .tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(getAccountId(), user).tryOpenWith(getActivity());
     }
 }
