@@ -52,9 +52,15 @@ import java.util.Stack;
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
+import biz.dealnote.messenger.domain.IAudioInteractor;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Audio;
 import biz.dealnote.messenger.util.Logger;
+import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
+import io.reactivex.disposables.CompositeDisposable;
+
+import static biz.dealnote.messenger.util.Utils.isEmpty;
 
 public class MusicPlaybackService extends Service {
 
@@ -572,7 +578,7 @@ public class MusicPlaybackService extends Service {
             }
 
             Stack<Integer> notPlayedTracksPositions = new Stack<>();
-            boolean allWerePlayed = mPlayList.size()-mHistory.size() == 0;
+            boolean allWerePlayed = mPlayList.size() - mHistory.size() == 0;
             if (!allWerePlayed) {
                 for (int i = 0; i < mPlayList.size(); i++) {
                     if (!mHistory.contains(i)) {
@@ -580,7 +586,7 @@ public class MusicPlaybackService extends Service {
                     }
                 }
             } else {
-                for (int i=0; i<mPlayList.size(); i++){
+                for (int i = 0; i < mPlayList.size(); i++) {
                     notPlayedTracksPositions.push(i);
                 }
                 mHistory.clear();
@@ -667,7 +673,7 @@ public class MusicPlaybackService extends Service {
                 return;
             }
 
-            mPlayer.setDataSource(audio.getUrl());
+            mPlayer.setDataSource(audio.getOwnerId(), audio.getId(), audio.getUrl());
         }
     }
 
@@ -996,7 +1002,7 @@ public class MusicPlaybackService extends Service {
     }
 
     private void cycleRepeat() {
-        switch (mRepeatMode){
+        switch (mRepeatMode) {
             case REPEAT_NONE:
                 setRepeatMode(REPEAT_ALL);
                 break;
@@ -1151,23 +1157,28 @@ public class MusicPlaybackService extends Service {
     private static final class MultiPlayer implements MediaPlayer.OnErrorListener,
             MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnBufferingUpdateListener {
 
-        private final WeakReference<MusicPlaybackService> mService;
+        final WeakReference<MusicPlaybackService> mService;
 
-        private MediaPlayer mCurrentMediaPlayer = new MediaPlayer();
+        MediaPlayer mCurrentMediaPlayer = new MediaPlayer();
 
-        private Handler mHandler;
+        Handler mHandler;
 
-        private boolean mIsInitialized;
+        boolean mIsInitialized;
 
-        private boolean preparing;
+        boolean preparing;
 
-        private int bufferPercent;
+        int bufferPercent;
+
+        final IAudioInteractor audioInteractor;
+
+        final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
         /**
          * Constructor of <code>MultiPlayer</code>
          */
         MultiPlayer(final MusicPlaybackService service) {
             mService = new WeakReference<>(service);
+            audioInteractor = InteractorFactory.createAudioInteractor();
             mCurrentMediaPlayer.setWakeMode(mService.get(), PowerManager.PARTIAL_WAKE_LOCK);
         }
 
@@ -1206,6 +1217,16 @@ public class MusicPlaybackService extends Service {
 
             resetBufferPercent();
             mService.get().notifyChange(PLAYSTATE_CHANGED);
+        }
+
+        void setDataSource(int ownerId, int audioId, String url) {
+            if (isEmpty(url) || "https://vk.com/mp3/audio_api_unavailable.mp3".equals(url)) {
+                compositeDisposable.add(audioInteractor.findAudioUrl(audioId, ownerId)
+                        .compose(RxUtils.applySingleIOToMainSchedulers())
+                        .subscribe(this::setDataSource, ignored -> setDataSource(url)));
+            } else {
+                setDataSource(url);
+            }
         }
 
         void resetBufferPercent() {
@@ -1266,6 +1287,7 @@ public class MusicPlaybackService extends Service {
         public void release() {
             stop();
             mCurrentMediaPlayer.release();
+            compositeDisposable.dispose();
         }
 
         public void pause() {
@@ -1280,20 +1302,20 @@ public class MusicPlaybackService extends Service {
             return mCurrentMediaPlayer.getCurrentPosition();
         }
 
-        public long seek(final long whereto) {
+        long seek(final long whereto) {
             mCurrentMediaPlayer.seekTo((int) whereto);
             return whereto;
         }
 
-        public void setVolume(final float vol) {
+        void setVolume(final float vol) {
             try {
                 mCurrentMediaPlayer.setVolume(vol, vol);
-            } catch (IllegalStateException ignored){
+            } catch (IllegalStateException ignored) {
                 // случается
             }
         }
 
-        public int getAudioSessionId() {
+        int getAudioSessionId() {
             return mCurrentMediaPlayer.getAudioSessionId();
         }
 
@@ -1321,7 +1343,7 @@ public class MusicPlaybackService extends Service {
             }
         }
 
-        public int getBufferPercent() {
+        int getBufferPercent() {
             return bufferPercent;
         }
     }

@@ -986,7 +986,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 break;
 
             case Place.AUDIOS:
-                attachFragment(AudiosFragment.newInstance(args.getInt(Extra.ACCOUNT_ID)), true, "audios");
+                attachFragment(AudiosFragment.newInstance(args.getInt(Extra.ACCOUNT_ID), args.getInt(Extra.OWNER_ID)), true, "audios");
                 break;
 
             case Place.VIDEO_ALBUM:

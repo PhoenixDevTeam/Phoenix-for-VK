@@ -126,10 +126,10 @@ public class AttchmentsEditorAdapter extends RecyclerBindableAdapter<AttachmenEn
         ViewHolder(View itemView) {
             super(itemView);
 
-            photoImageView = (ImageView) itemView.findViewById(R.id.item_attachment_image);
-            tvTitle = (TextView) itemView.findViewById(R.id.item_attachment_title);
+            photoImageView = itemView.findViewById(R.id.item_attachment_image);
+            tvTitle = itemView.findViewById(R.id.item_attachment_title);
             vRemove = itemView.findViewById(R.id.item_attachment_progress_root);
-            pbProgress = (CircleRoadProgress) itemView.findViewById(R.id.item_attachment_progress);
+            pbProgress = itemView.findViewById(R.id.item_attachment_progress);
             vTint = itemView.findViewById(R.id.item_attachment_tint);
             vTitleRoot = itemView.findViewById(R.id.item_attachment_title_root);
 

@@ -72,10 +72,10 @@ public class AudioRecyclerAdapter extends RecyclerView.Adapter<AudioRecyclerAdap
 
         AudioHolder(View itemView) {
             super(itemView);
-            artist = (TextView) itemView.findViewById(R.id.dialog_title);
-            title = (TextView) itemView.findViewById(R.id.dialog_message);
-            play = (ImageView) itemView.findViewById(R.id.item_audio_play);
-            time = (TextView) itemView.findViewById(R.id.item_audio_time);
+            artist = itemView.findViewById(R.id.dialog_title);
+            title = itemView.findViewById(R.id.dialog_message);
+            play = itemView.findViewById(R.id.item_audio_play);
+            time = itemView.findViewById(R.id.item_audio_time);
         }
     }
 

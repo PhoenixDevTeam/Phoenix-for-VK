@@ -1,5 +1,6 @@
 package biz.dealnote.messenger.domain;
 
+import biz.dealnote.messenger.App;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.domain.impl.AccountsInteractor;
 import biz.dealnote.messenger.domain.impl.AudioInteractor;
@@ -116,6 +117,6 @@ public class InteractorFactory {
     }
 
     public static IAudioInteractor createAudioInteractor() {
-        return new AudioInteractor(Injection.provideNetworkInterfaces());
+        return new AudioInteractor(App.getInstance(), Injection.provideNetworkInterfaces());
     }
 }

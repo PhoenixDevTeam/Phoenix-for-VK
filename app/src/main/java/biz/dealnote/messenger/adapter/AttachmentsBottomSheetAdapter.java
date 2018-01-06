@@ -162,8 +162,6 @@ public class AttachmentsBottomSheetAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void bindUploading(EntryHolder holder, UploadObject upload) {
-        Context context = holder.itemView.getContext();
-
         holder.tintView.setVisibility(View.VISIBLE);
 
         boolean inProgress = upload.getStatus() == UploadObject.STATUS_UPLOADING;
@@ -276,10 +274,10 @@ public class AttachmentsBottomSheetAdapter extends RecyclerView.Adapter<Recycler
 
         EntryHolder(View itemView) {
             super(itemView);
-            this.image = (ImageView) itemView.findViewById(R.id.image);
-            this.title = (TextView) itemView.findViewById(R.id.title);
+            this.image = itemView.findViewById(R.id.image);
+            this.title = itemView.findViewById(R.id.title);
             this.buttomRemove = itemView.findViewById(R.id.progress_root);
-            this.progress = (CircleRoadProgress) itemView.findViewById(R.id.progress_view);
+            this.progress = itemView.findViewById(R.id.progress_view);
             this.tintView = itemView.findViewById(R.id.tint_view);
         }
 

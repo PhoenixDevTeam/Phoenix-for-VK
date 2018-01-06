@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.domain;
 
 import java.util.Collection;
+import java.util.List;
 
 import biz.dealnote.messenger.model.Audio;
 import io.reactivex.Completable;
@@ -17,4 +18,7 @@ public interface IAudioInteractor {
     Completable restore(int accountId, int audioId, int ownerId);
 
     Completable sendBroadcast(int accountId, int audioOwnerId, int audioId, @Nullable Collection<Integer> targetIds);
+
+    Single<List<Audio>> get(int ownerId, int offset);
+    Single<String> findAudioUrl(int audioId, int ownerId);
 }

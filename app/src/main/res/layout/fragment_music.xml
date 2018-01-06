@@ -6,37 +6,57 @@
 
     <include layout="@layout/toolbar_with_elevation"/>
 
-    <LinearLayout
-        android:padding="32dp"
-        android:gravity="center"
-        android:orientation="vertical"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/blocked_root"
+            android:padding="32dp"
             android:gravity="center"
-            android:text="@string/audios_disabled_title"
-            android:textSize="18sp"
-            android:textColor="?textColorPrimary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="@string/audios_disabled_summary_message"
-            android:textSize="14sp"
-            android:textColor="?textColorSecondary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:gravity="center"
+                android:text="@string/audios_disabled_title"
+                android:textSize="18sp"
+                android:textColor="?textColorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <Button
-            android:text="@string/button_details"
-            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
-            android:id="@+id/button_details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@string/audios_disabled_summary_message"
+                android:textSize="14sp"
+                android:textColor="?textColorSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    </LinearLayout>
+            <Button
+                android:text="@string/button_details"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:id="@+id/button_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

@@ -132,10 +132,10 @@ public class DocsUploadAdapter extends RecyclerView.Adapter<DocsUploadAdapter.Ho
 
         Holder(View itemView) {
             super(itemView);
-            this.title = (TextView) itemView.findViewById(R.id.title);
-            this.status = (TextView) itemView.findViewById(R.id.status);
+            this.title = itemView.findViewById(R.id.title);
+            this.status = itemView.findViewById(R.id.status);
             this.buttonDelete = itemView.findViewById(R.id.progress_root);
-            this.progress = (CircleRoadProgress) itemView.findViewById(R.id.progress_view);
+            this.progress = itemView.findViewById(R.id.progress_view);
             //this.image = (ImageView) itemView.findViewById(R.id.image);
 
             itemView.setTag(generateNextHolderId());
