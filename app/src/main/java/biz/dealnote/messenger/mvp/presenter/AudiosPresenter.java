@@ -1,5 +1,6 @@
 package biz.dealnote.messenger.mvp.presenter;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,8 @@ import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Audio;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IAudiosView;
+import biz.dealnote.messenger.place.PlaceFactory;
+import biz.dealnote.messenger.player.MusicPlaybackService;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 
@@ -22,7 +25,7 @@ import biz.dealnote.messenger.util.Utils;
 public class AudiosPresenter extends AccountDependencyPresenter<IAudiosView> {
 
     private final IAudioInteractor audioInteractor;
-    private final List<Audio> audios;
+    private final ArrayList<Audio> audios;
     private final int ownerId;
 
     public AudiosPresenter(int accountId, int ownerId, @Nullable Bundle savedInstanceState) {
@@ -44,6 +47,11 @@ public class AudiosPresenter extends AccountDependencyPresenter<IAudiosView> {
         audios.clear();
         audios.addAll(data);
         callView(IAudiosView::notifyListChanged);
+    }
+
+    public void playAudio(Context context, int position){
+        MusicPlaybackService.startForPlayList(context, audios, position, false);
+        PlaceFactory.getPlayerPlace(getAccountId()).tryOpenWith(context);
     }
 
     private void onListGetError(Throwable t) {
