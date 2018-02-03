@@ -57,6 +57,7 @@ public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudi
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAudioRecyclerAdapter = new AudioRecyclerAdapter(getActivity(), Collections.emptyList());
+        mAudioRecyclerAdapter.setClickListener((position, audio) -> getPresenter().playAudio(getActivity(), position));
         recyclerView.setAdapter(mAudioRecyclerAdapter);
         return root;
     }
