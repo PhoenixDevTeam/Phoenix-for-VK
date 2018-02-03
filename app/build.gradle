@@ -9,7 +9,7 @@ android {
     }
 
     compileSdkVersion 27
-    buildToolsVersion '27.0.1'
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "biz.dealnote.messenger"
@@ -126,7 +126,7 @@ ext.supportLibraryVersion = '27.0.2'
 ext.firebaseLibraryVersion = '11.6.2'
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
     implementation "com.android.support:support-v4:$supportLibraryVersion"
