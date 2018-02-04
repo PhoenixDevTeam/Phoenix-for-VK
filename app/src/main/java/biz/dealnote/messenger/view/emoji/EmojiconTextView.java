@@ -156,7 +156,9 @@ public class EmojiconTextView extends WrapWidthTextView implements ClickableFore
                 EmojiconHandler.addEmojis(getContext(), spannable, mEmojiconSize, mTextStart, mTextLength);
             }
 
-            linkifyUrl(spannable);
+            if (Settings.get().main().isCustomTabEnabled()) {
+                linkifyUrl(spannable);
+            }
 
             super.setText(spannable, type);
         } else {

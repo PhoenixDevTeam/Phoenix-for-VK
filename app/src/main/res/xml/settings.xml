@@ -41,6 +41,11 @@
             android:key="blacklist"
             android:title="@string/user_blacklist_title" />
 
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="custom_tabs"
+            android:title="@string/open_links_in_app" />
+
     </PreferenceCategory>
 
 

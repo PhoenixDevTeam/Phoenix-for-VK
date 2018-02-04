@@ -91,6 +91,8 @@ public interface ISettings {
 
         boolean isNeedDoublePressToExit();
 
+        boolean isCustomTabEnabled();
+
         @Nullable
         Integer getUploadImageSize();
 

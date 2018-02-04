@@ -1266,5 +1266,6 @@
     <string name="error_key_exchange_session_expired">The key exchange session is no longer active. Please try again.</string>
     <string name="error_activity_not_found">No compatible software installed</string>
     <string name="last_closed_page">Last closed page</string>
+    <string name="open_links_in_app">Open web pages in app</string>
 
 </resources>
