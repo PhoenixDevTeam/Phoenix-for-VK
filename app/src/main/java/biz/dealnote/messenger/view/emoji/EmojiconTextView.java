@@ -21,22 +21,31 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.CharacterStyle;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import biz.dealnote.messenger.R;
+import biz.dealnote.messenger.link.LinkHelper;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.ClickableForegroundColorSpan;
 import biz.dealnote.messenger.view.WrapWidthTextView;
 
 /**
- * @author Hieu Rocker (rockerhieu@gmail.com).
+ * Здесь умер:
+ * Emin Guliev
+ * 03.01.1998 - 04.02.2018
+ * R.I.P
  */
 public class EmojiconTextView extends WrapWidthTextView implements ClickableForegroundColorSpan.OnHashTagClickListener {
 
@@ -47,6 +56,8 @@ public class EmojiconTextView extends WrapWidthTextView implements ClickableFore
     private OnHashTagClickListener mOnHashTagClickListener;
     private boolean mDisplayHashTags;
     private int mHashTagWordColor;
+
+    private static final Pattern URL_PATTERN = Pattern.compile("((http|https|rstp):\\/\\/\\S*)");
 
     public EmojiconTextView(Context context) {
         this(context, null);
@@ -141,13 +152,29 @@ public class EmojiconTextView extends WrapWidthTextView implements ClickableFore
                 setColorsToAllHashTags(spannable);
             }
 
-            if (!Settings.get().ui().isSystemEmoji()){
+            if (!Settings.get().ui().isSystemEmoji()) {
                 EmojiconHandler.addEmojis(getContext(), spannable, mEmojiconSize, mTextStart, mTextLength);
             }
+
+            linkifyUrl(spannable);
 
             super.setText(spannable, type);
         } else {
             super.setText(originalText, type);
+        }
+    }
+
+    public void linkifyUrl(Spannable spannable) {
+        Matcher m = URL_PATTERN.matcher(spannable);
+        while (m.find()) {
+            String url = spannable.toString().substring(m.start(), m.end());
+            ClickableSpan urlSpan = new ClickableSpan() {
+                @Override
+                public void onClick(View widget) {
+                    LinkHelper.openLinkInBrowser(getContext(), url);
+                }
+            };
+            spannable.setSpan(urlSpan, m.start(), m.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
 
