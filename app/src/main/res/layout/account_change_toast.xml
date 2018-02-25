@@ -1,62 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toast_layout_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#eb455a64"
-    android:orientation="horizontal">
+    android:padding="8dp">
 
     <ImageView
+        android:layout_marginStart="8dp"
+        android:layout_centerVertical="true"
         android:id="@+id/avatar"
         android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_height="48dp"/>
 
-    <TextView
-        android:id="@+id/account_switched"
+    <LinearLayout
+        android:layout_centerVertical="true"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/avatar"
+        android:layout_toStartOf="@+id/active"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:maxLines="1"
-        android:text="@string/account_switched_to"
-        android:textColor="#ececec"
-        android:textSize="@dimen/font_size_additional"
-        app:layout_constraintLeft_toRightOf="@+id/avatar"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:text="Ruslan Kolbasa"
-        android:textAllCaps="false"
-        android:textColor="#FFF"
-        android:textSize="@dimen/font_size_title"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/account_switched"
-        app:layout_constraintTop_toBottomOf="@+id/account_switched"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/account_switched"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="@string/account_switched_to"
+            android:textColor="#ececec"
+            android:textSize="@dimen/font_size_additional"/>
 
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            tools:text="Ruslan Kolbasa"
+            android:textAllCaps="false"
+            android:textColor="#FFF"
+            android:textSize="@dimen/font_size_title"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
 
     <ImageView
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
         android:id="@+id/active"
         android:layout_width="42dp"
         android:layout_height="42dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:padding="8dp"
-        android:src="@drawable/online_phoenix"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@drawable/online_phoenix" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

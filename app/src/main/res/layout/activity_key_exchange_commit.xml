@@ -1,87 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_lock"
     android:orientation="vertical">
 
-
-    <ImageView
-        android:id="@+id/avatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-
     <TextView
+        android:layout_gravity="center_horizontal"
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:padding="8dp"
         android:gravity="center"
         android:text="@string/you_have_received_request_for_key_exchange_from"
         android:textColor="?android:textColorSecondary"
-        android:textSize="14sp"
-        app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="14sp"/>
+
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/avatar"
+        tools:src="@drawable/ic_avatar_unknown"
+        android:layout_width="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_height="48dp"/>
 
     <TextView
-        android:id="@+id/user_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        tools:text="Ruslan Kolbasa"
         android:gravity="center"
         android:textColor="?android:textColorPrimary"
-        android:textSize="16sp"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/avatar" />
+        android:textSize="16sp"/>
 
-
-    <Button
-        android:id="@+id/decline_button"
-        style="@style/Widget.AppCompat.Button.Borderless"
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:gravity="end"
+        android:layout_gravity="end"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/button_decline"
-        android:textAllCaps="true"
-        app:layout_constraintBottom_toBottomOf="@+id/accept_button"
-        app:layout_constraintRight_toLeftOf="@+id/accept_button" />
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/accept_button"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/button_accept"
-        android:textAllCaps="true"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_name" />
+        <Button
+            android:id="@+id/decline_button"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_decline"
+            android:textAllCaps="true"/>
 
+        <Button
+            android:id="@+id/accept_button"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_accept"
+            android:textAllCaps="true" />
 
-</android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+</LinearLayout>
