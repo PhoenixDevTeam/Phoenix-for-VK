@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.support.v4.preference.PreferenceFragment;
@@ -222,6 +223,10 @@ public class PreferencesFragment extends PreferenceFragment {
 
         Preference notification = findPreference(KEY_NOTIFICATION);
         if (notification != null) {
+            //these options are not needed for Oreo as channels exists
+            if (Utils.hasOreo()){
+                ((PreferenceCategory)findPreference("group_general")).removePreference(notification);
+            }
             notification.setOnPreferenceClickListener(preference -> {
                 PlaceFactory.getNotificationSettingsPlace().tryOpenWith(getActivity());
                 return true;

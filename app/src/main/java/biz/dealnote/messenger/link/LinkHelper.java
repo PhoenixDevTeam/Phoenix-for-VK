@@ -4,8 +4,14 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.VKPhotosFragment;
@@ -35,10 +41,14 @@ import biz.dealnote.messenger.model.CommentedType;
 import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.place.PlaceFactory;
+import biz.dealnote.messenger.settings.CurrentTheme;
 
+import static android.support.customtabs.CustomTabsService.ACTION_CUSTOM_TABS_CONNECTION;
 import static biz.dealnote.messenger.util.Utils.singletonArrayList;
 
 public class LinkHelper {
+
+
 
     public static void openUrl(Activity context, int accountId, String link) {
         if (!openVKlink(context, accountId, link)) {
@@ -65,7 +75,6 @@ public class LinkHelper {
                 Photo photo = new Photo()
                         .setId(photoLink.id)
                         .setOwnerId(photoLink.ownerId);
-
 
                 PlaceFactory.getSimpleGalleryPlace(accountId, singletonArrayList(photo), 0, true).tryOpenWith(activity);
                 break;
@@ -169,14 +178,31 @@ public class LinkHelper {
         return link != null && openVKLink(activity, accoutnId, link);
     }
 
-    public static void openLinkInBrowser(Context context, String url) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(url));
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(context, R.string.error_activity_not_found, Toast.LENGTH_LONG).show();
+    public static ArrayList<ResolveInfo> getCustomTabsPackages(Context context) {
+        PackageManager pm = context.getPackageManager();
+        Intent activityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.example.com"));
+
+        List<ResolveInfo> resolvedActivityList = pm.queryIntentActivities(activityIntent, 0);
+        ArrayList<ResolveInfo> packagesSupportingCustomTabs = new ArrayList<>();
+        for (ResolveInfo info : resolvedActivityList) {
+            Intent serviceIntent = new Intent();
+            serviceIntent.setAction(ACTION_CUSTOM_TABS_CONNECTION);
+            serviceIntent.setPackage(info.activityInfo.packageName);
+            if (pm.resolveService(serviceIntent, 0) != null) {
+                packagesSupportingCustomTabs.add(info);
+            }
         }
+        return packagesSupportingCustomTabs;
+    }
+
+    public static void openLinkInBrowser(Context context, String url) {
+        CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+        intentBuilder.setToolbarColor(CurrentTheme.getColorPrimary(context));
+        CustomTabsIntent customTabsIntent = intentBuilder.build();
+        if (getCustomTabsPackages(context) != null && !getCustomTabsPackages(context).isEmpty()) {
+            customTabsIntent.intent.setPackage(getCustomTabsPackages(context).get(0).resolvePackageName);
+        }
+        customTabsIntent.launchUrl(context, Uri.parse(url));
     }
 
     public static Commented findCommentedFrom(String url) {

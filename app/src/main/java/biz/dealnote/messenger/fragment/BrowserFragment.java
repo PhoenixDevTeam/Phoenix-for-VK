@@ -34,14 +34,14 @@ public class BrowserFragment extends BaseFragment implements BackPressCallback {
     private String title;
     private Bundle webState;
 
-    public static Bundle buildArgs(int accountId, @NonNull String url){
+    public static Bundle buildArgs(int accountId, @NonNull String url) {
         Bundle args = new Bundle();
         args.putString(Extra.URL, url);
         args.putInt(Extra.ACCOUNT_ID, accountId);
         return args;
     }
 
-    public static BrowserFragment newInstance(Bundle args){
+    public static BrowserFragment newInstance(Bundle args) {
         BrowserFragment fragment = new BrowserFragment();
         fragment.setArguments(args);
         return fragment;
@@ -173,11 +173,11 @@ public class BrowserFragment extends BaseFragment implements BackPressCallback {
             //link: null, url: https://vk.com/doc124456557_415878705
 
             if (link == null) {
-                view.loadUrl(url);
+                LinkHelper.openLinkInBrowser(getActivity(), url);
                 return true;
             }
 
-            if(link instanceof PageLink){
+            if (link instanceof PageLink) {
                 view.loadUrl(url + "?api_view=0df43cdc43a25550c6beb7357c9d41");
                 return true;
             }
@@ -200,5 +200,7 @@ public class BrowserFragment extends BaseFragment implements BackPressCallback {
             title = view.getTitle();
             refreshActionBar();
         }
+
+
     }
 }
