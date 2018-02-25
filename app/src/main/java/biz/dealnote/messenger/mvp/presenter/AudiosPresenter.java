@@ -17,6 +17,7 @@ import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.player.MusicPlaybackService;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by admin on 1/4/2018.
@@ -27,18 +28,24 @@ public class AudiosPresenter extends AccountDependencyPresenter<IAudiosView> {
     private final IAudioInteractor audioInteractor;
     private final ArrayList<Audio> audios;
     private final int ownerId;
+    private final boolean audioAvailable;
 
     public AudiosPresenter(int accountId, int ownerId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.audioInteractor = InteractorFactory.createAudioInteractor();
+        this.audioAvailable = audioInteractor.isAudioPluginAvailable();
         this.audios = new ArrayList<>();
         this.ownerId = ownerId;
 
-        requestList();
+        if(audioAvailable){
+            requestList();
+        }
     }
 
+    private CompositeDisposable audioListDisposable = new CompositeDisposable();
+
     private void requestList() {
-        appendDisposable(audioInteractor.get(ownerId, 0)
+        audioListDisposable.add(audioInteractor.get(ownerId, 0)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onListReceived, this::onListGetError));
     }
@@ -54,6 +61,19 @@ public class AudiosPresenter extends AccountDependencyPresenter<IAudiosView> {
         PlaceFactory.getPlayerPlace(getAccountId()).tryOpenWith(context);
     }
 
+    public void fireRefresh(){
+        if(audioAvailable){
+            audioListDisposable.clear();
+            requestList();
+        }
+    }
+
+    @Override
+    public void onDestroyed() {
+        audioListDisposable.dispose();
+        super.onDestroyed();
+    }
+
     private void onListGetError(Throwable t) {
         showError(getView(), Utils.getCauseIfRuntime(t));
     }
@@ -62,6 +82,7 @@ public class AudiosPresenter extends AccountDependencyPresenter<IAudiosView> {
     public void onGuiCreated(@NonNull IAudiosView view) {
         super.onGuiCreated(view);
         view.displayList(audios);
+        view.setBlockedScreen(!audioAvailable);
     }
 
     @Override

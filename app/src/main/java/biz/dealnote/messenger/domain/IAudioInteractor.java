@@ -21,4 +21,6 @@ public interface IAudioInteractor {
 
     Single<List<Audio>> get(int ownerId, int offset);
     Single<String> findAudioUrl(int audioId, int ownerId);
+
+    boolean isAudioPluginAvailable();
 }

@@ -3,6 +3,7 @@ package biz.dealnote.messenger.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,13 +28,15 @@ import biz.dealnote.messenger.mvp.view.IAudiosView;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.mvp.core.IPresenterFactory;
+
+import static biz.dealnote.messenger.util.Objects.nonNull;
 
 /**
  * Audio is not supported :-(
  */
-public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudiosView> implements IAudiosView {
+public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudiosView>
+        implements IAudiosView {
 
     public static AudiosFragment newInstance(int accountId, int ownerId) {
         Bundle args = new Bundle();
@@ -44,12 +47,17 @@ public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudi
         return fragment;
     }
 
+    private View mBlockedRoot;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private AudioRecyclerAdapter mAudioRecyclerAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_music, container, false);
         ((AppCompatActivity)getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+
+        mBlockedRoot = root.findViewById(R.id.blocked_root);
+        mSwipeRefreshLayout = root.findViewById(R.id.refresh);
 
         root.findViewById(R.id.button_details).setOnClickListener(v -> openPost());
 
@@ -105,15 +113,26 @@ public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudi
 
     @Override
     public void displayList(List<Audio> audios) {
-        if(Objects.nonNull(mAudioRecyclerAdapter)){
+        if(nonNull(mAudioRecyclerAdapter)){
             mAudioRecyclerAdapter.setData(audios);
         }
     }
 
     @Override
     public void notifyListChanged() {
-        if(Objects.nonNull(mAudioRecyclerAdapter)){
+        if(nonNull(mAudioRecyclerAdapter)){
             mAudioRecyclerAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void setBlockedScreen(boolean visible) {
+        if(nonNull(mBlockedRoot)){
+            mBlockedRoot.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+
+        if(nonNull(mSwipeRefreshLayout)){
+            mSwipeRefreshLayout.setVisibility(visible ? View.GONE : View.VISIBLE);
         }
     }
 }

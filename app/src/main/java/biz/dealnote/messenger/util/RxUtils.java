@@ -1,5 +1,7 @@
 package biz.dealnote.messenger.util;
 
+import java.util.function.Consumer;
+
 import biz.dealnote.messenger.Injection;
 import io.reactivex.CompletableTransformer;
 import io.reactivex.FlowableTransformer;
@@ -13,6 +15,11 @@ import io.reactivex.schedulers.Schedulers;
  * phoenix
  */
 public class RxUtils {
+
+    public static <T> Consumer<T> ignore(){
+        return t -> {/*ignore*/};
+    }
+
     public static <T> MaybeTransformer<T, T> applyMaybeIOToMainSchedulers() {
         return upstream -> upstream
                 .subscribeOn(Schedulers.io())
