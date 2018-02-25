@@ -29,6 +29,7 @@ public class AudiosPresenter extends AccountDependencyPresenter<IAudiosView> {
     private final ArrayList<Audio> audios;
     private final int ownerId;
     private final boolean audioAvailable;
+    private boolean actualReceived;
 
     public AudiosPresenter(int accountId, int ownerId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
@@ -37,32 +38,73 @@ public class AudiosPresenter extends AccountDependencyPresenter<IAudiosView> {
         this.audios = new ArrayList<>();
         this.ownerId = ownerId;
 
-        if(audioAvailable){
+        if (audioAvailable) {
             requestList();
         }
     }
 
     private CompositeDisposable audioListDisposable = new CompositeDisposable();
 
+    private boolean loadingNow;
+
+    public void setLoadingNow(boolean loadingNow) {
+        this.loadingNow = loadingNow;
+        resolveRefreshingView();
+    }
+
+    @Override
+    public void onGuiResumed() {
+        super.onGuiResumed();
+        resolveRefreshingView();
+    }
+
+    private void resolveRefreshingView() {
+        if (isGuiResumed()) {
+            getView().displayRefreshing(loadingNow);
+        }
+    }
+
+    private boolean endOfContent;
+
+    private void requestNext() {
+        setLoadingNow(true);
+        final int offset = audios.size();
+        audioListDisposable.add(audioInteractor.get(ownerId, offset)
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::onNextListReceived, this::onListGetError));
+    }
+
     private void requestList() {
+        setLoadingNow(true);
         audioListDisposable.add(audioInteractor.get(ownerId, 0)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onListReceived, this::onListGetError));
     }
 
-    private void onListReceived(List<Audio> data) {
-        audios.clear();
-        audios.addAll(data);
+    private void onNextListReceived(List<Audio> next) {
+        next.removeAll(audios);
+        audios.addAll(next);
+        endOfContent = next.isEmpty();
+        setLoadingNow(false);
         callView(IAudiosView::notifyListChanged);
     }
 
-    public void playAudio(Context context, int position){
+    private void onListReceived(List<Audio> data) {
+        audios.clear();
+        audios.addAll(data);
+        endOfContent = data.isEmpty();
+        actualReceived = true;
+        setLoadingNow(false);
+        callView(IAudiosView::notifyListChanged);
+    }
+
+    public void playAudio(Context context, int position) {
         MusicPlaybackService.startForPlayList(context, audios, position, false);
         PlaceFactory.getPlayerPlace(getAccountId()).tryOpenWith(context);
     }
 
-    public void fireRefresh(){
-        if(audioAvailable){
+    public void fireRefresh() {
+        if (audioAvailable) {
             audioListDisposable.clear();
             requestList();
         }
@@ -75,6 +117,7 @@ public class AudiosPresenter extends AccountDependencyPresenter<IAudiosView> {
     }
 
     private void onListGetError(Throwable t) {
+        setLoadingNow(false);
         showError(getView(), Utils.getCauseIfRuntime(t));
     }
 
@@ -88,5 +131,11 @@ public class AudiosPresenter extends AccountDependencyPresenter<IAudiosView> {
     @Override
     protected String tag() {
         return AudiosPresenter.class.getSimpleName();
+    }
+
+    public void fireScrollToEnd() {
+        if (actualReceived && !endOfContent) {
+            requestNext();
+        }
     }
 }

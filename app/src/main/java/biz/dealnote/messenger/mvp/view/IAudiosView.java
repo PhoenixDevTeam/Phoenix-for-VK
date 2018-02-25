@@ -13,5 +13,6 @@ import biz.dealnote.mvp.core.IMvpView;
 public interface IAudiosView extends IMvpView, IErrorView, IAccountDependencyView {
     void displayList(List<Audio> audios);
     void notifyListChanged();
+    void displayRefreshing(boolean refresing);
     void setBlockedScreen(boolean visible);
 }

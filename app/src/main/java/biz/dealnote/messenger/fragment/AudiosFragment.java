@@ -21,6 +21,7 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.AudioRecyclerAdapter;
 import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.Audio;
 import biz.dealnote.messenger.mvp.presenter.AudiosPresenter;
@@ -58,11 +59,18 @@ public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudi
 
         mBlockedRoot = root.findViewById(R.id.blocked_root);
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
         root.findViewById(R.id.button_details).setOnClickListener(v -> openPost());
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+            @Override
+            public void onScrollToLastElement() {
+                getPresenter().fireScrollToEnd();
+            }
+        });
 
         mAudioRecyclerAdapter = new AudioRecyclerAdapter(getActivity(), Collections.emptyList());
         mAudioRecyclerAdapter.setClickListener((position, audio) -> getPresenter().playAudio(getActivity(), position));
@@ -122,6 +130,13 @@ public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudi
     public void notifyListChanged() {
         if(nonNull(mAudioRecyclerAdapter)){
             mAudioRecyclerAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void displayRefreshing(boolean refresing) {
+        if(nonNull(mSwipeRefreshLayout)){
+            mSwipeRefreshLayout.setRefreshing(refresing);
         }
     }
 

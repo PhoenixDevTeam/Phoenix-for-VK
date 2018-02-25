@@ -187,4 +187,20 @@ public class Audio extends AbsModel implements Parcelable {
     public String getArtistAndTitle(){
         return stringEmptyIfNull(artist) + " - " + stringEmptyIfNull(title);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Audio audio = (Audio) o;
+        return id == audio.id && ownerId == audio.ownerId;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + ownerId;
+        return result;
+    }
 }
