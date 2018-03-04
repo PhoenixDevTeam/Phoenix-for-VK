@@ -2,6 +2,7 @@ package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -111,7 +112,9 @@ public class WallAdapter extends RecyclerBindableAdapter<Post, RecyclerView.View
         holder.tvText.setText(OwnerLinkSpanFactory.withSpans(reduced, true, false, mLinkActionAdapter));
 
         holder.tvShowMore.setVisibility(post.hasText() && post.getText().length() > 400 ? View.VISIBLE : View.GONE);
-        holder.tvTime.setText(AppTextUtils.getDateFromUnixTime(mContext, post.getDate()));
+
+        String time = AppTextUtils.getDateFromUnixTime(mContext, post.getDate());
+
         holder.tvText.setVisibility(post.hasText() ? View.VISIBLE : View.GONE);
         holder.vTextContainer.setVisibility(post.hasText() ? View.VISIBLE : View.GONE);
 
@@ -158,6 +161,15 @@ public class WallAdapter extends RecyclerBindableAdapter<Post, RecyclerView.View
                 case PROFILE_PHOTO:
                     postSubtitle = mContext.getString(R.string.updated_profile_photo_at, formattedDate);
                     break;
+            }
+
+            if (post.getSource().getPlatform() != null) {
+                switch (post.getSource().getPlatform()) {
+                    case "instagram":
+                        holder.ivPlatform.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.instagram));
+                        holder.ivPlatform.setVisibility(View.VISIBLE);
+                        break;
+                }
             }
         }
         holder.tvTime.setText(postSubtitle);
@@ -295,6 +307,7 @@ public class WallAdapter extends RecyclerBindableAdapter<Post, RecyclerView.View
         ImageView ivSignerIcon;
         TextView tvSignerName;
         View bottomDivider;
+        ImageView ivPlatform;
 
         AttachmentsHolder attachmentContainers;
 
@@ -316,6 +329,7 @@ public class WallAdapter extends RecyclerBindableAdapter<Post, RecyclerView.View
             vSignerRoot = itemView.findViewById(R.id.item_post_signer_root);
             ivSignerIcon = itemView.findViewById(R.id.item_post_signer_icon);
             tvSignerName = itemView.findViewById(R.id.item_post_signer_name);
+            ivPlatform = itemView.findViewById(R.id.platform_icon);
             this.attachmentContainers = AttachmentsHolder.forPost((ViewGroup) itemView);
 
             this.viewCounterRoot = itemView.findViewById(R.id.post_views_counter_root);

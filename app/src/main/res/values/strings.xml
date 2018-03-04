@@ -1267,5 +1267,6 @@
     <string name="error_activity_not_found">No compatible software installed</string>
     <string name="last_closed_page">Last closed page</string>
     <string name="open_links_in_app">Open web pages in app</string>
+    <string name="via">via</string>
 
 </resources>
