@@ -28,6 +28,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
 import biz.dealnote.messenger.longpoll.AppNotificationChannels;
 import biz.dealnote.messenger.place.PlaceFactory;
+import biz.dealnote.messenger.push.NotificationUtils;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Utils;
 
@@ -51,9 +52,9 @@ public class NotificationHelper {
                 .getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    public void buildNotification(Context context, final String albumName, final String artistName,
-                                  final String trackName, final Long albumId, final Bitmap albumArt,
-                                  final boolean isPlaying, MediaSessionCompat.Token mediaSessionToken) {
+    public void buildNotification(Context context, final String artistName,
+                                  final String trackName, final boolean isPlaying,
+                                  MediaSessionCompat.Token mediaSessionToken) {
 
         if (Utils.hasOreo()){
             mNotificationManager.createNotificationChannel(AppNotificationChannels.getAudioChannel(context));
@@ -65,7 +66,6 @@ public class NotificationHelper {
                 .setContentTitle(artistName)
                 .setContentText(trackName)
                 .setContentIntent(getOpenIntent(context))
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.cover))
                 .setPriority(Notification.PRIORITY_MAX)
                 .setStyle(new MediaStyle()
                         .setMediaSession(mediaSessionToken)

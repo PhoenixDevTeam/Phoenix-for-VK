@@ -55,6 +55,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Audio;
+import biz.dealnote.messenger.push.NotificationUtils;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
@@ -493,8 +494,8 @@ public class MusicPlaybackService extends Service {
      * Updates the notification, considering the current play and activity state
      */
     private void updateNotification() {
-        mNotificationHelper.buildNotification(getApplicationContext(), getAlbumName(), getArtistName(),
-                getTrackName(), null, null, isPlaying(), mMediaSession.getSessionToken());
+        mNotificationHelper.buildNotification(getApplicationContext(), getArtistName(),
+                getTrackName(), isPlaying(), mMediaSession.getSessionToken());
     }
 
     private void scheduleDelayedShutdown() {
@@ -739,14 +740,13 @@ public class MusicPlaybackService extends Service {
      *
      * @return Bitmap
      */
-    public Bitmap getAlbumCover() {
+    public String getAlbumCover() {
         synchronized (this) {
             if (getCurrentTrack() == null) {
                 return null;
             }
 
-            Bitmap cover = BitmapFactory.decodeResource(getResources(), R.drawable.cover);
-            return cover;
+            return getCurrentTrack().getCover();
         }
     }
 

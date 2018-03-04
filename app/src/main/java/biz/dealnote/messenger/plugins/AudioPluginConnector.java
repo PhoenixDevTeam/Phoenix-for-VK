@@ -55,13 +55,17 @@ public class AudioPluginConnector implements IAudioPluginConnector {
                     String title = cursor.getString(cursor.getColumnIndex("title"));
                     String artist = cursor.getString(cursor.getColumnIndex("artist"));
                     int duration = cursor.getInt(cursor.getColumnIndex("duration"));
+                    String cover = cursor.getString(cursor.getColumnIndex("cover_url"));
+                    String bigCover = cursor.getString(cursor.getColumnIndex("cover_url"));
 
                     Audio audio = new Audio()
                             .setArtist(artist)
                             .setDuration(duration)
                             .setId(audioId)
                             .setOwnerId(ownerId1)
-                            .setTitle(title);
+                            .setTitle(title)
+                            .setBigCover(bigCover)
+                            .setCover(cover);
 
                     audios.add(audio);
                 }

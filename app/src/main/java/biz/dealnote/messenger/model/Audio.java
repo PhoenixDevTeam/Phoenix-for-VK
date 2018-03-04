@@ -33,6 +33,10 @@ public class Audio extends AbsModel implements Parcelable {
 
     private boolean deleted;
 
+    private String bigCover;
+
+    private String cover;
+
     public Audio(){
 
     }
@@ -50,6 +54,8 @@ public class Audio extends AbsModel implements Parcelable {
         genre = in.readInt();
         accessKey = in.readString();
         deleted = in.readByte() != 0;
+        bigCover = in.readString();
+        cover = in.readString();
     }
 
     @Override
@@ -66,6 +72,8 @@ public class Audio extends AbsModel implements Parcelable {
         dest.writeInt(genre);
         dest.writeString(accessKey);
         dest.writeByte((byte) (deleted ? 1 : 0));
+        dest.writeString(bigCover);
+        dest.writeString(cover);
     }
 
     public static final Creator<Audio> CREATOR = new Creator<Audio>() {
@@ -176,6 +184,24 @@ public class Audio extends AbsModel implements Parcelable {
 
     public Audio setDeleted(boolean deleted) {
         this.deleted = deleted;
+        return this;
+    }
+
+    public String getBigCover() {
+        return bigCover;
+    }
+
+    public Audio setBigCover(String bigCover) {
+        this.bigCover = bigCover;
+        return this;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public Audio setCover(String cover) {
+        this.cover = cover;
         return this;
     }
 
