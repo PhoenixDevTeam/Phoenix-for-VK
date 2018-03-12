@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.media.MediaPlayer;
@@ -42,16 +43,21 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Stack;
 
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
+import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Audio;
@@ -68,41 +74,40 @@ public class MusicPlaybackService extends Service {
     private static final String TAG = "MusicPlaybackService";
     private static final boolean D = BuildConfig.DEBUG;
 
-    public static final String PLAYSTATE_CHANGED = "com.apollo.playstatechanged";
-    public static final String POSITION_CHANGED = "com.apollo.positionchanged";
-    public static final String META_CHANGED = "com.apollo.metachanged";
-    public static final String PREPARED = "com.apollo.prepared";
-    public static final String REPEATMODE_CHANGED = "com.apollo.repeatmodechanged";
-    public static final String SHUFFLEMODE_CHANGED = "com.apollo.shufflemodechanged";
-    public static final String QUEUE_CHANGED = "com.apollo.queuechanged";
+    public static final String PLAYSTATE_CHANGED = "biz.dealnote.phoenix.player.playstatechanged";
+    public static final String POSITION_CHANGED = "biz.dealnote.phoenix.player.positionchanged";
+    public static final String META_CHANGED = "biz.dealnote.phoenix.player.metachanged";
+    public static final String PREPARED = "biz.dealnote.phoenix.player.prepared";
+    public static final String REPEATMODE_CHANGED = "biz.dealnote.phoenix.player.repeatmodechanged";
+    public static final String SHUFFLEMODE_CHANGED = "biz.dealnote.phoenix.player.shufflemodechanged";
+    public static final String QUEUE_CHANGED = "biz.dealnote.phoenix.player.queuechanged";
 
 
     /**
      * Called to indicate a general service commmand. Used in
      * {@link MediaButtonIntentReceiver}
      */
-    public static final String SERVICECMD = "com.apollo.musicservicecommand";
-    public static final String TOGGLEPAUSE_ACTION = "com.apollo.togglepause";
-    public static final String PAUSE_ACTION = "com.apollo.pause";
-    public static final String STOP_ACTION = "com.apollo.stop";
-    public static final String PREVIOUS_ACTION = "com.apollo.previous";
-    public static final String NEXT_ACTION = "com.apollo.next";
-    public static final String REPEAT_ACTION = "com.apollo.repeat";
-    public static final String SHUFFLE_ACTION = "com.apollo.shuffle";
+    public static final String SERVICECMD = "biz.dealnote.phoenix.player.musicservicecommand";
+    public static final String TOGGLEPAUSE_ACTION = "biz.dealnote.phoenix.player.togglepause";
+    public static final String PAUSE_ACTION = "biz.dealnote.phoenix.player.pause";
+    public static final String STOP_ACTION = "biz.dealnote.phoenix.player.stop";
+    public static final String PREVIOUS_ACTION = "biz.dealnote.phoenix.player.previous";
+    public static final String NEXT_ACTION = "biz.dealnote.phoenix.player.next";
+    public static final String REPEAT_ACTION = "biz.dealnote.phoenix.player.repeat";
+    public static final String SHUFFLE_ACTION = "biz.dealnote.phoenix.player.shuffle";
 
     /**
      * Called to update the service about the foreground state of Apollo's activities
      */
-    public static final String FOREGROUND_STATE_CHANGED = "com.apollo.fgstatechanged";
+    public static final String FOREGROUND_STATE_CHANGED = "biz.dealnote.phoenix.player.fgstatechanged";
     public static final String NOW_IN_FOREGROUND = "nowinforeground";
     public static final String FROM_MEDIA_BUTTON = "frommediabutton";
-    public static final String REFRESH = "com.apollo.refresh";
-    final String SHUTDOWN = "com.apollo.shutdown";
+    public static final String REFRESH = "biz.dealnote.phoenix.player.refresh";
+    final String SHUTDOWN = "biz.dealnote.phoenix.player.shutdown";
 
     /**
      * Called to update the remote control client
      */
-    public static final String UPDATE_LOCKSCREEN = "com.apollo.updatelockscreen";
     public static final String CMDNAME = "command";
     public static final String CMDTOGGLEPAUSE = "togglepause";
     public static final String CMDSTOP = "stop";
@@ -171,6 +176,8 @@ public class MusicPlaybackService extends Service {
 
     private NotificationHelper mNotificationHelper;
 
+    private MediaMetadataCompat mMediaMetadataCompat;
+
     @Override
     public IBinder onBind(final Intent intent) {
         if (D) Logger.d(TAG, "Service bound, intent = " + intent);
@@ -235,7 +242,7 @@ public class MusicPlaybackService extends Service {
 
         registerReceiver(mIntentReceiver, filter);
 
-        final PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        final PowerManager powerManager = (PowerManager) Objects.requireNonNull(getSystemService(Context.POWER_SERVICE));
         mWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
         mWakeLock.setReferenceCounted(false);
 
@@ -495,7 +502,7 @@ public class MusicPlaybackService extends Service {
      */
     private void updateNotification() {
         mNotificationHelper.buildNotification(getApplicationContext(), getArtistName(),
-                getTrackName(), isPlaying(), mMediaSession.getSessionToken());
+                getTrackName(), isPlaying(), getAlbumCover(), mMediaSession.getSessionToken());
     }
 
     private void scheduleDelayedShutdown() {
@@ -650,16 +657,41 @@ public class MusicPlaybackService extends Service {
                 mMediaSession.setPlaybackState(pmc);
                 break;
             case META_CHANGED:
-                mMediaSession.setMetadata(new MediaMetadataCompat.Builder()
-                        .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getArtistName())
-                        .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, getAlbumName())
-                        .putString(MediaMetadataCompat.METADATA_KEY_TITLE, getTrackName())
-                        //.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, getAlbumCover())
-                        .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration())
-                        .build());
-
+                fetchCoverAndUpdateMetadata();
                 break;
         }
+    }
+
+    private void fetchCoverAndUpdateMetadata(){
+        PicassoInstance.with()
+                .load(getAlbumCover())
+                .config(Bitmap.Config.RGB_565)
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        updateMetadata(bitmap);
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                        updateMetadata(null);
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                    }
+                });
+    }
+
+    private void updateMetadata(Bitmap albumCover){
+        mMediaMetadataCompat = new MediaMetadataCompat.Builder().
+                putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getArtistName())
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, getAlbumName())
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, getTrackName())
+                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumCover)
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration())
+                .build();
+        mMediaSession.setMetadata(mMediaMetadataCompat);
     }
 
     /**
@@ -738,7 +770,7 @@ public class MusicPlaybackService extends Service {
     /**
      * Returns the album cover
      *
-     * @return Bitmap
+     * @return url
      */
     public String getAlbumCover() {
         synchronized (this) {
@@ -746,7 +778,7 @@ public class MusicPlaybackService extends Service {
                 return null;
             }
 
-            return getCurrentTrack().getCover();
+            return getCurrentTrack().getBigCover();
         }
     }
 
@@ -1064,7 +1096,7 @@ public class MusicPlaybackService extends Service {
          * @param service The service to use.
          * @param looper  The thread to run on.
          */
-        public MusicPlayerHandler(final MusicPlaybackService service, final Looper looper) {
+        MusicPlayerHandler(final MusicPlaybackService service, final Looper looper) {
             super(looper);
             mService = new WeakReference<>(service);
         }
@@ -1357,137 +1389,137 @@ public class MusicPlaybackService extends Service {
         }
 
         @Override
-        public void openFile(final Audio audio) throws RemoteException {
+        public void openFile(final Audio audio) {
             mService.get().openFile(audio);
         }
 
         @Override
-        public void open(final List<Audio> list, final int position) throws RemoteException {
+        public void open(final List<Audio> list, final int position) {
             mService.get().open(list, position);
         }
 
         @Override
-        public void stop() throws RemoteException {
+        public void stop() {
             mService.get().stop();
         }
 
         @Override
-        public void pause() throws RemoteException {
+        public void pause() {
             mService.get().pause();
         }
 
         @Override
-        public void play() throws RemoteException {
+        public void play() {
             mService.get().play();
         }
 
         @Override
-        public void prev() throws RemoteException {
+        public void prev() {
             mService.get().prev();
         }
 
         @Override
-        public void next() throws RemoteException {
+        public void next() {
             mService.get().gotoNext(true);
         }
 
         @Override
-        public void setShuffleMode(final int shufflemode) throws RemoteException {
+        public void setShuffleMode(final int shufflemode) {
             mService.get().setShuffleMode(shufflemode);
         }
 
         @Override
-        public void setRepeatMode(final int repeatmode) throws RemoteException {
+        public void setRepeatMode(final int repeatmode) {
             mService.get().setRepeatMode(repeatmode);
         }
 
         @Override
-        public void refresh() throws RemoteException {
+        public void refresh() {
             mService.get().refresh();
         }
 
         @Override
-        public boolean isPlaying() throws RemoteException {
+        public boolean isPlaying() {
             return mService.get().isPlaying();
         }
 
         @Override
-        public boolean isPreparing() throws RemoteException {
+        public boolean isPreparing() {
             return mService.get().isPreparing();
         }
 
         @Override
-        public boolean isInitialized() throws RemoteException {
+        public boolean isInitialized() {
             return mService.get().isInitialized();
         }
 
         @Override
-        public List<Audio> getQueue() throws RemoteException {
+        public List<Audio> getQueue() {
             return mService.get().getQueue();
         }
 
         @Override
-        public long duration() throws RemoteException {
+        public long duration() {
             return mService.get().duration();
         }
 
         @Override
-        public long position() throws RemoteException {
+        public long position() {
             return mService.get().position();
         }
 
         @Override
-        public long seek(final long position) throws RemoteException {
+        public long seek(final long position) {
             return mService.get().seek(position);
         }
 
         @Override
-        public Audio getCurrentAudio() throws RemoteException {
+        public Audio getCurrentAudio() {
             return mService.get().getCurrentTrack();
         }
 
         @Override
-        public String getArtistName() throws RemoteException {
+        public String getArtistName() {
             return mService.get().getArtistName();
         }
 
         @Override
-        public String getTrackName() throws RemoteException {
+        public String getTrackName() {
             return mService.get().getTrackName();
         }
 
         @Override
-        public String getAlbumName() throws RemoteException {
+        public String getAlbumName() {
             return mService.get().getAlbumName();
         }
 
         @Override
-        public String getPath() throws RemoteException {
+        public String getPath() {
             return mService.get().getPath();
         }
 
         @Override
-        public int getQueuePosition() throws RemoteException {
+        public int getQueuePosition() {
             return mService.get().getQueuePosition();
         }
 
         @Override
-        public int getShuffleMode() throws RemoteException {
+        public int getShuffleMode() {
             return mService.get().getShuffleMode();
         }
 
         @Override
-        public int getRepeatMode() throws RemoteException {
+        public int getRepeatMode() {
             return mService.get().getRepeatMode();
         }
 
         @Override
-        public int getAudioSessionId() throws RemoteException {
+        public int getAudioSessionId() {
             return mService.get().getAudioSessionId();
         }
 
         @Override
-        public int getBufferPercent() throws RemoteException {
+        public int getBufferPercent() {
             return mService.get().getBufferPercent();
         }
     }

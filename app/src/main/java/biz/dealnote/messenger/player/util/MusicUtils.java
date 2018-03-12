@@ -444,7 +444,7 @@ public final class MusicUtils {
     private static final String TAG = MusicUtils.class.getSimpleName();
 
     /**
-     * Used to build and show a notification when Apollo is sent into the
+     * Used to build and show a notification when player is sent into the
      * background
      *
      * @param context The {@link Context} to use.

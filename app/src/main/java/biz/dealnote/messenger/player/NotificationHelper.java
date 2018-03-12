@@ -18,32 +18,33 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
 import android.support.v4.media.session.MediaSessionCompat;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
+import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.longpoll.AppNotificationChannels;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.push.NotificationUtils;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Utils;
 
-/**
- * Builds the notification for Apollo's service. Jelly Bean and higher uses the
- * expanded notification by default.
- *
- * @author Andrew Neal (andrewdneal@gmail.com)
- */
 public class NotificationHelper {
 
-    private static final int APOLLO_MUSIC_SERVICE = 1;
+    private static final int PHOENIX_MUSIC_SERVICE = 1;
     private final NotificationManager mNotificationManager;
     private final MusicPlaybackService mService;
     private NotificationCompat.Builder mNotificationBuilder = null;
+
+    private static final int ACTION_PLAY_PAUSE = 1;
+    private static final int ACTION_NEXT = 2;
+    private static final int ACTION_PREV = 3;
 
 
     public NotificationHelper(final MusicPlaybackService service) {
@@ -53,12 +54,13 @@ public class NotificationHelper {
     }
 
     public void buildNotification(Context context, final String artistName,
-                                  final String trackName, final boolean isPlaying,
+                                  final String trackName, final boolean isPlaying, final String coverUrl,
                                   MediaSessionCompat.Token mediaSessionToken) {
 
-        if (Utils.hasOreo()){
+        if (Utils.hasOreo()) {
             mNotificationManager.createNotificationChannel(AppNotificationChannels.getAudioChannel(context));
         }
+
         // Notification Builder
         mNotificationBuilder = new NotificationCompat.Builder(mService, AppNotificationChannels.AUDIO_CHANNEL_ID)
                 .setShowWhen(false)
@@ -72,14 +74,19 @@ public class NotificationHelper {
                         .setShowCancelButton(true)
                         .setShowActionsInCompactView(0, 1, 2)
                         .setCancelButtonIntent(retreivePlaybackActions(4)))
-                .addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.page_first, ""
-                        , retreivePlaybackActions(3)))
-                .addAction(new android.support.v4.app.NotificationCompat.Action(isPlaying ? R.drawable.pause : R.drawable.play, ""
-                        , retreivePlaybackActions(1)))
-                .addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.page_last, ""
-                        , retreivePlaybackActions(2)));
+                .addAction(new NotificationCompat.Action(R.drawable.page_first,
+                        context.getResources().getString(R.string.previous),
+                        retreivePlaybackActions(ACTION_PREV)))
+                .addAction(new NotificationCompat.Action(isPlaying ? R.drawable.pause : R.drawable.play,
+                        context.getResources().getString(isPlaying ? R.string.pause : R.string.play),
+                        retreivePlaybackActions(ACTION_PLAY_PAUSE)))
+                .addAction(new NotificationCompat.Action(R.drawable.page_last,
+                        context.getResources().getString(R.string.next),
+                        retreivePlaybackActions(ACTION_NEXT)));
 
-        mService.startForeground(APOLLO_MUSIC_SERVICE, mNotificationBuilder.build());
+        updateNotificationCover(coverUrl);
+
+        mService.startForeground(PHOENIX_MUSIC_SERVICE, mNotificationBuilder.build());
     }
 
     ;
@@ -90,6 +97,27 @@ public class NotificationHelper {
     public void killNotification() {
         mService.stopForeground(true);
         mNotificationBuilder = null;
+    }
+
+    public void updateNotificationCover(String cover) {
+        PicassoInstance.with()
+                .load(cover)
+                .config(Bitmap.Config.RGB_565)
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        mNotificationBuilder.setLargeIcon(bitmap);
+                        mNotificationManager.notify(PHOENIX_MUSIC_SERVICE, mNotificationBuilder.build());
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                    }
+                });
     }
 
     /**
@@ -110,7 +138,7 @@ public class NotificationHelper {
         mNotificationBuilder.mActions.add(1, new android.support.v4.app.NotificationCompat.Action(isPlaying ? R.drawable.pause : R.drawable.play, ""
                 , retreivePlaybackActions(1)));
 
-        mNotificationManager.notify(APOLLO_MUSIC_SERVICE, mNotificationBuilder.build());
+        mNotificationManager.notify(PHOENIX_MUSIC_SERVICE, mNotificationBuilder.build());
     }
 
     private PendingIntent getOpenIntent(Context context) {
@@ -130,19 +158,19 @@ public class NotificationHelper {
         PendingIntent pendingIntent;
         final ComponentName serviceName = new ComponentName(mService, MusicPlaybackService.class);
         switch (which) {
-            case 1:
+            case ACTION_PLAY_PAUSE:
                 // Play and pause
                 action = new Intent(MusicPlaybackService.TOGGLEPAUSE_ACTION);
                 action.setComponent(serviceName);
                 pendingIntent = PendingIntent.getService(mService, 1, action, 0);
                 return pendingIntent;
-            case 2:
+            case ACTION_NEXT:
                 // Skip tracks
                 action = new Intent(MusicPlaybackService.NEXT_ACTION);
                 action.setComponent(serviceName);
                 pendingIntent = PendingIntent.getService(mService, 2, action, 0);
                 return pendingIntent;
-            case 3:
+            case ACTION_PREV:
                 // Previous tracks
                 action = new Intent(MusicPlaybackService.PREVIOUS_ACTION);
                 action.setComponent(serviceName);
