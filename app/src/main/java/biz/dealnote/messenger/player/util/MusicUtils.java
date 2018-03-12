@@ -33,11 +33,7 @@ import biz.dealnote.messenger.util.Optional;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
-/**
- * A collection of helpers directly related to music or Apollo's service.
- *
- * @author Andrew Neal (andrewdneal@gmail.com)
- */
+
 public final class MusicUtils {
 
     public static IAudioPlayerService mService = null;
@@ -52,28 +48,6 @@ public final class MusicUtils {
 
     /* This class is never initiated */
     private MusicUtils() {
-    }
-
-    /**
-     * @param context  The {@link Context} to use
-     * @param callback The {@link ServiceConnection} to use
-     * @return The new instance of {@link ServiceToken}
-     */
-    public static ServiceToken bindToService(final Context context, final ServiceConnection callback) {
-        Activity realActivity = ((Activity) context).getParent();
-        if (realActivity == null) {
-            realActivity = (Activity) context;
-        }
-
-        final ContextWrapper contextWrapper = new ContextWrapper(realActivity);
-        contextWrapper.startService(new Intent(contextWrapper, MusicPlaybackService.class));
-        final ServiceBinder binder = new ServiceBinder(callback);
-        if (contextWrapper.bindService(new Intent().setClass(contextWrapper, MusicPlaybackService.class), binder, 0)) {
-            mConnectionMap.put(contextWrapper, binder);
-            return new ServiceToken(contextWrapper);
-        }
-
-        return null;
     }
 
     private static final PublishSubject<Optional<IAudioPlayerService>> SERVICE_BIND_PUBLISHER = PublishSubject.create();

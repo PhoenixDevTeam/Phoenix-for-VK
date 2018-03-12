@@ -13,6 +13,7 @@ package biz.dealnote.messenger.player.ui;
 
 import android.content.Context;
 import android.os.SystemClock;
+import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -29,7 +30,7 @@ import biz.dealnote.messenger.settings.CurrentTheme;
  * as the button is pressed, otherwise functions like a typecal
  * {@link ImageButton}
  */
-public class RepeatingImageButton extends ImageButton implements OnClickListener {
+public class RepeatingImageButton extends AppCompatImageButton implements OnClickListener {
 
     private static final long sInterval = 400;
     private long mStartTime;

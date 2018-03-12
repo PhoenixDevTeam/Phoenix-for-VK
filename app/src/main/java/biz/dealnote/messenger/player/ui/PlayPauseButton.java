@@ -13,16 +13,16 @@ package biz.dealnote.messenger.player.ui;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.player.util.MusicUtils;
 import biz.dealnote.messenger.settings.CurrentTheme;
 
-public class PlayPauseButton extends ImageButton implements OnClickListener {
+public class PlayPauseButton extends AppCompatImageButton implements OnClickListener {
 
     public PlayPauseButton(final Context context, final AttributeSet attrs) {
         super(context, attrs);
