@@ -74,13 +74,13 @@ public class NotificationHelper {
                         .setShowCancelButton(true)
                         .setShowActionsInCompactView(0, 1, 2)
                         .setCancelButtonIntent(retreivePlaybackActions(4)))
-                .addAction(new NotificationCompat.Action(R.drawable.page_first,
+                .addAction(new NotificationCompat.Action(R.drawable.prev_notification,
                         context.getResources().getString(R.string.previous),
                         retreivePlaybackActions(ACTION_PREV)))
-                .addAction(new NotificationCompat.Action(isPlaying ? R.drawable.pause : R.drawable.play,
+                .addAction(new NotificationCompat.Action(isPlaying ? R.drawable.pause_notification : R.drawable.play_notification,
                         context.getResources().getString(isPlaying ? R.string.pause : R.string.play),
                         retreivePlaybackActions(ACTION_PLAY_PAUSE)))
-                .addAction(new NotificationCompat.Action(R.drawable.page_last,
+                .addAction(new NotificationCompat.Action(R.drawable.next_notification,
                         context.getResources().getString(R.string.next),
                         retreivePlaybackActions(ACTION_NEXT)));
 
@@ -100,7 +100,6 @@ public class NotificationHelper {
     public void updateNotificationCover(String cover) {
         PicassoInstance.with()
                 .load(cover)
-                .config(Bitmap.Config.RGB_565)
                 .into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -133,8 +132,11 @@ public class NotificationHelper {
         }
         //Remove pause action
         mNotificationBuilder.mActions.remove(1);
-        mNotificationBuilder.mActions.add(1, new android.support.v4.app.NotificationCompat.Action(isPlaying ? R.drawable.pause : R.drawable.play, ""
-                , retreivePlaybackActions(1)));
+        mNotificationBuilder.mActions.add(1,
+                new android.support.v4.app.NotificationCompat.Action(
+                        isPlaying ? R.drawable.pause_notification : R.drawable.play_notification,
+                        null,
+                        retreivePlaybackActions(1)));
 
         mNotificationManager.notify(PHOENIX_MUSIC_SERVICE, mNotificationBuilder.build());
     }

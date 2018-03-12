@@ -668,7 +668,6 @@ public class MusicPlaybackService extends Service {
 
         PicassoInstance.with()
                 .load(getAlbumCover())
-                .config(Bitmap.Config.RGB_565)
                 .into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
