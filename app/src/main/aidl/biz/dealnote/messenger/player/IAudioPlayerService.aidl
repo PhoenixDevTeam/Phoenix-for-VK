@@ -26,6 +26,7 @@ interface IAudioPlayerService {
     String getTrackName();
     String getAlbumName();
     String getPath();
+    String getAlbumCover();
     int getQueuePosition();
     int getShuffleMode();
     int getRepeatMode();

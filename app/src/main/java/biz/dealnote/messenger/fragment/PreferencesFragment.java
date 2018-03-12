@@ -99,6 +99,7 @@ public class PreferencesFragment extends PreferenceFragment {
     private static final String KEY_NOTIFICATION = "notifications";
     private static final String KEY_SECURITY = "security";
     private static final String KEY_DRAWER_ITEMS = "drawer_categories";
+    private static final String KEY_LOCKSCREEN_ART = "lockscreen_art";
 
     private static final String TAG = PreferencesFragment.class.getSimpleName();
 
@@ -298,6 +299,11 @@ public class PreferencesFragment extends PreferenceFragment {
                 getActivity().recreate();
                 return true;
             });
+        }
+
+        if (AppPrefs.isAudioPlayAllowed(getActivity())) {
+            Preference lockscreenArt = findPreference(KEY_LOCKSCREEN_ART);
+            ((PreferenceCategory)findPreference("group_appearance")).removePreference(lockscreenArt);
         }
 
         findPreference("privacy_policy")

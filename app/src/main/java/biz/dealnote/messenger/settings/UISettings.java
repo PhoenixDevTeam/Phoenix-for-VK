@@ -22,6 +22,7 @@ class UISettings implements ISettings.IUISettings {
 
     private static final String KEY_NIGHT_START_TIME = "night_mode_start_time";
     private static final String KEY_NIGHT_END_TIME = "night_mode_end_time";
+    private static final String KEY_LOCKSCREEN_ART = "lockscreen_art";
 
     private final Context app;
 
@@ -336,5 +337,10 @@ class UISettings implements ISettings.IUISettings {
     @Override
     public boolean isMonochromeWhite(){
         return getMainTheme() == R.style.Theme10;
+    }
+
+    @Override
+    public boolean showLockscreenArt() {
+        return PreferenceManager.getDefaultSharedPreferences(app).getBoolean(KEY_LOCKSCREEN_ART, false);
     }
 }

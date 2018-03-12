@@ -56,7 +56,7 @@ public class AudioPluginConnector implements IAudioPluginConnector {
                     String artist = cursor.getString(cursor.getColumnIndex("artist"));
                     int duration = cursor.getInt(cursor.getColumnIndex("duration"));
                     String cover = cursor.getString(cursor.getColumnIndex("cover_url"));
-                    String bigCover = cursor.getString(cursor.getColumnIndex("cover_url"));
+                    String bigCover = cursor.getString(cursor.getColumnIndex("cover_url_big"));
 
                     Audio audio = new Audio()
                             .setArtist(artist)

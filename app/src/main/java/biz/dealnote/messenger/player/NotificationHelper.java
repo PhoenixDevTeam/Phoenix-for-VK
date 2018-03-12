@@ -89,8 +89,6 @@ public class NotificationHelper {
         mService.startForeground(PHOENIX_MUSIC_SERVICE, mNotificationBuilder.build());
     }
 
-    ;
-
     /**
      * Remove notification
      */

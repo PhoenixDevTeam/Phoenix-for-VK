@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
@@ -34,8 +33,8 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Process;
-import android.os.RemoteException;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
@@ -56,12 +55,10 @@ import java.util.Stack;
 
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
-import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Audio;
-import biz.dealnote.messenger.push.NotificationUtils;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
@@ -662,7 +659,13 @@ public class MusicPlaybackService extends Service {
         }
     }
 
-    private void fetchCoverAndUpdateMetadata(){
+    private void fetchCoverAndUpdateMetadata() {
+        if (getAlbumCover() == null || getAlbumCover().isEmpty() ||
+                !biz.dealnote.messenger.settings.Settings.get().ui().showLockscreenArt()){
+            updateMetadata(null);
+            return;
+        }
+
         PicassoInstance.with()
                 .load(getAlbumCover())
                 .config(Bitmap.Config.RGB_565)
@@ -683,12 +686,12 @@ public class MusicPlaybackService extends Service {
                 });
     }
 
-    private void updateMetadata(Bitmap albumCover){
+    private void updateMetadata(Bitmap albumCover) {
         mMediaMetadataCompat = new MediaMetadataCompat.Builder().
                 putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getArtistName())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, getAlbumName())
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, getTrackName())
-                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumCover)
+                .putBitmap(MediaMetadataCompat.METADATA_KEY_ART, albumCover)
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration())
                 .build();
         mMediaSession.setMetadata(mMediaMetadataCompat);
@@ -1491,6 +1494,11 @@ public class MusicPlaybackService extends Service {
         @Override
         public String getAlbumName() {
             return mService.get().getAlbumName();
+        }
+
+        @Override
+        public String getAlbumCover() {
+            return mService.get().getAlbumCover();
         }
 
         @Override

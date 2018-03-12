@@ -243,5 +243,7 @@ public interface ISettings {
         boolean isSystemEmoji();
 
         boolean isMonochromeWhite();
+
+        boolean showLockscreenArt();
     }
 }

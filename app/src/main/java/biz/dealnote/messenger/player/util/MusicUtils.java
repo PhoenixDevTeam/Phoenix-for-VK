@@ -330,6 +330,16 @@ public final class MusicUtils {
         return null;
     }
 
+    public static String getAlbumCover(){
+        if (mService != null) {
+            try {
+                return mService.getAlbumCover();
+            } catch (final RemoteException ignored) {
+            }
+        }
+        return null;
+    }
+
     /**
      * @return The current song Id.
      */

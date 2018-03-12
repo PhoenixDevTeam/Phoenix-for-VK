@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
+import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
@@ -89,6 +91,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
 
     private TextView tvTitle;
     private TextView tvSubtitle;
+    private ImageView ivCover;
 
     // Broadcast receiver
     private PlaybackStatus mPlaybackStatus;
@@ -206,6 +209,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         mProgress = root.findViewById(android.R.id.progress);
         tvTitle = root.findViewById(R.id.audio_player_title);
         tvSubtitle = root.findViewById(R.id.audio_player_subtitle);
+        ivCover = root.findViewById(R.id.music_default_cover);
 
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if (actionBar != null) {
@@ -471,6 +475,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
     private void updateNowPlayingInfo() {
         String artist = MusicUtils.getArtistName();
         String trackName = MusicUtils.getTrackName();
+        String coverUrl = MusicUtils.getAlbumCover();
 
         if (tvTitle != null) {
             tvTitle.setText(artist == null ? null : artist.trim());
@@ -478,6 +483,10 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
 
         if (tvSubtitle != null) {
             tvSubtitle.setText(trackName == null ? null : trackName.trim());
+        }
+
+        if (ivCover != null){
+            PicassoInstance.with().load(coverUrl).into(ivCover);
         }
 
         resolveAddButton();

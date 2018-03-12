@@ -65,7 +65,9 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/appearance_settings">
+    <PreferenceCategory
+        android:key="group_appearance"
+        android:title="@string/appearance_settings">
 
         <ListPreference
             android:defaultValue="theme6"
@@ -101,6 +103,11 @@
             android:key="avatar_style"
             android:summary="@string/avatar_style_summary"
             android:title="@string/avatar_style_title" />
+
+        <CheckBoxPreference
+            android:key="lockscreen_art"
+            android:title="Show audio art on lockscreen"/>
+
 
         <CheckBoxPreference
             android:defaultValue="true"
