@@ -222,19 +222,7 @@ public interface ISettings {
 
         boolean isDarkModeEnabled();
 
-        @StyleRes
-        int getQuickReplyTheme();
-
-        @NightMode
         int getNightMode();
-
-        void setNightStartTime(int hour);
-
-        int getNightStartTime();
-
-        void setNightEndTime(int hour);
-
-        int getNightEndTime();
 
         Place getDefaultPage(int accountId);
 

@@ -89,17 +89,6 @@
             android:title="@string/chat_background" />
 
         <Preference
-            android:key="night_mode_time"
-            android:title="@string/night_mode_interval" />
-
-        <ListPreference
-            android:defaultValue="dark"
-            android:entries="@array/night_back_names"
-            android:entryValues="@array/night_back_values"
-            android:key="night_theme"
-            android:title="@string/night_background_title" />
-
-        <Preference
             android:key="avatar_style"
             android:summary="@string/avatar_style_summary"
             android:title="@string/avatar_style_title" />

@@ -21,6 +21,7 @@ import android.support.v4.preference.PreferenceFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -66,6 +67,7 @@ import biz.dealnote.messenger.settings.AppPrefs;
 import biz.dealnote.messenger.settings.AvatarStyle;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.ISettings;
+import biz.dealnote.messenger.settings.NightMode;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.Logger;
@@ -176,12 +178,24 @@ public class PreferencesFragment extends PreferenceFragment {
 
         final ListPreference themePreference = (ListPreference) findPreference(KEY_APP_THEME);
         final ListPreference nightPreference = (ListPreference) findPreference(KEY_NIGHT_SWITCH);
-        final ListPreference nightBackgroundPreference = (ListPreference) findPreference(KEY_NIGHT_THEME);
         final CheckBoxPreference navigationbarColorPreference = (CheckBoxPreference) findPreference(KEY_NAVIGATION_COLORED);
 
         themePreference.setOnPreferenceChangeListener(recreateListener);
-        nightBackgroundPreference.setOnPreferenceChangeListener(recreateListener);
-        nightPreference.setOnPreferenceChangeListener(recreateListener);
+        nightPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            switch (Integer.parseInt(newValue.toString())) {
+                case NightMode.DISABLE:
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    break;
+                case NightMode.ENABLE:
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    break;
+                case NightMode.AUTO:
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+                    break;
+            }
+            getActivity().recreate();
+            return true;
+        });
         navigationbarColorPreference.setOnPreferenceChangeListener(recreateListener);
 
 
@@ -205,15 +219,6 @@ public class PreferencesFragment extends PreferenceFragment {
             });
         }
 
-        Preference nightTime = findPreference(KEY_NIGHT_TIME);
-        if (nightTime != null) {
-            nightTime.setOnPreferenceChangeListener(recreateListener);
-            nightTime.setOnPreferenceClickListener(preference -> {
-                pickNightTime();
-                return true;
-            });
-        }
-
         Preference comment = findPreference(KEY_ADD_COMMENT);
         if (comment != null) {
             comment.setOnPreferenceClickListener(preference -> {
@@ -225,8 +230,8 @@ public class PreferencesFragment extends PreferenceFragment {
         Preference notification = findPreference(KEY_NOTIFICATION);
         if (notification != null) {
             //these options are not needed for Oreo as channels exists
-            if (Utils.hasOreo()){
-                ((PreferenceCategory)findPreference("group_general")).removePreference(notification);
+            if (Utils.hasOreo()) {
+                ((PreferenceCategory) findPreference("group_general")).removePreference(notification);
             }
             notification.setOnPreferenceClickListener(preference -> {
                 PlaceFactory.getNotificationSettingsPlace().tryOpenWith(getActivity());
@@ -303,7 +308,7 @@ public class PreferencesFragment extends PreferenceFragment {
 
         if (AppPrefs.isAudioPlayAllowed(getActivity())) {
             Preference lockscreenArt = findPreference(KEY_LOCKSCREEN_ART);
-            ((PreferenceCategory)findPreference("group_appearance")).removePreference(lockscreenArt);
+            ((PreferenceCategory) findPreference("group_appearance")).removePreference(lockscreenArt);
         }
 
         findPreference("privacy_policy")
@@ -356,29 +361,6 @@ public class PreferencesFragment extends PreferenceFragment {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.preference_list_fragment, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         return root;
-    }
-
-    private void pickNightTime() {
-        TimePickerDialog.OnTimeSetListener startTimeListener = (view, startHourOfDay, startMinuteOfDay) -> {
-            TimePickerDialog timePickerDialogEnd = new TimePickerDialog(getActivity(), (view1, endHourOfDay, endMinuteOfDay) -> storeNightModeInterval(startHourOfDay * 60 + startMinuteOfDay, endHourOfDay * 60 + endMinuteOfDay), Settings.get().ui().getNightEndTime() / 60, Settings.get().ui().getNightEndTime() % 60, true);
-
-            timePickerDialogEnd.setTitle(R.string.title_end_time);
-            timePickerDialogEnd.show();
-        };
-
-        TimePickerDialog timePickerDialogStart = new TimePickerDialog(getActivity(), startTimeListener,
-                Settings.get().ui().getNightStartTime() / 60, Settings.get().ui().getNightStartTime() % 60, true);
-        timePickerDialogStart.setTitle(R.string.title_start_time);
-        timePickerDialogStart.show();
-    }
-
-    private void storeNightModeInterval(int startHourOfDay, int endHourOfDay) {
-        Logger.d(TAG, "storeNightModeInterval, startHourOfDay: " + startHourOfDay + ", endHourOfDay: " + endHourOfDay);
-        ISettings.IUISettings iuiSettings = Settings.get()
-                .ui();
-
-        iuiSettings.setNightStartTime(startHourOfDay);
-        iuiSettings.setNightEndTime(endHourOfDay);
     }
 
     private void tryDeleteFile(@NonNull File file) throws IOException {
@@ -466,7 +448,7 @@ public class PreferencesFragment extends PreferenceFragment {
         Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
 
         //java.lang.IllegalStateException: Can't compress a recycled bitmap
-        if(bm != resizedBitmap){
+        if (bm != resizedBitmap) {
             bm.recycle();
         }
 
@@ -569,7 +551,7 @@ public class PreferencesFragment extends PreferenceFragment {
         }.execute();
     }
 
-    private void postWallImageSync(int accountId, int ownerId){
+    private void postWallImageSync(int accountId, int ownerId) {
         IAccountApis apies = Apis.get()
                 .vkDefault(accountId);
 
@@ -637,7 +619,7 @@ public class PreferencesFragment extends PreferenceFragment {
             enabledCategoriesValues.add("4");
         }
 
-        if(drawerSettings.isCategoryEnabled(SwitchableCategory.NEWSFEED_COMMENTS)){
+        if (drawerSettings.isCategoryEnabled(SwitchableCategory.NEWSFEED_COMMENTS)) {
             enabledCategoriesName.add(getString(R.string.drawer_newsfeed_comments));
             enabledCategoriesValues.add("12");
         }

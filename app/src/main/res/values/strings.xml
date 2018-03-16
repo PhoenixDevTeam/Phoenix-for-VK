@@ -73,19 +73,7 @@
     <string-array name="night_mode_values" translatable="false">
         <item>1</item>
         <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="night_back_names">
-        <item>Light Gray</item>
-        <item>Dark</item>
-        <item>Black</item>
-    </string-array>
-
-    <string-array name="night_back_values" translatable="false">
-        <item>lightgray</item>
-        <item>dark</item>
-        <item>black</item>
+        <item>0</item>
     </string-array>
 
     <string-array name="array_vibration_length_names">

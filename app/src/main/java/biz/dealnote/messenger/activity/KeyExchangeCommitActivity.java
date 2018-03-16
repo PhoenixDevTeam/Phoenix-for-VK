@@ -27,9 +27,7 @@ public class KeyExchangeCommitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(Settings.get()
-                .ui()
-                .getQuickReplyTheme());
+        setTheme(R.style.QuickReply);
 
         setContentView(R.layout.activity_key_exchange_commit);
 

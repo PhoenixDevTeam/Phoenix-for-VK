@@ -73,7 +73,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
 
-        setTheme(Settings.get().ui().getQuickReplyTheme());
+        setTheme(R.style.QuickReply);
 
         accountId = getIntent().getExtras().getInt(Extra.ACCOUNT_ID);
         peerId = getIntent().getExtras().getInt(Extra.PEER_ID);
