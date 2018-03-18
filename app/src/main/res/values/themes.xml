@@ -88,6 +88,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:navigationBarColor" tools:targetApi="o_mr1">@android:color/white</item>
+        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">#aaaaaa</item>
 
         <item name="colorPrimary">#FFF</item>
         <item name="colorPrimaryDark">#aaaaaa</item>
