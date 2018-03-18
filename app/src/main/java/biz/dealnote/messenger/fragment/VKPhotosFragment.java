@@ -176,7 +176,7 @@ public class VKPhotosFragment extends BasePresenterFragment<VkPhotosPresenter, I
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

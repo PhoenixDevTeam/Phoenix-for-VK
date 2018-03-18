@@ -146,7 +146,7 @@ public class CommunityBanEditFragment extends BasePresenterFragment<CommunityBan
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

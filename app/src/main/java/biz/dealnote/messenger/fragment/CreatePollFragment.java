@@ -131,7 +131,7 @@ public class CreatePollFragment extends BasePresenterFragment<CreatePollPresente
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

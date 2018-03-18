@@ -129,7 +129,7 @@ public class SecurityPreferencesFragment extends PreferenceFragment implements P
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

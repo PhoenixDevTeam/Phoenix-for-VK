@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 
-import java.util.Calendar;
-
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.PreferencesFragment;
 import biz.dealnote.messenger.fragment.fave.FaveTabsFragment;
@@ -84,10 +82,10 @@ class UISettings implements ISettings.IUISettings {
     }
 
     @Override
-    public boolean isDarkModeEnabled() {
-        int currentNightMode = app.getResources().getConfiguration().uiMode
+    public boolean isDarkModeEnabled(Context context) {
+        int nightMode = context.getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
-        switch (currentNightMode) {
+        switch (nightMode) {
             case Configuration.UI_MODE_NIGHT_NO:
                 return false;
             case Configuration.UI_MODE_NIGHT_YES:
@@ -184,8 +182,8 @@ class UISettings implements ISettings.IUISettings {
     }
 
     @Override
-    public boolean isMonochromeWhite() {
-        return getMainTheme() == R.style.Theme10 && !isDarkModeEnabled();
+    public boolean isMonochromeWhite(Context context) {
+        return getMainTheme() == R.style.Theme10 && !isDarkModeEnabled(context);
     }
 
     @Override

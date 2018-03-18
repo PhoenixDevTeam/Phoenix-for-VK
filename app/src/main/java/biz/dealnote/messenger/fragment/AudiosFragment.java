@@ -100,7 +100,7 @@ public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudi
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

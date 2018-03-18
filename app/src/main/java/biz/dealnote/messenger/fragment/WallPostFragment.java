@@ -112,7 +112,7 @@ public class WallPostFragment extends PlaceSupportPresenterFragment<WallPostPres
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true, Settings.get().ui().isMonochromeWhite())
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

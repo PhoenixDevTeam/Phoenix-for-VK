@@ -85,8 +85,13 @@
 
     <!-- Monochrome-->
     <style name="Theme10" parent="AppTheme">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:navigationBarColor" tools:targetApi="o_mr1">@android:color/white</item>
+
         <item name="colorPrimary">#FFF</item>
         <item name="colorPrimaryDark">#aaaaaa</item>
+        <item name="colorPrimaryDark" tools:targetApi="m" tools:ignore="DuplicateDefinition">#FFF</item>
         <item name="colorAccent">#78909c</item>
 
         <item name="icon_color_on_colored_back">#757575</item>
@@ -115,7 +120,7 @@
         <item name="toolbarLockPlusIcon">@drawable/ic_crypt_plus_gray600_vector</item>
         <item name="toolbarUnlockIcon">@drawable/unlock_grey600</item>
         <item name="tabsTheme">@style/Theme.Tablayout</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+
 
         <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash_inverse</item>
     </style>

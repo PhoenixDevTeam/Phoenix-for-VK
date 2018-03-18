@@ -114,7 +114,7 @@ public class FriendsTabsFragment extends BasePresenterFragment<FriendsTabsPresen
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

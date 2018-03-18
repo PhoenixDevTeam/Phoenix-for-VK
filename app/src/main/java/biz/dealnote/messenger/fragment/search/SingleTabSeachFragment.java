@@ -132,7 +132,7 @@ public class SingleTabSeachFragment extends Fragment implements MySearchView.OnQ
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
 

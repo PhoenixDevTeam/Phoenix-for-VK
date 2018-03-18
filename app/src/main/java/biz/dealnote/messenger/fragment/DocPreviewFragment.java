@@ -230,7 +230,7 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

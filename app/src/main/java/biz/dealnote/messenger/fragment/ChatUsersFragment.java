@@ -107,7 +107,7 @@ public class ChatUsersFragment extends BasePresenterFragment<ChatMembersPresente
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(), true)
                 .build()
                 .apply(getActivity());
     }

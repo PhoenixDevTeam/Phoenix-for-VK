@@ -210,7 +210,7 @@ public class CommunityManagerEditFragment extends BasePresenterFragment<Communit
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

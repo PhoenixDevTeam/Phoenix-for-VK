@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -184,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getDelegate().applyDayNight();
         mMultipleActionsReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -222,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 .accounts()
                 .getCurrent();
 
-        setStatusbarColored(true, Settings.get().ui().isMonochromeWhite());
+        setStatusbarColored(true, Settings.get().ui().isMonochromeWhite(this));
 
         mDrawerLayout = findViewById(R.id.my_drawer_layout);
         mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
@@ -277,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 }
             }
         }
+        Logger.d(TAG, "" + (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK));
     }
 
     private void startEnterPinActivity() {
@@ -846,6 +849,20 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             }
 
             StatusbarUtil.setCustomStatusbarDarkMode(this, invertIcons);
+        }
+
+        if (Utils.hasOreo()){
+            if (invertIcons) {
+                int flags = getWindow().getDecorView().getSystemUiVisibility();
+                flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                getWindow().getDecorView().setSystemUiVisibility(flags);
+                getWindow().setNavigationBarColor(Color.WHITE);
+            } else {
+                int flags = getWindow().getDecorView().getSystemUiVisibility();
+                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                getWindow().getDecorView().setSystemUiVisibility(flags);
+                getWindow().setNavigationBarColor(Color.BLACK);
+            }
         }
     }
 

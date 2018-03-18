@@ -182,7 +182,7 @@ public class NavigationFragment extends BaseFragment {
 
         ImageView backgroundImage = vHeader.findViewById(R.id.header_navi_menu_background);
 
-        File file = PreferencesFragment.getDrawerBackgroundFile(getActivity(), !Settings.get().ui().isDarkModeEnabled());
+        File file = PreferencesFragment.getDrawerBackgroundFile(getActivity(), !Settings.get().ui().isDarkModeEnabled(getActivity()));
         if (file.exists()) {
             PicassoInstance.with().load(file).into(backgroundImage);
         } else {

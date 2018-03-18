@@ -49,7 +49,7 @@ public class LikesFragment extends AbsOwnersListFragment<LikesListPresenter, ISi
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

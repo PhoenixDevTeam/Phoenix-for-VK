@@ -299,7 +299,8 @@
                 android:paddingRight="16dp"
                 android:textAllCaps="true"
                 android:textColor="?icon_color_active"
-                android:textSize="@dimen/font_size_additional" />
+                android:textSize="@dimen/font_size_additional"
+                android:visibility="gone" />
 
         </LinearLayout>
     </TableLayout>

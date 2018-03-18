@@ -16,6 +16,7 @@ public class App extends Application {
     public void onCreate() {
         sInstanse = this;
         AppCompatDelegate.setDefaultNightMode(Settings.get().ui().getNightMode());
+
         super.onCreate();
 
         Settings.get()

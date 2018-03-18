@@ -121,7 +121,7 @@ public class FeedbackFragment extends PlaceSupportPresenterFragment<FeedbackPres
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

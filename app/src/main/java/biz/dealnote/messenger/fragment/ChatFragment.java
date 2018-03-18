@@ -705,7 +705,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

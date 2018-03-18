@@ -1,5 +1,6 @@
 package biz.dealnote.messenger.settings;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -220,7 +221,7 @@ public interface ISettings {
         @StyleRes
         int getMainTheme();
 
-        boolean isDarkModeEnabled();
+        boolean isDarkModeEnabled(Context context);
 
         int getNightMode();
 
@@ -230,7 +231,7 @@ public interface ISettings {
 
         boolean isSystemEmoji();
 
-        boolean isMonochromeWhite();
+        boolean isMonochromeWhite(Context context);
 
         boolean showLockscreenArt();
     }

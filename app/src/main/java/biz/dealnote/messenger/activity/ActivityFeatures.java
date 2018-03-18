@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 
@@ -72,9 +73,9 @@ public class ActivityFeatures {
             b.statusbarColorFeature = this;
         }
 
-        public Builder setStatusBarColored(boolean colored){
+        public Builder setStatusBarColored(Context context, boolean colored){
             this.statusBarColorOption = colored ? STATUSBAR_COLOR_COLORED : STATUSBAR_COLOR_NON_COLORED;
-            this.statusBarIconInvertedOption = Settings.get().ui().isMonochromeWhite();
+            this.statusBarIconInvertedOption = Settings.get().ui().isMonochromeWhite(context);
             return builder;
         }
 

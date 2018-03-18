@@ -393,7 +393,7 @@ public class DocsFragment extends BasePresenterFragment<DocsListPresenter, IDocL
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

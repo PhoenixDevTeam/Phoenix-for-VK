@@ -365,7 +365,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
 

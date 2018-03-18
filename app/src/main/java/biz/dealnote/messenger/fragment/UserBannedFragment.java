@@ -150,7 +150,7 @@ public class UserBannedFragment extends BasePresenterFragment<UserBannedPresente
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

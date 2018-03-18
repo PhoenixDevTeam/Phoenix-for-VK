@@ -300,7 +300,8 @@
                 android:paddingRight="16dp"
                 android:textAllCaps="true"
                 android:textColor="?icon_color_active"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
 
         </LinearLayout>
 

@@ -73,7 +73,7 @@ public class PostCreateFragment extends AbsPostEditFragment<PostCreatePresenter,
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(), true)
                 .build()
                 .apply(getActivity());
     }

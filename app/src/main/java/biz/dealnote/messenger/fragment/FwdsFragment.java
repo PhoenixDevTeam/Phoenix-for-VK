@@ -81,7 +81,7 @@ public class FwdsFragment extends PlaceSupportPresenterFragment<FwdsPresenter, I
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

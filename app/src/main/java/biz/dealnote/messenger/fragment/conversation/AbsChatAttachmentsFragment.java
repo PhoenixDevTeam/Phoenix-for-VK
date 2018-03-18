@@ -124,7 +124,7 @@ public abstract class AbsChatAttachmentsFragment<T, P extends BaseChatAttachment
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

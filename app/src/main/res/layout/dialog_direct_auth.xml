@@ -55,7 +55,8 @@
                     android:id="@+id/field_app_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/login_app_code_hint" />
+                    android:hint="@string/login_app_code_hint"
+                    android:inputType="number"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -82,7 +83,7 @@
                 android:id="@+id/field_sms_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/login_sms_code_hint" />
+                android:hint="@string/login_sms_code_hint"/>
 
         </android.support.design.widget.TextInputLayout>
 

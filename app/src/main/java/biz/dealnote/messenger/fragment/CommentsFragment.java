@@ -580,7 +580,7 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(true)
+                .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }
