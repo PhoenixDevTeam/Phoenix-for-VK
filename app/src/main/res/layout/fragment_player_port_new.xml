@@ -245,6 +245,7 @@
             android:id="@+id/music_default_cover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:layout_centerInParent="true"
             android:contentDescription="@string/album_cover"
             android:scaleType="centerCrop"/>

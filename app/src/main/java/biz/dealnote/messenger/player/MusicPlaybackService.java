@@ -660,29 +660,30 @@ public class MusicPlaybackService extends Service {
     }
 
     private void fetchCoverAndUpdateMetadata() {
-        if (getAlbumCover() == null || getAlbumCover().isEmpty() ||
-                !biz.dealnote.messenger.settings.Settings.get().ui().showLockscreenArt()){
-            updateMetadata(null);
-            return;
-        }
-
-        PicassoInstance.with()
-                .load(getAlbumCover())
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        updateMetadata(bitmap);
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                        updateMetadata(null);
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-                    }
-                });
+        updateMetadata(null);
+//        if (getAlbumCover() == null || getAlbumCover().isEmpty() ||
+//                !biz.dealnote.messenger.settings.Settings.get().ui().showLockscreenArt()){
+//            updateMetadata(null);
+//            return;
+//        }
+//
+//        PicassoInstance.with()
+//                .load(getAlbumCover())
+//                .into(new Target() {
+//                    @Override
+//                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+//                        updateMetadata(bitmap);
+//                    }
+//
+//                    @Override
+//                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+//                        updateMetadata(null);
+//                    }
+//
+//                    @Override
+//                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+//                    }
+//                });
     }
 
     private void updateMetadata(Bitmap albumCover) {

@@ -95,7 +95,10 @@
 
         <CheckBoxPreference
             android:key="lockscreen_art"
-            android:title="Show audio art on lockscreen"/>
+            android:title="Show audio art on lockscreen"
+            android:defaultValue="false"
+            android:enabled="false"
+            android:visibility="gone"/>
 
 
         <CheckBoxPreference

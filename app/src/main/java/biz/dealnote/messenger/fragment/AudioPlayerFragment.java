@@ -475,7 +475,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
     private void updateNowPlayingInfo() {
         String artist = MusicUtils.getArtistName();
         String trackName = MusicUtils.getTrackName();
-        String coverUrl = MusicUtils.getAlbumCover();
+//        String coverUrl = MusicUtils.getAlbumCover();
 
         if (tvTitle != null) {
             tvTitle.setText(artist == null ? null : artist.trim());
@@ -485,9 +485,9 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
             tvSubtitle.setText(trackName == null ? null : trackName.trim());
         }
 
-        if (ivCover != null){
-            PicassoInstance.with().load(coverUrl).into(ivCover);
-        }
+//        if (ivCover != null){
+//            PicassoInstance.with().load(coverUrl).into(ivCover);
+//        }
 
         resolveAddButton();
 
