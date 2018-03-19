@@ -1133,4 +1133,12 @@
     <string name="error_key_exchange_session_expired">Сессия уже не активна. Повторите обмен еще раз.</string>
     <string name="error_activity_not_found">Совместимое ПО не установлено</string>
     <string name="last_closed_page">Последняя закрытая</string>
+    <string name="open_links_in_app">Открывать ссылки в приложении</string>
+    <string name="via">через</string>
+    <string name="pause">пауза</string>
+    <string name="previous">предыдущий</string>
+    <string name="next">следующий</string>
+    <string name="night_mode_black_pref_title">Ночной режим AMOLED</string>
+    <string name="night_mode_black_pref_summary">Использовать чёрный фон в ночных темах</string>
+    <string name="vibration_length">Длительность вибрации</string>
 </resources>
