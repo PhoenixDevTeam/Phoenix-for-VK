@@ -852,16 +852,21 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         }
 
         if (Utils.hasOreo()){
+            Window w = getWindow();
             if (invertIcons) {
                 int flags = getWindow().getDecorView().getSystemUiVisibility();
                 flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-                getWindow().getDecorView().setSystemUiVisibility(flags);
-                getWindow().setNavigationBarColor(Color.WHITE);
+                w.getDecorView().setSystemUiVisibility(flags);
+                w.setNavigationBarColor(Color.WHITE);
             } else {
                 int flags = getWindow().getDecorView().getSystemUiVisibility();
                 flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-                getWindow().getDecorView().setSystemUiVisibility(flags);
-                getWindow().setNavigationBarColor(Color.BLACK);
+                w.getDecorView().setSystemUiVisibility(flags);
+                if (Settings.get().ui().isNavigationbarColored()) {
+                    @ColorInt
+                    int navigationColor = colored ? CurrentTheme.getNavigationBarColor(this) : Color.BLACK;
+                    w.setNavigationBarColor(navigationColor);
+                }
             }
         }
     }

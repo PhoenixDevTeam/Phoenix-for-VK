@@ -148,8 +148,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.2.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation "com.google.firebase:firebase-crash:$firebaseLibraryVersion"
     implementation "com.google.firebase:firebase-database:$firebaseLibraryVersion"
     implementation 'com.google.android.exoplayer:exoplayer:2.6.0'
