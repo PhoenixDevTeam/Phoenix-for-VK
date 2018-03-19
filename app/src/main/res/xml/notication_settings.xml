@@ -24,7 +24,7 @@
             android:entries="@array/array_vibration_length_names"
             android:entryValues="@array/array_vibration_length_value"
             android:key="vibration_length"
-            android:title="Vibration length" />
+            android:title="@string/vibration_length" />
 
     </PreferenceCategory>
 

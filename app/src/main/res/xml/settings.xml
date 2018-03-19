@@ -78,6 +78,12 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
+            android:key="amoled_night_mode"
+            android:title="@string/night_mode_black_pref_title"
+            android:summary="@string/night_mode_black_pref_summary" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
             android:key="navigation_colored"
             android:title="@string/color_navigation_bar" />
 

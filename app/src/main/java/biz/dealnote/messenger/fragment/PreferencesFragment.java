@@ -90,11 +90,10 @@ public class PreferencesFragment extends PreferenceFragment {
 
     public static final String KEY_DEFAULT_CATEGORY = "default_category";
     public static final String KEY_AVATAR_STYLE = "avatar_style";
-    public static final String KEY_NIGHT_TIME = "night_mode_time";
     public static final String KEY_NAVIGATION_COLORED = "navigation_colored";
     private static final String KEY_APP_THEME = "app_theme";
     private static final String KEY_NIGHT_SWITCH = "night_switch";
-    private static final String KEY_NIGHT_THEME = "night_theme";
+    private static final String KEY_AMOLED_NIGHT = "amoled_night_mode";
     private static final String KEY_TALK_ABOUT = "talk_about";
     private static final String KEY_JOIN_APP_GROUP = "join_app_group";
     private static final String KEY_ADD_COMMENT = "add_comment";
@@ -178,8 +177,11 @@ public class PreferencesFragment extends PreferenceFragment {
 
         final ListPreference themePreference = (ListPreference) findPreference(KEY_APP_THEME);
         final ListPreference nightPreference = (ListPreference) findPreference(KEY_NIGHT_SWITCH);
+
+        final CheckBoxPreference amoledNightMode = (CheckBoxPreference) findPreference(KEY_AMOLED_NIGHT);
         final CheckBoxPreference navigationbarColorPreference = (CheckBoxPreference) findPreference(KEY_NAVIGATION_COLORED);
 
+        amoledNightMode.setOnPreferenceChangeListener(recreateListener);
         themePreference.setOnPreferenceChangeListener(recreateListener);
         nightPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             switch (Integer.parseInt(newValue.toString())) {
@@ -201,6 +203,7 @@ public class PreferencesFragment extends PreferenceFragment {
 
         ListPreference defCategory = (ListPreference) findPreference(KEY_DEFAULT_CATEGORY);
         initStartPagePreference(defCategory);
+
 
         Preference talkPreference = findPreference(KEY_TALK_ABOUT);
         if (talkPreference != null) {
@@ -306,10 +309,10 @@ public class PreferencesFragment extends PreferenceFragment {
             });
         }
 
-        if (AppPrefs.isAudioPlayAllowed(getActivity())) {
-            Preference lockscreenArt = findPreference(KEY_LOCKSCREEN_ART);
-            ((PreferenceCategory) findPreference("group_appearance")).removePreference(lockscreenArt);
-        }
+//        if (AppPrefs.isAudioPlayAllowed(getActivity())) {
+//            Preference lockscreenArt = findPreference(KEY_LOCKSCREEN_ART);
+//            ((PreferenceCategory) findPreference("group_appearance")).removePreference(lockscreenArt);
+//        }
 
         findPreference("privacy_policy")
                 .setOnPreferenceClickListener(preference -> {

@@ -51,33 +51,34 @@ class UISettings implements ISettings.IUISettings {
     public int getMainTheme() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(app);
         String theme = preferences.getString("app_theme", "theme6");
+        boolean amoledMode = preferences.getBoolean("amoled_night_mode", false);
         switch (theme) {
             case "theme1":
-                return R.style.Theme1;
+                return amoledMode ? R.style.DayNightBlack1 : R.style.Theme1;
             case "theme2":
-                return R.style.Theme2;
+                return amoledMode ? R.style.DayNightBlack2 : R.style.Theme2;
             case "theme3":
-                return R.style.Theme3;
+                return amoledMode ? R.style.DayNightBlack3 : R.style.Theme3;
             case "theme4":
-                return R.style.Theme4;
+                return amoledMode ? R.style.DayNightBlack4 : R.style.Theme4;
             case "theme5":
-                return R.style.Theme5;
+                return amoledMode ? R.style.DayNightBlack5 : R.style.Theme5;
             case "theme6":
-                return R.style.Theme6;
+                return amoledMode ? R.style.DayNightBlack6 : R.style.Theme6;
             case "theme7":
-                return R.style.Theme7;
+                return amoledMode ? R.style.DayNightBlack7 : R.style.Theme7;
             case "theme8":
-                return R.style.Theme8;
+                return amoledMode ? R.style.DayNightBlack8 : R.style.Theme8;
             case "theme9":
-                return R.style.Theme9;
+                return amoledMode ? R.style.DayNightBlack9 : R.style.Theme9;
             case "theme10":
-                return R.style.Theme10;
+                return amoledMode ? R.style.DayNightBlack10 : R.style.Theme10;
             case "theme11":
-                return R.style.Theme11;
+                return amoledMode ? R.style.DayNightBlack11 : R.style.Theme11;
             case "theme12":
-                return R.style.Theme12;
+                return amoledMode ? R.style.DayNightBlack12 : R.style.Theme12;
             default:
-                return R.style.Theme6;
+                return amoledMode ? R.style.DayNightBlack6 : R.style.Theme6;
         }
     }
 
@@ -183,7 +184,7 @@ class UISettings implements ISettings.IUISettings {
 
     @Override
     public boolean isMonochromeWhite(Context context) {
-        return getMainTheme() == R.style.Theme10 && !isDarkModeEnabled(context);
+        return (getMainTheme() == R.style.Theme10 || getMainTheme() == R.style.DayNightBlack10) && !isDarkModeEnabled(context);
     }
 
     @Override

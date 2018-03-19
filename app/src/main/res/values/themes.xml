@@ -144,4 +144,17 @@
         <item name="icon_color_active">#1E88E5</item>
     </style>
 
+    <style name="DayNightBlack1" parent="Theme1"/>
+    <style name="DayNightBlack2" parent="Theme2"/>
+    <style name="DayNightBlack3" parent="Theme3"/>
+    <style name="DayNightBlack4" parent="Theme4"/>
+    <style name="DayNightBlack5" parent="Theme5"/>
+    <style name="DayNightBlack6" parent="Theme6"/>
+    <style name="DayNightBlack7" parent="Theme7"/>
+    <style name="DayNightBlack8" parent="Theme8"/>
+    <style name="DayNightBlack9" parent="Theme9"/>
+    <style name="DayNightBlack10" parent="Theme10"/>
+    <style name="DayNightBlack11" parent="Theme11"/>
+    <style name="DayNightBlack12" parent="Theme12"/>
+
 </resources>

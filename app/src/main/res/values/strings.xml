@@ -1260,4 +1260,8 @@
     <string name="previous">previous</string>
     <string name="next">next</string>
 
+    <string name="night_mode_black_pref_title">AMOLED night mode</string>
+    <string name="night_mode_black_pref_summary">Use black background at night mode</string>
+    <string name="vibration_length">Vibration length</string>
+
 </resources>
