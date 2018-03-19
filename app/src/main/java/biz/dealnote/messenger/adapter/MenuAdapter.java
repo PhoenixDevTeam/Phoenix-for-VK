@@ -119,12 +119,12 @@ public class MenuAdapter extends ArrayAdapter<Item>{
 
         Holder(View itemView) {
             this.headerRoot = itemView.findViewById(R.id.header_root);
-            this.headerIcon = (ImageView) itemView.findViewById(R.id.header_icon);
-            this.headerText = (TextView) itemView.findViewById(R.id.header_text);
+            this.headerIcon = itemView.findViewById(R.id.header_icon);
+            this.headerText = itemView.findViewById(R.id.header_text);
 
             this.itemOffsetView = itemView.findViewById(R.id.item_offset);
-            this.itemIcon = (ImageView) itemView.findViewById(R.id.item_icon);
-            this.itemText = (TextView) itemView.findViewById(R.id.item_text);
+            this.itemIcon = itemView.findViewById(R.id.item_icon);
+            this.itemText = itemView.findViewById(R.id.item_text);
 
             this.divider = itemView.findViewById(R.id.divider);
         }

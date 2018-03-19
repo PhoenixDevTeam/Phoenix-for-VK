@@ -189,7 +189,7 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
     }
 
     public void fireMoreInfoClick() {
-        // TODO: 18.09.2017
+        getView().openUserDetails(getAccountId(), user, details);
     }
 
     public void fireFilterClick(PostFilter entry) {

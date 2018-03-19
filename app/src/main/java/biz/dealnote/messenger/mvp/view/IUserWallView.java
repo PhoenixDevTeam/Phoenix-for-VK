@@ -1,5 +1,6 @@
 package biz.dealnote.messenger.mvp.view;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
@@ -8,6 +9,7 @@ import java.util.List;
 import biz.dealnote.messenger.model.FriendsCounters;
 import biz.dealnote.messenger.model.PostFilter;
 import biz.dealnote.messenger.model.User;
+import biz.dealnote.messenger.model.UserDetails;
 
 /**
  * Created by ruslan.kolbasa on 23.01.2017.
@@ -35,4 +37,6 @@ public interface IUserWallView extends IWallView, IProgressView, ISnackbarView {
     void displayUserStatus(String statusText);
 
     void displayBaseUserInfo(User user);
+
+    void openUserDetails(int accountId, @NonNull User user, @NonNull UserDetails details);
 }

@@ -6,18 +6,10 @@ package biz.dealnote.messenger.util;
  */
 public class CompareUtils {
     public static int compareInts(int lhs, int rhs){
-        return (lhs < rhs) ? -1 : ((lhs > rhs) ? 1 : 0);
+        return Integer.compare(lhs, rhs);
     }
 
     public static int compareBoolean(boolean lhs, boolean rhs){
-        if(lhs == rhs){
-            return 0;
-        }
-
-        if (lhs) {
-            return 1;
-        } else {
-            return -1;
-        }
+        return Boolean.compare(lhs, rhs);
     }
 }

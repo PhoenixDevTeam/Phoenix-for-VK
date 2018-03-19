@@ -9,17 +9,23 @@ import biz.dealnote.messenger.api.model.Likeable;
 import biz.dealnote.messenger.api.model.PhotoSizeDto;
 import biz.dealnote.messenger.api.model.VKApiAttachment;
 import biz.dealnote.messenger.api.model.VKApiAudio;
+import biz.dealnote.messenger.api.model.VKApiCareer;
+import biz.dealnote.messenger.api.model.VKApiCity;
 import biz.dealnote.messenger.api.model.VKApiComment;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
+import biz.dealnote.messenger.api.model.VKApiCountry;
 import biz.dealnote.messenger.api.model.VKApiLink;
 import biz.dealnote.messenger.api.model.VKApiMessage;
+import biz.dealnote.messenger.api.model.VKApiMilitary;
 import biz.dealnote.messenger.api.model.VKApiNews;
 import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.VKApiPhotoAlbum;
 import biz.dealnote.messenger.api.model.VKApiPoll;
 import biz.dealnote.messenger.api.model.VKApiPost;
+import biz.dealnote.messenger.api.model.VKApiSchool;
 import biz.dealnote.messenger.api.model.VKApiSticker;
 import biz.dealnote.messenger.api.model.VKApiTopic;
+import biz.dealnote.messenger.api.model.VKApiUniversity;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.api.model.VKApiVideoAlbum;
@@ -44,14 +50,18 @@ import biz.dealnote.messenger.crypt.CryptHelper;
 import biz.dealnote.messenger.crypt.MessageType;
 import biz.dealnote.messenger.db.model.IdPairEntity;
 import biz.dealnote.messenger.db.model.entity.AudioEntity;
+import biz.dealnote.messenger.db.model.entity.CareerEntity;
+import biz.dealnote.messenger.db.model.entity.CityEntity;
 import biz.dealnote.messenger.db.model.entity.CommentEntity;
 import biz.dealnote.messenger.db.model.entity.CommunityEntity;
 import biz.dealnote.messenger.db.model.entity.CopiesEntity;
+import biz.dealnote.messenger.db.model.entity.CountryEntity;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.DocumentEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
 import biz.dealnote.messenger.db.model.entity.LinkEntity;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
+import biz.dealnote.messenger.db.model.entity.MilitaryEntity;
 import biz.dealnote.messenger.db.model.entity.NewsEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.PageEntity;
@@ -61,8 +71,10 @@ import biz.dealnote.messenger.db.model.entity.PhotoSizeEntity;
 import biz.dealnote.messenger.db.model.entity.PollEntity;
 import biz.dealnote.messenger.db.model.entity.PostEntity;
 import biz.dealnote.messenger.db.model.entity.PrivacyEntity;
+import biz.dealnote.messenger.db.model.entity.SchoolEntity;
 import biz.dealnote.messenger.db.model.entity.StickerEntity;
 import biz.dealnote.messenger.db.model.entity.TopicEntity;
+import biz.dealnote.messenger.db.model.entity.UniversityEntity;
 import biz.dealnote.messenger.db.model.entity.UserDetailsEntity;
 import biz.dealnote.messenger.db.model.entity.UserEntity;
 import biz.dealnote.messenger.db.model.entity.VideoAlbumEntity;
@@ -83,6 +95,7 @@ import biz.dealnote.messenger.model.MessageStatus;
 import biz.dealnote.messenger.model.feedback.FeedbackType;
 import biz.dealnote.messenger.util.Utils;
 
+import static biz.dealnote.messenger.domain.mappers.MapUtil.mapAll;
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
@@ -422,6 +435,13 @@ public class Dto2Entity {
         }
 
         dbo.setStatusAudio(nonNull(user.status_audio) ? buildAudioDbo(user.status_audio) : null);
+        dbo.setBdate(user.bdate);
+        dbo.setCity(isNull(user.city) ? null : dto2entity(user.city));
+        dbo.setCountry(isNull(user.country) ? null : dto2entity(user.country));
+        dbo.setHomeTown(user.home_town);
+        dbo.setPhone(user.mobile_phone);
+        dbo.setHomePhone(user.home_phone);
+        dbo.setSkype(user.skype);
 
         VKApiUser.Counters counters = user.counters;
 
@@ -439,8 +459,101 @@ public class Dto2Entity {
                     .setPostponedWallCount(counters.postponed_wall);
         }
 
-        return dbo;
+        dbo.setMilitaries(mapAll(user.militaries, Dto2Entity::dto2entity));
+        dbo.setCareers(mapAll(user.careers, Dto2Entity::dto2entity));
+        dbo.setUniversities(mapAll(user.universities, Dto2Entity::dto2entity));
+        dbo.setSchools(mapAll(user.schools, Dto2Entity::dto2entity));
+        dbo.setRelatives(mapAll(user.relatives, Dto2Entity::dto2entity));
 
+        dbo.setRelation(user.relation);
+        dbo.setRelationPartnerId(user.relation_partner == null ? 0 : user.relation_partner.id);
+        dbo.setLanguages(user.langs);
+
+        dbo.setPolitical(user.political);
+        dbo.setPeopleMain(user.people_main);
+        dbo.setLifeMain(user.life_main);
+        dbo.setSmoking(user.smoking);
+        dbo.setAlcohol(user.alcohol);
+        dbo.setInspiredBy(user.inspired_by);
+        dbo.setReligion(user.religion);
+        dbo.setSite(user.site);
+        dbo.setInterests(user.interests);
+        dbo.setMusic(user.music);
+        dbo.setActivities(user.activities);
+        dbo.setMovies(user.movies);
+        dbo.setTv(user.tv);
+        dbo.setGames(user.games);
+        dbo.setQuotes(user.quotes);
+        dbo.setAbout(user.about);
+        dbo.setBooks(user.books);
+        return dbo;
+    }
+
+    public static UserDetailsEntity.RelativeEntity dto2entity(VKApiUser.Relative relative) {
+        return new UserDetailsEntity.RelativeEntity()
+                .setId(relative.id)
+                .setType(relative.type)
+                .setName(relative.name);
+    }
+
+    public static SchoolEntity dto2entity(VKApiSchool dto) {
+        return new SchoolEntity()
+                .setCityId(dto.city_id)
+                .setClazz(dto.clazz)
+                .setCountryId(dto.country_id)
+                .setFrom(dto.year_from)
+                .setTo(dto.year_to)
+                .setYearGraduated(dto.year_graduated)
+                .setId(dto.id)
+                .setName(dto.name);
+    }
+
+    public static UniversityEntity dto2entity(VKApiUniversity dto) {
+        return new UniversityEntity()
+                .setId(dto.id)
+                .setCityId(dto.city_id)
+                .setCountryId(dto.country_id)
+                .setName(dto.name)
+                .setStatus(dto.education_status)
+                .setForm(dto.education_form)
+                .setFacultyId(dto.faculty)
+                .setFacultyName(dto.faculty_name)
+                .setChairId(dto.chair)
+                .setChairName(dto.chair_name)
+                .setGraduationYear(dto.graduation);
+    }
+
+    public static MilitaryEntity dto2entity(VKApiMilitary dto) {
+        return new MilitaryEntity()
+                .setCountryId(dto.country_id)
+                .setFrom(dto.from)
+                .setUnit(dto.unit)
+                .setUnitId(dto.unit_id)
+                .setUntil(dto.until);
+    }
+
+    public static CareerEntity dto2entity(VKApiCareer dto) {
+        return new CareerEntity()
+                .setCityId(dto.city_id)
+                .setCompany(dto.company)
+                .setCountryId(dto.country_id)
+                .setFrom(dto.from)
+                .setUntil(dto.until)
+                .setPosition(dto.position)
+                .setGroupId(dto.group_id);
+    }
+
+    public static CountryEntity dto2entity(VKApiCountry dto) {
+        return new CountryEntity(dto.id, dto.title);
+    }
+
+    public static CityEntity dto2entity(VKApiCity dto) {
+        return new CityEntity()
+                .setArea(dto.area)
+                .setId(dto.id)
+                .setImportant(dto.important)
+                .setTitle(dto.title)
+                .setRegion(dto.region);
     }
 
     public static NewsEntity buildNewsDbo(VKApiNews news) {

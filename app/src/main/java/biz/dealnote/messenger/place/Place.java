@@ -75,6 +75,7 @@ public class Place implements Parcelable {
 
     public static final int PROXY_ADD = 65;
     public static final int DRAWER_EDIT = 66;
+    public static final int USER_DETAILS = 67;
 
     public int type;
     private Bundle args;

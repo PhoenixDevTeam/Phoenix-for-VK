@@ -370,32 +370,32 @@
 
     <string name="relationship_status">Семейное положение</string>
     <string name="relationship_partner">партнер</string>
-    <string name="relationship_man_single">не женат</string>
-    <string name="relationship_man_in_relationship">есть подруга</string>
-    <string name="relationship_man_engaged">помолвлен</string>
-    <string name="relationship_man_married">женат</string>
-    <string name="relationship_man_in_love">влюблен</string>
-    <string name="relationship_man_its_complicated">все сложно</string>
-    <string name="relationship_man_activelly_searching">в активном поиске</string>
+    <string name="relationship_man_single">Не женат</string>
+    <string name="relationship_man_in_relationship">Есть подруга</string>
+    <string name="relationship_man_engaged">Помолвлен</string>
+    <string name="relationship_man_married">Женат</string>
+    <string name="relationship_man_in_love">Влюблен</string>
+    <string name="relationship_man_its_complicated">Все сложно</string>
+    <string name="relationship_man_activelly_searching">В активном поиске</string>
 
-    <string name="relationship_woman_single">не замужем</string>
-    <string name="relationship_woman_in_relationship">есть друг</string>
-    <string name="relationship_woman_engaged">помолвлена</string>
-    <string name="relationship_woman_married">замужем</string>
-    <string name="relationship_woman_in_love">влюблена</string>
-    <string name="relationship_woman_its_complicated">все сложно</string>
-    <string name="relationship_woman_activelly_searching">в активном поиске</string>
+    <string name="relationship_woman_single">Не замужем</string>
+    <string name="relationship_woman_in_relationship">Есть друг</string>
+    <string name="relationship_woman_engaged">Помолвлена</string>
+    <string name="relationship_woman_married">Замужем</string>
+    <string name="relationship_woman_in_love">Влюблена</string>
+    <string name="relationship_woman_its_complicated">Все сложно</string>
+    <string name="relationship_woman_activelly_searching">В активном поиске</string>
 
     <string name="birthday">День рождения</string>
     <string name="hometown">Родной город</string>
     <string name="languages">Языки</string>
     <string name="relatives">Родственники</string>
-    <string name="relatives_grandparents">бабушки и дедушки</string>
-    <string name="relatives_parents">родители</string>
-    <string name="relatives_siblings">братья и сестры</string>
-    <string name="relatives_children">дети</string>
-    <string name="relatives_grandchildren">внуки</string>
-    <string name="relatives_others">другие</string>
+    <string name="relatives_grandparents">Бабушки и дедушки</string>
+    <string name="relatives_parents">Родители</string>
+    <string name="relatives_siblings">Братья и сестры</string>
+    <string name="relatives_children">Дети</string>
+    <string name="relatives_grandchildren">Внуки</string>
+    <string name="relatives_others">Другие</string>
 
     <!--Контактная информация пользователя-->
     <string name="contact_information">Контактная информация</string>
@@ -1141,4 +1141,6 @@
     <string name="night_mode_black_pref_title">Ночной режим AMOLED</string>
     <string name="night_mode_black_pref_summary">Использовать чёрный фон в ночных темах</string>
     <string name="vibration_length">Длительность вибрации</string>
+    <string name="family">Семья</string>
+    <string name="activity_until_now">текущее время</string>
 </resources>

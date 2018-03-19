@@ -1,13 +1,13 @@
 package biz.dealnote.messenger.util;
 
-import java.util.function.Consumer;
-
 import biz.dealnote.messenger.Injection;
 import io.reactivex.CompletableTransformer;
 import io.reactivex.FlowableTransformer;
 import io.reactivex.MaybeTransformer;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.SingleTransformer;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -15,6 +15,13 @@ import io.reactivex.schedulers.Schedulers;
  * phoenix
  */
 public class RxUtils {
+
+    private static final Action DUMMMY_ACTION_0 = () -> {
+    };
+
+    public static Action dummy() {
+        return DUMMMY_ACTION_0;
+    }
 
     public static <T> Consumer<T> ignore(){
         return t -> {/*ignore*/};

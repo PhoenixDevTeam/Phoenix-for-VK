@@ -59,6 +59,4 @@ public class VKApiUniversity implements IUserActivityPoint {
      * Status of education
      */
     public String education_status;
-
-    private String fullName;
 }

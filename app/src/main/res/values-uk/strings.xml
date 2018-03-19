@@ -368,32 +368,32 @@
 
     <string name="relationship_status">Сімейний стан</string>
     <string name="relationship_partner">партнер</string>
-    <string name="relationship_man_single">неодружений</string>
-    <string name="relationship_man_in_relationship">є подруга</string>
-    <string name="relationship_man_engaged">заручений</string>
-    <string name="relationship_man_married">одружений</string>
-    <string name="relationship_man_in_love">закоханий</string>
-    <string name="relationship_man_its_complicated">все складно</string>
-    <string name="relationship_man_activelly_searching">в активному пошуку</string>
+    <string name="relationship_man_single">Неодружений</string>
+    <string name="relationship_man_in_relationship">Є подруга</string>
+    <string name="relationship_man_engaged">Заручений</string>
+    <string name="relationship_man_married">Одружений</string>
+    <string name="relationship_man_in_love">Закоханий</string>
+    <string name="relationship_man_its_complicated">Все складно</string>
+    <string name="relationship_man_activelly_searching">В активному пошуку</string>
 
-    <string name="relationship_woman_single">незаміжня</string>
-    <string name="relationship_woman_in_relationship">є друг</string>
-    <string name="relationship_woman_engaged">заручена</string>
-    <string name="relationship_woman_married">заміжня</string>
-    <string name="relationship_woman_in_love">закохана</string>
-    <string name="relationship_woman_its_complicated">все складно</string>
-    <string name="relationship_woman_activelly_searching">в активному пошуку</string>
+    <string name="relationship_woman_single">Незаміжня</string>
+    <string name="relationship_woman_in_relationship">Є друг</string>
+    <string name="relationship_woman_engaged">Заручена</string>
+    <string name="relationship_woman_married">Заміжня</string>
+    <string name="relationship_woman_in_love">Закохана</string>
+    <string name="relationship_woman_its_complicated">Все складно</string>
+    <string name="relationship_woman_activelly_searching">В активному пошуку</string>
 
     <string name="birthday">День народження</string>
     <string name="hometown">Рідне місто</string>
     <string name="languages">Мови</string>
     <string name="relatives">Родичі</string>
-    <string name="relatives_grandparents">бабусі та дідусі</string>
-    <string name="relatives_parents">батьки</string>
-    <string name="relatives_siblings">брати і сестри</string>
-    <string name="relatives_children">діти</string>
-    <string name="relatives_grandchildren">онуки</string>
-    <string name="relatives_others">інші</string>
+    <string name="relatives_grandparents">Бабусі та дідусі</string>
+    <string name="relatives_parents">Батьки</string>
+    <string name="relatives_siblings">Брати і сестри</string>
+    <string name="relatives_children">Діти</string>
+    <string name="relatives_grandchildren">Онуки</string>
+    <string name="relatives_others">Інші</string>
 
     <!--Контактная информация пользователя-->
     <string name="contact_information">Контактна інформація</string>
@@ -1130,4 +1130,15 @@
     <string name="error_key_exchange_session_expired">Сесія вже не активна. Повторіть обмін ще раз.</string>
     <string name="error_activity_not_found">Сумісне ПЗ не встановлено</string>
     <string name="last_closed_page">Остання закрита</string>
+
+    <string name="open_links_in_app">Открывать ссылки в приложении</string>
+    <string name="via">через</string>
+    <string name="pause">пауза</string>
+    <string name="previous">попередній</string>
+    <string name="next">наступний</string>
+    <string name="night_mode_black_pref_title">Нічний режим AMOLED</string>
+    <string name="night_mode_black_pref_summary">Використовувати чорний фон в нічних темах</string>
+    <string name="vibration_length">Тривалість вібрації</string>
+    <string name="family">Родина</string>
+    <string name="activity_until_now">поточний час</string>
 </resources>

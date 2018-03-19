@@ -3,6 +3,10 @@ package biz.dealnote.messenger.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
+import biz.dealnote.messenger.model.database.Country;
+
 /**
  * Created by ruslan.kolbasa on 25.11.2016.
  * phoenix
@@ -35,8 +39,387 @@ public final class UserDetails implements Parcelable {
 
     private int postponedWallCount;
 
+    private String bdate;
+
+    private City city;
+
+    private Country country;
+
+    private String hometown;
+
+    private String phone;
+
+    private String homePhone;
+
+    private String skype;
+
+    private List<Career> careers;
+
+    private List<Military> militaries;
+
+    private List<University> universities;
+
+    private List<School> schools;
+
+    private List<Relative> relatives;
+
+    private int relation;
+
+    private Owner relationPartner;
+
+    private String[] languages;
+
+    private int political;
+
+    private int peopleMain;
+
+    private int lifeMain;
+
+    private int smoking;
+
+    private int alcohol;
+
+    private String inspiredBy;
+
+    private String religion;
+
+    private String site;
+
+    private String interests;
+
+    private String music;
+
+    private String activities;
+
+    private String movies;
+
+    private String tv;
+
+    private String games;
+
+    private String quotes;
+
+    private String about;
+
+    private String books;
+
+    public String getInterests() {
+        return interests;
+    }
+
+    public UserDetails setInterests(String interests) {
+        this.interests = interests;
+        return this;
+    }
+
+    public String getMusic() {
+        return music;
+    }
+
+    public UserDetails setMusic(String music) {
+        this.music = music;
+        return this;
+    }
+
+    public String getActivities() {
+        return activities;
+    }
+
+    public UserDetails setActivities(String activities) {
+        this.activities = activities;
+        return this;
+    }
+
+    public String getMovies() {
+        return movies;
+    }
+
+    public UserDetails setMovies(String movies) {
+        this.movies = movies;
+        return this;
+    }
+
+    public String getTv() {
+        return tv;
+    }
+
+    public UserDetails setTv(String tv) {
+        this.tv = tv;
+        return this;
+    }
+
+    public String getGames() {
+        return games;
+    }
+
+    public UserDetails setGames(String games) {
+        this.games = games;
+        return this;
+    }
+
+    public String getQuotes() {
+        return quotes;
+    }
+
+    public UserDetails setQuotes(String quotes) {
+        this.quotes = quotes;
+        return this;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public UserDetails setAbout(String about) {
+        this.about = about;
+        return this;
+    }
+
+    public String getBooks() {
+        return books;
+    }
+
+    public UserDetails setBooks(String books) {
+        this.books = books;
+        return this;
+    }
+
+    public UserDetails setSite(String site) {
+        this.site = site;
+        return this;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public UserDetails setAlcohol(int alcohol) {
+        this.alcohol = alcohol;
+        return this;
+    }
+
+    public UserDetails setInspiredBy(String inspiredBy) {
+        this.inspiredBy = inspiredBy;
+        return this;
+    }
+
+    public UserDetails setLifeMain(int lifeMain) {
+        this.lifeMain = lifeMain;
+        return this;
+    }
+
+    public UserDetails setPeopleMain(int peopleMain) {
+        this.peopleMain = peopleMain;
+        return this;
+    }
+
+    public UserDetails setPolitical(int political) {
+        this.political = political;
+        return this;
+    }
+
+    public UserDetails setReligion(String religion) {
+        this.religion = religion;
+        return this;
+    }
+
+    public UserDetails setSmoking(int smoking) {
+        this.smoking = smoking;
+        return this;
+    }
+
+    public int getAlcohol() {
+        return alcohol;
+    }
+
+    public int getLifeMain() {
+        return lifeMain;
+    }
+
+    public int getPeopleMain() {
+        return peopleMain;
+    }
+
+    public int getPolitical() {
+        return political;
+    }
+
+    public int getSmoking() {
+        return smoking;
+    }
+
+    public String getInspiredBy() {
+        return inspiredBy;
+    }
+
+    public String getReligion() {
+        return religion;
+    }
+
+    public UserDetails setLanguages(String[] languages) {
+        this.languages = languages;
+        return this;
+    }
+
+    public String[] getLanguages() {
+        return languages;
+    }
+
+    public UserDetails setRelation(int relation) {
+        this.relation = relation;
+        return this;
+    }
+
+    public UserDetails setRelationPartner(Owner relationPartner) {
+        this.relationPartner = relationPartner;
+        return this;
+    }
+
+    public int getRelation() {
+        return relation;
+    }
+
+    public Owner getRelationPartner() {
+        return relationPartner;
+    }
+
+    public UserDetails setRelatives(List<Relative> relatives) {
+        this.relatives = relatives;
+        return this;
+    }
+
+    public List<Relative> getRelatives() {
+        return relatives;
+    }
+
+    public static final class Relative {
+
+        private User user;
+
+        private String type;
+
+        private String name;
+
+        public Relative setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Relative setType(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Relative setUser(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public User getUser() {
+            return user;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
+
+    public UserDetails setSchools(List<School> schools) {
+        this.schools = schools;
+        return this;
+    }
+
+    public List<School> getSchools() {
+        return schools;
+    }
+
+    public UserDetails setUniversities(List<University> universities) {
+        this.universities = universities;
+        return this;
+    }
+
+    public List<University> getUniversities() {
+        return universities;
+    }
+
+    public UserDetails setMilitaries(List<Military> militaries) {
+        this.militaries = militaries;
+        return this;
+    }
+
+    public List<Military> getMilitaries() {
+        return militaries;
+    }
+
+    public UserDetails setCareers(List<Career> careers) {
+        this.careers = careers;
+        return this;
+    }
+
+    public List<Career> getCareers() {
+        return careers;
+    }
+
+    public UserDetails setSkype(String skype) {
+        this.skype = skype;
+        return this;
+    }
+
+    public String getSkype() {
+        return skype;
+    }
+
+    public UserDetails setHomePhone(String homePhone) {
+        this.homePhone = homePhone;
+        return this;
+    }
+
+    public String getHomePhone() {
+        return homePhone;
+    }
+
+    public UserDetails setPhone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
     public UserDetails(){
 
+    }
+
+    public UserDetails setHometown(String hometown) {
+        this.hometown = hometown;
+        return this;
+    }
+
+    public String getHometown() {
+        return hometown;
+    }
+
+    public UserDetails setCountry(Country country) {
+        this.country = country;
+        return this;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public UserDetails setCity(City city) {
+        this.city = city;
+        return this;
     }
 
     private UserDetails(Parcel in) {
@@ -53,6 +436,7 @@ public final class UserDetails implements Parcelable {
         allWallCount = in.readInt();
         ownWallCount = in.readInt();
         postponedWallCount = in.readInt();
+        bdate = in.readString();
     }
 
     public static final Creator<UserDetails> CREATOR = new Creator<UserDetails>() {
@@ -87,6 +471,16 @@ public final class UserDetails implements Parcelable {
         parcel.writeInt(allWallCount);
         parcel.writeInt(ownWallCount);
         parcel.writeInt(postponedWallCount);
+        parcel.writeString(bdate);
+    }
+
+    public String getBdate() {
+        return bdate;
+    }
+
+    public UserDetails setBdate(String bdate) {
+        this.bdate = bdate;
+        return this;
     }
 
     public IdPair getPhotoId() {

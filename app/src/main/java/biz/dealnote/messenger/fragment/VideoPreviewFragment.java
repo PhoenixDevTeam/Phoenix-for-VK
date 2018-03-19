@@ -540,10 +540,10 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
         final String videoId = video.getExternalLink().substring(index + 8, video.getExternalLink().length());
 
         try {
-            Intent intent = YouTubeStandalonePlayer.createVideoIntent(getActivity(), YoutubeDeveloperKey.DEVELOPER_KEY, videoId, 0, true, inFloatWindow);
+            Intent intent = YouTubeStandalonePlayer.createVideoIntent(requireActivity(), YoutubeDeveloperKey.DEVELOPER_KEY, videoId, 0, true, inFloatWindow);
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Utils.showRedTopToast(getActivity(), R.string.no_compatible_software_installed);
+            Utils.showRedTopToast(requireActivity(), R.string.no_compatible_software_installed);
         }
     }
 
@@ -565,7 +565,7 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override

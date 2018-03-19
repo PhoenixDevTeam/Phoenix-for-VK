@@ -237,6 +237,17 @@ public class Utils {
         return sb.toString();
     }
 
+    public static String joinNonEmptyStrings(String delimiter, @NonNull String... tokens) {
+        List<String> nonEmpty = new ArrayList<>();
+        for (String token : tokens) {
+            if (nonEmpty(token)) {
+                nonEmpty.add(token);
+            }
+        }
+
+        return join(nonEmpty, delimiter, orig -> orig);
+    }
+
     public static <T> String join(Iterable<T> tokens, String delimiter, SimpleFunction<T, String> function) {
         if (isNull(tokens)) {
             return null;

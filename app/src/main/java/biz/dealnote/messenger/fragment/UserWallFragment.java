@@ -29,6 +29,7 @@ import biz.dealnote.messenger.model.FriendsCounters;
 import biz.dealnote.messenger.model.ParcelableOwnerWrapper;
 import biz.dealnote.messenger.model.PostFilter;
 import biz.dealnote.messenger.model.User;
+import biz.dealnote.messenger.model.UserDetails;
 import biz.dealnote.messenger.mvp.presenter.UserWallPresenter;
 import biz.dealnote.messenger.mvp.view.IUserWallView;
 import biz.dealnote.messenger.place.PlaceFactory;
@@ -77,6 +78,11 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
         if (onlineIcon != null) {
             mHeaderHolder.ivOnline.setIcon(onlineIcon);
         }
+    }
+
+    @Override
+    public void openUserDetails(int accountId, @NonNull User user, @NonNull UserDetails details) {
+        PlaceFactory.getUserDetailsPlace(accountId, user, details).tryOpenWith(requireActivity());
     }
 
     /*@Override
@@ -168,6 +174,8 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
     @Override
     public IPresenterFactory<UserWallPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
+            AssertUtils.requireNonNull(getArguments());
+
             int accoutnId = getArguments().getInt(Extra.ACCOUNT_ID);
             int ownerId = getArguments().getInt(Extra.OWNER_ID);
 
@@ -205,14 +213,14 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
 
     @Override
     public void openFriends(int accountId, int userId, int tab, FriendsCounters counters) {
-        PlaceFactory.getFriendsFollowersPlace(accountId, userId, tab, counters).tryOpenWith(getActivity());
+        PlaceFactory.getFriendsFollowersPlace(accountId, userId, tab, counters).tryOpenWith(requireActivity());
     }
 
     @Override
     public void openGroups(int accountId, int userId, @Nullable User user) {
         PlaceFactory.getCommunitiesPlace(accountId, userId)
                 .withParcelableExtra(Extra.USER, user)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override

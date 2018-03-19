@@ -28,14 +28,31 @@ public class ColorFilterImageView extends AppCompatImageView {
         init(context, attrs);
     }
 
+    private int color;
+    private boolean disabledColorFilter;
+
     private void init(Context context, AttributeSet attrs){
         final TypedArray attrArray = context.obtainStyledAttributes(attrs, R.styleable.ColorFilterImageView);
 
         try {
-            int color = attrArray.getColor(R.styleable.ColorFilterImageView_filter_color, Color.BLACK);
-            setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+            color = attrArray.getColor(R.styleable.ColorFilterImageView_filter_color, Color.BLACK);
         } finally {
             attrArray.recycle();
         }
+
+        resolveColorFilter();
+    }
+
+    private void resolveColorFilter() {
+        if (disabledColorFilter) {
+            setColorFilter(null);
+        } else {
+            setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        }
+    }
+
+    public void setColorFilterEnabled(boolean enabled) {
+        this.disabledColorFilter = !enabled;
+        resolveColorFilter();
     }
 }

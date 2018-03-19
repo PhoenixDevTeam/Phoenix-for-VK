@@ -1,7 +1,5 @@
 package biz.dealnote.messenger.domain.impl;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +27,6 @@ import biz.dealnote.messenger.domain.mappers.FeedbackEntity2Model;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.criteria.NotificationsCriteria;
 import biz.dealnote.messenger.model.feedback.Feedback;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.VKOwnIds;
@@ -119,8 +116,6 @@ public class FeedbackInteractor implements IFeedbackInteractor {
                             .map(owners -> {
                                 List<Feedback> feedbacks = new ArrayList<>(dbos.size());
                                 for (FeedbackEntity dbo : dbos) {
-                                    Logger.d("sdfdsfdsf", new Gson().toJson(dbo));
-
                                     feedbacks.add(FeedbackEntity2Model.buildFeedback(dbo, owners));
                                 }
                                 return feedbacks;

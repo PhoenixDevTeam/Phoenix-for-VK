@@ -3,14 +3,17 @@ package biz.dealnote.messenger.domain.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.db.column.GroupColumns;
 import biz.dealnote.messenger.db.column.UserColumns;
 import biz.dealnote.messenger.db.interfaces.IOwnersStore;
+import biz.dealnote.messenger.db.model.entity.CareerEntity;
 import biz.dealnote.messenger.db.model.entity.CommunityEntity;
 import biz.dealnote.messenger.db.model.entity.UserDetailsEntity;
 import biz.dealnote.messenger.db.model.entity.UserEntity;
@@ -28,6 +31,7 @@ import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.SparseArrayOwnersBundle;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.UserDetails;
+import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Pair;
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -84,33 +88,64 @@ public class OwnersInteractor implements IOwnersInteractor {
         this.cache = ownersRepository;
     }
 
+    private Single<Optional<UserDetails>> getCachedDetails(int accountId, int userId) {
+        return cache.getUserDetails(accountId, userId)
+                .flatMap(optional -> {
+                    if (optional.isEmpty()) {
+                        return Single.just(Optional.<UserDetails>empty());
+                    }
+
+                    UserDetailsEntity entity = optional.get();
+                    Set<Integer> requiredIds = new HashSet<>(1);
+
+                    if (nonEmpty(entity.getCareers())) {
+                        for (CareerEntity career : entity.getCareers()) {
+                            if (career.getGroupId() != 0) {
+                                requiredIds.add(-career.getGroupId());
+                            }
+                        }
+                    }
+
+                    if (nonEmpty(entity.getRelatives())) {
+                        for (UserDetailsEntity.RelativeEntity e : entity.getRelatives()) {
+                            if (e.getId() > 0) {
+                                requiredIds.add(e.getId());
+                            }
+                        }
+                    }
+
+                    if (entity.getRelationPartnerId() != 0) {
+                        requiredIds.add(entity.getRelationPartnerId());
+                    }
+
+                    return findBaseOwnersDataAsBundle(accountId, requiredIds, MODE_ANY)
+                            .map(bundle -> Optional.wrap(Entity2Model.buildUserDetailsFromDbo(entity, bundle)));
+                });
+    }
+
+    private Single<Pair<User, UserDetails>> getCachedFullData(int accountId, int userId) {
+        return cache.findUserDboById(accountId, userId)
+                .zipWith(getCachedDetails(accountId, userId), (userEntityOptional, userDetailsOptional) -> {
+                    User user = userEntityOptional.isEmpty() ? null : Entity2Model.buildUserFromDbo(userEntityOptional.get());
+                    return Pair.create(user, userDetailsOptional.get());
+                });
+    }
+
     @Override
     public Single<Pair<User, UserDetails>> getFullUserInfo(int accountId, int userId, int mode) {
         switch (mode) {
             case MODE_CACHE:
-                return cache.findUserDboById(accountId, userId)
-                        .flatMap(optionalUser -> cache.getUserDetails(accountId, userId)
-                                .map(optionalDetails -> {
-                                    User user = optionalUser.nonEmpty() ? Entity2Model.buildUserFromDbo(optionalUser.get()) : null;
-                                    UserDetails details = optionalDetails.nonEmpty() ? Entity2Model.buildUserDetailsFromDbo(optionalDetails.get()) : null;
-                                    return Pair.create(user, details);
-                                }));
+                return getCachedFullData(accountId, userId);
             case MODE_NET:
                 return networker.vkDefault(accountId)
                         .users()
                         .getUserWallInfo(userId, VKApiUser.ALL_FIELDS, null)
                         .flatMap(user -> {
                             UserEntity userEntity = Dto2Entity.buildUserDbo(user);
-                            UserDetailsEntity detailsDbo = Dto2Entity.buildUserDetailsDbo(user);
-
-                            Pair<User, UserDetails> pair = Pair.create(
-                                    Entity2Model.buildUserFromDbo(userEntity),
-                                    Entity2Model.buildUserDetailsFromDbo(detailsDbo)
-                            );
-
+                            UserDetailsEntity detailsEntity = Dto2Entity.buildUserDetailsDbo(user);
                             return cache.storeUserDbos(accountId, singletonList(userEntity))
-                                    .andThen(cache.storeUserDetails(accountId, userId, detailsDbo))
-                                    .andThen(Single.just(pair));
+                                    .andThen(cache.storeUserDetails(accountId, userId, detailsEntity))
+                                    .andThen(getCachedFullData(accountId, userId));
                         });
         }
 

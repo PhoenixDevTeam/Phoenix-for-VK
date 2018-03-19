@@ -80,6 +80,7 @@ import biz.dealnote.messenger.fragment.RequestExecuteFragment;
 import biz.dealnote.messenger.fragment.SecurityPreferencesFragment;
 import biz.dealnote.messenger.fragment.TopicsFragment;
 import biz.dealnote.messenger.fragment.UserBannedFragment;
+import biz.dealnote.messenger.fragment.UserDetailsFragment;
 import biz.dealnote.messenger.fragment.VKPhotoAlbumsFragment;
 import biz.dealnote.messenger.fragment.VKPhotosFragment;
 import biz.dealnote.messenger.fragment.VideoPreviewFragment;
@@ -105,6 +106,8 @@ import biz.dealnote.messenger.model.Comment;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.Manager;
 import biz.dealnote.messenger.model.Peer;
+import biz.dealnote.messenger.model.User;
+import biz.dealnote.messenger.model.UserDetails;
 import biz.dealnote.messenger.model.drawer.AbsDrawerItem;
 import biz.dealnote.messenger.model.drawer.RecentChat;
 import biz.dealnote.messenger.model.drawer.SectionDrawerItem;
@@ -718,7 +721,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             if (inputManager != null) {
                 inputManager.hideSoftInputFromWindow(getWindow().getDecorView().getRootView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
-        } catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
     }
@@ -791,6 +794,10 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         mCurrentFrontSection = null;
     }
 
+    private void attachFragment(Fragment fragment, boolean addToBackStack) {
+        attachFragment(fragment, addToBackStack, null);
+    }
+
     private void attachFragment(Fragment fragment, boolean addToBackStack, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -851,7 +858,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             StatusbarUtil.setCustomStatusbarDarkMode(this, invertIcons);
         }
 
-        if (Utils.hasOreo()){
+        if (Utils.hasOreo()) {
             Window w = getWindow();
             if (invertIcons) {
                 int flags = getWindow().getDecorView().getSystemUiVisibility();
@@ -960,13 +967,14 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 attachFragment(postCreateFragment, true, "create_post");
                 break;
 
-            case Place.EDIT_COMMENT:
+            case Place.EDIT_COMMENT: {
                 Comment comment = place.getArgs().getParcelable(Extra.COMMENT);
                 int accountId = place.getArgs().getInt(Extra.ACCOUNT_ID);
                 CommentEditFragment commentEditFragment = CommentEditFragment.newInstance(accountId, comment);
                 place.applyTargetingTo(commentEditFragment);
                 attachFragment(commentEditFragment, true, "edit_comment");
-                break;
+            }
+            break;
 
             case Place.EDIT_POST:
                 PostEditFragment postEditFragment = PostEditFragment.newInstance(place.getArgs());
@@ -1189,9 +1197,18 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 attachFragment(UserBannedFragment.newInstance(place.getArgs().getInt(Extra.ACCOUNT_ID)), true, "user-blacklist");
                 break;
 
-            case Place.DRAWER_EDIT:
+            case Place.DRAWER_EDIT: {
                 attachFragment(DrawerEditFragment.newInstance(), true, "drawer-edit");
-                break;
+            }
+            break;
+
+            case Place.USER_DETAILS: {
+                int accountId = args.getInt(Extra.ACCOUNT_ID);
+                User user = args.getParcelable(Extra.USER);
+                UserDetails details = args.getParcelable("details");
+                attachFragment(UserDetailsFragment.newInstance(accountId, user, details), true);
+            }
+            break;
 
             default:
                 throw new IllegalArgumentException("Main activity can't open this place, type: " + place.type);

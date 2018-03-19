@@ -5,7 +5,6 @@ import biz.dealnote.messenger.api.model.response.NotificationsResponse;
 import io.reactivex.Single;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 /**
@@ -14,7 +13,8 @@ import retrofit2.http.POST;
  */
 public interface INotificationsService {
 
-    @GET("notifications.markAsViewed")
+    @FormUrlEncoded
+    @POST("notifications.markAsViewed")
     Single<BaseResponse<Integer>> markAsViewed();
 
     @FormUrlEncoded

@@ -481,12 +481,12 @@
     <string name="hometown">Hometown</string>
     <string name="languages">Languages</string>
     <string name="relatives">Relatives</string>
-    <string name="relatives_grandparents">grandparents</string>
-    <string name="relatives_parents">parents</string>
-    <string name="relatives_siblings">siblings</string>
-    <string name="relatives_children">children</string>
-    <string name="relatives_grandchildren">grandchildren</string>
-    <string name="relatives_others">others</string>
+    <string name="relatives_grandparents">Grandparents</string>
+    <string name="relatives_parents">Parents</string>
+    <string name="relatives_siblings">Siblings</string>
+    <string name="relatives_children">Children</string>
+    <string name="relatives_grandchildren">Grandchildren</string>
+    <string name="relatives_others">Others</string>
 
     <!--Контактная информация пользователя-->
     <string name="contact_information">Contact information</string>
@@ -1263,5 +1263,8 @@
     <string name="night_mode_black_pref_title">AMOLED night mode</string>
     <string name="night_mode_black_pref_summary">Use black background at night mode</string>
     <string name="vibration_length">Vibration length</string>
+    <string name="skype" translatable="false">Skype</string>
+    <string name="activity_until_now">now</string>
+    <string name="family">Family</string>
 
 </resources>

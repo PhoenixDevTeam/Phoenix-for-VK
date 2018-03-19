@@ -67,6 +67,7 @@ import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.TmpSource;
 import biz.dealnote.messenger.model.User;
+import biz.dealnote.messenger.model.UserDetails;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.model.WallEditorAttrs;
 import biz.dealnote.messenger.player.util.MusicUtils;
@@ -74,6 +75,13 @@ import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Utils;
 
 public class PlaceFactory {
+
+    public static Place getUserDetailsPlace(int accountId, @NonNull User user, @NonNull UserDetails details) {
+        return new Place(Place.USER_DETAILS)
+                .withIntExtra(Extra.ACCOUNT_ID, accountId)
+                .withParcelableExtra(Extra.USER, user)
+                .withParcelableExtra("details", details);
+    }
 
     public static Place getDrawerEditPlace(){
         return new Place(Place.DRAWER_EDIT);

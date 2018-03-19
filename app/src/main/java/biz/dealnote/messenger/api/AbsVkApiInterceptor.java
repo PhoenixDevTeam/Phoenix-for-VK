@@ -6,15 +6,12 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.model.Captcha;
 import biz.dealnote.messenger.api.model.Error;
 import biz.dealnote.messenger.api.model.response.VkReponse;
 import biz.dealnote.messenger.service.ApiErrorCodes;
-import biz.dealnote.messenger.util.Exestime;
-import biz.dealnote.messenger.util.Logger;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -32,10 +29,7 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  */
 abstract class AbsVkApiInterceptor implements Interceptor {
 
-    private static final String TAG = AbsVkApiInterceptor.class.getSimpleName();
-
     private final String version;
-    private static final AtomicInteger COUNTER = new AtomicInteger();
     private final Gson gson;
 
     AbsVkApiInterceptor(String version, Gson gson) {
@@ -49,8 +43,6 @@ abstract class AbsVkApiInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        int requestId = COUNTER.incrementAndGet();
-
         Request original = chain.request();
 
         String token = getToken();
@@ -82,26 +74,12 @@ abstract class AbsVkApiInterceptor implements Interceptor {
         ResponseBody responseBody;
         String responseBodyString;
 
-        int tryCounter = 0;
-
         while (true) {
-            tryCounter++;
-
-            Logger.d(TAG, "Requestid: " + requestId + ", try to get response, try: " + tryCounter);
-
-            long startGet = System.currentTimeMillis();
-
             response = chain.proceed(request);
             responseBody = response.body();
             responseBodyString = responseBody.string();
 
-            Exestime.log("AbsVkApiInterceptor.get", startGet);
-
-            long startParse = System.currentTimeMillis();
             VkReponse vkReponse = gson.fromJson(responseBodyString, VkReponse.class);
-            //Logger.d(TAG, "vkReponse: " + vkReponse);
-
-            Exestime.log("AbsVkApiInterceptor.parse", startParse);
 
             Error error = isNull(vkReponse) ? null : vkReponse.error;
 
@@ -109,13 +87,7 @@ abstract class AbsVkApiInterceptor implements Interceptor {
                 if (error.errorCode == ApiErrorCodes.TOO_MANY_REQUESTS_PER_SECOND) {
                     synchronized (AbsVkApiInterceptor.class) {
                         int sleepMs = 1000 + RANDOM.nextInt(500);
-
-                        Logger.d(TAG, "Requestid: " + requestId + ", try sleep for " + sleepMs + " ms");
-
-                        try {
-                            Thread.sleep(sleepMs);
-                        } catch (InterruptedException ignored) {
-                        }
+                        SystemClock.sleep(sleepMs);
                     }
 
                     continue;
@@ -127,8 +99,6 @@ abstract class AbsVkApiInterceptor implements Interceptor {
                     ICaptchaProvider provider = Injection.provideCaptchaProvider();
                     provider.requestCaptha(captcha.getSid(), captcha);
 
-                    Logger.d(TAG, "CAPTCHA need, lookup started");
-
                     String code = null;
 
                     while (true){
@@ -136,14 +106,11 @@ abstract class AbsVkApiInterceptor implements Interceptor {
                             code = provider.lookupCode(captcha.getSid());
 
                             if(nonNull(code)){
-                                Logger.d(TAG, "CAPTCHA found: " + code);
                                 break;
                             } else {
-                                Logger.d(TAG, "CAPTCHA not found yet");
                                 SystemClock.sleep(1000);
                             }
                         } catch (OutOfDateException e) {
-                            Logger.d(TAG, "CAPTCHA out of date!!!");
                             break;
                         }
                     }
