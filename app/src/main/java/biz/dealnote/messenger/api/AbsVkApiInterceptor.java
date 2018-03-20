@@ -11,6 +11,7 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.model.Captcha;
 import biz.dealnote.messenger.api.model.Error;
 import biz.dealnote.messenger.api.model.response.VkReponse;
+import biz.dealnote.messenger.exception.UnauthorizedException;
 import biz.dealnote.messenger.service.ApiErrorCodes;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
@@ -21,7 +22,7 @@ import okhttp3.ResponseBody;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
-import static biz.dealnote.messenger.util.Utils.nonEmpty;
+import static biz.dealnote.messenger.util.Utils.isEmpty;
 
 /**
  * Created by admin on 21.12.2016.
@@ -47,12 +48,13 @@ abstract class AbsVkApiInterceptor implements Interceptor {
 
         String token = getToken();
 
-        FormBody.Builder formBuiler = new FormBody.Builder()
-                .add("v", version);
-
-        if(nonEmpty(token)){
-            formBuiler.add("access_token", token);
+        if (isEmpty(token)) {
+            throw new UnauthorizedException("No authorization! Please, login and retry");
         }
+
+        FormBody.Builder formBuiler = new FormBody.Builder()
+                .add("v", version)
+                .add("access_token", token);
 
         RequestBody body = original.body();
 

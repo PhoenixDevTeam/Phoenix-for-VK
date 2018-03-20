@@ -17,6 +17,7 @@ import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.db.interfaces.IDialogsStore;
 import biz.dealnote.messenger.domain.IMessagesInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.exception.UnauthorizedException;
 import biz.dealnote.messenger.longpoll.LongpollUtils;
 import biz.dealnote.messenger.longpoll.model.AbsRealtimeAction;
 import biz.dealnote.messenger.longpoll.model.RealtimeAction;
@@ -36,10 +37,11 @@ import biz.dealnote.messenger.util.ShortcutUtils;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Completable;
 import io.reactivex.disposables.CompositeDisposable;
-import retrofit2.HttpException;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.RxUtils.dummy;
+import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 import static biz.dealnote.messenger.util.Utils.indexOf;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
@@ -130,21 +132,22 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
             appendDisposable(InteractorFactory.createStickersInteractor()
                     .getAndStore(getAccountId())
                     .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                    .subscribe(() -> {/*ignore*/}, t -> {/*ignore*/}));
+                    .subscribe(dummy(), ignore()));
         } catch (Exception ignored) {
             /*ignore*/
         }
     }
 
-    private void onDialogsGetError(Throwable throwable) {
-        setNetLoadnigNow(false);
-        throwable.printStackTrace();
+    private void onDialogsGetError(Throwable t) {
+        Throwable cause = getCauseIfRuntime(t);
 
-        if (throwable instanceof HttpException && ((HttpException) throwable).code() == 401) {
+        setNetLoadnigNow(false);
+
+        if (cause instanceof UnauthorizedException) {
             return;
         }
 
-        showError(getView(), throwable);
+        showError(getView(), cause);
     }
 
     private boolean netLoadnigNow;
@@ -163,8 +166,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
 
         netDisposable.add(messagesInteractor.getDialogs(dialogsOwnerId, COUNT, null)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onDialogsFisrtResponse,
-                        throwable -> onDialogsGetError(getCauseIfRuntime(throwable))));
+                .subscribe(this::onDialogsFisrtResponse, this::onDialogsGetError));
 
         resolveRefreshingView();
     }
