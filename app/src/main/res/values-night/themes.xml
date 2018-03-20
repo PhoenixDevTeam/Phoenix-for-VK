@@ -156,7 +156,9 @@
         <item name="android:colorBackground">@android:color/black</item>
     </style>
     <style name="DayNightBlack11" parent="Theme11">
+        <item name="android:colorBackground">@android:color/black</item>
     </style>
     <style name="DayNightBlack12" parent="Theme12">
+        <item name="android:colorBackground">@android:color/black</item>
     </style>
 </resources>

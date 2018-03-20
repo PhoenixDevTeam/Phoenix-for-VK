@@ -9,11 +9,11 @@
 
         <item name="colorPrimary">#FFF</item>
         <item name="colorPrimaryDark">#FFF</item>
-        <item name="colorAccent">#78909c</item>
+        <item name="colorAccent">#233446</item>
 
         <item name="icon_color_on_colored_back">#757575</item>
 
-        <item name="icon_color_active">#78909c</item>
+        <item name="icon_color_active">#233446</item>
 
         <item name="textColorPrimaryOnColoredBack">#de000000</item>
         <item name="textColorSecondaryOnColoredBack">#8a000000</item>
