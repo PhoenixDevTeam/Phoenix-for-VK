@@ -118,7 +118,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
     @Override
     public void onSpinnerOptionClick(final SpinnerOption spinnerOption) {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(spinnerOption.title)
                 .setItems(spinnerOption.createAvailableNames(getActivity()), (dialog, which) -> {
                     spinnerOption.value = spinnerOption.available.get(which);
@@ -199,13 +199,14 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
         switch (databaseOption.type) {
             case DatabaseOption.TYPE_COUNTRY:
-                SelectCountryDialog selectCountryDialog = SelectCountryDialog.newInstance(mAccountId);
+                SelectCountryDialog selectCountryDialog = new SelectCountryDialog();
                 selectCountryDialog.setTargetFragment(this, REQUEST_CODE_COUTRY);
 
                 Bundle args = new Bundle();
                 args.putInt(Extra.KEY, databaseOption.key);
+                args.putInt(Extra.ACCOUNT_ID, mAccountId);
                 selectCountryDialog.setArguments(args);
-                selectCountryDialog.show(getFragmentManager(), "countries");
+                selectCountryDialog.show(requireFragmentManager(), "countries");
                 break;
 
             case DatabaseOption.TYPE_CITY:
@@ -332,7 +333,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
         SelectCityDialog selectCityDialog = SelectCityDialog.newInstance(mAccountId, countryId, args);
         selectCityDialog.setTargetFragment(this, REQUEST_CODE_CITY);
-        selectCityDialog.show(getFragmentManager(), "cities");
+        selectCityDialog.show(requireFragmentManager(), "cities");
     }
 
     private void showUniversitiesDialog(DatabaseOption databaseOption, int countryId) {
@@ -341,7 +342,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
         SelectUniversityDialog dialog = SelectUniversityDialog.newInstance(mAccountId, countryId, args);
         dialog.setTargetFragment(this, REQUEST_CODE_UNIVERSITY);
-        dialog.show(getFragmentManager(), "universities");
+        dialog.show(requireFragmentManager(), "universities");
     }
 
     private void showSchoolsDialog(DatabaseOption databaseOption, int cityId) {
@@ -350,7 +351,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
         SelectSchoolsDialog dialog = SelectSchoolsDialog.newInstance(mAccountId, cityId, args);
         dialog.setTargetFragment(this, REQUEST_CODE_SCHOOL);
-        dialog.show(getFragmentManager(), "schools");
+        dialog.show(requireFragmentManager(), "schools");
     }
 
     private void showFacultiesDialog(DatabaseOption databaseOption, int universityId) {
@@ -359,7 +360,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
         SelectFacultyDialog dialog = SelectFacultyDialog.newInstance(mAccountId, universityId, args);
         dialog.setTargetFragment(this, REQUEST_CODE_FACULTY);
-        dialog.show(getFragmentManager(), "faculties");
+        dialog.show(requireFragmentManager(), "faculties");
     }
 
     private void showChairsDialog(DatabaseOption databaseOption, int facultyId) {
@@ -368,7 +369,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
         SelectChairsDialog dialog = SelectChairsDialog.newInstance(mAccountId, facultyId, args);
         dialog.setTargetFragment(this, REQUEST_CODE_CHAIR);
-        dialog.show(getFragmentManager(), "chairs");
+        dialog.show(requireFragmentManager(), "chairs");
     }
 
     private void showSchoolClassesDialog(DatabaseOption databaseOption, int countryId) {
@@ -377,7 +378,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
         SelectSchoolClassesDialog dialog = SelectSchoolClassesDialog.newInstance(mAccountId, countryId, args);
         dialog.setTargetFragment(this, REQUEST_CODE_SCHOOL_CLASS);
-        dialog.show(getFragmentManager(), "school-classes");
+        dialog.show(requireFragmentManager(), "school-classes");
     }
 
     private BaseOption findDependencyByKey(int key) {

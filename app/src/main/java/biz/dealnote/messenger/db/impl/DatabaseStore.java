@@ -35,7 +35,7 @@ public class DatabaseStore extends AbsStore implements IDatabaseStore {
             Uri uri = MessengerContentProvider.getCountriesContentUriFor(accountId);
 
             ArrayList<ContentProviderOperation> operations = new ArrayList<>(dbos.size() + 1);
-            operations.add(ContentProviderOperation.newUpdate(uri).build());
+            operations.add(ContentProviderOperation.newDelete(uri).build());
 
             for (CountryEntity dbo : dbos) {
                 ContentValues cv = new ContentValues();

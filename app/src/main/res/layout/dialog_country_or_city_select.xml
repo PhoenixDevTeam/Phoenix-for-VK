@@ -19,6 +19,7 @@
             android:textSize="@dimen/font_size_title"
             android:layout_height="wrap_content"
             android:inputType="text"
+            android:imeOptions="actionDone"
             android:hint="@string/type_here_to_start_searching"
             android:background="?messages_background_color"
             android:padding="8dp" />
@@ -32,11 +33,11 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"/>
 
-
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

@@ -33,7 +33,7 @@ public class SelectCityDialog extends AccountDependencyDialogFragment implements
     private static final int COUNT_PER_REQUEST = 1000;
     private static final int RUN_SEACRH_DELAY = 1000;
 
-    public static SelectCityDialog newInstance(int aid, int countryId, Bundle additional){
+    public static SelectCityDialog newInstance(int aid, int countryId, Bundle additional) {
         Bundle args = additional == null ? new Bundle() : additional;
         args.putInt(Extra.COUNTRY_ID, countryId);
         args.putInt(Extra.ACCOUNT_ID, aid);
@@ -90,7 +90,7 @@ public class SelectCityDialog extends AccountDependencyDialogFragment implements
         super.onActivityCreated(savedInstanceState);
 
         boolean firstRun = false;
-        if(mData == null){
+        if (mData == null) {
             mData = new ArrayList<>();
             firstRun = true;
         }
@@ -99,23 +99,23 @@ public class SelectCityDialog extends AccountDependencyDialogFragment implements
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
-        if(firstRun){
+        if (firstRun) {
             request(0);
         }
     }
 
-    private void request(int offset){
+    private void request(int offset) {
         appendDisposable(databaseInteractor.getCities(accountId, countryId, filter, true, COUNT_PER_REQUEST, offset)
-        .compose(RxUtils.applySingleIOToMainSchedulers())
-        .subscribe(cities -> onRequestFinised(cities, offset), this::onDataGetError));
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(cities -> onRequestFinised(cities, offset), this::onDataGetError));
     }
 
-    private void onDataGetError(Throwable t){
+    private void onDataGetError(Throwable t) {
         // TODO: 04.10.2017
     }
 
-    private void onRequestFinised(List<City> cities, int offset){
-        if(offset == 0){
+    private void onRequestFinised(List<City> cities, int offset) {
+        if (offset == 0) {
             mData.clear();
         }
 
