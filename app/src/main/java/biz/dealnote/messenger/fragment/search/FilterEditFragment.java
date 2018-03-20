@@ -199,7 +199,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
         switch (databaseOption.type) {
             case DatabaseOption.TYPE_COUNTRY:
-                SelectCountryDialog selectCountryDialog = new SelectCountryDialog();
+                SelectCountryDialog selectCountryDialog = SelectCountryDialog.newInstance(mAccountId);
                 selectCountryDialog.setTargetFragment(this, REQUEST_CODE_COUTRY);
 
                 Bundle args = new Bundle();

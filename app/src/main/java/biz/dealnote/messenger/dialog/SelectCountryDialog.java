@@ -37,12 +37,20 @@ public class SelectCountryDialog extends BasePresenterDialogFragment<CountriesPr
     private CountriesAdapter mAdapter;
     private View mLoadingView;
 
+    public static SelectCountryDialog newInstance(int accountId) {
+        Bundle args = new Bundle();
+        args.putInt(Extra.ACCOUNT_ID, accountId);
+        SelectCountryDialog fragment = new SelectCountryDialog();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = View.inflate(getActivity(), R.layout.dialog_countries, null);
 
-        Dialog dialog = new AlertDialog.Builder(getActivity())
+        Dialog dialog = new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.countries_title)
                 .setView(view)
                 .setNegativeButton(R.string.button_cancel, null)
