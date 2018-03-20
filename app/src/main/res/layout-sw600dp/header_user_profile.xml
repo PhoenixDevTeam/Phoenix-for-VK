@@ -344,8 +344,7 @@
                         android:text="@string/more_info"
                         android:textAllCaps="true"
                         android:textColor="?icon_color_active"
-                        android:textSize="@dimen/font_size_additional"
-                        android:visibility="gone" />
+                        android:textSize="@dimen/font_size_additional" />
                 </RelativeLayout>
 
             </LinearLayout>
