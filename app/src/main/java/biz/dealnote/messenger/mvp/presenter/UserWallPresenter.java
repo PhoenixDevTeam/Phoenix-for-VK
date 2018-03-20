@@ -86,7 +86,7 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
     @OnGuiCreated
     private void resolveBaseUserInfoViews(){
         if(isGuiReady()){
-            getView().displayBaseUserInfo(this.user);
+            getView().displayBaseUserInfo(user);
         }
     }
 

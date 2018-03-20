@@ -1,9 +1,6 @@
 package biz.dealnote.messenger.db.column;
 
-import android.content.ContentValues;
 import android.provider.BaseColumns;
-
-import biz.dealnote.messenger.api.model.VKApiUser;
 
 public final class UserColumns implements BaseColumns {
 
@@ -34,26 +31,6 @@ public final class UserColumns implements BaseColumns {
     public static final String DOMAIN = "domain";
     public static final String IS_FRIEND = "is_friend";
     public static final String FRIEND_STATUS = "friend_status";
-
-    public static ContentValues getCV(VKApiUser u) {
-        ContentValues cv = new ContentValues();
-        cv.put(_ID, u.id);
-        cv.put(FIRST_NAME, u.first_name);
-        cv.put(LAST_NAME, u.last_name);
-        cv.put(ONLINE, u.online);
-        cv.put(ONLINE_MOBILE, u.online_mobile);
-        cv.put(ONLINE_APP, u.online_app);
-        cv.put(PHOTO_50, u.photo_50);
-        cv.put(PHOTO_100, u.photo_100);
-        cv.put(PHOTO_200, u.photo_200);
-        cv.put(LAST_SEEN, u.last_seen);
-        cv.put(PLATFORM, u.platform);
-        cv.put(USER_STATUS, u.status);
-        cv.put(SEX, u.sex);
-        cv.put(DOMAIN, u.domain);
-        cv.put(IS_FRIEND, u.is_friend);
-        return cv;
-    }
 
     /**
      * The id of the user, includes tablename prefix

@@ -120,6 +120,7 @@ class OwnersRepositiry extends AbsStore implements IOwnersStore {
         cv.put(UserColumns.SEX, dbo.getSex());
         cv.put(UserColumns.DOMAIN, dbo.getDomain());
         cv.put(UserColumns.IS_FRIEND, dbo.isFriend());
+        cv.put(UserColumns.FRIEND_STATUS, dbo.getFriendStatus());
         return cv;
     }
 
