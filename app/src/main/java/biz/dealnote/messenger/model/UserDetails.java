@@ -52,6 +52,12 @@ public final class UserDetails implements Parcelable {
     private String homePhone;
 
     private String skype;
+    
+    private String instagram;
+    
+    private String twitter;
+    
+    private String facebook;
 
     private List<Career> careers;
 
@@ -371,6 +377,33 @@ public final class UserDetails implements Parcelable {
 
     public String getSkype() {
         return skype;
+    }
+
+    public UserDetails setInstagram(String instagram) {
+        this.instagram = instagram;
+        return this;
+    }
+
+    public String getInstagram() {
+        return instagram;
+    }
+
+    public UserDetails setTwitter(String twitter) {
+        this.twitter = twitter;
+        return this;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public UserDetails setFacebook(String facebook) {
+        this.facebook = facebook;
+        return this;
+    }
+
+    public String getFacebook() {
+        return facebook;
     }
 
     public UserDetails setHomePhone(String homePhone) {

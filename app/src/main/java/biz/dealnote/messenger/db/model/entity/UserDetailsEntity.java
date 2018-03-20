@@ -50,6 +50,12 @@ public class UserDetailsEntity {
 
     private String skype;
 
+    private String instagram;
+
+    private String twitter;
+
+    private String facebook;
+
     private List<CareerEntity> careers;
 
     private List<MilitaryEntity> militaries;
@@ -332,6 +338,33 @@ public class UserDetailsEntity {
 
     public String getSkype() {
         return skype;
+    }
+    
+    public UserDetailsEntity setTwitter(String twitter){
+        this.twitter = twitter;
+        return this;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public UserDetailsEntity setInstagram(String instagram){
+        this.instagram = instagram;
+        return this;
+    }
+
+    public String getInstagram() {
+        return instagram;
+    }
+
+    public UserDetailsEntity setFacebook(String facebook) {
+        this.facebook = facebook;
+        return this;
+    }
+
+    public String getFacebook() {
+        return facebook;
     }
 
     public UserDetailsEntity setHomePhone(String homePhone) {

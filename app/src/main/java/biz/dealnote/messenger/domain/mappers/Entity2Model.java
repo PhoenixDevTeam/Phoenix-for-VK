@@ -173,7 +173,10 @@ public class Entity2Model {
                 .setHometown(dbo.getHomeTown())
                 .setPhone(dbo.getPhone())
                 .setHomePhone(dbo.getHomePhone())
-                .setSkype(dbo.getSkype());
+                .setSkype(dbo.getSkype())
+                .setInstagram(dbo.getInstagram())
+                .setTwitter(dbo.getTwitter())
+                .setFacebook(dbo.getFacebook());
 
         details.setMilitaries(mapAll(dbo.getMilitaries(), Entity2Model::entity2model));
         details.setCareers(mapAll(dbo.getCareers(), orig -> entity2model(orig, owners)));

@@ -442,6 +442,9 @@ public class Dto2Entity {
         dbo.setPhone(user.mobile_phone);
         dbo.setHomePhone(user.home_phone);
         dbo.setSkype(user.skype);
+        dbo.setInstagram(user.instagram);
+        dbo.setFacebook(user.facebook);
+        dbo.setTwitter(user.twitter);
 
         VKApiUser.Counters counters = user.counters;
 

@@ -104,8 +104,29 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
                     .setSection(mainSection));
         }
 
+        if (nonEmpty(details.getInstagram())) {
+            items.add(new AdvancedItem(8, new Text(R.string.instagram))
+                    .setSubtitle(new Text(details.getInstagram()))
+                    .setIcon(Icon.fromResources(R.drawable.instagram))
+                    .setSection(mainSection));
+        }
+
+        if (nonEmpty(details.getTwitter())) {
+            items.add(new AdvancedItem(9, new Text(R.string.twitter))
+                    .setSubtitle(new Text(details.getTwitter()))
+                    .setIcon(Icon.fromResources(R.drawable.twitter))
+                    .setSection(mainSection));
+        }
+
+        if (nonEmpty(details.getFacebook())) {
+            items.add(new AdvancedItem(10, new Text(R.string.facebook))
+                    .setSubtitle(new Text(details.getFacebook()))
+                    .setIcon(Icon.fromResources(R.drawable.facebook))
+                    .setSection(mainSection));
+        }
+
         if (nonEmpty(user.getStatus())) {
-            items.add(new AdvancedItem(8, new Text(R.string.status))
+            items.add(new AdvancedItem(11, new Text(R.string.status))
                     .setSubtitle(new Text(user.getStatus()))
                     .setIcon(Icon.fromResources(R.drawable.ic_profile_status))
                     .setSection(mainSection));
