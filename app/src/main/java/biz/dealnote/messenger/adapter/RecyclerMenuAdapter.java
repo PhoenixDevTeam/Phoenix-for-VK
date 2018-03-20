@@ -44,6 +44,8 @@ public class RecyclerMenuAdapter extends RecyclerBindableAdapter<AdvancedItem, R
 
     public interface ActionListener {
         void onClick(AdvancedItem item);
+
+        void onLongClick(AdvancedItem item);
     }
 
     @Override
@@ -120,6 +122,13 @@ public class RecyclerMenuAdapter extends RecyclerBindableAdapter<AdvancedItem, R
             if (nonNull(actionListener)) {
                 actionListener.onClick(item);
             }
+        });
+
+        holder.itemRoot.setOnLongClickListener(v -> {
+            if (actionListener != null) {
+                actionListener.onLongClick(item);
+            }
+            return true;
         });
     }
 

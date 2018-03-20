@@ -91,21 +91,6 @@ public class UserDetailsFragment extends BasePresenterFragment<UserDetailsPresen
     }
 
     @Override
-    public void copyToClipboard(AdvancedItem item) {
-        ClipboardManager clipboard = (ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
-        if (clipboard != null) {
-            String title = item.getTitle().getText(requireContext());
-            String subtitle = nonNull(item.getSubtitle()) ? item.getSubtitle().getText(requireContext()) : null;
-            String details = Utils.joinNonEmptyStrings("\n", title, subtitle);
-
-            ClipData clip = ClipData.newPlainText("Details", details);
-            clipboard.setPrimaryClip(clip);
-
-            Toast.makeText(requireContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if (getActivity() instanceof OnSectionResumeCallback) {
@@ -133,6 +118,21 @@ public class UserDetailsFragment extends BasePresenterFragment<UserDetailsPresen
                 getArguments().getParcelable("details"),
                 saveInstanceState
         );
+    }
+
+    @Override
+    public void onLongClick(AdvancedItem item) {
+        ClipboardManager clipboard = (ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard != null) {
+            String title = item.getTitle().getText(requireContext());
+            String subtitle = nonNull(item.getSubtitle()) ? item.getSubtitle().getText(requireContext()) : null;
+            String details = Utils.joinNonEmptyStrings("\n", title, subtitle);
+
+            ClipData clip = ClipData.newPlainText("Details", details);
+            clipboard.setPrimaryClip(clip);
+
+            Toast.makeText(requireContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

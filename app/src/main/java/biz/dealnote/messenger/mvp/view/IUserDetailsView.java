@@ -20,6 +20,4 @@ public interface IUserDetailsView extends IMvpView, IAccountDependencyView, IErr
     void displayToolbarTitle(String title);
 
     void openOwnerProfile(int accountId, int ownerId, @Nullable Owner owner);
-
-    void copyToClipboard(AdvancedItem item);
 }
