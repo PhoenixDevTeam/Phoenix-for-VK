@@ -23,8 +23,9 @@ import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.model.database.Country;
 import biz.dealnote.messenger.mvp.presenter.CountriesPresenter;
 import biz.dealnote.messenger.mvp.view.ICountriesView;
-import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.mvp.core.IPresenterFactory;
+
+import static biz.dealnote.messenger.util.Objects.nonNull;
 
 public class SelectCountryDialog extends BasePresenterDialogFragment<CountriesPresenter, ICountriesView>
         implements CountriesAdapter.Listener, ICountriesView {
@@ -42,7 +43,7 @@ public class SelectCountryDialog extends BasePresenterDialogFragment<CountriesPr
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = View.inflate(getActivity(), R.layout.dialog_countries, null);
 
-        Dialog dialog = new AlertDialog.Builder(getActivity())
+        Dialog dialog = new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.countries_title)
                 .setView(view)
                 .setNegativeButton(R.string.button_cancel, null)
@@ -65,6 +66,8 @@ public class SelectCountryDialog extends BasePresenterDialogFragment<CountriesPr
         recyclerView.setAdapter(mAdapter);
 
         mLoadingView = view.findViewById(R.id.progress_root);
+
+        fireViewCreated();
         return dialog;
     }
 
@@ -75,21 +78,21 @@ public class SelectCountryDialog extends BasePresenterDialogFragment<CountriesPr
 
     @Override
     public void displayData(List<Country> countries) {
-        if(Objects.nonNull(mAdapter)){
+        if (nonNull(mAdapter)) {
             mAdapter.setData(countries);
         }
     }
 
     @Override
     public void notifyDataSetChanged() {
-        if(Objects.nonNull(mAdapter)){
+        if (nonNull(mAdapter)) {
             mAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void displayLoading(boolean loading) {
-        if(Objects.nonNull(mLoadingView)){
+        if (nonNull(mLoadingView)) {
             mLoadingView.setVisibility(loading ? View.VISIBLE : View.INVISIBLE);
         }
     }

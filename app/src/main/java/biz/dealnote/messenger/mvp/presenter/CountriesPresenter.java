@@ -40,13 +40,10 @@ public class CountriesPresenter extends RxSupportPresenter<ICountriesView> {
         this.accountId = accountId;
         this.countries = new ArrayList<>();
         this.filtered = new ArrayList<>();
-
         this.databaseInteractor = InteractorFactory.createDatabaseInteractor();
 
         requestData();
     }
-
-
 
     @Override
     public void onGuiCreated(@NonNull ICountriesView viewHost) {
@@ -89,18 +86,18 @@ public class CountriesPresenter extends RxSupportPresenter<ICountriesView> {
     }
 
     private void reFillFilteredData(){
-        this.filtered.clear();
+        filtered.clear();
 
-        if(isEmpty(this.filter)){
-            this.filtered.addAll(this.countries);
+        if (isEmpty(filter)) {
+            filtered.addAll(countries);
             return;
         }
 
-        String lowerFilter = this.filter.toLowerCase();
+        String lowerFilter = filter.toLowerCase();
 
-        for(Country country : this.countries){
+        for (Country country : countries) {
             if(country.getTitle().toLowerCase().contains(lowerFilter)){
-                this.filtered.add(country);
+                filtered.add(country);
             }
         }
     }
