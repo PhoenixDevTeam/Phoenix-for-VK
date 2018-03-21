@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Monochrome-->
-    <style name="Theme10" parent="AppTheme">
+    <style name="App.DayNight.Monochrome" parent="Base.App.DayNight">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:navigationBarColor" tools:targetApi="o_mr1">@android:color/white</item>

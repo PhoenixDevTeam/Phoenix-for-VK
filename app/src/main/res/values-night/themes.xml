@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Blue -->
-    <style name="Theme1" parent="AppTheme">
+    <style name="App.DayNight.Blue" parent="Base.App.DayNight">
         <item name="colorPrimary">#487197</item>
         <item name="colorPrimaryDark">#3B5973</item>
         <item name="colorAccent">#487197</item>
@@ -10,7 +10,7 @@
     </style>
 
     <!-- Light Blue -->
-    <style name="Theme2" parent="AppTheme">
+    <style name="App.DayNight.LightBlue" parent="Base.App.DayNight">
         <item name="colorPrimary">#1976D2</item>
         <item name="colorPrimaryDark">#1565C0</item>
         <item name="colorAccent">#c2185b</item>
@@ -19,7 +19,7 @@
     </style>
 
     <!-- Grey -->
-    <style name="Theme3" parent="AppTheme">
+    <style name="App.DayNight.Grey" parent="Base.App.DayNight">
         <item name="colorPrimary">#2B5266</item>
         <item name="colorPrimaryDark">#254659</item>
         <item name="colorAccent">#387C9C</item>
@@ -28,7 +28,7 @@
     </style>
 
     <!-- Teal -->
-    <style name="Theme4" parent="AppTheme">
+    <style name="App.DayNight.Teal" parent="Base.App.DayNight">
         <item name="colorPrimary">#FF009688</item>
         <item name="colorPrimaryDark">#00796B</item>
         <item name="colorAccent">#C65954</item>
@@ -37,7 +37,7 @@
     </style>
 
     <!-- Red -->
-    <style name="Theme5" parent="AppTheme">
+    <style name="App.DayNight.Red" parent="Base.App.DayNight">
         <item name="colorPrimary">#d50000</item>
         <item name="colorPrimaryDark">#FFB71C1C</item>
         <item name="colorAccent">#ff00877a</item>
@@ -46,7 +46,7 @@
     </style>
 
     <!-- Indigo -->
-    <style name="Theme6" parent="AppTheme">
+    <style name="App.DayNight.Indigo" parent="Base.App.DayNight">
         <item name="colorPrimary">#3F51B5</item>
         <item name="colorPrimaryDark">#303F9F</item>
         <item name="colorAccent">#E91E63</item>
@@ -55,7 +55,7 @@
     </style>
 
     <!-- Pink -->
-    <style name="Theme7" parent="AppTheme">
+    <style name="App.DayNight.Pink" parent="Base.App.DayNight">
         <item name="colorPrimary">#E91E63</item>
         <item name="colorPrimaryDark">#C2185B</item>
         <item name="colorAccent">#3F51B5</item>
@@ -64,7 +64,7 @@
     </style>
 
     <!-- Orange -->
-    <style name="Theme8" parent="AppTheme">
+    <style name="App.DayNight.Orange" parent="Base.App.DayNight">
         <item name="colorPrimary">#FF5722</item>
         <item name="colorPrimaryDark">#E64A19</item>
         <item name="colorAccent">#00BCD4</item>
@@ -73,7 +73,7 @@
     </style>
 
     <!-- Purple -->
-    <style name="Theme9" parent="AppTheme">
+    <style name="App.DayNight.Purple" parent="Base.App.DayNight">
         <item name="colorPrimary">#674391</item>
         <item name="colorPrimaryDark">#57397b</item>
         <item name="colorAccent">#E91E63</item>
@@ -82,7 +82,7 @@
     </style>
 
     <!-- Monochrome -->
-    <style name="Theme10" parent="AppTheme">
+    <style name="App.DayNight.Monochrome" parent="Base.App.DayNight">
         <item name="colorPrimary">?android:colorBackground</item>
         <item name="colorPrimaryDark">?android:colorBackground</item>
         <item name="colorAccent">#78909c</item>
@@ -92,7 +92,7 @@
     </style>
 
     <!-- Green -->
-    <style name="Theme11" parent="AppTheme">
+    <style name="App.DayNight.Green" parent="Base.App.DayNight">
         <item name="colorPrimary">#0F9D58</item>
         <item name="colorPrimaryDark">#0C7E46</item>
         <item name="colorAccent">#26be74</item>
@@ -101,7 +101,7 @@
     </style>
 
     <!-- Pixel -->
-    <style name="Theme12" parent="AppTheme">
+    <style name="App.DayNight.Pixel" parent="Base.App.DayNight">
         <item name="colorPrimary">#4285F4</item>
         <item name="colorPrimaryDark">#2962FF</item>
         <item name="colorAccent">#1E88E5</item>
@@ -110,55 +110,100 @@
     </style>
 
 
-    <style name="DayNightBlack1" parent="Theme1">
-        <item name="android:colorBackground">@android:color/black</item>
+    <style name="App.DayNight.Amoled.Blue" parent="Base.App.DayNight.Amoled">
+        <item name="colorPrimary">#487197</item>
+        <item name="colorPrimaryDark">#3B5973</item>
+        <item name="colorAccent">#487197</item>
+
+        <item name="icon_color_active">#ff6196cd</item>
     </style>
 
-    <style name="DayNightBlack2" parent="Theme2">
-        <item name="android:colorBackground">@android:color/black</item>
+    <style name="App.DayNight.Amoled.LightBlue" parent="Base.App.DayNight.Amoled">
+        <item name="colorPrimary">#1976D2</item>
+        <item name="colorPrimaryDark">#1565C0</item>
+        <item name="colorAccent">#c2185b</item>
+
+        <item name="icon_color_active">#1976D2</item>
     </style>
 
-    <style name="DayNightBlack3" parent="Theme3">
-        <item name="android:colorBackground">@android:color/black</item>
+    <style name="App.DayNight.Amoled.Grey" parent="Base.App.DayNight.Amoled">
+        <item name="colorPrimary">#2B5266</item>
+        <item name="colorPrimaryDark">#254659</item>
+        <item name="colorAccent">#387C9C</item>
+
+        <item name="icon_color_active">#387C9C</item>
     </style>
 
-    <style name="DayNightBlack4" parent="Theme4">
-        <item name="android:colorBackground">@android:color/black</item>
+    <style name="App.DayNight.Amoled.Teal" parent="Base.App.DayNight.Amoled">
+        <item name="colorPrimary">#FF009688</item>
+        <item name="colorPrimaryDark">#00796B</item>
+        <item name="colorAccent">#C65954</item>
+
+        <item name="icon_color_active">#00897B</item>
     </style>
 
-    <style name="DayNightBlack5" parent="Theme5">
-        <item name="android:colorBackground">@android:color/black</item>
+    <style name="App.DayNight.Amoled.Red" parent="Base.App.DayNight.Amoled">
+        <item name="colorPrimary">#d50000</item>
+        <item name="colorPrimaryDark">#FFB71C1C</item>
+        <item name="colorAccent">#ff00877a</item>
+
+        <item name="icon_color_active">#d50000</item>
     </style>
 
-    <style name="DayNightBlack6" parent="Theme6">
-        <item name="android:colorBackground">@android:color/black</item>
+    <style name="App.DayNight.Amoled.Indigo" parent="Base.App.DayNight.Amoled">
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="colorPrimaryDark">#303F9F</item>
+        <item name="colorAccent">#E91E63</item>
+
+        <item name="icon_color_active">#ff6773ff</item>
     </style>
 
-    <style name="DayNightBlack7" parent="Theme7">
-        <item name="android:colorBackground">@android:color/black</item>
+    <style name="App.DayNight.Amoled.Pink" parent="Base.App.DayNight.Amoled">
+        <item name="colorPrimary">#E91E63</item>
+        <item name="colorPrimaryDark">#C2185B</item>
+        <item name="colorAccent">#3F51B5</item>
+
+        <item name="icon_color_active">#E91E63</item>
     </style>
 
-    <style name="DayNightBlack8" parent="Theme8">
-        <item name="android:colorBackground">@android:color/black</item>
+    <style name="App.DayNight.Amoled.Orange" parent="Base.App.DayNight.Amoled">
+        <item name="colorPrimary">#FF5722</item>
+        <item name="colorPrimaryDark">#E64A19</item>
+        <item name="colorAccent">#00BCD4</item>
+
+        <item name="icon_color_active">#FF5722</item>
     </style>
 
-    <style name="DayNightBlack9" parent="Theme9">
-        <item name="android:colorBackground">@android:color/black</item>
+    <style name="App.DayNight.Amoled.Purple" parent="Base.App.DayNight.Amoled">
+        <item name="colorPrimary">#674391</item>
+        <item name="colorPrimaryDark">#57397b</item>
+        <item name="colorAccent">#E91E63</item>
+
+        <item name="icon_color_active">#9160ca</item>
     </style>
 
-    <style name="DayNightBlack10" parent="Theme10">
+    <style name="App.DayNight.Amoled.Monochrome" parent="Base.App.DayNight.Amoled">
         <item name="colorPrimary">@android:color/black</item>
         <item name="colorPrimaryDark">@android:color/black</item>
         <item name="colorAccent">#78909c</item>
 
         <item name="icon_color_active">#78909c</item>
         <item name="toolbarElevation">@dimen/toolbar_no_elevation</item>
-        <item name="android:colorBackground">@android:color/black</item>
     </style>
-    <style name="DayNightBlack11" parent="Theme11">
-        <item name="android:colorBackground">@android:color/black</item>
+
+    <style name="App.DayNight.Amoled.Green" parent="Base.App.DayNight.Amoled">
+        <item name="colorPrimary">#0F9D58</item>
+        <item name="colorPrimaryDark">#0C7E46</item>
+        <item name="colorAccent">#26be74</item>
+
+        <item name="icon_color_active">#0F9D58</item>
     </style>
-    <style name="DayNightBlack12" parent="Theme12">
-        <item name="android:colorBackground">@android:color/black</item>
+
+    <style name="App.DayNight.Amoled.Pixel" parent="Base.App.DayNight.Amoled">
+        <item name="colorPrimary">#4285F4</item>
+        <item name="colorPrimaryDark">#2962FF</item>
+        <item name="colorAccent">#1E88E5</item>
+
+        <item name="icon_color_active">#1E88E5</item>
     </style>
 </resources>

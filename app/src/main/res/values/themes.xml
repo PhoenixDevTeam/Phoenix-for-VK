@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Light themes here-->
 
     <!-- Blue -->
-    <style name="Theme1" parent="AppTheme">
+    <style name="App.DayNight.Blue" parent="Base.App.DayNight">
         <item name="colorPrimary">#527DAD</item>
         <item name="colorPrimaryDark">#3B5973</item>
         <item name="colorAccent">#487197</item>
@@ -13,7 +13,7 @@
     </style>
 
     <!-- Light Blue -->
-    <style name="Theme2" parent="AppTheme">
+    <style name="App.DayNight.LightBlue" parent="Base.App.DayNight">
         <item name="colorPrimary">#1976D2</item>
         <item name="colorPrimaryDark">#1565C0</item>
         <item name="colorAccent">#c2185b</item>
@@ -22,7 +22,7 @@
     </style>
 
     <!-- Grey -->
-    <style name="Theme3" parent="AppTheme">
+    <style name="App.DayNight.Grey" parent="Base.App.DayNight">
         <item name="colorPrimary">#2B5266</item>
         <item name="colorPrimaryDark">#254659</item>
         <item name="colorAccent">#387C9C</item>
@@ -31,7 +31,7 @@
     </style>
 
     <!-- Teal -->
-    <style name="Theme4" parent="AppTheme">
+    <style name="App.DayNight.Teal" parent="Base.App.DayNight">
         <item name="colorPrimary">#FF009688</item>
         <item name="colorPrimaryDark">#00796B</item>
         <item name="colorAccent">#C65954</item>
@@ -40,7 +40,7 @@
     </style>
 
     <!-- Red -->
-    <style name="Theme5" parent="AppTheme">
+    <style name="App.DayNight.Red" parent="Base.App.DayNight">
         <item name="colorPrimary">#d50000</item>
         <item name="colorPrimaryDark">#FFB71C1C</item>
         <item name="colorAccent">#00695c</item>
@@ -49,7 +49,7 @@
     </style>
 
     <!-- Indigo -->
-    <style name="Theme6" parent="AppTheme">
+    <style name="App.DayNight.Indigo" parent="Base.App.DayNight">
         <item name="colorPrimary">#3F51B5</item>
         <item name="colorPrimaryDark">#303F9F</item>
         <item name="colorAccent">#E91E63</item>
@@ -58,7 +58,7 @@
     </style>
 
     <!-- Pink -->
-    <style name="Theme7" parent="AppTheme">
+    <style name="App.DayNight.Pink" parent="Base.App.DayNight">
         <item name="colorPrimary">#E91E63</item>
         <item name="colorPrimaryDark">#C2185B</item>
         <item name="colorAccent">#3F51B5</item>
@@ -67,7 +67,7 @@
     </style>
 
     <!-- Orange -->
-    <style name="Theme8" parent="AppTheme">
+    <style name="App.DayNight.Orange" parent="Base.App.DayNight">
         <item name="colorPrimary">#FF5722</item>
         <item name="colorPrimaryDark">#E64A19</item>
         <item name="colorAccent">#00BCD4</item>
@@ -75,7 +75,7 @@
         <item name="icon_color_active">#FF5722</item>
     </style>
 
-    <style name="Theme9" parent="AppTheme">
+    <style name="App.DayNight.Purple" parent="Base.App.DayNight">
         <item name="colorPrimary">#674391</item>
         <item name="colorPrimaryDark">#57397b</item>
         <item name="colorAccent">#E91E63</item>
@@ -84,7 +84,7 @@
     </style>
 
     <!-- Monochrome-->
-    <style name="Theme10" parent="AppTheme">
+    <style name="App.DayNight.Monochrome" parent="Base.App.DayNight">
         <item name="colorPrimary">#FFF</item>
         <item name="colorPrimaryDark">#aaaaaa</item>
         <item name="colorAccent">#78909c</item>
@@ -121,7 +121,7 @@
     </style>
 
     <!-- Green -->
-    <style name="Theme11" parent="AppTheme">
+    <style name="App.DayNight.Green" parent="Base.App.DayNight">
         <item name="colorPrimary">#0F9D58</item>
         <item name="colorPrimaryDark">#0C7E46</item>
         <item name="colorAccent">#26be74</item>
@@ -130,7 +130,7 @@
     </style>
 
     <!-- Pixel -->
-    <style name="Theme12" parent="AppTheme">
+    <style name="App.DayNight.Pixel" parent="Base.App.DayNight">
         <item name="colorPrimary">#4285F4</item>
         <item name="colorPrimaryDark">#2962FF</item>
         <item name="colorAccent">#1E88E5</item>
@@ -138,17 +138,17 @@
         <item name="icon_color_active">#1E88E5</item>
     </style>
 
-    <style name="DayNightBlack1" parent="Theme1"/>
-    <style name="DayNightBlack2" parent="Theme2"/>
-    <style name="DayNightBlack3" parent="Theme3"/>
-    <style name="DayNightBlack4" parent="Theme4"/>
-    <style name="DayNightBlack5" parent="Theme5"/>
-    <style name="DayNightBlack6" parent="Theme6"/>
-    <style name="DayNightBlack7" parent="Theme7"/>
-    <style name="DayNightBlack8" parent="Theme8"/>
-    <style name="DayNightBlack9" parent="Theme9"/>
-    <style name="DayNightBlack10" parent="Theme10"/>
-    <style name="DayNightBlack11" parent="Theme11"/>
-    <style name="DayNightBlack12" parent="Theme12"/>
+    <style name="App.DayNight.Amoled.Blue" parent="App.DayNight.Blue"/>
+    <style name="App.DayNight.Amoled.LightBlue" parent="App.DayNight.LightBlue"/>
+    <style name="App.DayNight.Amoled.Grey" parent="App.DayNight.Grey"/>
+    <style name="App.DayNight.Amoled.Teal" parent="App.DayNight.Teal"/>
+    <style name="App.DayNight.Amoled.Red" parent="App.DayNight.Red"/>
+    <style name="App.DayNight.Amoled.Indigo" parent="App.DayNight.Indigo"/>
+    <style name="App.DayNight.Amoled.Pink" parent="App.DayNight.Pink"/>
+    <style name="App.DayNight.Amoled.Orange" parent="App.DayNight.Orange"/>
+    <style name="App.DayNight.Amoled.Purple" parent="App.DayNight.Purple"/>
+    <style name="App.DayNight.Amoled.Monochrome" parent="App.DayNight.Monochrome"/>
+    <style name="App.DayNight.Amoled.Green" parent="App.DayNight.Green"/>
+    <style name="App.DayNight.Amoled.Pixel" parent="App.DayNight.Pixel"/>
 
 </resources>
