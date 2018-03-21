@@ -30,8 +30,10 @@ import static biz.dealnote.messenger.db.column.VideoColumns.DATE;
 import static biz.dealnote.messenger.db.column.VideoColumns.DESCRIPTION;
 import static biz.dealnote.messenger.db.column.VideoColumns.DURATION;
 import static biz.dealnote.messenger.db.column.VideoColumns.EXTERNAL;
+import static biz.dealnote.messenger.db.column.VideoColumns.HLS;
 import static biz.dealnote.messenger.db.column.VideoColumns.LIKES;
 import static biz.dealnote.messenger.db.column.VideoColumns.LINK;
+import static biz.dealnote.messenger.db.column.VideoColumns.LIVE;
 import static biz.dealnote.messenger.db.column.VideoColumns.MP4_1080;
 import static biz.dealnote.messenger.db.column.VideoColumns.MP4_240;
 import static biz.dealnote.messenger.db.column.VideoColumns.MP4_360;
@@ -133,6 +135,8 @@ class VideoStore extends AbsStore implements IVideoStore {
                 .setMp4link720(cursor.getString(cursor.getColumnIndex(MP4_720)))
                 .setMp4link1080(cursor.getString(cursor.getColumnIndex(MP4_1080)))
                 .setExternalLink(cursor.getString(cursor.getColumnIndex(EXTERNAL)))
+                .setHls(cursor.getString(cursor.getColumnIndex(HLS)))
+                .setLive(cursor.getString(cursor.getColumnIndex(LIVE)))
                 .setPlatform(cursor.getString(cursor.getColumnIndex(VideoColumns.PLATFORM)))
                 .setCanEdit(cursor.getInt(cursor.getColumnIndex(VideoColumns.CAN_EDIT)) == 1)
                 .setCanAdd(cursor.getInt(cursor.getColumnIndex(VideoColumns.CAN_ADD)) == 1);
@@ -184,6 +188,8 @@ class VideoStore extends AbsStore implements IVideoStore {
         cv.put(VideoColumns.MP4_720, dbo.getMp4link720());
         cv.put(VideoColumns.MP4_1080, dbo.getMp4link1080());
         cv.put(VideoColumns.EXTERNAL, dbo.getExternalLink());
+        cv.put(VideoColumns.HLS, dbo.getHls());
+        cv.put(VideoColumns.LIVE, dbo.getLive());
         cv.put(VideoColumns.PLATFORM, dbo.getPlatform());
         cv.put(VideoColumns.CAN_EDIT, dbo.isCanEdit());
         cv.put(VideoColumns.CAN_ADD, dbo.isCanAdd());

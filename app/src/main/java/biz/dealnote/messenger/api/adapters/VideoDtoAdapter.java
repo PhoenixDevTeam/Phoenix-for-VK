@@ -77,6 +77,8 @@ public class VideoDtoAdapter extends AbsAdapter implements JsonDeserializer<VKAp
             dto.mp4_720 = optString(filesRoot, "mp4_720");
             dto.mp4_1080 = optString(filesRoot, "mp4_1080");
             dto.external = optString(filesRoot, "external");
+            dto.hls = optString(filesRoot, "hls");
+            dto.live = optString(filesRoot, "live");
         }
 
         dto.photo_130 = optString(root, "photo_130");

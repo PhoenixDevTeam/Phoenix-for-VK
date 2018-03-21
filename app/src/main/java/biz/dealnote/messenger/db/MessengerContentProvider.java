@@ -532,6 +532,8 @@ public class MessengerContentProvider extends ContentProvider {
         sVideosProjectionMap.put(VideoColumns.MP4_720, VideoColumns.FULL_MP4_720);
         sVideosProjectionMap.put(VideoColumns.MP4_1080, VideoColumns.FULL_MP4_1080);
         sVideosProjectionMap.put(VideoColumns.EXTERNAL, VideoColumns.FULL_EXTERNAL);
+        sVideosProjectionMap.put(VideoColumns.HLS, VideoColumns.FULL_HLS);
+        sVideosProjectionMap.put(VideoColumns.LIVE, VideoColumns.FULL_LIVE);
         sVideosProjectionMap.put(VideoColumns.PLATFORM, VideoColumns.FULL_PLATFORM);
         sVideosProjectionMap.put(VideoColumns.CAN_EDIT, VideoColumns.FULL_CAN_EDIT);
         sVideosProjectionMap.put(VideoColumns.CAN_ADD, VideoColumns.FULL_CAN_ADD);

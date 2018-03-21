@@ -181,6 +181,10 @@ public class VKApiVideo implements VKApiAttachment, Commentable, Likeable, Copya
      */
     public String external;
 
+    public String hls;
+
+    public String live;
+
     public String platform;
 
     public boolean can_edit;

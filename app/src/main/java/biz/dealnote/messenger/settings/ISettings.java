@@ -56,6 +56,8 @@ public interface ISettings {
         boolean isAudioBroadcastActive();
 
         void setAudioBroadcastActive(boolean active);
+
+        boolean isForceExoplayer();
     }
 
     interface IAccountsSettings {

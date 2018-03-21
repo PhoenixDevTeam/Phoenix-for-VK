@@ -30,7 +30,8 @@ import biz.dealnote.messenger.media.exo.CustomHttpDataSourceFactory;
 import biz.dealnote.messenger.media.exo.ExoUtil;
 import biz.dealnote.messenger.model.ProxyConfig;
 import biz.dealnote.messenger.model.VideoSize;
-import biz.dealnote.messenger.util.Objects;
+
+import static biz.dealnote.messenger.util.Objects.nonNull;
 
 /**
  * Created by Ruslan Kolbasa on 14.08.2017.
@@ -52,7 +53,7 @@ public class ExoVideoPlayer implements IVideoPlayer {
 
     private static MediaSource createMediaSource(Context context, String url, ProxyConfig proxyConfig) {
         Proxy proxy = null;
-        if (Objects.nonNull(proxyConfig)) {
+        if (nonNull(proxyConfig)) {
             proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyConfig.getAddress(), proxyConfig.getPort()));
 
             if (proxyConfig.isAuthEnabled()) {

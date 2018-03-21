@@ -1,6 +1,5 @@
 package biz.dealnote.messenger.fragment;
 
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -9,8 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -143,20 +142,20 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_video, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) mRootView.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(mRootView.findViewById(R.id.toolbar));
 
-        mPreviewImage = (ImageView) mRootView.findViewById(R.id.fragment_video_preview_image);
+        mPreviewImage = mRootView.findViewById(R.id.fragment_video_preview_image);
 
-        likeButton = (CircleCounterButton) mRootView.findViewById(R.id.like_button);
-        CircleCounterButton shareButton = (CircleCounterButton) mRootView.findViewById(R.id.share_button);
-        commentsButton = (CircleCounterButton) mRootView.findViewById(R.id.comments_button);
+        likeButton = mRootView.findViewById(R.id.like_button);
+        CircleCounterButton shareButton = mRootView.findViewById(R.id.share_button);
+        commentsButton = mRootView.findViewById(R.id.comments_button);
 
         commentsButton.setOnClickListener(this);
         shareButton.setOnClickListener(this);
         likeButton.setOnClickListener(this);
 
-        mTitleText = (TextView) mRootView.findViewById(R.id.fragment_video_title);
-        mSubtitleText = (TextView) mRootView.findViewById(R.id.fragment_video_subtitle);
+        mTitleText = mRootView.findViewById(R.id.fragment_video_title);
+        mSubtitleText = mRootView.findViewById(R.id.fragment_video_subtitle);
 
         mRootView.findViewById(R.id.button_play).setOnClickListener(v -> getPresenter().firePlayClick());
         mRootView.findViewById(R.id.try_again_button).setOnClickListener(v -> getPresenter().fireTryAgainClick());
@@ -179,7 +178,7 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 
-        if (nonNull(getActivity().getPackageManager().resolveActivity(intent, 0))) {
+        if (nonNull(requireActivity().getPackageManager().resolveActivity(intent, 0))) {
             startActivity(intent);
         } else {
             Toast.makeText(getActivity(), R.string.no_compatible_software_installed, Toast.LENGTH_SHORT).show();
@@ -202,7 +201,7 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
 
     @Override
     public void displayLoading() {
-        if(nonNull(mRootView)){
+        if (nonNull(mRootView)) {
             mRootView.findViewById(R.id.content).setVisibility(View.GONE);
             mRootView.findViewById(R.id.loading_root).setVisibility(View.VISIBLE);
 
@@ -214,7 +213,7 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
 
     @Override
     public void displayLoadingError() {
-        if(nonNull(mRootView)){
+        if (nonNull(mRootView)) {
             mRootView.findViewById(R.id.content).setVisibility(View.GONE);
             mRootView.findViewById(R.id.loading_root).setVisibility(View.VISIBLE);
 
@@ -226,14 +225,14 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
 
     @Override
     public void displayVideoInfo(Video video) {
-        if(nonNull(mRootView)){
+        if (nonNull(mRootView)) {
             mRootView.findViewById(R.id.content).setVisibility(View.VISIBLE);
             mRootView.findViewById(R.id.loading_root).setVisibility(View.GONE);
         }
 
         safelySetText(mTitleText, video.getTitle());
 
-        if(nonNull(mSubtitleText)){
+        if (nonNull(mSubtitleText)) {
             Spannable subtitle = OwnerLinkSpanFactory.withSpans(video.getDescription(), true, false, ownerLinkAdapter);
 
             mSubtitleText.setText(subtitle, TextView.BufferType.SPANNABLE);
@@ -251,7 +250,7 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
 
     @Override
     public void displayLikes(int count, boolean userLikes) {
-        if(nonNull(likeButton)){
+        if (nonNull(likeButton)) {
             likeButton.setIcon(userLikes ? R.drawable.heart : R.drawable.heart_outline);
             likeButton.setCount(count);
             likeButton.setActive(userLikes);
@@ -260,14 +259,14 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
 
     @Override
     public void setCommentButtonVisible(boolean visible) {
-        if(nonNull(commentsButton)){
+        if (nonNull(commentsButton)) {
             commentsButton.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
         }
     }
 
     @Override
     public void displayCommentCount(int count) {
-        if(nonNull(commentsButton)){
+        if (nonNull(commentsButton)) {
             commentsButton.setCount(count);
         }
     }
@@ -279,20 +278,20 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
 
     @Override
     public void showOwnerWall(int accountId, int ownerId) {
-        PlaceFactory.getOwnerWallPlace(accountId, ownerId, null).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, ownerId, null).tryOpenWith(requireActivity());
     }
 
     @Override
     public void showSubtitle(String subtitle) {
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
-        if(nonNull(actionBar)){
+        if (nonNull(actionBar)) {
             actionBar.setSubtitle(subtitle);
         }
     }
 
     @Override
     public void showComments(int accountId, Commented commented) {
-        PlaceFactory.getCommentsPlace(accountId, commented, null).tryOpenWith(getActivity());
+        PlaceFactory.getCommentsPlace(accountId, commented, null).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -304,14 +303,14 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
             items = new String[]{getString(R.string.repost_send_message)};
         }
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setItems(items, (dialogInterface, i) -> {
                     switch (i) {
                         case 0:
                             SendAttachmentsActivity.startForSendAttachments(getActivity(), accountId, video);
                             break;
                         case 1:
-                            PlaceUtil.goToPostCreation(getActivity(), accountId, accountId, EditingPostType.TEMP, Collections.singletonList(video));
+                            PlaceUtil.goToPostCreation(requireActivity(), accountId, accountId, EditingPostType.TEMP, Collections.singletonList(video));
                             break;
                     }
                 })
@@ -326,6 +325,8 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
         static final int P_480 = 480;
         static final int P_720 = 720;
         static final int P_1080 = 1080;
+        //static final int HLS = -7;
+        static final int LIVE = -8;
         static final int P_EXTERNAL_PLAYER = -1;
 
         static final int YOUTUBE_FULL = -2;
@@ -367,6 +368,12 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
                     .setIcon(R.drawable.video)
                     .setSection(section));
         }
+
+        if (nonEmpty(video.getLive())) {
+            items.add(new Item(Menu.LIVE, new Text(R.string.player_live))
+                    .setSection(section)
+                    .setIcon(R.drawable.video));
+        }
         return items;
     }
 
@@ -376,8 +383,7 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
             return;
         }
 
-        List<Item> items = new ArrayList<>();
-        items.addAll(createDirectVkPlayItems(video, SECTION_PLAY));
+        List<Item> items = new ArrayList<>(createDirectVkPlayItems(video, SECTION_PLAY));
 
         String external = video.getExternalLink();
 
@@ -408,7 +414,8 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
                 video.getMp4link360(),
                 video.getMp4link480(),
                 video.getMp4link720(),
-                video.getMp4link1080()))) {
+                video.getMp4link1080(),
+                video.getLive()))) {
 
             // потом выбираем качество
             items.add(new Item(Menu.P_EXTERNAL_PLAYER, new Text(R.string.play_in_external_player))
@@ -420,9 +427,9 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
                 .setIcon(R.drawable.ic_external)
                 .setSection(SECTION_OTHER));
 
-        MenuAdapter adapter = new MenuAdapter(getActivity(), items);
+        MenuAdapter adapter = new MenuAdapter(requireActivity(), items);
 
-        new android.support.v7.app.AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setAdapter(adapter, (dialog, which) -> onPlayMenuItemClick(video, items.get(which)))
                 .setNegativeButton(R.string.button_cancel, null)
                 .show();
@@ -448,6 +455,10 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
 
             case Menu.P_1080:
                 openInternal(video, InternalVideoSize.SIZE_1080);
+                break;
+
+            case Menu.LIVE:
+                openInternal(video, InternalVideoSize.SIZE_LIVE);
                 break;
 
             case Menu.P_EXTERNAL_PLAYER:
@@ -479,30 +490,29 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
     private void showPlayExternalPlayerMenu(Video video) {
         Section section = new Section(new Text(R.string.title_select_resolution));
         List<Item> items = createDirectVkPlayItems(video, section);
-        MenuAdapter adapter = new MenuAdapter(getActivity(), items);
+        MenuAdapter adapter = new MenuAdapter(requireActivity(), items);
 
-        new android.support.v7.app.AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setAdapter(adapter, (dialog, which) -> {
                     Item item = items.get(which);
                     switch (item.getKey()) {
                         case Menu.P_240:
                             playDirectVkLinkInExternalPlayer(video.getMp4link240());
                             break;
-
                         case Menu.P_360:
                             playDirectVkLinkInExternalPlayer(video.getMp4link360());
                             break;
-
                         case Menu.P_480:
                             playDirectVkLinkInExternalPlayer(video.getMp4link480());
                             break;
-
                         case Menu.P_720:
                             playDirectVkLinkInExternalPlayer(video.getMp4link720());
                             break;
-
                         case Menu.P_1080:
                             playDirectVkLinkInExternalPlayer(video.getMp4link1080());
+                            break;
+                        case Menu.LIVE:
+                            playDirectVkLinkInExternalPlayer(video.getLive());
                             break;
                     }
                 })
@@ -514,15 +524,15 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(url), "video/mp4");
 
-        if (nonNull(getActivity().getPackageManager().resolveActivity(intent, 0))) {
+        if (nonNull(requireActivity().getPackageManager().resolveActivity(intent, 0))) {
             startActivity(intent);
         } else {
-            Utils.showRedTopToast(getActivity(), R.string.no_compatible_software_installed);
+            Utils.showRedTopToast(requireActivity(), R.string.no_compatible_software_installed);
         }
     }
 
     private void openInternal(Video video, int size) {
-        PlaceFactory.getVkInternalPlayerPlace(video, size).tryOpenWith(getActivity());
+        PlaceFactory.getVkInternalPlayerPlace(video, size).tryOpenWith(requireActivity());
     }
 
     private void playWithCoub(Video video) {
@@ -563,7 +573,7 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(getActivity(),true)
+                .setStatusBarColored(getActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

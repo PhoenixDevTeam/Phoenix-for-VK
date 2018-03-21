@@ -79,8 +79,8 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="amoled_night_mode"
-            android:title="@string/night_mode_black_pref_title"
-            android:summary="@string/night_mode_black_pref_summary" />
+            android:summary="@string/night_mode_black_pref_summary"
+            android:title="@string/night_mode_black_pref_title" />
 
         <CheckBoxPreference
             android:defaultValue="false"
@@ -100,11 +100,11 @@
             android:title="@string/avatar_style_title" />
 
         <CheckBoxPreference
-            android:key="lockscreen_art"
-            android:title="Show audio art on lockscreen"
             android:defaultValue="false"
             android:enabled="false"
-            android:visibility="gone"/>
+            android:key="lockscreen_art"
+            android:title="Show audio art on lockscreen"
+            android:visibility="gone" />
 
 
         <CheckBoxPreference
@@ -136,7 +136,9 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:key="other" android:title="@string/other_settings">
+    <PreferenceCategory
+        android:key="other"
+        android:title="@string/other_settings">
         <Preference
             android:key="talk_about"
             android:title="@string/share_text" />
@@ -147,7 +149,12 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:key="dev" android:title="@string/dev_settings">
+    <PreferenceCategory
+        android:key="dev"
+        android:title="@string/dev_settings">
+        <CheckBoxPreference
+            android:key="force_exoplayer"
+            android:title="@string/settings_force_exoplayer_title" />
         <Preference
             android:key="show_logs"
             android:title="@string/settings_show_logs_title" />
@@ -167,8 +174,8 @@
             android:title="@string/pref_join_app_group_title" />
         <Preference
             android:key="source_code"
-            android:title="@string/source_code_title"
-            android:summary="@string/source_code_link"/>
+            android:summary="@string/source_code_link"
+            android:title="@string/source_code_title" />
         <Preference
             android:key="version"
             android:title="@string/app_name" />

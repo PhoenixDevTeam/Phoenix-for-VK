@@ -1266,8 +1266,10 @@
     <string name="skype" translatable="false">Skype</string>
     <string name="activity_until_now">now</string>
     <string name="family">Family</string>
-    <string name="instagram">Instagram</string>
-    <string name="twitter">Twitter</string>
-    <string name="facebook">Facebook</string>
+    <string name="instagram" translatable="false">Instagram</string>
+    <string name="twitter" translatable="false">Twitter</string>
+    <string name="facebook" translatable="false">Facebook</string>
+    <string name="settings_force_exoplayer_title" translatable="false">Force ExoPlayer</string>
+    <string name="player_live" translatable="false">Live</string>
 
 </resources>

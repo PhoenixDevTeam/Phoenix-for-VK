@@ -51,7 +51,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 155;
+    private static final int DATABASE_VERSION = 156;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -578,6 +578,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "  [" + VideoColumns.MP4_720 + "] TEXT, " +
                 "  [" + VideoColumns.MP4_1080 + "] TEXT, " +
                 "  [" + VideoColumns.EXTERNAL + "] TEXT, " +
+                "  [" + VideoColumns.HLS + "] TEXT, " +
+                "  [" + VideoColumns.LIVE + "] TEXT, " +
                 "  [" + VideoColumns.PLATFORM + "] TEXT, " +
                 "  [" + VideoColumns.CAN_EDIT + "] BOOLEAN, " +
                 "  [" + VideoColumns.CAN_ADD + "] BOOLEAN, " +

@@ -75,12 +75,6 @@ public class Video extends AbsModel implements Parcelable {
 
     private boolean canRepost;
 
-    public static final int SIZE_240 = 240;
-    public static final int SIZE_360 = 360;
-    public static final int SIZE_480 = 480;
-    public static final int SIZE_720 = 720;
-    public static final int SIZE_1080 = 1080;
-
     public Video(){
 
     }
@@ -112,6 +106,8 @@ public class Video extends AbsModel implements Parcelable {
         mp4link720 = in.readString();
         mp4link1080 = in.readString();
         externalLink = in.readString();
+        hls = in.readString();
+        live = in.readString();
         platform = in.readString();
         repeat = in.readByte() != 0;
         duration = in.readInt();
@@ -167,6 +163,8 @@ public class Video extends AbsModel implements Parcelable {
         dest.writeString(mp4link720);
         dest.writeString(mp4link1080);
         dest.writeString(externalLink);
+        dest.writeString(hls);
+        dest.writeString(live);
         dest.writeString(platform);
         dest.writeByte((byte) (repeat ? 1 : 0));
         dest.writeInt(duration);
@@ -434,6 +432,28 @@ public class Video extends AbsModel implements Parcelable {
     public Video setExternalLink(String externalLink) {
         this.externalLink = externalLink;
         return this;
+    }
+
+    private String hls;
+
+    private String live;
+
+    public Video setHls(String hls) {
+        this.hls = hls;
+        return this;
+    }
+
+    public Video setLive(String live) {
+        this.live = live;
+        return this;
+    }
+
+    public String getLive() {
+        return live;
+    }
+
+    public String getHls() {
+        return hls;
     }
 
     public String getPlatform() {

@@ -940,6 +940,8 @@ public class Dto2Entity {
                 .setMp4link720(dto.mp4_720)
                 .setMp4link1080(dto.mp4_1080)
                 .setExternalLink(dto.external)
+                .setHls(dto.hls)
+                .setLive(dto.live)
                 .setPlatform(dto.platform)
                 .setCanEdit(dto.can_edit)
                 .setCanAdd(dto.can_add);

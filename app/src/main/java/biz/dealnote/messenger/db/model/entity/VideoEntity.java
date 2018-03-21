@@ -52,6 +52,10 @@ public class VideoEntity extends Entity {
 
     private String externalLink;
 
+    private String hls;
+
+    private String live;
+
     private String platform;
 
     private boolean repeat;
@@ -90,6 +94,24 @@ public class VideoEntity extends Entity {
     public VideoEntity setAlbumId(int albumId) {
         this.albumId = albumId;
         return this;
+    }
+
+    public VideoEntity setHls(String hls) {
+        this.hls = hls;
+        return this;
+    }
+
+    public VideoEntity setLive(String live) {
+        this.live = live;
+        return this;
+    }
+
+    public String getHls() {
+        return hls;
+    }
+
+    public String getLive() {
+        return live;
     }
 
     public String getTitle() {

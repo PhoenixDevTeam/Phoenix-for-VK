@@ -82,4 +82,9 @@ class OtherSettings implements ISettings.IOtherSettings {
                 .putBoolean("broadcast", active)
                 .apply();
     }
+
+    @Override
+    public boolean isForceExoplayer() {
+        return PreferenceManager.getDefaultSharedPreferences(app).getBoolean("force_exoplayer", false);
+    }
 }

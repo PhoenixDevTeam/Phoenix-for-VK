@@ -32,7 +32,8 @@ import biz.dealnote.messenger.model.ProxyConfig;
 import biz.dealnote.messenger.model.VideoSize;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Logger;
-import biz.dealnote.messenger.util.Objects;
+
+import static biz.dealnote.messenger.util.Objects.nonNull;
 
 /**
  * Created by admin on 13.08.2017.
@@ -81,7 +82,7 @@ public class ExoGifPlayer implements IGifPlayer {
         }
     }
 
-    private void preparePlayer() throws PlayerPrepareException {
+    private void preparePlayer() {
         this.setStatus(IStatus.PREPARING);
 
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
@@ -96,7 +97,7 @@ public class ExoGifPlayer implements IGifPlayer {
         // DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(App.getInstance(), Util.getUserAgent(App.getInstance(), "exoplayer2example"), bandwidthMeterA);
 
         Proxy proxy = null;
-        if(Objects.nonNull(proxyConfig)){
+        if (nonNull(proxyConfig)) {
             proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyConfig.getAddress(), proxyConfig.getPort()));
 
             if(proxyConfig.isAuthEnabled()){
@@ -179,7 +180,7 @@ public class ExoGifPlayer implements IGifPlayer {
 
         supposedToBePlaying = false;
 
-        if(Objects.nonNull(internalPlayer)){
+        if (nonNull(internalPlayer)) {
             try {
                 pausePlayer(this.internalPlayer);
             } catch (Exception e){
@@ -190,14 +191,14 @@ public class ExoGifPlayer implements IGifPlayer {
 
     @Override
     public void setDisplay(SurfaceHolder holder) {
-        if(Objects.nonNull(internalPlayer)){
+        if (nonNull(internalPlayer)) {
             internalPlayer.setVideoSurfaceHolder(holder);
         }
     }
 
     @Override
     public void release() {
-        if(Objects.nonNull(internalPlayer)){
+        if (nonNull(internalPlayer)) {
             try {
                 internalPlayer.release();
             } catch (Exception e){

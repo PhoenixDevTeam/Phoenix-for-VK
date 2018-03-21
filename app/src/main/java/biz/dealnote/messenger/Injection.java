@@ -51,13 +51,13 @@ public class Injection {
     }
 
     public static IGifPlayerFactory provideGifPlayerFactory(){
-        return new AppGifPlayerFactory(proxySettings);
+        return new AppGifPlayerFactory(proxySettings, provideSettings().other());
     }
 
     private static volatile IPushRegistrationResolver resolver;
 
     public static IVoicePlayerFactory provideVoicePlayerFactory(){
-        return new VoicePlayerFactory(provideApplicationContext(), provideProxySettings());
+        return new VoicePlayerFactory(provideApplicationContext(), provideProxySettings(), provideSettings().other());
     }
 
     public static IPushRegistrationResolver providePushRegistrationResolver(){

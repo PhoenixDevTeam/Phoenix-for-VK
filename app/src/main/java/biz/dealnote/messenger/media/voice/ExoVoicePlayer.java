@@ -59,7 +59,7 @@ public class ExoVoicePlayer implements IVoicePlayer {
     private AudioEntry playingEntry;
 
     @Override
-    public boolean toggle(int id, VoiceMessage audio) throws PrepareException {
+    public boolean toggle(int id, VoiceMessage audio) {
         if (nonNull(playingEntry) && playingEntry.getId() == id) {
             setSupposedToBePlaying(!isSupposedToPlay());
             return false;
@@ -98,17 +98,20 @@ public class ExoVoicePlayer implements IVoicePlayer {
         // DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "exoplayer2example"), bandwidthMeterA);
         // DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(App.getInstance(), Util.getUserAgent(App.getInstance(), "exoplayer2example"), bandwidthMeterA);
 
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyConfig.getAddress(), proxyConfig.getPort()));
-        if (proxyConfig.isAuthEnabled()) {
-            Authenticator authenticator = new Authenticator() {
-                public PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(proxyConfig.getUser(), proxyConfig.getPass().toCharArray());
-                }
-            };
+        Proxy proxy = null;
+        if (nonNull(proxyConfig)) {
+            proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyConfig.getAddress(), proxyConfig.getPort()));
+            if (proxyConfig.isAuthEnabled()) {
+                Authenticator authenticator = new Authenticator() {
+                    public PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(proxyConfig.getUser(), proxyConfig.getPass().toCharArray());
+                    }
+                };
 
-            Authenticator.setDefault(authenticator);
-        } else {
-            Authenticator.setDefault(null);
+                Authenticator.setDefault(authenticator);
+            } else {
+                Authenticator.setDefault(null);
+            }
         }
 
         String userAgent = Util.getUserAgent(app, "Phoenix-for-VK");

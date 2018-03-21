@@ -23,14 +23,16 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.media.video.DefaultVideoPlayer;
 import biz.dealnote.messenger.media.video.ExoVideoPlayer;
 import biz.dealnote.messenger.media.video.IVideoPlayer;
+import biz.dealnote.messenger.model.InternalVideoSize;
 import biz.dealnote.messenger.model.ProxyConfig;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.model.VideoSize;
 import biz.dealnote.messenger.settings.IProxySettings;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.VideoControllerView;
+
+import static biz.dealnote.messenger.util.Objects.nonNull;
 
 public class VideoPlayerActivity extends AppCompatActivity implements SurfaceHolder.Callback,
         VideoControllerView.MediaPlayerControl, IVideoPlayer.IVideoSizeChangeListener {
@@ -65,7 +67,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements SurfaceHol
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         video = getIntent().getParcelableExtra(EXTRA_VIDEO);
-        size = getIntent().getIntExtra(EXTRA_SIZE, Video.SIZE_240);
+        size = getIntent().getIntExtra(EXTRA_SIZE, InternalVideoSize.SIZE_240);
 
         mDecorView = getWindow().getDecorView();
 
@@ -110,8 +112,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements SurfaceHol
         ProxyConfig config = settings.getActiveProxy();
 
         final String url = getFileUrl();
-
-        return Objects.nonNull(config) ? new ExoVideoPlayer(this, url, config) : new DefaultVideoPlayer(url);
+        return nonNull(config) || Settings.get().other().isForceExoplayer() ? new ExoVideoPlayer(this, url, config) : new DefaultVideoPlayer(url);
     }
 
     private void resolveControlsVisibility() {
@@ -233,30 +234,24 @@ public class VideoPlayerActivity extends AppCompatActivity implements SurfaceHol
     }
 
     private String getFileUrl() {
-        String url;
-
         switch (size) {
-            case Video.SIZE_240:
-                url = video.getMp4link240();
-                break;
-            case Video.SIZE_360:
-                url = video.getMp4link360();
-                break;
-            case Video.SIZE_480:
-                url = video.getMp4link480();
-                break;
-            case Video.SIZE_720:
-                url = video.getMp4link720();
-                break;
-            case Video.SIZE_1080:
-                url = video.getMp4link1080();
-                break;
+            case InternalVideoSize.SIZE_240:
+                return video.getMp4link240();
+            case InternalVideoSize.SIZE_360:
+                return video.getMp4link360();
+            case InternalVideoSize.SIZE_480:
+                return video.getMp4link480();
+            case InternalVideoSize.SIZE_720:
+                return video.getMp4link720();
+            case InternalVideoSize.SIZE_1080:
+                return video.getMp4link1080();
+            case InternalVideoSize.SIZE_HLS:
+                return video.getHls();
+            case InternalVideoSize.SIZE_LIVE:
+                return video.getLive();
             default:
                 throw new IllegalArgumentException("Unknown video size");
         }
-
-        return url;
-
     }
 
     private void setFitToFillAspectRatio(int videoWidth, int videoHeight) {
