@@ -48,7 +48,7 @@ public class DocsInteractor implements IDocsInteractor {
 
                     for(VkApiDoc dto : dtos){
                         documents.add(Dto2Model.transform(dto));
-                        entities.add(Dto2Entity.buildDocumentDbo(dto));
+                        entities.add(Dto2Entity.buildDocumentEntity(dto));
                     }
 
                     return cache.store(accountId, ownerId, entities, true)

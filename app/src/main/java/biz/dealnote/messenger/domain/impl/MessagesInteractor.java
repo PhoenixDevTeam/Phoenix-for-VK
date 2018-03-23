@@ -387,7 +387,7 @@ public class MessagesInteractor implements IMessagesInteractor {
                         List<MessageEntity> fwddbos = new ArrayList<>(fwds.size());
 
                         for (Message message : fwds) {
-                            MessageEntity fwddbo = Model2Entity.buildMessageDbo(message);
+                            MessageEntity fwddbo = Model2Entity.buildMessageEntity(message);
                             fwddbo.setOriginalId(message.getId()); // сохранить original_id необходимо, так как при вставке в таблицу _ID потеряется
 
                             // fixes

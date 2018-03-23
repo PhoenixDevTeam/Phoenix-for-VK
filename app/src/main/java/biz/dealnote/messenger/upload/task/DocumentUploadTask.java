@@ -160,7 +160,7 @@ public class DocumentUploadTask extends AbstractUploadTask<DocumentUploadTask.Re
         }
 
         for (VkApiDoc dto : documents) {
-            DocumentEntity entity = Dto2Entity.buildDocumentDbo(dto);
+            DocumentEntity entity = Dto2Entity.buildDocumentEntity(dto);
 
             Stores.getInstance()
                     .docs()

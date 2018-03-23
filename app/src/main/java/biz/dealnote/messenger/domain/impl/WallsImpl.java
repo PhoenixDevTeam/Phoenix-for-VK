@@ -196,7 +196,7 @@ public class WallsImpl implements IWalls {
 
                                 List<PostEntity> dbos = new ArrayList<>(dtos.size());
                                 for (VKApiPost dto : dtos) {
-                                    dbos.add(Dto2Entity.buildPostDbo(dto));
+                                    dbos.add(Dto2Entity.buildPostEntity(dto));
                                 }
 
                                 return repositories.wall()
@@ -397,7 +397,7 @@ public class WallsImpl implements IWalls {
                         throw new NotFoundException();
                     }
 
-                    PostEntity dbo = Dto2Entity.buildPostDbo(response.posts.get(0));
+                    PostEntity dbo = Dto2Entity.buildPostEntity(response.posts.get(0));
 
                     OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
                     return cache.storeWallDbos(accountId, Collections.singletonList(dbo), ownerEntities, null)

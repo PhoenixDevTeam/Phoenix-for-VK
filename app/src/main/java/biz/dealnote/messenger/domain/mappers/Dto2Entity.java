@@ -126,7 +126,7 @@ public class Dto2Entity {
                 VkApiMentionWallFeedback mentionWallFeedback = (VkApiMentionWallFeedback) feedback;
 
                 final MentionEntity mentionDbo = new MentionEntity(type);
-                PostEntity post = buildPostDbo(mentionWallFeedback.post);
+                PostEntity post = buildPostEntity(mentionWallFeedback.post);
                 mentionDbo.setWhere(post);
 
                 if (nonNull(feedback.reply)) {
@@ -156,7 +156,7 @@ public class Dto2Entity {
             case FeedbackType.WALL:
             case FeedbackType.WALL_PUBLISH:
                 VkApiWallFeedback wallFeedback = (VkApiWallFeedback) feedback;
-                PostEntity postEntity = buildPostDbo(wallFeedback.post);
+                PostEntity postEntity = buildPostEntity(wallFeedback.post);
 
                 final PostFeedbackEntity postFeedbackEntity = new PostFeedbackEntity(type);
                 postFeedbackEntity.setDate(feedback.date);
@@ -241,11 +241,11 @@ public class Dto2Entity {
                 copyEntity.setDate(feedback.date);
 
                 if (type == FeedbackType.COPY_POST) {
-                    copyEntity.setCopied(buildPostDbo((VKApiPost) copyFeedback.what));
+                    copyEntity.setCopied(buildPostEntity((VKApiPost) copyFeedback.what));
                 } else if (type == FeedbackType.COPY_PHOTO) {
-                    copyEntity.setCopied(buildPhotoDbo((VKApiPhoto) copyFeedback.what));
+                    copyEntity.setCopied(buildPhotoEntity((VKApiPhoto) copyFeedback.what));
                 } else {
-                    copyEntity.setCopied(buildVideoDbo((VKApiVideo) copyFeedback.what));
+                    copyEntity.setCopied(buildVideoEntity((VKApiVideo) copyFeedback.what));
                 }
 
                 List<Copies.IdPair> copyPairs = listEmptyIfNull(copyFeedback.copies.pairs);
@@ -283,15 +283,15 @@ public class Dto2Entity {
 
     private static Entity createFromLikeable(Likeable likeable) {
         if (likeable instanceof VKApiPost) {
-            return buildPostDbo((VKApiPost) likeable);
+            return buildPostEntity((VKApiPost) likeable);
         }
 
         if (likeable instanceof VKApiPhoto) {
-            return buildPhotoDbo((VKApiPhoto) likeable);
+            return buildPhotoEntity((VKApiPhoto) likeable);
         }
 
         if (likeable instanceof VKApiVideo) {
-            return buildVideoDbo((VKApiVideo) likeable);
+            return buildVideoEntity((VKApiVideo) likeable);
         }
 
         throw new UnsupportedOperationException("Unsupported commentable type: " + likeable);
@@ -299,17 +299,17 @@ public class Dto2Entity {
 
     private static CEntity createFromCommentable(Commentable commentable) {
         if (commentable instanceof VKApiPost) {
-            PostEntity entity = buildPostDbo((VKApiPost) commentable);
+            PostEntity entity = buildPostEntity((VKApiPost) commentable);
             return new CEntity(entity.getId(), entity.getOwnerId(), CommentedType.POST, null, entity);
         }
 
         if (commentable instanceof VKApiPhoto) {
-            PhotoEntity entity = buildPhotoDbo((VKApiPhoto) commentable);
+            PhotoEntity entity = buildPhotoEntity((VKApiPhoto) commentable);
             return new CEntity(entity.getId(), entity.getOwnerId(), CommentedType.PHOTO, entity.getAccessKey(), entity);
         }
 
         if (commentable instanceof VKApiVideo) {
-            VideoEntity entity = buildVideoDbo((VKApiVideo) commentable);
+            VideoEntity entity = buildVideoEntity((VKApiVideo) commentable);
             return new CEntity(entity.getId(), entity.getOwnerId(), CommentedType.VIDEO, entity.getAccessKey(), entity);
         }
 
@@ -366,23 +366,11 @@ public class Dto2Entity {
     }
 
     public static List<CommunityEntity> buildCommunityDbos(List<VKApiCommunity> communities) {
-        List<CommunityEntity> communityEntities = new ArrayList<>(safeCountOf(communities));
-        if (nonNull(communities)) {
-            for (VKApiCommunity community : communities) {
-                communityEntities.add(buildCommunityDbo(community));
-            }
-        }
-        return communityEntities;
+        return mapAll(communities, Dto2Entity::buildCommunityDbo);
     }
 
     public static List<UserEntity> buildUserDbos(List<VKApiUser> users) {
-        List<UserEntity> userEntities = new ArrayList<>(safeCountOf(users));
-        if (nonNull(users)) {
-            for (VKApiUser user : users) {
-                userEntities.add(buildUserDbo(user));
-            }
-        }
-        return userEntities;
+        return mapAll(users, Dto2Entity::buildUserDbo, true);
     }
 
     public static CommunityEntity buildCommunityDbo(VKApiCommunity community) {
@@ -434,7 +422,7 @@ public class Dto2Entity {
 
         }
 
-        dbo.setStatusAudio(nonNull(user.status_audio) ? buildAudioDbo(user.status_audio) : null);
+        dbo.setStatusAudio(nonNull(user.status_audio) ? buildAudioEntity(user.status_audio) : null);
         dbo.setBdate(user.bdate);
         dbo.setCity(isNull(user.city) ? null : dto2entity(user.city));
         dbo.setCountry(isNull(user.country) ? null : dto2entity(user.country));
@@ -559,8 +547,8 @@ public class Dto2Entity {
                 .setRegion(dto.region);
     }
 
-    public static NewsEntity buildNewsDbo(VKApiNews news) {
-        NewsEntity dbo = new NewsEntity()
+    public static NewsEntity buildNewsEntity(VKApiNews news) {
+        NewsEntity entity = new NewsEntity()
                 .setType(news.type)
                 .setSourceId(news.source_id)
                 .setDate(news.date)
@@ -586,30 +574,20 @@ public class Dto2Entity {
                 .setViews(news.views);
 
         if (news.hasAttachments()) {
-            dbo.setAttachments(buildAttachmentsDbos(news.attachments));
+            entity.setAttachments(buildAttachmentsEntities(news.attachments));
         } else {
-            dbo.setAttachments(Collections.emptyList());
+            entity.setAttachments(Collections.emptyList());
         }
 
-        if (news.hasCopyHistory()) {
-            List<PostEntity> copyDbos = new ArrayList<>(news.copy_history.size());
-            for (VKApiPost copy : news.copy_history) {
-                copyDbos.add(buildPostDbo(copy));
-            }
-
-            dbo.setCopyHistory(copyDbos);
-        } else {
-            dbo.setCopyHistory(Collections.emptyList());
-        }
-
-        return dbo;
+        entity.setCopyHistory(mapAll(news.copy_history, Dto2Entity::buildPostEntity, false));
+        return entity;
     }
 
     public static CommentEntity buildCommentDbo(int sourceId, int sourceOwnerId, int sourceType, String sourceAccessKey, VKApiComment comment) {
         List<Entity> attachmentsEntities;
 
         if(nonNull(comment.attachments)){
-            attachmentsEntities = buildAttachmentsDbos(comment.attachments);
+            attachmentsEntities = buildAttachmentsEntities(comment.attachments);
         } else {
             attachmentsEntities = Collections.emptyList();
         }
@@ -643,7 +621,7 @@ public class Dto2Entity {
                 .setUnreadCount(dto.unread);
     }
 
-    public static List<Entity> buildAttachmentsDbos(VkApiAttachments attachments) {
+    public static List<Entity> buildAttachmentsEntities(VkApiAttachments attachments) {
         List<VkApiAttachments.Entry> entries = attachments.entryList();
 
         if (entries.isEmpty()) {
@@ -651,7 +629,7 @@ public class Dto2Entity {
         }
 
         if (entries.size() == 1) {
-            return Collections.singletonList(buildAttachmentDbo(entries.get(0).attachment));
+            return Collections.singletonList(buildAttachmentEntity(entries.get(0).attachment));
         }
 
         List<Entity> entities = new ArrayList<>(entries.size());
@@ -662,53 +640,53 @@ public class Dto2Entity {
                 continue;
             }
 
-            entities.add(buildAttachmentDbo(entry.attachment));
+            entities.add(buildAttachmentEntity(entry.attachment));
         }
 
         return entities;
     }
 
-    public static Entity buildAttachmentDbo(VKApiAttachment dto) {
+    public static Entity buildAttachmentEntity(VKApiAttachment dto) {
         if (dto instanceof VKApiPhoto) {
-            return buildPhotoDbo((VKApiPhoto) dto);
+            return buildPhotoEntity((VKApiPhoto) dto);
         }
 
         if (dto instanceof VKApiVideo) {
-            return buildVideoDbo((VKApiVideo) dto);
+            return buildVideoEntity((VKApiVideo) dto);
         }
 
         if (dto instanceof VkApiDoc) {
-            return buildDocumentDbo((VkApiDoc) dto);
+            return buildDocumentEntity((VkApiDoc) dto);
         }
 
         if (dto instanceof VKApiLink) {
-            return buildLinkDbo((VKApiLink) dto);
+            return buildLinkEntity((VKApiLink) dto);
         }
 
         if (dto instanceof VKApiWikiPage) {
-            return buildPageDbo((VKApiWikiPage) dto);
+            return buildPageEntity((VKApiWikiPage) dto);
         }
 
         if (dto instanceof VKApiSticker) {
-            return buildStickerDbo((VKApiSticker) dto);
+            return buildStickerEntity((VKApiSticker) dto);
         }
 
         if (dto instanceof VKApiPost) {
-            return buildPostDbo((VKApiPost) dto);
+            return buildPostEntity((VKApiPost) dto);
         }
 
         if (dto instanceof VKApiPoll) {
-            return buildPollDbo((VKApiPoll) dto);
+            return buildPollEntity((VKApiPoll) dto);
         }
 
         if (dto instanceof VKApiAudio) {
-            return buildAudioDbo((VKApiAudio) dto);
+            return buildAudioEntity((VKApiAudio) dto);
         }
 
         throw new UnsupportedOperationException("Unsupported attachment, class: " + dto.getClass());
     }
 
-    public static AudioEntity buildAudioDbo(VKApiAudio dto) {
+    public static AudioEntity buildAudioEntity(VKApiAudio dto) {
         return new AudioEntity(dto.id, dto.owner_id)
                 .setArtist(dto.artist)
                 .setTitle(dto.title)
@@ -720,7 +698,7 @@ public class Dto2Entity {
                 .setAccessKey(dto.access_key);
     }
 
-    public static PollEntity buildPollDbo(VKApiPoll dto) {
+    public static PollEntity buildPollEntity(VKApiPoll dto) {
         List<PollEntity.AnswerDbo> answerDbos = new ArrayList<>(safeCountOf(dto.answers));
 
         if (nonNull(dto.answers)) {
@@ -739,7 +717,7 @@ public class Dto2Entity {
                 .setQuestion(dto.question);
     }
 
-    public static PostEntity buildPostDbo(VKApiPost dto) {
+    public static PostEntity buildPostEntity(VKApiPost dto) {
         PostEntity dbo = new PostEntity(dto.id, dto.owner_id)
                 .setFromId(dto.from_id)
                 .setDate(dto.date)
@@ -771,19 +749,13 @@ public class Dto2Entity {
         }
 
         if (dto.hasAttachments()) {
-            dbo.setAttachments(buildAttachmentsDbos(dto.attachments));
+            dbo.setAttachments(buildAttachmentsEntities(dto.attachments));
         } else {
             dbo.setAttachments(Collections.emptyList());
         }
 
         if (dto.hasCopyHistory()) {
-            List<PostEntity> copyDbos = new ArrayList<>(dto.copy_history.size());
-
-            for (VKApiPost copyDto : dto.copy_history) {
-                copyDbos.add(buildPostDbo(copyDto));
-            }
-
-            dbo.setCopyHierarchy(copyDbos);
+            dbo.setCopyHierarchy(mapAll(dto.copy_history, Dto2Entity::buildPostEntity));
         } else {
             dbo.setCopyHierarchy(Collections.emptyList());
         }
@@ -791,13 +763,13 @@ public class Dto2Entity {
         return dbo;
     }
 
-    public static StickerEntity buildStickerDbo(VKApiSticker sticker) {
+    public static StickerEntity buildStickerEntity(VKApiSticker sticker) {
         return new StickerEntity(sticker.id)
                 .setHeight(sticker.height)
                 .setWidth(sticker.width);
     }
 
-    public static PageEntity buildPageDbo(VKApiWikiPage dto) {
+    public static PageEntity buildPageEntity(VKApiWikiPage dto) {
         return new PageEntity(dto.id, dto.owner_id)
                 .setCreatorId(dto.creator_id)
                 .setTitle(dto.title)
@@ -810,15 +782,15 @@ public class Dto2Entity {
                 .setViewUrl(dto.view_url);
     }
 
-    public static LinkEntity buildLinkDbo(VKApiLink link) {
+    public static LinkEntity buildLinkEntity(VKApiLink link) {
         return new LinkEntity(link.url)
                 .setCaption(link.caption)
                 .setDescription(link.description)
                 .setTitle(link.title)
-                .setPhoto(nonNull(link.photo) ? buildPhotoDbo(link.photo) : null);
+                .setPhoto(nonNull(link.photo) ? buildPhotoEntity(link.photo) : null);
     }
 
-    public static DocumentEntity buildDocumentDbo(VkApiDoc dto) {
+    public static DocumentEntity buildDocumentEntity(VkApiDoc dto) {
         DocumentEntity dbo = new DocumentEntity(dto.id, dto.ownerId)
                 .setTitle(dto.title)
                 .setSize(dto.size)
@@ -861,7 +833,7 @@ public class Dto2Entity {
         } catch (NumberFormatException ignored) {
         }
 
-        MessageEntity dbo = new MessageEntity(dto.id, dto.peer_id, dto.from_id)
+        MessageEntity entity = new MessageEntity(dto.id, dto.peer_id, dto.from_id)
                 .setDate(dto.date)
                 .setRead(dto.read_state)
                 .setOut(dto.out)
@@ -886,15 +858,15 @@ public class Dto2Entity {
                 .setPhoto200(dto.photo_200)
                 .setRandomId(randomId);
 
-        if (dbo.isHasAttachmens()) {
-            dbo.setAttachments(buildAttachmentsDbos(dto.attachments));
+        if (entity.isHasAttachmens()) {
+            entity.setAttachments(buildAttachmentsEntities(dto.attachments));
         } else {
-            dbo.setAttachments(Collections.emptyList());
+            entity.setAttachments(Collections.emptyList());
         }
 
         if (nonEmpty(dto.fwd_messages)) {
             if (dto.fwd_messages.size() == 1) {
-                dbo.setForwardMessages(Collections.singletonList(buildMessageDbo(dto.fwd_messages.get(0))));
+                entity.setForwardMessages(Collections.singletonList(buildMessageDbo(dto.fwd_messages.get(0))));
             } else {
                 List<MessageEntity> fwds = new ArrayList<>(dto.fwd_messages.size());
 
@@ -902,16 +874,16 @@ public class Dto2Entity {
                     fwds.add(buildMessageDbo(f));
                 }
 
-                dbo.setForwardMessages(fwds);
+                entity.setForwardMessages(fwds);
             }
         } else {
-            dbo.setForwardMessages(Collections.emptyList());
+            entity.setForwardMessages(Collections.emptyList());
         }
 
-        return dbo;
+        return entity;
     }
 
-    public static VideoEntity buildVideoDbo(VKApiVideo dto) {
+    public static VideoEntity buildVideoEntity(VKApiVideo dto) {
         return new VideoEntity(dto.id, dto.owner_id)
                 .setAlbumId(dto.album_id)
                 .setTitle(dto.title)
@@ -959,7 +931,7 @@ public class Dto2Entity {
         return new PrivacyEntity(dto.type, entries.toArray(new PrivacyEntity.Entry[entries.size()]));
     }
 
-    public static PhotoEntity buildPhotoDbo(VKApiPhoto dto) {
+    public static PhotoEntity buildPhotoEntity(VKApiPhoto dto) {
         return new PhotoEntity(dto.id, dto.owner_id)
                 .setAlbumId(dto.album_id)
                 .setWidth(dto.width)

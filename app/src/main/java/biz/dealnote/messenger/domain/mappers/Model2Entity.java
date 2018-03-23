@@ -35,9 +35,10 @@ import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.model.VoiceMessage;
 import biz.dealnote.messenger.model.WikiPage;
 
+import static biz.dealnote.messenger.domain.mappers.MapUtil.mapAll;
+import static biz.dealnote.messenger.domain.mappers.MapUtil.mapAndAdd;
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
-import static biz.dealnote.messenger.util.Utils.nonEmpty;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;
 
 /**
@@ -46,8 +47,8 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
  */
 public class Model2Entity {
 
-    public static MessageEntity buildMessageDbo(Message message){
-        MessageEntity dbo = new MessageEntity(message.getId(), message.getPeerId(), message.getSenderId())
+    public static MessageEntity buildMessageEntity(Message message) {
+        return new MessageEntity(message.getId(), message.getPeerId(), message.getSenderId())
                 .setDate(message.getDate())
                 .setRead(message.isRead())
                 .setOut(message.isOut())
@@ -72,87 +73,22 @@ public class Model2Entity {
                 .setPhoto200(message.getPhoto200())
                 .setRandomId(message.getRandomId())
                 .setExtras(message.getExtras())
-                .setAttachments(nonNull(message.getAttachments()) ? buildDboAttachments(message.getAttachments()) : null);
-
-        if(nonEmpty(message.getFwd())){
-            if(message.getFwd().size() == 1){
-                dbo.setForwardMessages(Collections.singletonList(buildMessageDbo(message.getFwd().get(0))));
-            } else {
-                List<MessageEntity> forwardDbos = new ArrayList<>(message.getFwd().size());
-                for(Message fwd : message.getFwd()){
-                    forwardDbos.add(buildMessageDbo(fwd));
-                }
-
-                dbo.setForwardMessages(forwardDbos);
-            }
-        }
-
-        return dbo;
+                .setAttachments(nonNull(message.getAttachments()) ? buildEntityAttachments(message.getAttachments()) : null)
+                .setForwardMessages(mapAll(message.getFwd(), Model2Entity::buildMessageEntity, false));
     }
 
-    public static List<Entity> buildDboAttachments(Attachments attachments){
+    public static List<Entity> buildEntityAttachments(Attachments attachments) {
         List<Entity> entities = new ArrayList<>(attachments.size());
-
-        if(nonEmpty(attachments.getAudios())){
-            for(Audio audio : attachments.getAudios()){
-                entities.add(buildAudioDbo(audio));
-            }
-        }
-
-        if(nonEmpty(attachments.getStickers())){
-            for(Sticker sticker : attachments.getStickers()){
-                entities.add(buildStickerDbo(sticker));
-            }
-        }
-
-        if(nonEmpty(attachments.getPhotos())){
-            for(Photo photo : attachments.getPhotos()){
-                entities.add(buildPhotoDbo(photo));
-            }
-        }
-
-        if(nonEmpty(attachments.getDocs())){
-            for(Document document : attachments.getDocs()){
-                entities.add(buildDocumentDbo(document));
-            }
-        }
-
-        if(nonEmpty(attachments.getVoiceMessages())){
-            for(VoiceMessage message : attachments.getVoiceMessages()){
-                entities.add(buildDocumentDbo(message));
-            }
-        }
-
-        if(nonEmpty(attachments.getVideos())){
-            for(Video video : attachments.getVideos()){
-                entities.add(buildVideoDbo(video));
-            }
-        }
-
-        if(nonEmpty(attachments.getPosts())){
-            for(Post post : attachments.getPosts()){
-                entities.add(buildPostDbo(post));
-            }
-        }
-
-        if(nonEmpty(attachments.getLinks())){
-            for(Link link : attachments.getLinks()){
-                entities.add(buildLinkDbo(link));
-            }
-        }
-
-        if(nonEmpty(attachments.getPolls())){
-            for(Poll poll : attachments.getPolls()){
-                entities.add(buildPollDbo(poll));
-            }
-        }
-
-        if(nonEmpty(attachments.getPages())){
-            for(WikiPage page : attachments.getPages()){
-                entities.add(buildPageDbo(page));
-            }
-        }
-
+        mapAndAdd(attachments.getAudios(), Model2Entity::buildAudioEntity, entities);
+        mapAndAdd(attachments.getStickers(), Model2Entity::buildStickerEntity, entities);
+        mapAndAdd(attachments.getPhotos(), Model2Entity::buildPhotoEntity, entities);
+        mapAndAdd(attachments.getDocs(), Model2Entity::buildDocumentDbo, entities);
+        mapAndAdd(attachments.getVoiceMessages(), Model2Entity::buildDocumentDbo, entities);
+        mapAndAdd(attachments.getVideos(), Model2Entity::buildVideoDbo, entities);
+        mapAndAdd(attachments.getPosts(), Model2Entity::buildPostDbo, entities);
+        mapAndAdd(attachments.getLinks(), Model2Entity::buildLinkDbo, entities);
+        mapAndAdd(attachments.getPolls(), Model2Entity::buildPollDbo, entities);
+        mapAndAdd(attachments.getPages(), Model2Entity::buildPageEntity, entities);
         return entities;
     }
 
@@ -161,11 +97,11 @@ public class Model2Entity {
 
         for(AbsModel model : models){
             if(model instanceof Audio){
-                entities.add(buildAudioDbo((Audio) model));
+                entities.add(buildAudioEntity((Audio) model));
             } else if(model instanceof Sticker){
-                entities.add(buildStickerDbo((Sticker) model));
+                entities.add(buildStickerEntity((Sticker) model));
             } else if(model instanceof Photo){
-                entities.add(buildPhotoDbo((Photo) model));
+                entities.add(buildPhotoEntity((Photo) model));
             } else if(model instanceof Document){
                 entities.add(buildDocumentDbo((Document) model));
             } else if(model instanceof Video){
@@ -177,7 +113,7 @@ public class Model2Entity {
             } else if(model instanceof Poll){
                 entities.add(buildPollDbo((Poll) model));
             } else if(model instanceof WikiPage){
-                entities.add(buildPageDbo((WikiPage) model));
+                entities.add(buildPageEntity((WikiPage) model));
             } else {
                 throw new UnsupportedOperationException("Unsupported model");
             }
@@ -186,7 +122,7 @@ public class Model2Entity {
         return entities;
     }
 
-    public static PageEntity buildPageDbo(WikiPage page){
+    public static PageEntity buildPageEntity(WikiPage page) {
         return new PageEntity(page.getId(), page.getOwnerId())
                 .setViewUrl(page.getViewUrl())
                 .setViews(page.getViews())
@@ -198,17 +134,13 @@ public class Model2Entity {
                 .setSource(page.getSource());
     }
 
+    public static PollEntity.AnswerDbo mapAnswer(Poll.Answer answer) {
+        return new PollEntity.AnswerDbo(answer.getId(), answer.getText(), answer.getVoteCount(), answer.getRate());
+    }
+
     public static PollEntity buildPollDbo(Poll poll){
-        List<PollEntity.AnswerDbo> answerDbos = new ArrayList<>(safeCountOf(poll.getAnswers()));
-
-        if(nonEmpty(poll.getAnswers())){
-            for(Poll.Answer answer : poll.getAnswers()){
-                answerDbos.add(new PollEntity.AnswerDbo(answer.getId(), answer.getText(), answer.getVoteCount(), answer.getRate()));
-            }
-        }
-
         return new PollEntity(poll.getId(), poll.getOwnerId())
-                .setAnswers(answerDbos)
+                .setAnswers(mapAll(poll.getAnswers(), Model2Entity::mapAnswer, false))
                 .setQuestion(poll.getQuestion())
                 .setVoteCount(poll.getVoteCount())
                 .setMyAnswerId(poll.getMyAnswerId())
@@ -219,7 +151,7 @@ public class Model2Entity {
 
     public static LinkEntity buildLinkDbo(Link link){
         return new LinkEntity(link.getUrl())
-                .setPhoto(isNull(link.getPhoto()) ? null : buildPhotoDbo(link.getPhoto()))
+                .setPhoto(isNull(link.getPhoto()) ? null : buildPhotoEntity(link.getPhoto()))
                 .setTitle(link.getTitle())
                 .setDescription(link.getDescription())
                 .setCaption(link.getCaption());
@@ -258,27 +190,12 @@ public class Model2Entity {
         }
 
         if(nonNull(post.getAttachments())){
-            dbo.setAttachments(buildDboAttachments(post.getAttachments()));
+            dbo.setAttachments(buildEntityAttachments(post.getAttachments()));
         } else {
             dbo.setAttachments(Collections.emptyList());
         }
 
-        List<Post> copies = post.getCopyHierarchy();
-        if(nonEmpty(copies)){
-            if(copies.size() == 1){
-                dbo.setCopyHierarchy(Collections.singletonList(buildPostDbo(copies.get(0))));
-            } else {
-                List<PostEntity> copyDbos = new ArrayList<>(copies.size());
-                for(Post copy : copies){
-                    copyDbos.add(buildPostDbo(copy));
-                }
-
-                dbo.setCopyHierarchy(copyDbos);
-            }
-        } else {
-            dbo.setCopyHierarchy(Collections.emptyList());
-        }
-
+        dbo.setCopyHierarchy(mapAll(post.getCopyHierarchy(), Model2Entity::buildPostDbo, false));
         return dbo;
     }
 
@@ -358,13 +275,13 @@ public class Model2Entity {
         return dbo;
     }
 
-    public static StickerEntity buildStickerDbo(Sticker sticker){
+    public static StickerEntity buildStickerEntity(Sticker sticker) {
         return new StickerEntity(sticker.getId())
                 .setWidth(sticker.getWidth())
                 .setHeight(sticker.getHeight());
     }
 
-    public static AudioEntity buildAudioDbo(Audio audio){
+    public static AudioEntity buildAudioEntity(Audio audio) {
         return new AudioEntity(audio.getId(), audio.getOwnerId())
                 .setArtist(audio.getArtist())
                 .setTitle(audio.getTitle())
@@ -377,7 +294,7 @@ public class Model2Entity {
                 .setDeleted(audio.isDeleted());
     }
 
-    public static PhotoEntity buildPhotoDbo(Photo photo) {
+    public static PhotoEntity buildPhotoEntity(Photo photo) {
         return new PhotoEntity(photo.getId(), photo.getOwnerId())
                 .setAlbumId(photo.getAlbumId())
                 .setWidth(photo.getWidth())
@@ -392,10 +309,10 @@ public class Model2Entity {
                 .setAccessKey(photo.getAccessKey())
                 .setPostId(photo.getPostId())
                 .setDeleted(photo.isDeleted())
-                .setSizes(isNull(photo.getSizes()) ? null : buildPhotoSizeDbo(photo.getSizes()));
+                .setSizes(isNull(photo.getSizes()) ? null : buildPhotoSizeEntity(photo.getSizes()));
     }
 
-    public static PhotoSizeEntity buildPhotoSizeDbo(PhotoSizes sizes){
+    public static PhotoSizeEntity buildPhotoSizeEntity(PhotoSizes sizes) {
         return new PhotoSizeEntity()
                 .setS(sizes.getS())
                 .setM(sizes.getM())

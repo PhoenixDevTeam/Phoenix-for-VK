@@ -2,6 +2,7 @@ package biz.dealnote.messenger.api;
 
 import android.os.SystemClock;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -58,10 +59,10 @@ abstract class AbsVkApiInterceptor implements Interceptor {
 
         RequestBody body = original.body();
 
-        if(body instanceof FormBody){
+        if (body instanceof FormBody) {
             FormBody formBody = (FormBody) body;
 
-            for(int i = 0; i < formBody.size(); i++){
+            for (int i = 0; i < formBody.size(); i++) {
                 String name = formBody.name(i);
                 String value = formBody.value(i);
                 formBuiler.add(name, value);
@@ -86,6 +87,16 @@ abstract class AbsVkApiInterceptor implements Interceptor {
             Error error = isNull(vkReponse) ? null : vkReponse.error;
 
             if (nonNull(error)) {
+                switch (error.errorCode) {
+                    case ApiErrorCodes.TOO_MANY_REQUESTS_PER_SECOND:
+                    case ApiErrorCodes.CAPTCHA_NEED:
+                        // no logging
+                        break;
+                    default:
+                        FirebaseCrash.log("ApiError, method: " + error.method + ", code: " + error.errorCode + ", message: " + error.errorMsg);
+                        break;
+                }
+
                 if (error.errorCode == ApiErrorCodes.TOO_MANY_REQUESTS_PER_SECOND) {
                     synchronized (AbsVkApiInterceptor.class) {
                         int sleepMs = 1000 + RANDOM.nextInt(500);
@@ -95,7 +106,7 @@ abstract class AbsVkApiInterceptor implements Interceptor {
                     continue;
                 }
 
-                if(error.errorCode == ApiErrorCodes.CAPTCHA_NEED){
+                if (error.errorCode == ApiErrorCodes.CAPTCHA_NEED) {
                     Captcha captcha = new Captcha(error.captchaSid, error.captchaImg);
 
                     ICaptchaProvider provider = Injection.provideCaptchaProvider();
@@ -103,11 +114,11 @@ abstract class AbsVkApiInterceptor implements Interceptor {
 
                     String code = null;
 
-                    while (true){
+                    while (true) {
                         try {
                             code = provider.lookupCode(captcha.getSid());
 
-                            if(nonNull(code)){
+                            if (nonNull(code)) {
                                 break;
                             } else {
                                 SystemClock.sleep(1000);
@@ -117,7 +128,7 @@ abstract class AbsVkApiInterceptor implements Interceptor {
                         }
                     }
 
-                    if(nonNull(code)){
+                    if (nonNull(code)) {
                         formBuiler.add("captcha_sid", captcha.getSid());
                         formBuiler.add("captcha_key", code);
 
@@ -134,10 +145,6 @@ abstract class AbsVkApiInterceptor implements Interceptor {
 
         Response.Builder builder = response.newBuilder()
                 .body(ResponseBody.create(responseBody.contentType(), responseBodyString));
-
-        if (isNull(token)) {
-            builder.code(401);
-        }
 
         return builder.build();
     }

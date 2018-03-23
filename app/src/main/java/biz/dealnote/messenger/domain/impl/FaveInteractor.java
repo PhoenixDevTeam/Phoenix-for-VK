@@ -77,7 +77,7 @@ public class FaveInteractor implements IFaveInteractor {
                     final List<PostEntity> dbos = new ArrayList<>(safeCountOf(response.posts));
                     if(nonNull(response.posts)){
                         for(VKApiPost dto : response.posts){
-                            dbos.add(Dto2Entity.buildPostDbo(dto));
+                            dbos.add(Dto2Entity.buildPostEntity(dto));
                         }
                     }
 
@@ -135,7 +135,7 @@ public class FaveInteractor implements IFaveInteractor {
                     List<Photo> photos = new ArrayList<>(dtos.size());
 
                     for(VKApiPhoto dto : dtos){
-                        dbos.add(Dto2Entity.buildPhotoDbo(dto));
+                        dbos.add(Dto2Entity.buildPhotoEntity(dto));
                         photos.add(Dto2Model.transform(dto));
                     }
 
@@ -171,7 +171,7 @@ public class FaveInteractor implements IFaveInteractor {
                     List<Video> videos = new ArrayList<>(dtos.size());
 
                     for(VKApiVideo dto : dtos){
-                        dbos.add(Dto2Entity.buildVideoDbo(dto));
+                        dbos.add(Dto2Entity.buildVideoEntity(dto));
                         videos.add(Dto2Model.transform(dto));
                     }
 

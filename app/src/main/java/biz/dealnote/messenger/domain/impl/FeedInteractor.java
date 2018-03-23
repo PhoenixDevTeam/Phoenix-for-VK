@@ -67,7 +67,7 @@ public class FeedInteractor implements IFeedInteractor {
                     for(VKApiNews news : feed){
                         if(!hasNewsSupport(news)) continue;
 
-                        dbos.add(Dto2Entity.buildNewsDbo(news));
+                        dbos.add(Dto2Entity.buildNewsEntity(news));
                         ownIds.appendNews(news);
                     }
 

@@ -57,7 +57,7 @@ public class VideosInteractor implements IVideosInteractor {
                     List<Video> videos = new ArrayList<>(dbos.size());
 
                     for(VKApiVideo dto : dtos){
-                        dbos.add(Dto2Entity.buildVideoDbo(dto));
+                        dbos.add(Dto2Entity.buildVideoEntity(dto));
                         videos.add(Dto2Model.transform(dto));
                     }
 
@@ -96,7 +96,7 @@ public class VideosInteractor implements IVideosInteractor {
                 })
                 .flatMap(dto -> {
                     if(cacheData){
-                        VideoEntity dbo = Dto2Entity.buildVideoDbo(dto);
+                        VideoEntity dbo = Dto2Entity.buildVideoEntity(dto);
 
                         return cache.videos()
                                 .insertData(accountId, ownerId, dto.album_id, Collections.singletonList(dbo), false)

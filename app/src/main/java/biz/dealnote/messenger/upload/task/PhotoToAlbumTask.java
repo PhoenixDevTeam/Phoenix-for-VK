@@ -114,7 +114,7 @@ public class PhotoToAlbumTask extends AbstractUploadTask<PhotoToAlbumTask.Respon
 
                 result.photo = Dto2Model.transform(dto);
 
-                final PhotoEntity photoEntity = Dto2Entity.buildPhotoDbo(dto);
+                final PhotoEntity photoEntity = Dto2Entity.buildPhotoEntity(dto);
                 Stores.getInstance()
                         .photos()
                         .insertPhotosRx(accountId, photoEntity.getOwnerId(), photoEntity.getAlbumId(), Collections.singletonList(photoEntity), false)
