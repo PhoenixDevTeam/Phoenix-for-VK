@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.fragment.attachments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,23 +37,23 @@ public abstract class AbsPostEditFragment<P extends AbsPostEditPresenter<V>, V e
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         AssertUtils.requireNonNull(root);
 
         View signatureRoot = inflater.inflate(R.layout.content_post_edit_under_body, getUnderBodyContainer(), false);
 
-        mFromGroupCheckBox = (CheckBox) signatureRoot.findViewById(R.id.check_from_group);
+        mFromGroupCheckBox = signatureRoot.findViewById(R.id.check_from_group);
         mFromGroupCheckBox.setOnCheckedChangeListener((buttonView, checked) -> getPresenter().fireFromGroupChecked(checked));
 
-        mFrindsOnlyCheckBox = (CheckBox) signatureRoot.findViewById(R.id.check_friends_only);
+        mFrindsOnlyCheckBox = signatureRoot.findViewById(R.id.check_friends_only);
         mFrindsOnlyCheckBox.setOnCheckedChangeListener((buttonView, checked) -> getPresenter().fireFriendsOnlyCheched(checked));
 
         mSignerRoot = signatureRoot.findViewById(R.id.signer_root);
-        mSignerAvatar = (ImageView) signatureRoot.findViewById(R.id.signer_avatar);
-        mSignerName = (TextView) signatureRoot.findViewById(R.id.signer_name);
+        mSignerAvatar = signatureRoot.findViewById(R.id.signer_avatar);
+        mSignerName = signatureRoot.findViewById(R.id.signer_name);
 
-        mShowAuthorCheckbox = (CheckBox) signatureRoot.findViewById(R.id.check_show_author);
+        mShowAuthorCheckbox = signatureRoot.findViewById(R.id.check_show_author);
         mShowAuthorCheckbox.setOnCheckedChangeListener((buttonView, checked) -> getPresenter().fireShowAuthorChecked(checked));
 
         getUnderBodyContainer().addView(signatureRoot);

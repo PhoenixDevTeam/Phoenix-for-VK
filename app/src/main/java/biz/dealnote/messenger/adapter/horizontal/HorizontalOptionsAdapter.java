@@ -44,7 +44,7 @@ public class HorizontalOptionsAdapter<T extends Entry> extends RecyclerBindableA
 
         Holder(View itemView) {
             super(itemView);
-            button = (RoundedButton) itemView.findViewById(R.id.button);
+            button = itemView.findViewById(R.id.button);
         }
     }
 

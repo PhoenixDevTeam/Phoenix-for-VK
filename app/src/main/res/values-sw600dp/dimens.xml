@@ -9,11 +9,8 @@
     <dimen name="audio_play_button_size">36dp</dimen>
 
     <!--Диаметр изображения аватара владельца поста-->
-    <dimen name="post_owner_avatar_size">42dp</dimen>
 
     <bool name="is_tablet">true</bool>
-
-    <dimen name="navigation_drawer_width">308dp</dimen>
 
     <dimen name="newsfeed_comments_card_side_margin">16dp</dimen>
 

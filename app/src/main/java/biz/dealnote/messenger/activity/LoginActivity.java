@@ -36,7 +36,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        WebView webview = (WebView) findViewById(R.id.vkontakteview);
+        WebView webview = findViewById(R.id.vkontakteview);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.clearCache(true);
 

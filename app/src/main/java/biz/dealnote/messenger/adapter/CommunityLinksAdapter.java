@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,14 +31,15 @@ public class CommunityLinksAdapter extends RecyclerView.Adapter<CommunityLinksAd
         this.links = links;
     }
 
+    @NonNull
     @Override
-    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new Holder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_community_link, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(Holder holder, int position) {
+    public void onBindViewHolder(@NonNull Holder holder, int position) {
         Context context = holder.itemView.getContext();
 
         VKApiCommunity.Link link = links.get(position);
@@ -104,9 +106,9 @@ public class CommunityLinksAdapter extends RecyclerView.Adapter<CommunityLinksAd
 
         Holder(View itemView) {
             super(itemView);
-            this.title = (TextView) itemView.findViewById(R.id.title);
-            this.subtitle = (TextView) itemView.findViewById(R.id.subtitle);
-            this.icon = (ImageView) itemView.findViewById(R.id.icon);
+            this.title = itemView.findViewById(R.id.title);
+            this.subtitle = itemView.findViewById(R.id.subtitle);
+            this.icon = itemView.findViewById(R.id.icon);
         }
     }
 }

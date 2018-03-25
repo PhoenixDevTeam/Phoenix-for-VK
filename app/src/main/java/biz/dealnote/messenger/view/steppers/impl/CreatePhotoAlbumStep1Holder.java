@@ -23,8 +23,8 @@ public class CreatePhotoAlbumStep1Holder extends AbsStepHolder<CreatePhotoAlbumS
 
     @Override
     public void initInternalView(View contentView) {
-        mTitle = (TextView) contentView.findViewById(R.id.title);
-        mDescription = (TextView) contentView.findViewById(R.id.description);
+        mTitle = contentView.findViewById(R.id.title);
+        mDescription = contentView.findViewById(R.id.description);
 
         mTitle.addTextChangedListener(new TextWatcherAdapter(){
             @Override

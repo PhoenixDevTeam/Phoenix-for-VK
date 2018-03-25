@@ -45,10 +45,10 @@ public class CreatePinFragment extends BasePresenterFragment<CreatePinPresenter,
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_create_pin, container, false);
 
-        KeyboardView keyboardView = (KeyboardView) root.findViewById(R.id.keyboard);
+        KeyboardView keyboardView = root.findViewById(R.id.keyboard);
         keyboardView.setOnKeyboardClickListener(this);
 
-        mTitle = (TextView) root.findViewById(R.id.pin_title_text);
+        mTitle = root.findViewById(R.id.pin_title_text);
 
         mValuesRoot = root.findViewById(R.id.value_root);
         mValuesCircles = new View[Constants.PIN_DIGITS_COUNT];
@@ -90,8 +90,8 @@ public class CreatePinFragment extends BasePresenterFragment<CreatePinPresenter,
 
     @Override
     public void sendSkipAndClose() {
-        getActivity().setResult(Activity.RESULT_CANCELED);
-        getActivity().finish();
+        requireActivity().setResult(Activity.RESULT_CANCELED);
+        requireActivity().finish();
     }
 
     private static final String EXTRA_PIN_VALUE = "pin_value";
@@ -100,8 +100,8 @@ public class CreatePinFragment extends BasePresenterFragment<CreatePinPresenter,
     public void sendSuccessAndClose(int[] values) {
         Intent data = new Intent();
         data.putExtra(EXTRA_PIN_VALUE, values);
-        getActivity().setResult(Activity.RESULT_OK, data);
-        getActivity().finish();
+        requireActivity().setResult(Activity.RESULT_OK, data);
+        requireActivity().finish();
     }
 
     public static int[] extractValueFromIntent(Intent intent){

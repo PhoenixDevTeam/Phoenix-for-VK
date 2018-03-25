@@ -11,7 +11,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,22 +63,22 @@ public class LocalPhotosFragment extends BasePresenterFragment<LocalPhotosPresen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo_gallery, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) view.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(view.findViewById(R.id.toolbar));
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
+        mSwipeRefreshLayout = view.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
 
         int columnCount = getResources().getInteger(R.integer.local_gallery_column_count);
         RecyclerView.LayoutManager manager = new GridLayoutManager(getActivity(), columnCount);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
+        mRecyclerView = view.findViewById(R.id.list);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.addOnScrollListener(new PicassoPauseOnScrollListener(LocalPhotosAdapter.TAG));
 
-        mEmptyTextView = (TextView) view.findViewById(R.id.empty);
+        mEmptyTextView = view.findViewById(R.id.empty);
 
-        fabAttach = (FloatingActionButton) view.findViewById(R.id.fr_photo_gallery_attach);
+        fabAttach = view.findViewById(R.id.fr_photo_gallery_attach);
         fabAttach.setOnClickListener(v -> getPresenter().fireFabClick());
 
         return view;
@@ -123,8 +122,8 @@ public class LocalPhotosFragment extends BasePresenterFragment<LocalPhotosPresen
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(Extra.PHOTOS, photos);
 
-        getActivity().setResult(Activity.RESULT_OK, intent);
-        getActivity().finish();
+        requireActivity().setResult(Activity.RESULT_OK, intent);
+        requireActivity().finish();
     }
 
     @Override

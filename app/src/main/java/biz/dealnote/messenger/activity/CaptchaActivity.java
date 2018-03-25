@@ -18,6 +18,8 @@ import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.disposables.CompositeDisposable;
 
+import static biz.dealnote.messenger.util.RxUtils.ignore;
+
 /**
  * Created by ruslan.kolbasa on 27.10.2016.
  * phoenix
@@ -38,8 +40,8 @@ public class CaptchaActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_captcha);
 
-        ImageView imageView = (ImageView) findViewById(R.id.captcha_view);
-        mTextField = (EditText) findViewById(R.id.captcha_text);
+        ImageView imageView = findViewById(R.id.captcha_view);
+        mTextField = findViewById(R.id.captcha_text);
 
         String image = getIntent().getStringExtra(Extra.CAPTCHA_URL);
 
@@ -55,15 +57,15 @@ public class CaptchaActivity extends AppCompatActivity {
 
         captchaProvider = Injection.provideCaptchaProvider();
 
-        captchaProvider.observeWaiting()
+        mCompositeDisposable.add(captchaProvider.observeWaiting()
                 .filter(sid -> sid.equals(requestSid))
                 .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(rid -> onWaitingRequestRecieved());
+                .subscribe(rid -> onWaitingRequestRecieved(), ignore()));
 
-        captchaProvider.observeCanceling()
+        mCompositeDisposable.add(captchaProvider.observeCanceling()
                 .filter(sid -> sid.equals(requestSid))
                 .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(integer -> onRequestCancelled());
+                .subscribe(integer -> onRequestCancelled(), ignore()));
     }
 
     private void cancel(){

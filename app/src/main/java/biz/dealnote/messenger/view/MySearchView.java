@@ -48,12 +48,12 @@ public class MySearchView extends LinearLayout {
     protected void init() {
         LayoutInflater.from(getContext()).inflate(R.layout.custom_searchview, this);
 
-        mInput = (EditText) findViewById(R.id.input);
+        mInput = findViewById(R.id.input);
         mInput.setOnEditorActionListener(mOnEditorActionListener);
 
-        mButtonBack = (ImageView) findViewById(R.id.button_back);
-        mButtonClear = (ImageView) findViewById(R.id.clear);
-        mButtonAdditional = (ImageView) findViewById(R.id.additional);
+        mButtonBack = findViewById(R.id.button_back);
+        mButtonClear = findViewById(R.id.clear);
+        mButtonAdditional = findViewById(R.id.additional);
 
         mButtonBack.setColorFilter(CurrentTheme.getIconColorStatic(getContext()));
         mButtonClear.setColorFilter(CurrentTheme.getIconColorStatic(getContext()));

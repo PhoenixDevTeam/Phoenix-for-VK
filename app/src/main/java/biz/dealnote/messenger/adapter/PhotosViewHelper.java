@@ -45,9 +45,9 @@ public class PhotosViewHelper {
         final TextView tvTitle;
 
         Holder(View itemView){
-            vgPhoto = (ImageView) itemView.findViewById(R.id.item_video_image);
-            ivPlay = (ImageView) itemView.findViewById(R.id.item_video_play);
-            tvTitle = (TextView) itemView.findViewById(R.id.item_video_title);
+            vgPhoto = itemView.findViewById(R.id.item_video_image);
+            ivPlay = itemView.findViewById(R.id.item_video_play);
+            tvTitle = itemView.findViewById(R.id.item_video_title);
         }
     }
 

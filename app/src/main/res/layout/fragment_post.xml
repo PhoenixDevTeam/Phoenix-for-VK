@@ -19,7 +19,6 @@
             android:layout_height="match_parent">
 
             <ScrollView
-                android:id="@+id/fragment_post_scrollview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/buttons_bar_container"
@@ -49,7 +48,6 @@
                         custom:hashTagColor="?attr/colorAccent" />
 
                     <LinearLayout
-                        android:id="@+id/fragment_post_attachments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -96,9 +94,7 @@
                 android:id="@+id/buttons_bar_container"
                 android:layout_alignParentBottom="true">
 
-                <include
-                    android:id="@+id/fragment_post_divider"
-                    layout="@layout/line_divider"/>
+                <include layout="@layout/line_divider" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"

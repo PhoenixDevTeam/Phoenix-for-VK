@@ -23,8 +23,8 @@ public class CreatePhotoAlbumStep4Holder extends AbsStepHolder<CreatePhotoAlbumS
 
     @Override
     public void initInternalView(View contentView) {
-        this.mPrivacyCommentAllowed = (TextView) contentView.findViewById(R.id.commenting_allowed);
-        this.mPrivacyComemntDisallowed = (TextView) contentView.findViewById(R.id.commenting_disabled);
+        this.mPrivacyCommentAllowed = contentView.findViewById(R.id.commenting_allowed);
+        this.mPrivacyComemntDisallowed = contentView.findViewById(R.id.commenting_disabled);
 
         mRootView = contentView.findViewById(R.id.root);
         mRootView.setOnClickListener(v -> mActionListener.onPrivacyCommentClick());

@@ -55,11 +55,11 @@ public class DialogNotifOptionsDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View root = View.inflate(getActivity(), R.layout.dialog_dialog_options, null);
 
-        scEnable = (SwitchCompat) root.findViewById(R.id.enable);
-        scHighPriority = (SwitchCompat) root.findViewById(R.id.priority);
-        scSound = (SwitchCompat) root.findViewById(R.id.sound);
-        scVibro = (SwitchCompat) root.findViewById(R.id.vibro);
-        scLed = (SwitchCompat) root.findViewById(R.id.led);
+        scEnable = root.findViewById(R.id.enable);
+        scHighPriority = root.findViewById(R.id.priority);
+        scSound = root.findViewById(R.id.sound);
+        scVibro = root.findViewById(R.id.vibro);
+        scLed = root.findViewById(R.id.led);
 
         scEnable.setChecked(hasFlag(mask, FLAG_SHOW_NOTIF));
         scEnable.setOnCheckedChangeListener((buttonView, isChecked) -> resolveOtherSwitches());
@@ -69,7 +69,7 @@ public class DialogNotifOptionsDialog extends DialogFragment {
         scVibro.setChecked(hasFlag(mask, FLAG_VIBRO));
         scLed.setChecked(hasFlag(mask, FLAG_LED));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.peer_notification_settings)
                 .setPositiveButton(R.string.button_ok, (dialog, whichButton) -> onSaveClick())
                 .setNeutralButton(R.string.set_default, (dialog, which) -> Settings.get()

@@ -51,10 +51,10 @@ public class CommunityLinksFragment extends BasePresenterFragment<CommunityLinks
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_community_links, container, false);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.refresh);
+        mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mLinksAdapter = new CommunityLinksAdapter(Collections.emptyList());
@@ -115,7 +115,7 @@ public class CommunityLinksFragment extends BasePresenterFragment<CommunityLinks
     @Override
     public void onLongClick(VKApiCommunity.Link link) {
         String[] items = {getString(R.string.edit), getString(R.string.delete)};
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(link.name)
                 .setItems(items, (dialog, which) -> {
                     switch (which){

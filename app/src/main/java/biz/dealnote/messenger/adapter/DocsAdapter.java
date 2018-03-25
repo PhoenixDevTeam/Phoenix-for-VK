@@ -96,10 +96,10 @@ public class DocsAdapter extends RecyclerBindableAdapter<Document, DocsAdapter.D
 
         private DocViewHolder(View root) {
             super(root);
-            tvExt = (TextView) root.findViewById(R.id.item_document_big_ext);
-            ivImage = (ImageView) root.findViewById(R.id.item_document_big_image);
-            tvTitle = (TextView) root.findViewById(R.id.item_document_big_title);
-            tvSize = (TextView) root.findViewById(R.id.item_document_big_size);
+            tvExt = root.findViewById(R.id.item_document_big_ext);
+            ivImage = root.findViewById(R.id.item_document_big_image);
+            tvTitle = root.findViewById(R.id.item_document_big_title);
+            tvSize = root.findViewById(R.id.item_document_big_size);
 
             tvExt.getBackground().setColorFilter(CurrentTheme.getIconColorActive(root.getContext()),
                     PorterDuff.Mode.MULTIPLY);

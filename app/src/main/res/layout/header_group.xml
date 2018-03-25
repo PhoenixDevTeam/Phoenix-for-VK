@@ -112,7 +112,6 @@
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
-                    android:id="@+id/header_group_bmembers_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
@@ -142,7 +141,6 @@
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
-                    android:id="@+id/header_group_btopics_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
@@ -173,7 +171,6 @@
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
-                    android:id="@+id/header_group_documents_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
@@ -210,7 +207,6 @@
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
-                    android:id="@+id/header_group_bphotos_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
@@ -241,7 +237,6 @@
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
-                    android:id="@+id/header_group_baudios_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
@@ -272,7 +267,6 @@
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
-                    android:id="@+id/header_group_bvideos_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"

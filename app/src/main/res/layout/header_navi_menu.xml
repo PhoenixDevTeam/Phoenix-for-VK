@@ -33,7 +33,6 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/header_navi_menu_avatar_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"

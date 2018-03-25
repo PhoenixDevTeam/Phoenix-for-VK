@@ -61,10 +61,10 @@ public class CommunityManagersFragment extends BasePresenterFragment<CommunityMa
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_community_managers, container, false);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.refresh);
+        mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAdapter = new CommunityManagersAdapter(getActivity(), Collections.emptyList());
@@ -88,7 +88,7 @@ public class CommunityManagersFragment extends BasePresenterFragment<CommunityMa
 
     private void showManagerContextMenu(Manager manager){
         String[] items = {getString(R.string.delete)};
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(manager.getUser().getFullName())
                 .setItems(items, (dialog, which) -> getPresenter().fireRemoveClick(manager))
                 .setNegativeButton(R.string.button_cancel, null)
@@ -132,12 +132,12 @@ public class CommunityManagersFragment extends BasePresenterFragment<CommunityMa
 
     @Override
     public void goToManagerEditing(int accountId, int groupId, Manager manager) {
-        PlaceFactory.getCommunityManagerEditPlace(accountId, groupId, manager).tryOpenWith(getActivity());
+        PlaceFactory.getCommunityManagerEditPlace(accountId, groupId, manager).tryOpenWith(requireActivity());
     }
 
     @Override
     public void showUserProfile(int accountId, User user) {
-        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -153,7 +153,7 @@ public class CommunityManagersFragment extends BasePresenterFragment<CommunityMa
 
     @Override
     public void startAddingUsersToManagers(int accountId, int groupId, ArrayList<User> users) {
-        PlaceFactory.getCommunityManagerAddPlace(accountId, groupId, users).tryOpenWith(getActivity());
+        PlaceFactory.getCommunityManagerAddPlace(accountId, groupId, users).tryOpenWith(requireActivity());
     }
 
     @Override

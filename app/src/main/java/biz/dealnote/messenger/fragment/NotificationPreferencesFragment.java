@@ -7,11 +7,11 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.preference.PreferenceFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,9 +53,9 @@ public class NotificationPreferencesFragment extends PreferenceFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.preference_list_fragment, container, false);
-        ((AppCompatActivity)getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         return root;
     }
 
@@ -90,7 +90,7 @@ public class NotificationPreferencesFragment extends PreferenceFragment {
 
         selection = Arrays.asList(array).indexOf(selectionKey);
 
-        new AlertDialog.Builder(getActivity()).setSingleChoiceItems(array, selection, (dialog, which) -> {
+        new AlertDialog.Builder(requireActivity()).setSingleChoiceItems(array, selection, (dialog, which) -> {
             selection = which;
             stopRingtoneIfExist();
             String title = array[which];
@@ -173,6 +173,6 @@ public class NotificationPreferencesFragment extends PreferenceFragment {
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 }

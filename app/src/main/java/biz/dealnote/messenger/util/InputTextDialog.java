@@ -34,7 +34,7 @@ public class InputTextDialog {
         builder.setTitle(titleRes);
         View view = View.inflate(context, R.layout.dialog_enter_text, null);
 
-        final EditText input = (EditText) view.findViewById(R.id.editText);
+        final EditText input = view.findViewById(R.id.editText);
         input.setText(value);
         input.setSelection(input.getText().length());
 

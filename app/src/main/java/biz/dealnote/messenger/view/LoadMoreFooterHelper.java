@@ -37,9 +37,9 @@ public class LoadMoreFooterHelper {
         public Holder(View root){
             this.root = root;
             container = root.findViewById(R.id.footer_load_more_root);
-            progress = (ProgressBar) root.findViewById(R.id.footer_load_more_progress);
+            progress = root.findViewById(R.id.footer_load_more_progress);
             bLoadMore = root.findViewById(R.id.footer_load_more_run);
-            tvEndOfList = (TextView) root.findViewById(R.id.footer_load_more_end_of_list);
+            tvEndOfList = root.findViewById(R.id.footer_load_more_end_of_list);
         }
     }
 

@@ -51,7 +51,6 @@
                 layout="@layout/line_divider" />
 
             <RelativeLayout
-                android:id="@+id/item_post_middle_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="6dp"

@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,17 +59,17 @@ public class LogsFragement extends BasePresenterFragment<LogsPresenter, ILogsVie
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_logs, container, false);
-        ((AppCompatActivity)getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.refresh);
+        mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.events_recycler_view);
+        RecyclerView recyclerView = root.findViewById(R.id.events_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         View headerView = inflater.inflate(R.layout.header_logs, recyclerView, false);
 
-        RecyclerView typesRecyclerView = (RecyclerView) headerView.findViewById(R.id.types_recycler_view);
+        RecyclerView typesRecyclerView = headerView.findViewById(R.id.types_recycler_view);
         typesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         mTypesAdapter = new HorizontalOptionsAdapter<>(Collections.emptyList());
@@ -82,7 +81,7 @@ public class LogsFragement extends BasePresenterFragment<LogsPresenter, ILogsVie
 
         recyclerView.setAdapter(mLogsAdapter);
 
-        mEmptyText = (TextView) root.findViewById(R.id.empty_text);
+        mEmptyText = root.findViewById(R.id.empty_text);
         return root;
     }
 
@@ -126,7 +125,7 @@ public class LogsFragement extends BasePresenterFragment<LogsPresenter, ILogsVie
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -168,6 +167,6 @@ public class LogsFragement extends BasePresenterFragment<LogsPresenter, ILogsVie
     @Override
     public void onShareClick(LogEventWrapper wrapper) {
         LogEvent event = wrapper.getEvent();
-        Utils.shareLink(getActivity(), event.getBody(), event.getTag());
+        Utils.shareLink(requireActivity(), event.getBody(), event.getTag());
     }
 }

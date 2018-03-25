@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,10 +39,10 @@ public abstract class AbsChatAttachmentsFragment<T, P extends BaseChatAttachment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_photos, container, false);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
-        mRecyclerView = (RecyclerView) root.findViewById(android.R.id.list);
-        mEmpty = (TextView) root.findViewById(R.id.empty);
+        mRecyclerView = root.findViewById(android.R.id.list);
+        mEmpty = root.findViewById(R.id.empty);
 
         RecyclerView.LayoutManager manager = createLayoutManager();
         mRecyclerView.setLayoutManager(manager);
@@ -56,7 +55,7 @@ public abstract class AbsChatAttachmentsFragment<T, P extends BaseChatAttachment
             }
         });
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.refresh);
+        mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(getPresenter()::fireRefresh);
 
         ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
@@ -126,6 +125,6 @@ public abstract class AbsChatAttachmentsFragment<T, P extends BaseChatAttachment
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 }

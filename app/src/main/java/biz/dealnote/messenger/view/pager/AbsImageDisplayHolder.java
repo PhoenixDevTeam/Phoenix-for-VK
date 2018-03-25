@@ -1,6 +1,5 @@
 package biz.dealnote.messenger.view.pager;
 
-import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -23,16 +22,13 @@ public abstract class AbsImageDisplayHolder extends AbsPagerHolder implements Ca
     private boolean mLoadingNow;
     private WeakPicassoLoadCallback mPicassoLoadCallback;
 
-    private Context mContext;
-
     public AbsImageDisplayHolder(int adapterPosition, @NonNull View itemView) {
         super(adapterPosition, itemView);
-        mContext = itemView.getContext().getApplicationContext();
 
-        mPhotoView = (PhotoView) itemView.findViewById(idOfImageView());
+        mPhotoView = itemView.findViewById(idOfImageView());
         mPhotoView.setMaximumScale(5f);
 
-        mProgressBar = (ProgressBar) itemView.findViewById(idOfProgressBar());
+        mProgressBar = itemView.findViewById(idOfProgressBar());
         mPicassoLoadCallback = new WeakPicassoLoadCallback(this);
     }
 

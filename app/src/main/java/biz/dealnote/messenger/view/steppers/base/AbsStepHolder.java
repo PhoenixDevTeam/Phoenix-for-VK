@@ -35,12 +35,12 @@ public abstract class AbsStepHolder<T extends AbsStepsHost> extends RecyclerView
 
         this.index = stepIndex;
         this.counterRoot = itemView.findViewById(R.id.counter_root);
-        this.counterText = (TextView) itemView.findViewById(R.id.counter);
-        this.titleText = (TextView) itemView.findViewById(R.id.title);
+        this.counterText = itemView.findViewById(R.id.counter);
+        this.titleText = itemView.findViewById(R.id.title);
         this.line = itemView.findViewById(R.id.step_line);
-        this.buttonNext = (AppCompatButton) itemView.findViewById(R.id.buttonNext);
-        this.buttonCancel = (Button) itemView.findViewById(R.id.buttonCancel);
-        this.content = (ViewGroup) itemView.findViewById(R.id.content);
+        this.buttonNext = itemView.findViewById(R.id.buttonNext);
+        this.buttonCancel = itemView.findViewById(R.id.buttonCancel);
+        this.content = itemView.findViewById(R.id.content);
         this.contentRoot = itemView.findViewById(R.id.content_root);
 
         this.mContentView = LayoutInflater.from(itemView.getContext()).inflate(internalLayoutRes, parent, false);

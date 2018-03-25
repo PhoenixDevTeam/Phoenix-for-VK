@@ -15,11 +15,7 @@
     <string name="service_message">[service message]</string>
     <string name="title_mssages">Messages</string>
 
-    <string name="back_button_label" translatable="false">Back</string>
-    <string name="next_button_label" translatable="false">Next</string>
-
     <!-- Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] -->
-    <string name="skip_button_label" translatable="false">Skip</string>
 
 
     <string name="settings">Settings</string>
@@ -129,7 +125,6 @@
     <string name="attachment_document">Document</string>
     <string name="attachment_documents">Documents</string>
     <string name="attachment_link">Link</string>
-    <string name="new_message">New message</string>
     <string name="user_type_message">is typing a message…</string>
 
     <string name="load_more">Load more</string>
@@ -137,7 +132,6 @@
     <string name="last_seen_sex_woman">last activity: %1$s</string>
     <string name="last_seen_sex_unknown">last activity: %1$s</string>
     <string name="online">Online</string>
-    <string name="offline">Offline</string>
     <string name="thank_you">Info about this app was shared to your wall. Thank you very much! </string>
 
     <!-- Notification settings-->
@@ -158,7 +152,6 @@
     <string name="cannot_create_catalog">Directory already exists or you have entered an invalid directory name</string>
     <string name="path_not_exist">The path does not exist or can not be read</string>
     <string name="create_dir">New folder</string>
-    <string name="file_explorer">File manager</string>
 
     <string name="quick_answer_title">Quick reply</string>
 
@@ -169,12 +162,8 @@
     <string name="default_category_summary">Choose page that will be loaded on app start</string>
 
     <string name="music">Music</string>
-    <string name="added_music">Added music</string>
-    <string name="music_from_search">Tracks of global search</string>
-    <string name="enter_to_search">Enter to search</string>
 
     <string name="image_number">%1$d of %2$d</string>
-    <string name="image_load_error">Failed to load image</string>
 
     <string name="service_update_chat_photo">%1$s updated chat photo</string>
     <string name="service_remove_chat_photo">%1$s removed chat photo</string>
@@ -207,9 +196,7 @@
     <string name="set_groupchat_title">Specify the title</string>
 
     <string name="copied_to_clipboard">Copied to clipboard</string>
-    <string name="visibility_mode_title">Visibility mode</string>
 
-    <string name="night_background_title">Night mode background</string>
     <string name="night_mode_title">Night mode</string>
 
     <string name="select_image_size_title">Upload image size</string>
@@ -244,7 +231,6 @@
     <string name="for_wall_post">for wall post</string>
     <string name="for_photo">for photo</string>
 
-    <string name="error_token_is_null">Access token is null. Check auth.</string>
     <string name="title_activity_create_post">Create wall post</string>
 
     <string name="chat_empty_text">There will be displayed chat history.</string>
@@ -252,12 +238,6 @@
     <string name="emojis_type_title">Use system emoticons</string>
     <string name="emojis_type_summary">System emoticons will be used if checked</string>
     <string name="appearance_settings">Appearance</string>
-
-    <string name="logging_categoty_title">Development</string>
-    <string name="enable_log_title">Enable log</string>
-    <string name="enable_log_summary">Save data about application events in file</string>
-    <string name="clear_log_title">Clear log</string>
-    <string name="clear_log_summary">Erase all data from events file</string>
 
     <string name="wall_post">Wall post</string>
 
@@ -276,7 +256,6 @@
     <string name="publication">Publication</string>
 
     <string name="waiting_for_upload">Waiting for upload</string>
-    <string name="download">Download</string>
 
     <string name="deleted_post">Post was deleted</string>
     <string name="comment_was_deleted">Comment was deleted</string>
@@ -297,7 +276,6 @@
     <string name="save_to_drive">Save on a drive</string>
 
     <string name="reply">Reply</string>
-    <string name="reply_for">reply for %1$s</string>
 
     <string name="feed">Feed</string>
     <string name="feeds_empty_text">News from your friends and communities will be displayed here.</string>
@@ -373,14 +351,11 @@
     <string name="view_count">views: %1$d</string>
     <string name="message_was_deleted">Message was deleted</string>
     <string name="edit">Edit</string>
-    <string name="add_yourself">Add yourself</string>
     <string name="added">Added</string>
 
     <string name="get_full_app_title">Get FULL app</string>
     <string name="get_full_app_summary">If you want more options, try Phoenix for VK</string>
     <string name="buy_phoenix">Buy Phoenix</string>
-
-    <string name="illegal_content_message">Illegal content. Visit our group or check out phoenixvk.ru for more information</string>
 
     <!--Feedback-->
 
@@ -443,24 +418,15 @@
     <string name="play_720" translatable="false">720p</string>
     <string name="play_1080" translatable="false">1080p</string>
     <string name="play">Play</string>
-    <string name="play_small">Play (MIN)</string>
-    <string name="play_with_outer_app">Open with…</string>
-    <string name="play_with_coub">Play with Coub</string>
 
 
     <string name="for_video">for video</string>
     <string name="more_info">More info</string>
-    <string name="hide_info">Hide info</string>
 
     <!--Основная информация о пользователе-->
     <string name="mail_information">Main information</string>
-    <string name="first_name">First name</string>
-    <string name="last_name">Last name</string>
     <string name="sex">Sex</string>
-    <string name="studied_at">Studied at</string>
 
-    <string name="relationship_status">Relationship status</string>
-    <string name="relationship_partner">Partner</string>
     <string name="relationship_man_single">Single</string>
     <string name="relationship_man_in_relationship">In a relationship</string>
     <string name="relationship_man_engaged">Engaged</string>
@@ -480,8 +446,6 @@
     <string name="birthday">Birthday</string>
     <string name="hometown">Hometown</string>
     <string name="languages">Languages</string>
-    <string name="relatives">Relatives</string>
-    <string name="relatives_grandparents">Grandparents</string>
     <string name="relatives_parents">Parents</string>
     <string name="relatives_siblings">Siblings</string>
     <string name="relatives_children">Children</string>
@@ -489,18 +453,12 @@
     <string name="relatives_others">Others</string>
 
     <!--Контактная информация пользователя-->
-    <string name="contact_information">Contact information</string>
     <string name="mobile_phone_number">Mobile phone</string>
     <string name="home_phone_number">Home phone</string>
     <string name="college_or_university">College or university</string>
-    <string name="department">Department</string>
-    <string name="study_program">Study program</string>
-    <string name="mode_of_study">Mode of study</string>
     <string name="status">Status</string>
     <string name="school">School</string>
     <string name="website">Website</string>
-    <string name="alternative_phone">Alternative phone</string>
-    <string name="home">Home</string>
     <string name="country">Country</string>
     <string name="city">City</string>
 
@@ -560,27 +518,14 @@
 
     <!--Военная служба-->
     <string name="military_service">Military Service</string>
-    <string name="branch_unit">Branch/Unit</string>
 
     <!--Карьера-->
     <string name="career">Career</string>
     <string name="company">Company</string>
-    <string name="from">From</string>
-    <string name="to">To</string>
     <string name="position">Position</string>
 
     <!--Образование-->
     <string name="education">Education</string>
-    <string name="secondary_education">Secondary education</string>
-    <string name="graduation_year">Graduation year</string>
-    <string name="clazz">Class</string>
-    <string name="specialization">Specialization</string>
-    <string name="higher_education">Higher education</string>
-
-    <string name="application_not_licensed_title">Application not licensed</string>
-    <string name="application_not_licensed_message">This application is not licensed. Please purchase it from Google Play</string>
-    <string name="exit">Exit</string>
-    <string name="buy_app">Buy App</string>
 
     <string name="like">Like</string>
     <string name="dislike">Dislike</string>
@@ -615,7 +560,6 @@
     <string name="suggestion_deleted">Suggestion deleted</string>
 
     <string name="status_was_changed">Status was changed</string>
-    <string name="upload_new_photo">Upload new photo</string>
     <string name="open_photo_album">Open album</string>
 
     <string name="community_send_request">Send a request</string>
@@ -631,14 +575,10 @@
     <string name="community_leave_success">You left the community</string>
 
     <string name="counter_topics">topics</string>
-    <string name="counter_links">links</string>
-    <string name="members">Members</string>
 
     <string name="topic_comments_counter">last edited: %1$s | %2$d comments</string>
     <string name="topics">Topics</string>
     <string name="post_from_group">On behalf of Community</string>
-
-    <string name="publish">Done</string>
 
     <string name="for_friends_only">For friends only</string>
     <string name="add_signature">Add author\'s signature</string>
@@ -660,7 +600,6 @@
     <string name="photo">Photo</string>
     <string name="video">Video</string>
     <string name="share">Share</string>
-    <string name="repeat">Repeat</string>
     <string name="new_comment">New comment</string>
     <string name="editing">Editing</string>
     <string name="ready">Ready</string>
@@ -671,16 +610,11 @@
     <string name="developer">Developers</string>
     <string name="ruslan_kolbasa" translatable="false">Ruslan Kolbasa</string>
     <string name="emin_guliev" translatable="false">Emin Guliev</string>
-    <string name="phoenix_site" translatable="false">phoenixvk.ru</string>
     <string name="save_changes_question">Save changes ?</string>
     <string name="comment">Comment</string>
     <string name="up">Up</string>
     <string name="search">Search</string>
-    <string name="attach_quick_photos_title">You can attach a photo album here</string>
-    <string name="attach">Attach</string>
     <string name="input">Input</string>
-    <string name="show_quick_photos_album_title">Show quick photos</string>
-    <string name="select_quick_photos_album">Select quick photos album</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="list_is_empty">List is empty</string>
     <string name="people">People</string>
@@ -696,7 +630,6 @@
     <string name="all_friends">All friends</string>
     <string name="share_link">Share link</string>
     <string name="share_using">Share using</string>
-    <string name="requests_to_friends">Followers</string>
     <string name="type_here_to_start_searching">Type here to start searching…</string>
     <string name="results_in_the_cache">Results in the cache</string>
     <string name="results_in_a_network">Results in a network</string>
@@ -704,7 +637,6 @@
     <string name="wiki_page">Wiki-page</string>
     <string name="browser">Browser</string>
     <string name="title">Title: %1$s</string>
-    <string name="size">Size: %1$s</string>
     <string name="share_document_title">Share document</string>
     <string name="deleted">Deleted</string>
     <string name="remove_confirm">Remove confirm</string>
@@ -717,11 +649,7 @@
 
     <string name="no_photos">No photos</string>
     <string name="in_response_to">%1$s in response to %2$s</string>
-    <string name="select_file">Select file</string>
-    <string name="select_directory">Select directory</string>
-    <string name="add_new_document">Add new document</string>
     <string name="directory_is_empty">Directory is empty</string>
-    <string name="cancel_upload_confirm">Cancel upload?</string>
     <string name="invites_you_to_join_community">%1$s invites you to join the community</string>
     <string name="attachments_in_chat">Attachments in chat</string>
     <string name="photos_count">%1$d photos</string>
@@ -733,7 +661,6 @@
     <string name="share_photo_title">Share photo</string>
     <string name="communities">Communities</string>
     <string name="documents">Documents</string>
-    <string name="nothing_found">Search for \"%1$s\" no results</string>
     <string name="error_with_message">Error: %1$s</string>
     <string name="search_options">Search options</string>
     <string name="clear">Clear</string>
@@ -766,12 +693,8 @@
     <string name="sorting_by_comments_number_members_number_ratio">by the \"comments number/members number\" ratio</string>
     <string name="sorting_by_boards_entries_number_members_number_ratio">by the \"boards entries number/members number\" ratio</string>
     <string name="future_events_only">Future events only</string>
-    <string name="with_lyrics_only">With lyrics only</string>
-    <string name="search_only_by_artist_name">Search only by artist name</string>
     <string name="by_date_added">by date added</string>
-    <string name="by_popularity">by popularity</string>
     <string name="by_duration">by duration</string>
-    <string name="search_in_my_audios">Search in my audios</string>
     <string name="by_relevance">by relevance</string>
     <string name="hd_only">HD only</string>
     <string name="disable_safe_search">Disable safe search</string>
@@ -806,7 +729,6 @@
     <string name="school_city">School city</string>
     <string name="school_class">School class</string>
     <string name="religious_affiliation">Religious affiliation</string>
-    <string name="equalizer">Equalizer</string>
     <string name="restored">Restored</string>
     <string name="cancel_invitation">Cancel invitation</string>
     <string name="request_canceled">Request canceled</string>
@@ -847,13 +769,9 @@
     <string name="post_is_pinned">Post is pinned</string>
     <string name="will_be_post_at">Will be post %1$s</string>
     <string name="date_is_invalid">Date is invalid. Enter valid date</string>
-    <string name="upload_does_not_finished_saving_cancelled">Uploading not completed. Saving canceled</string>
     <string name="this_device_does_not_support_gcm">This device does not supports GCM</string>
-    <string name="show_animation_transitions">Show animation transitions</string>
     <string name="double_press_to_exit">Double-click to exit the application</string>
-    <string name="posts_of_community">Posts of community</string>
 
-    <string name="preference_audio_notif_invert_title">Invert audio player notification colors</string>
     <string name="from_list">From list</string>
     <string name="photo_size">Photo size</string>
     <string name="later">Later</string>
@@ -879,20 +797,14 @@
     <string name="who_cannot_have_access">Who cannot have access?</string>
     <string name="press_plus_for_add">Press (+) to select user</string>
     <string name="privacy_view">Privacy view</string>
-    <string name="all_users">All users</string>
     <string name="and">and</string>
     <string name="privacy_settings">Privacy settings</string>
     <string name="privacy_comment">Privacy comment</string>
-    <string name="create_an_album">Create an album</string>
-    <string name="night_mode_interval">Night mode interval</string>
     <string name="who_is_allowed_to_view_this_album">Who is allowed to view this album?</string>
     <string name="who_is_not_allowed_to_view_this_album">Who is not allowed to view this album?</string>
     <string name="who_is_allowed_to_comment_photos">Who is allowed to comment photos?</string>
     <string name="who_is_not_allowed_to_comment_this_album">Who is not allowed to comment this album?</string>
     <string name="album_remove_confirm_message">Are you really sure to delete this album? This action cannot be undone.</string>
-    <string name="title_start_time">Start time</string>
-    <string name="title_end_time">End time</string>
-    <string name="album_edit">Album edit</string>
     <string name="copy">Copy</string>
     <string name="forward">Forward</string>
     <string name="enter_captcha_text">Enter captcha text</string>
@@ -901,15 +813,12 @@
     <string name="from_camera">From camera</string>
     <string name="messages">Messages</string>
     <string name="color_navigation_bar">Color navigation bar</string>
-    <string name="unable_to_delete_temp_recording_file">Unable to delete temp recording file</string>
-    <string name="unable_to_prepare_media_recorder">Unable to prepare MediaRecorder</string>
     <string name="recording_time">Recording… %1$s</string>
     <string name="unable_to_play_file">Unable to play file</string>
     <string name="gif_player">Gif Player</string>
     <string name="viewing_messages">Viewing Messages</string>
     <string name="pause_is_not_supported">Pause is not supported</string>
     <string name="authorization">Authorization</string>
-    <string name="unknown_community_name">Unknown Community</string>
     <string name="open_post">Open post</string>
     <string name="show_photo">Show Photo</string>
     <string name="show_video">Show Video</string>
@@ -933,7 +842,6 @@
     <string name="create_pin_code_title">Create PIN-code</string>
     <string name="repeat_pin_code_title">Repeat PIN-code</string>
     <string name="entered_pin_codes_do_not_match">Entered PIN-codes do not match</string>
-    <string name="skip">Skip</string>
     <string name="session_already_created">Session already created</string>
     <string name="key_exchange_request">Key exchange request</string>
     <string name="key_exchange_request_content_text">%1$s requests permission to key exchange</string>
@@ -954,8 +862,6 @@
     <string name="ask_for_pin_on_application_start_title">PIN on start</string>
     <string name="ask_for_pin_on_application_start_summary">Ask for PIN on application start</string>
     <string name="change_pin_title">Change PIN</string>
-    <string name="automatically_decrypt_all_messages_title">Automatically decrypt all messages</string>
-    <string name="ask_for_pin_when_decrypting_messages_title">Ask for PIN when decrypting messages</string>
     <string name="button_accept">Accept</string>
     <string name="button_decline">Decline</string>
     <string name="you_have_received_request_for_key_exchange_from">You have received a request for key exchange from</string>
@@ -1002,12 +908,6 @@
         \n4. DENIAL OF RESPONSIBILITY
         \n4.1. Phoenix app developers are not responsible for user data in case of keys loss or improper usage of this option.</string>
     <string name="encryption_terms_of_use_title">Terms of use</string>
-    <string name="export_keys_title">Export keys</string>
-    <string name="export_keys_summary">Save the keys to a file phoenixkeys.json in the internal memory</string>
-    <string name="import_keys_title">Import keys</string>
-    <string name="import_keys_summary">Import keys from file phoenixkeys.json</string>
-    <string name="successfully_imported_count_keys">Successfully imported %1$d keys</string>
-    <string name="successfully_exported_count_keys">Successfully saved %1$d keys</string>
     <string name="reached_maximum_count_of_attachments">Reached the maximum count of attachments</string>
     <string name="for_topic">for topic</string>
     <string name="votes_count">%1$d votes</string>
@@ -1024,7 +924,6 @@
     <string name="push_user_liked_your_comment_on_the_post">%1$s liked your comment on the post</string>
     <string name="likes">Likes</string>
     <string name="success">Success</string>
-    <string name="unauthorized">Unauthorized</string>
     <string name="wait_until_file_upload_is_complete">Wait until the file upload is complete</string>
     <string name="chat_background">Chat background</string>
     <string name="go_to_post">Go to post</string>
@@ -1032,7 +931,6 @@
     <string name="go_to_video">Go to video</string>
     <string name="upload_not_resolved_exception_message">Uploading is not completed or interrupted</string>
     <string name="privacy_policy">Privacy policy</string>
-    <string name="post_editing">Post editing</string>
     <string name="copy_text">Copy text</string>
     <string name="copied_text">Text is copied</string>
     <string name="in_a_civil_union">In a civil union</string>
@@ -1049,7 +947,6 @@
     <string name="settings_show_logs_title" translatable="false">Logs</string>
     <string name="application_logs" translatable="false">App Logs</string>
     <string name="search_option_empty_text">Search options are not available</string>
-    <string name="counter_gifts">gifts</string>
     <string name="comment_editing_title">Comment editing</string>
     <string name="saving">Saving</string>
     <string name="drawer_newsfeed_comments">Comments</string>
@@ -1072,7 +969,6 @@
     <string name="add_to_launcer_shortcuts">Add to shortcuts</string>
     <string name="wall_text_hint">Enter the text of the post</string>
     <string name="document_short">Doc</string>
-    <string name="timer">Timer</string>
     <string name="button_postpone">Postpone</string>
     <string name="message_obtaining_owner_information">Obtaining owner information</string>
     <string name="title_suggest_news">Suggest news</string>
@@ -1098,7 +994,6 @@
     <string name="community_options_main_info_title">Main info</string>
     <string name="community_options_name_title">Name</string>
     <string name="community_control">Community control</string>
-    <string name="community_settings_tab_title">Settings</string>
     <string name="community_managers_tab_title">Managers</string>
     <string name="community_options_description_title">Community description</string>
     <string name="community_options_link_title">Community link</string>
@@ -1113,7 +1008,6 @@
     <string name="community_options_date_created_title">Date Created</string>
     <string name="community_options_community_subject_title">Community subject</string>
     <string name="select_category_hint">Select category</string>
-    <string name="community_options_sections_title">Sections</string>
     <string name="community_options_comments_title">Comments</string>
     <string name="community_options_feedback_title">Feedback</string>
     <string name="community_options_enable_comments">Enable comments</string>
@@ -1123,8 +1017,6 @@
     <string name="community_options_separate_keywords_by_commas">Separate keywords by commas.</string>
     <string name="community_links_tab_title">Links</string>
     <string name="community_blacklist_tab_title">Blacklist</string>
-    <string name="community_members_tab_title">Members</string>
-    <string name="add_new_link">Add new link</string>
     <string name="role_moderator">Moderator</string>
     <string name="role_editor">Editor</string>
     <string name="role_administrator">Administrator</string>
@@ -1204,7 +1096,6 @@
     <string name="button_disable">Disable</string>
     <string name="button_activate">Activate</string>
     <string name="action_add">Add</string>
-    <string name="proxy_restart_app_toast">To apply the changes, restart the application</string>
     <string name="error_timeout_message">Timeout</string>
     <string name="button_login">Login</string>
     <string name="button_login_via_web">Login via web</string>
@@ -1214,7 +1105,6 @@
     <string name="button_proxy">Proxy</string>
     <string name="login_sms_code_hint">SMS-code</string>
     <string name="login_captcha_hint" translatable="false">Captcha</string>
-    <string name="button_close_now">Close now</string>
     <string name="drawer_edit_title">Navigation editor</string>
     <string name="login_app_code_hint">Confirmation code</string>
     <string name="button_login_send_code_via_sms">Send code via SMS</string>
@@ -1240,7 +1130,6 @@
     <string name="api_error_902">Can\'t send messages to this user due to their privacy settings</string>
     <string name="api_error_909">Can\'t edit this message, because it\'s too old</string>
     <string name="api_error_914">Too many forwarded messages</string>
-    <string name="api_error_917">You don\'t have access to this chat</string>
     <string name="api_error_913">Message is too long</string>
     <string name="api_error_921">Can\'t forward these messages</string>
     <string name="allow_fingerprint_title">Allow fingerprint</string>
@@ -1252,10 +1141,8 @@
     <string name="error_key_exchange_invalid_session_state">Invalid session state</string>
     <string name="error_key_exchange_cancelled_by_user">Key exchange was cancelled by user</string>
     <string name="error_key_exchange_session_expired">The key exchange session is no longer active. Please try again.</string>
-    <string name="error_activity_not_found">No compatible software installed</string>
     <string name="last_closed_page">Last closed page</string>
     <string name="open_links_in_app">Open web pages in app</string>
-    <string name="via">via</string>
     <string name="pause">pause</string>
     <string name="previous">previous</string>
     <string name="next">next</string>

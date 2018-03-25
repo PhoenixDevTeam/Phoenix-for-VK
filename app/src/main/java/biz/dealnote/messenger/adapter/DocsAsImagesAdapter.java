@@ -1,6 +1,5 @@
 package biz.dealnote.messenger.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -47,8 +46,6 @@ public class DocsAsImagesAdapter extends RecyclerBindableAdapter<Document, DocsA
 
     @Override
     protected void onBindItemViewHolder(DocViewHolder holder, int position, int type) {
-        final Context context = holder.itemView.getContext();
-
         Document item = getItem(position);
 
         holder.title.setText(item.getTitle());
@@ -91,10 +88,10 @@ public class DocsAsImagesAdapter extends RecyclerBindableAdapter<Document, DocsA
         ImageView image;
         TextView title;
 
-        private DocViewHolder(View root) {
+        DocViewHolder(View root) {
             super(root);
-            image = (ImageView) root.findViewById(R.id.image);
-            title = (TextView) root.findViewById(R.id.title);
+            image = root.findViewById(R.id.image);
+            title = root.findViewById(R.id.title);
         }
     }
 }

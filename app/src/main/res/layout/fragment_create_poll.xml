@@ -22,7 +22,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="?android:textColorPrimary"
                 android:text="@string/poll_question"
-                android:id="@+id/textView5"
                 android:paddingBottom="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
@@ -42,7 +41,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/poll_options"
-                android:id="@+id/textView6"
                 android:padding="8dp"
                 android:layout_marginTop="8dp"
                 android:textSize="@dimen/font_size_additional" />

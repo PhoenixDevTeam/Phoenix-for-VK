@@ -18,12 +18,6 @@
     <!-- Settings-->
     <string name="settings">Настройки</string>
 
-    <string-array name="night_back_names">
-        <item>Серый</item>
-        <item>Темный</item>
-        <item>Черный</item>
-    </string-array>
-
     <string name="general_settings">Общие</string>
     <string name="other_settings">Другие</string>
     <string name="about_settings">О приложении</string>
@@ -52,7 +46,6 @@
     <string name="attachment_document">Документ</string>
     <string name="attachment_documents">Документы</string>
     <string name="attachment_link">Ссылка</string>
-    <string name="new_message">Новое сообщение</string>
     <string name="user_type_message">набирает сообщение…</string>
 
     <string name="load_more">Загрузить еще</string>
@@ -60,7 +53,6 @@
     <string name="last_seen_sex_woman">была в сети: %1$s</string>
     <string name="last_seen_sex_unknown">был(-а) в сети: %1$s</string>
     <string name="online">Онлайн</string>
-    <string name="offline">В оффлайне</string>
     <string name="thank_you">На вашей стене создан пост с информацией о приложении. Спасибо большое за поддержку!</string>
 
 
@@ -81,7 +73,6 @@
     <string name="cannot_create_catalog">Каталог уже присутствует или Вы ввели недопустимое имя каталога</string>
     <string name="path_not_exist">Путь не существует или не может быть прочитан</string>
     <string name="create_dir">Новая папка</string>
-    <string name="file_explorer">Менеджер файлов</string>
 
     <string name="quick_answer_title">Быстрый ответ</string>
 
@@ -89,13 +80,8 @@
     <string name="to_another_dialogue">В другой диалог</string>
 
     <string name="music">Аудиозаписи</string>
-    <string name="added_music">Добавленные аудиозаписи</string>
-    <string name="music_from_search">Композиции из глобального поиска</string>
-    <string name="enter_to_search">Введите для поиска</string>
-    <string name="illegal_content_message">Нелегальный контент. Посетите группу приложения (через настройки) или пройдите по адресу phoenixvk.ru для подробной информации</string>
 
     <string name="image_number">%1$d из %2$d</string>
-    <string name="image_load_error">Не удалось загрузить изображение</string>
 
     <string name="service_update_chat_photo">%1$s  обновил фотографию беседы</string>
     <string name="service_remove_chat_photo">%1$s удалил фотографию беседы</string>
@@ -127,7 +113,6 @@
     <string name="set_groupchat_title">Укажите тему беседы</string>
 
     <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
-    <string name="visibility_mode_title">Режим видимости</string>
 
     <string-array name="night_mode_names">
         <item>Выкл</item>
@@ -152,7 +137,6 @@
 
     <string name="high_notif_priority_title">Высокий приоритет уведомлений</string>
     <string name="high_notif_priority_summary">Уведомления из приложения будут располагаться выше по отношению к другим уведомлениям. Для Android версии 5.0 и выше данная опция также включает всплывающие уведомления</string>
-    <string name="night_background_title">Фон ночного режима</string>
     <string name="night_mode_title">Ночной режим</string>
 
     <string name="photos">Фотографии</string>
@@ -162,7 +146,6 @@
     <string name="for_wall_post">к записи на стене</string>
     <string name="for_photo">к фотографии</string>
 
-    <string name="error_token_is_null">Аккаунт не авторизирован. Проверьте авторизацию.</string>
     <string name="title_activity_create_post">Новая запись</string>
 
     <string name="chat_empty_text">Здесь будет выводиться история переписки.</string>
@@ -170,12 +153,6 @@
     <string name="emojis_type_summary">Если включено, будут использоваться системные смайлы</string>
     <string name="emojis_type_title">Использовать системные смайлы</string>
     <string name="appearance_settings">Внешний вид</string>
-
-    <string name="logging_categoty_title">Логирование</string>
-    <string name="enable_log_title">Вести журнал событий</string>
-    <string name="enable_log_summary">Сохранять сведения о событиях приложения в файл</string>
-    <string name="clear_log_title">Очистить журнал</string>
-    <string name="clear_log_summary">Удалить все записи из журнала событий</string>
 
     <string name="wall_post">Запись на стене</string>
 
@@ -213,7 +190,6 @@
     <string name="save_to_drive">Сохранить на накопитель</string>
 
     <string name="reply">Ответить</string>
-    <string name="reply_for">ответ для %1$s</string>
 
     <string name="feed">Новости</string>
     <string name="feeds_empty_text">Здесь Вы будете видеть новостную ленту своих друзей.</string>
@@ -288,7 +264,6 @@
     <string name="view_count">просмотров: %1$d</string>
     <string name="message_was_deleted">Сообщение было удалено</string>
     <string name="edit">Редактировать</string>
-    <string name="add_yourself">Добавить себе</string>
     <string name="added">Добавлено</string>
 
     <string name="get_full_app_title">Получить полное приложение</string>
@@ -353,23 +328,14 @@
     <string name="open_profile">Открыть профиль</string>
 
     <string name="play">Воспроизвести</string>
-    <string name="play_small">Воспроизвести (MIN)</string>
-    <string name="play_with_outer_app">Открыть с помощью…</string>
-    <string name="play_with_coub">Открыть в Coub</string>
     <string name="for_video">к видеозаписи</string>
 
     <string name="more_info">Больше</string>
-    <string name="hide_info">Скрыть</string>
 
     <!--Основная информация о пользователе-->
     <string name="mail_information">Основная информация</string>
-    <string name="first_name">Имя</string>
-    <string name="last_name">Фамилия</string>
     <string name="sex">Пол</string>
-    <string name="studied_at">Место учёбы</string>
 
-    <string name="relationship_status">Семейное положение</string>
-    <string name="relationship_partner">партнер</string>
     <string name="relationship_man_single">Не женат</string>
     <string name="relationship_man_in_relationship">Есть подруга</string>
     <string name="relationship_man_engaged">Помолвлен</string>
@@ -389,8 +355,6 @@
     <string name="birthday">День рождения</string>
     <string name="hometown">Родной город</string>
     <string name="languages">Языки</string>
-    <string name="relatives">Родственники</string>
-    <string name="relatives_grandparents">Бабушки и дедушки</string>
     <string name="relatives_parents">Родители</string>
     <string name="relatives_siblings">Братья и сестры</string>
     <string name="relatives_children">Дети</string>
@@ -398,18 +362,12 @@
     <string name="relatives_others">Другие</string>
 
     <!--Контактная информация пользователя-->
-    <string name="contact_information">Контактная информация</string>
     <string name="mobile_phone_number">Мобильный телефон</string>
     <string name="home_phone_number">Домашний телефон</string>
     <string name="college_or_university">ВУЗ</string>
-    <string name="department">Факультет</string>
-    <string name="study_program">Кафедра</string>
-    <string name="mode_of_study">Форма обучения</string>
     <string name="status">Статус</string>
     <string name="school">Школа</string>
     <string name="website">Сайт</string>
-    <string name="alternative_phone">Дополнительный телефон</string>
-    <string name="home">Дом</string>
     <string name="country">Страна</string>
     <string name="city">Город</string>
 
@@ -469,28 +427,14 @@
 
     <!--Военная служба-->
     <string name="military_service">Военная служба</string>
-    <string name="branch_unit">Войсковая часть</string>
 
     <!--Карьера-->
     <string name="career">Карьера</string>
     <string name="company">Компания</string>
-    <string name="from">Год начала</string>
-    <string name="to">Год окончания</string>
     <string name="position">Должность</string>
 
     <!--Образование-->
     <string name="education">Образование</string>
-    <string name="secondary_education">Среднее образование</string>
-    <string name="graduation_year">Год выпуска</string>
-    <string name="clazz">Класс</string>
-    <string name="specialization">Специализация</string>
-    <string name="higher_education">Высшее образование</string>
-
-    <string name="application_not_licensed_title">Нет лицензии</string>
-    <string name="application_not_licensed_message">У Вас нет лицензии на использование этого приложения. Пожалуйста, купите его в Google Play</string>
-    <string name="exit">Выход</string>
-    <string name="buy_app">Купить</string>
-    <string name="download">Загрузить</string>
 
     <string name="like">Мне нравится</string>
     <string name="dislike">Мне не нравится</string>
@@ -523,7 +467,6 @@
     <string name="suggestion_deleted">Отклонена рекомендация друга</string>
 
     <string name="status_was_changed">Статус был изменен</string>
-    <string name="upload_new_photo">Загрузить новую фотографию</string>
     <string name="open_photo_album">Открыть альбом</string>
 
     <string name="community_send_request">Отправить заявку</string>
@@ -539,15 +482,11 @@
     <string name="community_leave_success">Вы покинули группу</string>
 
     <string name="counter_topics">обсуждения</string>
-    <string name="counter_links">ссылки</string>
-    <string name="members">Участники</string>
 
     <string name="topic_comments_counter">последнее обновление: %1$s | %2$d комментариев</string>
     <string name="topics">Обсуждения</string>
     <string name="group_chat_leave">Покинуть беседу</string>
     <string name="post_from_group">От имени группы</string>
-
-    <string name="publish">Готово</string>
 
     <string name="for_friends_only">Только для друзей</string>
     <string name="add_signature">Добавить подпись автора</string>
@@ -568,7 +507,6 @@
     <string name="photo">Фото</string>
     <string name="video">Видео</string>
     <string name="share">Поделиться</string>
-    <string name="repeat">Повторить</string>
     <string name="new_comment">Новый комментарий</string>
     <string name="editing">Редактирование</string>
     <string name="ready">Готово</string>
@@ -581,11 +519,7 @@
     <string name="comment">Комментарий</string>
     <string name="up">Вверх</string>
     <string name="search">Поиск</string>
-    <string name="attach_quick_photos_title">Вы можете прикрепить сюда альбом с фотографиями</string>
-    <string name="attach">Прикрепить</string>
     <string name="input">Ввод</string>
-    <string name="show_quick_photos_album_title">Показывать блок быстрых фото</string>
-    <string name="select_quick_photos_album">Выбрать альбом быстрых фотографий</string>
     <string name="bookmarks">Закладки</string>
     <string name="list_is_empty">Список пуст</string>
     <string name="people">Люди</string>
@@ -601,13 +535,11 @@
     <string name="all_friends">Все друзья</string>
     <string name="share_link">Поделиться ссылкой</string>
     <string name="share_using">Поделиться с помощью</string>
-    <string name="requests_to_friends">Заявки</string>
     <string name="mutual_friends">Общие друзья</string>
     <string name="results_in_a_network">Найденное в сети</string>
     <string name="type_here_to_start_searching">Введите, чтобы начать поиск…</string>
     <string name="results_in_the_cache">Результаты из кэша</string>
     <string name="wiki_page">Вики-страница</string>
-    <string name="size">Размер: %1$s</string>
     <string name="title">Название: %1$s</string>
     <string name="browser">Браузер</string>
     <string name="share_document_title">Поделиться документом</string>
@@ -617,12 +549,8 @@
     <string name="album_remove_confirm_message">Вы действительно хотите удалить этот альбом ? Это действие нельзя отменить.</string>
     <string name="in_response_to">%1$s в ответ на %2$s</string>
     <string name="no_photos">Нет изображений</string>
-    <string name="select_directory">Выберите каталог</string>
-    <string name="select_file">Выберите файл</string>
     <string name="invites_you_to_join_community">%1$s приглашает Вас вступить в сообщество</string>
-    <string name="add_new_document">Добавить новый документ</string>
     <string name="attachments_in_chat">Материалы беседы</string>
-    <string name="cancel_upload_confirm">Отменить загрузку?</string>
     <string name="photos_count">%1$d фото</string>
     <string name="videos_count">%1$d видео</string>
     <string name="communities">Сообщества</string>
@@ -630,7 +558,6 @@
     <string name="save_yourself">Сохранить себе</string>
     <string name="photo_saved_yourself">Сохранено в альбом "Сохраненные фотографии"</string>
     <string name="documents">Документы</string>
-    <string name="nothing_found">По запросу \"%1$s\" ничего не найдено</string>
     <string name="search_options">Опции поиска</string>
     <string name="clear">Очистить</string>
     <string name="age_from">Возраст, с</string>
@@ -641,7 +568,6 @@
     <string name="birthday_month">Месяц рождения</string>
     <string name="by_date_added">по дате добавления</string>
     <string name="by_duration">по длительности</string>
-    <string name="by_popularity">по популярности</string>
     <string name="by_relevance">по релевантности</string>
     <string name="april">Апрель</string>
     <string name="december">Декабрь</string>
@@ -668,9 +594,7 @@
     <string name="online_only">Только онлайн</string>
     <string name="page">Страница</string>
     <string name="relationship">Семейное положение</string>
-    <string name="search_in_my_audios">Искать в моих аудиозаписях</string>
     <string name="search_in_my_videos">Искать в моих видеозаписях</string>
-    <string name="search_only_by_artist_name">Искать только по исполнителю</string>
     <string name="search_option_actively_searching">В активном поиске</string>
     <string name="search_option_by_date_registered">По дате регистрации</string>
     <string name="search_option_by_rating">По рейтингу</string>
@@ -686,7 +610,6 @@
     <string name="sorting_by_growth_speed">по скорости роста</string>
     <string name="sorting_by_likes_number_members_number_ratio">по отношению количества лайков к количеству пользователей</string>
     <string name="type">Тип</string>
-    <string name="with_lyrics_only">Только с текстами песен</string>
     <string name="with_photo_only">Только с фото</string>
     <string name="chair">Кафедра</string>
     <string name="faculty">Факультет</string>
@@ -702,7 +625,6 @@
     <string name="religious_affiliation">Религиозная принадлежность</string>
     <string name="audios_count">%1$d аудиозаписей</string>
     <string name="documents_count">%1$d документов</string>
-    <string name="equalizer">Эквалайзер</string>
     <string name="cancel_invitation">Отклонить приглашение</string>
     <string name="invitation_has_been_declined">Приглашение было отклонено</string>
     <string name="request_canceled">Заявка отменена</string>
@@ -741,12 +663,8 @@
     <string name="will_be_post_at">Будет опубликован %1$s</string>
     <string name="date_is_invalid">Вы ввели неверную дату</string>
     <string name="this_device_does_not_support_gcm">Это устройство не поддерживает GCM</string>
-    <string name="upload_does_not_finished_saving_cancelled">Загрузка не завершена. Сохранение отменено</string>
     <string name="double_press_to_exit">Двойное нажатие для выхода из приложения</string>
-    <string name="show_animation_transitions">Анимировать переходы</string>
-    <string name="posts_of_community">Записи группы</string>
     <string name="from_list">Из списка</string>
-    <string name="preference_audio_notif_invert_title">Инвертировать цвета уведомления аудио-плеера</string>
     <string name="photo_size">Размер фото</string>
     <string name="button_go">Перейти</string>
     <string name="later">Позже</string>
@@ -769,21 +687,15 @@
     <string name="privacy_to_friends_only">Только друзьям</string>
     <string name="privacy_to_all_users">Всем пользователям</string>
     <string name="privacy_to_friends_and_friends_of_friends">Друзьям и друзьям друзей</string>
-    <string name="all_users">Все пользователи</string>
     <string name="press_plus_for_add">Нажмите (+) чтобы отметить пользователя</string>
     <string name="and">и</string>
     <string name="privacy_view">Доступ к просмотру</string>
     <string name="privacy_settings">Настройки приватности</string>
-    <string name="create_an_album">Создание альбома</string>
-    <string name="night_mode_interval">Интервал ночного режима</string>
     <string name="privacy_comment">Доступ к комментированию</string>
     <string name="who_is_allowed_to_view_this_album">Кому доступен просмотр этого альбома?</string>
     <string name="who_is_not_allowed_to_view_this_album">Кому просмотр этого альбома запрещен?</string>
     <string name="who_is_allowed_to_comment_photos">Кто может комментировать фотографии?</string>
     <string name="who_is_not_allowed_to_comment_this_album">Кому комментирование этого альбома запрещено?</string>
-    <string name="title_end_time">Время окончания</string>
-    <string name="title_start_time">Время начала</string>
-    <string name="album_edit">Редактирование альбома</string>
     <string name="copy">Копировать</string>
     <string name="forward">Переслать</string>
     <string name="enter_captcha_text">Введите текст с картинки</string>
@@ -795,13 +707,10 @@
     <string name="error_with_message">Ошибка: %1$s</string>
     <string name="gif_player">Gif-плеер</string>
     <string name="recording_time">Запись… %1$s</string>
-    <string name="unable_to_delete_temp_recording_file">Не удалось удалить временный файл</string>
     <string name="unable_to_play_file">Не удалось воспроизвести файл</string>
-    <string name="unable_to_prepare_media_recorder">Не удалось инициализировать диктофон</string>
     <string name="viewing_messages">Просмотр сообщений</string>
     <string name="authorization">Авторизация</string>
     <string name="pause_is_not_supported">Пауза не поддерживается</string>
-    <string name="unknown_community_name">Неизвестное сообщество</string>
     <string name="jump_to_comment">Перейти к комментарию</string>
     <string name="open_post">Показать запись</string>
     <string name="open_topic">Открыть обсуждение</string>
@@ -820,7 +729,6 @@
     <string name="pin_is_invalid_message">Неверный PIN-код</string>
     <string name="repeat_pin_code_title">Повторите PIN-код</string>
     <string name="session_already_created">Сессия уже активна</string>
-    <string name="skip">Пропустить</string>
     <string name="use_pin_title">Используйте PIN-код или отпечаток пальца</string>
     <string name="key_exchange_failed">Обмен ключами не удался</string>
     <string name="you_have_successfully_exchanged_keys">Вы успешно обменялись ключами, теперь можете включить шифрование сообщений</string>
@@ -838,8 +746,6 @@
     <string name="change_pin_title">Изменить PIN-код</string>
     <string name="button_decline">Отклонить</string>
     <string name="button_accept">Принять</string>
-    <string name="automatically_decrypt_all_messages_title">Автоматически расшифровывать все сообщения</string>
-    <string name="ask_for_pin_when_decrypting_messages_title">Запрашивать PIN-код для расшифровки сообщений</string>
     <string name="accepted_friend_request">принял заявку в друзья</string>
 
     <string name="encryption_terms_of_use">
@@ -882,12 +788,6 @@
     <string name="store_in_ram_summary">Ключи шифрования будут помещены в оперативную память. ВАЖНО. После закрытия приложения Вы навсегда потеряете эти ключи и не сможете расшифровать входящие и исходящие сообщения.</string>
     <string name="store_on_disk">Сохранить на диск (рекомендуется)</string>
     <string name="store_on_disk_summary">Ключи шифрования будут сохранены в постоянной памяти устройства.</string>
-    <string name="export_keys_summary">Сохранить все ключи в файл phoenixkeys.json во внутренней памяти</string>
-    <string name="export_keys_title">Экспорт ключей</string>
-    <string name="import_keys_summary">Импортировать ключи из файла phoenixkeys.json</string>
-    <string name="import_keys_title">Импорт ключей</string>
-    <string name="successfully_imported_count_keys">Успешно импортировано %1$d ключей</string>
-    <string name="successfully_exported_count_keys">Успешно сохранено %1$d ключей</string>
     <string name="new_post_title">Новая запись</string>
     <string name="new_post_was_published_in">%1$s опубликовал новую запись</string>
     <string name="for_topic">В обсуждении</string>
@@ -907,13 +807,11 @@
     <string name="chat_background">Фон чата</string>
     <string name="go_to_post">Перейти к записи</string>
     <string name="success">Успех</string>
-    <string name="unauthorized">Ошибка авторизации</string>
     <string name="post_text">Текст записи</string>
     <string name="allow_text_selection">Разрешить выделение текста</string>
     <string name="in_a_civil_union">В гражданском браке</string>
     <string name="copied_text">Текст скопирован в буфер обмена</string>
     <string name="copy_text">Скопировать текст</string>
-    <string name="post_editing">Редактирование записи</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="upload_not_resolved_exception_message">Загрузка не завершена или прервана</string>
     <string name="go_to_video">Перейти к видео</string>
@@ -937,7 +835,6 @@
     <string name="message_attachment_empty_text">Вложений пока нет</string>
     <string name="button_add_photo">Добавить фото</string>
     <string name="search_option_empty_text">Опции поиска недоступны</string>
-    <string name="counter_gifts">подарки</string>
     <string name="comment_editing_title">Редактирование</string>
     <string name="saving">Сохранение</string>
     <string name="drawer_newsfeed_comments">Комментарии</string>
@@ -958,7 +855,6 @@
     <string name="add_to_launcer_shortcuts">Добавить в ярлыки приложения</string>
     <string name="wall_text_hint">Введите текст новости</string>
     <string name="document_short">Док</string>
-    <string name="timer">Таймер</string>
     <string name="button_postpone">Отложить</string>
     <string name="message_obtaining_owner_information">Получение информации о владельце</string>
     <string name="title_suggest_news">Предложить новость</string>
@@ -984,7 +880,6 @@
     <string name="community_options_main_info_title">Основная информация</string>
     <string name="community_options_name_title">Название</string>
     <string name="community_control">Управление</string>
-    <string name="community_settings_tab_title">Настройки</string>
     <string name="community_managers_tab_title">Управление</string>
     <string name="community_options_description_title">Описание сообщества</string>
     <string name="community_options_link_title">Адрес страницы</string>
@@ -999,7 +894,6 @@
     <string name="community_options_date_created_title">Дата создания</string>
     <string name="community_options_community_subject_title">Тематика сообщества</string>
     <string name="select_category_hint">Выберите категорию</string>
-    <string name="community_options_sections_title">Разделы</string>
     <string name="community_options_comments_title">Комментарии</string>
     <string name="community_options_feedback_title">Обратная связь</string>
     <string name="community_options_enable_comments">Комментарии включены</string>
@@ -1009,8 +903,6 @@
     <string name="community_options_separate_keywords_by_commas">Перечислите ключевые слова через запятую.</string>
     <string name="community_links_tab_title">Ссылки</string>
     <string name="community_blacklist_tab_title">Черный список</string>
-    <string name="community_members_tab_title">Участники</string>
-    <string name="add_new_link">Добавить новую ссылку</string>
     <string name="role_moderator">Модератор</string>
     <string name="role_editor">Редактор</string>
     <string name="role_administrator">Администратор</string>
@@ -1087,9 +979,7 @@
     <string name="proxy_authorization">Авторизация</string>
     <string name="button_disable">Отключить</string>
     <string name="action_add">Добавить</string>
-    <string name="proxy_restart_app_toast">Для применения изменений перезапустите приложение</string>
     <string name="error_timeout_message">Превышено время ожидание запроса</string>
-    <string name="button_close_now">Закрыть сейчас</string>
     <string name="login_sms_code_hint">SMS-код</string>
     <string name="button_proxy">Прокси</string>
     <string name="login_password_hint">Пароль</string>
@@ -1123,7 +1013,6 @@
     <string name="api_error_909">Нельзя редактировать это сообщение, так как оно слишком устарело</string>
     <string name="api_error_914">Слишком много пересланных сообщений</string>
     <string name="api_error_913">Сообщение слишком длинное</string>
-    <string name="api_error_917">У Вас нет доступа к этому чату</string>
     <string name="api_error_921">Невозможно переслать выбранные сообщения</string>
     <string name="allow_fingerprint_title">Разрешить отпечаток пальца</string>
     <string name="error_login_by_fingerprint_not_allowed">Вход с помощью отпечатка пальца не разрешен</string>
@@ -1131,10 +1020,8 @@
     <string name="error_key_exchange_invalid_session_state">Недопустимый статус сессии. Обмен ключами не удался.</string>
     <string name="error_key_exchange_cancelled_by_user">Обмен ключами был отменен пользователем</string>
     <string name="error_key_exchange_session_expired">Сессия уже не активна. Повторите обмен еще раз.</string>
-    <string name="error_activity_not_found">Совместимое ПО не установлено</string>
     <string name="last_closed_page">Последняя закрытая</string>
     <string name="open_links_in_app">Открывать ссылки в приложении</string>
-    <string name="via">через</string>
     <string name="pause">пауза</string>
     <string name="previous">предыдущий</string>
     <string name="next">следующий</string>

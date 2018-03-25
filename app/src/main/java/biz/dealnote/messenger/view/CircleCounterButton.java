@@ -49,8 +49,8 @@ public class CircleCounterButton extends LinearLayout {
     protected void init(Context context, AttributeSet attrs) {
         inflate(context, R.layout.button_circle_with_counter, this);
 
-        icon = (ImageView) findViewById(R.id.icon);
-        counter = (TextView) findViewById(R.id.counter);
+        icon = findViewById(R.id.icon);
+        counter = findViewById(R.id.counter);
 
         final TypedArray attrArray = context.obtainStyledAttributes(attrs, R.styleable.CircleCounterButton);
 

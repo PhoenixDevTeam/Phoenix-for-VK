@@ -69,7 +69,6 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/time_and_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 

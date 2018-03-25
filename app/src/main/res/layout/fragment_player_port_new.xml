@@ -225,7 +225,6 @@
 
     <RelativeLayout
         android:layout_marginBottom="24dp"
-        android:id="@+id/top_container"
         android:elevation="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

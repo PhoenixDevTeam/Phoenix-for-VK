@@ -156,14 +156,6 @@
         <attr name="filter_color" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="TextInputLayout">
-        <attr name="input_description" format="string" />
-        <attr name="input_description_text_size" format="dimension" />
-        <attr name="input_description_text_color" format="color" />
-        <attr name="input_divider_color" format="color"/>
-        <attr name="input_divider_height" format="dimension"/>
-    </declare-styleable>
-
     <declare-styleable name="SawView">
         <attr name="sawToothPrefWidht" format="dimension" />
         <attr name="sawBackground" format="color" />

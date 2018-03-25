@@ -57,7 +57,7 @@ public class EmojiconTextView extends WrapWidthTextView implements ClickableFore
     private boolean mDisplayHashTags;
     private int mHashTagWordColor;
 
-    private static final Pattern URL_PATTERN = Pattern.compile("((http|https|rstp):\\/\\/\\S*)");
+    private static final Pattern URL_PATTERN = Pattern.compile("((http|https|rstp)://\\S*)");
 
     public EmojiconTextView(Context context) {
         this(context, null);

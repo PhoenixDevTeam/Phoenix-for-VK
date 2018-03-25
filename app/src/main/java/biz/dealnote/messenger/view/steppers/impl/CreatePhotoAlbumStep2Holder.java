@@ -29,8 +29,8 @@ public class CreatePhotoAlbumStep2Holder extends AbsStepHolder<CreatePhotoAlbumS
 
     @Override
     public void initInternalView(View contentView) {
-        mUploadByAdminsOnly = (CheckBox) contentView.findViewById(R.id.upload_only_admins);
-        mDisableComments = (CheckBox) contentView.findViewById(R.id.disable_comments);
+        mUploadByAdminsOnly = contentView.findViewById(R.id.upload_only_admins);
+        mDisableComments = contentView.findViewById(R.id.disable_comments);
 
         CompoundButton.OnCheckedChangeListener uploadByAdminsOnlyListener = (compoundButton, b) -> mActionListener.onUploadByAdminsOnlyChecked(b);
         CompoundButton.OnCheckedChangeListener disableCommentsListener = (compoundButton, b) -> mActionListener.onCommentsDisableChecked(b);

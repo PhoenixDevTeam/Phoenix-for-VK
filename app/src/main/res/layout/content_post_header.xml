@@ -1,7 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_top_container"
     style='style="?android:attr/borderlessButtonStyle"'
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -61,7 +59,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

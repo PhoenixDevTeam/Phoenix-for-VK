@@ -138,7 +138,6 @@
                     android:textSize="26sp" />
 
                 <TextView
-                    android:id="@+id/fragment_user_profile_bfriends_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
@@ -168,7 +167,6 @@
                     android:textSize="26sp" />
 
                 <TextView
-                    android:id="@+id/fragment_user_profile_bfollowers_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
@@ -198,7 +196,6 @@
                     android:textSize="26sp" />
 
                 <TextView
-                    android:id="@+id/fragment_user_profile_bgroups_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
@@ -228,7 +225,6 @@
                     android:textSize="26sp" />
 
                 <TextView
-                    android:id="@+id/fragment_user_profile_bphotos_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
@@ -257,7 +253,6 @@
                     android:textSize="26sp" />
 
                 <TextView
-                    android:id="@+id/fragment_user_profile_baudios_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
@@ -288,7 +283,6 @@
                     android:textSize="26sp" />
 
                 <TextView
-                    android:id="@+id/fragment_user_profile_bvideos_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"

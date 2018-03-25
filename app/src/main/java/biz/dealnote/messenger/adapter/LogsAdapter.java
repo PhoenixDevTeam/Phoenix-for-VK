@@ -105,9 +105,9 @@ public class LogsAdapter extends RecyclerBindableAdapter<LogEventWrapper, LogsAd
 
         Holder(View itemView) {
             super(itemView);
-            this.tag = (TextView) itemView.findViewById(R.id.log_tag);
-            this.datetime = (TextView) itemView.findViewById(R.id.log_datetime);
-            this.body = (TextView) itemView.findViewById(R.id.log_body);
+            this.tag = itemView.findViewById(R.id.log_tag);
+            this.datetime = itemView.findViewById(R.id.log_datetime);
+            this.body = itemView.findViewById(R.id.log_body);
 
             this.buttonShare = itemView.findViewById(R.id.log_button_share);
 
@@ -116,7 +116,7 @@ public class LogsAdapter extends RecyclerBindableAdapter<LogEventWrapper, LogsAd
 
             Context context = itemView.getContext();
 
-            ImageView icon = (ImageView) itemView.findViewById(R.id.log_icon);
+            ImageView icon = itemView.findViewById(R.id.log_icon);
             icon.getBackground().setColorFilter(CurrentTheme.getColorPrimary(context), PorterDuff.Mode.MULTIPLY);
             icon.setColorFilter(CurrentTheme.getIconColorOnColoredBackgroundCode(context));
         }

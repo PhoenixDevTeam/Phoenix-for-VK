@@ -43,21 +43,21 @@ public class LocalImageAlbumsFragment extends BasePresenterFragment<LocalPhotoAl
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_local_albums_gallery, container, false);
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
         if(!hasHideToolbarExtra()){
-            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+            ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         } else {
             toolbar.setVisibility(View.GONE);
         }
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
+        mSwipeRefreshLayout = view.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
 
         int columnCount = getResources().getInteger(R.integer.photos_albums_column_count);
         RecyclerView.LayoutManager manager = new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
+        mRecyclerView = view.findViewById(R.id.list);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.addOnScrollListener(new PicassoPauseOnScrollListener(LocalPhotoAlbumsAdapter.PICASSO_TAG));
 
@@ -66,7 +66,7 @@ public class LocalImageAlbumsFragment extends BasePresenterFragment<LocalPhotoAl
 
         mRecyclerView.setAdapter(mAlbumsAdapter);
 
-        mEmptyTextView = (TextView)view.findViewById(R.id.empty);
+        mEmptyTextView = view.findViewById(R.id.empty);
         return view;
     }
 
@@ -103,7 +103,7 @@ public class LocalImageAlbumsFragment extends BasePresenterFragment<LocalPhotoAl
 
     @Override
     public void openAlbum(@NonNull LocalImageAlbum album) {
-        PlaceFactory.getLocalImageAlbumPlace(album).tryOpenWith(getActivity());
+        PlaceFactory.getLocalImageAlbumPlace(album).tryOpenWith(requireActivity());
     }
 
     @Override

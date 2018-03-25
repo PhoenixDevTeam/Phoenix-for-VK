@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -74,12 +73,12 @@ public class MessagesLookFragment extends PlaceSupportPresenterFragment<Messages
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_messages_lookup, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, true);
 
-        mRecyclerView = (RecyclerView) root.findViewById(R.id.recycleView);
+        mRecyclerView = root.findViewById(R.id.recycleView);
         mRecyclerView.setLayoutManager(layoutManager);
 
         mHeaderView = inflater.inflate(R.layout.footer_load_more, mRecyclerView, false);
@@ -204,7 +203,7 @@ public class MessagesLookFragment extends PlaceSupportPresenterFragment<Messages
     @Override
     public void showActionMode(String title) {
         if (Objects.isNull(mActionMode)) {
-            mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(mActionModeCallback);
+            mActionMode = ((AppCompatActivity) requireActivity()).startSupportActionMode(mActionModeCallback);
         }
 
         if(Objects.nonNull(mActionMode)){
@@ -316,6 +315,6 @@ public class MessagesLookFragment extends PlaceSupportPresenterFragment<Messages
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 }

@@ -61,12 +61,12 @@ public class ProgressButton extends FrameLayout {
         View view = LayoutInflater.from(context).inflate(layout, this, false);
         view.setBackgroundColor(buttonColor);
 
-        mTitleTextView = (TextView) view.findViewById(R.id.progress_button_title_text);
+        mTitleTextView = view.findViewById(R.id.progress_button_title_text);
 
         mTitleTextView.setText(buttonTitle);
         mTitleTextView.setAllCaps(allCaps);
 
-        mProgressIcon = (ImageView) view.findViewById(R.id.progress_button_progress_icon);
+        mProgressIcon = view.findViewById(R.id.progress_button_progress_icon);
         mTitleRoot = view.findViewById(R.id.progress_button_title_root);
 
         addView(view);

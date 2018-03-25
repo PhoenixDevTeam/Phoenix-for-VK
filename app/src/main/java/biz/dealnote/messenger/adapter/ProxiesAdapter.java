@@ -94,10 +94,10 @@ public class ProxiesAdapter extends RecyclerBindableAdapter<ProxyConfig, Proxies
 
         Holder(View itemView) {
             super(itemView);
-            address = (TextView) itemView.findViewById(R.id.address);
-            port = (TextView) itemView.findViewById(R.id.port);
-            username = (TextView) itemView.findViewById(R.id.username);
-            pass = (TextView) itemView.findViewById(R.id.password);
+            address = itemView.findViewById(R.id.address);
+            port = itemView.findViewById(R.id.port);
+            username = itemView.findViewById(R.id.username);
+            pass = itemView.findViewById(R.id.password);
 
             delete = itemView.findViewById(R.id.button_delete);
             setAsActive = itemView.findViewById(R.id.button_set_as_active);

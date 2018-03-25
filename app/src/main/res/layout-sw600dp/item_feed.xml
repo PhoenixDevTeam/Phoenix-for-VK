@@ -21,7 +21,6 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/item_top_container"
                 style='style="?android:attr/borderlessButtonStyle"'
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,7 +30,6 @@
                 android:paddingTop="8dp">
 
                 <LinearLayout
-                    android:id="@+id/linearLayout9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -98,7 +96,6 @@
                 layout="@layout/line_divider" />
 
             <RelativeLayout
-                android:id="@+id/item_post_middle_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="6dp"

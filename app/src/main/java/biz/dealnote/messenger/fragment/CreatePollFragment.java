@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -67,11 +66,11 @@ public class CreatePollFragment extends BasePresenterFragment<CreatePollPresente
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_create_poll, container, false);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
-        mQuestion = (EditText) root.findViewById(R.id.dialog_poll_create_question);
-        mAnonymous = (CheckBox) root.findViewById(R.id.dialog_poll_create_anonymous);
-        mOptionsViewGroup = (ViewGroup) root.findViewById(R.id.dialog_poll_create_options);
+        mQuestion = root.findViewById(R.id.dialog_poll_create_question);
+        mAnonymous = root.findViewById(R.id.dialog_poll_create_anonymous);
+        mOptionsViewGroup = root.findViewById(R.id.dialog_poll_create_options);
 
         for (int i = 0; i < mOptionsViewGroup.getChildCount(); i++) {
             EditText editText = (EditText) mOptionsViewGroup.getChildAt(i);
@@ -133,7 +132,7 @@ public class CreatePollFragment extends BasePresenterFragment<CreatePollPresente
                 .setBlockNavigationDrawer(true)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -213,6 +212,6 @@ public class CreatePollFragment extends BasePresenterFragment<CreatePollPresente
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
         }
 
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 }

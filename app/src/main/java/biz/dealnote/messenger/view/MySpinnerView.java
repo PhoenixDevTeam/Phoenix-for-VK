@@ -41,11 +41,11 @@ public class MySpinnerView extends RelativeLayout {
     private void init(Context context, AttributeSet attrs) {
         inflate(context, R.layout.view_my_spinner, this);
 
-        this.mTextView = (TextView) findViewById(R.id.text);
+        this.mTextView = findViewById(R.id.text);
 
         setBackgroundResource(R.drawable.backgroud_rectangle_border);
 
-        ImageView icon = (ImageView) findViewById(R.id.icon);
+        ImageView icon = findViewById(R.id.icon);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MySpinnerView);
 

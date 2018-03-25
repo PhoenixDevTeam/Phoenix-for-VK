@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,11 +44,11 @@ public class RequestExecuteFragment extends BasePresenterFragment<RequestExecute
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_request_executor, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
-        mResposeBody = (EditText) root.findViewById(R.id.response_body);
+        mResposeBody = root.findViewById(R.id.response_body);
 
-        EditText methodEditText = (EditText) root.findViewById(R.id.method);
+        EditText methodEditText = root.findViewById(R.id.method);
         methodEditText.addTextChangedListener(new TextWatcherAdapter(){
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -57,7 +56,7 @@ public class RequestExecuteFragment extends BasePresenterFragment<RequestExecute
             }
         });
 
-        EditText bodyEditText = (EditText) root.findViewById(R.id.body);
+        EditText bodyEditText = root.findViewById(R.id.body);
         bodyEditText.addTextChangedListener(new TextWatcherAdapter(){
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -109,7 +108,7 @@ public class RequestExecuteFragment extends BasePresenterFragment<RequestExecute
 
     @Override
     public void hideKeyboard() {
-        ActivityUtils.hideSoftKeyboard(getActivity());
+        ActivityUtils.hideSoftKeyboard(requireActivity());
     }
 
     @Override

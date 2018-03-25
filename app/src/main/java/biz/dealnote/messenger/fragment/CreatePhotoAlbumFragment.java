@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,9 +74,9 @@ public class CreatePhotoAlbumFragment extends BasePresenterFragment<EditPhotoAlb
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_create_photo_album, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
-        mRecyclerView = (RecyclerView) root.findViewById(R.id.recycleView);
+        mRecyclerView = root.findViewById(R.id.recycleView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return root;
     }
@@ -151,12 +150,12 @@ public class CreatePhotoAlbumFragment extends BasePresenterFragment<EditPhotoAlb
 
     @Override
     public void goBack() {
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 
     @Override
     public void hideKeyboard() {
-        ActivityUtils.hideSoftKeyboard(getActivity());
+        ActivityUtils.hideSoftKeyboard(requireActivity());
     }
 
     @Override
@@ -245,7 +244,7 @@ public class CreatePhotoAlbumFragment extends BasePresenterFragment<EditPhotoAlb
                 .setBlockNavigationDrawer(true)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override

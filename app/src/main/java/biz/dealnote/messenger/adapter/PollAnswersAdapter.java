@@ -67,10 +67,10 @@ public class PollAnswersAdapter extends RecyclerBindableAdapter<Poll.Answer, Pol
 
         public ViewHolder(View itemView) {
             super(itemView);
-            rbButton = (RadioButton) itemView.findViewById(R.id.item_poll_answer_radio);
-            tvCount = (TextView) itemView.findViewById(R.id.item_poll_answer_count);
-            tvTitle = (TextView) itemView.findViewById(R.id.item_poll_answer_title);
-            pbRate = (ProgressBar) itemView.findViewById(R.id.item_poll_answer_progress);
+            rbButton = itemView.findViewById(R.id.item_poll_answer_radio);
+            tvCount = itemView.findViewById(R.id.item_poll_answer_count);
+            tvTitle = itemView.findViewById(R.id.item_poll_answer_title);
+            pbRate = itemView.findViewById(R.id.item_poll_answer_progress);
             mVotedRoot = itemView.findViewById(R.id.voted_root);
         }
     }

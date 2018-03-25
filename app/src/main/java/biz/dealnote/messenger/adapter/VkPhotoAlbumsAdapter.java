@@ -27,13 +27,14 @@ public class VkPhotoAlbumsAdapter extends RecyclerView.Adapter<VkPhotoAlbumsAdap
         this.context = context;
     }
 
+    @NonNull
     @Override
-    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.local_album_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(Holder holder, int position) {
+    public void onBindViewHolder(@NonNull Holder holder, int position) {
         final PhotoAlbum photoAlbum = data.get(position);
 
         String thumb = photoAlbum.getSizes().getUrlForSize(PhotoSize.X, false);
@@ -69,9 +70,9 @@ public class VkPhotoAlbumsAdapter extends RecyclerView.Adapter<VkPhotoAlbumsAdap
 
         public Holder(View itemView) {
             super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.item_local_album_cover);
-            title = (TextView) itemView.findViewById(R.id.item_local_album_name);
-            counterText = (TextView) itemView.findViewById(R.id.counter);
+            imageView = itemView.findViewById(R.id.item_local_album_cover);
+            title = itemView.findViewById(R.id.item_local_album_name);
+            counterText = itemView.findViewById(R.id.counter);
         }
     }
 

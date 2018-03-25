@@ -42,11 +42,11 @@ public class YoutubeButton extends LinearLayout {
             String text = a.getString(R.styleable.YoutubeButton_youtube_button_text);
             int textcolor = a.getColor(R.styleable.YoutubeButton_youtube_button_text_color, Color.GRAY);
 
-            ImageView icon = (ImageView) findViewById(R.id.youtube_button_icon);
+            ImageView icon = findViewById(R.id.youtube_button_icon);
             icon.setColorFilter(iconcolor, PorterDuff.Mode.MULTIPLY);
             icon.setImageResource(iconres);
 
-            TextView textView = (TextView) findViewById(R.id.youtube_button_text);
+            TextView textView = findViewById(R.id.youtube_button_text);
             textView.setTextColor(textcolor);
             textView.setText(text);
         } finally {

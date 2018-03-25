@@ -15,7 +15,6 @@
         app:titleTextAppearance="@style/Theme.Title.Toolbar" />
 
     <ScrollView
-        android:id="@+id/activity_quick_message_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar">
@@ -82,7 +81,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/relativeLayout6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp">

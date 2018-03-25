@@ -75,18 +75,18 @@ public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresent
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_gif_pager, container, false);
 
-        mToolbar = (Toolbar) root.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        mToolbar = root.findViewById(R.id.toolbar);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(mToolbar);
 
         mButtonsRoot = root.findViewById(R.id.buttons);
 
-        mButtonAddOrDelete = (CircleCounterButton) root.findViewById(R.id.button_add_or_delete);
+        mButtonAddOrDelete = root.findViewById(R.id.button_add_or_delete);
         mButtonAddOrDelete.setOnClickListener(v -> getPresenter().fireAddDeleteButtonClick());
 
-        mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
+        mViewPager = root.findViewById(R.id.view_pager);
         mViewPager.setOffscreenPageLimit(1);
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -105,13 +105,13 @@ public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresent
     }
 
     private void goBack() {
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 
     private boolean mFullscreen;
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("mFullscreen", mFullscreen);
     }
@@ -124,7 +124,7 @@ public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresent
                 .setBlockNavigationDrawer(true)
                 .setStatusBarColored(false, false)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     private void toggleFullscreen() {
@@ -257,7 +257,7 @@ public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresent
 
         Holder(int adapterPosition, View rootView) {
             super(adapterPosition, rootView);
-            FlingRelativeLayout flingRelativeLayout = (FlingRelativeLayout) rootView.findViewById(R.id.fling_root_view);
+            FlingRelativeLayout flingRelativeLayout = rootView.findViewById(R.id.fling_root_view);
             flingRelativeLayout.setOnClickListener(v -> toggleFullscreen());
             flingRelativeLayout.setOnSingleFlingListener(new CloseOnFlingListener(rootView.getContext()) {
                 @Override
@@ -267,12 +267,12 @@ public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresent
                 }
             });
 
-            mSurfaceView = (SurfaceView) rootView.findViewById(R.id.surface_view);
+            mSurfaceView = rootView.findViewById(R.id.surface_view);
             mSurfaceHolder = mSurfaceView.getHolder();
             mSurfaceHolder.addCallback(this);
 
-            mAspectRatioLayout = (AlternativeAspectRatioFrameLayout) rootView.findViewById(R.id.aspect_ratio_layout);
-            mProgressBar = (ProgressBar) rootView.findViewById(R.id.preparing_progress_bar);
+            mAspectRatioLayout = rootView.findViewById(R.id.aspect_ratio_layout);
+            mProgressBar = rootView.findViewById(R.id.preparing_progress_bar);
         }
 
         @Override
@@ -319,8 +319,9 @@ public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresent
             return mPageCount;
         }
 
+        @NonNull
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
             View stepView = LayoutInflater.from(getActivity()).inflate(R.layout.content_gif_page, container, false);
 
             final Holder holder = new Holder(position, stepView);
@@ -333,7 +334,7 @@ public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresent
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object view) {
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object view) {
             Holder holder = mHolderSparseArray.get(position);
             if (holder != null) {
                 fireHolderDestroy(holder);
@@ -344,7 +345,7 @@ public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresent
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object key) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object key) {
             return key == view;
         }
     }

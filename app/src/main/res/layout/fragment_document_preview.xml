@@ -18,7 +18,6 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/relativeLayout34"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/bottom_buttons_bar"

@@ -15,7 +15,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/l1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/additional_actions"
@@ -101,7 +100,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/controls_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -112,7 +110,6 @@
                     android:padding="8dp">
 
                     <FrameLayout
-                        android:id="@+id/action_button_shuffle_cnt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -132,7 +129,6 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/action_button_previous_ctn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -153,7 +149,6 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/action_button_play_ctn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -173,7 +168,6 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/action_button_next_cnt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -193,7 +187,6 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/action_button_repeat_ctn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

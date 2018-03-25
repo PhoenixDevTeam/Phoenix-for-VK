@@ -31,13 +31,14 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.Holder> {
         this.data = data;
     }
 
+    @NonNull
     @Override
-    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new Holder(LayoutInflater.from(context).inflate(R.layout.item_fave_video, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(Holder holder, int position) {
+    public void onBindViewHolder(@NonNull Holder holder, int position) {
         final Video video = data.get(position);
 
         holder.viewsCount.setText(context.getString(R.string.view_count, video.getViews()));
@@ -98,11 +99,11 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.Holder> {
         public Holder(View itemView) {
             super(itemView);
             card = itemView.findViewById(R.id.card_view);
-            image = (ImageView) itemView.findViewById(R.id.video_image);
-            videoLenght = (TextView) itemView.findViewById(R.id.video_lenght);
-            videoService = (ImageView) itemView.findViewById(R.id.video_service);
-            title = (TextView) itemView.findViewById(R.id.title);
-            viewsCount = (TextView) itemView.findViewById(R.id.view_count);
+            image = itemView.findViewById(R.id.video_image);
+            videoLenght = itemView.findViewById(R.id.video_lenght);
+            videoService = itemView.findViewById(R.id.video_service);
+            title = itemView.findViewById(R.id.title);
+            viewsCount = itemView.findViewById(R.id.view_count);
         }
     }
 }

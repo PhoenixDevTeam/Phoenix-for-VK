@@ -114,17 +114,16 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_file_explorer, container, false);
-        //((AppCompatActivity)getActivity()).setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
 
-        mRecyclerView = (RecyclerView) root.findViewById(R.id.list);
-        empty = (TextView) root.findViewById(R.id.empty);
+        mRecyclerView = root.findViewById(R.id.list);
+        empty = root.findViewById(R.id.empty);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setHasFixedSize(Boolean.TRUE);
 
-        btnSelectCurrentDir = (ImageView) root.findViewById(R.id.select_current_directory_button);
-        tvCurrentDir = (TextView) root.findViewById(R.id.current_path);
+        btnSelectCurrentDir = root.findViewById(R.id.select_current_directory_button);
+        tvCurrentDir = root.findViewById(R.id.current_path);
 
         btnSelectCurrentDir.setVisibility(currentAction == SELECT_DIRECTORY ? View.VISIBLE : View.GONE);
 
@@ -229,8 +228,8 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
     private void returnFileFinishActivity(String filePath) {
         Intent retIntent = new Intent();
         retIntent.putExtra(returnFileParameter, filePath);
-        getActivity().setResult(Activity.RESULT_OK, retIntent);
-        getActivity().finish();
+        requireActivity().setResult(Activity.RESULT_OK, retIntent);
+        requireActivity().finish();
     }
 
     private void parseDirectoryPath() {
@@ -338,7 +337,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
     }
 
     private void setInitialDirectory() {
-        Intent intent = getActivity().getIntent();
+        Intent intent = requireActivity().getIntent();
         String requestedStartDir = intent.getStringExtra(EXTRA_START_DIRECTOTY);
 
         if (!TextUtils.isEmpty(requestedStartDir)) {

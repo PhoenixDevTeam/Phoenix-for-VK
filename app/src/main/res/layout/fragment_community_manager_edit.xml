@@ -179,7 +179,6 @@
                     <RadioButton
                         android:checked="true"
                         android:enabled="false"
-                        android:id="@+id/button_creator"
                         android:text="@string/community_creator"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
