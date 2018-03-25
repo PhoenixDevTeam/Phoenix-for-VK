@@ -1242,8 +1242,6 @@ public class MusicPlaybackService extends Service {
             intent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, mService.get().getPackageName());
             mService.get().sendBroadcast(intent);
 
-            //return true;
-
             resetBufferPercent();
             mService.get().notifyChange(PLAYSTATE_CHANGED);
         }

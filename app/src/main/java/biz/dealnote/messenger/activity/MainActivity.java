@@ -1,10 +1,8 @@
 package biz.dealnote.messenger.activity;
 
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -18,9 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -40,7 +36,6 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
@@ -118,8 +113,6 @@ import biz.dealnote.messenger.place.PlaceProvider;
 import biz.dealnote.messenger.player.MusicPlaybackService;
 import biz.dealnote.messenger.player.util.MusicUtils;
 import biz.dealnote.messenger.push.IPushRegistrationResolver;
-import biz.dealnote.messenger.service.CheckLicenseService;
-import biz.dealnote.messenger.settings.AppPrefs;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
@@ -170,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
      */
     private AbsDrawerItem mCurrentFrontSection;
     private Toolbar mToolbar;
-    private BroadcastReceiver mMultipleActionsReceiver;
     private DrawerLayout mDrawerLayout;
     private MusicUtils.ServiceToken mAudioPlayServiceToken;
     private UploadUtils.ServiceToken mUploadServiceToken;
@@ -189,30 +181,12 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getDelegate().applyDayNight();
-        mMultipleActionsReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent == null || intent.getAction() == null) return;
-                switch (intent.getAction()) {
-                    case CheckLicenseService.BROADCAST_ACTION:
-                        boolean success = intent.getBooleanExtra(CheckLicenseService.EXTRA_LICENSE_SUCCESS, true);
-                        if (!success && !isFinishing() && AppPrefs.FULL_APP) {
-                            showBuyDialog();
-                        }
-                        break;
-                }
-            }
-        };
 
         mCompositeDisposable.add(Settings.get()
                 .accounts()
                 .observeChanges()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onCurrentAccountChange));
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(CheckLicenseService.BROADCAST_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMultipleActionsReceiver, filter);
 
         bindToAudioPlayService();
         bindToUploadService();
@@ -262,12 +236,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             if (!intentWasHandled) {
                 Place place = Settings.get().ui().getDefaultPage(mAccountId);
                 place.tryOpenWith(this);
-
-                //openDrawerPage(mCurrentFrontSection);
-            }
-
-            if (AppPrefs.FULL_APP && !BuildConfig.DEBUG) {
-                checkLicense();
             }
 
             checkGCMRegistration();
@@ -450,28 +418,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         mTargetPage = null;
     }
 
-    private void checkLicense() {
-        startService(new Intent(this, CheckLicenseService.class));
-    }
-
-    private void showBuyDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.application_not_licensed_title)
-                .setCancelable(false)
-                .setMessage(R.string.application_not_licensed_message)
-                .setPositiveButton(R.string.buy_app,
-                        (dialog, which) -> {
-                            goToGooglePlayFull();
-                            finish();
-                        })
-                .setNegativeButton(R.string.exit, (dialog, which) -> finish()).show();
-    }
-
-    private void goToGooglePlayFull() {
-        Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://market.android.com/details?id=" + getPackageName()));
-        startActivity(marketIntent);
-    }
-
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
         if (nonNull(mToolbar)) {
@@ -522,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             Logger.d(TAG, "Create new chat fragment");
 
             ChatFragment chatFragment = ChatFragment.newInstance(accountId, messagesOwnerId, peer);
-            attachFragment(chatFragment, true, "chat");
+            attachToFront(chatFragment);
         }
     }
 
@@ -656,7 +602,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         mCompositeDisposable.dispose();
         mDestroyed = true;
 
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMultipleActionsReceiver);
         getSupportFragmentManager().removeOnBackStackChangedListener(mOnBackStackChangedListener);
 
         unbindFromUploadService();
@@ -794,23 +739,12 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         mCurrentFrontSection = null;
     }
 
-    private void attachFragment(Fragment fragment, boolean addToBackStack) {
-        attachFragment(fragment, addToBackStack, null);
-    }
-
-    private void attachFragment(Fragment fragment, boolean addToBackStack, String tag) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        transaction.replace(R.id.fragment, fragment);
-
-        if (addToBackStack) {
-            transaction.addToBackStack(tag);
-        }
-
-        //transaction.commit();
-
-        // Need to test this!!
-        transaction.commitAllowingStateLoss();
+    private void attachToFront(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment, fragment)
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
     }
 
     @Override
@@ -901,109 +835,109 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         final Bundle args = place.getArgs();
         switch (place.type) {
             case Place.VIDEO_PREVIEW:
-                attachFragment(VideoPreviewFragment.newInstance(place.getArgs()), true, "video_preview");
+                attachToFront(VideoPreviewFragment.newInstance(args));
                 break;
 
             case Place.FRIENDS_AND_FOLLOWERS:
-                attachFragment(FriendsTabsFragment.newInstance(place.getArgs()), true, "friends");
+                attachToFront(FriendsTabsFragment.newInstance(args));
                 break;
 
             case Place.WIKI_PAGE:
-                attachFragment(BrowserFragment.newInstance(place.getArgs()), true, "wikipage");
+                attachToFront(BrowserFragment.newInstance(args));
                 break;
 
             case Place.EXTERNAL_LINK:
-                attachFragment(BrowserFragment.newInstance(place.getArgs()), true, "unknown_link");
+                attachToFront(BrowserFragment.newInstance(args));
                 break;
 
             case Place.DOC_PREVIEW:
-                Document document = place.getArgs().getParcelable(Extra.DOC);
+                Document document = args.getParcelable(Extra.DOC);
                 if (document != null && document.hasValidGifVideoLink()) {
-                    int aid = place.getArgs().getInt(Extra.ACCOUNT_ID);
+                    int aid = args.getInt(Extra.ACCOUNT_ID);
                     ArrayList<Document> documents = new ArrayList<>(Collections.singletonList(document));
 
                     Bundle argsForGifs = GifPagerFragment.buildArgs(aid, documents, 0);
-                    attachFragment(GifPagerFragment.newInstance(argsForGifs), true, "gif_player");
+                    attachToFront(GifPagerFragment.newInstance(argsForGifs));
                 } else {
-                    attachFragment(DocPreviewFragment.newInstance(place.getArgs()), true, "doc_preview");
+                    attachToFront(DocPreviewFragment.newInstance(args));
                 }
                 break;
 
             case Place.WALL_POST:
-                attachFragment(WallPostFragment.newInstance(place.getArgs()), true, "post");
+                attachToFront(WallPostFragment.newInstance(args));
                 break;
 
             case Place.COMMENTS:
-                attachFragment(CommentsFragment.newInstance(place), true, "comments");
+                attachToFront(CommentsFragment.newInstance(place));
                 break;
 
             case Place.WALL:
-                attachFragment(AbsWallFragment.newInstance(place.getArgs()), true, "owner-wall");
+                attachToFront(AbsWallFragment.newInstance(args));
                 break;
 
             case Place.CONVERSATION_ATTACHMENTS:
-                attachFragment(ConversationFragmentFactory.newInstance(place.getArgs()), true, "conversation_attachments");
+                attachToFront(ConversationFragmentFactory.newInstance(args));
                 break;
 
             case Place.PLAYER:
                 if (!(getFrontFragement() instanceof AudioPlayerFragment)) {
-                    attachFragment(AudioPlayerFragment.newInstance(place.getArgs()), true, "player");
+                    attachToFront(AudioPlayerFragment.newInstance(args));
                 }
                 break;
 
             case Place.CHAT:
-                final Peer peer = place.getArgs().getParcelable(Extra.PEER);
+                final Peer peer = args.getParcelable(Extra.PEER);
                 AssertUtils.requireNonNull(peer);
-                openChat(place.getArgs().getInt(Extra.ACCOUNT_ID), place.getArgs().getInt(Extra.OWNER_ID), peer);
+                openChat(args.getInt(Extra.ACCOUNT_ID), args.getInt(Extra.OWNER_ID), peer);
                 break;
 
             case Place.SEARCH:
-                attachFragment(SeachTabsFragment.newInstance(place.getArgs()), true, "search");
+                attachToFront(SeachTabsFragment.newInstance(args));
                 break;
 
             case Place.BUILD_NEW_POST:
-                PostCreateFragment postCreateFragment = PostCreateFragment.newInstance(place.getArgs());
+                PostCreateFragment postCreateFragment = PostCreateFragment.newInstance(args);
                 place.applyTargetingTo(postCreateFragment);
-                attachFragment(postCreateFragment, true, "create_post");
+                attachToFront(postCreateFragment);
                 break;
 
             case Place.EDIT_COMMENT: {
-                Comment comment = place.getArgs().getParcelable(Extra.COMMENT);
-                int accountId = place.getArgs().getInt(Extra.ACCOUNT_ID);
+                Comment comment = args.getParcelable(Extra.COMMENT);
+                int accountId = args.getInt(Extra.ACCOUNT_ID);
                 CommentEditFragment commentEditFragment = CommentEditFragment.newInstance(accountId, comment);
                 place.applyTargetingTo(commentEditFragment);
-                attachFragment(commentEditFragment, true, "edit_comment");
+                attachToFront(commentEditFragment);
             }
             break;
 
             case Place.EDIT_POST:
-                PostEditFragment postEditFragment = PostEditFragment.newInstance(place.getArgs());
+                PostEditFragment postEditFragment = PostEditFragment.newInstance(args);
                 place.applyTargetingTo(postEditFragment);
-                attachFragment(postEditFragment, true, "edit_post");
+                attachToFront(postEditFragment);
                 break;
 
             case Place.REPOST:
-                attachFragment(RepostFragment.obtain(place), true, "repost");
+                attachToFront(RepostFragment.obtain(place));
                 break;
 
             case Place.DIALOGS:
-                attachFragment(DialogsFragment.newInstance(
-                        place.getArgs().getInt(Extra.ACCOUNT_ID),
-                        place.getArgs().getInt(Extra.OWNER_ID),
-                        place.getArgs().getString(Extra.SUBTITLE)
-                ), true, "dialogs");
+                attachToFront(DialogsFragment.newInstance(
+                        args.getInt(Extra.ACCOUNT_ID),
+                        args.getInt(Extra.OWNER_ID),
+                        args.getString(Extra.SUBTITLE)
+                ));
                 break;
 
             case Place.FORWARD_MESSAGES:
-                attachFragment(FwdsFragment.newInstance(place.getArgs()), true, "fwds");
+                attachToFront(FwdsFragment.newInstance(args));
                 break;
 
             case Place.TOPICS:
-                attachFragment(TopicsFragment.newInstance(place.getArgs()), true, "topics");
+                attachToFront(TopicsFragment.newInstance(args));
                 break;
 
             case Place.CHAT_MEMBERS:
-                attachFragment(ChatUsersFragment.newInstance(place.getArgs()), true, "chat_members");
+                attachToFront(ChatUsersFragment.newInstance(args));
                 break;
 
             case Place.COMMUNITIES:
@@ -1012,121 +946,120 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                         args.getInt(Extra.USER_ID)
                 );
 
-                attachFragment(communitiesFragment, true, "communities");
+                attachToFront(communitiesFragment);
                 break;
 
             case Place.AUDIOS:
-                attachFragment(AudiosFragment.newInstance(args.getInt(Extra.ACCOUNT_ID), args.getInt(Extra.OWNER_ID)), true, "audios");
+                attachToFront(AudiosFragment.newInstance(args.getInt(Extra.ACCOUNT_ID), args.getInt(Extra.OWNER_ID)));
                 break;
 
             case Place.VIDEO_ALBUM:
-                attachFragment(VideosFragment.newInstance(place.getArgs()), true, "video_album");
+                attachToFront(VideosFragment.newInstance(args));
                 break;
 
             case Place.VIDEOS:
-                attachFragment(VideosTabsFragment.newInstance(place.getArgs()), true, "videos");
+                attachToFront(VideosTabsFragment.newInstance(args));
                 break;
 
             case Place.VK_PHOTO_ALBUMS:
-                attachFragment(VKPhotoAlbumsFragment.newInstance(
+                attachToFront(VKPhotoAlbumsFragment.newInstance(
                         args.getInt(Extra.ACCOUNT_ID),
                         args.getInt(Extra.OWNER_ID),
                         args.getString(Extra.ACTION),
                         args.getParcelable(Extra.OWNER)
-                ), true, "vk_photo_almums");
+                ));
                 break;
 
             case Place.VK_PHOTO_ALBUM:
-                attachFragment(VKPhotosFragment.newInstance(place.getArgs()), true, "vk_photos_album");
+                attachToFront(VKPhotosFragment.newInstance(args));
                 break;
 
             case Place.VK_PHOTO_ALBUM_GALLERY:
-                //attachFragment(AlbumPhotoPagerFragment.newInstance(place.getArgs()), true, "vk_album_gallery");
-                attachFragment(PhotoPagerFragment.newInstance(place.type, place.getArgs()), true, "photo_pager");
+                attachToFront(PhotoPagerFragment.newInstance(place.type, args));
                 break;
 
             case Place.FAVE_PHOTOS_GALLERY:
-                attachFragment(PhotoPagerFragment.newInstance(place.type, place.getArgs()), true, "fave_photos_gallery");
+                attachToFront(PhotoPagerFragment.newInstance(place.type, args));
                 break;
 
             case Place.SIMPLE_PHOTO_GALLERY:
-                attachFragment(PhotoPagerFragment.newInstance(place.type, place.getArgs()), true, "photo_pager");
+                attachToFront(PhotoPagerFragment.newInstance(place.type, args));
                 break;
 
             case Place.VK_PHOTO_TMP_SOURCE:
-                attachFragment(PhotoPagerFragment.newInstance(place.type, place.getArgs()), true, "tmp_source_gallery");
+                attachToFront(PhotoPagerFragment.newInstance(place.type, args));
                 break;
 
             case Place.POLL:
-                attachFragment(PollFragment.newInstance(place.getArgs()), true, "poll");
+                attachToFront(PollFragment.newInstance(args));
                 break;
 
             case Place.BOOKMARKS:
-                attachFragment(FaveTabsFragment.newInstance(place.getArgs()), true, "fave_tabs");
+                attachToFront(FaveTabsFragment.newInstance(args));
                 break;
 
             case Place.DOCS:
-                attachFragment(DocsFragment.newInstance(place.getArgs()), true, "docs");
+                attachToFront(DocsFragment.newInstance(args));
                 break;
 
             case Place.FEED:
-                attachFragment(FeedFragment.newInstance(place.getArgs()), true, "feed");
+                attachToFront(FeedFragment.newInstance(args));
                 break;
 
             case Place.NOTIFICATIONS:
-                attachFragment(FeedbackFragment.newInstance(place.getArgs()), true, "notifications");
+                attachToFront(FeedbackFragment.newInstance(args));
                 break;
 
             case Place.PREFERENCES:
-                attachFragment(PreferencesFragment.newInstance(place.getArgs()), true, "preferences");
+                attachToFront(PreferencesFragment.newInstance(args));
                 break;
 
             case Place.RESOLVE_DOMAIN:
-                ResolveDomainDialog domainDialog = ResolveDomainDialog.newInstance(place.getArgs());
-                domainDialog.show(getSupportFragmentManager(), "resolve_domain");
+                ResolveDomainDialog domainDialog = ResolveDomainDialog.newInstance(args);
+                domainDialog.show(getSupportFragmentManager(), "resolve-domain");
                 break;
 
             case Place.VK_INTERNAL_PLAYER:
                 Intent intent = new Intent(this, VideoPlayerActivity.class);
-                intent.putExtras(place.getArgs());
+                intent.putExtras(args);
                 startActivity(intent);
                 break;
 
             case Place.NOTIFICATION_SETTINGS:
-                attachFragment(new NotificationPreferencesFragment(), true, "notifications");
+                attachToFront(new NotificationPreferencesFragment());
                 break;
 
             case Place.LIKES_AND_COPIES:
-                attachFragment(LikesFragment.newInstance(place.getArgs()), true, "likes");
+                attachToFront(LikesFragment.newInstance(args));
                 break;
 
             case Place.CREATE_PHOTO_ALBUM:
             case Place.EDIT_PHOTO_ALBUM:
-                CreatePhotoAlbumFragment createPhotoAlbumFragment = CreatePhotoAlbumFragment.newInstance(place.getArgs());
+                CreatePhotoAlbumFragment createPhotoAlbumFragment = CreatePhotoAlbumFragment.newInstance(args);
                 place.applyTargetingTo(createPhotoAlbumFragment);
-                attachFragment(createPhotoAlbumFragment, true, "create_or_edit_photo_album");
+                attachToFront(createPhotoAlbumFragment);
                 break;
 
             case Place.MESSAGE_LOOKUP:
-                attachFragment(MessagesLookFragment.newInstance(place.getArgs()), true, "messages_lookup");
+                attachToFront(MessagesLookFragment.newInstance(args));
                 break;
 
             case Place.AUDIO_CURRENT_PLAYLIST:
-                attachFragment(PlaylistFragment.newInstance(place.getArgs()), true, "audio_playlist");
+                attachToFront(PlaylistFragment.newInstance(args));
                 break;
 
             case Place.GIF_PAGER:
-                attachFragment(GifPagerFragment.newInstance(place.getArgs()), true, "gif_pager");
+                attachToFront(GifPagerFragment.newInstance(args));
                 break;
 
             case Place.SECURITY:
-                attachFragment(new SecurityPreferencesFragment(), true, "security");
+                attachToFront(new SecurityPreferencesFragment());
                 break;
 
             case Place.CREATE_POLL:
-                CreatePollFragment createPollFragment = CreatePollFragment.newInstance(place.getArgs());
+                CreatePollFragment createPollFragment = CreatePollFragment.newInstance(args);
                 place.applyTargetingTo(createPollFragment);
-                attachFragment(createPollFragment, true, "create_poll");
+                attachToFront(createPollFragment);
                 break;
 
             case Place.COMMENT_CREATE:
@@ -1134,71 +1067,71 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 break;
 
             case Place.LOGS:
-                attachFragment(LogsFragement.newInstance(), true, "logs");
+                attachToFront(LogsFragement.newInstance());
                 break;
 
             case Place.SINGLE_SEARCH:
-                SingleTabSeachFragment singleTabSeachFragment = SingleTabSeachFragment.newInstance(place.getArgs());
-                attachFragment(singleTabSeachFragment, true, "single_tab_fragment");
+                SingleTabSeachFragment singleTabSeachFragment = SingleTabSeachFragment.newInstance(args);
+                attachToFront(singleTabSeachFragment);
                 break;
 
             case Place.NEWSFEED_COMMENTS:
-                NewsfeedCommentsFragment newsfeedCommentsFragment = NewsfeedCommentsFragment.newInstance(place.getArgs().getInt(Extra.ACCOUNT_ID));
-                attachFragment(newsfeedCommentsFragment, true, "newsfeed_comments");
+                NewsfeedCommentsFragment newsfeedCommentsFragment = NewsfeedCommentsFragment.newInstance(args.getInt(Extra.ACCOUNT_ID));
+                attachToFront(newsfeedCommentsFragment);
                 break;
 
             case Place.COMMUNITY_CONTROL:
                 CommunityControlFragment communityControlFragment = CommunityControlFragment.newInstance(
-                        place.getArgs().getInt(Extra.ACCOUNT_ID),
-                        place.getArgs().getParcelable(Extra.OWNER),
-                        place.getArgs().getParcelable(Extra.SETTINGS)
+                        args.getInt(Extra.ACCOUNT_ID),
+                        args.getParcelable(Extra.OWNER),
+                        args.getParcelable(Extra.SETTINGS)
                 );
-                attachFragment(communityControlFragment, true, "community_control");
+                attachToFront(communityControlFragment);
                 break;
 
             case Place.COMMUNITY_BAN_EDIT:
                 CommunityBanEditFragment communityBanEditFragment = CommunityBanEditFragment.newInstance(
-                        place.getArgs().getInt(Extra.ACCOUNT_ID),
-                        place.getArgs().getInt(Extra.GROUP_ID),
-                        (Banned) place.getArgs().getParcelable(Extra.BANNED)
+                        args.getInt(Extra.ACCOUNT_ID),
+                        args.getInt(Extra.GROUP_ID),
+                        (Banned) args.getParcelable(Extra.BANNED)
                 );
-                attachFragment(communityBanEditFragment, true, "community_ban_edit");
+                attachToFront(communityBanEditFragment);
                 break;
 
             case Place.COMMUNITY_ADD_BAN:
-                attachFragment(CommunityBanEditFragment.newInstance(
-                        place.getArgs().getInt(Extra.ACCOUNT_ID),
-                        place.getArgs().getInt(Extra.GROUP_ID),
-                        place.getArgs().getParcelableArrayList(Extra.USERS)
-                ), true, "community_ban_add");
+                attachToFront(CommunityBanEditFragment.newInstance(
+                        args.getInt(Extra.ACCOUNT_ID),
+                        args.getInt(Extra.GROUP_ID),
+                        args.getParcelableArrayList(Extra.USERS)
+                ));
                 break;
 
             case Place.COMMUNITY_MANAGER_ADD:
-                attachFragment(CommunityManagerEditFragment.newInstance(
-                        place.getArgs().getInt(Extra.ACCOUNT_ID),
-                        place.getArgs().getInt(Extra.GROUP_ID),
-                        place.getArgs().getParcelableArrayList(Extra.USERS)
-                ), true, "managers_adding");
+                attachToFront(CommunityManagerEditFragment.newInstance(
+                        args.getInt(Extra.ACCOUNT_ID),
+                        args.getInt(Extra.GROUP_ID),
+                        args.getParcelableArrayList(Extra.USERS)
+                ));
                 break;
 
             case Place.COMMUNITY_MANAGER_EDIT:
-                attachFragment(CommunityManagerEditFragment.newInstance(
-                        place.getArgs().getInt(Extra.ACCOUNT_ID),
-                        place.getArgs().getInt(Extra.GROUP_ID),
-                        (Manager) place.getArgs().getParcelable(Extra.MANAGER)
-                ), true, "manager_editing");
+                attachToFront(CommunityManagerEditFragment.newInstance(
+                        args.getInt(Extra.ACCOUNT_ID),
+                        args.getInt(Extra.GROUP_ID),
+                        (Manager) args.getParcelable(Extra.MANAGER)
+                ));
                 break;
 
             case Place.REQUEST_EXECUTOR:
-                attachFragment(RequestExecuteFragment.newInstance(place.getArgs().getInt(Extra.ACCOUNT_ID)), true, "request-executor");
+                attachToFront(RequestExecuteFragment.newInstance(args.getInt(Extra.ACCOUNT_ID)));
                 break;
 
             case Place.USER_BLACKLIST:
-                attachFragment(UserBannedFragment.newInstance(place.getArgs().getInt(Extra.ACCOUNT_ID)), true, "user-blacklist");
+                attachToFront(UserBannedFragment.newInstance(args.getInt(Extra.ACCOUNT_ID)));
                 break;
 
             case Place.DRAWER_EDIT: {
-                attachFragment(DrawerEditFragment.newInstance(), true, "drawer-edit");
+                attachToFront(DrawerEditFragment.newInstance());
             }
             break;
 
@@ -1206,7 +1139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 int accountId = args.getInt(Extra.ACCOUNT_ID);
                 User user = args.getParcelable(Extra.USER);
                 UserDetails details = args.getParcelable("details");
-                attachFragment(UserDetailsFragment.newInstance(accountId, user, details), true);
+                attachToFront(UserDetailsFragment.newInstance(accountId, user, details));
             }
             break;
 
@@ -1224,7 +1157,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         );
 
         place.applyTargetingTo(fragment);
-        attachFragment(fragment, true, "comemnt_create");
+        attachToFront(fragment);
     }
 
     @Override

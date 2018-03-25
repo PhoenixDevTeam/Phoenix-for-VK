@@ -9,9 +9,10 @@ import java.util.List;
 
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.model.Audio;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Single;
+
+import static biz.dealnote.messenger.util.Objects.isNull;
 
 /**
  * Created by admin on 2/3/2018.
@@ -48,7 +49,14 @@ public class AudioPluginConnector implements IAudioPluginConnector {
                         break;
                     }
 
-                    checkAudioPluginError(cursor);
+                    try {
+                        checkAudioPluginError(cursor);
+                    } catch (Exception e) {
+                        cursor.close();
+                        emitter.onError(e);
+                        return;
+                    }
+
 
                     int audioId = cursor.getInt(cursor.getColumnIndex("audio_id"));
                     int ownerId1 = cursor.getInt(cursor.getColumnIndex("owner_id"));
@@ -91,7 +99,7 @@ public class AudioPluginConnector implements IAudioPluginConnector {
 
     @Override
     public Single<String> findAudioUrl(int audioId, int ownerId) {
-        return Single.fromCallable(() -> {
+        return Single.create(emitter -> {
             Uri uri = new Uri.Builder()
                     .scheme("content")
                     .authority(AUTHORITY)
@@ -106,17 +114,16 @@ public class AudioPluginConnector implements IAudioPluginConnector {
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     url = cursor.getString(cursor.getColumnIndex("url"));
-                    Logger.d("Audios", "audioId: " + audioId);
                 }
 
                 cursor.close();
             }
 
-            if(url == null){
-                throw new NotFoundException();
+            if (isNull(url)) {
+                emitter.onError(new NotFoundException());
+            } else {
+                emitter.onSuccess(url);
             }
-
-            return url;
         });
     }
 

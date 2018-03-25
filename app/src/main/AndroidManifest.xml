@@ -199,10 +199,6 @@
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
 
-        <service
-            android:name=".service.CheckLicenseService"
-            android:exported="false" />
-
         <!-- Profile phone Activity -->
         <!-- Shortcut launcher Activity -->
         <!-- Search interface -->

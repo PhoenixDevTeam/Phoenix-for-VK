@@ -15,8 +15,8 @@ android {
         applicationId "biz.dealnote.messenger"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 40106
-        versionName '4_0_1'
+        versionCode 40200
+        versionName '4_0_2'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -143,7 +143,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
-    implementation project(':lvl')
     implementation project(':mvpcore')
     implementation 'com.squareup.retrofit2:retrofit:2.2.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
@@ -152,7 +151,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation "com.google.firebase:firebase-crash:$firebaseLibraryVersion"
     implementation "com.google.firebase:firebase-database:$firebaseLibraryVersion"
-    implementation 'com.google.android.exoplayer:exoplayer:2.6.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.7.1'
     implementation "com.android.support:exifinterface:$supportLibraryVersion"
 }
 
