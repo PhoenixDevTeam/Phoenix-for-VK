@@ -1,167 +1,196 @@
 package biz.dealnote.messenger.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Transformation;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import biz.dealnote.messenger.R;
+import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.model.drawer.AbsDrawerItem;
 import biz.dealnote.messenger.model.drawer.IconDrawerItem;
 import biz.dealnote.messenger.model.drawer.NoIconDrawerItem;
 import biz.dealnote.messenger.model.drawer.RecentChat;
 import biz.dealnote.messenger.settings.CurrentTheme;
+import biz.dealnote.messenger.util.Utils;
 
-public class MenuListAdapter extends ArrayAdapter<AbsDrawerItem> {
+public class MenuListAdapter extends RecyclerBindableAdapter<AbsDrawerItem, RecyclerView.ViewHolder> {
 
-    private Context context;
-    private ArrayList<AbsDrawerItem> pageItems;
-    private ListView listView;
     private int unselectedTextColor;
     private int activeColor;
     private int unselectedIconColor;
     private Transformation transformation;
+    private final ActionListener actionListener;
 
-    public MenuListAdapter(Context context, ArrayList<AbsDrawerItem> pageItems, ListView listView) {
-        super(context, R.layout.drawer_list_item, pageItems);
-        this.context = context;
-        this.pageItems = pageItems;
-        this.listView = listView;
+    public MenuListAdapter(@NonNull Context context, @NonNull List<AbsDrawerItem> pageItems, @NonNull ActionListener actionListener) {
+        super(pageItems);
         this.unselectedTextColor = CurrentTheme.getColorFromAttrs(R.attr.textColorPrimary, context, "#000000");
         this.activeColor = CurrentTheme.getIconColorActive(context);
         this.unselectedIconColor = CurrentTheme.getIconColorStatic(context);
         this.transformation = CurrentTheme.createTransformationForAvatar(context);
+        this.actionListener = actionListener;
+    }
+
+    public interface ActionListener {
+        void onDrawerItemClick(AbsDrawerItem item);
+        void onDrawerItemLongClick(AbsDrawerItem item);
     }
 
     @Override
-    public int getCount() {
-        return pageItems.size();
+    protected void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position, int type) {
+        AbsDrawerItem item = getItem(position);
+        holder.itemView.setSelected(item.isSelected());
+
+        switch (type) {
+            case AbsDrawerItem.TYPE_WITH_ICON:
+                bindIconHolder((NormalHolder) holder, (IconDrawerItem) item);
+                break;
+            case AbsDrawerItem.TYPE_RECENT_CHAT:
+                bindRecentChat((RecentChatHolder) holder, (RecentChat) item);
+                break;
+            case AbsDrawerItem.TYPE_WITHOUT_ICON:
+                bindWithoutIcon((NoIconHolder) holder, (NoIconDrawerItem) item);
+                break;
+        }
+    }
+
+    private void bindWithoutIcon(NoIconHolder holder, NoIconDrawerItem item) {
+        holder.txTitle.setText(item.getTitle());
+        holder.txTitle.setTextColor(item.isSelected() ? activeColor : unselectedTextColor);
+        holder.contentRoot.setOnClickListener(v -> actionListener.onDrawerItemClick(item));
+        holder.contentRoot.setOnLongClickListener(view -> {
+            actionListener.onDrawerItemLongClick(item);
+            return true;
+        });
+    }
+
+    private void bindRecentChat(RecentChatHolder holder, RecentChat item) {
+        holder.tvChatTitle.setText(item.getTitle());
+        holder.tvChatTitle.setTextColor(item.isSelected() ? activeColor : unselectedTextColor);
+
+        if (Utils.isEmpty(item.getIconUrl())) {
+            PicassoInstance.with()
+                    .load(R.drawable.ic_group_chat)
+                    .transform(transformation)
+                    .into(holder.ivChatImage);
+        } else {
+            PicassoInstance.with()
+                    .load(item.getIconUrl())
+                    .transform(transformation)
+                    .into(holder.ivChatImage);
+        }
+
+        holder.contentRoot.setOnClickListener(v -> actionListener.onDrawerItemClick(item));
+        holder.contentRoot.setOnLongClickListener(view -> {
+            actionListener.onDrawerItemLongClick(item);
+            return true;
+        });
+    }
+
+    private void bindIconHolder(NormalHolder holder, IconDrawerItem item) {
+        holder.txtTitle.setText(item.getTitle());
+        holder.txtTitle.setTextColor(item.isSelected() ? activeColor : unselectedTextColor);
+
+        holder.tvCount.setVisibility(item.getCount() > 0 ? View.VISIBLE : View.INVISIBLE);
+        holder.tvCount.setText(String.valueOf(item.getCount()));
+
+        holder.imgIcon.setImageResource(item.getIcon());
+        holder.imgIcon.setColorFilter(item.isSelected() ? activeColor : unselectedIconColor);
+        holder.contentRoot.setOnClickListener(v -> actionListener.onDrawerItemClick(item));
+        holder.contentRoot.setOnLongClickListener(view -> {
+            actionListener.onDrawerItemLongClick(item);
+            return true;
+        });
     }
 
     @Override
-    public AbsDrawerItem getItem(int position) {
-        return pageItems.get(position);
+    protected RecyclerView.ViewHolder viewHolder(View view, int type) {
+        switch (type) {
+            case AbsDrawerItem.TYPE_DIVIDER:
+                return new DividerHolder(view);
+            case AbsDrawerItem.TYPE_RECENT_CHAT:
+                return new RecentChatHolder(view);
+            case AbsDrawerItem.TYPE_WITH_ICON:
+                return new NormalHolder(view);
+            case AbsDrawerItem.TYPE_WITHOUT_ICON:
+                return new NoIconHolder(view);
+        }
+        throw new IllegalStateException();
     }
 
     @Override
-    public int getViewTypeCount() {
-        return 5;
+    protected int getItemType(int position) {
+        return getItem(position - getHeadersCount()).getType();
     }
 
     @Override
-    public boolean isEnabled(int position) {
-        return getItemViewType(position) != AbsDrawerItem.TYPE_DIVIDER;
+    protected int layoutId(int type) {
+        switch (type) {
+            case AbsDrawerItem.TYPE_DIVIDER:
+                return R.layout.drawer_list_item_divider;
+            case AbsDrawerItem.TYPE_RECENT_CHAT:
+                return R.layout.item_navi_recents;
+            case AbsDrawerItem.TYPE_WITH_ICON:
+                return R.layout.drawer_list_item;
+            case AbsDrawerItem.TYPE_WITHOUT_ICON:
+                return R.layout.drawer_list_item_without_icon;
+        }
+
+        throw new IllegalStateException();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return pageItems.get(position).getType();
-    }
+    private class NormalHolder extends RecyclerView.ViewHolder {
 
-    private class NormalHolder {
         ImageView imgIcon;
         TextView txtTitle;
         TextView tvCount;
+        View contentRoot;
 
-        NormalHolder(View view){
+        NormalHolder(View view) {
+            super(view);
+            contentRoot = view.findViewById(R.id.content_root);
             imgIcon = view.findViewById(R.id.icon);
             txtTitle = view.findViewById(R.id.title);
             tvCount = view.findViewById(R.id.counter);
         }
     }
 
-    private class NoIconHolder {
-        TextView txTitle;
+    private class DividerHolder extends RecyclerView.ViewHolder {
 
-        NoIconHolder(View view){
+        DividerHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    private class NoIconHolder extends RecyclerView.ViewHolder {
+        TextView txTitle;
+        View contentRoot;
+
+        NoIconHolder(View view) {
+            super(view);
+            contentRoot = view.findViewById(R.id.content_root);
             txTitle = view.findViewById(R.id.title);
         }
     }
 
-    @NonNull
-    @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        final AbsDrawerItem item = pageItems.get(position);
-        boolean selected = listView.getCheckedItemPosition() == position + listView.getHeaderViewsCount();
+    private class RecentChatHolder extends RecyclerView.ViewHolder {
 
-        switch (getItemViewType(position)) {
-            case AbsDrawerItem.TYPE_WITH_ICON:
-                IconDrawerItem iconDrawerItem = (IconDrawerItem) item;
-                if (convertView == null) {
-                    LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-                    convertView = mInflater.inflate(R.layout.drawer_list_item, parent, false);
-                }
+        TextView tvChatTitle;
+        ImageView ivChatImage;
+        View contentRoot;
 
-                NormalHolder normalHolder = new NormalHolder(convertView);
-                normalHolder.txtTitle.setText(iconDrawerItem.getTitle());
-                normalHolder.txtTitle.setTextColor(selected ? activeColor : unselectedTextColor);
-
-                normalHolder.tvCount.setVisibility(iconDrawerItem.getCount() > 0 ? View.VISIBLE : View.INVISIBLE);
-                normalHolder.tvCount.setText(String.valueOf(iconDrawerItem.getCount()));
-
-                normalHolder.imgIcon.setImageResource(iconDrawerItem.getIcon());
-                normalHolder.imgIcon.setColorFilter(selected ? activeColor : unselectedIconColor);
-                return convertView;
-
-            case AbsDrawerItem.TYPE_WITHOUT_ICON:
-                NoIconDrawerItem noIconDrawerItem = (NoIconDrawerItem) item;
-                if (convertView == null) {
-                    LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-                    convertView = mInflater.inflate(R.layout.drawer_list_item_without_icon, parent, false);
-                }
-
-                NoIconHolder noIconHolder = new NoIconHolder(convertView);
-                noIconHolder.txTitle.setText(noIconDrawerItem.getTitle());
-                noIconHolder.txTitle.setTextColor(selected ? activeColor : unselectedTextColor);
-
-                return convertView;
-            case AbsDrawerItem.TYPE_DIVIDER:
-                if (convertView == null) {
-                    LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-                    convertView = mInflater.inflate(R.layout.drawer_list_item_divider, parent, false);
-                }
-
-                return convertView;
-            case AbsDrawerItem.TYPE_RECENT_CHAT:
-                RecentChat recentChat = (RecentChat) item;
-                if (convertView == null) {
-                    LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-                    convertView = mInflater.inflate(R.layout.item_navi_recents, parent, false);
-                }
-
-                TextView tvChatTitle = convertView.findViewById(R.id.title);
-                tvChatTitle.setText(recentChat.getTitle());
-                tvChatTitle.setTextColor(selected ? activeColor : unselectedTextColor);
-
-                ImageView ivChatImage = convertView.findViewById(R.id.item_friend_avatar);
-
-                if (TextUtils.isEmpty(recentChat.getIconUrl())) {
-                    PicassoInstance.with()
-                            .load(R.drawable.ic_group_chat)
-                            .transform(transformation)
-                            .into(ivChatImage);
-                } else {
-                    PicassoInstance.with()
-                            .load(recentChat.getIconUrl())
-                            .transform(transformation)
-                            .into(ivChatImage);
-                }
-
-                return convertView;
-            default:
-                throw new IllegalArgumentException();
+        RecentChatHolder(View itemView) {
+            super(itemView);
+            contentRoot = itemView.findViewById(R.id.content_root);
+            tvChatTitle = itemView.findViewById(R.id.title);
+            ivChatImage = itemView.findViewById(R.id.item_friend_avatar);
         }
     }
 }

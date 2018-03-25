@@ -100,14 +100,6 @@
             android:title="@string/avatar_style_title" />
 
         <CheckBoxPreference
-            android:defaultValue="false"
-            android:enabled="false"
-            android:key="lockscreen_art"
-            android:title="Show audio art on lockscreen"
-            android:visibility="gone" />
-
-
-        <CheckBoxPreference
             android:defaultValue="true"
             android:key="double_press_to_exit"
             android:title="@string/double_press_to_exit" />

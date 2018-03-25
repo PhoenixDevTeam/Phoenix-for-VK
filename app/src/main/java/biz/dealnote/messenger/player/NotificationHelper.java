@@ -17,19 +17,13 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
 import android.support.v4.media.session.MediaSessionCompat;
 
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
-import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.longpoll.AppNotificationChannels;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.settings.Settings;
@@ -54,7 +48,7 @@ public class NotificationHelper {
     }
 
     public void buildNotification(Context context, final String artistName,
-                                  final String trackName, final boolean isPlaying, final String coverUrl,
+                                  final String trackName, final boolean isPlaying,
                                   MediaSessionCompat.Token mediaSessionToken) {
 
         if (Utils.hasOreo()) {
@@ -84,8 +78,6 @@ public class NotificationHelper {
                         context.getResources().getString(R.string.next),
                         retreivePlaybackActions(ACTION_NEXT)));
 
-        updateNotificationCover(coverUrl);
-
         mService.startForeground(PHOENIX_MUSIC_SERVICE, mNotificationBuilder.build());
     }
 
@@ -95,26 +87,6 @@ public class NotificationHelper {
     public void killNotification() {
         mService.stopForeground(true);
         mNotificationBuilder = null;
-    }
-
-    public void updateNotificationCover(String cover) {
-        PicassoInstance.with()
-                .load(cover)
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        mNotificationBuilder.setLargeIcon(bitmap);
-                        mNotificationManager.notify(PHOENIX_MUSIC_SERVICE, mNotificationBuilder.build());
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-                    }
-                });
     }
 
     /**

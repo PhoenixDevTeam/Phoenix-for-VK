@@ -22,7 +22,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +37,6 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
-import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
@@ -52,6 +50,7 @@ import biz.dealnote.messenger.player.ui.RepeatingImageButton;
 import biz.dealnote.messenger.player.ui.ShuffleButton;
 import biz.dealnote.messenger.player.util.MusicUtils;
 import biz.dealnote.messenger.settings.Settings;
+import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.CircleCounterButton;
@@ -60,6 +59,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import static biz.dealnote.messenger.player.util.MusicUtils.isPlaying;
 import static biz.dealnote.messenger.player.util.MusicUtils.mService;
 import static biz.dealnote.messenger.player.util.MusicUtils.observeServiceBinding;
+import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
 public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekBarChangeListener {
@@ -91,7 +91,6 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
 
     private TextView tvTitle;
     private TextView tvSubtitle;
-    private ImageView ivCover;
 
     // Broadcast receiver
     private PlaybackStatus mPlaybackStatus;
@@ -136,6 +135,8 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        AssertUtils.requireNonNull(getArguments());
+
         mAccountId = getArguments().getInt(Extra.ACCOUNT_ID);
         mAudioInteractor = InteractorFactory.createAudioInteractor();
 
@@ -177,7 +178,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
                 return true;
 
             case R.id.playlist:
-                PlaceFactory.getPlaylistPlace().tryOpenWith(getActivity());
+                PlaceFactory.getPlaylistPlace().tryOpenWith(requireActivity());
                 return true;
         }
 
@@ -187,7 +188,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         int layoutRes;
-        if (Utils.isLandscape(getActivity()) && !Utils.is600dp(getActivity())) {
+        if (Utils.isLandscape(requireActivity()) && !Utils.is600dp(requireActivity())) {
             layoutRes = R.layout.fragment_player_land;
         } else {
             layoutRes = R.layout.fragment_player_port_new;
@@ -195,7 +196,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
 
         View root = inflater.inflate(layoutRes, container, false);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mPlayPauseButton = root.findViewById(R.id.action_button_play);
         mShuffleButton = root.findViewById(R.id.action_button_shuffle);
@@ -209,11 +210,10 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         mProgress = root.findViewById(android.R.id.progress);
         tvTitle = root.findViewById(R.id.audio_player_title);
         tvSubtitle = root.findViewById(R.id.audio_player_subtitle);
-        ivCover = root.findViewById(R.id.music_default_cover);
 
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if (actionBar != null) {
-            actionBar.setTitle(Utils.isLandscape(getActivity()) ? getResources().getString(R.string.music) : null);
+            actionBar.setTitle(Utils.isLandscape(requireActivity()) ? getResources().getString(R.string.music) : null);
             actionBar.setSubtitle(null);
         }
 
@@ -399,13 +399,13 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(), true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     private void resolveActionBar() {
         if (!isAdded()) return;
 
-        boolean isLandLayout = Utils.isLandscape(getActivity()) && !Utils.is600dp(getActivity());
+        boolean isLandLayout = Utils.isLandscape(requireActivity()) && !Utils.is600dp(requireActivity());
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
 
         if (actionBar != null) {
@@ -433,7 +433,8 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         filter.addAction(MusicPlaybackService.PREPARED);
         // Update a list, probably the playlist fragment's
         filter.addAction(MusicPlaybackService.REFRESH);
-        getActivity().registerReceiver(mPlaybackStatus, filter);
+
+        requireActivity().registerReceiver(mPlaybackStatus, filter);
         // Refresh the current time
         final long next = refreshCurrentTime();
         queueNextRefresh(next);
@@ -463,7 +464,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
 
         // Unregister the receiver
         try {
-            getActivity().unregisterReceiver(mPlaybackStatus);
+            requireActivity().unregisterReceiver(mPlaybackStatus);
         } catch (final Throwable ignored) {
             //$FALL-THROUGH$
         }
@@ -512,7 +513,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         }
 
         if (MusicUtils.isInitialized()) {
-            mTotalTime.setText(MusicUtils.makeTimeString(getActivity(), MusicUtils.duration() / 1000));
+            mTotalTime.setText(MusicUtils.makeTimeString(requireActivity(), MusicUtils.duration() / 1000));
         }
     }
 
@@ -545,7 +546,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
     private void startEffectsPanel() {
         try {
             final Intent effects = new Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL);
-            effects.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, getContext().getPackageName());
+            effects.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, requireContext().getPackageName());
             effects.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, MusicUtils.getAudioSessionId());
             effects.putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC);
             startActivityForResult(effects, REQUEST_EQ);
@@ -556,7 +557,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
 
     private boolean isEqualizerAvailable() {
         Intent intent = new Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL);
-        PackageManager manager = getActivity().getPackageManager();
+        PackageManager manager = requireActivity().getPackageManager();
         List<ResolveInfo> infos = manager.queryIntentActivities(intent, 0);
         return infos.size() > 0;
     }
@@ -715,9 +716,8 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
     }
 
     private void refreshCurrentTimeText(final long pos) {
-        mCurrentTime.setText(MusicUtils.makeTimeString(getActivity(), pos / 1000));
+        mCurrentTime.setText(MusicUtils.makeTimeString(requireActivity(), pos / 1000));
     }
-
 
     private long refreshCurrentTime() {
         //Logger.d("refreshTime", String.valueOf(mService == null));
@@ -863,28 +863,31 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         public void onReceive(final Context context, final Intent intent) {
             final String action = intent.getAction();
 
+            AudioPlayerFragment fragment = mReference.get();
+            if(isNull(fragment) || isNull(action)) return;
+
             switch (action) {
                 case MusicPlaybackService.META_CHANGED:
                     // Current info
-                    mReference.get().updateNowPlayingInfo();
-                    mReference.get().resolveControlViews();
+                    fragment.updateNowPlayingInfo();
+                    fragment.resolveControlViews();
                     break;
                 case MusicPlaybackService.PLAYSTATE_CHANGED:
                     // Set the play and pause image
-                    mReference.get().mPlayPauseButton.updateState();
-                    mReference.get().resolveTotalTime();
-                    mReference.get().resolveControlViews();
+                    fragment.mPlayPauseButton.updateState();
+                    fragment.resolveTotalTime();
+                    fragment.resolveControlViews();
                     break;
                 case MusicPlaybackService.REPEATMODE_CHANGED:
                 case MusicPlaybackService.SHUFFLEMODE_CHANGED:
                     // Set the repeat image
-                    mReference.get().mRepeatButton.updateRepeatState();
+                    fragment.mRepeatButton.updateRepeatState();
                     // Set the shuffle image
-                    mReference.get().mShuffleButton.updateShuffleState();
+                    fragment.mShuffleButton.updateShuffleState();
                     break;
                 case MusicPlaybackService.PREPARED:
-                    mReference.get().updateNowPlayingInfo();
-                    mReference.get().resolveControlViews();
+                    fragment.updateNowPlayingInfo();
+                    fragment.resolveControlViews();
                     break;
             }
         }

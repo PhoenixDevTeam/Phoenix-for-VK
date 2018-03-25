@@ -90,13 +90,4 @@ public class RecentChat extends AbsDrawerItem implements Parcelable {
             return new RecentChat[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return "RecentChat{" +
-                "aid=" + aid +
-                ", peerId=" + peerId +
-                ", title='" + title + '\'' +
-                '}';
-    }
 }

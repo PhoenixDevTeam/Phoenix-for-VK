@@ -10,6 +10,16 @@ public class AbsDrawerItem implements Parcelable {
     public static final int TYPE_DIVIDER = 2;
     public static final int TYPE_RECENT_CHAT = 3;
 
+    private boolean selected;
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
     public AbsDrawerItem(int type) {
         this.type = type;
     }
@@ -28,10 +38,12 @@ public class AbsDrawerItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(type);
+        dest.writeInt(selected ? 1 : 0);
     }
 
     public AbsDrawerItem(Parcel in) {
         this.type = in.readInt();
+        this.selected = in.readInt() == 1;
     }
 
     public static Creator<AbsDrawerItem> CREATOR = new Creator<AbsDrawerItem>() {

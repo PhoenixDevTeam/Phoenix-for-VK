@@ -162,7 +162,7 @@ public interface ISettings {
     interface IDrawerSettings {
         boolean isCategoryEnabled(@SwitchableCategory int category);
 
-        void setCategoriesOrder(@SwitchableCategory int [] order, boolean[] active);
+        void setCategoriesOrder(@SwitchableCategory int[] order, boolean[] active);
 
         int[] getCategoriesOrder();
 
@@ -234,7 +234,5 @@ public interface ISettings {
         boolean isSystemEmoji();
 
         boolean isMonochromeWhite(Context context);
-
-        boolean showLockscreenArt();
     }
 }

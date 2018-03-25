@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Transformation;
@@ -39,10 +40,8 @@ import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.settings.AppPrefs;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.RoundTransformation;
 import biz.dealnote.messenger.util.RxUtils;
-import biz.dealnote.messenger.util.Utils;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static biz.dealnote.messenger.model.SwitchableCategory.BOOKMARKS;
@@ -58,11 +57,11 @@ import static biz.dealnote.messenger.model.SwitchableCategory.PHOTOS;
 import static biz.dealnote.messenger.model.SwitchableCategory.SEARCH;
 import static biz.dealnote.messenger.model.SwitchableCategory.VIDEOS;
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.RxUtils.ignore;
+import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
-public class NavigationFragment extends BaseFragment {
-
-    private static final String TAG = NavigationFragment.class.getSimpleName();
+public class NavigationFragment extends BaseFragment implements MenuListAdapter.ActionListener {
 
     public static final int PAGE_FRIENDS = 0;
     public static final int PAGE_DIALOGS = 1;
@@ -97,21 +96,18 @@ public class NavigationFragment extends BaseFragment {
     public static final SectionDrawerItem SECTION_ITEM_BY_FULL_APP = new NoIconDrawerItem(PAGE_BUY_FULL_APP, R.string.buy_phoenix);
     public static final SectionDrawerItem SECTION_ITEM_ACCOUNTS = new NoIconDrawerItem(PAGE_ACCOUNTS, R.string.accounts);
 
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-
     private static final int MAX_RECENT_COUNT = 5;
 
     private NavigationDrawerCallbacks mCallbacks;
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
     private View mFragmentContainerView;
     private ImageView ivHeaderAvatar;
     private TextView tvUserName;
     private TextView tvDomain;
-    private int mCurrentSelectedPosition;
+
     private List<RecentChat> mRecentChats;
     private MenuListAdapter mAdapter;
-    private ArrayList<AbsDrawerItem> mDrawerItems;
+    private List<AbsDrawerItem> mDrawerItems;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private int mAccountId;
@@ -121,8 +117,9 @@ public class NavigationFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
-        this.mAccountId = Settings.get()
+
+        ownersInteractor = InteractorFactory.createOwnerInteractor();
+        mAccountId = Settings.get()
                 .accounts()
                 .getCurrent();
 
@@ -131,12 +128,6 @@ public class NavigationFragment extends BaseFragment {
                 .observeChanges()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onAccountChange));
-
-        if (savedInstanceState != null) {
-            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
-        }
-
-        selectItem(mCurrentSelectedPosition, false);
 
         mRecentChats = Settings.get()
                 .recentChats()
@@ -160,8 +151,6 @@ public class NavigationFragment extends BaseFragment {
     }
 
     private void onUnreadDialogsCountChange(int count) {
-        Logger.d(TAG, "onUnreadDialogsCountChange, count: " + count);
-
         if (SECTION_ITEM_DIALOGS.getCount() != count) {
             SECTION_ITEM_DIALOGS.setCount(count);
             safellyNotifyDataSetChanged();
@@ -171,25 +160,22 @@ public class NavigationFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView = root.findViewById(R.id.fragment_navigation_list);
-        mDrawerListView.setOnItemClickListener((parent, view, position, id) -> selectItem(position, false));
-        mDrawerListView.setOnItemLongClickListener((parent, view, position, id) -> {
-            selectItem(position, true);
-            return true;
-        });
 
-        View vHeader = inflater.inflate(R.layout.header_navi_menu, mDrawerListView, false);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+
+        View vHeader = inflater.inflate(R.layout.header_navi_menu, recyclerView, false);
 
         ImageView backgroundImage = vHeader.findViewById(R.id.header_navi_menu_background);
 
-        File file = PreferencesFragment.getDrawerBackgroundFile(getActivity(), !Settings.get().ui().isDarkModeEnabled(getActivity()));
+        boolean dark = Settings.get().ui().isDarkModeEnabled(requireActivity());
+        File file = PreferencesFragment.getDrawerBackgroundFile(requireActivity(), !dark);
+
         if (file.exists()) {
             PicassoInstance.with().load(file).into(backgroundImage);
         } else {
             backgroundImage.setImageResource(R.drawable.background_drawer_header_vector);
         }
-
-        mDrawerListView.addHeaderView(vHeader, null, false);
 
         ivHeaderAvatar = vHeader.findViewById(R.id.header_navi_menu_avatar);
         tvUserName = vHeader.findViewById(R.id.header_navi_menu_username);
@@ -197,9 +183,11 @@ public class NavigationFragment extends BaseFragment {
 
         mDrawerItems = new ArrayList<>();
         mDrawerItems.addAll(generateNavDrawerItems());
-        mAdapter = new MenuListAdapter(getActivity(), mDrawerItems, mDrawerListView);
 
-        mDrawerListView.setAdapter(mAdapter);
+        mAdapter = new MenuListAdapter(requireActivity(), mDrawerItems, this);
+        mAdapter.addHeader(vHeader);
+
+        recyclerView.setAdapter(mAdapter);
 
         refreshUserInfo();
 
@@ -212,10 +200,10 @@ public class NavigationFragment extends BaseFragment {
     }
 
     private void refreshUserInfo() {
-        if (this.mAccountId != ISettings.IAccountsSettings.INVALID_ID) {
+        if (mAccountId != ISettings.IAccountsSettings.INVALID_ID) {
             mCompositeDisposable.add(ownersInteractor.getBaseOwnerInfo(mAccountId, mAccountId, IOwnersInteractor.MODE_ANY)
                     .compose(RxUtils.applySingleIOToMainSchedulers())
-                    .subscribe(owner -> refreshHeader((User) owner), t -> {/*ignored*/}));
+                    .subscribe(owner -> refreshHeader((User) owner), ignore()));
         }
     }
 
@@ -224,8 +212,7 @@ public class NavigationFragment extends BaseFragment {
             return;
         }
 
-        PlaceFactory.getOwnerWallPlace(mAccountId, mAccountId, null)
-                .tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(mAccountId, mAccountId, null).tryOpenWith(requireActivity());
     }
 
     public void refreshDrawerItems() {
@@ -301,7 +288,7 @@ public class NavigationFragment extends BaseFragment {
     }
 
     /**
-     * Добавить новые "недавний чат" в боковую панель
+     * Добавить новый "недавний чат" в боковую панель
      * Если там уже есть более 4-х елементов, то удаляем последний
      *
      * @param recentChat новый чат
@@ -317,8 +304,8 @@ public class NavigationFragment extends BaseFragment {
 
             // если вдруг мы дабавляем чат без иконки или названия, то сохраним эти
             // значения из пердыдущего (c тем же peer_id) елемента
-            recentChat.setIconUrl(Utils.firstNonEmptyString(recentChat.getIconUrl(), old.getIconUrl()));
-            recentChat.setTitle(Utils.firstNonEmptyString(recentChat.getTitle(), old.getTitle()));
+            recentChat.setIconUrl(firstNonEmptyString(recentChat.getIconUrl(), old.getIconUrl()));
+            recentChat.setTitle(firstNonEmptyString(recentChat.getTitle(), old.getTitle()));
 
             mRecentChats.set(index, recentChat);
         } else {
@@ -336,7 +323,6 @@ public class NavigationFragment extends BaseFragment {
         if (!isAdded()) return;
 
         String avaUrl = user.getMaxSquareAvatar();
-        String fullName = user.getFullName();
 
         Transformation transformation = new RoundTransformation();
         if (nonNull(avaUrl) && !avaUrl.contains("camera")) {
@@ -351,12 +337,9 @@ public class NavigationFragment extends BaseFragment {
                     .into(ivHeaderAvatar);
         }
 
-        tvUserName.setText(fullName);
-
-        if (tvDomain != null) {
-            String domailText = "@" + user.getDomain();
-            tvDomain.setText(domailText);
-        }
+        String domailText = "@" + user.getDomain();
+        tvDomain.setText(domailText);
+        tvUserName.setText(user.getFullName());
     }
 
     public boolean isDrawerOpen() {
@@ -382,25 +365,19 @@ public class NavigationFragment extends BaseFragment {
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      */
     public void setUp(int fragmentId, DrawerLayout drawerLayout) {
-        mFragmentContainerView = getActivity().findViewById(fragmentId);
+        mFragmentContainerView = requireActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
         if (drawerLayout != null) {
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         }
     }
 
-    private void selectItem(int position, boolean longClick) {
-        mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
-        }
-
+    private void selectItem(AbsDrawerItem item, boolean longClick) {
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
 
-        if (mCallbacks != null && mAdapter != null) {
-            AbsDrawerItem item = mAdapter.getItem(position - mDrawerListView.getHeaderViewsCount());
+        if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(item, longClick);
         }
     }
@@ -421,22 +398,11 @@ public class NavigationFragment extends BaseFragment {
         mCallbacks = null;
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
-    }
-
     public void selectPage(AbsDrawerItem item) {
-        int index = item == null ? -1 : mDrawerItems.indexOf(item);
-        if (index != -1) {
-            int targetIndex = index + mDrawerListView.getHeaderViewsCount();
-            mDrawerListView.setItemChecked(targetIndex, true);
-        } else {
-            mDrawerListView.clearChoices();
+        for(AbsDrawerItem i : mDrawerItems){
+            i.setSelected(i == item);
         }
-
-        mAdapter.notifyDataSetChanged();
+        safellyNotifyDataSetChanged();
     }
 
     private void backupRecentChats() {
@@ -485,6 +451,16 @@ public class NavigationFragment extends BaseFragment {
             } catch (Exception ignored) {
             }
         }
+    }
+
+    @Override
+    public void onDrawerItemClick(AbsDrawerItem item) {
+        selectItem(item, false);
+    }
+
+    @Override
+    public void onDrawerItemLongClick(AbsDrawerItem item) {
+        selectItem(item, true);
     }
 
     public interface NavigationDrawerCallbacks {

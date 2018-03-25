@@ -19,8 +19,6 @@ import biz.dealnote.messenger.place.PlaceFactory;
  */
 class UISettings implements ISettings.IUISettings {
 
-    private static final String KEY_LOCKSCREEN_ART = "lockscreen_art";
-
     private final Context app;
 
     UISettings(Context context) {
@@ -185,10 +183,5 @@ class UISettings implements ISettings.IUISettings {
     @Override
     public boolean isMonochromeWhite(Context context) {
         return (getMainTheme() == R.style.App_DayNight_Monochrome || getMainTheme() == R.style.App_DayNight_Amoled_Monochrome) && !isDarkModeEnabled(context);
-    }
-
-    @Override
-    public boolean showLockscreenArt() {
-        return PreferenceManager.getDefaultSharedPreferences(app).getBoolean(KEY_LOCKSCREEN_ART, false);
     }
 }

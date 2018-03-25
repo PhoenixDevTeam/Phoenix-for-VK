@@ -19,8 +19,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.media.MediaPlayer;
@@ -34,16 +32,12 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Process;
 import android.os.SystemClock;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
-
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -55,7 +49,6 @@ import java.util.Stack;
 
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
-import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Audio;
@@ -499,7 +492,7 @@ public class MusicPlaybackService extends Service {
      */
     private void updateNotification() {
         mNotificationHelper.buildNotification(getApplicationContext(), getArtistName(),
-                getTrackName(), isPlaying(), getAlbumCover(), mMediaSession.getSessionToken());
+                getTrackName(), isPlaying(), mMediaSession.getSessionToken());
     }
 
     private void scheduleDelayedShutdown() {
@@ -660,7 +653,8 @@ public class MusicPlaybackService extends Service {
     }
 
     private void fetchCoverAndUpdateMetadata() {
-        updateMetadata(null);
+        updateMetadata();
+
 //        if (getAlbumCover() == null || getAlbumCover().isEmpty() ||
 //                !biz.dealnote.messenger.settings.Settings.get().ui().showLockscreenArt()){
 //            updateMetadata(null);
@@ -686,12 +680,12 @@ public class MusicPlaybackService extends Service {
 //                });
     }
 
-    private void updateMetadata(Bitmap albumCover) {
+    private void updateMetadata() {
         mMediaMetadataCompat = new MediaMetadataCompat.Builder().
                 putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getArtistName())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, getAlbumName())
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, getTrackName())
-                .putBitmap(MediaMetadataCompat.METADATA_KEY_ART, albumCover)
+                //.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, albumCover)
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration())
                 .build();
         mMediaSession.setMetadata(mMediaMetadataCompat);
