@@ -1028,4 +1028,6 @@
     <string name="vibration_length">Тривалість вібрації</string>
     <string name="family">Родина</string>
     <string name="activity_until_now">поточний час</string>
+    <string name="direction">Напрямок</string>
+    <string name="toast_comment_sent">напрямок був опублікований!</string>
 </resources>

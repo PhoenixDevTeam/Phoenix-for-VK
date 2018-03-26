@@ -84,6 +84,23 @@ class OtherSettings implements ISettings.IOtherSettings {
     }
 
     @Override
+    public boolean isCommentsDesc() {
+        return PreferenceManager.getDefaultSharedPreferences(app).getBoolean("comments_desc", true);
+    }
+
+    @Override
+    public boolean toggleCommentsDirection() {
+        boolean descNow = isCommentsDesc();
+
+        PreferenceManager.getDefaultSharedPreferences(app)
+                .edit()
+                .putBoolean("comments_desc", !descNow)
+                .apply();
+
+        return !descNow;
+    }
+
+    @Override
     public boolean isForceExoplayer() {
         return PreferenceManager.getDefaultSharedPreferences(app).getBoolean("force_exoplayer", false);
     }

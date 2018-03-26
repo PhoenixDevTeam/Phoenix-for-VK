@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -46,6 +47,7 @@ import biz.dealnote.messenger.mvp.presenter.CommentsPresenter;
 import biz.dealnote.messenger.mvp.view.ICommentsView;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.RoundTransformation;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.CommentsInputViewController;
@@ -352,6 +354,18 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
     }
 
     @Override
+    public void scrollToPosition(int position) {
+        if (nonNull(mLinearLayoutManager) && nonNull(mAdapter)) {
+            mLinearLayoutManager.scrollToPosition(position + mAdapter.getHeadersCount());
+        }
+    }
+
+    @Override
+    public void showCommentSentToast() {
+        showToast(R.string.toast_comment_sent, true);
+    }
+
+    @Override
     public void showAuthorSelectDialog(List<Owner> owners) {
         final ArrayList<Owner> data = new ArrayList<>(owners);
         OwnersListAdapter adapter = new OwnersListAdapter(getActivity(), data);
@@ -597,6 +611,14 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
         if (mGotoSourceAvailable) {
             gotoSource.setTitle(mGotoSourceText);
         }
+
+        boolean desc = Settings.get().other().isCommentsDesc();
+        menu.findItem(R.id.direction).setIcon(getDirectionIcon(desc));
+    }
+
+    @DrawableRes
+    private int getDirectionIcon(boolean desc) {
+        return desc ? R.drawable.ic_comments_direction_desc : R.drawable.ic_comments_direction_asc;
     }
 
     @Override
@@ -605,13 +627,16 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
             case R.id.refresh:
                 getPresenter().fireRefreshClick();
                 return true;
-
             case R.id.open_poll:
                 getPresenter().fireTopicPollClick();
                 return true;
-
             case R.id.to_commented:
                 getPresenter().fireGotoSourceClick();
+                return true;
+            case R.id.direction:
+                boolean decs = Settings.get().other().toggleCommentsDirection();
+                item.setIcon(getDirectionIcon(decs));
+                getPresenter().fireDirectionChanged();
                 return true;
         }
 

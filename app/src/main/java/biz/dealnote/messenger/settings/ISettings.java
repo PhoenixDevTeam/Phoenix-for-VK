@@ -58,6 +58,10 @@ public interface ISettings {
         void setAudioBroadcastActive(boolean active);
 
         boolean isForceExoplayer();
+
+        boolean isCommentsDesc();
+
+        boolean toggleCommentsDirection();
     }
 
     interface IAccountsSettings {

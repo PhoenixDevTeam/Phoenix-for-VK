@@ -1030,4 +1030,6 @@
     <string name="vibration_length">Длительность вибрации</string>
     <string name="family">Семья</string>
     <string name="activity_until_now">текущее время</string>
+    <string name="direction">Направление</string>
+    <string name="toast_comment_sent">Комментарий был опубликован!</string>
 </resources>

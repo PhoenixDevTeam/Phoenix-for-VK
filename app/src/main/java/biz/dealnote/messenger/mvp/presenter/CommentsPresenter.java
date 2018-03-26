@@ -35,6 +35,7 @@ import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
 import biz.dealnote.messenger.mvp.view.ICommentsView;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.DisposableHolder;
@@ -43,10 +44,12 @@ import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
 import io.reactivex.Single;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 import static biz.dealnote.messenger.util.Utils.trimmedNonEmpty;
@@ -76,6 +79,8 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
 
     private Owner author;
 
+    private boolean directionDesc;
+
     public CommentsPresenter(int accountId, Commented commented, Integer focusToComment, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.authorId = accountId;
@@ -83,6 +88,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         this.interactor = new CommentsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
         this.commented = commented;
         this.focusToComment = focusToComment;
+        this.directionDesc = Settings.get().other().isCommentsDesc();
 
         this.data = new ArrayList<>();
 
@@ -133,7 +139,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         }
     }
 
-    private void onAuthorDataGetError(Throwable t){
+    private void onAuthorDataGetError(Throwable t) {
         showError(getView(), getCauseIfRuntime(t));
     }
 
@@ -201,7 +207,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         }
     }
 
-    private DisposableHolder<Void> netLoaderHolder = new DisposableHolder<>();
+    private CompositeDisposable actualLoadingDisposable = new CompositeDisposable();
 
     private int loadingState;
 
@@ -211,22 +217,21 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         Single<CommentsBundle> single;
         if (nonNull(focusToComment)) {
             single = interactor.getCommentsPortion(accountId, commented, -10, COUNT, focusToComment, true, "asc");
-        } else {
+        } else if (directionDesc) {
             single = interactor.getCommentsPortion(accountId, commented, 0, COUNT, null, true, "desc");
+        } else {
+            single = interactor.getCommentsPortion(accountId, commented, 0, COUNT, null, true, "asc");
         }
 
         setLoadingState(LoadingState.INITIAL);
-        netLoaderHolder.append(single
+        actualLoadingDisposable.add(single
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onInitialDataReceived,
-                        throwable -> onInitialDataError(getCauseIfRuntime(throwable))));
+                .subscribe(this::onInitialDataReceived, this::onInitialDataError));
     }
 
     private void onInitialDataError(Throwable throwable) {
-        throwable.printStackTrace();
-
         setLoadingState(LoadingState.NO);
-        showError(getView(), throwable);
+        showError(getView(), getCauseIfRuntime(throwable));
     }
 
     private void loadUp() {
@@ -238,7 +243,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         final int accountId = super.getAccountId();
 
         setLoadingState(LoadingState.UP);
-        netLoaderHolder.append(interactor.getCommentsPortion(accountId, commented, 1, COUNT, first.getId(), false, "desc")
+        actualLoadingDisposable.add(interactor.getCommentsPortion(accountId, commented, 1, COUNT, first.getId(), false, "desc")
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onCommentsPortionPortionReceived,
                         throwable -> onCommentPortionError(getCauseIfRuntime(throwable))));
@@ -253,7 +258,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         final int accountId = super.getAccountId();
 
         setLoadingState(LoadingState.DOWN);
-        netLoaderHolder.append(interactor.getCommentsPortion(accountId, commented, 0, COUNT, last.getId(), false, "asc")
+        actualLoadingDisposable.add(interactor.getCommentsPortion(accountId, commented, 0, COUNT, last.getId(), false, "asc")
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onCommentsPortionPortionReceived,
                         throwable -> onCommentPortionError(getCauseIfRuntime(throwable))));
@@ -265,7 +270,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
     }
 
     private void onCommentsPortionPortionReceived(CommentsBundle bundle) {
-        cacheLoadingHolder.dispose();
+        cacheLoadingDisposable.clear();
 
         List<Comment> comments = bundle.getComments();
 
@@ -306,7 +311,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         Owner author = comment.getAuthor();
 
         // если комментарий от имени сообщества и я админ или модератор, то могу удалить
-        if(author instanceof Community && ((Community) author).getAdminLevel() >= VKApiCommunity.AdminLevel.MODERATOR){
+        if (author instanceof Community && ((Community) author).getAdminLevel() >= VKApiCommunity.AdminLevel.MODERATOR) {
             return true;
         }
 
@@ -624,7 +629,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
 
         appendDisposable(interactor.send(accountId, commented, intent)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onNormalSendResponse, throwable -> onSendError(getCauseIfRuntime(throwable))));
+                .subscribe(this::onNormalSendResponse, this::onSendError));
     }
 
     private void sendQuickComment(CommentIntent intent) {
@@ -633,21 +638,18 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         final int accountId = super.getAccountId();
         appendDisposable(interactor.send(accountId, commented, intent)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onQuickSendResponse, throwable -> onSendError(getCauseIfRuntime(throwable))));
+                .subscribe(this::onQuickSendResponse, this::onSendError));
     }
 
-    private void onSendError(Throwable throwable) {
+    private void onSendError(Throwable t) {
         setSendingNow(false);
-        showError(getView(), throwable);
+        showError(getView(), getCauseIfRuntime(t));
     }
 
     private void onQuickSendResponse(Comment comment) {
         setSendingNow(false);
-        data.add(0, comment);
 
-        if (isGuiReady()) {
-            getView().notifyDataAddedToBottom(1);
-        }
+        handleCommentAdded(comment);
 
         this.replyTo = null;
 
@@ -655,14 +657,33 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         resolveEmptyTextVisibility();
     }
 
+    private void handleCommentAdded(Comment comment) {
+        boolean canAdd;
+
+        if (isNull(commentedState)) {
+            canAdd = false;
+        } else if (data.isEmpty()) {
+            canAdd = true;
+        } else if (isNull(commentedState.lastCommentId)) {
+            canAdd = true;
+        } else {
+            Comment last = data.get(0);
+            canAdd = last.getId() == commentedState.lastCommentId;
+        }
+
+        if (canAdd) {
+            data.add(0, comment);
+            commentedState.lastCommentId = comment.getId();
+            callView(view -> view.notifyDataAddedToBottom(1));
+        } else {
+            callView(ICommentsView::showCommentSentToast);
+        }
+    }
+
     private void onNormalSendResponse(Comment comment) {
         setSendingNow(false);
 
-        data.add(0, comment);
-
-        if (isGuiReady()) {
-            getView().notifyDataAddedToBottom(1);
-        }
+        handleCommentAdded(comment);
 
         this.draftCommentAttachmentsCount = 0;
         this.draftCommentBody = null;
@@ -726,7 +747,8 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         int accountId = super.getAccountId();
         appendDisposable(interactor.deleteRestore(accountId, commented, commentId, delete)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(() -> {}, throwable -> showError(getView(), getCauseIfRuntime(throwable))));
+                .subscribe(() -> {
+                }, throwable -> showError(getView(), getCauseIfRuntime(throwable))));
     }
 
     public void fireCommentEditClick(Comment comment) {
@@ -743,7 +765,8 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
 
         appendDisposable(interactor.like(accountId, comment.getCommented(), comment.getId(), add)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(() -> {}, throwable -> showError(getView(), getCauseIfRuntime(throwable))));
+                .subscribe(() -> {
+                }, throwable -> showError(getView(), getCauseIfRuntime(throwable))));
     }
 
     public void fireCommentRestoreClick(int commentId) {
@@ -789,7 +812,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
 
     public void fireRefreshClick() {
         if (loadingState != LoadingState.INITIAL) {
-            netLoaderHolder.dispose();
+            actualLoadingDisposable.clear();
             requestInitialData();
         }
     }
@@ -869,7 +892,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
 
         Single<List<Owner>> single;
 
-        if(canSendFromAnyGroup){
+        if (canSendFromAnyGroup) {
             single = interactor.getAvailableAuthors(accountId);
         } else {
             Set<Integer> ids = new HashSet<>();
@@ -883,12 +906,11 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
                 .subscribe(this::onAvailableAuthorsReceived, throwable -> onAvailableAuthorsGetError(getCauseIfRuntime(throwable))));
     }
 
-    private void onAvailableAuthorsGetError(Throwable throwable){
+    private void onAvailableAuthorsGetError(Throwable throwable) {
         setLoadingAvailableAuthorsNow(false);
-        throwable.printStackTrace();
     }
 
-    private void onAvailableAuthorsReceived(List<Owner> owners){
+    private void onAvailableAuthorsReceived(List<Owner> owners) {
         setLoadingAvailableAuthorsNow(false);
         callView(view -> view.showAuthorSelectDialog(owners));
     }
@@ -899,11 +921,18 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         resolveAuthorAvatarView();
     }
 
+    public void fireDirectionChanged() {
+        this.data.clear();
+        getView().notifyDataSetChanged();
+
+        this.directionDesc = Settings.get().other().isCommentsDesc();
+        requestInitialData();
+    }
+
     private static class CommentedState {
 
-        final Integer firstCommentId;
-
-        final Integer lastCommentId;
+        Integer firstCommentId;
+        Integer lastCommentId;
 
         CommentedState(Integer firstCommentId, Integer lastCommentId) {
             this.firstCommentId = firstCommentId;
@@ -928,7 +957,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
 
     private void onInitialDataReceived(CommentsBundle bundle) {
         // отменяем загрузку из БД если активна
-        cacheLoadingHolder.dispose();
+        cacheLoadingDisposable.clear();
 
         data.clear();
         data.addAll(bundle.getComments());
@@ -945,7 +974,11 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
             getView().notifyDataSetChanged();
         }
 
-        checkFocusToCommentDone();
+        if (nonNull(focusToComment)) {
+            checkFocusToCommentDone();
+        } else if (!directionDesc) {
+            callView(view -> view.scrollToPosition(data.size() - 1));
+        }
 
         resolveOptionMenu();
         resolveHeaderFooterViews();
@@ -958,14 +991,13 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         static final int DOWN = 3;
     }
 
-    private DisposableHolder<Void> cacheLoadingHolder = new DisposableHolder<>();
+    private CompositeDisposable cacheLoadingDisposable = new CompositeDisposable();
 
     private void loadCachedData() {
         final int accountId = super.getAccountId();
-
-        cacheLoadingHolder.append(interactor.getAllCachedData(accountId, commented)
+        cacheLoadingDisposable.add(interactor.getAllCachedData(accountId, commented)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onCachedDataReceived, Analytics::logUnexpectedError));
+                .subscribe(this::onCachedDataReceived, ignore()));
     }
 
     @OnGuiCreated
@@ -999,8 +1031,8 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
     }
 
     private void onCachedDataReceived(List<Comment> comments) {
-        this.data.clear();
-        this.data.addAll(comments);
+        data.clear();
+        data.addAll(comments);
 
         resolveHeaderFooterViews();
         resolveEmptyTextVisibility();
@@ -1008,6 +1040,10 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
 
         if (isGuiReady()) {
             getView().notifyDataSetChanged();
+
+            if (!directionDesc) {
+                getView().scrollToPosition(data.size() - 1);
+            }
         }
     }
 
@@ -1020,12 +1056,12 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
 
     @Override
     public void onDestroyed() {
-        cacheLoadingHolder.dispose();
-        netLoaderHolder.dispose();
+        cacheLoadingDisposable.dispose();
+        actualLoadingDisposable.dispose();
         deepLookingHolder.dispose();
 
         // save draft async
-        saveSingle().subscribeOn(Schedulers.io()).subscribe(ignored -> {}, Analytics::logUnexpectedError);
+        saveSingle().subscribeOn(Schedulers.io()).subscribe(ignore(), ignore());
         super.onDestroyed();
     }
 

@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/direction"
+        app:showAsAction="always"
+        android:title="@string/direction" />
+
     <item android:id="@+id/to_commented"
         android:title="@string/go_to_post"/>
 
     <item android:id="@+id/open_poll"
         android:icon="?toolbarGraphicIcon"
         android:title="@string/poll"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom" />
 
     <item android:id="@+id/refresh"
         android:title="@string/refresh"/>

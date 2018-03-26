@@ -39,7 +39,6 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -1212,24 +1211,26 @@ public class MusicPlaybackService extends Service {
         }
 
         /**
-         * @param path The path of the file, or the http/rtsp URL of the stream
+         * @param remoteUrl The path of the file, or the http/rtsp URL of the stream
          *             you want to play
          *             return True if the <code>player</code> has been prepared and is
          *             ready to play, false otherwise
          */
-        void setDataSource(final String path) {
-            Logger.d(TAG, "setDataSourceImpl, path: " + path);
+        void setDataSource(final String remoteUrl) {
+            Logger.d(TAG, "setDataSourceImpl, path: " + remoteUrl);
+
+            final String url = isEmpty(remoteUrl) ? "https://vk.com/mp3/audio_api_unavailable.mp3" : remoteUrl;
 
             try {
                 mCurrentMediaPlayer.reset();
                 mCurrentMediaPlayer.setOnPreparedListener(this);
-                mCurrentMediaPlayer.setDataSource(path);
+                mCurrentMediaPlayer.setDataSource(url);
                 mCurrentMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mCurrentMediaPlayer.prepareAsync();
                 preparing = true;
 
                 mService.get().mIsSupposedToBePlaying = false;
-            } catch (final IOException e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 

@@ -1,10 +1,8 @@
 package biz.dealnote.messenger.fragment;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -12,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,9 +31,7 @@ import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
-import biz.dealnote.messenger.activity.SendAttachmentsActivity;
 import biz.dealnote.messenger.adapter.WallAdapter;
-import biz.dealnote.messenger.dialog.PostShareDialog;
 import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
 import biz.dealnote.messenger.fragment.search.SearchContentType;
 import biz.dealnote.messenger.fragment.search.criteria.WallSearchCriteria;
@@ -53,7 +48,6 @@ import biz.dealnote.messenger.mvp.view.IWallView;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.place.PlaceUtil;
 import biz.dealnote.messenger.util.AppTextUtils;
-import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.messenger.view.LoadMoreFooterHelper;
@@ -67,8 +61,6 @@ import static biz.dealnote.messenger.util.Utils.isLandscape;
  */
 public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPresenter<V>>
         extends PlaceSupportPresenterFragment<P, V> implements IWallView, WallAdapter.ClickListener, WallAdapter.NonPublishedPostActionListener {
-
-    private static final int REQUEST_POST_SHARE = 45;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private WallAdapter mWallAdapter;
@@ -259,43 +251,6 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
         if (nonNull(mWallAdapter)) {
             mWallAdapter.notifyItemRemoved(index + mWallAdapter.getHeadersCount());
         }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_POST_SHARE && resultCode == Activity.RESULT_OK) {
-            int method = PostShareDialog.extractMethod(data);
-            int accountId = PostShareDialog.extractAccountId(data);
-            Post post = PostShareDialog.extractPost(data);
-
-            AssertUtils.requireNonNull(post);
-
-            switch (method) {
-                case PostShareDialog.Methods.SHARE_LINK:
-                    Utils.shareLink(requireActivity(), post.generateVkPostLink(), post.getText());
-                    break;
-                case PostShareDialog.Methods.REPOST_YOURSELF:
-                    PlaceFactory.getRepostPlace(accountId, null, post).tryOpenWith(requireActivity());
-                    break;
-                case PostShareDialog.Methods.SEND_MESSAGE:
-                    SendAttachmentsActivity.startForSendAttachments(requireActivity(), accountId, post);
-                    break;
-                case PostShareDialog.Methods.REPOST_GROUP:
-                    int ownerId = PostShareDialog.extractOwnerId(data);
-                    PlaceFactory.getRepostPlace(accountId, Math.abs(ownerId), post).tryOpenWith(requireActivity());
-                    break;
-            }
-        }
-    }
-
-    public static void repost(@NonNull Fragment fragment, final int accountId, final Post post) {
-        FragmentManager fm = fragment.requireActivity().getSupportFragmentManager();
-
-        PostShareDialog.newInstance(accountId, post)
-                .targetTo(fragment, REQUEST_POST_SHARE)
-                .show(fm, "post-sharing");
     }
 
     @Override

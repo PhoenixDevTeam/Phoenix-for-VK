@@ -441,6 +441,7 @@ public class News extends AbsModel implements Parcelable {
                 .setUserReposted(userReposted)
                 .setCommentsCount(commentCount)
                 .setCanPostComment(commentCanPost)
+                .setCanRepost(canPublish)
                 .setViewCount(viewCount);
     }
 

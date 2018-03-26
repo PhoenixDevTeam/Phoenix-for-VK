@@ -58,6 +58,10 @@ public interface ICommentsView extends IAccountDependencyView, IAttachmentsPlace
 
     void showAuthorSelectDialog(List<Owner> owners);
 
+    void scrollToPosition(int position);
+
+    void showCommentSentToast();
+
     interface ICommentContextView {
         void setCanEdit(boolean can);
         void setCanDelete(boolean can);
