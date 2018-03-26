@@ -127,7 +127,9 @@ public class PostShareDialog extends DialogFragment {
         items.add(new Item(Methods.SHARE_LINK, new Text(R.string.share_link)).setIcon(R.drawable.web));
         items.add(new Item(Methods.SEND_MESSAGE, new Text(R.string.repost_send_message)).setIcon(R.drawable.share));
 
-        if (mPost.getOwnerId() != mAccountId) {
+        boolean canRepostYourself = mPost.getOwnerId() != mAccountId && !mPost.isFriendsOnly() && mPost.getAuthorId() != mAccountId;
+
+        if (canRepostYourself) {
             items.add(new Item(Methods.REPOST_YOURSELF, new Text(R.string.repost_to_wall)).setIcon(R.drawable.share_variant));
         }
 
@@ -138,22 +140,30 @@ public class PostShareDialog extends DialogFragment {
                 .setAdapter(mAdapter, (dialog, which) -> onItemClick(items.get(which)))
                 .setNegativeButton(R.string.button_cancel, null);
 
-        compositeDisposable.add(interactor
-                .getCommunitiesWhereAdmin(mAccountId, true, true, false)
-                .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(owners -> {
-                    for (Owner owner : owners) {
-                        if (owner.getOwnerId() == mPost.getOwnerId()) {
-                            continue;
+
+        boolean iAmOwnerAndAuthor = mPost.getOwnerId() == mAccountId && mPost.getAuthorId() == mAccountId;
+
+        // Аккуратно, сложная логика!!!
+        boolean canShareToGroups = mPost.isCanRepost() || (iAmOwnerAndAuthor && !mPost.isFriendsOnly());
+
+        if (canShareToGroups) {
+            compositeDisposable.add(interactor
+                    .getCommunitiesWhereAdmin(mAccountId, true, true, false)
+                    .compose(RxUtils.applySingleIOToMainSchedulers())
+                    .subscribe(owners -> {
+                        for (Owner owner : owners) {
+                            if (owner.getOwnerId() == mPost.getOwnerId()) {
+                                continue;
+                            }
+
+                            items.add(new Item(Methods.REPOST_GROUP, new Text(owner.getFullName()))
+                                    .setIcon(owner.get100photoOrSmaller())
+                                    .setExtra(owner.getOwnerId()));
                         }
 
-                        items.add(new Item(Methods.REPOST_GROUP, new Text(owner.getFullName()))
-                                .setIcon(owner.get100photoOrSmaller())
-                                .setExtra(owner.getOwnerId()));
-                    }
-
-                    mAdapter.notifyDataSetChanged();
-                }, ignore()));
+                        mAdapter.notifyDataSetChanged();
+                    }, ignore()));
+        }
 
         return builder.create();
     }
