@@ -2,6 +2,7 @@ package biz.dealnote.messenger.model.menu;
 
 import android.support.annotation.DrawableRes;
 
+import biz.dealnote.messenger.model.Icon;
 import biz.dealnote.messenger.model.Text;
 
 /**
@@ -10,14 +11,24 @@ import biz.dealnote.messenger.model.Text;
  */
 public class Item {
 
-    @DrawableRes
-    private Integer icon;
+    private Icon icon;
 
     private final int key;
 
     private final Text title;
 
     private Section section;
+
+    private int extra;
+
+    public Item setExtra(int extra) {
+        this.extra = extra;
+        return this;
+    }
+
+    public int getExtra() {
+        return extra;
+    }
 
     public Item(int key, Text title) {
         this.key = key;
@@ -33,7 +44,17 @@ public class Item {
         return this;
     }
 
-    public Item setIcon(Integer icon) {
+    public Item setIcon(@DrawableRes int res) {
+        this.icon = Icon.fromResources(res);
+        return this;
+    }
+
+    public Item setIcon(String remoteUrl) {
+        this.icon = Icon.fromUrl(remoteUrl);
+        return this;
+    }
+
+    public Item setIcon(Icon icon) {
         this.icon = icon;
         return this;
     }
@@ -42,7 +63,7 @@ public class Item {
         return section;
     }
 
-    public Integer getIcon() {
+    public Icon getIcon() {
         return icon;
     }
 

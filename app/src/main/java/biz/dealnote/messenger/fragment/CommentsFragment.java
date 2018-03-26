@@ -46,7 +46,6 @@ import biz.dealnote.messenger.mvp.presenter.CommentsPresenter;
 import biz.dealnote.messenger.mvp.view.ICommentsView;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.RoundTransformation;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.CommentsInputViewController;
@@ -115,14 +114,14 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (RelativeLayout) inflater.inflate(R.layout.fragment_comments, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mAuthorAvatar = root.findViewById(R.id.author_avatar);
 
-        mInputController = new CommentsInputViewController(getActivity(), root, this);
+        mInputController = new CommentsInputViewController(requireActivity(), root, this);
         mInputController.setOnSickerClickListener(this);
 
-        mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
+        mLinearLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, true);
 
         mRecyclerView = root.findViewById(R.id.list);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
@@ -149,7 +148,7 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
             }
         });
 
-        mAdapter = new CommentsAdapter(getActivity(), Collections.emptyList(), this);
+        mAdapter = new CommentsAdapter(requireActivity(), Collections.emptyList(), this);
         mAdapter.addHeader(loadDownView);
         mAdapter.addFooter(loadUpView);
         mAdapter.setListener(this);
@@ -166,14 +165,6 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
     public boolean onSendLongClick() {
         if (mCanSendCommentAsAdmin) {
             getPresenter().fireSendLongClick();
-            //PopupMenu popupMenu = new PopupMenu(getActivity(), mInputController.getButtonSendView());
-            //popupMenu.getMenu()
-            //        .add(R.string.button_post_as_group)
-            //        .setOnMenuItemClickListener(item -> {
-            //            getPresenter().firePostAsGroupClick();
-            //            return true;
-            //        });
-            //popupMenu.show();
             return true;
         }
 
@@ -295,7 +286,7 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
     public void openAttachmentsManager(int accountId, Integer draftCommentId, int sourceOwnerId, String draftCommentBody) {
         PlaceFactory.getCommentCreatePlace(accountId, draftCommentId, sourceOwnerId, draftCommentBody)
                 .targetTo(this, REQUEST_CODE_ATTACHMENTS)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
@@ -324,22 +315,22 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
     public void goToCommentEdit(int accountId, Comment comment) {
         PlaceFactory.getEditCommentPlace(accountId, comment)
                 .targetTo(this, REQUEST_EDIT)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
     public void goToWallPost(int accountId, int postId, int postOwnerId) {
-        PlaceFactory.getPostPreviewPlace(accountId, postId, postOwnerId).tryOpenWith(getActivity());
+        PlaceFactory.getPostPreviewPlace(accountId, postId, postOwnerId).tryOpenWith(requireActivity());
     }
 
     @Override
     public void goToVideoPreview(int accountId, int videoId, int videoOwnerId) {
-        PlaceFactory.getVideoPreviewPlace(accountId, videoOwnerId, videoId, null).tryOpenWith(getActivity());
+        PlaceFactory.getVideoPreviewPlace(accountId, videoOwnerId, videoId, null).tryOpenWith(requireActivity());
     }
 
     @Override
     public void banUser(int accountId, int groupId, User user) {
-        PlaceFactory.getCommunityAddBanPlace(accountId, groupId, Utils.singletonArrayList(user)).tryOpenWith(getActivity());
+        PlaceFactory.getCommunityAddBanPlace(accountId, groupId, Utils.singletonArrayList(user)).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -364,7 +355,7 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
     public void showAuthorSelectDialog(List<Owner> owners) {
         final ArrayList<Owner> data = new ArrayList<>(owners);
         OwnersListAdapter adapter = new OwnersListAdapter(getActivity(), data);
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.select_comment_author)
                 .setAdapter(adapter, (dialog, which) -> getPresenter().fireAuthorSelected(data.get(which)))
                 .setNegativeButton(R.string.button_cancel, null)
@@ -379,7 +370,7 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
         this.mGotoSourceText = gotoSourceText;
 
         try {
-            getActivity().invalidateOptionsMenu();
+            requireActivity().invalidateOptionsMenu();
         } catch (Exception ignored) {
         }
     }
@@ -556,7 +547,6 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
         if (requestCode == REQUEST_CODE_ATTACHMENTS) {
             String body = data.getStringExtra(Extra.BODY);
             postPrenseterReceive(presenter -> presenter.fireEditBodyResult(body));
-            //getPresenter().fireEditBodyResult(body);
         }
 
         if (requestCode == REQUEST_EDIT && resultCode == Activity.RESULT_OK) {
@@ -564,7 +554,6 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
 
             if (nonNull(comment)) {
                 postPrenseterReceive(presenter -> presenter.fireCommentEditResult(comment));
-                //getPresenter().fireCommentEditResult(comment);
             }
         }
     }
@@ -582,7 +571,7 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -627,12 +616,6 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        Logger.d(tag(), "finalize");
-        super.finalize();
     }
 
     @Override

@@ -40,5 +40,7 @@ public interface IOwnersInteractor {
 
     Completable cacheActualOwnersData(int accountId, Collection<Integer> ids);
 
+    Single<List<Owner>> getCommunitiesWhereAdmin(int accountId, boolean admin, boolean editor, boolean moderator);
+
     Single<List<User>> searchPeoples(int accountId, PeopleSearchCriteria criteria, int count, int offset);
 }

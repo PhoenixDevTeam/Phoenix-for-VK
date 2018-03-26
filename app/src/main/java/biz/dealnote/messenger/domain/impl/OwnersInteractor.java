@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import biz.dealnote.messenger.api.interfaces.INetworker;
+import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.db.column.GroupColumns;
 import biz.dealnote.messenger.db.column.UserColumns;
@@ -63,6 +64,7 @@ import static biz.dealnote.messenger.api.model.VKApiCommunity.STATUS;
 import static biz.dealnote.messenger.api.model.VKApiCommunity.VERIFIED;
 import static biz.dealnote.messenger.api.model.VKApiCommunity.WIKI_PAGE;
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.Utils.join;
 import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 import static biz.dealnote.messenger.util.Utils.stringJoin;
@@ -190,6 +192,33 @@ public class OwnersInteractor implements IOwnersInteractor {
         }
 
         return completable;
+    }
+
+    @Override
+    public Single<List<Owner>> getCommunitiesWhereAdmin(int accountId, boolean admin, boolean editor, boolean moderator) {
+        List<String> roles = new ArrayList<>();
+
+        if (admin) {
+            roles.add("admin");
+        }
+
+        if (editor) {
+            roles.add("editor");
+        }
+
+        if (moderator) {
+            roles.add("moderator");
+        }
+
+        return networker.vkDefault(accountId)
+                .groups()
+                .get(accountId, true, join(roles, ",", orig -> orig), GroupColumns.API_FIELDS, null, 1000)
+                .map(Items::getItems)
+                .map(groups -> {
+                    List<Owner> owners = new ArrayList<>(groups.size());
+                    owners.addAll(Dto2Model.transformCommunities(groups));
+                    return owners;
+                });
     }
 
     @Override

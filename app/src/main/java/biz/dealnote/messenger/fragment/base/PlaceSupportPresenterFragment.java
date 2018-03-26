@@ -186,6 +186,6 @@ public abstract class PlaceSupportPresenterFragment<P extends PlaceSupportPresen
 
     @Override
     public void repostPost(int accountId, @NonNull Post post) {
-        AbsWallFragment.repost(getActivity(), accountId, post);
+        AbsWallFragment.repost(this, accountId, post);
     }
 }

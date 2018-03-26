@@ -86,62 +86,62 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
         if (nonEmpty(details.getPhone())) {
             items.add(new AdvancedItem(5, new Text(R.string.mobile_phone_number))
                     .setSubtitle(new Text(details.getPhone()))
-                    .setIcon(Icon.fromResources(R.drawable.ic_phone))
+                    .setIcon(R.drawable.ic_phone)
                     .setSection(mainSection));
         }
 
         if (nonEmpty(details.getHomePhone())) {
             items.add(new AdvancedItem(6, new Text(R.string.home_phone_number))
                     .setSubtitle(new Text(details.getHomePhone()))
-                    .setIcon(Icon.fromResources(R.drawable.ic_phone))
+                    .setIcon(R.drawable.ic_phone)
                     .setSection(mainSection));
         }
 
         if (nonEmpty(details.getSkype())) {
             items.add(new AdvancedItem(7, new Text(R.string.skype))
                     .setSubtitle(new Text(details.getSkype()))
-                    .setIcon(Icon.fromResources(R.drawable.ic_skype))
+                    .setIcon(R.drawable.ic_skype)
                     .setSection(mainSection));
         }
 
         if (nonEmpty(details.getInstagram())) {
             items.add(new AdvancedItem(8, new Text(R.string.instagram))
                     .setSubtitle(new Text(details.getInstagram()))
-                    .setIcon(Icon.fromResources(R.drawable.instagram))
+                    .setIcon(R.drawable.instagram)
                     .setSection(mainSection));
         }
 
         if (nonEmpty(details.getTwitter())) {
             items.add(new AdvancedItem(9, new Text(R.string.twitter))
                     .setSubtitle(new Text(details.getTwitter()))
-                    .setIcon(Icon.fromResources(R.drawable.twitter))
+                    .setIcon(R.drawable.twitter)
                     .setSection(mainSection));
         }
 
         if (nonEmpty(details.getFacebook())) {
             items.add(new AdvancedItem(10, new Text(R.string.facebook))
                     .setSubtitle(new Text(details.getFacebook()))
-                    .setIcon(Icon.fromResources(R.drawable.facebook))
+                    .setIcon(R.drawable.facebook)
                     .setSection(mainSection));
         }
 
         if (nonEmpty(user.getStatus())) {
             items.add(new AdvancedItem(11, new Text(R.string.status))
                     .setSubtitle(new Text(user.getStatus()))
-                    .setIcon(Icon.fromResources(R.drawable.ic_profile_status))
+                    .setIcon(R.drawable.ic_profile_status)
                     .setSection(mainSection));
         }
 
         if (nonNull(details.getLanguages()) && details.getLanguages().length > 0) {
             items.add(new AdvancedItem(15, new Text(R.string.languages))
-                    .setIcon(Icon.fromResources(R.drawable.ic_language))
+                    .setIcon(R.drawable.ic_language)
                     .setSubtitle(new Text(Utils.join(details.getLanguages(), ", ", orig -> orig)))
                     .setSection(mainSection));
         }
 
         if (nonEmpty(details.getSite())) {
             items.add(new AdvancedItem(23, new Text(R.string.website))
-                    .setIcon(Icon.fromResources(R.drawable.ic_site))
+                    .setIcon(R.drawable.ic_site)
                     .setSection(mainSection)
                     .setSubtitle(new Text(details.getSite())));
         }
@@ -162,41 +162,41 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
         if (nonNull(getPolitivalViewRes(details.getPolitical()))) {
             items.add(new AdvancedItem(16, new Text(R.string.political_views))
                     .setSection(beliefs)
-                    .setIcon(Icon.fromResources(R.drawable.ic_profile_personal))
+                    .setIcon(R.drawable.ic_profile_personal)
                     .setSubtitle(new Text(getPolitivalViewRes(details.getPolitical()))));
         }
 
         if (nonNull(getLifeMainRes(details.getLifeMain()))) {
             items.add(new AdvancedItem(17, new Text(R.string.personal_priority))
                     .setSection(beliefs)
-                    .setIcon(Icon.fromResources(R.drawable.ic_profile_personal))
+                    .setIcon(R.drawable.ic_profile_personal)
                     .setSubtitle(new Text(getLifeMainRes(details.getLifeMain()))));
         }
 
         if (nonNull(getPeopleMainRes(details.getPeopleMain()))) {
             items.add(new AdvancedItem(18, new Text(R.string.important_in_others))
                     .setSection(beliefs)
-                    .setIcon(Icon.fromResources(R.drawable.ic_profile_personal))
+                    .setIcon(R.drawable.ic_profile_personal)
                     .setSubtitle(new Text(getPeopleMainRes(details.getPeopleMain()))));
         }
 
         if (nonNull(getAlcoholOrSmokingViewRes(details.getSmoking()))) {
             items.add(new AdvancedItem(19, new Text(R.string.views_on_smoking))
                     .setSection(beliefs)
-                    .setIcon(Icon.fromResources(R.drawable.ic_profile_personal))
+                    .setIcon(R.drawable.ic_profile_personal)
                     .setSubtitle(new Text(getAlcoholOrSmokingViewRes(details.getSmoking()))));
         }
 
         if (nonNull(getAlcoholOrSmokingViewRes(details.getAlcohol()))) {
             items.add(new AdvancedItem(20, new Text(R.string.views_on_alcohol))
                     .setSection(beliefs)
-                    .setIcon(Icon.fromResources(R.drawable.ic_profile_personal))
+                    .setIcon(R.drawable.ic_profile_personal)
                     .setSubtitle(new Text(getAlcoholOrSmokingViewRes(details.getAlcohol()))));
         }
 
         if (nonEmpty(details.getInspiredBy())) {
             items.add(new AdvancedItem(21, new Text(R.string.inspired_by))
-                    .setIcon(Icon.fromResources(R.drawable.ic_profile_personal))
+                    .setIcon(R.drawable.ic_profile_personal)
                     .setSection(beliefs)
                     .setSubtitle(new Text(details.getInspiredBy())));
         }
@@ -204,7 +204,7 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
         if (nonEmpty(details.getReligion())) {
             items.add(new AdvancedItem(22, new Text(R.string.world_view))
                     .setSection(beliefs)
-                    .setIcon(Icon.fromResources(R.drawable.ic_profile_personal))
+                    .setIcon(R.drawable.ic_profile_personal)
                     .setSubtitle(new Text(details.getReligion())));
         }
 
@@ -232,7 +232,7 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
                 String term = String.valueOf(m.getFrom()) + " - " + (m.getUntil() == 0 ? getString(R.string.activity_until_now) : String.valueOf(m.getUntil()));
                 items.add(new AdvancedItem(10, new Text(m.getUnit()))
                         .setSubtitle(new Text(term))
-                        .setIcon(Icon.fromResources(R.drawable.ic_military))
+                        .setIcon(R.drawable.ic_military)
                         .setSection(section));
             }
         }
@@ -247,7 +247,7 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
                     items.add(new AdvancedItem(11, new Text(title))
                             .setSection(section)
                             .setSubtitle(isEmpty(subtitle) ? null : new Text(subtitle))
-                            .setIcon(Icon.fromResources(R.drawable.ic_university)));
+                            .setIcon(R.drawable.ic_university));
                 }
             }
 
@@ -267,7 +267,7 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
                     items.add(new AdvancedItem(12, new Text(title))
                             .setSection(section)
                             .setSubtitle(term)
-                            .setIcon(Icon.fromResources(R.drawable.ic_school)));
+                            .setIcon(R.drawable.ic_school));
                 }
             }
         }
@@ -316,7 +316,7 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
     private static void addPersonalInfo(List<AdvancedItem> items, @DrawableRes int icon, int key, Section section, @StringRes int title, String v) {
         if (nonEmpty(v)) {
             items.add(new AdvancedItem(key, new Text(title))
-                    .setIcon(Icon.fromResources(icon))
+                    .setIcon(icon)
                     .setSection(section)
                     .setSubtitle(new Text(v)));
         }

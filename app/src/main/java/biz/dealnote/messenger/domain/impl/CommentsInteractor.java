@@ -133,7 +133,7 @@ public class CommentsInteractor implements ICommentsInteractor {
                         data.add(Dto2Model.buildComment(commented, dto, bundle));
                     }
 
-                    Collections.sort(data, (o1, o2) -> (o2.getId() < o1.getId()) ? -1 : ((o2.getId() == o1.getId()) ? 0 : 1));
+                    Collections.sort(data, (o1, o2) -> Integer.compare(o2.getId(), o1.getId()));
                     return data;
                 });
     }

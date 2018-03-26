@@ -1,5 +1,7 @@
 package biz.dealnote.messenger.model.menu;
 
+import android.support.annotation.DrawableRes;
+
 import biz.dealnote.messenger.model.Icon;
 import biz.dealnote.messenger.model.Text;
 
@@ -68,6 +70,16 @@ public class AdvancedItem {
 
     public AdvancedItem setIcon(Icon icon) {
         this.icon = icon;
+        return this;
+    }
+
+    public AdvancedItem setIcon(@DrawableRes int iconRes) {
+        this.icon = Icon.fromResources(iconRes);
+        return this;
+    }
+
+    public AdvancedItem setIcon(String remoteUrl) {
+        this.icon = Icon.fromUrl(remoteUrl);
         return this;
     }
 

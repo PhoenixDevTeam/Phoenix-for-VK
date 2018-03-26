@@ -1,10 +1,10 @@
 package biz.dealnote.messenger.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +36,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
 import biz.dealnote.messenger.adapter.WallAdapter;
+import biz.dealnote.messenger.dialog.PostShareDialog;
 import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
 import biz.dealnote.messenger.fragment.search.SearchContentType;
 import biz.dealnote.messenger.fragment.search.criteria.WallSearchCriteria;
@@ -51,6 +53,7 @@ import biz.dealnote.messenger.mvp.view.IWallView;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.place.PlaceUtil;
 import biz.dealnote.messenger.util.AppTextUtils;
+import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.messenger.view.LoadMoreFooterHelper;
@@ -64,6 +67,8 @@ import static biz.dealnote.messenger.util.Utils.isLandscape;
  */
 public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPresenter<V>>
         extends PlaceSupportPresenterFragment<P, V> implements IWallView, WallAdapter.ClickListener, WallAdapter.NonPublishedPostActionListener {
+
+    private static final int REQUEST_POST_SHARE = 45;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private WallAdapter mWallAdapter;
@@ -104,7 +109,7 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_wall, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
@@ -112,11 +117,11 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
         ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
 
         RecyclerView.LayoutManager manager;
-        if (Utils.is600dp(getActivity())) {
-            boolean land = isLandscape(getActivity());
+        if (Utils.is600dp(requireActivity())) {
+            boolean land = isLandscape(requireActivity());
             manager = new StaggeredGridLayoutManager(land ? 2 : 1, StaggeredGridLayoutManager.VERTICAL);
         } else {
-            manager = new LinearLayoutManager(getActivity());
+            manager = new LinearLayoutManager(requireActivity());
         }
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
@@ -155,7 +160,7 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
 
     @Override
     public void showSnackbar(int res, boolean isLong) {
-        if(nonNull(getView())){
+        if (nonNull(getView())) {
             Snackbar.make(getView(), res, isLong ? Snackbar.LENGTH_LONG : Snackbar.LENGTH_SHORT).show();
         }
     }
@@ -163,18 +168,18 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
     @Override
     public void openPhotoAlbum(int accountId, int ownerId, int albumId, @Nullable Integer focusPhotoId) {
         PlaceFactory.getPhotoAlbumGalleryPlace(accountId, albumId, ownerId, focusPhotoId)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
     public void goToWallSearch(int accountId, int ownerId) {
         WallSearchCriteria criteria = new WallSearchCriteria("", ownerId);
-        PlaceFactory.getSingleTabSearchPlace(accountId, SearchContentType.WALL, criteria).tryOpenWith(getActivity());
+        PlaceFactory.getSingleTabSearchPlace(accountId, SearchContentType.WALL, criteria).tryOpenWith(requireActivity());
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_refresh:
                 getPresenter().fireRefresh();
                 return true;
@@ -196,8 +201,8 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
     }
 
     @Override
-    public void copyToClipboard(String label, String body){
-        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+    public void copyToClipboard(String label, String body) {
+        ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(label, body);
         clipboard.setPrimaryClip(clip);
 
@@ -206,12 +211,12 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
 
     @Override
     public void goToPostCreation(int accountId, int ownerId, @EditingPostType int postType) {
-        PlaceUtil.goToPostCreation(getActivity(), accountId, ownerId, postType, null);
+        PlaceUtil.goToPostCreation(requireActivity(), accountId, ownerId, postType, null);
     }
 
     @Override
     public void showRefreshing(boolean refreshing) {
-        if(nonNull(mSwipeRefreshLayout)){
+        if (nonNull(mSwipeRefreshLayout)) {
             mSwipeRefreshLayout.setRefreshing(refreshing);
         }
     }
@@ -223,57 +228,74 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
 
     @Override
     public void displayWallData(List<Post> data) {
-        if(nonNull(mWallAdapter)){
+        if (nonNull(mWallAdapter)) {
             mWallAdapter.setItems(data);
         }
     }
 
     @Override
     public void notifyWallDataSetChanged() {
-        if(nonNull(mWallAdapter)){
+        if (nonNull(mWallAdapter)) {
             mWallAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void notifyWallItemChanged(int position) {
-        if(nonNull(mWallAdapter)){
+        if (nonNull(mWallAdapter)) {
             mWallAdapter.notifyItemChanged(position + mWallAdapter.getHeadersCount());
         }
     }
 
     @Override
     public void notifyWallDataAdded(int position, int count) {
-        if(nonNull(mWallAdapter)){
+        if (nonNull(mWallAdapter)) {
             mWallAdapter.notifyItemRangeInserted(position + mWallAdapter.getHeadersCount(), count);
         }
     }
 
     @Override
     public void notifyWallItemRemoved(int index) {
-        if(nonNull(mWallAdapter)){
+        if (nonNull(mWallAdapter)) {
             mWallAdapter.notifyItemRemoved(index + mWallAdapter.getHeadersCount());
         }
     }
 
-    public static void repost(final Activity activity, final int accountId, final Post post) {
-        String[] items = post.getOwnerId() == accountId ?
-                new String[]{activity.getString(R.string.share_link), activity.getString(R.string.repost_send_message)} :
-                new String[]{activity.getString(R.string.share_link), activity.getString(R.string.repost_send_message), activity.getString(R.string.repost_to_wall)};
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        new AlertDialog.Builder(activity).setItems(items, (dialogInterface, i) -> {
-            switch (i) {
-                case 0:
-                    Utils.shareLink(activity, post.generateVkPostLink(), post.getText());
+        if (requestCode == REQUEST_POST_SHARE && resultCode == Activity.RESULT_OK) {
+            int method = PostShareDialog.extractMethod(data);
+            int accountId = PostShareDialog.extractAccountId(data);
+            Post post = PostShareDialog.extractPost(data);
+
+            AssertUtils.requireNonNull(post);
+
+            switch (method) {
+                case PostShareDialog.Methods.SHARE_LINK:
+                    Utils.shareLink(requireActivity(), post.generateVkPostLink(), post.getText());
                     break;
-                case 1:
-                    SendAttachmentsActivity.startForSendAttachments(activity, accountId, post);
+                case PostShareDialog.Methods.REPOST_YOURSELF:
+                    PlaceFactory.getRepostPlace(accountId, null, post).tryOpenWith(requireActivity());
                     break;
-                case 2:
-                    PlaceFactory.getRepostPlace(accountId, null, post).tryOpenWith(activity);
+                case PostShareDialog.Methods.SEND_MESSAGE:
+                    SendAttachmentsActivity.startForSendAttachments(requireActivity(), accountId, post);
+                    break;
+                case PostShareDialog.Methods.REPOST_GROUP:
+                    int ownerId = PostShareDialog.extractOwnerId(data);
+                    PlaceFactory.getRepostPlace(accountId, Math.abs(ownerId), post).tryOpenWith(requireActivity());
                     break;
             }
-        }).setCancelable(true).setTitle(R.string.repost_title).show();
+        }
+    }
+
+    public static void repost(@NonNull Fragment fragment, final int accountId, final Post post) {
+        FragmentManager fm = fragment.requireActivity().getSupportFragmentManager();
+
+        PostShareDialog.newInstance(accountId, post)
+                .targetTo(fragment, REQUEST_POST_SHARE)
+                .show(fm, "post-sharing");
     }
 
     @Override
@@ -318,13 +340,12 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
 
     @Override
     public void openPostEditor(int accountId, Post post) {
-        PlaceUtil.goToPostEditor(getActivity(), accountId, post);
-        //PlaceFactory.getEditPostPlace(accountId, post, owner).tryOpenWith(getActivity());
+        PlaceUtil.goToPostEditor(requireActivity(), accountId, post);
     }
 
     @Override
     public void setupLoadMoreFooter(@LoadMoreState int state) {
-        if(nonNull(mLoadMoreFooterHelper)){
+        if (nonNull(mLoadMoreFooterHelper)) {
             mLoadMoreFooterHelper.switchToState(state);
         }
     }
@@ -332,21 +353,21 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
     @Override
     public void openPhotoAlbums(int accountId, int ownerId, @Nullable Owner owner) {
         PlaceFactory.getVKPhotoAlbumsPlace(accountId, ownerId, VKPhotosFragment.ACTION_SHOW_PHOTOS, ParcelableOwnerWrapper.wrap(owner))
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
     public void openVideosLibrary(int accountId, int ownerId, @Nullable Owner owner) {
         PlaceFactory.getVideosPlace(accountId, ownerId, VideosFragment.ACTION_SHOW)
                 .withParcelableExtra(Extra.OWNER, owner)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
     public void openAudios(int accountId, int ownerId, @Nullable Owner owner) {
         PlaceFactory.getAudiosPlace(accountId, ownerId)
                 .withParcelableExtra(Extra.OWNER, owner)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
@@ -360,9 +381,9 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(getActivity(),true)
+                .setStatusBarColored(getActivity(), true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override

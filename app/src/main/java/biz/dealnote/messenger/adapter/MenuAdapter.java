@@ -13,9 +13,13 @@ import android.widget.TextView;
 import java.util.List;
 
 import biz.dealnote.messenger.R;
+import biz.dealnote.messenger.api.PicassoInstance;
+import biz.dealnote.messenger.model.Icon;
 import biz.dealnote.messenger.model.menu.Item;
 import biz.dealnote.messenger.model.menu.Section;
+import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.AssertUtils;
+import biz.dealnote.messenger.view.ColorFilterImageView;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
@@ -78,13 +82,7 @@ public class MenuAdapter extends ArrayAdapter<Item>{
         }
 
         holder.itemOffsetView.setVisibility(nonNull(section) ? View.VISIBLE : View.GONE);
-
-        if(nonNull(item.getIcon())){
-            holder.itemIcon.setVisibility(View.VISIBLE);
-            holder.itemIcon.setImageResource(item.getIcon());
-        } else {
-            holder.itemIcon.setVisibility(View.GONE);
-        }
+        bindIcon(holder.itemIcon, item.getIcon());
 
         holder.itemText.setText(item.getTitle().getText(getContext()));
 
@@ -105,6 +103,27 @@ public class MenuAdapter extends ArrayAdapter<Item>{
         return view;
     }
 
+    private void bindIcon(ColorFilterImageView imageView, Icon icon) {
+        if (nonNull(icon)) {
+            imageView.setVisibility(View.VISIBLE);
+
+            if (icon.isRemote()) {
+                imageView.setColorFilterEnabled(false);
+                PicassoInstance.with()
+                        .load(icon.getUrl())
+                        .transform(CurrentTheme.createTransformationForAvatar(imageView.getContext()))
+                        .into(imageView);
+            } else {
+                imageView.setColorFilterEnabled(true);
+                PicassoInstance.with().cancelRequest(imageView);
+                imageView.setImageResource(icon.getRes());
+            }
+        } else {
+            PicassoInstance.with().cancelRequest(imageView);
+            imageView.setVisibility(View.GONE);
+        }
+    }
+
     static class Holder {
 
         final View headerRoot;
@@ -112,7 +131,7 @@ public class MenuAdapter extends ArrayAdapter<Item>{
         final TextView headerText;
 
         final View itemOffsetView;
-        final ImageView itemIcon;
+        final ColorFilterImageView itemIcon;
         final TextView itemText;
 
         final View divider;
