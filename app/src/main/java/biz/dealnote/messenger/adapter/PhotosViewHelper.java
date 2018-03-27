@@ -15,6 +15,7 @@ import java.util.List;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
+import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.model.Video;
@@ -44,7 +45,7 @@ public class PhotosViewHelper {
         final ImageView ivPlay;
         final TextView tvTitle;
 
-        Holder(View itemView){
+        Holder(View itemView) {
             vgPhoto = itemView.findViewById(R.id.item_video_image);
             ivPlay = itemView.findViewById(R.id.item_video_play);
             tvTitle = itemView.findViewById(R.id.item_video_title);
@@ -53,11 +54,13 @@ public class PhotosViewHelper {
 
     public void displayPhotos(final List<PostImage> photos, final ViewGroup container) {
         container.setVisibility(photos.size() == 0 ? View.GONE : View.VISIBLE);
+
         if (photos.size() == 0) {
             return;
         }
 
         int i = photos.size() - container.getChildCount();
+
         for (int j = 0; j < i; j++) {
             View root = LayoutInflater.from(context).inflate(R.layout.item_video, container, false);
             Holder holder = new Holder(root);
@@ -80,17 +83,25 @@ public class PhotosViewHelper {
                 holder.ivPlay.setVisibility(image.getType() == PostImage.TYPE_IMAGE ? View.GONE : View.VISIBLE);
                 holder.tvTitle.setVisibility(image.getType() == PostImage.TYPE_IMAGE ? View.GONE : View.VISIBLE);
 
-                final int finalG = g;
+                final int position = g;
+
                 holder.vgPhoto.setOnClickListener(v -> {
                     switch (image.getType()) {
                         case PostImage.TYPE_IMAGE:
-                            openImages(photos, finalG);
+                            openImages(photos, position);
                             break;
                         case PostImage.TYPE_VIDEO:
                             if (attachmentsActionCallback != null) {
                                 Video video = (Video) image.getAttachment();
                                 attachmentsActionCallback.onVideoPlay(video);
                             }
+                            break;
+                        case PostImage.TYPE_GIF:
+                            if (attachmentsActionCallback != null) {
+                                Document document = (Document) image.getAttachment();
+                                attachmentsActionCallback.onDocPreviewOpen(document);
+                            }
+
                             break;
                     }
                 });
@@ -105,6 +116,11 @@ public class PhotosViewHelper {
                         Video video = (Video) image.getAttachment();
                         url = firstNonEmptyString(video.getPhoto800(), video.getPhoto320());
                         holder.tvTitle.setText(AppTextUtils.getDurationString(video.getDuration()));
+                        break;
+                    case PostImage.TYPE_GIF:
+                        Document document = (Document) image.getAttachment();
+                        url = document.getPreviewWithSize(PhotoSize.Q, false);
+                        holder.tvTitle.setText(context.getString(R.string.gif, AppTextUtils.getSizeString(document.getSize())));
                         break;
                 }
 

@@ -1,5 +1,7 @@
 package biz.dealnote.messenger.domain.mappers;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -312,17 +314,27 @@ public class Model2Entity {
                 .setSizes(isNull(photo.getSizes()) ? null : buildPhotoSizeEntity(photo.getSizes()));
     }
 
+    private static PhotoSizeEntity.Size model2entityNullable(@Nullable PhotoSizes.Size size) {
+        if (nonNull(size)) {
+            return new PhotoSizeEntity.Size()
+                    .setUrl(size.getUrl())
+                    .setW(size.getW())
+                    .setH(size.getH());
+        }
+        return null;
+    }
+
     public static PhotoSizeEntity buildPhotoSizeEntity(PhotoSizes sizes) {
         return new PhotoSizeEntity()
-                .setS(sizes.getS())
-                .setM(sizes.getM())
-                .setX(sizes.getX())
-                .setO(sizes.getO())
-                .setP(sizes.getP())
-                .setQ(sizes.getQ())
-                .setR(sizes.getR())
-                .setY(sizes.getY())
-                .setZ(sizes.getZ())
-                .setW(sizes.getW());
+                .setS(model2entityNullable(sizes.getS()))
+                .setM(model2entityNullable(sizes.getM()))
+                .setX(model2entityNullable(sizes.getX()))
+                .setO(model2entityNullable(sizes.getO()))
+                .setP(model2entityNullable(sizes.getP()))
+                .setQ(model2entityNullable(sizes.getQ()))
+                .setR(model2entityNullable(sizes.getR()))
+                .setY(model2entityNullable(sizes.getY()))
+                .setZ(model2entityNullable(sizes.getZ()))
+                .setW(model2entityNullable(sizes.getW()));
     }
 }

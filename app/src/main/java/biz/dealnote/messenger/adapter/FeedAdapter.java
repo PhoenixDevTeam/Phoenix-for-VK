@@ -231,11 +231,11 @@ public class FeedAdapter extends RecyclerBindableAdapter<News, FeedAdapter.PostH
 
     private static boolean needToShowBottomDivider(News news) {
         if (Utils.safeIsEmpty(news.getCopyHistory())) {
-            return news.getAttachments() == null || !news.getAttachments().isPhotosVideosOnly();
+            return news.getAttachments() == null || !news.getAttachments().isPhotosVideosGifsOnly();
         }
 
         Post last = news.getCopyHistory().get(news.getCopyHistory().size() - 1);
-        return last.getAttachments() == null || !last.getAttachments().isPhotosVideosOnly();
+        return last.getAttachments() == null || !last.getAttachments().isPhotosVideosGifsOnly();
     }
 
     public interface ClickListener {

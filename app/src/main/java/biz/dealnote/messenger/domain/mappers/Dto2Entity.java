@@ -949,6 +949,13 @@ public class Dto2Entity {
                 .setSizes(buildPhotoSizeDbo(dto.sizes));
     }
 
+    public static PhotoSizeEntity.Size dto2entity(PhotoSizeDto dto) {
+        return new PhotoSizeEntity.Size()
+                .setH(dto.height)
+                .setW(dto.width)
+                .setUrl(dto.src);
+    }
+
     public static PhotoSizeEntity buildPhotoSizeDbo(List<PhotoSizeDto> dtos) {
         PhotoSizeEntity sizes = new PhotoSizeEntity();
 
@@ -956,43 +963,43 @@ public class Dto2Entity {
             for (PhotoSizeDto dto : dtos) {
                 switch (dto.type) {
                     case PhotoSizeDto.Type.S:
-                        sizes.setS(dto.src);
+                        sizes.setS(dto2entity(dto));
                         break;
 
                     case PhotoSizeDto.Type.M:
-                        sizes.setM(dto.src);
+                        sizes.setM(dto2entity(dto));
                         break;
 
                     case PhotoSizeDto.Type.X:
-                        sizes.setX(dto.src);
+                        sizes.setX(dto2entity(dto));
                         break;
 
                     case PhotoSizeDto.Type.Y:
-                        sizes.setY(dto.src);
+                        sizes.setY(dto2entity(dto));
                         break;
 
                     case PhotoSizeDto.Type.Z:
-                        sizes.setZ(dto.src);
+                        sizes.setZ(dto2entity(dto));
                         break;
 
                     case PhotoSizeDto.Type.W:
-                        sizes.setW(dto.src);
+                        sizes.setW(dto2entity(dto));
                         break;
 
                     case PhotoSizeDto.Type.O:
-                        sizes.setO(dto.src);
+                        sizes.setO(dto2entity(dto));
                         break;
 
                     case PhotoSizeDto.Type.P:
-                        sizes.setP(dto.src);
+                        sizes.setP(dto2entity(dto));
                         break;
 
                     case PhotoSizeDto.Type.Q:
-                        sizes.setQ(dto.src);
+                        sizes.setQ(dto2entity(dto));
                         break;
 
                     case PhotoSizeDto.Type.R:
-                        sizes.setR(dto.src);
+                        sizes.setR(dto2entity(dto));
                         break;
                 }
             }

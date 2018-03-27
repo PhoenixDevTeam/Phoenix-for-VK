@@ -113,8 +113,6 @@ public class WallAdapter extends RecyclerBindableAdapter<Post, RecyclerView.View
 
         holder.tvShowMore.setVisibility(post.hasText() && post.getText().length() > 400 ? View.VISIBLE : View.GONE);
 
-        String time = AppTextUtils.getDateFromUnixTime(mContext, post.getDate());
-
         holder.tvText.setVisibility(post.hasText() ? View.VISIBLE : View.GONE);
         holder.vTextContainer.setVisibility(post.hasText() ? View.VISIBLE : View.GONE);
 
@@ -223,11 +221,11 @@ public class WallAdapter extends RecyclerBindableAdapter<Post, RecyclerView.View
         }
 
         if (isEmpty(post.getCopyHierarchy())) {
-            return isNull(post.getAttachments()) || !post.getAttachments().isPhotosVideosOnly();
+            return isNull(post.getAttachments()) || !post.getAttachments().isPhotosVideosGifsOnly();
         }
 
         Post last = post.getCopyHierarchy().get(post.getCopyHierarchy().size() - 1);
-        return isNull(last.getAttachments()) || !last.getAttachments().isPhotosVideosOnly();
+        return isNull(last.getAttachments()) || !last.getAttachments().isPhotosVideosGifsOnly();
     }
 
     @Override

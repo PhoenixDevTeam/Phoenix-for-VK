@@ -1163,5 +1163,6 @@
     <string name="share_to_wall_label">Post to wall</string>
     <string name="error_post_creation_no_auth">There are no active accounts in the app!</string>
     <string name="select_post_destination_label">Select post destination</string>
+    <string name="gif" translatable="false">GIF %1$s</string>
 
 </resources>

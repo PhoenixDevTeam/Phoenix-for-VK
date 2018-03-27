@@ -644,6 +644,16 @@ public class Utils {
         return null;
     }
 
+    public static <T> T firstNonNull(T... items) {
+        for (T t : items) {
+            if (t != null) {
+                return t;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Округление числа
      *

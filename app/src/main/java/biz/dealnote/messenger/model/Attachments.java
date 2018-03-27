@@ -11,6 +11,7 @@ import biz.dealnote.messenger.util.Utils;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.cloneListAsArrayList;
+import static biz.dealnote.messenger.util.Utils.nonEmpty;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;
 import static biz.dealnote.messenger.util.Utils.safeCountOfMultiple;
 import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
@@ -40,7 +41,8 @@ public class Attachments implements Parcelable, Cloneable {
     private ArrayList<WikiPage> pages;
     private ArrayList<VoiceMessage> voiceMessages;
 
-    public Attachments() {}
+    public Attachments() {
+    }
 
     protected Attachments(Parcel in) {
         audios = in.createTypedArrayList(Audio.CREATOR);
@@ -73,7 +75,7 @@ public class Attachments implements Parcelable, Cloneable {
         dest.writeTypedList(voiceMessages);
     }
 
-    public void add(AbsModel model){
+    public void add(AbsModel model) {
         if (model instanceof Audio) {
             prepareAudios().add((Audio) model);
             return;
@@ -90,7 +92,7 @@ public class Attachments implements Parcelable, Cloneable {
         }
 
         if (model instanceof Document) {
-            if(model instanceof VoiceMessage){
+            if (model instanceof VoiceMessage) {
                 prepareVoiceMessages().add((VoiceMessage) model);
             } else {
                 prepareDocs().add((Document) model);
@@ -141,7 +143,7 @@ public class Attachments implements Parcelable, Cloneable {
             result.addAll(docs);
         }
 
-        if(!safeIsEmpty(voiceMessages)){
+        if (!safeIsEmpty(voiceMessages)) {
             result.addAll(voiceMessages);
         }
 
@@ -267,14 +269,25 @@ public class Attachments implements Parcelable, Cloneable {
         return size() == 0;
     }
 
-    public boolean isPhotosVideosOnly(){
-        if(safeIsEmpty(photos) && safeIsEmpty(videos)){
+    public boolean isPhotosVideosGifsOnly() {
+        boolean hasGifWithPreview = false;
+
+        if (nonEmpty(docs)) {
+            for (Document document : docs) {
+                if (document.isGif() && nonNull(document.getPhotoPreview())) {
+                    hasGifWithPreview = true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        if (safeIsEmpty(photos) && safeIsEmpty(videos) && !hasGifWithPreview) {
             return false;
         }
 
         return safeIsEmpty(audios) &&
                 safeIsEmpty(stickers) &&
-                safeIsEmpty(docs) &&
                 safeIsEmpty(posts) &&
                 safeIsEmpty(links) &&
                 safeIsEmpty(pages) &&
@@ -301,13 +314,25 @@ public class Attachments implements Parcelable, Cloneable {
             }
         }
 
+        if (nonNull(docs)) {
+            for (Document document : docs) {
+                if (document.isGif() && nonNull(document.getPhotoPreview())) {
+                    result.add(new PostImage(document, PostImage.TYPE_GIF));
+                }
+            }
+        }
+
         return result;
     }
 
-    public ArrayList<DocLink> getDocLinks(boolean postsAsLink) {
+    public ArrayList<DocLink> getDocLinks(boolean postsAsLink, boolean excludeGifWithImages) {
         ArrayList<DocLink> result = new ArrayList<>();
         if (docs != null) {
             for (Document doc : docs) {
+                if (excludeGifWithImages && doc.isGif() && nonNull(doc.getPhotoPreview())) {
+                    continue;
+                }
+
                 result.add(new DocLink(doc));
             }
         }
@@ -360,43 +385,43 @@ public class Attachments implements Parcelable, Cloneable {
     @Override
     public String toString() {
         String line = "";
-        if(nonNull(audios)){
+        if (nonNull(audios)) {
             line = line + " audios=" + safeCountOf(audios);
         }
 
-        if(nonNull(stickers)){
+        if (nonNull(stickers)) {
             line = line + " stickers=" + safeCountOf(stickers);
         }
 
-        if(nonNull(photos)){
+        if (nonNull(photos)) {
             line = line + " photos=" + safeCountOf(photos);
         }
 
-        if(nonNull(docs)){
+        if (nonNull(docs)) {
             line = line + " docs=" + safeCountOf(docs);
         }
 
-        if(nonNull(videos)){
+        if (nonNull(videos)) {
             line = line + " videos=" + safeCountOf(videos);
         }
 
-        if(nonNull(posts)){
+        if (nonNull(posts)) {
             line = line + " posts=" + safeCountOf(posts);
         }
 
-        if(nonNull(links)){
+        if (nonNull(links)) {
             line = line + " links=" + safeCountOf(links);
         }
 
-        if(nonNull(polls)){
+        if (nonNull(polls)) {
             line = line + " polls=" + safeCountOf(polls);
         }
 
-        if(nonNull(pages)){
+        if (nonNull(pages)) {
             line = line + " pages=" + safeCountOf(pages);
         }
 
-        if(nonNull(voiceMessages)){
+        if (nonNull(voiceMessages)) {
             line = line + " voiceMessages=" + safeCountOf(voiceMessages);
         }
 

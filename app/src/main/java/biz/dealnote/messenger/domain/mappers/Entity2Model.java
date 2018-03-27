@@ -730,18 +730,25 @@ public class Entity2Model {
                 .setSizes(nonNull(dbo.getSizes()) ? buildPhotoSizesFromDbo(dbo.getSizes()) : new PhotoSizes());
     }
 
+    private static PhotoSizes.Size entity2modelNullable(@Nullable PhotoSizeEntity.Size size) {
+        if (nonNull(size)) {
+            return new PhotoSizes.Size(size.getW(), size.getH(), size.getUrl());
+        }
+        return null;
+    }
+
     public static PhotoSizes buildPhotoSizesFromDbo(PhotoSizeEntity dbo) {
         return new PhotoSizes()
-                .setS(dbo.getS())
-                .setM(dbo.getM())
-                .setX(dbo.getX())
-                .setO(dbo.getO())
-                .setP(dbo.getP())
-                .setQ(dbo.getQ())
-                .setR(dbo.getR())
-                .setY(dbo.getY())
-                .setZ(dbo.getZ())
-                .setW(dbo.getW());
+                .setS(entity2modelNullable(dbo.getS()))
+                .setM(entity2modelNullable(dbo.getM()))
+                .setX(entity2modelNullable(dbo.getX()))
+                .setO(entity2modelNullable(dbo.getO()))
+                .setP(entity2modelNullable(dbo.getP()))
+                .setQ(entity2modelNullable(dbo.getQ()))
+                .setR(entity2modelNullable(dbo.getR()))
+                .setY(entity2modelNullable(dbo.getY()))
+                .setZ(entity2modelNullable(dbo.getZ()))
+                .setW(entity2modelNullable(dbo.getW()));
     }
 
     public static void fillOwnerIds(@NonNull VKOwnIds ids, @Nullable List<? extends Entity> dbos) {

@@ -110,8 +110,7 @@ public class AttachmentsViewBinder {
         } else {
             displayAudios(attachments.getAudios(), containers.getVgAudios());
             displayVoiceMessages(attachments.getVoiceMessages(), containers.getVoiceMessageRoot());
-            displayDocs(attachments.getDocLinks(postsAsLinks), containers.getVgDocs());
-            //displayNewFriends(friends, containers.getVgFriends());
+            displayDocs(attachments.getDocLinks(postsAsLinks, true), containers.getVgDocs());
 
             if(containers.getVgStickers() != null ){
                 displayStickers(attachments.getStickers(), containers.getVgStickers());

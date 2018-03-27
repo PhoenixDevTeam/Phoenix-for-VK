@@ -3,8 +3,6 @@ package biz.dealnote.messenger.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import biz.dealnote.messenger.util.Objects;
-
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
 
@@ -62,7 +60,7 @@ public class Document extends AbsModel implements Parcelable {
     }
 
     public String getPreviewWithSize(@PhotoSize int size, boolean excludeNonAspectRatio){
-        return Objects.isNull(photoPreview) ? null : photoPreview.getUrlForSize(size, excludeNonAspectRatio);
+        return photoPreview == null ? null : photoPreview.getUrlForSize(size, excludeNonAspectRatio);
     }
 
     public PhotoSizes getPhotoPreview() {
@@ -81,6 +79,10 @@ public class Document extends AbsModel implements Parcelable {
     public Document setVideoPreview(VideoPreview videoPreview) {
         this.videoPreview = videoPreview;
         return this;
+    }
+
+    public PhotoSizes.Size getMaxPreviewSize(boolean excludeNonAspectRatio) {
+        return photoPreview != null ? photoPreview.getMaxSize(excludeNonAspectRatio) : null;
     }
 
     @Override

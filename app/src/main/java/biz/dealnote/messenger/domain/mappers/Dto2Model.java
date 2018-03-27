@@ -348,49 +348,53 @@ public class Dto2Model {
                 .setWidth(dto.width);
     }
 
+    private static PhotoSizes.Size dto2model(PhotoSizeDto dto) {
+        return new PhotoSizes.Size(dto.width, dto.height, dto.src);
+    }
+
     public static PhotoSizes transform(List<PhotoSizeDto> dtos) {
         PhotoSizes sizes = new PhotoSizes();
         if (nonNull(dtos)) {
             for (PhotoSizeDto dto : dtos) {
                 switch (dto.type) {
                     case PhotoSizeDto.Type.S:
-                        sizes.setS(dto.src);
+                        sizes.setS(dto2model(dto));
                         break;
 
                     case PhotoSizeDto.Type.M:
-                        sizes.setM(dto.src);
+                        sizes.setM(dto2model(dto));
                         break;
 
                     case PhotoSizeDto.Type.X:
-                        sizes.setX(dto.src);
+                        sizes.setX(dto2model(dto));
                         break;
 
                     case PhotoSizeDto.Type.Y:
-                        sizes.setY(dto.src);
+                        sizes.setY(dto2model(dto));
                         break;
 
                     case PhotoSizeDto.Type.Z:
-                        sizes.setZ(dto.src);
+                        sizes.setZ(dto2model(dto));
                         break;
 
                     case PhotoSizeDto.Type.W:
-                        sizes.setW(dto.src);
+                        sizes.setW(dto2model(dto));
                         break;
 
                     case PhotoSizeDto.Type.O:
-                        sizes.setO(dto.src);
+                        sizes.setO(dto2model(dto));
                         break;
 
                     case PhotoSizeDto.Type.P:
-                        sizes.setP(dto.src);
+                        sizes.setP(dto2model(dto));
                         break;
 
                     case PhotoSizeDto.Type.Q:
-                        sizes.setQ(dto.src);
+                        sizes.setQ(dto2model(dto));
                         break;
 
                     case PhotoSizeDto.Type.R:
-                        sizes.setR(dto.src);
+                        sizes.setR(dto2model(dto));
                         break;
                 }
             }
