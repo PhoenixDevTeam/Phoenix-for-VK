@@ -74,7 +74,7 @@ public class UserDetailsFragment extends BasePresenterFragment<UserDetailsPresen
 
     @Override
     public void displayData(@NonNull List<AdvancedItem> items) {
-        menuAdapter.setItems(items, true);
+        menuAdapter.setItems(items);
     }
 
     @Override

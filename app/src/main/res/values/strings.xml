@@ -1160,5 +1160,8 @@
     <string name="player_live" translatable="false">Live</string>
     <string name="direction">Direction</string>
     <string name="toast_comment_sent">The comment was published!</string>
+    <string name="share_to_wall_label">Post to wall</string>
+    <string name="error_post_creation_no_auth">There are no active accounts in the app!</string>
+    <string name="select_post_destination_label">Select post destination</string>
 
 </resources>

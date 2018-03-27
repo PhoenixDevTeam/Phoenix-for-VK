@@ -167,6 +167,7 @@ public class User extends Owner implements Parcelable, Identificable {
         return this;
     }
 
+    @Override
     public String getDomain() {
         return domain;
     }

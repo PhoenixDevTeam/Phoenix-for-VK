@@ -1,11 +1,13 @@
 package biz.dealnote.messenger.util;
 
 import biz.dealnote.messenger.Injection;
+import io.reactivex.Completable;
 import io.reactivex.CompletableTransformer;
-import io.reactivex.FlowableTransformer;
 import io.reactivex.MaybeTransformer;
 import io.reactivex.ObservableTransformer;
+import io.reactivex.Single;
 import io.reactivex.SingleTransformer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -27,6 +29,16 @@ public class RxUtils {
         return t -> {/*ignore*/};
     }
 
+    public static <T> Disposable subscribeOnIOAndIgnore(Single<T> completable) {
+        return completable.subscribeOn(Schedulers.io())
+                .subscribe(ignore(), ignore());
+    }
+
+    public static Disposable subscribeOnIOAndIgnore(Completable completable) {
+        return completable.subscribeOn(Schedulers.io())
+                .subscribe(dummy(), ignore());
+    }
+
     public static <T> MaybeTransformer<T, T> applyMaybeIOToMainSchedulers() {
         return upstream -> upstream
                 .subscribeOn(Schedulers.io())
@@ -46,12 +58,6 @@ public class RxUtils {
     }
 
     public static <T> ObservableTransformer<T, T> applyObservableIOToMainSchedulers() {
-        return upstream -> upstream
-                .subscribeOn(Schedulers.io())
-                .observeOn(Injection.provideMainThreadScheduler());
-    }
-
-    public static <T> FlowableTransformer<T, T> applyFlowableIOToMainSchedulers() {
         return upstream -> upstream
                 .subscribeOn(Schedulers.io())
                 .observeOn(Injection.provideMainThreadScheduler());

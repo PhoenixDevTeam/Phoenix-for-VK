@@ -1032,4 +1032,7 @@
     <string name="activity_until_now">текущее время</string>
     <string name="direction">Направление</string>
     <string name="toast_comment_sent">Комментарий был опубликован!</string>
+    <string name="share_to_wall_label">На стену</string>
+    <string name="error_post_creation_no_auth">Нет активных аккаунтов в приложении! Публикация отменена.</string>
+    <string name="select_post_destination_label">Выберите назначение публикации</string>
 </resources>

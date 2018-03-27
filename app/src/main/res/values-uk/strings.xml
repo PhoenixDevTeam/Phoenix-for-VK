@@ -1029,5 +1029,8 @@
     <string name="family">Родина</string>
     <string name="activity_until_now">поточний час</string>
     <string name="direction">Напрямок</string>
-    <string name="toast_comment_sent">напрямок був опублікований!</string>
+    <string name="toast_comment_sent">Коментар був опублікований!</string>
+    <string name="share_to_wall_label">На стіну</string>
+    <string name="error_post_creation_no_auth">Не знайдено активних акаунтів в додатку! Публікація скасована.</string>
+    <string name="select_post_destination_label">Виберіть призначення публікації</string>
 </resources>

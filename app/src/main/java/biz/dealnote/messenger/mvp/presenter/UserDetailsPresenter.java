@@ -272,10 +272,10 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
             }
         }
 
-        if (nonEmpty(details.getRelatives()) || nonNull(details.getRelationPartner())) {
+        if (details.getRelation() > 0 || nonEmpty(details.getRelatives()) || nonNull(details.getRelationPartner())) {
             Section section = new Section(new Text(R.string.family));
 
-            if (details.getRelation() > 0 && nonNull(details.getRelationPartner())) {
+            if (details.getRelation() > 0 || nonNull(details.getRelationPartner())) {
                 Icon icon;
                 Text subtitle;
 

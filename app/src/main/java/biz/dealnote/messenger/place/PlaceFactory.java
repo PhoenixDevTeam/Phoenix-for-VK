@@ -1,5 +1,6 @@
 package biz.dealnote.messenger.place;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -371,14 +372,15 @@ public class PlaceFactory {
     }
 
     public static Place getCreatePostPlace(int accountId, int ownerId, @EditingPostType int editingType,
-                                           @Nullable List<AbsModel> input, @NonNull WallEditorAttrs attrs){
+                                           @Nullable List<AbsModel> input, @NonNull WallEditorAttrs attrs,
+                                           @Nullable ArrayList<Uri> streams, @Nullable String body) {
         ModelsBundle bundle = new ModelsBundle(Utils.safeCountOf(input));
         if(Objects.nonNull(input)){
             bundle.append(input);
         }
 
         return new Place(Place.BUILD_NEW_POST)
-                .setArguments(PostCreateFragment.buildArgs(accountId, ownerId, editingType, bundle, attrs));
+                .setArguments(PostCreateFragment.buildArgs(accountId, ownerId, editingType, bundle, attrs, streams, body));
     }
 
     public static Place getForwardMessagesPlace(int accountId, ArrayList<Message> messages){

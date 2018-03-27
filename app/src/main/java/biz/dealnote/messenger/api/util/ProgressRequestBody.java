@@ -48,13 +48,7 @@ public class ProgressRequestBody extends RequestBody {
 
         try {
             int read;
-            //Handler handler = new Handler(Looper.getMainLooper());
-
             while ((read = stream.read(buffer)) != -1) {
-
-                // update progress on UI thread
-                //handler.post(new ProgressUpdater(uploaded, fileLength));
-
                 if(listener != null){
                     listener.onProgressUpdate((int) (100 * uploaded / fileLength));
                 }
@@ -62,24 +56,14 @@ public class ProgressRequestBody extends RequestBody {
                 uploaded += read;
                 sink.write(buffer, 0, read);
             }
+        } catch (Exception e) {
+            if (e instanceof IOException) {
+                throw e;
+            } else {
+                throw new IOException(e);
+            }
         } finally {
             stream.close();
         }
     }
-
-    /*private class ProgressUpdater implements Runnable {
-
-        private long mUploaded;
-        private long mTotal;
-
-        ProgressUpdater(long uploaded, long total) {
-            mUploaded = uploaded;
-            mTotal = total;
-        }
-
-        @Override
-        public void run() {
-            listener.onProgressUpdate((int)(100 * mUploaded / mTotal));
-        }
-    }*/
 }

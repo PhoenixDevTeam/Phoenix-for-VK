@@ -56,6 +56,7 @@ import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.disposables.CompositeDisposable;
 
+import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 
 public class MusicPlaybackService extends Service {
@@ -875,8 +876,6 @@ public class MusicPlaybackService extends Service {
                 mPlayPos = mShuffler.nextInt(Utils.safeCountOf(mPlayList));
             }
 
-            Logger.d(TAG, "open, size: " + mPlayList.size() + ", position: " + mPlayPos);
-
             mHistory.clear();
 
             playCurrentTrack();
@@ -1217,9 +1216,7 @@ public class MusicPlaybackService extends Service {
          *             ready to play, false otherwise
          */
         void setDataSource(final String remoteUrl) {
-            Logger.d(TAG, "setDataSourceImpl, path: " + remoteUrl);
-
-            final String url = isEmpty(remoteUrl) ? "https://vk.com/mp3/audio_api_unavailable.mp3" : remoteUrl;
+            final String url = firstNonEmptyString(remoteUrl, "https://vk.com/mp3/audio_api_unavailable.mp3");
 
             try {
                 mCurrentMediaPlayer.reset();
@@ -1272,8 +1269,6 @@ public class MusicPlaybackService extends Service {
         @Override
         public void onPrepared(MediaPlayer mp) {
             boolean current = mp == mCurrentMediaPlayer;
-
-            Logger.d(TAG, "onPrepared, current: " + current);
 
             if (current) {
                 preparing = false;

@@ -1295,7 +1295,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
     @OnGuiCreated
     private void resolveInputImagesUploading() {
-        if (!safeIsEmpty(mOutConfig.getUploadFiles())) {
+        if (nonEmpty(mOutConfig.getUploadFiles())) {
             uploadStreams(mOutConfig.getUploadFiles());
         }
     }

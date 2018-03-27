@@ -620,7 +620,7 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
     @DrawableRes
     private int getDirectionIcon(boolean desc) {
         return CurrentTheme.getResIdFromAttribute(requireActivity(),
-                desc ? R.attr.toolbarDoubleDownIcon : R.attr.toolbarDoubleUpIcon);
+                desc ? R.attr.toolbarDoubleUpIcon : R.attr.toolbarDoubleDownIcon);
     }
 
     @Override

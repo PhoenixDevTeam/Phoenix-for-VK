@@ -1,15 +1,18 @@
 package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.model.Icon;
 import biz.dealnote.messenger.model.menu.AdvancedItem;
@@ -25,15 +28,26 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 3/19/2018.
  * Phoenix-for-VK
  */
-public class RecyclerMenuAdapter extends RecyclerBindableAdapter<AdvancedItem, RecyclerMenuAdapter.MenuItemHolder> {
+public class RecyclerMenuAdapter extends RecyclerView.Adapter<RecyclerMenuAdapter.MenuItemHolder> {
 
-    public RecyclerMenuAdapter(List<AdvancedItem> items) {
-        super(items);
+    private List<AdvancedItem> items;
+
+    @LayoutRes
+    private final int itemRes;
+
+    public RecyclerMenuAdapter(@LayoutRes int itemLayout, @NonNull List<AdvancedItem> items) {
+        this.itemRes = itemLayout;
+        this.items = items;
     }
 
-    @Override
-    protected void onBindItemViewHolder(MenuItemHolder viewHolder, int position, int type) {
-        onBindMenuItemHolder(viewHolder, position);
+    public RecyclerMenuAdapter(List<AdvancedItem> items) {
+        this.items = items;
+        this.itemRes = R.layout.item_advanced_menu;
+    }
+
+    public void setItems(List<AdvancedItem> items) {
+        this.items = items;
+        notifyDataSetChanged();
     }
 
     private ActionListener actionListener;
@@ -42,20 +56,30 @@ public class RecyclerMenuAdapter extends RecyclerBindableAdapter<AdvancedItem, R
         this.actionListener = actionListener;
     }
 
+    @NonNull
+    @Override
+    public MenuItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new MenuItemHolder(LayoutInflater.from(parent.getContext()).inflate(itemRes, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MenuItemHolder holder, int position) {
+        onBindMenuItemHolder(holder, position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
+
     public interface ActionListener {
         void onClick(AdvancedItem item);
 
         void onLongClick(AdvancedItem item);
     }
 
-    @Override
-    protected MenuItemHolder viewHolder(View view, int type) {
-        return new MenuItemHolder(view);
-    }
-
-    @Override
-    protected int layoutId(int type) {
-        return R.layout.item_advanced_menu;
+    private AdvancedItem getItem(int position) {
+        return items.get(position);
     }
 
     private void onBindMenuItemHolder(MenuItemHolder holder, int position) {

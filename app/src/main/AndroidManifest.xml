@@ -87,6 +87,27 @@
             android:excludeFromRecents="true"
             android:theme="@style/QuickReply" />
 
+        <activity
+            android:name=".activity.PostPublishPrepareActivity"
+            android:label="@string/share_to_wall_label"
+            android:excludeFromRecents="true"
+            android:theme="@style/QuickReply">
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <data android:mimeType="image/*" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="image/*" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+
         <provider
             android:name=".db.MessengerContentProvider"
             android:authorities="${applicationId}.providers.Messages"
@@ -104,6 +125,20 @@
         <activity
             android:name=".activity.PhotosActivity"
             android:label="@string/photos" />
+
+        <activity
+            android:name=".activity.PostCreateActivity"
+            android:theme="@style/Base.App.DayNight"
+            android:label="@string/share_to_wall_label"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+
+            <!--<intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="text/plain" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>-->
+
+        </activity>
 
         <activity
             android:name=".activity.MainActivity"

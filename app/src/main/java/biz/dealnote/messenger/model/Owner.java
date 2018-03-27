@@ -37,6 +37,10 @@ public abstract class Owner extends AbsModel implements Parcelable {
         throw new UnsupportedOperationException();
     }
 
+    public String getDomain() {
+        throw new UnsupportedOperationException();
+    }
+
     public String getMaxSquareAvatar(){
         throw new UnsupportedOperationException();
     }

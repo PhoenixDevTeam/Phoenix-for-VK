@@ -200,6 +200,11 @@ public class Community extends Owner implements Parcelable {
     }
 
     @Override
+    public String getDomain() {
+        return screenName;
+    }
+
+    @Override
     public String getMaxSquareAvatar() {
         return firstNonEmptyString(photo200, photo100, photo50);
     }

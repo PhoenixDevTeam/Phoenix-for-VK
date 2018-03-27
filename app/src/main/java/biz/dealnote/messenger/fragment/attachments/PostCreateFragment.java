@@ -1,5 +1,6 @@
 package biz.dealnote.messenger.fragment.attachments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,9 +8,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
+import biz.dealnote.messenger.dialog.ImageSizeAlertDialog;
 import biz.dealnote.messenger.model.EditingPostType;
 import biz.dealnote.messenger.model.ModelsBundle;
 import biz.dealnote.messenger.model.WallEditorAttrs;
@@ -26,6 +31,7 @@ public class PostCreateFragment extends AbsPostEditFragment<PostCreatePresenter,
         implements IPostCreateView {
 
     private static final String EXTRA_EDITING_TYPE = "editing_type";
+    private static final String EXTRA_STREAMS = "streams";
 
     public static PostCreateFragment newInstance(Bundle args){
         PostCreateFragment fragment = new PostCreateFragment();
@@ -34,11 +40,15 @@ public class PostCreateFragment extends AbsPostEditFragment<PostCreatePresenter,
     }
 
     public static Bundle buildArgs(int accountId, int ownerId, @EditingPostType int editingType,
-                                   ModelsBundle bundle, @NonNull WallEditorAttrs attrs) {
+                                   ModelsBundle bundle, @NonNull WallEditorAttrs attrs,
+                                   @Nullable ArrayList<Uri> streams, @Nullable String body) {
         Bundle args = new Bundle();
+        args.putInt(EXTRA_EDITING_TYPE, editingType);
+        args.putParcelableArrayList(EXTRA_STREAMS, streams);
+
         args.putInt(Extra.ACCOUNT_ID, accountId);
         args.putInt(Extra.OWNER_ID, ownerId);
-        args.putInt(EXTRA_EDITING_TYPE, editingType);
+        args.putString(Extra.BODY, body);
         args.putParcelable(Extra.BUNDLE, bundle);
         args.putParcelable(Extra.ATTRS, attrs);
         return args;
@@ -63,7 +73,10 @@ public class PostCreateFragment extends AbsPostEditFragment<PostCreatePresenter,
 
             WallEditorAttrs attrs = getArguments().getParcelable(Extra.ATTRS);
             AssertUtils.requireNonNull(attrs);
-            return new PostCreatePresenter(accountId, ownerId, type, bundle, attrs, saveInstanceState);
+
+            ArrayList<Uri> streams = getArguments().getParcelableArrayList(EXTRA_STREAMS);
+            getArguments().remove(EXTRA_STREAMS); // only first start
+            return new PostCreatePresenter(accountId, ownerId, type, bundle, attrs, streams, saveInstanceState);
         };
     }
 
@@ -73,9 +86,9 @@ public class PostCreateFragment extends AbsPostEditFragment<PostCreatePresenter,
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setStatusBarColored(getActivity(), true)
+                .setStatusBarColored(requireActivity(), true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -84,8 +97,16 @@ public class PostCreateFragment extends AbsPostEditFragment<PostCreatePresenter,
     }
 
     @Override
+    public void displayUploadUriSizeDialog(@NonNull List<Uri> uris) {
+        new ImageSizeAlertDialog.Builder(getActivity())
+                .setOnSelectedCallback(size -> getPresenter().fireUriUploadSizeSelected(uris, size))
+                .setOnCancelCallback(() -> getPresenter().fireUriUploadCancelClick())
+                .show();
+    }
+
+    @Override
     public void goBack() {
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 
     @Override

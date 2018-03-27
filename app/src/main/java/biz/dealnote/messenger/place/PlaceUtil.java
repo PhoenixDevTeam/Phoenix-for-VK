@@ -3,11 +3,13 @@ package biz.dealnote.messenger.place;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +31,7 @@ import io.reactivex.disposables.Disposable;
  */
 public class PlaceUtil {
 
-    public static void goToPostEditor(@NonNull Activity activity, final int accountId, final Post post){
+    public static void goToPostEditor(@NonNull Activity activity, final int accountId, final Post post) {
         ProgressDialog dialog = createProgressDialog(activity);
         WeakReference<Dialog> dialogWeakReference = new WeakReference<>(dialog);
         WeakReference<Activity> reference = new WeakReference<>(activity);
@@ -61,9 +63,9 @@ public class PlaceUtil {
         dialog.setOnCancelListener(d -> disposable.dispose());
     }
 
-    private static void safelyShowError(WeakReference<Activity> reference, Throwable throwable){
+    private static void safelyShowError(WeakReference<Activity> reference, Throwable throwable) {
         Activity a = reference.get();
-        if(a != null){
+        if (a != null) {
             new AlertDialog.Builder(a)
                     .setTitle(R.string.error)
                     .setMessage(Utils.getCauseIfRuntime(throwable).getMessage())
@@ -73,7 +75,12 @@ public class PlaceUtil {
     }
 
     public static void goToPostCreation(@NonNull Activity activity, int accountId, int ownerId,
-                                        @EditingPostType int editingType, @Nullable List<AbsModel> input){
+                                        @EditingPostType int editingType, @Nullable List<AbsModel> input) {
+        goToPostCreation(activity, accountId, ownerId, editingType, input, null, null);
+    }
+
+    public static void goToPostCreation(@NonNull Activity activity, int accountId, int ownerId,
+                                        @EditingPostType int editingType, @Nullable List<AbsModel> input, @Nullable ArrayList<Uri> streams, @Nullable String body) {
 
         ProgressDialog dialog = createProgressDialog(activity);
         WeakReference<Dialog> dialogWeakReference = new WeakReference<>(dialog);
@@ -95,17 +102,15 @@ public class PlaceUtil {
                     }
 
                     Activity a = reference.get();
-
                     if (a != null) {
-                        PlaceFactory.getCreatePostPlace(accountId, ownerId, editingType, input, attrs)
-                                .tryOpenWith(a);
+                        PlaceFactory.getCreatePostPlace(accountId, ownerId, editingType, input, attrs, streams, body).tryOpenWith(a);
                     }
                 }, throwable -> safelyShowError(reference, throwable));
 
         dialog.setOnCancelListener(d -> disposable.dispose());
     }
 
-    private static ProgressDialog createProgressDialog(Activity activity){
+    private static ProgressDialog createProgressDialog(Activity activity) {
         ProgressDialog dialog = new ProgressDialog(activity);
         dialog.setTitle(R.string.please_wait);
         dialog.setMessage(activity.getString(R.string.message_obtaining_owner_information));

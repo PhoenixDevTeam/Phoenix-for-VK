@@ -15,8 +15,8 @@ android {
         applicationId "biz.dealnote.messenger"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 40401
-        versionName '4_0_4'
+        versionCode 40501
+        versionName '4_0_5'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -124,7 +124,7 @@ allprojects {
 }
 
 ext.supportLibraryVersion = '27.1.0'
-ext.firebaseLibraryVersion = '12.0.0'
+ext.firebaseLibraryVersion = '11.8.0'
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
