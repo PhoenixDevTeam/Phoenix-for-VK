@@ -124,7 +124,7 @@ allprojects {
 }
 
 ext.supportLibraryVersion = '27.1.0'
-ext.firebaseLibraryVersion = '11.8.0'
+ext.firebaseLibraryVersion = '12.0.0'
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')

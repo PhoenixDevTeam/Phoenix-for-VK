@@ -83,8 +83,8 @@
 
     <!-- Monochrome -->
     <style name="App.DayNight.Monochrome" parent="Base.App.DayNight">
-        <item name="colorPrimary">?android:colorBackground</item>
-        <item name="colorPrimaryDark">?android:colorBackground</item>
+        <item name="colorPrimary">#1F2226</item>
+        <item name="colorPrimaryDark">#1F2226</item>
         <item name="colorAccent">#78909c</item>
 
         <item name="icon_color_active">#78909c</item>

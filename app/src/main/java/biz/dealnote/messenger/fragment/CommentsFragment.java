@@ -47,6 +47,7 @@ import biz.dealnote.messenger.mvp.presenter.CommentsPresenter;
 import biz.dealnote.messenger.mvp.view.ICommentsView;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
+import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.RoundTransformation;
 import biz.dealnote.messenger.util.Utils;
@@ -618,7 +619,8 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
 
     @DrawableRes
     private int getDirectionIcon(boolean desc) {
-        return desc ? R.drawable.ic_comments_direction_desc : R.drawable.ic_comments_direction_asc;
+        return CurrentTheme.getResIdFromAttribute(requireActivity(),
+                desc ? R.attr.toolbarDoubleDownIcon : R.attr.toolbarDoubleUpIcon);
     }
 
     @Override

@@ -803,11 +803,10 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 int flags = getWindow().getDecorView().getSystemUiVisibility();
                 flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
                 w.getDecorView().setSystemUiVisibility(flags);
-                if (Settings.get().ui().isNavigationbarColored()) {
-                    @ColorInt
-                    int navigationColor = colored ? CurrentTheme.getNavigationBarColor(this) : Color.BLACK;
-                    w.setNavigationBarColor(navigationColor);
-                }
+                @ColorInt
+                int navigationColor = Settings.get().ui().isNavigationbarColored() && colored ?
+                        CurrentTheme.getNavigationBarColor(this) : Color.BLACK;
+                w.setNavigationBarColor(navigationColor);
             }
         }
     }

@@ -367,9 +367,9 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
     public void setUp(int fragmentId, DrawerLayout drawerLayout) {
         mFragmentContainerView = requireActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
-        if (drawerLayout != null) {
-            mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        }
+//        if (drawerLayout != null) {
+//            mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+//        }
     }
 
     private void selectItem(AbsDrawerItem item, boolean longClick) {

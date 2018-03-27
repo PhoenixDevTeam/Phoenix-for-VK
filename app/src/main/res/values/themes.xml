@@ -114,6 +114,8 @@
         <item name="toolbarLockIcon">@drawable/lock_grey600</item>
         <item name="toolbarLockPlusIcon">@drawable/ic_crypt_plus_gray600_vector</item>
         <item name="toolbarUnlockIcon">@drawable/unlock_grey600</item>
+        <item name="toolbarDoubleUpIcon">@drawable/double_up_grey600</item>
+        <item name="toolbarDoubleDownIcon">@drawable/double_down_grey600</item>
         <item name="tabsTheme">@style/Theme.Tablayout</item>
 
 
