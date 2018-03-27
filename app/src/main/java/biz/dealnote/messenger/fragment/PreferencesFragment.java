@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.fragment;
 
 import android.app.Activity;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -70,12 +69,12 @@ import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.NightMode;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.AppPerms;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.MaskTransformation;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.RoundTransformation;
 import biz.dealnote.messenger.util.Utils;
 
+import static android.preference.Preference.OnPreferenceChangeListener;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 import static biz.dealnote.messenger.util.Utils.safelyClose;
 import static biz.dealnote.messenger.util.Utils.safelyRecycle;
@@ -170,8 +169,8 @@ public class PreferencesFragment extends PreferenceFragment {
             screen.addPreference(getFullApp);
         }
 
-        Preference.OnPreferenceChangeListener recreateListener = (preference, o) -> {
-            getActivity().recreate();
+        OnPreferenceChangeListener recreateListener = (preference, o) -> {
+            requireActivity().recreate();
             return true;
         };
 
@@ -195,15 +194,21 @@ public class PreferencesFragment extends PreferenceFragment {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
                     break;
             }
-            getActivity().recreate();
+
+            requireActivity().recreate();
             return true;
         });
-        navigationbarColorPreference.setOnPreferenceChangeListener(recreateListener);
 
+        ListPreference prefPhotoPreview = (ListPreference) findPreference("photo_preview_size");
+        prefPhotoPreview.setOnPreferenceChangeListener((preference, newValue) -> {
+            Settings.get().main().notifyPrefPreviewSizeChanged();
+            return true;
+        });
+
+        navigationbarColorPreference.setOnPreferenceChangeListener(recreateListener);
 
         ListPreference defCategory = (ListPreference) findPreference(KEY_DEFAULT_CATEGORY);
         initStartPagePreference(defCategory);
-
 
         Preference talkPreference = findPreference(KEY_TALK_ABOUT);
         if (talkPreference != null) {
@@ -237,7 +242,7 @@ public class PreferencesFragment extends PreferenceFragment {
                 ((PreferenceCategory) findPreference("group_general")).removePreference(notification);
             }
             notification.setOnPreferenceClickListener(preference -> {
-                PlaceFactory.getNotificationSettingsPlace().tryOpenWith(getActivity());
+                PlaceFactory.getNotificationSettingsPlace().tryOpenWith(requireActivity());
                 return true;
             });
         }
@@ -253,7 +258,7 @@ public class PreferencesFragment extends PreferenceFragment {
         Preference drawerCategories = findPreference(KEY_DRAWER_ITEMS);
         if (drawerCategories != null) {
             drawerCategories.setOnPreferenceClickListener(preference -> {
-                PlaceFactory.getDrawerEditPlace().tryOpenWith(getActivity());
+                PlaceFactory.getDrawerEditPlace().tryOpenWith(requireActivity());
                 return true;
             });
         }
@@ -268,7 +273,7 @@ public class PreferencesFragment extends PreferenceFragment {
 
         Preference version = findPreference("version");
         if (version != null) {
-            version.setSummary(Utils.getAppVersionName(getActivity()));
+            version.setSummary(Utils.getAppVersionName(requireActivity()));
             version.setOnPreferenceClickListener(preference -> {
                 openAboutUs();
                 return true;
@@ -294,8 +299,8 @@ public class PreferencesFragment extends PreferenceFragment {
         Preference resetDrawerBackground = findPreference("reset_sidebar_background");
         if (resetDrawerBackground != null) {
             resetDrawerBackground.setOnPreferenceClickListener(preference -> {
-                File light = getDrawerBackgroundFile(getActivity(), true);
-                File dark = getDrawerBackgroundFile(getActivity(), false);
+                File light = getDrawerBackgroundFile(requireActivity(), true);
+                File dark = getDrawerBackgroundFile(requireActivity(), false);
 
                 try {
                     tryDeleteFile(light);
@@ -304,7 +309,7 @@ public class PreferencesFragment extends PreferenceFragment {
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
-                getActivity().recreate();
+                requireActivity().recreate();
                 return true;
             });
         }
@@ -322,19 +327,19 @@ public class PreferencesFragment extends PreferenceFragment {
 
         findPreference("show_logs")
                 .setOnPreferenceClickListener(preference -> {
-                    PlaceFactory.getLogsPlace().tryOpenWith(getActivity());
+                    PlaceFactory.getLogsPlace().tryOpenWith(requireActivity());
                     return true;
                 });
 
         findPreference("request_executor")
                 .setOnPreferenceClickListener(preference -> {
-                    PlaceFactory.getRequestExecutorPlace(getAccountId()).tryOpenWith(getActivity());
+                    PlaceFactory.getRequestExecutorPlace(getAccountId()).tryOpenWith(requireActivity());
                     return true;
                 });
 
         findPreference("blacklist")
                 .setOnPreferenceClickListener(preference -> {
-                    PlaceFactory.getUserBlackListPlace(getAccountId()).tryOpenWith(getActivity());
+                    PlaceFactory.getUserBlackListPlace(getAccountId()).tryOpenWith(requireActivity());
                     return true;
                 });
 
@@ -355,14 +360,14 @@ public class PreferencesFragment extends PreferenceFragment {
         if (Settings.get().security().isUsePinForSecurity()) {
             startActivityForResult(new Intent(getActivity(), EnterPinActivity.class), REQUEST_PIN_FOR_SECURITY);
         } else {
-            PlaceFactory.getSecuritySettingsPlace().tryOpenWith(getActivity());
+            PlaceFactory.getSecuritySettingsPlace().tryOpenWith(requireActivity());
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.preference_list_fragment, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         return root;
     }
 
@@ -389,11 +394,11 @@ public class PreferencesFragment extends PreferenceFragment {
         if ((requestCode == REQUEST_DARK_SIDEBAR_BACKGROUND || requestCode == REQUEST_LIGHT_SIDEBAR_BACKGROUND)
                 && resultCode == Activity.RESULT_OK && data != null) {
             changeDrawerBackground(requestCode, data);
-            getActivity().recreate();
+            requireActivity().recreate();
         }
 
         if (requestCode == REQUEST_PIN_FOR_SECURITY && resultCode == Activity.RESULT_OK) {
-            PlaceFactory.getSecuritySettingsPlace().tryOpenWith(getActivity());
+            PlaceFactory.getSecuritySettingsPlace().tryOpenWith(requireActivity());
         }
     }
 
@@ -407,7 +412,7 @@ public class PreferencesFragment extends PreferenceFragment {
 
         boolean light = requestCode == REQUEST_LIGHT_SIDEBAR_BACKGROUND;
 
-        File file = getDrawerBackgroundFile(getActivity(), light);
+        File file = getDrawerBackgroundFile(requireActivity(), light);
 
         Bitmap original = null;
         Bitmap scaled = null;
@@ -460,10 +465,9 @@ public class PreferencesFragment extends PreferenceFragment {
 
     private void openAboutUs() {
         View view = View.inflate(getActivity(), R.layout.dialog_about_us, null);
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setView(view)
                 .show();
-
     }
 
     private void resolveAvatarStyleViews(int style, ImageView circle, ImageView oval) {
@@ -505,7 +509,7 @@ public class PreferencesFragment extends PreferenceFragment {
                 .transform(new MaskTransformation(getActivity(), R.drawable.avatar_mask))
                 .into(ivOval);
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.avatar_style_title)
                 .setView(view)
                 .setPositiveButton(R.string.button_ok, (dialog, which) -> {
@@ -523,7 +527,7 @@ public class PreferencesFragment extends PreferenceFragment {
     }
 
     private void openAppCommunity() {
-        PlaceFactory.getOwnerWallPlace(getAccountId(), -APP_GROUP_ID, null).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(getAccountId(), -APP_GROUP_ID, null).tryOpenWith(requireActivity());
     }
 
     private void postWallImage() {
@@ -681,6 +685,6 @@ public class PreferencesFragment extends PreferenceFragment {
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 }

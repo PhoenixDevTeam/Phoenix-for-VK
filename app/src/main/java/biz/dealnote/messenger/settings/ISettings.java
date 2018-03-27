@@ -104,6 +104,11 @@ public interface ISettings {
         Integer getUploadImageSize();
 
         @PhotoSize
+        int getPrefPreviewImageSize();
+
+        void notifyPrefPreviewSizeChanged();
+
+        @PhotoSize
         int getPrefDisplayImageSize(@PhotoSize int byDefault);
 
         void setPrefDisplayImageSize(@PhotoSize int size);

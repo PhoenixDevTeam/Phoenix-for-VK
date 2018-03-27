@@ -35,6 +35,28 @@
         <item>Pixel-Styled</item>
     </string-array>
 
+    <string-array name="preview_preview_size" translatable="false">
+        <item>S: 75px</item>
+        <item>M: 130px</item>
+        <!--<item>O: 130px (3:2)</item>
+        <item>P: 200px (3:2)</item>
+        <item>Q: 320px (3:2)</item>
+        <item>R: 510px (3:2)</item>-->
+        <item>X: 604px</item>
+        <item>Y: 807px</item>
+    </string-array>
+
+    <string-array name="preview_preview_size_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <!--<item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>-->
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
     <string-array name="player_progress_state" translatable="false">
         <item> ••••••</item>
         <item>• •••••</item>
@@ -1164,5 +1186,6 @@
     <string name="error_post_creation_no_auth">There are no active accounts in the app!</string>
     <string name="select_post_destination_label">Select post destination</string>
     <string name="gif" translatable="false">GIF %1$s</string>
+    <string name="photo_preview_size_title">Photo preview size</string>
 
 </resources>

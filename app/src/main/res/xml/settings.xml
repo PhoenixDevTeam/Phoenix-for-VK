@@ -25,6 +25,13 @@
             android:summary="@string/select_image_size_summary"
             android:title="@string/select_image_size_title" />
 
+        <ListPreference
+            android:defaultValue="3"
+            android:entries="@array/preview_preview_size"
+            android:entryValues="@array/preview_preview_size_values"
+            android:key="photo_preview_size"
+            android:title="@string/photo_preview_size_title" />
+
         <Preference
             android:key="proxy"
             android:title="@string/http_proxy" />

@@ -20,11 +20,10 @@ import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.settings.CurrentTheme;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.AppTextUtils;
 import biz.dealnote.messenger.view.mozaik.MozaikLayout;
 
-import static biz.dealnote.messenger.util.Objects.isNull;
-import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
 public class PhotosViewHelper {
@@ -33,10 +32,14 @@ public class PhotosViewHelper {
     private AttachmentsViewBinder.OnAttachmentsActionCallback attachmentsActionCallback;
     private int mIconColorActive;
 
-    public PhotosViewHelper(Context context, @NonNull AttachmentsViewBinder.OnAttachmentsActionCallback attachmentsActionCallback) {
+    @PhotoSize
+    private final int mPhotoPreviewSize;
+
+    PhotosViewHelper(Context context, @NonNull AttachmentsViewBinder.OnAttachmentsActionCallback attachmentsActionCallback) {
         this.context = context;
         this.attachmentsActionCallback = attachmentsActionCallback;
         this.mIconColorActive = CurrentTheme.getIconColorActive(context);
+        this.mPhotoPreviewSize = Settings.get().main().getPrefPreviewImageSize();
     }
 
     private static class Holder {
@@ -91,35 +94,25 @@ public class PhotosViewHelper {
                             openImages(photos, position);
                             break;
                         case PostImage.TYPE_VIDEO:
-                            if (attachmentsActionCallback != null) {
-                                Video video = (Video) image.getAttachment();
-                                attachmentsActionCallback.onVideoPlay(video);
-                            }
+                            Video video = (Video) image.getAttachment();
+                            attachmentsActionCallback.onVideoPlay(video);
                             break;
                         case PostImage.TYPE_GIF:
-                            if (attachmentsActionCallback != null) {
-                                Document document = (Document) image.getAttachment();
-                                attachmentsActionCallback.onDocPreviewOpen(document);
-                            }
-
+                            Document document = (Document) image.getAttachment();
+                            attachmentsActionCallback.onDocPreviewOpen(document);
                             break;
                     }
                 });
 
-                String url = null;
+                final String url = image.getPreviewUrl(mPhotoPreviewSize);
+
                 switch (image.getType()) {
-                    case PostImage.TYPE_IMAGE:
-                        Photo photo = (Photo) image.getAttachment();
-                        url = isNull(photo.getSizes()) ? null : photo.getSizes().getUrlForSize(PhotoSize.X, true);
-                        break;
                     case PostImage.TYPE_VIDEO:
                         Video video = (Video) image.getAttachment();
-                        url = firstNonEmptyString(video.getPhoto800(), video.getPhoto320());
                         holder.tvTitle.setText(AppTextUtils.getDurationString(video.getDuration()));
                         break;
                     case PostImage.TYPE_GIF:
                         Document document = (Document) image.getAttachment();
-                        url = document.getPreviewWithSize(PhotoSize.Q, false);
                         holder.tvTitle.setText(context.getString(R.string.gif, AppTextUtils.getSizeString(document.getSize())));
                         break;
                 }

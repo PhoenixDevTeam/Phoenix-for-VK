@@ -3,8 +3,12 @@ package biz.dealnote.messenger.adapter;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.Photo;
+import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.model.PhotoSizes;
+import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.view.mozaik.PostImagePosition;
+
+import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
 
 public class PostImage {
 
@@ -52,6 +56,23 @@ public class PostImage {
             default:
                 throw new UnsupportedOperationException();
         }
+    }
+
+    public String getPreviewUrl(@PhotoSize int photoPreviewSize) {
+        switch (type) {
+            case PostImage.TYPE_IMAGE:
+                Photo photo = (Photo) attachment;
+                PhotoSizes.Size size = photo.getSizes().getSize(photoPreviewSize, true);
+                return size == null ? null : size.getUrl();
+            case PostImage.TYPE_VIDEO:
+                Video video = (Video) attachment;
+                return firstNonEmptyString(video.getPhoto800(), video.getPhoto320());
+            case PostImage.TYPE_GIF:
+                Document document = (Document) attachment;
+                return document.getPreviewWithSize(PhotoSize.Q, false);
+        }
+
+        throw new UnsupportedOperationException();
     }
 
     public int getHeight(){

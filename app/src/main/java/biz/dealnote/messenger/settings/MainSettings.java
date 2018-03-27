@@ -1,11 +1,13 @@
 package biz.dealnote.messenger.settings;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.util.Optional;
 
 /**
  * Created by ruslan.kolbasa on 02.12.2016.
@@ -20,8 +22,11 @@ class MainSettings implements ISettings.IMainSettings {
 
     private final Context app;
 
+    private Optional<Integer> prefferedPhotoPreviewSize;
+
     MainSettings(Context context) {
-        this.app = context.getApplicationContext();
+        app = context.getApplicationContext();
+        prefferedPhotoPreviewSize = Optional.empty();
     }
 
     @Override
@@ -32,13 +37,12 @@ class MainSettings implements ISettings.IMainSettings {
 
     @Override
     public int getRunCount() {
-        return PreferenceManager.getDefaultSharedPreferences(app)
-                .getInt(KEY_RUN_COUNT, 0);
+        return getDefaultPreferences().getInt(KEY_RUN_COUNT, 0);
     }
 
     @Override
     public void setRunCount(int count) {
-        PreferenceManager.getDefaultSharedPreferences(app)
+        getDefaultPreferences()
                 .edit()
                 .putInt(KEY_RUN_COUNT, count)
                 .apply();
@@ -46,19 +50,18 @@ class MainSettings implements ISettings.IMainSettings {
 
     @Override
     public boolean isSendByEnter() {
-        return PreferenceManager.getDefaultSharedPreferences(app).getBoolean("send_by_enter", false);
+        return getDefaultPreferences().getBoolean("send_by_enter", false);
     }
 
     @Override
     public boolean isNeedDoublePressToExit() {
-        return PreferenceManager.getDefaultSharedPreferences(app)
-                .getBoolean(KEY_DOUBLE_PRESS_TO_EXIT, true);
+        return getDefaultPreferences().getBoolean(KEY_DOUBLE_PRESS_TO_EXIT, true);
     }
 
     @Nullable
     @Override
     public Integer getUploadImageSize() {
-        String i = PreferenceManager.getDefaultSharedPreferences(app).getString(KEY_IMAGE_SIZE, "0");
+        String i = getDefaultPreferences().getString(KEY_IMAGE_SIZE, "0");
         switch (i) {
             case "1":
                 return UploadObject.IMAGE_SIZE_800;
@@ -71,17 +74,42 @@ class MainSettings implements ISettings.IMainSettings {
         }
     }
 
+    @Override
+    public int getPrefPreviewImageSize() {
+        if (prefferedPhotoPreviewSize.isEmpty()) {
+            prefferedPhotoPreviewSize = Optional.wrap(restorePhotoPreviewSize());
+        }
+
+        return prefferedPhotoPreviewSize.get();
+    }
+
+    @PhotoSize
+    private int restorePhotoPreviewSize() {
+        try {
+            return Integer.parseInt(getDefaultPreferences().getString("photo_preview_size", String.valueOf(PhotoSize.X)));
+        } catch (Exception e) {
+            return PhotoSize.X;
+        }
+    }
+
+    private SharedPreferences getDefaultPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(app);
+    }
+
+    @Override
+    public void notifyPrefPreviewSizeChanged() {
+        prefferedPhotoPreviewSize = Optional.empty();
+    }
+
     @PhotoSize
     @Override
     public int getPrefDisplayImageSize(@PhotoSize int byDefault) {
-        //noinspection ResourceType
-        return PreferenceManager.getDefaultSharedPreferences(app).getInt("pref_display_photo_size", byDefault);
-
+        return getDefaultPreferences().getInt("pref_display_photo_size", byDefault);
     }
 
     @Override
     public void setPrefDisplayImageSize(@PhotoSize int size) {
-        PreferenceManager.getDefaultSharedPreferences(app)
+        getDefaultPreferences()
                 .edit()
                 .putInt("pref_display_photo_size", size)
                 .apply();
@@ -89,7 +117,6 @@ class MainSettings implements ISettings.IMainSettings {
 
     @Override
     public boolean isCustomTabEnabled() {
-        return PreferenceManager.getDefaultSharedPreferences(app)
-                .getBoolean(KEY_CUSTOM_TABS, true);
+        return getDefaultPreferences().getBoolean(KEY_CUSTOM_TABS, true);
     }
 }
