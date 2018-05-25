@@ -29,8 +29,8 @@ public class RxUtils {
         return t -> {/*ignore*/};
     }
 
-    public static <T> Disposable subscribeOnIOAndIgnore(Single<T> completable) {
-        return completable.subscribeOn(Schedulers.io())
+    public static <T> Disposable subscribeOnIOAndIgnore(Single<T> single) {
+        return single.subscribeOn(Schedulers.io())
                 .subscribe(ignore(), ignore());
     }
 

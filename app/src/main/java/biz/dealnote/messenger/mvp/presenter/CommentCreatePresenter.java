@@ -24,9 +24,9 @@ import biz.dealnote.messenger.util.Predicate;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
 import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
+import static biz.dealnote.messenger.util.RxUtils.subscribeOnIOAndIgnore;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 import static biz.dealnote.messenger.util.Utils.removeIf;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;
@@ -139,9 +139,7 @@ public class CommentCreatePresenter extends AbsAttachmentsEditPresenter<ICreateC
     @Override
     void onAttachmentRemoveClick(int index, @NonNull AttachmenEntry attachment) {
         if (attachment.getOptionalId() != 0) {
-            attachmentsRepository.remove(getAccountId(), AttachToType.COMMENT, commentId, attachment.getOptionalId())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(() -> {}, Analytics::logUnexpectedError);
+            subscribeOnIOAndIgnore(attachmentsRepository.remove(getAccountId(), AttachToType.COMMENT, commentId, attachment.getOptionalId()));
             // из списка не удаляем, так как удаление из репозитория "слушается"
             // (будет удалено асинхронно и после этого удалится из списка)
         } else {
@@ -152,9 +150,7 @@ public class CommentCreatePresenter extends AbsAttachmentsEditPresenter<ICreateC
 
     @Override
     protected void onModelsAdded(List<? extends AbsModel> models) {
-        this.attachmentsRepository.attach(getAccountId(), AttachToType.COMMENT, commentId, models)
-                .subscribeOn(Schedulers.io())
-                .subscribe(() -> {}, Analytics::logUnexpectedError);
+        subscribeOnIOAndIgnore(attachmentsRepository.attach(getAccountId(), AttachToType.COMMENT, commentId, models));
     }
 
     @Override

@@ -3,6 +3,7 @@ package biz.dealnote.messenger.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.model.AbsModel;
@@ -32,7 +33,7 @@ public class SendAttachmentsActivity extends MainActivity {
         context.startActivity(intent);
     }
 
-    public static void startForSendAttachments(Context context, int accountId, AbsModel model) {
+    public static void startForSendAttachments(@NonNull Context context, int accountId, AbsModel model) {
         startForSendAttachments(context, accountId, new ModelsBundle(1).append(model));
     }
 

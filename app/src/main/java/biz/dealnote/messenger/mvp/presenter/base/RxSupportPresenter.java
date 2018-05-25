@@ -12,14 +12,13 @@ import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.mvp.view.IErrorView;
 import biz.dealnote.messenger.mvp.view.IToastView;
 import biz.dealnote.messenger.service.ErrorLocalizer;
-import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.InstancesCounter;
+import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.mvp.core.AbsPresenter;
 import biz.dealnote.mvp.core.IMvpView;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
@@ -85,11 +84,10 @@ public abstract class RxSupportPresenter<V extends IMvpView> extends AbsPresente
         compositeDisposable.dispose();
 
         if (tempDataUsage) {
-            Stores.getInstance()
+            RxUtils.subscribeOnIOAndIgnore(Stores.getInstance()
                     .tempStore()
-                    .delete(getInstanceId())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(() -> {}, Analytics::logUnexpectedError);
+                    .delete(getInstanceId()));
+
             tempDataUsage = false;
         }
 

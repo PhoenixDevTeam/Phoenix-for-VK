@@ -86,7 +86,6 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
     private static final String TAG = ChatFragment.class.getSimpleName();
     private static final int REQUEST_RECORD_PERMISSIONS = 15;
     private static final int REQUEST_EDIT_MESSAGE = 150;
-    //private static final int REQUEST_FORWARD_MESSAGE = 151;
 
     public static Bundle buildArgs(int accountId, int peerId, String title, String avaUrl) {
         Bundle bundle = new Bundle();
@@ -129,7 +128,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_chat, container, false);
         root.setBackground(CurrentTheme.getChatBackground(getActivity()));
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mEmptyText = root.findViewById(R.id.fragment_chat_empty_text);
 
@@ -144,7 +143,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
         mHeaderView = inflater.inflate(R.layout.footer_load_more, mRecyclerView, false);
         mLoadMoreFooterHelper = LoadMoreFooterHelper.createFrom(mHeaderView, () -> getPresenter().fireLoadUpButtonClick());
 
-        mInputViewController = new InputViewController(getActivity(), root, true, this);
+        mInputViewController = new InputViewController(requireActivity(), root, true, this);
 
         mInputViewController.setSendOnEnter(Settings.get()
                 .main()
@@ -247,9 +246,9 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
     @Override
     public IPresenterFactory<ChatPrensenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int aid = getArguments().getInt(Extra.ACCOUNT_ID);
-            int messagesOwnerId = getArguments().getInt(Extra.OWNER_ID);
-            Peer peer = getArguments().getParcelable(Extra.PEER);
+            int aid = requireArguments().getInt(Extra.ACCOUNT_ID);
+            int messagesOwnerId = requireArguments().getInt(Extra.OWNER_ID);
+            Peer peer = requireArguments().getParcelable(Extra.PEER);
             AssertUtils.requireNonNull(peer);
             return new ChatPrensenter(aid, messagesOwnerId, peer, createStartConfig(), saveInstanceState);
         };
@@ -261,7 +260,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
 
         config.setCloseOnSend(getActivity() instanceof SendAttachmentsActivity);
 
-        ArrayList<Uri> inputStreams = ActivityUtils.checkLocalStreams(getActivity());
+        ArrayList<Uri> inputStreams = ActivityUtils.checkLocalStreams(requireActivity());
         config.setUploadFiles(safeIsEmpty(inputStreams) ? null : inputStreams);
 
         ModelsBundle models = getActivity().getIntent().getParcelableExtra(MainActivity.EXTRA_INPUT_ATTACHMENTS);
@@ -342,7 +341,11 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
 
     @Override
     public void doCloseAfterSend() {
-        getActivity().finish();
+        try {
+            requireActivity().finish();
+        } catch (Exception ignored){
+
+        }
     }
 
     private ActionMode mActionMode;
@@ -425,7 +428,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
     @Override
     public void showActionMode(String title) {
         if (Objects.isNull(mActionMode)) {
-            mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(mActionModeCallback);
+            mActionMode = ((AppCompatActivity) requireActivity()).startSupportActionMode(mActionModeCallback);
         }
 
         if (nonNull(mActionMode)) {
@@ -482,14 +485,14 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
                                              String body, @Nullable ModelsBundle attachments) {
         MessageAttachmentsFragment fragment = MessageAttachmentsFragment.newInstance(accountId, messageOwnerId, destination.getId(), attachments);
         fragment.setTargetFragment(this, REQUEST_EDIT_MESSAGE);
-        fragment.show(getFragmentManager(), "message-attachments");
+        fragment.show(requireFragmentManager(), "message-attachments");
     }
 
     @Override
     public void showErrorSendDialog(@NonNull Message message) {
         String[] items = {getString(R.string.try_again), getString(R.string.delete)};
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.sending_message_failed)
                 .setItems(items, (dialogInterface, i) -> {
                     switch (i) {
@@ -532,7 +535,11 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
         mOptionMenuSettings.put(ENCRYPTION_PLUS_ENABLED, encryptionPlusEnabled);
         mOptionMenuSettings.put(KEY_EXCHANGE_VISIBLE, keyExchangeVisible);
 
-        getActivity().invalidateOptionsMenu();
+        try {
+            requireActivity().invalidateOptionsMenu();
+        } catch (Exception ignored){
+
+        }
     }
 
     private SparseBooleanArray mOptionMenuSettings = new SparseBooleanArray();
@@ -546,7 +553,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
         MessageSeachCriteria criteria = new MessageSeachCriteria("")
                 .setPeerId(peer.getId());
 
-        PlaceFactory.getSingleTabSearchPlace(accountId, SearchContentType.MESSAGES, criteria).tryOpenWith(getActivity());
+        PlaceFactory.getSingleTabSearchPlace(accountId, SearchContentType.MESSAGES, criteria).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -559,13 +566,13 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
 
     @Override
     public void resetUploadImages() {
-        ActivityUtils.resetInputPhotos(getActivity());
+        ActivityUtils.resetInputPhotos(requireActivity());
     }
 
     @Override
     public void resetInputAttachments() {
-        getActivity().getIntent().removeExtra(MainActivity.EXTRA_INPUT_ATTACHMENTS);
-        ActivityUtils.resetInputText(getActivity());
+        requireActivity().getIntent().removeExtra(MainActivity.EXTRA_INPUT_ATTACHMENTS);
+        ActivityUtils.resetInputText(requireActivity());
     }
 
     @Override
@@ -591,23 +598,22 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
                 getString(R.string.music)
         };
 
-        new AlertDialog.Builder(getActivity()).setItems(items,
+        new AlertDialog.Builder(requireActivity()).setItems(items,
                 (dialog, which) -> showConversationAttachments(accountId, peerId, types[which])).show();
     }
 
     private void showConversationAttachments(int accountId, int peerId, String type) {
-        PlaceFactory.getConversationAttachmentsPlace(accountId, peerId, type).tryOpenWith(getActivity());
+        PlaceFactory.getConversationAttachmentsPlace(accountId, peerId, type).tryOpenWith(requireActivity());
     }
 
     @Override
     public void goToChatMembers(int accountId, int chatId) {
-        PlaceFactory.getChatMembersPlace(accountId, chatId)
-                .tryOpenWith(getActivity());
+        PlaceFactory.getChatMembersPlace(accountId, chatId).tryOpenWith(requireActivity());
     }
 
     @Override
     public void showChatTitleChangeDialog(String initialValue) {
-        new InputTextDialog.Builder(getActivity())
+        new InputTextDialog.Builder(requireActivity())
                 .setAllowEmpty(false)
                 .setInputType(InputType.TYPE_CLASS_TEXT)
                 .setValue(initialValue)
@@ -618,7 +624,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
 
     @Override
     public void forwardMessagesToAnotherConversation(@NonNull ArrayList<Message> messages, int accountId) {
-        SendAttachmentsActivity.startForSendAttachments(getActivity(), accountId, new FwdMessages(messages));
+        SendAttachmentsActivity.startForSendAttachments(requireActivity(), accountId, new FwdMessages(messages));
     }
 
     @Override
@@ -636,7 +642,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
             }
         };
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setItems(items, listener)
                 .setCancelable(true)
                 .show();
@@ -658,7 +664,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
 
     @Override
     public void displayIniciateKeyExchangeQuestion(@KeyLocationPolicy int policy) {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.key_exchange)
                 .setMessage(R.string.you_dont_have_encryption_keys_stored_initiate_key_exchange)
                 .setPositiveButton(R.string.button_ok, (dialog, which) -> getPresenter().fireIniciateKeyExchangeClick(policy))
@@ -674,7 +680,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
 
         buttonOnDisk.setChecked(true);
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.choose_location_key_store)
                 .setView(view)
                 .setPositiveButton(R.string.button_ok, (dialogInterface, i) -> {
@@ -691,7 +697,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
     @Override
     public void showEncryptionDisclaimerDialog(int requestCode) {
         View view = View.inflate(getActivity(), R.layout.content_encryption_terms_of_use, null);
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setView(view)
                 .setTitle(R.string.phoenix_encryption)
                 .setPositiveButton(R.string.button_accept, (dialogInterface, i) -> getPresenter().fireTermsOfUseAcceptClick(requestCode))
@@ -707,7 +713,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override

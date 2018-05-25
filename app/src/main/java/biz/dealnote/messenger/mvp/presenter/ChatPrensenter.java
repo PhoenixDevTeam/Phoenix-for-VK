@@ -87,7 +87,8 @@ import static biz.dealnote.messenger.util.AppTextUtils.safeTrimmedIsEmpty;
 import static biz.dealnote.messenger.util.CompareUtils.compareInts;
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
-import static biz.dealnote.messenger.util.RxUtils.ignore;
+import static biz.dealnote.messenger.util.RxUtils.dummy;
+import static biz.dealnote.messenger.util.RxUtils.subscribeOnIOAndIgnore;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 import static biz.dealnote.messenger.util.Utils.getSelected;
 import static biz.dealnote.messenger.util.Utils.hasFlag;
@@ -514,6 +515,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         }
     }
 
+    @SuppressLint("CheckResult")
     private void sendMessage(@NonNull SaveMessageBuilder builder) {
         messagesInteractor.put(builder)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
@@ -1053,10 +1055,10 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         final int peerId = getPeerId();
         final String body = mDraftMessageText;
 
-        Stores.getInstance().messages()
+        subscribeOnIOAndIgnore(Stores.getInstance()
+                .messages()
                 .saveDraftMessageBody(messagesOwnerId, peerId, body)
-                .subscribeOn(Schedulers.io())
-                .subscribe(ignore(), ignore());
+                .subscribeOn(Schedulers.io()));
     }
 
     @Override
@@ -1084,7 +1086,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
             appendDisposable(messagesInteractor.markAsRead(messagesOwnerId, peedId)
                     .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                    .subscribe(() -> {/*ignore*/}, t -> showError(getView(), getCauseIfRuntime(t))));
+                    .subscribe(dummy(), t -> showError(getView(), t)));
         }
     }
 
@@ -1179,11 +1181,9 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     }
 
     private void deleteMessageFromDbAsync(@NonNull Message message) {
-        Stores.getInstance()
+        subscribeOnIOAndIgnore(Stores.getInstance()
                 .messages()
-                .deleteMessage(messagesOwnerId, message.getId())
-                .subscribeOn(Schedulers.io())
-                .subscribe(ignore(), ignore());
+                .deleteMessage(messagesOwnerId, message.getId()));
     }
 
     public void fireErrorMessageDeleteClick(@NonNull Message message) {
@@ -1586,36 +1586,32 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
             this.uploadFiles = in.createTypedArrayList(Uri.CREATOR);
         }
 
-        public OutConfig setModels(ModelsBundle models) {
+        public void setModels(ModelsBundle models) {
             this.models = models;
-            return this;
         }
 
         private boolean isCloseOnSend() {
             return closeOnSend;
         }
 
-        public OutConfig setCloseOnSend(boolean closeOnSend) {
+        public void setCloseOnSend(boolean closeOnSend) {
             this.closeOnSend = closeOnSend;
-            return this;
         }
 
         private String getInitialText() {
             return initialText;
         }
 
-        public OutConfig setInitialText(String initialText) {
+        public void setInitialText(String initialText) {
             this.initialText = initialText;
-            return this;
         }
 
         private ArrayList<Uri> getUploadFiles() {
             return uploadFiles;
         }
 
-        public OutConfig setUploadFiles(ArrayList<Uri> uploadFiles) {
+        public void setUploadFiles(ArrayList<Uri> uploadFiles) {
             this.uploadFiles = uploadFiles;
-            return this;
         }
 
         @Override
@@ -1631,17 +1627,10 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
             dest.writeTypedList(uploadFiles);
         }
 
-        public OutConfig appendModel(AbsModel model) {
-            this.models.append(model);
-            return this;
-        }
-
-        public OutConfig appendAll(Iterable<? extends AbsModel> models) {
+        public void appendAll(Iterable<? extends AbsModel> models) {
             for (AbsModel model : models) {
                 this.models.append(model);
             }
-            //this.models.append(models);
-            return this;
         }
     }
 }
