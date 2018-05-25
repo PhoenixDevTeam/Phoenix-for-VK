@@ -45,7 +45,7 @@ public abstract class BasePresenterFragment<P extends AbsPresenter<V>, V extends
         }
     }
 
-    protected Bundle requireArguments(){
+    public Bundle requireArguments(){
         return AssertUtils.requireNonNull(getArguments());
     }
 

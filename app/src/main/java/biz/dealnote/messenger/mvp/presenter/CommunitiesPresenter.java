@@ -185,7 +185,7 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
         if (searchNow) {
             filterDisposable.add(filter(own.get(), filter)
                     .compose(RxUtils.applySingleComputationToMainSchedulers())
-                    .subscribe(this::onFilteredDataReceived, t -> {/*ignored*/}));
+                    .subscribe(this::onFilteredDataReceived, RxUtils.ignore()));
 
             startNetSearch(0, true);
         } else {

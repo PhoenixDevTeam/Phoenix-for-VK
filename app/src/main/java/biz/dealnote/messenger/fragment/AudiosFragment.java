@@ -55,7 +55,7 @@ public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_music, container, false);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity)requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mBlockedRoot = root.findViewById(R.id.blocked_root);
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
@@ -79,7 +79,7 @@ public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudi
     }
 
     private void openPost(){
-        PlaceFactory.getPostPreviewPlace(getArguments().getInt(Extra.ACCOUNT_ID), 7927, -72124992).tryOpenWith(getActivity());
+        PlaceFactory.getPostPreviewPlace(requireArguments().getInt(Extra.ACCOUNT_ID), 7927, -72124992).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -102,7 +102,7 @@ public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudi
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -113,8 +113,8 @@ public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudi
     @Override
     public IPresenterFactory<AudiosPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new AudiosPresenter(
-                getArguments().getInt(Extra.ACCOUNT_ID),
-                getArguments().getInt(Extra.OWNER_ID),
+                requireArguments().getInt(Extra.ACCOUNT_ID),
+                requireArguments().getInt(Extra.OWNER_ID),
                 saveInstanceState
         );
     }

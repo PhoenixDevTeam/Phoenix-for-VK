@@ -65,7 +65,7 @@ public class TopicsFragment extends BasePresenterFragment<TopicsPresenter, ITopi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_topics, container, false);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity)requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
@@ -108,7 +108,7 @@ public class TopicsFragment extends BasePresenterFragment<TopicsPresenter, ITopi
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -160,7 +160,7 @@ public class TopicsFragment extends BasePresenterFragment<TopicsPresenter, ITopi
     @Override
     public void goToComments(int accountId, @NonNull Topic topic) {
         PlaceFactory.getCommentsPlace(accountId, Commented.from(topic), null)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
@@ -179,8 +179,8 @@ public class TopicsFragment extends BasePresenterFragment<TopicsPresenter, ITopi
     @Override
     public IPresenterFactory<TopicsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
-            int ownerId = getArguments().getInt(Extra.OWNER_ID);
+            int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
+            int ownerId = requireArguments().getInt(Extra.OWNER_ID);
             return new TopicsPresenter(accountId, ownerId, saveInstanceState);
         };
     }

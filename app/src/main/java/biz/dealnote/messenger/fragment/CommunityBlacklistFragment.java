@@ -86,8 +86,8 @@ public class CommunityBlacklistFragment extends BasePresenterFragment<CommunityB
     @Override
     public IPresenterFactory<CommunityBlacklistPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new CommunityBlacklistPresenter(
-                getArguments().getInt(Extra.ACCOUNT_ID),
-                getArguments().getInt(Extra.GROUP_ID),
+                requireArguments().getInt(Extra.ACCOUNT_ID),
+                requireArguments().getInt(Extra.GROUP_ID),
                 saveInstanceState
         );
     }
@@ -127,7 +127,7 @@ public class CommunityBlacklistFragment extends BasePresenterFragment<CommunityB
 
     @Override
     public void openBanEditor(int accountId, int groupId, Banned banned) {
-        PlaceFactory.getCommunityBanEditPlace(accountId, groupId, banned).tryOpenWith(getActivity());
+        PlaceFactory.getCommunityBanEditPlace(accountId, groupId, banned).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -154,7 +154,7 @@ public class CommunityBlacklistFragment extends BasePresenterFragment<CommunityB
 
     @Override
     public void addUsersToBan(int accountId, int groupId, ArrayList<User> users) {
-        PlaceFactory.getCommunityAddBanPlace(accountId, groupId, users).tryOpenWith(getActivity());
+        PlaceFactory.getCommunityAddBanPlace(accountId, groupId, users).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -172,7 +172,7 @@ public class CommunityBlacklistFragment extends BasePresenterFragment<CommunityB
     @Override
     public void onBannedLongClick(Banned banned) {
         String[] items = {getString(R.string.delete)};
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(banned.getUser().getFullName())
                 .setItems(items, (dialog, which) -> getPresenter().fireBannedRemoveClick(banned))
                 .setNegativeButton(R.string.button_cancel, null)

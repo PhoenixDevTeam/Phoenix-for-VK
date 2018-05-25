@@ -54,7 +54,7 @@ public class ProxyManagerFrgament extends BasePresenterFragment<ProxyManagerPres
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.frgament_proxy_manager, container, false);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -121,7 +121,7 @@ public class ProxyManagerFrgament extends BasePresenterFragment<ProxyManagerPres
 
     @Override
     public void goToAddingScreen() {
-        PlaceFactory.getProxyAddPlace().tryOpenWith(getActivity());
+        PlaceFactory.getProxyAddPlace().tryOpenWith(requireActivity());
     }
 
     @Override

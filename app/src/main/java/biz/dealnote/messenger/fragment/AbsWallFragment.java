@@ -198,7 +198,7 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
         ClipData clip = ClipData.newPlainText(label, body);
         clipboard.setPrimaryClip(clip);
 
-        Toast.makeText(getActivity(), R.string.copied, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireActivity(), R.string.copied, Toast.LENGTH_SHORT).show();
     }
 
     @Override

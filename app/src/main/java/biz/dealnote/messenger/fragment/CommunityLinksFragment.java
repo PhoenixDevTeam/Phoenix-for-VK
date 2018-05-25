@@ -69,8 +69,8 @@ public class CommunityLinksFragment extends BasePresenterFragment<CommunityLinks
     @Override
     public IPresenterFactory<CommunityLinksPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new CommunityLinksPresenter(
-                getArguments().getInt(Extra.ACCOUNT_ID),
-                getArguments().getInt(Extra.GROUP_ID),
+                requireArguments().getInt(Extra.ACCOUNT_ID),
+                requireArguments().getInt(Extra.GROUP_ID),
                 saveInstanceState
         );
     }

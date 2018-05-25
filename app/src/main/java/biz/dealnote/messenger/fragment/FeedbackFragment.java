@@ -70,7 +70,7 @@ public class FeedbackFragment extends PlaceSupportPresenterFragment<FeedbackPres
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_feedback, container, false);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity)requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mEmptyText = root.findViewById(R.id.fragment_feedback_empty_text);
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
@@ -123,7 +123,7 @@ public class FeedbackFragment extends PlaceSupportPresenterFragment<FeedbackPres
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -177,12 +177,12 @@ public class FeedbackFragment extends PlaceSupportPresenterFragment<FeedbackPres
 
     @Override
     public void showLinksDialog(int accountId, @NonNull Feedback notification) {
-        FeedbackLinkDialog.newInstance(accountId, notification).show(getFragmentManager(), "feedback_links");
+        FeedbackLinkDialog.newInstance(accountId, notification).show(requireFragmentManager(), "feedback_links");
     }
 
     @Override
     public IPresenterFactory<FeedbackPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
-        return () -> new FeedbackPresenter(getArguments().getInt(Extra.ACCOUNT_ID),saveInstanceState);
+        return () -> new FeedbackPresenter(requireArguments().getInt(Extra.ACCOUNT_ID),saveInstanceState);
     }
 
     @Override

@@ -76,11 +76,11 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_accounts, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         empty = root.findViewById(R.id.empty);
         mRecyclerView = root.findViewById(R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
 
         root.findViewById(R.id.fab).setOnClickListener(this);
         return root;
@@ -240,7 +240,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
     private void startDirectLogin() {
         DirectAuthDialog.newInstance()
                 .targetTo(this, REQEUST_DIRECT_LOGIN)
-                .show(getFragmentManager(), "direct-login");
+                .show(requireFragmentManager(), "direct-login");
     }
 
     @Override
@@ -261,7 +261,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
                 .accounts()
                 .remove(account.getId());
 
-        DBHelper.removeDatabaseFor(getContext(), account.getId());
+        DBHelper.removeDatabaseFor(requireActivity(), account.getId());
 
         stopLongpoll();
 
@@ -271,7 +271,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void stopLongpoll() {
-        getContext().stopService(new Intent(getActivity(), LongpollService.class));
+        requireContext().stopService(new Intent(getActivity(), LongpollService.class));
     }
 
     private void setAsActive(Account account) {
@@ -300,7 +300,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
             items = new String[]{getString(R.string.delete)};
         }
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(account.getDisplayName())
                 .setItems(items, (dialog, which) -> {
                     switch (which) {
@@ -321,7 +321,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_ok) {
-            getActivity().finish();
+            requireActivity().finish();
             return true;
         }
 

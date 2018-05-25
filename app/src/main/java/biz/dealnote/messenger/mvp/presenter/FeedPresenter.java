@@ -26,6 +26,7 @@ import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
@@ -87,7 +88,7 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
         final int accountId = super.getAccountId();
         appendDisposable(feedInteractor.getActualFeedLists(accountId)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onFeedListsUpdated, t -> {/*ignored*/}));
+                .subscribe(this::onFeedListsUpdated, ignore()));
     }
 
     private void onPostUpdateEvent(PostUpdate update) {
@@ -189,7 +190,7 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
         cacheLoadingHolder.append(feedInteractor
                 .getCachedFeed(accountId)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(feed -> onCachedFeedReceived(feed, thenScrollToState), Throwable::printStackTrace));
+                .subscribe(feed -> onCachedFeedReceived(feed, thenScrollToState), ignore()));
     }
 
     @Override
@@ -413,9 +414,7 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
 
             appendDisposable(walls.like(accountId, news.getSourceId(), news.getPostId(), add)
                     .compose(RxUtils.applySingleIOToMainSchedulers())
-                    .subscribe(count -> {
-                    }, t -> {
-                    })); // ignore error
+                    .subscribe(ignore(), ignore()));
         }
     }
 

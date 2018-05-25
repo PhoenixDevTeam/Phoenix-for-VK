@@ -177,13 +177,13 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
     @Override
     public IPresenterFactory<CommentsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
-            Commented commented = getArguments().getParcelable(Extra.COMMENTED);
+            int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
+            Commented commented = requireArguments().getParcelable(Extra.COMMENTED);
 
             Integer focusTo = null;
-            if (getArguments().containsKey(EXTRA_AT_COMMENT_OBJECT)) {
-                focusTo = getArguments().getInt(EXTRA_AT_COMMENT_OBJECT);
-                getArguments().remove(EXTRA_AT_COMMENT_OBJECT);
+            if (requireArguments().containsKey(EXTRA_AT_COMMENT_OBJECT)) {
+                focusTo = requireArguments().getInt(EXTRA_AT_COMMENT_OBJECT);
+                requireArguments().remove(EXTRA_AT_COMMENT_OBJECT);
             }
 
             return new CommentsPresenter(accountId, commented, focusTo, saveInstanceState);

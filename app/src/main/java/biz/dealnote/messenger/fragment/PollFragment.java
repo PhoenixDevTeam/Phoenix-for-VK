@@ -64,7 +64,7 @@ public class PollFragment extends BasePresenterFragment<PollPresenter, IPollView
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_poll, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -152,8 +152,8 @@ public class PollFragment extends BasePresenterFragment<PollPresenter, IPollView
     @Override
     public IPresenterFactory<PollPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int aid = getArguments().getInt(Extra.ACCOUNT_ID);
-            Poll poll = getArguments().getParcelable(Extra.POLL);
+            int aid = requireArguments().getInt(Extra.ACCOUNT_ID);
+            Poll poll = requireArguments().getParcelable(Extra.POLL);
             AssertUtils.requireNonNull(poll);
             return new PollPresenter(aid, poll, saveInstanceState);
         };

@@ -94,7 +94,7 @@ public class GroupWallPresenter extends AbsWallPresenter<IGroupWallView> {
                 .subscribe(pair -> {
                     onFullInfoReceived(pair.getFirst(), pair.getSecond());
                     requestActualFullInfo();
-                }, t -> {/*ignore*/}));
+                }, RxUtils.ignore()));
     }
 
     private void requestActualFullInfo() {

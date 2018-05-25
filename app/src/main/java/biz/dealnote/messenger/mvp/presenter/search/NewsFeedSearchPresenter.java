@@ -37,9 +37,9 @@ public class NewsFeedSearchPresenter extends AbsSearchPresenter<INewsFeedSearchV
         this.feedInteractor = InteractorFactory.createFeedInteractor();
         this.walls = Injection.provideWalls();
 
-        this.walls.observeMinorChanges()
+        appendDisposable(walls.observeMinorChanges()
                 .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(this::onPostUpdate);
+                .subscribe(this::onPostUpdate, RxUtils.ignore()));
     }
 
     private void onPostUpdate(PostUpdate update){
@@ -91,6 +91,6 @@ public class NewsFeedSearchPresenter extends AbsSearchPresenter<INewsFeedSearchV
 
         appendDisposable(walls.like(accountId, post.getOwnerId(), post.getVkid(), !post.isUserLikes())
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(integer -> {/*ignore*/}, t -> showError(getView(), Utils.getCauseIfRuntime(t))));
+                .subscribe(RxUtils.ignore(), t -> showError(getView(), t)));
     }
 }

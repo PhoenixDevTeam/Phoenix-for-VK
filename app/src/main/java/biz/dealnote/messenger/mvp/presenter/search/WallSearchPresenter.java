@@ -21,7 +21,6 @@ import io.reactivex.Single;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
-import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
 /**
  * Created by admin on 02.05.2017.
@@ -130,7 +129,6 @@ public class WallSearchPresenter extends AbsSearchPresenter<IWallSearchView, Wal
 
         appendDisposable(walls.like(accountId, post.getOwnerId(), post.getVkid(), !post.isUserLikes())
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(ignored -> {
-                }, t -> showError(getView(), getCauseIfRuntime(t))));
+                .subscribe(RxUtils.ignore(), t -> showError(getView(), t)));
     }
 }

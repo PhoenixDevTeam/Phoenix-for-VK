@@ -50,7 +50,7 @@ public class FaveLinksPresenter extends AccountDependencyPresenter<IFaveLinksVie
         final int accountId = super.getAccountId();
         cacheDisposable.add(faveInteractor.getCachedLinks(accountId)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onCachedDataReceived, t -> {/*ignore*/}));
+                .subscribe(this::onCachedDataReceived, RxUtils.ignore()));
     }
 
     private CompositeDisposable actualDisposable = new CompositeDisposable();

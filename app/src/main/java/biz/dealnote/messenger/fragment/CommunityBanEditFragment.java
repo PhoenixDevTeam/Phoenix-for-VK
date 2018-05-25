@@ -92,7 +92,7 @@ public class CommunityBanEditFragment extends BasePresenterFragment<CommunityBan
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_community_ban_edit, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mAvatar = root.findViewById(R.id.avatar);
         mAvatar.setOnClickListener(v -> getPresenter().fireAvatarClick());
@@ -148,16 +148,16 @@ public class CommunityBanEditFragment extends BasePresenterFragment<CommunityBan
                 .setBlockNavigationDrawer(true)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
     public IPresenterFactory<CommunityBanEditPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
-            int groupId = getArguments().getInt(Extra.GROUP_ID);
-            Banned banned = getArguments().getParcelable(Extra.BANNED);
-            ArrayList<User> users = getArguments().getParcelableArrayList(Extra.USERS);
+            int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
+            int groupId = requireArguments().getInt(Extra.GROUP_ID);
+            Banned banned = requireArguments().getParcelable(Extra.BANNED);
+            ArrayList<User> users = requireArguments().getParcelableArrayList(Extra.USERS);
             return Objects.nonNull(banned) ? new CommunityBanEditPresenter(accountId, groupId, banned, saveInstanceState)
                     : new CommunityBanEditPresenter(accountId, groupId, users, saveInstanceState);
         };
@@ -233,7 +233,7 @@ public class CommunityBanEditFragment extends BasePresenterFragment<CommunityBan
 
     @Override
     public void goBack() {
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 
     @Override
@@ -243,7 +243,7 @@ public class CommunityBanEditFragment extends BasePresenterFragment<CommunityBan
             strings[i] = options.get(i).getTitle();
         }
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.select_from_list_title)
                 .setItems(strings, (dialog, which) -> getPresenter().fireOptionSelected(requestCode, options.get(which)))
                 .setNegativeButton(R.string.button_cancel, null)
@@ -252,6 +252,6 @@ public class CommunityBanEditFragment extends BasePresenterFragment<CommunityBan
 
     @Override
     public void openProfile(int accountId, User user) {
-        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(requireActivity());
     }
 }

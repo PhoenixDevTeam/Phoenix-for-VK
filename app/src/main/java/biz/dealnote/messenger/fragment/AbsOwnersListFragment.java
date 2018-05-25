@@ -45,16 +45,16 @@ public abstract class AbsOwnersListFragment<P extends SimpleOwnersPresenter<V>, 
         View root = inflater.inflate(mHasToolbar ? R.layout.fragment_abs_friends_with_toolbar : R.layout.fragment_abs_friends, container, false);
 
         if(mHasToolbar){
-            ((AppCompatActivity)getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+            ((AppCompatActivity)requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         }
 
         mRecyclerView = root.findViewById(R.id.list);
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
-        mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        mLinearLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.addOnScrollListener(new PicassoPauseOnScrollListener(Constants.PICASSO_TAG));
         mRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
@@ -101,6 +101,6 @@ public abstract class AbsOwnersListFragment<P extends SimpleOwnersPresenter<V>, 
 
     @Override
     public void showOwnerWall(int accountId, Owner owner) {
-        PlaceFactory.getOwnerWallPlace(accountId, owner).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, owner).tryOpenWith(requireActivity());
     }
 }

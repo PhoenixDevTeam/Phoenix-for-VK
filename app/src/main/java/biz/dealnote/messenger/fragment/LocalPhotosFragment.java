@@ -162,8 +162,8 @@ public class LocalPhotosFragment extends BasePresenterFragment<LocalPhotosPresen
     @Override
     public IPresenterFactory<LocalPhotosPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int maxSelectionItemCount1 = getArguments().getInt(EXTRA_MAX_SELECTION_COUNT, 10);
-            LocalImageAlbum album = getArguments().getParcelable(Extra.ALBUM);
+            int maxSelectionItemCount1 = requireArguments().getInt(EXTRA_MAX_SELECTION_COUNT, 10);
+            LocalImageAlbum album = requireArguments().getParcelable(Extra.ALBUM);
             AssertUtils.requireNonNull(album);
             return new LocalPhotosPresenter(album, maxSelectionItemCount1, saveInstanceState);
         };

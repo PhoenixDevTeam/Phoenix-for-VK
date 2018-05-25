@@ -99,7 +99,7 @@ public class DocsFragment extends BasePresenterFragment<DocsListPresenter, IDocL
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_docs, container, false);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
@@ -249,22 +249,20 @@ public class DocsFragment extends BasePresenterFragment<DocsListPresenter, IDocL
 
     @Override
     public void openDocument(int accountId, @NonNull Document document) {
-        PlaceFactory.getDocPreviewPlace(accountId, document)
-                .tryOpenWith(getActivity());
+        PlaceFactory.getDocPreviewPlace(accountId, document).tryOpenWith(requireActivity());
     }
 
     @Override
     public void returnSelection(ArrayList<Document> docs) {
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(Extra.ATTACHMENTS, docs);
-        getActivity().setResult(Activity.RESULT_OK, intent);
-        getActivity().finish();
+        requireActivity().setResult(Activity.RESULT_OK, intent);
+        requireActivity().finish();
     }
 
     @Override
     public void goToGifPlayer(int accountId, @NonNull ArrayList<Document> gifs, int selected) {
-        PlaceFactory.getGifPagerPlace(accountId, gifs, selected)
-                .tryOpenWith(getActivity());
+        PlaceFactory.getGifPagerPlace(accountId, gifs, selected).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -363,9 +361,9 @@ public class DocsFragment extends BasePresenterFragment<DocsListPresenter, IDocL
     @Override
     public IPresenterFactory<DocsListPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new DocsListPresenter(
-                getArguments().getInt(Extra.ACCOUNT_ID),
-                getArguments().getInt(Extra.OWNER_ID),
-                getArguments().getString(Extra.ACTION),
+                requireArguments().getInt(Extra.ACCOUNT_ID),
+                requireArguments().getInt(Extra.OWNER_ID),
+                requireArguments().getString(Extra.ACTION),
                 saveInstanceState
         );
     }
@@ -395,7 +393,7 @@ public class DocsFragment extends BasePresenterFragment<DocsListPresenter, IDocL
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override

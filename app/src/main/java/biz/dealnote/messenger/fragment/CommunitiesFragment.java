@@ -156,7 +156,7 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(), true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -182,7 +182,7 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
 
     @Override
     public void showCommunityWall(int accountId, Community community) {
-        PlaceFactory.getOwnerWallPlace(accountId, community).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, community).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -195,8 +195,8 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
     @Override
     public IPresenterFactory<CommunitiesPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new CommunitiesPresenter(
-                getArguments().getInt(Extra.ACCOUNT_ID),
-                getArguments().getInt(Extra.USER_ID),
+                requireArguments().getInt(Extra.ACCOUNT_ID),
+                requireArguments().getInt(Extra.USER_ID),
                 saveInstanceState
         );
     }

@@ -568,7 +568,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
             return;
         }
 
-        SendAttachmentsActivity.startForSendAttachments(getActivity(), mAccountId, current);
+        SendAttachmentsActivity.startForSendAttachments(requireActivity(), mAccountId, current);
     }
 
     private void resolveAddButton() {

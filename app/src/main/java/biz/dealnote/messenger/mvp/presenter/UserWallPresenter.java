@@ -97,7 +97,7 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
                 .subscribe(pair -> {
                     onFullInfoReceived(pair.getFirst(), pair.getSecond());
                     requestActualFullInfo();
-                }, t -> {/*ignore*/}));
+                }, RxUtils.ignore()));
     }
 
     private void requestActualFullInfo() {

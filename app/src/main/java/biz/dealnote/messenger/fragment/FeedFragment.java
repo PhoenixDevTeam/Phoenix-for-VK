@@ -122,17 +122,17 @@ public class FeedFragment extends PlaceSupportPresenterFragment<FeedPresenter, I
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_new_feed, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         styleSwipeRefreshLayoutWithCurrentTheme(mSwipeRefreshLayout);
 
-        if (Utils.is600dp(getActivity())) {
-            boolean land = Utils.isLandscape(getActivity());
+        if (Utils.is600dp(requireActivity())) {
+            boolean land = Utils.isLandscape(requireActivity());
             mFeedLayoutManager = new StaggeredGridLayoutManager(land ? 2 : 1, StaggeredGridLayoutManager.VERTICAL);
         } else {
-            mFeedLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            mFeedLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
         }
 
         mRecycleView = root.findViewById(R.id.fragment_feeds_list);
@@ -229,7 +229,7 @@ public class FeedFragment extends PlaceSupportPresenterFragment<FeedPresenter, I
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -271,20 +271,18 @@ public class FeedFragment extends PlaceSupportPresenterFragment<FeedPresenter, I
 
     @Override
     public void goToLikes(int accountId, String type, int ownerId, int id) {
-        PlaceFactory.getLikesCopiesPlace(accountId, type, ownerId, id, ILikesInteractor.FILTER_LIKES)
-                .tryOpenWith(getActivity());
+        PlaceFactory.getLikesCopiesPlace(accountId, type, ownerId, id, ILikesInteractor.FILTER_LIKES).tryOpenWith(requireActivity());
     }
 
     @Override
     public void goToReposts(int accountId, String type, int ownerId, int id) {
-        PlaceFactory.getLikesCopiesPlace(accountId, type, ownerId, id, ILikesInteractor.FILTER_COPIES)
-                .tryOpenWith(getActivity());
+        PlaceFactory.getLikesCopiesPlace(accountId, type, ownerId, id, ILikesInteractor.FILTER_COPIES).tryOpenWith(requireActivity());
     }
 
     @Override
     public void goToPostComments(int accountId, int postId, int ownerId) {
         Commented commented = new Commented(postId, ownerId, CommentedType.POST, null);
-        PlaceFactory.getCommentsPlace(accountId, commented, null).tryOpenWith(getActivity());
+        PlaceFactory.getCommentsPlace(accountId, commented, null).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -458,6 +456,6 @@ public class FeedFragment extends PlaceSupportPresenterFragment<FeedPresenter, I
 
     @Override
     public IPresenterFactory<FeedPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
-        return () -> new FeedPresenter(getArguments().getInt(Extra.ACCOUNT_ID), saveInstanceState);
+        return () -> new FeedPresenter(requireArguments().getInt(Extra.ACCOUNT_ID), saveInstanceState);
     }
 }

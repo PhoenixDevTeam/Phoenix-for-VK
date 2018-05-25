@@ -104,7 +104,7 @@ public class VideoAlbumsPresenter extends AccountDependencyPresenter<IVideoAlbum
 
         cacheDisposable.add(videosInteractor.getCachedAlbums(accountId, ownerId)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onCachedDataReceived, t -> {/*ignored*/}));
+                .subscribe(this::onCachedDataReceived, RxUtils.ignore()));
     }
 
     private void onCachedDataReceived(List<VideoAlbum> albums) {

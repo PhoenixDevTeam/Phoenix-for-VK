@@ -71,7 +71,7 @@ public class VKPhotoAlbumsFragment extends BasePresenterFragment<PhotoAlbumsPres
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         if(!hasHideToolbarExtra()){
-            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+            ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         } else {
             toolbar.setVisibility(View.GONE);
         }
@@ -116,7 +116,7 @@ public class VKPhotoAlbumsFragment extends BasePresenterFragment<PhotoAlbumsPres
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -154,7 +154,7 @@ public class VKPhotoAlbumsFragment extends BasePresenterFragment<PhotoAlbumsPres
 
     @Override
     public void showDeleteConfirmDialog(@NonNull final PhotoAlbum album) {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.remove_confirm)
                 .setMessage(R.string.album_remove_confirm_message)
                 .setPositiveButton(R.string.button_yes, (dialog, which) -> getPresenter().fireAlbumDeletingConfirmed(album))
@@ -209,13 +209,13 @@ public class VKPhotoAlbumsFragment extends BasePresenterFragment<PhotoAlbumsPres
         PlaceFactory.getVKPhotosAlbumPlace(accountId, album.getOwnerId(), album.getId(), action)
                 .withParcelableExtra(Extra.ALBUM, album)
                 .withParcelableExtra(Extra.OWNER, new ParcelableOwnerWrapper(owner))
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
     public void showAlbumContextMenu(@NonNull PhotoAlbum album) {
         String[] items = {getString(R.string.delete), getString(R.string.edit)};
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(album.getTitle())
                 .setItems(items, (dialog, which) -> {
                     switch (which) {
@@ -235,8 +235,8 @@ public class VKPhotoAlbumsFragment extends BasePresenterFragment<PhotoAlbumsPres
         Intent result = new Intent();
         result.putExtra(Extra.OWNER_ID, album.getOwnerId());
         result.putExtra(Extra.ALBUM_ID, album.getId());
-        getActivity().setResult(Activity.RESULT_OK, result);
-        getActivity().finish();
+        requireActivity().setResult(Activity.RESULT_OK, result);
+        requireActivity().finish();
     }
 
     @Override
@@ -256,7 +256,7 @@ public class VKPhotoAlbumsFragment extends BasePresenterFragment<PhotoAlbumsPres
     public void goToAlbumCreation(int accountId, int ownerId) {
         PlaceFactory.getCreatePhotoAlbumPlace(accountId, ownerId)
                 .targetTo(this, REQUEST_CREATE_ALBUM)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
@@ -264,7 +264,7 @@ public class VKPhotoAlbumsFragment extends BasePresenterFragment<PhotoAlbumsPres
         PlaceFactory.getEditPhotoAlbumPlace(accountId, album, editor)
                 //.withParcelableExtra(Extra.OWNER, owner)
                 .targetTo(this, REQUEST_EDIT_ALBUM)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
@@ -297,13 +297,13 @@ public class VKPhotoAlbumsFragment extends BasePresenterFragment<PhotoAlbumsPres
     @Override
     public IPresenterFactory<PhotoAlbumsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int ownerId = getArguments().getInt(Extra.OWNER_ID);
-            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
+            int ownerId = requireArguments().getInt(Extra.OWNER_ID);
+            int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
 
-            ParcelableOwnerWrapper wrapper = getArguments().getParcelable(Extra.OWNER);
+            ParcelableOwnerWrapper wrapper = requireArguments().getParcelable(Extra.OWNER);
             Owner owner = Objects.nonNull(wrapper) ? wrapper.get() : null;
 
-            String action = getArguments().getString(Extra.ACTION);
+            String action = requireArguments().getString(Extra.ACTION);
             return new PhotoAlbumsPresenter(accountId, ownerId, new PhotoAlbumsPresenter.AdditionalParams()
                     .setAction(action)
                     .setOwner(owner), saveInstanceState);

@@ -105,7 +105,7 @@ public class FavePostsPresenter extends PlaceSupportPresenter<IFavePostsView> {
         final int newOffset = offset + COUNT;
         appendDisposable(faveInteractor.getPosts(accountId, COUNT, offset)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(posts -> onActualDataReceived(offset, newOffset, posts), throwable -> onActualDataGetError(Utils.getCauseIfRuntime(throwable))));
+                .subscribe(posts -> onActualDataReceived(offset, newOffset, posts), this::onActualDataGetError));
     }
 
     private void onActualDataGetError(Throwable throwable) {
@@ -178,8 +178,7 @@ public class FavePostsPresenter extends PlaceSupportPresenter<IFavePostsView> {
         final int accountId = super.getAccountId();
         appendDisposable(wallInteractor.like(accountId, post.getOwnerId(), post.getVkid(), !post.isUserLikes())
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(integer -> {
-                }, throwable -> onLikeError(Utils.getCauseIfRuntime(throwable))));
+                .subscribe(RxUtils.ignore(), this::onLikeError));
     }
 
     private void onLikeError(Throwable t) {

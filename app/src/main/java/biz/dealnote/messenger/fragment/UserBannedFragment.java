@@ -68,7 +68,7 @@ public class UserBannedFragment extends BasePresenterFragment<UserBannedPresente
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_user_banned, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
@@ -193,13 +193,13 @@ public class UserBannedFragment extends BasePresenterFragment<UserBannedPresente
 
     @Override
     public void showUserProfile(int accountId, User user) {
-        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(requireActivity());
     }
 
     @Override
     public IPresenterFactory<UserBannedPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new UserBannedPresenter(
-                getArguments().getInt(Extra.ACCOUNT_ID),
+                requireArguments().getInt(Extra.ACCOUNT_ID),
                 saveInstanceState
         );
     }
@@ -211,7 +211,7 @@ public class UserBannedFragment extends BasePresenterFragment<UserBannedPresente
 
     @Override
     public boolean onOwnerLongClick(Owner owner) {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(owner.getFullName())
                 .setItems(new String[]{getString(R.string.delete)}, (dialog, which) -> getPresenter().fireRemoveClick((User) owner))
                 .setNegativeButton(R.string.button_cancel, null)

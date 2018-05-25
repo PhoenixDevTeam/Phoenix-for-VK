@@ -42,7 +42,7 @@ public class LikesFragment extends AbsOwnersListFragment<LikesListPresenter, ISi
         super.onResume();
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if(actionBar != null){
-            actionBar.setTitle("likes".equals(getArguments().getString(Extra.FILTER)) ? R.string.like : R.string.shared);
+            actionBar.setTitle("likes".equals(requireArguments().getString(Extra.FILTER)) ? R.string.like : R.string.shared);
             actionBar.setSubtitle(null);
         }
 
@@ -51,7 +51,7 @@ public class LikesFragment extends AbsOwnersListFragment<LikesListPresenter, ISi
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -62,11 +62,11 @@ public class LikesFragment extends AbsOwnersListFragment<LikesListPresenter, ISi
     @Override
     public IPresenterFactory<LikesListPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new LikesListPresenter(
-                getArguments().getInt(Extra.ACCOUNT_ID),
-                getArguments().getString(Extra.TYPE),
-                getArguments().getInt(Extra.OWNER_ID),
-                getArguments().getInt(Extra.ITEM_ID),
-                getArguments().getString(Extra.FILTER),
+                requireArguments().getInt(Extra.ACCOUNT_ID),
+                requireArguments().getString(Extra.TYPE),
+                requireArguments().getInt(Extra.OWNER_ID),
+                requireArguments().getInt(Extra.ITEM_ID),
+                requireArguments().getString(Extra.FILTER),
                 saveInstanceState
         );
     }

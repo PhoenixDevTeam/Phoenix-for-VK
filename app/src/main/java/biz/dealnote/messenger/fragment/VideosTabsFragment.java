@@ -61,15 +61,15 @@ public class VideosTabsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        accountId = getArguments().getInt(Extra.ACCOUNT_ID);
-        ownerId = getArguments().getInt(Extra.OWNER_ID);
-        action = getArguments().getString(Extra.ACTION);
+        accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
+        ownerId = requireArguments().getInt(Extra.OWNER_ID);
+        action = requireArguments().getString(Extra.ACTION);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_videos_tabs, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         return root;
     }
 
@@ -92,7 +92,7 @@ public class VideosTabsFragment extends BaseFragment {
 
     private void setupViewPager(ViewPager viewPager) {
         VideosFragment fragment = VideosFragment.newInstance(getAccountId(), ownerId, 0, action, null);
-        fragment.getArguments().putBoolean(VideosFragment.EXTRA_IN_TABS_CONTAINER, true);
+        fragment.requireArguments().putBoolean(VideosFragment.EXTRA_IN_TABS_CONTAINER, true);
 
         Adapter adapter = new Adapter(getChildFragmentManager());
         adapter.addFragment(fragment, getString(R.string.videos_my));
@@ -128,7 +128,7 @@ public class VideosTabsFragment extends BaseFragment {
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     static class Adapter extends FragmentPagerAdapter {
@@ -140,7 +140,7 @@ public class VideosTabsFragment extends BaseFragment {
             super(fm);
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        void addFragment(Fragment fragment, String title) {
             mFragments.add(fragment);
             mFragmentTitles.add(title);
         }
@@ -166,7 +166,7 @@ public class VideosTabsFragment extends BaseFragment {
         switch (item.getItemId()) {
             case R.id.action_search:
                 VideoSearchCriteria criteria = new VideoSearchCriteria("");
-                PlaceFactory.getSingleTabSearchPlace(getAccountId(), SearchContentType.VIDEOS, criteria).tryOpenWith(getActivity());
+                PlaceFactory.getSingleTabSearchPlace(getAccountId(), SearchContentType.VIDEOS, criteria).tryOpenWith(requireActivity());
                 return true;
         }
 

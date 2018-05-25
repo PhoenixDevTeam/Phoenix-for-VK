@@ -63,7 +63,7 @@ public class ChatUsersFragment extends BasePresenterFragment<ChatMembersPresente
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_chat_users, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -109,7 +109,7 @@ public class ChatUsersFragment extends BasePresenterFragment<ChatMembersPresente
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(), true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -119,7 +119,7 @@ public class ChatUsersFragment extends BasePresenterFragment<ChatMembersPresente
 
     @Override
     public void onRemoveClick(final AppChatUser user) {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.confirmation)
                 .setMessage(getString(R.string.remove_chat_user_commit, user.getUser().getFullName()))
                 .setPositiveButton(R.string.button_ok, (dialog, which) -> getPresenter().fireUserDeteleConfirmed(user))
@@ -157,7 +157,7 @@ public class ChatUsersFragment extends BasePresenterFragment<ChatMembersPresente
 
     @Override
     public void openUserWall(int accountId, User user) {
-        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -180,8 +180,8 @@ public class ChatUsersFragment extends BasePresenterFragment<ChatMembersPresente
     @Override
     public IPresenterFactory<ChatMembersPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new ChatMembersPresenter(
-                getArguments().getInt(Extra.ACCOUNT_ID),
-                getArguments().getInt(Extra.CHAT_ID),
+                requireArguments().getInt(Extra.ACCOUNT_ID),
+                requireArguments().getInt(Extra.CHAT_ID),
                 saveInstanceState
         );
     }

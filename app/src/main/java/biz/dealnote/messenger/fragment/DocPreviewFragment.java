@@ -232,7 +232,7 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     private void resolveActionBar() {
@@ -294,7 +294,7 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
     }
 
     private void remove() {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.remove_confirm)
                 .setMessage(R.string.doc_remove_confirm_message)
                 .setPositiveButton(R.string.button_yes, (dialog, which) -> doRemove())
@@ -311,14 +311,14 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
                 getString(R.string.repost_to_wall)
         };
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setItems(items, (dialogInterface, i) -> {
                     switch (i) {
                         case 0:
-                            Utils.shareLink(getActivity(), genLink(), document.getTitle());
+                            Utils.shareLink(requireActivity(), genLink(), document.getTitle());
                             break;
                         case 1:
-                            SendAttachmentsActivity.startForSendAttachments(getActivity(), accountId, document);
+                            SendAttachmentsActivity.startForSendAttachments(requireActivity(), accountId, document);
                             break;
                         case 2:
                             postToMyWall();
@@ -332,7 +332,7 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
 
     private void postToMyWall() {
         List<AbsModel> models = Collections.singletonList(document);
-        PlaceUtil.goToPostCreation(getActivity(), accountId, accountId, EditingPostType.TEMP, models);
+        PlaceUtil.goToPostCreation(requireActivity(), accountId, accountId, EditingPostType.TEMP, models);
     }
 
     private String genLink() {
@@ -349,12 +349,12 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
         req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, document.getTitle());
         req.allowScanningByMediaScanner();
         req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        DownloadManager dm = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager dm = (DownloadManager) requireActivity().getSystemService(Context.DOWNLOAD_SERVICE);
         dm.enqueue(req);
     }
 
     private void openOwnerWall() {
-        PlaceFactory.getOwnerWallPlace(accountId, ownerId, null).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, ownerId, null).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -392,7 +392,7 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
     }
 
     private void addYourSelf() {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.confirmation)
                 .setMessage(R.string.add_document_to_yourself_commit)
                 .setPositiveButton(R.string.button_yes, (dialog, which) -> doAddYourSelf())

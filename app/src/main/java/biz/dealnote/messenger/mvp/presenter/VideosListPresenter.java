@@ -15,7 +15,6 @@ import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IVideosListView;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.RxUtils;
-import biz.dealnote.messenger.util.Utils;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
@@ -99,7 +98,7 @@ public class VideosListPresenter extends AccountDependencyPresenter<IVideosListV
                 .subscribe(videos -> {
                     IntNextFrom nextFrom = new IntNextFrom(startFrom.getOffset() + COUNT);
                     onRequestResposnse(videos, startFrom, nextFrom);
-                }, throwable -> onListGetError(Utils.getCauseIfRuntime(throwable))));
+                }, this::onListGetError));
     }
 
     private void onListGetError(Throwable throwable){

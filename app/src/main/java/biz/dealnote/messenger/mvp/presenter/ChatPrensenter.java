@@ -1159,7 +1159,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         if (!sent.isEmpty()) {
             appendDisposable(messagesInteractor.deleteMessages(messagesOwnerId, sent)
                     .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                    .subscribe(() -> {/*ignore*/}, t -> showError(getView(), getCauseIfRuntime(t))));
+                    .subscribe(dummy(), t -> showError(getView(), t)));
         }
 
         if (hasChanged) {
@@ -1208,7 +1208,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
         appendDisposable(messagesInteractor.removeChatUser(accountId, chatId, accountId)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(() -> {}, t -> showError(getView(), getCauseIfRuntime(t))));
+                .subscribe(dummy(), t -> showError(getView(), t)));
     }
 
     public void fireChatTitleClick() {
@@ -1296,7 +1296,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
         appendDisposable(messagesInteractor.changeChatTitle(this.messagesOwnerId, chatId, newValue)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(() -> {/*ignore*/}, t -> showError(getView(), getCauseIfRuntime(t))));
+                .subscribe(dummy(), t -> showError(getView(), t)));
     }
 
     public void fireForwardToHereClick(@NonNull ArrayList<Message> messages) {

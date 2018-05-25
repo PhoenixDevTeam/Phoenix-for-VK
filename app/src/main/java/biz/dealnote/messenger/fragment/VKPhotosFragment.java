@@ -82,13 +82,13 @@ public class VKPhotosFragment extends BasePresenterFragment<VkPhotosPresenter, I
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mAction = getArguments().getString(Extra.ACTION, ACTION_SHOW_PHOTOS);
+        mAction = requireArguments().getString(Extra.ACTION, ACTION_SHOW_PHOTOS);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_photo_gallery, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         int columnCount = getResources().getInteger(R.integer.local_gallery_column_count);
         RecyclerView.LayoutManager manager = new GridLayoutManager(getActivity(), columnCount);
@@ -178,7 +178,7 @@ public class VKPhotosFragment extends BasePresenterFragment<VkPhotosPresenter, I
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -279,7 +279,7 @@ public class VKPhotosFragment extends BasePresenterFragment<VkPhotosPresenter, I
 
     @Override
     public void displayGallery(int accountId, int albumId, int ownerId, Integer focusToId) {
-        PlaceFactory.getPhotoAlbumGalleryPlace(accountId, albumId, ownerId, focusToId).tryOpenWith(getActivity());
+        PlaceFactory.getPhotoAlbumGalleryPlace(accountId, albumId, ownerId, focusToId).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -302,8 +302,8 @@ public class VKPhotosFragment extends BasePresenterFragment<VkPhotosPresenter, I
     public void returnSelectionToParent(List<Photo> selected) {
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(Extra.ATTACHMENTS, new ArrayList<>(selected));
-        getActivity().setResult(Activity.RESULT_OK, intent);
-        getActivity().finish();
+        requireActivity().setResult(Activity.RESULT_OK, intent);
+        requireActivity().finish();
     }
 
     @Override
@@ -347,15 +347,15 @@ public class VKPhotosFragment extends BasePresenterFragment<VkPhotosPresenter, I
     @Override
     public IPresenterFactory<VkPhotosPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            ParcelableOwnerWrapper ownerWrapper = getArguments().getParcelable(Extra.OWNER);
+            ParcelableOwnerWrapper ownerWrapper = requireArguments().getParcelable(Extra.OWNER);
             Owner owner = nonNull(ownerWrapper) ? ownerWrapper.get() : null;
-            PhotoAlbum album = getArguments().getParcelable(Extra.ALBUM);
+            PhotoAlbum album = requireArguments().getParcelable(Extra.ALBUM);
 
             return new VkPhotosPresenter(
-                    getArguments().getInt(Extra.ACCOUNT_ID),
-                    getArguments().getInt(Extra.OWNER_ID),
-                    getArguments().getInt(Extra.ALBUM_ID),
-                    getArguments().getString(Extra.ACTION, ACTION_SHOW_PHOTOS),
+                    requireArguments().getInt(Extra.ACCOUNT_ID),
+                    requireArguments().getInt(Extra.OWNER_ID),
+                    requireArguments().getInt(Extra.ALBUM_ID),
+                    requireArguments().getString(Extra.ACTION, ACTION_SHOW_PHOTOS),
                     owner,
                     album,
                     saveInstanceState

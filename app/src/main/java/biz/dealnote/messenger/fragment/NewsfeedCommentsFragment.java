@@ -90,7 +90,7 @@ public class NewsfeedCommentsFragment extends PlaceSupportPresenterFragment<News
     @Override
     public IPresenterFactory<NewsfeedCommentsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
+            int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
             return new NewsfeedCommentsPresenter(accountId, saveInstanceState);
         };
     }

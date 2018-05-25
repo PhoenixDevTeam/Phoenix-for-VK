@@ -163,7 +163,7 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
         mButtonsRoot = root.findViewById(R.id.buttons);
         mToolbar = root.findViewById(R.id.toolbar);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(mToolbar);
 
         mViewPager = root.findViewById(R.id.view_pager);
         mViewPager.setOffscreenPageLimit(1);
@@ -224,7 +224,7 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
 
     @Override
     public void goToLikesList(int accountId, int ownerId, int photoId) {
-        PlaceFactory.getLikesCopiesPlace(accountId, "photo", ownerId, photoId, ILikesInteractor.FILTER_LIKES).tryOpenWith(getActivity());
+        PlaceFactory.getLikesCopiesPlace(accountId, "photo", ownerId, photoId, ILikesInteractor.FILTER_LIKES).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -238,11 +238,11 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
     }
 
     private void onPhotoSizeClicked() {
-        View view = getActivity().findViewById(R.id.photo_size);
+        View view = requireActivity().findViewById(R.id.photo_size);
 
         int current = getPhotoSizeFromPrefs();
 
-        PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+        PopupMenu popupMenu = new PopupMenu(requireActivity(), view);
         for (int i = 0; i < SIZES.size(); i++) {
             int key = SIZES.keyAt(i);
             int value = SIZES.get(key);
@@ -261,7 +261,7 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
                     .setPrefDisplayImageSize(SIZES.get(key));
 
             onImageDisplayedImageSizeChanged();
-            getActivity().invalidateOptionsMenu();
+            requireActivity().invalidateOptionsMenu();
             return true;
         });
 
@@ -307,34 +307,34 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
     @Override
     public IPresenterFactory<PhotoPagerPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int placeType = getArguments().getInt(Extra.PLACE_TYPE);
-            int aid = getArguments().getInt(Extra.ACCOUNT_ID);
+            int placeType = requireArguments().getInt(Extra.PLACE_TYPE);
+            int aid = requireArguments().getInt(Extra.ACCOUNT_ID);
 
             switch (placeType) {
                 case Place.SIMPLE_PHOTO_GALLERY:
-                    int index = getArguments().getInt(Extra.INDEX);
-                    boolean needUpdate = getArguments().getBoolean(EXTRA_NEED_UPDATE);
-                    ArrayList<Photo> photos = getArguments().getParcelableArrayList(EXTRA_PHOTOS);
+                    int index = requireArguments().getInt(Extra.INDEX);
+                    boolean needUpdate = requireArguments().getBoolean(EXTRA_NEED_UPDATE);
+                    ArrayList<Photo> photos = requireArguments().getParcelableArrayList(EXTRA_PHOTOS);
                     AssertUtils.requireNonNull(photos);
                     return new SimplePhotoPresenter(photos, index, needUpdate, aid, saveInstanceState);
 
                 case Place.VK_PHOTO_ALBUM_GALLERY:
-                    int ownerId = getArguments().getInt(Extra.OWNER_ID);
-                    int albumId = getArguments().getInt(Extra.ALBUM_ID);
-                    Integer focusTo = getArguments().containsKey(EXTRA_FOCUS_PHOTO_ID)
-                            ? getArguments().getInt(EXTRA_FOCUS_PHOTO_ID) : null;
+                    int ownerId = requireArguments().getInt(Extra.OWNER_ID);
+                    int albumId = requireArguments().getInt(Extra.ALBUM_ID);
+                    Integer focusTo = requireArguments().containsKey(EXTRA_FOCUS_PHOTO_ID)
+                            ? requireArguments().getInt(EXTRA_FOCUS_PHOTO_ID) : null;
                     return new PhotoAlbumPagerPresenter(aid, ownerId, albumId, focusTo, saveInstanceState);
 
                 case Place.FAVE_PHOTOS_GALLERY:
-                    int findex = getArguments().getInt(Extra.INDEX);
-                    ArrayList<Photo> favePhotos = getArguments().getParcelableArrayList(EXTRA_PHOTOS);
+                    int findex = requireArguments().getInt(Extra.INDEX);
+                    ArrayList<Photo> favePhotos = requireArguments().getParcelableArrayList(EXTRA_PHOTOS);
                     AssertUtils.requireNonNull(favePhotos);
                     return new FavePhotoPagerPresenter(favePhotos, findex, aid, saveInstanceState);
 
                 case Place.VK_PHOTO_TMP_SOURCE:
-                    TmpSource source = getArguments().getParcelable(Extra.SOURCE);
+                    TmpSource source = requireArguments().getParcelable(Extra.SOURCE);
                     AssertUtils.requireNonNull(source);
-                    return new TmpGalleryPagerPresenter(aid, source, getArguments().getInt(Extra.INDEX), saveInstanceState);
+                    return new TmpGalleryPagerPresenter(aid, source, requireArguments().getInt(Extra.INDEX), saveInstanceState);
             }
 
             throw new UnsupportedOperationException();
@@ -395,10 +395,10 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
                 .setItems(items, (dialogInterface, i) -> {
                     switch (i) {
                         case 0:
-                            Utils.shareLink(getActivity(), photo.generateWebLink(), photo.getText());
+                            Utils.shareLink(requireActivity(), photo.generateWebLink(), photo.getText());
                             break;
                         case 1:
-                            SendAttachmentsActivity.startForSendAttachments(getActivity(), accountId, photo);
+                            SendAttachmentsActivity.startForSendAttachments(requireActivity(), accountId, photo);
                             break;
                         case 2:
                             getPresenter().firePostToMyWallClick();
@@ -412,7 +412,7 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
 
     @Override
     public void postToMyWall(@NonNull Photo photo, int accountId) {
-        PlaceUtil.goToPostCreation(getActivity(), accountId, accountId, EditingPostType.TEMP, Collections.singletonList(photo));
+        PlaceUtil.goToPostCreation(requireActivity(), accountId, accountId, EditingPostType.TEMP, Collections.singletonList(photo));
     }
 
     @Override
@@ -431,12 +431,12 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
     public void setupOptionMenu(boolean canSaveYourself, boolean canDelete) {
         mCanSaveYourself = canSaveYourself;
         mCanDelete = canDelete;
-        getActivity().invalidateOptionsMenu();
+        requireActivity().invalidateOptionsMenu();
     }
 
     @Override
     public void goToComments(int aid, @NonNull Commented commented) {
-        PlaceFactory.getCommentsPlace(aid, commented, null).tryOpenWith(getActivity());
+        PlaceFactory.getCommentsPlace(aid, commented, null).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -496,7 +496,7 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
     @Override
     public void goBack() {
         if (isAdded() && canGoBack()) {
-            getActivity().getSupportFragmentManager().popBackStack();
+            requireActivity().getSupportFragmentManager().popBackStack();
         }
     }
 
@@ -508,11 +508,11 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
                 .setBlockNavigationDrawer(true)
                 .setStatusBarColored(false, false)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     private boolean canGoBack() {
-        return getActivity().getSupportFragmentManager().getBackStackEntryCount() > 1;
+        return requireActivity().getSupportFragmentManager().getBackStackEntryCount() > 1;
     }
 
     @PhotoSize

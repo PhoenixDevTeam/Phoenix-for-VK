@@ -53,7 +53,7 @@ public class FwdsFragment extends PlaceSupportPresenterFragment<FwdsPresenter, I
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_fwds, container, false);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity)requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -83,7 +83,7 @@ public class FwdsFragment extends PlaceSupportPresenterFragment<FwdsPresenter, I
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -170,8 +170,8 @@ public class FwdsFragment extends PlaceSupportPresenterFragment<FwdsPresenter, I
     @Override
     public IPresenterFactory<FwdsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            ArrayList<Message> messages = getArguments().getParcelableArrayList(Extra.MESSAGES);
-            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
+            ArrayList<Message> messages = requireArguments().getParcelableArrayList(Extra.MESSAGES);
+            int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
             return new FwdsPresenter(accountId, messages, saveInstanceState);
         };
     }

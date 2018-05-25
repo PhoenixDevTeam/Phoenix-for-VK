@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.SwitchPreference;
+import android.support.annotation.NonNull;
 import android.support.v4.preference.PreferenceFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -55,7 +56,7 @@ public class SecurityPreferencesFragment extends PreferenceFragment implements P
 
         findPreference("encryption_terms_of_use").setOnPreferenceClickListener(preference -> {
             View view = View.inflate(getActivity(), R.layout.content_encryption_terms_of_use, null);
-            new AlertDialog.Builder(getActivity())
+            new AlertDialog.Builder(requireActivity())
                     .setView(view)
                     .setTitle(R.string.phoenix_encryption)
                     .setNegativeButton(R.string.button_cancel, null)
@@ -66,7 +67,7 @@ public class SecurityPreferencesFragment extends PreferenceFragment implements P
 
     private void onClearKeysClick() {
         String[] items = {getString(R.string.for_the_current_account), getString(R.string.for_all_accounts)};
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setItems(items, (dialog, which) -> onClearKeysClick(which == 1))
                 .setNegativeButton(R.string.button_cancel, null)
                 .show();
@@ -107,9 +108,9 @@ public class SecurityPreferencesFragment extends PreferenceFragment implements P
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.preference_list_fragment, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         return root;
     }
 
@@ -131,7 +132,7 @@ public class SecurityPreferencesFragment extends PreferenceFragment implements P
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     private static final int REQUEST_CREATE_PIN = 1786;

@@ -46,19 +46,17 @@ public abstract class AbsDocumentPreviewFragment<P extends BaseDocumentPresenter
                 getString(R.string.repost_to_wall)
         };
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setItems(items, (dialogInterface, i) -> {
                     switch (i) {
                         case 0:
-                            Utils.shareLink(getActivity(), document.generateWebLink(), document.getTitle());
+                            Utils.shareLink(requireActivity(), document.generateWebLink(), document.getTitle());
                             break;
                         case 1:
-                            SendAttachmentsActivity.startForSendAttachments(getActivity(), accountId, document);
+                            SendAttachmentsActivity.startForSendAttachments(requireActivity(), accountId, document);
                             break;
                         case 2:
-                            PlaceUtil.goToPostCreation(getActivity(), accountId, accountId, EditingPostType.TEMP, Collections.singletonList(document));
-                            //PlaceFactory.getCreatePostPlace(accountId, accountId, EditingPostType.TEMP,
-                            //        Collections.singletonList(document), null).tryOpenWith(getActivity());
+                            PlaceUtil.goToPostCreation(requireActivity(), accountId, accountId, EditingPostType.TEMP, Collections.singletonList(document));
                             break;
                     }
                 })

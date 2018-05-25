@@ -160,8 +160,7 @@ public class CommunityBlacklistPresenter extends AccountDependencyPresenter<ICom
         appendDisposable(groupSettingsInteractor
                 .unbanUser(getAccountId(), groupId, banned.getUser().getId())
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(() -> onUnbanComplete(banned),
-                        throwable -> onUnbanError(getCauseIfRuntime(throwable))));
+                .subscribe(() -> onUnbanComplete(banned), this::onUnbanError));
     }
 
     @SuppressWarnings("unused")
@@ -170,7 +169,6 @@ public class CommunityBlacklistPresenter extends AccountDependencyPresenter<ICom
     }
 
     private void onUnbanError(Throwable throwable) {
-        throwable.printStackTrace();
         showError(getView(), throwable);
     }
 

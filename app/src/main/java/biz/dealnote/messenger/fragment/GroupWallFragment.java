@@ -108,10 +108,10 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
     @Override
     public IPresenterFactory<GroupWallPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
-            int ownerId = getArguments().getInt(Extra.OWNER_ID);
+            int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
+            int ownerId = requireArguments().getInt(Extra.OWNER_ID);
 
-            ParcelableOwnerWrapper wrapper = getArguments().getParcelable(Extra.OWNER);
+            ParcelableOwnerWrapper wrapper = requireArguments().getParcelable(Extra.OWNER);
             AssertUtils.requireNonNull(wrapper);
 
             return new GroupWallPresenter(accountId, ownerId, (Community) wrapper.get(), saveInstanceState);
@@ -161,7 +161,7 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
     public void openTopics(int accoundId, int ownerId, @Nullable Owner owner) {
         PlaceFactory.getTopicsPlace(accoundId, ownerId)
                 .withParcelableExtra(Extra.OWNER, owner)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
@@ -169,14 +169,14 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
         PeopleSearchCriteria criteria = new PeopleSearchCriteria("")
                 .setGroupId(groupId);
 
-        PlaceFactory.getSingleTabSearchPlace(accoundId, SearchContentType.PEOPLE, criteria).tryOpenWith(getActivity());
+        PlaceFactory.getSingleTabSearchPlace(accoundId, SearchContentType.PEOPLE, criteria).tryOpenWith(requireActivity());
     }
 
     @Override
     public void openDocuments(int accoundId, int ownerId, @Nullable Owner owner) {
         PlaceFactory.getDocumentsPlace(accoundId, ownerId, DocsListPresenter.ACTION_SHOW)
                 .withParcelableExtra(Extra.OWNER, owner)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
@@ -228,7 +228,7 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
 
     @Override
     public void goToCommunityControl(int accountId, Community community, GroupSettings settings) {
-        PlaceFactory.getCommunityControlPlace(accountId, community, settings).tryOpenWith(getActivity());
+        PlaceFactory.getCommunityControlPlace(accountId, community, settings).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -239,7 +239,7 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
 
     @Override
     public void openCommunityDialogs(int accountId, int groupId, String subtitle) {
-        PlaceFactory.getDialogsPlace(accountId, -groupId, subtitle).tryOpenWith(getActivity());
+        PlaceFactory.getDialogsPlace(accountId, -groupId, subtitle).tryOpenWith(requireActivity());
     }
 
     @Override

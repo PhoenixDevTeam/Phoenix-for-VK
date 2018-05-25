@@ -133,7 +133,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         if (!isMy() && isNull(owner)) {
             appendDisposable(ownersInteractor.getBaseOwnerInfo(accountId, ownerId, IOwnersInteractor.MODE_NET)
                     .compose(RxUtils.applySingleIOToMainSchedulers())
-                    .subscribe(this::onActualOwnerInfoReceived, throwable -> {/*ignore*/}));
+                    .subscribe(this::onActualOwnerInfoReceived, RxUtils.ignore()));
         }
     }
 
@@ -143,7 +143,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         if (isNull(album)) {
             appendDisposable(interactor.getAlbumById(accountId, ownerId, albumId)
                     .compose(RxUtils.applySingleIOToMainSchedulers())
-                    .subscribe(this::onAlbumInfoReceived, throwable -> {/*ignore*/}));
+                    .subscribe(this::onAlbumInfoReceived, RxUtils.ignore()));
         }
     }
 

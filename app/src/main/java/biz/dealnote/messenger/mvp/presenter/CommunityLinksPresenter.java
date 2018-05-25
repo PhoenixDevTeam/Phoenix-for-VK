@@ -87,8 +87,6 @@ public class CommunityLinksPresenter extends AccountDependencyPresenter<ICommuni
     }
 
     private void onRequestError(Throwable throwable) {
-        throwable.printStackTrace();
-
         setLoadingNow(false);
         showError(getView(), throwable);
     }

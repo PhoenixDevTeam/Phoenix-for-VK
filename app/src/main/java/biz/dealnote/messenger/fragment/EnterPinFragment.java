@@ -88,8 +88,8 @@ public class EnterPinFragment extends BasePresenterFragment<EnterPinPresenter, I
     @Override
     public void sendSuccessAndClose() {
         if(isAdded()){
-            getActivity().setResult(Activity.RESULT_OK);
-            getActivity().finish();
+            requireActivity().setResult(Activity.RESULT_OK);
+            requireActivity().finish();
         }
     }
 

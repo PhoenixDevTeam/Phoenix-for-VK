@@ -1,5 +1,6 @@
 package biz.dealnote.messenger.util;
 
+import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Injection;
 import io.reactivex.Completable;
 import io.reactivex.CompletableTransformer;
@@ -26,7 +27,11 @@ public class RxUtils {
     }
 
     public static <T> Consumer<T> ignore(){
-        return t -> {/*ignore*/};
+        return t -> {
+            if(t instanceof Throwable && BuildConfig.DEBUG){
+                ((Throwable) t).printStackTrace();
+            }
+        };
     }
 
     public static <T> Disposable subscribeOnIOAndIgnore(Single<T> single) {

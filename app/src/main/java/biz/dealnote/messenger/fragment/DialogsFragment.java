@@ -90,7 +90,7 @@ public class DialogsFragment extends BasePresenterFragment<DialogsPresenter, IDi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dialogs, container, false);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mRecyclerView = root.findViewById(R.id.recycleView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -256,8 +256,8 @@ public class DialogsFragment extends BasePresenterFragment<DialogsPresenter, IDi
             options.add(addToShortcuts);
         }
 
-        new AlertDialog.Builder(getActivity())
-                .setTitle(dialog.getDisplayTitle(getActivity()))
+        new AlertDialog.Builder(requireActivity())
+                .setTitle(dialog.getDisplayTitle(requireActivity()))
                 .setItems(options.toArray(new String[options.size()]), (dialogInterface, which) -> {
                     final String selected = options.get(which);
                     if(selected.equals(delete)){
@@ -314,7 +314,7 @@ public class DialogsFragment extends BasePresenterFragment<DialogsPresenter, IDi
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if (actionBar != null) {
             actionBar.setTitle(R.string.dialogs);
-            actionBar.setSubtitle(getArguments().getString(Extra.SUBTITLE));
+            actionBar.setSubtitle(requireArguments().getString(Extra.SUBTITLE));
         }
 
         if (getActivity() instanceof OnSectionResumeCallback) {
@@ -326,7 +326,7 @@ public class DialogsFragment extends BasePresenterFragment<DialogsPresenter, IDi
                 .setBlockNavigationDrawer(false)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -359,7 +359,7 @@ public class DialogsFragment extends BasePresenterFragment<DialogsPresenter, IDi
 
     @Override
     public void goToChat(int accountId, int messagesOwnerId, int peerId, String title, String avaurl) {
-        PlaceFactory.getChatPlace(accountId, messagesOwnerId, new Peer(peerId).setTitle(title).setAvaUrl(avaurl)).tryOpenWith(getActivity());
+        PlaceFactory.getChatPlace(accountId, messagesOwnerId, new Peer(peerId).setTitle(title).setAvaUrl(avaurl)).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -367,7 +367,7 @@ public class DialogsFragment extends BasePresenterFragment<DialogsPresenter, IDi
         DialogsSearchCriteria criteria = new DialogsSearchCriteria("");
 
         PlaceFactory.getSingleTabSearchPlace(accountId, SearchContentType.DIALOGS, criteria)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
@@ -391,19 +391,19 @@ public class DialogsFragment extends BasePresenterFragment<DialogsPresenter, IDi
     @Override
     public void showNotificationSettings(int accountId, int peerId) {
         DialogNotifOptionsDialog dialog = DialogNotifOptionsDialog.newInstance(accountId, peerId);
-        dialog.show(getFragmentManager(), "dialog-notif-options");
+        dialog.show(requireFragmentManager(), "dialog-notif-options");
     }
 
     @Override
     public void goToOwnerWall(int accountId, int ownerId, @Nullable Owner owner) {
-        PlaceFactory.getOwnerWallPlace(accountId, ownerId, owner).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, ownerId, owner).tryOpenWith(requireActivity());
     }
 
     @Override
     public IPresenterFactory<DialogsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new DialogsPresenter(
-                getArguments().getInt(Extra.ACCOUNT_ID),
-                getArguments().getInt(Extra.OWNER_ID),
+                requireArguments().getInt(Extra.ACCOUNT_ID),
+                requireArguments().getInt(Extra.OWNER_ID),
                 saveInstanceState
         );
     }

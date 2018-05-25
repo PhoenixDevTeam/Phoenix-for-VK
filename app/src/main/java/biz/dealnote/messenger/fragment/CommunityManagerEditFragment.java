@@ -92,7 +92,7 @@ public class CommunityManagerEditFragment extends BasePresenterFragment<Communit
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_community_manager_edit, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mAvatar = root.findViewById(R.id.avatar);
         mAvatar.setOnClickListener(v -> getPresenter().fireAvatarClick());
@@ -185,10 +185,10 @@ public class CommunityManagerEditFragment extends BasePresenterFragment<Communit
     @Override
     public IPresenterFactory<CommunityManagerEditPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
-            int groupId = getArguments().getInt(Extra.GROUP_ID);
-            ArrayList<User> users = getArguments().getParcelableArrayList(Extra.USERS);
-            Manager manager = getArguments().getParcelable(Extra.MANAGER);
+            int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
+            int groupId = requireArguments().getInt(Extra.GROUP_ID);
+            ArrayList<User> users = requireArguments().getParcelableArrayList(Extra.USERS);
+            Manager manager = requireArguments().getParcelable(Extra.MANAGER);
 
             return Objects.nonNull(manager)
                     ? new CommunityManagerEditPresenter(accountId, groupId, manager, saveInstanceState)
@@ -212,7 +212,7 @@ public class CommunityManagerEditFragment extends BasePresenterFragment<Communit
                 .setBlockNavigationDrawer(true)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -241,7 +241,7 @@ public class CommunityManagerEditFragment extends BasePresenterFragment<Communit
 
     @Override
     public void showUserProfile(int accountId, User user) {
-        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(requireActivity());
     }
 
     @Override
@@ -292,7 +292,7 @@ public class CommunityManagerEditFragment extends BasePresenterFragment<Communit
 
     @Override
     public void goBack() {
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 
     private boolean mOptionDeleteVisible;
@@ -300,6 +300,6 @@ public class CommunityManagerEditFragment extends BasePresenterFragment<Communit
     @Override
     public void setDeleteOptionVisible(boolean visible) {
         mOptionDeleteVisible = visible;
-        getActivity().invalidateOptionsMenu();
+        requireActivity().invalidateOptionsMenu();
     }
 }

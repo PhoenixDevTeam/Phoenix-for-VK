@@ -122,8 +122,7 @@ public class WallPostPresenter extends PlaceSupportPresenter<IWallPostView> {
             final int accountId = super.getAccountId();
             appendDisposable(ownersInteractor.getBaseOwnerInfo(accountId, ownerId, IOwnersInteractor.MODE_NET)
                     .compose(RxUtils.applySingleIOToMainSchedulers())
-                    .subscribe(this::onOwnerInfoReceived, ignored -> {
-                    }));
+                    .subscribe(this::onOwnerInfoReceived, RxUtils.ignore()));
         }
     }
 
@@ -277,8 +276,7 @@ public class WallPostPresenter extends PlaceSupportPresenter<IWallPostView> {
         if (nonNull(post)) {
             appendDisposable(wallInteractor.like(getAccountId(), ownerId, postId, !post.isUserLikes())
                     .compose(RxUtils.applySingleIOToMainSchedulers())
-                    .subscribe(ignored -> {
-                    }, t -> showError(getView(), getCauseIfRuntime(t))));
+                    .subscribe(RxUtils.ignore(), t -> showError(getView(), t)));
         } else {
             getView().showPostNotReadyToast();
         }

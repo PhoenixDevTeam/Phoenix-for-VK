@@ -58,7 +58,7 @@ public class CommunityControlFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_community_control, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         ViewPager pager = root.findViewById(R.id.view_pager);
         pager.setOffscreenPageLimit(2);
@@ -98,7 +98,7 @@ public class CommunityControlFragment extends Fragment {
                 .setBlockNavigationDrawer(true)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     private static class Tab implements ITab {

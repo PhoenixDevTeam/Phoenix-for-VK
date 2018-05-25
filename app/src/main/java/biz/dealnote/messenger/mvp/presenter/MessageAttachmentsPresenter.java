@@ -293,10 +293,7 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
 
     public void fireRemoveClick(AttachmenEntry entry) {
         if (entry.getOptionalId() != 0) {
-            attachmentsRepository
-                    .remove(messageOwnerId, AttachToType.MESSAGE, messageId, entry.getOptionalId())
-                    .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                    .subscribe(() -> {}, Analytics::logUnexpectedError);
+            RxUtils.subscribeOnIOAndIgnore(attachmentsRepository.remove(messageOwnerId, AttachToType.MESSAGE, messageId, entry.getOptionalId()));
             return;
         }
 
@@ -397,9 +394,6 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
     }
 
     public void fireAttachmentsSelected(ArrayList<? extends AbsModel> attachments) {
-        attachmentsRepository
-                .attach(messageOwnerId, AttachToType.MESSAGE, messageId, attachments)
-                .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(() -> {}, Analytics::logUnexpectedError);
+        RxUtils.subscribeOnIOAndIgnore(attachmentsRepository.attach(messageOwnerId, AttachToType.MESSAGE, messageId, attachments));
     }
 }

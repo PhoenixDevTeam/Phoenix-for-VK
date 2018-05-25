@@ -54,7 +54,7 @@ public class PlaylistFragment extends BaseFragment implements AudioRecyclerAdapt
         if (savedInstanceState != null) {
             restoreFromSavedInstanceState(savedInstanceState);
         }
-        mData = getArguments().getParcelableArrayList(Extra.AUDIOS);
+        mData = requireArguments().getParcelableArrayList(Extra.AUDIOS);
     }
 
     @Override

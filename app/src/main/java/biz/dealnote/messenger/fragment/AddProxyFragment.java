@@ -45,7 +45,7 @@ public class AddProxyFragment extends BasePresenterFragment<AddProxyPresenter, I
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_proxy_add, container, false);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mAuthFieldsRoot = root.findViewById(R.id.auth_fields_root);
 
@@ -104,7 +104,7 @@ public class AddProxyFragment extends BasePresenterFragment<AddProxyPresenter, I
 
     @Override
     public void goBack() {
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 
     @Override

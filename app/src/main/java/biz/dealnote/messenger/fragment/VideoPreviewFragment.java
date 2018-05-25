@@ -191,10 +191,10 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
     @Override
     public IPresenterFactory<VideoPreviewPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new VideoPreviewPresenter(
-                getArguments().getInt(Extra.ACCOUNT_ID),
-                getArguments().getInt(EXTRA_VIDEO_ID),
-                getArguments().getInt(Extra.OWNER_ID),
-                getArguments().getParcelable(Extra.VIDEO),
+                requireArguments().getInt(Extra.ACCOUNT_ID),
+                requireArguments().getInt(EXTRA_VIDEO_ID),
+                requireArguments().getInt(Extra.OWNER_ID),
+                requireArguments().getParcelable(Extra.VIDEO),
                 saveInstanceState
         );
     }
@@ -307,7 +307,7 @@ public class VideoPreviewFragment extends BasePresenterFragment<VideoPreviewPres
                 .setItems(items, (dialogInterface, i) -> {
                     switch (i) {
                         case 0:
-                            SendAttachmentsActivity.startForSendAttachments(getActivity(), accountId, video);
+                            SendAttachmentsActivity.startForSendAttachments(requireActivity(), accountId, video);
                             break;
                         case 1:
                             PlaceUtil.goToPostCreation(requireActivity(), accountId, accountId, EditingPostType.TEMP, Collections.singletonList(video));

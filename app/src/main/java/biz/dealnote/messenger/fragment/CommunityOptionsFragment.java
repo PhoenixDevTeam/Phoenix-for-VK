@@ -113,9 +113,9 @@ public class CommunityOptionsFragment extends BasePresenterFragment<CommunityOpt
     @Override
     public IPresenterFactory<CommunityOptionsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
-            VKApiCommunity community = getArguments().getParcelable(Extra.GROUP);
-            GroupSettings settings = getArguments().getParcelable(Extra.SETTINGS);
+            int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
+            VKApiCommunity community = requireArguments().getParcelable(Extra.GROUP);
+            GroupSettings settings = requireArguments().getParcelable(Extra.SETTINGS);
             return new CommunityOptionsPresenter(accountId, community, settings, saveInstanceState);
         };
     }
@@ -164,7 +164,7 @@ public class CommunityOptionsFragment extends BasePresenterFragment<CommunityOpt
             strings[i] = data.get(i).getTitle();
         }
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.select_from_list_title)
                 .setItems(strings, (dialog, which) -> getPresenter().fireOptionSelected(requestCode, data.get(which)))
                 .setNegativeButton(R.string.button_cancel, null)

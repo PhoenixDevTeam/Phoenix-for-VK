@@ -109,7 +109,10 @@ public class CreatePollFragment extends BasePresenterFragment<CreatePollPresente
 
     @Override
     public IPresenterFactory<CreatePollPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
-        return () -> new CreatePollPresenter(getArguments().getInt(Extra.ACCOUNT_ID), getArguments().getInt(Extra.OWNER_ID), saveInstanceState);
+        return () -> new CreatePollPresenter(
+                requireArguments().getInt(Extra.ACCOUNT_ID),
+                requireArguments().getInt(Extra.OWNER_ID),
+                saveInstanceState);
     }
 
     @Override

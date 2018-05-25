@@ -282,7 +282,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
                     } else {
                         onActualMessagePeerMessageReceived(accountId, peerId, unreadCount, optional.get());
                     }
-                }, t -> {/*ignored*/}));
+                }, RxUtils.ignore()));
     }
 
     private void onActualMessagePeerMessageReceived(int accountId, int peerId, int unreadCount, Message message) {

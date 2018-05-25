@@ -17,6 +17,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.MyFragmentStatePagerAdapter;
+import biz.dealnote.messenger.fragment.base.BaseFragment;
 import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.model.selection.AbsSelectableSource;
@@ -33,7 +34,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 15.04.2017.
  * phoenix
  */
-public class DualTabPhotosFragment extends Fragment implements BackPressCallback {
+public class DualTabPhotosFragment extends BaseFragment implements BackPressCallback {
 
     public static DualTabPhotosFragment newInstance(Sources sources) {
         Bundle args = new Bundle();
@@ -49,7 +50,7 @@ public class DualTabPhotosFragment extends Fragment implements BackPressCallback
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mSources = getArguments().getParcelable(Extra.SOURCES);
+        this.mSources = requireArguments().getParcelable(Extra.SOURCES);
 
         if(nonNull(savedInstanceState)){
             this.mCurrentTab = savedInstanceState.getInt("mCurrentTab");
@@ -69,7 +70,7 @@ public class DualTabPhotosFragment extends Fragment implements BackPressCallback
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_dual_tab_photos, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         TabLayout tabLayout = root.findViewById(R.id.tablayout);
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
@@ -139,7 +140,7 @@ public class DualTabPhotosFragment extends Fragment implements BackPressCallback
             if (source instanceof VkPhotosSelectableSource) {
                 final VkPhotosSelectableSource vksource = (VkPhotosSelectableSource) source;
                 VKPhotoAlbumsFragment fragment = VKPhotoAlbumsFragment.newInstance(vksource.getAccountId(), vksource.getOwnerId(), null, null);
-                fragment.getArguments().putBoolean(BasePresenterFragment.EXTRA_HIDE_TOOLBAR, true);
+                fragment.requireArguments().putBoolean(BasePresenterFragment.EXTRA_HIDE_TOOLBAR, true);
                 return fragment;
             }
 

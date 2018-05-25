@@ -50,7 +50,7 @@ public class DrawerEditFragment extends AbsPresenterFragment<DrawerEditPresenter
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dialog_drawers_categories, container, false);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -146,6 +146,6 @@ public class DrawerEditFragment extends AbsPresenterFragment<DrawerEditPresenter
 
     @Override
     public void goBackAndApplyChanges() {
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 }

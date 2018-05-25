@@ -49,6 +49,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.RxUtils.dummy;
 import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
@@ -747,8 +748,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         int accountId = super.getAccountId();
         appendDisposable(interactor.deleteRestore(accountId, commented, commentId, delete)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(() -> {
-                }, throwable -> showError(getView(), getCauseIfRuntime(throwable))));
+                .subscribe(dummy(), t -> showError(getView(), t)));
     }
 
     public void fireCommentEditClick(Comment comment) {
@@ -765,8 +765,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
 
         appendDisposable(interactor.like(accountId, comment.getCommented(), comment.getId(), add)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(() -> {
-                }, throwable -> showError(getView(), getCauseIfRuntime(throwable))));
+                .subscribe(dummy(), t -> showError(getView(), t)));
     }
 
     public void fireCommentRestoreClick(int commentId) {

@@ -72,7 +72,7 @@ public class RequestExecuteFragment extends BasePresenterFragment<RequestExecute
 
     @Override
     public IPresenterFactory<RequestExecutePresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
-        return () -> new RequestExecutePresenter(getArguments().getInt(Extra.ACCOUNT_ID), saveInstanceState);
+        return () -> new RequestExecutePresenter(requireArguments().getInt(Extra.ACCOUNT_ID), saveInstanceState);
     }
 
     @Override

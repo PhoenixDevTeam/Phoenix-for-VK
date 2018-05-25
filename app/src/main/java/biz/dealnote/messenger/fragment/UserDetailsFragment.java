@@ -113,9 +113,9 @@ public class UserDetailsFragment extends BasePresenterFragment<UserDetailsPresen
     @Override
     public IPresenterFactory<UserDetailsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new UserDetailsPresenter(
-                getArguments().getInt(Extra.ACCOUNT_ID),
-                getArguments().getParcelable(Extra.USER),
-                getArguments().getParcelable("details"),
+                requireArguments().getInt(Extra.ACCOUNT_ID),
+                requireArguments().getParcelable(Extra.USER),
+                requireArguments().getParcelable("details"),
                 saveInstanceState
         );
     }

@@ -44,7 +44,6 @@ public class MessagesLookFragment extends PlaceSupportPresenterFragment<Messages
         implements IMessagesLookView, MessagesAdapter.OnMessageActionListener {
 
     private static final String TAG = MessagesLookFragment.class.getSimpleName();
-    private static final int REQUEST_FORWARD_MESSAGE = 1566;
 
     private RecyclerView mRecyclerView;
     private MessagesAdapter mMessagesAdapter;
@@ -240,21 +239,8 @@ public class MessagesLookFragment extends PlaceSupportPresenterFragment<Messages
 
     @Override
     public void forwardMessages(int accountId, @NonNull ArrayList<Message> messages) {
-        SendAttachmentsActivity.startForSendAttachments(getActivity(), accountId, new FwdMessages(messages));
-        //App.getInstance().setFwdBuffer(messages);
-        //SendAttachmentsActivity.startForForwardMessages(this, REQUEST_FORWARD_MESSAGE, accountId);
+        SendAttachmentsActivity.startForSendAttachments(requireActivity(), accountId, new FwdMessages(messages));
     }
-
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_FORWARD_MESSAGE){
-            App.getInstance().setFwdBuffer(null);
-            if(isPresenterPrepared()){
-                getPresenter().fireMessageForwardSent();
-            }
-        }
-    }*/
 
     @Override
     protected String tag() {
@@ -269,9 +255,9 @@ public class MessagesLookFragment extends PlaceSupportPresenterFragment<Messages
     @Override
     public IPresenterFactory<MessagesLookPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int aid = getArguments().getInt(Extra.ACCOUNT_ID);
-            int peerId = getArguments().getInt(Extra.PEER_ID);
-            Integer focusTo = getArguments().containsKey(Extra.FOCUS_TO) ? getArguments().getInt(Extra.FOCUS_TO) : null;
+            int aid = requireArguments().getInt(Extra.ACCOUNT_ID);
+            int peerId = requireArguments().getInt(Extra.PEER_ID);
+            Integer focusTo = requireArguments().containsKey(Extra.FOCUS_TO) ? requireArguments().getInt(Extra.FOCUS_TO) : null;
             return new MessagesLookPresenter(aid, peerId, focusTo, saveInstanceState);
         };
     }

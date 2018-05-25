@@ -62,7 +62,7 @@ public class BrowserFragment extends BaseFragment implements BackPressCallback {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_browser, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         mWebView = root.findViewById(R.id.webview);
 
         mWebView.getSettings().setBuiltInZoomControls(true);
