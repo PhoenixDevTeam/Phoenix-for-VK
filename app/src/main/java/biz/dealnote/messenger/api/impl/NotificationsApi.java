@@ -1,5 +1,8 @@
 package biz.dealnote.messenger.api.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import biz.dealnote.messenger.api.IServiceProvider;
 import biz.dealnote.messenger.api.TokenType;
 import biz.dealnote.messenger.api.interfaces.INotificationsApi;
@@ -8,7 +11,9 @@ import biz.dealnote.messenger.api.model.response.NotificationsResponse;
 import biz.dealnote.messenger.api.services.INotificationsService;
 import io.reactivex.Single;
 
+import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.Utils.safeCountOf;
 
 /**
  * Created by admin on 03.01.2017.
@@ -33,14 +38,22 @@ class NotificationsApi extends AbsApi implements INotificationsApi {
                 .flatMap(service -> service.get(count, startFrom, filters, startTime, endTime)
                         .map(extractResponseWithErrorHandling())
                         .map(response -> {
+                            List<VkApiBaseFeedback> realList = new ArrayList<>(safeCountOf(response.notifications));
+
                             if (nonNull(response.notifications)) {
                                 for (VkApiBaseFeedback n : response.notifications) {
+                                    if (isNull(n)) continue;
+
                                     if (nonNull(n.reply)) {
                                         // fix В ответе нет этого параметра
                                         n.reply.from_id = getAccountId();
                                     }
+
+                                    realList.add(n);
                                 }
                             }
+
+                            response.notifications = realList; //without unsupported items
                             return response;
                         }));
     }

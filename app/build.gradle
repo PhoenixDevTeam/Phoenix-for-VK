@@ -15,8 +15,8 @@ android {
         applicationId "biz.dealnote.messenger"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 40700
-        versionName '4_0_7'
+        versionCode 40800
+        versionName '4.0.8'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -123,7 +123,7 @@ allprojects {
     }
 }
 
-ext.supportLibraryVersion = '27.1.0'
+ext.supportLibraryVersion = '27.1.1'
 ext.firebaseLibraryVersion = '11.8.0'
 
 dependencies {
@@ -136,12 +136,12 @@ dependencies {
     implementation "com.android.support:support-vector-drawable:$supportLibraryVersion"
     implementation "com.android.support:support-media-compat:$supportLibraryVersion"
     implementation "com.android.support:customtabs:$supportLibraryVersion"
-    implementation 'com.squareup.picasso:picasso:3.0.0-SNAPSHOT'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "com.google.android.gms:play-services-gcm:$firebaseLibraryVersion"
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
     implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.10'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     implementation project(':mvpcore')
     implementation 'com.squareup.retrofit2:retrofit:2.2.0'
@@ -151,7 +151,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation "com.google.firebase:firebase-crash:$firebaseLibraryVersion"
     implementation "com.google.firebase:firebase-database:$firebaseLibraryVersion"
-    implementation 'com.google.android.exoplayer:exoplayer:2.7.1'
+    implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
     implementation "com.android.support:exifinterface:$supportLibraryVersion"
 }
 
