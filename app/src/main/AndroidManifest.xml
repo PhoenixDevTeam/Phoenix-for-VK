@@ -115,7 +115,7 @@
             android:multiprocess="true" />
 
         <service
-            android:name=".service.SendService"
+            android:name=".service.QuickReplyService"
             android:exported="false"/>
 
         <service

@@ -1,14 +1,10 @@
 package biz.dealnote.messenger.settings;
 
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,11 +15,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.push.IPushRegistrationResolver;
 import biz.dealnote.messenger.util.RxUtils;
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
+import io.reactivex.processors.PublishProcessor;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
@@ -34,7 +30,6 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  */
 class AccountsSettings implements ISettings.IAccountsSettings {
 
-    private static final String WHAT_ACCOUNT_CHANGE = "biz.dealnote.messenger.WHAT_ACCOUNT_CHANGE";
     private static final String KEY_ACCOUNT_UIDS = "account_uids";
     private static final String KEY_CURRENT = "current_account_id";
 
@@ -63,23 +58,22 @@ class AccountsSettings implements ISettings.IAccountsSettings {
         return "token" + uid;
     }
 
-    @Override
-    public Observable<Integer> observeChanges() {
-        return Observable.create(e -> {
-            BroadcastReceiver receiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    if (nonNull(intent) && WHAT_ACCOUNT_CHANGE.equals(intent.getAction())) {
-                        e.onNext(intent.getExtras().getInt(Extra.ACCOUNT_ID));
-                    }
-                }
-            };
+    private final PublishProcessor<ISettings.IAccountsSettings> changesPublisher = PublishProcessor.create();
 
-            e.setCancellable(() -> LocalBroadcastManager.getInstance(app).unregisterReceiver(receiver));
-            if (!e.isDisposed()) {
-                LocalBroadcastManager.getInstance(app).registerReceiver(receiver, new IntentFilter(WHAT_ACCOUNT_CHANGE));
-            }
-        });
+    private void notifyAboutRegisteredChanges(){
+        changesPublisher.onNext(this);
+    }
+
+    @Override
+    public Flowable<ISettings.IAccountsSettings> observeRegistered() {
+        return changesPublisher.onBackpressureBuffer();
+    }
+
+    private PublishProcessor<Integer> currentPublisher = PublishProcessor.create();
+
+    @Override
+    public Flowable<Integer> observeChanges() {
+        return currentPublisher.onBackpressureBuffer();
     }
 
     @NonNull
@@ -112,14 +106,9 @@ class AccountsSettings implements ISettings.IAccountsSettings {
         final IPushRegistrationResolver registrationResolver = Injection.providePushRegistrationResolver();
         registrationResolver.resolvePushRegistration()
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(() -> {}, Throwable::printStackTrace);
+                .subscribe(RxUtils.dummy(), RxUtils.ignore());
 
-        //RestRequestManager.from(app).execute(AccountRequestFactory.getResolvePushRegistrationRequest(), DUMMY_REQUEST_ADAPTER);
-
-        Intent intent = new Intent(WHAT_ACCOUNT_CHANGE);
-        intent.putExtra(Extra.ACCOUNT_ID, getCurrent());
-
-        LocalBroadcastManager.getInstance(app).sendBroadcast(intent);
+        currentPublisher.onNext(getCurrent());
     }
 
     @Override
@@ -168,6 +157,7 @@ class AccountsSettings implements ISettings.IAccountsSettings {
             }
         }
 
+        notifyAboutRegisteredChanges();
         fireAccountChange();
     }
 
@@ -187,6 +177,8 @@ class AccountsSettings implements ISettings.IAccountsSettings {
         }
 
         editor.apply();
+
+        notifyAboutRegisteredChanges();
 
         if (setCurrent) {
             fireAccountChange();

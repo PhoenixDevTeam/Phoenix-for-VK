@@ -3,7 +3,6 @@ package biz.dealnote.messenger.upload;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
@@ -18,14 +17,13 @@ import biz.dealnote.messenger.db.interfaces.IMessagesStore;
 import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
 import biz.dealnote.messenger.model.MessageStatus;
 import biz.dealnote.messenger.service.ErrorLocalizer;
-import biz.dealnote.messenger.service.SendService;
+import biz.dealnote.messenger.service.MessageSender;
 import biz.dealnote.messenger.upload.task.AbstractUploadTask;
 import biz.dealnote.messenger.upload.task.DocumentUploadTask;
 import biz.dealnote.messenger.upload.task.OwnerPhotoUploadTask;
 import biz.dealnote.messenger.upload.task.PhotoMessageUploadTask;
 import biz.dealnote.messenger.upload.task.PhotoToAlbumTask;
 import biz.dealnote.messenger.upload.task.PhotoWallUploadTask;
-import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.MagicKey;
@@ -37,6 +35,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.RxUtils.dummy;
+import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
 public class UploadService extends Service implements UploadCallback {
@@ -71,7 +71,7 @@ public class UploadService extends Service implements UploadCallback {
         compositeDisposable.add(uploadsRepository
                 .findFirstByStatus(UploadObject.STATUS_QUEUE)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::uploadFirstInQueue, Analytics::logUnexpectedError));
+                .subscribe(this::uploadFirstInQueue, ignore()));
     }
 
     @Override
@@ -162,7 +162,7 @@ public class UploadService extends Service implements UploadCallback {
                 .getAll(object -> object.getDestination().compareTo(dest))
                 .flatMapObservable(Observable::fromIterable)
                 .compose(RxUtils.applyObservableIOToMainSchedulers())
-                .subscribe(object -> cancelById(object.getId()), Analytics::logUnexpectedError));
+                .subscribe(object -> cancelById(object.getId()), ignore()));
     }
 
     @Override
@@ -210,11 +210,11 @@ public class UploadService extends Service implements UploadCallback {
 
                     mCurrenTask = null;
                     uploadFirstInQueue();
-                }, Analytics::logUnexpectedError));
+                }, ignore()));
     }
 
     private void startSendService() {
-        startService(new Intent(this, SendService.class));
+        MessageSender.getSendService().runSendingQueue();
     }
 
     private Single<Boolean> handleCompletedUploading(final UploadObject upload, BaseUploadResponse response) {
@@ -258,8 +258,7 @@ public class UploadService extends Service implements UploadCallback {
 
         uploadsRepository.removeWithId(upload.getId())
                 .subscribeOn(Schedulers.io())
-                .subscribe(() -> {
-                }, Analytics::logUnexpectedError);
+                .subscribe(dummy(), ignore());
 
         uploadFirstInQueue();
     }
@@ -272,7 +271,7 @@ public class UploadService extends Service implements UploadCallback {
     private void fireStatusChange(UploadObject uploadObject) {
         uploadsRepository.changeStatus(uploadObject.getId(), uploadObject.getStatus())
                 .subscribeOn(Schedulers.io())
-                .subscribe(() -> {}, Analytics::logUnexpectedError);
+                .subscribe(dummy(), ignore());
     }
 
     /**
@@ -300,8 +299,7 @@ public class UploadService extends Service implements UploadCallback {
 
         uploadsRepository.removeWithId(id)
                 .subscribeOn(Schedulers.io())
-                .subscribe(() -> {
-                }, Analytics::logUnexpectedError);
+                .subscribe(dummy(), ignore());
 
         return true;
     }
@@ -366,7 +364,7 @@ public class UploadService extends Service implements UploadCallback {
         }
 
         @Override
-        public UploadObject getCurrent() throws RemoteException {
+        public UploadObject getCurrent() {
             return mService.get().getCurrent();
         }
     }

@@ -14,6 +14,7 @@ import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.model.SwitchableCategory;
 import biz.dealnote.messenger.model.drawer.RecentChat;
 import biz.dealnote.messenger.place.Place;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
 /**
@@ -67,7 +68,9 @@ public interface ISettings {
     interface IAccountsSettings {
         int INVALID_ID = -1;
 
-        Observable<Integer> observeChanges();
+        Flowable<Integer> observeChanges();
+
+        Flowable<IAccountsSettings> observeRegistered();
 
         List<Integer> getRegistered();
 

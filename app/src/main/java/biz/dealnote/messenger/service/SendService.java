@@ -1,146 +1,123 @@
 package biz.dealnote.messenger.service;
 
-import android.app.Service;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.support.v4.app.RemoteInput;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.annotation.MainThread;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.concurrent.Executors;
 
-import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.domain.IMessagesInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
-import biz.dealnote.messenger.model.SaveMessageBuilder;
 import biz.dealnote.messenger.model.SentMsg;
-import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.util.Analytics;
-import biz.dealnote.messenger.util.Logger;
+import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class SendService extends Service {
+public class SendService {
 
-    public static final String TAG = SendService.class.getSimpleName();
-
-    public static final String ACTION_ADD_MESSAGE = "SendService.ACTION_ADD_MESSAGE";
-
-    private Scheduler mSenderScheduler;
+    private Scheduler senderScheduler;
     private IMessagesInteractor messagesInteractor;
     private Collection<Integer> registeredAccounts;
+    private final Context app;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        this.messagesInteractor = InteractorFactory.createMessagesInteractor();
-        this.mSenderScheduler = Schedulers.from(Executors.newFixedThreadPool(1));
-        this.registeredAccounts = Settings.get().accounts().getRegistered();
+    SendService(Context context, IMessagesInteractor interactor, ISettings.IAccountsSettings settings){
+        this.app = context.getApplicationContext();
+        this.messagesInteractor = interactor;
+        this.registeredAccounts = settings.getRegistered();
+        this.senderScheduler = Schedulers.from(Executors.newFixedThreadPool(1));
+
+        compositeDisposable.add(settings.observeRegistered()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onAccountsChanged, RxUtils.ignore()));
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Logger.d(TAG, "destroyed");
-        this.mCompositeDisposable.dispose();
+    private void onAccountsChanged(ISettings.IAccountsSettings settings){
+        registeredAccounts = settings.getRegistered();
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        String action = intent != null ? intent.getAction() : null;
+    private final InternalHandler handler = new InternalHandler(Looper.getMainLooper(), this);
 
-        if (ACTION_ADD_MESSAGE.equals(action)) {
-            int accountId = intent.getExtras().getInt(Extra.ACCOUNT_ID);
-            int peerId = intent.getExtras().getInt(Extra.PEER_ID);
+    private static final class InternalHandler extends Handler {
 
-            Bundle msg = RemoteInput.getResultsFromIntent(intent);
-            if (msg != null) {
-                CharSequence body = msg.getCharSequence(Extra.BODY);
-                addMessage(accountId, peerId, body);
-            }
-        } else {
-            send();
+        final WeakReference<SendService> reference;
+
+        InternalHandler(Looper looper, SendService service) {
+            super(looper);
+            this.reference = new WeakReference<>(service);
         }
 
-        return START_NOT_STICKY;
+        static final int SEND = 1;
+
+        void runSend(){
+            sendEmptyMessage(SEND);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            SendService service = reference.get();
+            if(service != null){
+                switch (msg.what){
+                    case SEND:
+                        service.send();
+                        break;
+                }
+            }
+        }
     }
 
-    public static Intent intentForAddMessage(Context context, int accountId, int peerId) {
-        Intent intent = new Intent(context, SendService.class);
-        intent.setAction(ACTION_ADD_MESSAGE);
-        intent.putExtra(Extra.ACCOUNT_ID, accountId);
-        intent.putExtra(Extra.PEER_ID, peerId);
-        return intent;
+    private boolean nowSending;
+
+    public void runSendingQueue(){
+        handler.runSend();
     }
-
-    private void addMessage(int accountId, int peerId, CharSequence body) {
-        final IMessagesInteractor messagesInteractor = InteractorFactory.createMessagesInteractor();
-
-        SaveMessageBuilder builder = new SaveMessageBuilder(accountId, peerId)
-                .setBody(body.toString());
-
-        messagesInteractor.put(builder)
-                .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(message -> send(), Analytics::logUnexpectedError);
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    private boolean mNowSending;
 
     /**
      * Отправить первое неотправленное сообщение
      */
+    @MainThread
     private void send() {
-        if (this.mNowSending) {
-            Logger.d(TAG, "Now sending, send aborted");
+        if (nowSending) {
             return;
         }
 
-        this.mNowSending = true;
-        sendMessage(this.registeredAccounts);
+        nowSending = true;
+        sendMessage(registeredAccounts);
     }
 
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    @SuppressWarnings("unused")
     private void onMessageSent(SentMsg msg){
-        this.mNowSending = false;
-
-        NotificationHelper.tryCancelNotificationForPeer(this, msg.getAccountId(), msg.getPeerId());
-
+        nowSending = false;
+        NotificationHelper.tryCancelNotificationForPeer(app, msg.getAccountId(), msg.getPeerId());
         send();
     }
 
     private void onMessageSendError(Throwable t){
         Throwable cause = Utils.getCauseIfRuntime(t);
-
-        this.mNowSending = false;
+        nowSending = false;
 
         if(cause instanceof NotFoundException){
             // no unsent messages
-            stopSelf();
             return;
         }
 
-        Toast.makeText(SendService.this, ErrorLocalizer.localizeThrowable(this, cause), Toast.LENGTH_LONG).show();
+        Toast.makeText(app, ErrorLocalizer.localizeThrowable(app, cause), Toast.LENGTH_LONG).show();
     }
 
     private void sendMessage(Collection<Integer> accountIds) {
-        this.mNowSending = true;
-        this.mCompositeDisposable.add(messagesInteractor.sendUnsentMessage(accountIds)
-                .subscribeOn(mSenderScheduler)
+        nowSending = true;
+        compositeDisposable.add(messagesInteractor.sendUnsentMessage(accountIds)
+                .subscribeOn(senderScheduler)
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onMessageSent, this::onMessageSendError));
     }

@@ -19,7 +19,7 @@ import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.push.ChatEntryFetcher;
 import biz.dealnote.messenger.push.NotificationScheduler;
-import biz.dealnote.messenger.service.SendService;
+import biz.dealnote.messenger.service.QuickReplyService;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Objects;
@@ -102,7 +102,7 @@ public class NotificationHelper {
                 .setLabel(context.getResources().getString(R.string.reply))
                 .build();
 
-        Intent directIntent = SendService.intentForAddMessage(context, accountId, peerId);
+        Intent directIntent = QuickReplyService.intentForAddMessage(context, accountId, peerId);
         PendingIntent directPendingIntent = PendingIntent.getService(context, mid, directIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Action actionDirectReply = new NotificationCompat.Action.Builder

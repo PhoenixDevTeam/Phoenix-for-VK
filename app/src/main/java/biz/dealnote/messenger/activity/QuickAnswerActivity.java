@@ -29,7 +29,7 @@ import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.model.SaveMessageBuilder;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.service.SendService;
+import biz.dealnote.messenger.service.MessageSender;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.task.TextingNotifier;
@@ -41,6 +41,7 @@ import biz.dealnote.messenger.util.ViewUtils;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 
+import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 
 public class QuickAnswerActivity extends AppCompatActivity {
@@ -227,9 +228,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     private void onMessageSaved(Message message) {
         NotificationHelper.tryCancelNotificationForPeer(this, accountId, peerId);
-
-        Intent intent = new Intent(this, SendService.class);
-        startService(intent);
+        MessageSender.getSendService().runSendingQueue();
         finish();
     }
 
@@ -238,6 +237,6 @@ public class QuickAnswerActivity extends AppCompatActivity {
     private void setMessageAsRead() {
         mCompositeDisposable.add(mMessagesInteractor.markAsRead(accountId, peerId)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(() -> {/*ignore*/}, t -> {/*ignore*/}));
+                .subscribe(RxUtils.dummy(), ignore()));
     }
 }

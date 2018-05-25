@@ -3,7 +3,6 @@ package biz.dealnote.messenger.mvp.presenter;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -60,7 +59,7 @@ import biz.dealnote.messenger.model.Sticker;
 import biz.dealnote.messenger.mvp.view.IChatView;
 import biz.dealnote.messenger.realtime.Processors;
 import biz.dealnote.messenger.realtime.TmpResult;
-import biz.dealnote.messenger.service.SendService;
+import biz.dealnote.messenger.service.MessageSender;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.task.TextingNotifier;
@@ -88,6 +87,7 @@ import static biz.dealnote.messenger.util.AppTextUtils.safeTrimmedIsEmpty;
 import static biz.dealnote.messenger.util.CompareUtils.compareInts;
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 import static biz.dealnote.messenger.util.Utils.getSelected;
 import static biz.dealnote.messenger.util.Utils.hasFlag;
@@ -515,11 +515,9 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     }
 
     private void sendMessage(@NonNull SaveMessageBuilder builder) {
-        final Context app = getApplicationContext();
-
-        this.messagesInteractor.put(builder)
+        messagesInteractor.put(builder)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .doOnSuccess(message -> startSendService(app))
+                .doOnSuccess(message -> startSendService())
                 .subscribe(new WeakConsumer<>(this::onMessageSaveSuccess), this::onMessageSaveError);
     }
 
@@ -551,13 +549,8 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         //}
     }
 
-    private void startSendService(Context context) {
-        Intent intent = new Intent(context, SendService.class);
-        context.startService(intent);
-    }
-
     private void startSendService() {
-        startSendService(getApplicationContext());
+        MessageSender.getSendService().runSendingQueue();
     }
 
     public void fireAttachButtonClick() {
@@ -1063,8 +1056,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         Stores.getInstance().messages()
                 .saveDraftMessageBody(messagesOwnerId, peerId, body)
                 .subscribeOn(Schedulers.io())
-                .subscribe(ignore -> {
-                }, Analytics::logUnexpectedError);
+                .subscribe(ignore(), ignore());
     }
 
     @Override
@@ -1191,8 +1183,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
                 .messages()
                 .deleteMessage(messagesOwnerId, message.getId())
                 .subscribeOn(Schedulers.io())
-                .subscribe(ignore -> {
-                }, Analytics::logUnexpectedError);
+                .subscribe(ignore(), ignore());
     }
 
     public void fireErrorMessageDeleteClick(@NonNull Message message) {
