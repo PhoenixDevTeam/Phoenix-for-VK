@@ -250,10 +250,10 @@ class MessagesApi extends AbsApi implements IMessagesApi {
     }
 
     @Override
-    public Single<VkApiLongpollServer> getLongpollServer(boolean needPts, boolean useSsl) {
+    public Single<VkApiLongpollServer> getLongpollServer(boolean needPts, int lpVersion) {
         return serviceRx(TokenType.USER, TokenType.COMMUNITY)
                 .flatMap(service -> service
-                        .getLongpollServer(needPts ? 1 : 0, useSsl ? 1 : 0)
+                        .getLongpollServer(needPts ? 1 : 0, lpVersion)
                         .map(extractResponseWithErrorHandling()));
     }
 

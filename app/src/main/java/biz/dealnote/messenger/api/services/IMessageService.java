@@ -333,19 +333,10 @@ public interface IMessageService {
                                                      @Field("unread") Integer unread,
                                                      @Field("important") Integer important);
 
-    /**
-     * Returns data required for connection to a Long Poll server.
-     * With Long Poll connection, you can immediately know about incoming messages and other events.
-     *
-     * @param needPts 1 — to return the pts field, needed for the {@link #getLongPollHistory} method
-     * @param useSsl  1 — to use SSL
-     * @return Returns an object with key, server, ts fields.
-     * With such data you can connect to an instant message server to immediately receive incoming messages and other events.
-     */
     @FormUrlEncoded
     @POST("messages.getLongPollServer")
     Single<BaseResponse<VkApiLongpollServer>> getLongpollServer(@Field("need_pts") int needPts,
-                                                                @Field("use_ssl") int useSsl);
+                                                                @Field("lp_version") int lpVersion);
 
     /**
      * Returns message history for the specified user or group chat.

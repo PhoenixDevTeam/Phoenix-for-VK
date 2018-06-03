@@ -23,7 +23,6 @@ import biz.dealnote.messenger.player.util.MusicUtils;
 /**
  * Created by golde on 27.09.2016.
  */
-
 public class PlaylistFragment extends BaseFragment implements AudioRecyclerAdapter.ClickListener,
         BackPressCallback {
 

@@ -92,7 +92,7 @@ public interface IMessagesApi {
     Single<MessageHistoryResponse> getHistory(Integer offset, Integer count, int peerId, Integer startMessageId, Boolean rev);
 
     @CheckResult
-    Single<VkApiLongpollServer> getLongpollServer(boolean needPts, boolean useSsl);
+    Single<VkApiLongpollServer> getLongpollServer(boolean needPts, int lpVersion);
 
     Single<List<SearchDialogsResponse.AbsChattable>> searchDialogs(String query, Integer limit, String fileds);
 }

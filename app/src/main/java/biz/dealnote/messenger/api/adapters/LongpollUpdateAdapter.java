@@ -23,11 +23,13 @@ import biz.dealnote.messenger.api.model.longpoll.UserIsOfflineUpdate;
 import biz.dealnote.messenger.api.model.longpoll.UserIsOnlineUpdate;
 import biz.dealnote.messenger.api.model.longpoll.WriteTextInDialogUpdate;
 import biz.dealnote.messenger.api.util.VKStringUtils;
+import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.util.Logger;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.hasFlag;
+import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
 /**
  * Created by admin on 25.12.2016.
@@ -135,30 +137,38 @@ public class LongpollUpdateAdapter extends AbsAdapter implements JsonDeserialize
     private AddMessageUpdate deserializeAddMessageUpdate(JsonArray array){
         AddMessageUpdate update = new AddMessageUpdate();
 
+        int flags = optInt(array, 2);
+
         update.message_id = optInt(array, 1);
-        update.flags = optInt(array, 2);
         update.peer_id = optInt(array, 3);
         update.timestamp = optLong(array, 4);
-        update.subject = optString(array, 5);
-        update.text = VKStringUtils.unescape(optString(array, 6));
+        update.text = VKStringUtils.unescape(optString(array, 5));
+        update.outbox = hasFlag(flags, VKApiMessage.FLAG_OUTBOX);
+        update.unread = hasFlag(flags, VKApiMessage.FLAG_UNREAD);
+        update.important = hasFlag(flags, VKApiMessage.FLAG_IMPORTANT);
+        update.deleted = hasFlag(flags, VKApiMessage.FLAG_DELETED);
+
+        JsonObject extra = (JsonObject) opt(array, 6);
+        if(nonNull(extra)){
+            update.from = optInt(extra, "from");
+            update.subject = optString(extra, "title");
+            update.sourceText = optString(extra, "source_text");
+            update.sourceAct = optString(extra, "source_act");
+            update.sourceMid = optInt(extra, "source_mid");
+        }
 
         JsonObject attachments = (JsonObject) opt(array, 7);
-
         if(nonNull(attachments)){
-            update.from = optInt(attachments, "from");
-            update.sourceText = optString(attachments, "source_text");
-            update.sourceAct = optString(attachments, "source_act");
-            update.sourceMid = optInt(attachments, "source_mid");
-
+            update.hasMedia = attachments.has("attach1_type");
             String fwd = optString(attachments, "fwd");
-            if(nonNull(fwd)){
+            if(nonEmpty(fwd)){
                 update.fwds = parseLineWithSeparators(fwd, ",");
             }
         }
 
-        update.random_id = optString(array, 8);
+        update.random_id = optString(array, 8); // ok
 
-        if(!hasFlag(update.flags, VKApiMessage.FLAG_GROUP_CHAT) && !hasFlag(update.flags, VKApiMessage.FLAG_OUTBOX)){
+        if(update.from == 0 && !Peer.isGroupChat(update.peer_id) && !update.outbox){
             update.from = update.peer_id;
         }
 

@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 
-import biz.dealnote.messenger.api.model.VKApiMessage;
+import biz.dealnote.messenger.model.Peer;
 
 public class AddMessageUpdate extends AbsLongpollEvent {
 
@@ -13,12 +13,16 @@ public class AddMessageUpdate extends AbsLongpollEvent {
     }
 
     public int message_id;
-    public int flags;
+
     public long timestamp;
     public String subject;
     public String text;
     public int from;
-
+    public boolean outbox;
+    public boolean unread;
+    public boolean important;
+    public boolean deleted;
+    public boolean hasMedia;
     public String sourceText;
     public String sourceAct;
     public int sourceMid;
@@ -31,7 +35,7 @@ public class AddMessageUpdate extends AbsLongpollEvent {
     }
 
     public boolean isOut(){
-        return (flags & VKApiMessage.FLAG_OUTBOX) != 0;
+        return outbox;
     }
 
     public String getText() {
@@ -39,11 +43,11 @@ public class AddMessageUpdate extends AbsLongpollEvent {
     }
 
     public boolean isGroupChat() {
-        return (flags & VKApiMessage.FLAG_GROUP_CHAT) != 0;
+        return Peer.isGroupChat(peer_id);
     }
 
     public boolean hasMedia() {
-        return (flags & VKApiMessage.FLAG_MEDIA) != 0;
+        return hasMedia;
     }
 
     public boolean hasFwds() {

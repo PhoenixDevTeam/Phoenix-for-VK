@@ -231,10 +231,10 @@ public class Dto2Model {
     public static VKApiMessage transform(int accountUid, @NonNull AddMessageUpdate update) {
         VKApiMessage message = new VKApiMessage();
         message.id = update.message_id;
-        message.out = (update.flags & VKApiMessage.FLAG_OUTBOX) != 0;
-        message.important = (update.flags & VKApiMessage.FLAG_IMPORTANT) != 0;
-        message.deleted = (update.flags & VKApiMessage.FLAG_DELETED) != 0;
-        message.read_state = (update.flags & VKApiMessage.FLAG_UNREAD) == 0;
+        message.out = update.outbox;
+        message.important = update.important;
+        message.deleted = update.deleted;
+        message.read_state = !update.unread;
         message.peer_id = update.peer_id;
         message.from_id = message.out ? accountUid : (Peer.isGroupChat(update.peer_id) ? update.from : update.peer_id);
         message.body = VKStringUtils.unescape(update.text);

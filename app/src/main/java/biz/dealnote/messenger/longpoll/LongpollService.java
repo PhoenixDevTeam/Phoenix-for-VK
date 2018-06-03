@@ -276,7 +276,7 @@ public class LongpollService extends Service implements Longpoll.Callback {
     private Longpoll prepareLongpollFor(int aid) {
         Longpoll longpoll = mActiveLongpolls.get(aid);
         if (longpoll == null) {
-            longpoll = new Longpoll(this, Injection.provideNetworkInterfaces(), aid, this);
+            longpoll = new Longpoll(Injection.provideNetworkInterfaces(), aid, this);
             mActiveLongpolls.put(aid, longpoll);
         }
 
@@ -286,18 +286,18 @@ public class LongpollService extends Service implements Longpoll.Callback {
     private static final Scheduler MONO_SCHEDULER = Schedulers.from(Executors.newFixedThreadPool(1));
 
     @Override
-    public void onUpdates(int aid, VkApiLongpollUpdates updates) {
-        Logger.d(TAG, "onUpdates, aid: " + aid + ", updates: " + updates);
+    public void onUpdates(int accountId, VkApiLongpollUpdates updates) {
+        Logger.d(TAG, "onUpdates, aid: " + accountId + ", updates: " + updates);
 
         if (nonEmpty(updates.getAddMessageUpdates())) {
             Processors.realtimeMessages()
-                    .process(aid, updates.getAddMessageUpdates());
+                    .process(accountId, updates.getAddMessageUpdates());
         }
 
-        mCompositeDisposable.add(new LongPollEventSaver().save(this, aid, updates)
+        mCompositeDisposable.add(new LongPollEventSaver().save(this, accountId, updates)
                 .subscribeOn(MONO_SCHEDULER)
                 .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(() -> onUpdatesSaved(aid, updates)));
+                .subscribe(() -> onUpdatesSaved(accountId, updates)));
     }
 
     private void onUpdatesSaved(int accountId, VkApiLongpollUpdates updates) {
