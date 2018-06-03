@@ -19,13 +19,13 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.util.Util;
 
 import java.net.Authenticator;
-import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.App;
+import biz.dealnote.messenger.api.ProxyUtil;
 import biz.dealnote.messenger.media.exo.CustomHttpDataSourceFactory;
 import biz.dealnote.messenger.media.exo.ExoEventAdapter;
 import biz.dealnote.messenger.model.ProxyConfig;
@@ -98,7 +98,7 @@ public class ExoGifPlayer implements IGifPlayer {
 
         Proxy proxy = null;
         if (nonNull(proxyConfig)) {
-            proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyConfig.getAddress(), proxyConfig.getPort()));
+            proxy = new Proxy(Proxy.Type.HTTP, ProxyUtil.obtainAddress(proxyConfig));
 
             if(proxyConfig.isAuthEnabled()){
                 Authenticator authenticator = new Authenticator() {

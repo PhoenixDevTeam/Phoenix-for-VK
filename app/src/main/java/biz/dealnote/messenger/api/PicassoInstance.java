@@ -9,17 +9,13 @@ import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 
 import biz.dealnote.messenger.model.ProxyConfig;
 import biz.dealnote.messenger.settings.IProxySettings;
 import biz.dealnote.messenger.task.LocalPhotoRequestHandler;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Objects;
-import okhttp3.Authenticator;
 import okhttp3.Cache;
-import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 
 /**
@@ -92,7 +88,8 @@ public class PicassoInstance {
         ProxyConfig config = proxySettings.getActiveProxy();
 
         if (Objects.nonNull(config)) {
-            Authenticator authenticator = null;
+            ProxyUtil.applyProxyConfig(builder, config);
+            /*Authenticator authenticator = null;
             if (config.isAuthEnabled()) {
                 authenticator = (route, response) -> {
                     String credential = Credentials.basic(config.getUser(), config.getPass());
@@ -107,7 +104,7 @@ public class PicassoInstance {
 
             if (Objects.nonNull(authenticator)) {
                 builder.proxyAuthenticator(authenticator);
-            }
+            }*/
         }
 
         OkHttp3Downloader downloader = new OkHttp3Downloader(builder.build());

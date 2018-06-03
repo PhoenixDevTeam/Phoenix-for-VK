@@ -20,12 +20,12 @@ import com.google.android.exoplayer2.util.Util;
 
 import java.lang.ref.WeakReference;
 import java.net.Authenticator;
-import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
+import biz.dealnote.messenger.api.ProxyUtil;
 import biz.dealnote.messenger.media.exo.CustomHttpDataSourceFactory;
 import biz.dealnote.messenger.media.exo.ExoUtil;
 import biz.dealnote.messenger.model.ProxyConfig;
@@ -54,7 +54,7 @@ public class ExoVideoPlayer implements IVideoPlayer {
     private static MediaSource createMediaSource(Context context, String url, ProxyConfig proxyConfig) {
         Proxy proxy = null;
         if (nonNull(proxyConfig)) {
-            proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyConfig.getAddress(), proxyConfig.getPort()));
+            proxy = new Proxy(Proxy.Type.HTTP, ProxyUtil.obtainAddress(proxyConfig));
 
             if (proxyConfig.isAuthEnabled()) {
                 Authenticator authenticator = new Authenticator() {

@@ -8,6 +8,7 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.mvp.presenter.base.RxSupportPresenter;
 import biz.dealnote.messenger.mvp.view.IAddProxyView;
 import biz.dealnote.messenger.settings.IProxySettings;
+import biz.dealnote.messenger.util.ValidationUtil;
 
 import static biz.dealnote.messenger.util.Utils.trimmedIsEmpty;
 
@@ -67,34 +68,6 @@ public class AddProxyPresenter extends RxSupportPresenter<IAddProxyView> {
         pass = s.toString();
     }
 
-    private boolean isValidIpAddress(String ipv4) {
-        if(trimmedIsEmpty(ipv4)){
-            return false;
-        }
-
-        ipv4 = ipv4.trim();
-
-        String[] blocks = ipv4.split("\\.");
-
-        if(blocks.length != 4){
-            return false;
-        }
-
-        for (String block : blocks) {
-            try {
-                int num = Integer.parseInt(block);
-
-                if (num > 255 || num < 0) {
-                    return false;
-                }
-            } catch (Exception e){
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     private boolean validateData() {
         try {
             try {
@@ -106,7 +79,7 @@ public class AddProxyPresenter extends RxSupportPresenter<IAddProxyView> {
                 throw new Exception("Invalid port");
             }
 
-            if (!isValidIpAddress(address)) {
+            if (!ValidationUtil.isValidIpAddress(address) && !ValidationUtil.isValidURL(address)) {
                 throw new Exception("Invalid address");
             }
 

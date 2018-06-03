@@ -1,11 +1,13 @@
 package biz.dealnote.messenger.api;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
 import biz.dealnote.messenger.model.ProxyConfig;
+import biz.dealnote.messenger.util.ValidationUtil;
 import okhttp3.Authenticator;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
@@ -18,9 +20,17 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  */
 public class ProxyUtil {
 
+    public static InetSocketAddress obtainAddress(@NonNull ProxyConfig config){
+        if(ValidationUtil.isValidIpAddress(config.getAddress())){
+            return new InetSocketAddress(config.getAddress(), config.getPort());
+        } else {
+            return InetSocketAddress.createUnresolved(config.getAddress(), config.getPort());
+        }
+    }
+
     public static void applyProxyConfig(OkHttpClient.Builder builder, @Nullable ProxyConfig config){
         if (nonNull(config)) {
-            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(config.getAddress(), config.getPort()));
+            final Proxy proxy = new Proxy(Proxy.Type.HTTP, obtainAddress(config));
 
             builder.proxy(proxy);
 
