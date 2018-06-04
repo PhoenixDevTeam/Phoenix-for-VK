@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatDelegate;
 
 import biz.dealnote.messenger.api.PicassoInstance;
+import biz.dealnote.messenger.service.KeepLongpollService;
 import biz.dealnote.messenger.settings.Settings;
 
 public class App extends Application {
@@ -24,6 +25,10 @@ public class App extends Application {
                 .incrementRunCount();
 
         PicassoInstance.init(this, Injection.provideProxySettings());
+
+        if(Settings.get().other().isKeepLongpoll()){
+            KeepLongpollService.start(this);
+        }
     }
 
     @NonNull

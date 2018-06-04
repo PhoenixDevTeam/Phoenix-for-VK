@@ -62,6 +62,7 @@ import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.model.SwitchableCategory;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
+import biz.dealnote.messenger.service.KeepLongpollService;
 import biz.dealnote.messenger.settings.AppPrefs;
 import biz.dealnote.messenger.settings.AvatarStyle;
 import biz.dealnote.messenger.settings.CurrentTheme;
@@ -354,6 +355,17 @@ public class PreferencesFragment extends PreferenceFragment {
                     LinkHelper.openLinkInBrowser(getContext(), getString(R.string.source_code_link));
                     return true;
                 });
+
+        CheckBoxPreference keepLongpoll = (CheckBoxPreference) findPreference("keep_longpoll");
+        keepLongpoll.setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean keep = (boolean) newValue;
+            if(keep){
+                KeepLongpollService.start(preference.getContext());
+            } else {
+                KeepLongpollService.stop(preference.getContext());
+            }
+            return true;
+        });
     }
 
     private void onSecurityClick() {

@@ -154,6 +154,10 @@
         <CheckBoxPreference
             android:key="force_exoplayer"
             android:title="@string/settings_force_exoplayer_title" />
+        <CheckBoxPreference
+            android:key="keep_longpoll"
+            android:title="@string/settings_keep_longpoll_title"
+            android:summary="@string/settings_keep_longpoll_summary"/>
         <Preference
             android:key="show_logs"
             android:title="@string/settings_show_logs_title" />

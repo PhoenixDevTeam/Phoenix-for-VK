@@ -101,6 +101,11 @@ class OtherSettings implements ISettings.IOtherSettings {
     }
 
     @Override
+    public boolean isKeepLongpoll() {
+        return PreferenceManager.getDefaultSharedPreferences(app).getBoolean("keep_longpoll", false);
+    }
+
+    @Override
     public boolean isForceExoplayer() {
         return PreferenceManager.getDefaultSharedPreferences(app).getBoolean("force_exoplayer", false);
     }
