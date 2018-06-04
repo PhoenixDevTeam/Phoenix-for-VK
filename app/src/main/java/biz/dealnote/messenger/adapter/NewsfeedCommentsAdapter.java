@@ -2,6 +2,7 @@ package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.view.LayoutInflater;
@@ -27,6 +28,8 @@ import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.model.PhotoWithOwner;
 import biz.dealnote.messenger.model.Post;
+import biz.dealnote.messenger.model.Topic;
+import biz.dealnote.messenger.model.TopicWithOwner;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.model.VideoWithOwner;
 import biz.dealnote.messenger.settings.CurrentTheme;
@@ -80,8 +83,9 @@ public class NewsfeedCommentsAdapter extends AbsRecyclerViewAdapter<NewsfeedComm
         this.actionListener = actionListener;
     }
 
+    @NonNull
     @Override
-    public AbsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AbsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         switch (viewType) {
@@ -91,28 +95,71 @@ public class NewsfeedCommentsAdapter extends AbsRecyclerViewAdapter<NewsfeedComm
                 return new VideoHolder(inflater.inflate(R.layout.item_newsfeed_comment_video, parent, false));
             case VTYPE_PHOTO:
                 return new PhotoHolder(inflater.inflate(R.layout.item_newsfeed_comment_photo, parent, false));
+            case VTYPE_TOPIC:
+                return new TopicHolder(inflater.inflate(R.layout.item_newsfeed_comment_topic, parent, false));
         }
 
         throw new UnsupportedOperationException();
     }
 
+    private static final class TopicHolder extends AbsHolder {
+
+        ImageView ownerAvatar;
+        ImageView creatorAvatar;
+        TextView commentsCounter;
+        TextView ownerName;
+        TextView title;
+
+        TopicHolder(View itemView) {
+            super(itemView);
+            ownerAvatar = itemView.findViewById(R.id.owner_avatar);
+            creatorAvatar = itemView.findViewById(R.id.creator_avatar);
+            commentsCounter = itemView.findViewById(R.id.comments_counter);
+            ownerName = itemView.findViewById(R.id.owner_name);
+            title = itemView.findViewById(R.id.title);
+        }
+    }
+
     @Override
-    public void onBindViewHolder(AbsHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AbsHolder holder, int position) {
         bindBase(holder, position);
 
         switch (getItemViewType(position)) {
             case VTYPE_POST:
                 bindPost((PostHolder) holder, position);
                 break;
-
             case VTYPE_VIDEO:
                 bindVideo((VideoHolder) holder, position);
                 break;
-
             case VTYPE_PHOTO:
                 bindPhoto((PhotoHolder) holder, position);
                 break;
+            case VTYPE_TOPIC:
+                bindTopic((TopicHolder) holder, position);
+                break;
         }
+    }
+
+    private void bindTopic(TopicHolder holder, int position){
+        TopicWithOwner wrapper = (TopicWithOwner) data.get(position).getModel();
+        Topic topic = wrapper.getTopic();
+        Owner owner = wrapper.getOwner();
+
+        ViewUtils.displayAvatar(holder.ownerAvatar, transformation, owner.getMaxSquareAvatar(), Constants.PICASSO_TAG);
+
+        if(nonNull(topic.getCreator())){
+            holder.creatorAvatar.setVisibility(View.VISIBLE);
+            ViewUtils.displayAvatar(holder.creatorAvatar, transformation, topic.getCreator().get100photoOrSmaller(), Constants.PICASSO_TAG);
+        } else {
+            holder.creatorAvatar.setVisibility(View.GONE);
+            PicassoInstance.with().cancelRequest(holder.creatorAvatar);
+        }
+
+        super.addOwnerAvatarClickHandling(holder.ownerAvatar, topic.getOwnerId());
+
+        holder.ownerName.setText(owner.getFullName());
+        holder.commentsCounter.setText(String.valueOf(topic.getCommentsCount()));
+        holder.title.setText(topic.getTitle());
     }
 
     private void bindPhoto(PhotoHolder holder, int position) {
@@ -278,12 +325,17 @@ public class NewsfeedCommentsAdapter extends AbsRecyclerViewAdapter<NewsfeedComm
             return VTYPE_PHOTO;
         }
 
-        return super.getItemViewType(position);
+        if(comment.getModel() instanceof TopicWithOwner){
+            return VTYPE_TOPIC;
+        }
+
+        throw new IllegalStateException("Unsupported view type");
     }
 
     private static final int VTYPE_POST = 1;
     private static final int VTYPE_VIDEO = 2;
     private static final int VTYPE_PHOTO = 3;
+    private static final int VTYPE_TOPIC = 4;
 
     public void setData(List<NewsfeedComment> data) {
         this.data = data;

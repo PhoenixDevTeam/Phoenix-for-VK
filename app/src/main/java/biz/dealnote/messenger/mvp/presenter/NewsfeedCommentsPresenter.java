@@ -15,8 +15,8 @@ import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
 import biz.dealnote.messenger.mvp.view.INewsfeedCommentsView;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.RxUtils;
-import biz.dealnote.messenger.util.Utils;
 
+import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
@@ -67,10 +67,9 @@ public class NewsfeedCommentsPresenter extends PlaceSupportPresenter<INewsfeedCo
     }
 
     private void load(final String startFrom){
-        appendDisposable(interactor.getNewsfeedComments(getAccountId(), 10, startFrom, "post,photo,video")
+        appendDisposable(interactor.getNewsfeedComments(getAccountId(), 10, startFrom, "post,photo,video,topic")
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(pair -> onDataReceived(startFrom, pair.getSecond(), pair.getFirst()),
-                        throwable -> onRequestError(Utils.getCauseIfRuntime(throwable))));
+                .subscribe(pair -> onDataReceived(startFrom, pair.getSecond(), pair.getFirst()), this::onRequestError));
     }
 
     private void loadNext() {
@@ -81,23 +80,23 @@ public class NewsfeedCommentsPresenter extends PlaceSupportPresenter<INewsfeedCo
     }
 
     private void onRequestError(Throwable throwable){
-        throwable.printStackTrace();
+        showError(getView(), getCauseIfRuntime(throwable));
         setLoadingNow(false);
     }
 
-    private void onDataReceived(String startFrom, String nextFrom, List<NewsfeedComment> comments){
+    private void onDataReceived(String startFrom, String newNextFrom, List<NewsfeedComment> comments){
         setLoadingNow(false);
 
         boolean atLast = isEmpty(startFrom);
-        this.nextFrom = nextFrom;
+        nextFrom = newNextFrom;
 
         if(atLast){
-            this.data.clear();
-            this.data.addAll(comments);
+            data.clear();
+            data.addAll(comments);
             callView(INewsfeedCommentsView::notifyDataSetChanged);
         } else {
-            int startCount = this.data.size();
-            this.data.addAll(comments);
+            int startCount = data.size();
+            data.addAll(comments);
             callView(view -> view.notifyDataAdded(startCount, comments.size()));
         }
     }

@@ -13,7 +13,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  */
 public abstract class AbsRecyclerViewAdapter<H extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<H> {
 
-    protected OwnerClickListener ownerClickListener;
+    private OwnerClickListener ownerClickListener;
 
     public void setOwnerClickListener(OwnerClickListener ownerClickListener) {
         this.ownerClickListener = ownerClickListener;

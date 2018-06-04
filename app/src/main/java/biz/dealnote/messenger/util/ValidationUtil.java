@@ -1,29 +1,13 @@
 package biz.dealnote.messenger.util;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import android.support.v4.util.PatternsCompat;
 
 import static biz.dealnote.messenger.util.Utils.trimmedIsEmpty;
 
 public class ValidationUtil {
 
     public static boolean isValidURL(String url) {
-        URL u;
-
-        try {
-            u = new URL(url);
-        } catch (MalformedURLException e) {
-            return false;
-        }
-
-        try {
-            u.toURI();
-        } catch (URISyntaxException e) {
-            return false;
-        }
-
-        return true;
+        return url != null && PatternsCompat.AUTOLINK_WEB_URL.matcher(url).find();
     }
 
     public static boolean isValidIpAddress(String ipv4) {

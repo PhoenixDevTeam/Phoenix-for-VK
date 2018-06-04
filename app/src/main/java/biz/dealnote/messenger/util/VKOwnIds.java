@@ -284,12 +284,4 @@ public class VKOwnIds {
     public String toString() {
         return "uids: " + uids + ", gids: " + gids;
     }
-
-    public static boolean isUser(int ownerId) {
-        return ownerId > 0;
-    }
-
-    public static boolean isGroup(int ownerId) {
-        return ownerId < 0;
-    }
 }

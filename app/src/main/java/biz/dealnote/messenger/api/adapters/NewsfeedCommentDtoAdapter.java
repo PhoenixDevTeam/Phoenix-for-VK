@@ -8,6 +8,7 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
+import biz.dealnote.messenger.api.model.CommentsDto;
 import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.api.model.VKApiTopic;
@@ -33,7 +34,12 @@ public class NewsfeedCommentDtoAdapter extends AbsAdapter implements JsonDeseria
         } else if("video".equals(type)){
             dto = new NewsfeedCommentsResponse.VideoDto(context.deserialize(root, VKApiVideo.class));
         } else if("topic".equals(type)){
-            dto = new NewsfeedCommentsResponse.TopicDto(context.deserialize(root, VKApiTopic.class));
+            VKApiTopic topic = new VKApiTopic();
+            topic.id = optInt(root, "post_id");
+            topic.owner_id = optInt(root, "source_id");
+            topic.title = optString(root, "text");
+            topic.comments = context.deserialize(root.get("comments"), CommentsDto.class);
+            dto = new NewsfeedCommentsResponse.TopicDto(topic);
         }
 
         return dto;

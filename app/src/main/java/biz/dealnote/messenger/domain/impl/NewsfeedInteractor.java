@@ -23,6 +23,7 @@ import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.PhotoWithOwner;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.Topic;
+import biz.dealnote.messenger.model.TopicWithOwner;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.model.VideoWithOwner;
 import biz.dealnote.messenger.util.Pair;
@@ -66,15 +67,15 @@ public class NewsfeedInteractor implements INewsfeedInteractor {
                             ownIds.append(post);
                             ownIds.append(post.comments);
                         } else if (dto instanceof NewsfeedCommentsResponse.PhotoDto) {
-                            ownIds.append(((NewsfeedCommentsResponse.PhotoDto) dto).photo.comments);
                             ownIds.append(((NewsfeedCommentsResponse.PhotoDto) dto).photo.owner_id);
+                            ownIds.append(((NewsfeedCommentsResponse.PhotoDto) dto).photo.comments);
                         } else if (dto instanceof NewsfeedCommentsResponse.TopicDto) {
                             VKApiTopic topic = ((NewsfeedCommentsResponse.TopicDto) dto).topic;
+                            ownIds.append(topic.owner_id);
                             ownIds.append(topic.comments);
-                            ownIds.append(topic);
                         } else if (dto instanceof NewsfeedCommentsResponse.VideoDto) {
-                            ownIds.append(((NewsfeedCommentsResponse.VideoDto) dto).video.comments);
                             ownIds.append(((NewsfeedCommentsResponse.VideoDto) dto).video.owner_id);
+                            ownIds.append(((NewsfeedCommentsResponse.VideoDto) dto).video.comments);
                         } else {
                             // TODO: 08.05.2017
                         }
@@ -83,10 +84,8 @@ public class NewsfeedInteractor implements INewsfeedInteractor {
                     return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersInteractor.MODE_ANY, owners)
                             .map(bundle -> {
                                 List<NewsfeedComment> comments = new ArrayList<>(dtos.size());
-
                                 for (NewsfeedCommentsResponse.Dto dto : dtos) {
                                     NewsfeedComment comment = createFrom(dto, bundle);
-
                                     if (nonNull(comment)) {
                                         comments.add(comment);
                                     }
@@ -99,7 +98,7 @@ public class NewsfeedInteractor implements INewsfeedInteractor {
 
     private static Comment oneCommentFrom(Commented commented, CommentsDto dto, IOwnersBundle bundle) {
         if (nonNull(dto) && nonEmpty(dto.list)) {
-            return Dto2Model.buildComment(commented, dto.list.get(0), bundle);
+            return Dto2Model.buildComment(commented, dto.list.get(dto.list.size() - 1), bundle);
         }
 
         return null;
@@ -136,8 +135,14 @@ public class NewsfeedInteractor implements INewsfeedInteractor {
         if (dto instanceof NewsfeedCommentsResponse.TopicDto) {
             VKApiTopic topicDto = ((NewsfeedCommentsResponse.TopicDto) dto).topic;
             Topic topic = Dto2Model.transform(topicDto, bundle);
+
+            if(nonNull(topicDto.comments)){
+                topic.setCommentsCount(topicDto.comments.count);
+            }
+
             Commented commented = Commented.from(topic);
-            return new NewsfeedComment(topic).setComment(oneCommentFrom(commented, topicDto.comments, bundle));
+            Owner owner = bundle.getById(topic.getOwnerId());
+            return new NewsfeedComment(new TopicWithOwner(topic, owner)).setComment(oneCommentFrom(commented, topicDto.comments, bundle));
         }
 
         return null;
