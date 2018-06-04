@@ -16,6 +16,9 @@ import static biz.dealnote.messenger.util.Utils.safeCountOfMultiple;
 
 public final class VkApiLongpollUpdates {
 
+    // TODO Message edit update
+    //{"ts":1841741106,"updates":[[5,1200880,51,26632922,1528116889,"и тд",{"title":""},{},1000771599]]}
+
     public long ts;
     public int failed;
 
