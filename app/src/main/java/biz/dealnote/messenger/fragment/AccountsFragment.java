@@ -40,7 +40,7 @@ import biz.dealnote.messenger.domain.IAccountsInteractor;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
-import biz.dealnote.messenger.longpoll.LongpollService;
+import biz.dealnote.messenger.longpoll.LongpollInstance;
 import biz.dealnote.messenger.model.Account;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.settings.Settings;
@@ -263,15 +263,11 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
 
         DBHelper.removeDatabaseFor(requireActivity(), account.getId());
 
-        stopLongpoll();
+        LongpollInstance.get().forceDestroy(account.getId());
 
         mData.remove(account);
         mAdapter.notifyDataSetChanged();
         resolveEmptyText();
-    }
-
-    private void stopLongpoll() {
-        requireContext().stopService(new Intent(getActivity(), LongpollService.class));
     }
 
     private void setAsActive(Account account) {

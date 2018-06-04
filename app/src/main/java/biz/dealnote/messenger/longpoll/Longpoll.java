@@ -34,6 +34,10 @@ class Longpoll {
         this.networker = networker;
     }
 
+    public int getAccountId() {
+        return accountId;
+    }
+
     private void resetServerAttrs() {
         this.server = null;
         this.key = null;

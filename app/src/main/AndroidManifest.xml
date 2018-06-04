@@ -249,8 +249,6 @@
             android:name=".player.MusicPlaybackService"
             android:exported="false"/>
 
-        <service android:name=".longpoll.LongpollService"/>
-
         <provider
             android:authorities="${applicationId}.fileprovider"
             android:name="android.support.v4.content.FileProvider"

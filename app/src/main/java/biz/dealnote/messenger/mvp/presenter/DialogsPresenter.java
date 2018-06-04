@@ -18,9 +18,8 @@ import biz.dealnote.messenger.db.interfaces.IDialogsStore;
 import biz.dealnote.messenger.domain.IMessagesInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.exception.UnauthorizedException;
-import biz.dealnote.messenger.longpoll.LongpollUtils;
-import biz.dealnote.messenger.longpoll.model.AbsRealtimeAction;
-import biz.dealnote.messenger.longpoll.model.RealtimeAction;
+import biz.dealnote.messenger.longpoll.ILongpollManager;
+import biz.dealnote.messenger.longpoll.LongpollInstance;
 import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.Peer;
@@ -64,6 +63,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     private boolean endOfContent;
 
     private final IMessagesInteractor messagesInteractor;
+    private final ILongpollManager longpollManager;
 
     public DialogsPresenter(int accountId, int dialogsOwnerId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
@@ -78,6 +78,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         }
 
         this.messagesInteractor = InteractorFactory.createMessagesInteractor();
+        this.longpollManager = LongpollInstance.get();
 
         final IDialogsStore store = Stores.getInstance().dialogs();
 
@@ -91,9 +92,9 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(dialog -> onDialogDeleted(dialog.getAccountId(), dialog.getPeerId())));
 
-        appendDisposable(LongpollUtils.observeUpdates(getApplicationContext())
+        appendDisposable(longpollManager.observeKeepAlive()
                 .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(this::onRealtimeEvents));
+                .subscribe(ignore -> checkLongpoll()));
 
         loadCachedData();
 
@@ -344,26 +345,16 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     public void onGuiResumed() {
         super.onGuiResumed();
         resolveRefreshingView();
-        registerLongpoll();
+        checkLongpoll();
+    }
+
+    private void checkLongpoll(){
+        if(isGuiResumed() && getAccountId() != ISettings.IAccountsSettings.INVALID_ID){
+            longpollManager.keepAlive(getAccountId());
+        }
     }
 
     private static final Comparator<Dialog> COMPARATOR = (rhs, lhs) -> CompareUtils.compareInts(lhs.getLastMessageId(), rhs.getLastMessageId());
-
-    private void registerLongpoll() {
-        LongpollUtils.register(getApplicationContext(), dialogsOwnerId, 0, null, null);
-    }
-
-    private boolean needLongpoll() {
-        return isGuiResumed();
-    }
-
-    private void onRealtimeEvents(List<AbsRealtimeAction> actions) {
-        for (AbsRealtimeAction action : actions) {
-            if (action.getAction() == RealtimeAction.KEEP_LISTENING_REQUEST && needLongpoll()) {
-                registerLongpoll();
-            }
-        }
-    }
 
     public void fireRefresh() {
         this.cacheLoadingDisposable.dispose();
@@ -492,7 +483,8 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         loadCachedData();
         requestAtLast();
 
-        LongpollUtils.register(getApplicationContext(), newAid, 0, oldAid, 0);
+        longpollManager.forceDestroy(oldAid);
+        checkLongpoll();
     }
 
     public void fireAddToLauncherShortcuts(Dialog dialog) {
