@@ -12,7 +12,7 @@ public class LongpollInstance {
         if(longpollManager == null){
             synchronized (LongpollInstance.class){
                 if(longpollManager == null){
-                    longpollManager = new LongpollManagerImpl(App.getInstance(), Injection.provideNetworkInterfaces(), Processors.realtimeMessages());
+                    longpollManager = new AndroidLongpollManager(App.getInstance(), Injection.provideNetworkInterfaces(), Processors.realtimeMessages());
                 }
             }
         }

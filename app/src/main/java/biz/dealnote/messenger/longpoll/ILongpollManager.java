@@ -13,8 +13,4 @@ public interface ILongpollManager {
     Flowable<Integer> observeKeepAlive();
 
     void keepAlive(int accountId);
-
-    void notifyDestroy(LongpollEntry entry);
-
-    void notifyPreDestroy(LongpollEntry entry);
 }

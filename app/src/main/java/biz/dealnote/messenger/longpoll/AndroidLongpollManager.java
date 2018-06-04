@@ -1,9 +1,12 @@
 package biz.dealnote.messenger.longpoll;
 
 import android.content.Context;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -38,7 +41,7 @@ import io.reactivex.schedulers.Schedulers;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
-public class LongpollManagerImpl implements ILongpollManager, Longpoll.Callback {
+public class AndroidLongpollManager implements ILongpollManager, Longpoll.Callback {
 
     private final Context app;
     private final SparseArray<LongpollEntry> map;
@@ -48,11 +51,11 @@ public class LongpollManagerImpl implements ILongpollManager, Longpoll.Callback 
     private final IRealtimeMessagesProcessor messagesProcessor;
     private final Object lock = new Object();
 
-    private final static String TAG = LongpollManagerImpl.class.getSimpleName();
+    private final static String TAG = AndroidLongpollManager.class.getSimpleName();
 
     private static final Scheduler MONO_SCHEDULER = Schedulers.from(Executors.newFixedThreadPool(1));
 
-    LongpollManagerImpl(Context context, INetworker networker, IRealtimeMessagesProcessor messagesProcessor) {
+    AndroidLongpollManager(Context context, INetworker networker, IRealtimeMessagesProcessor messagesProcessor) {
         this.app = context.getApplicationContext();
         this.networker = networker;
         this.messagesProcessor = messagesProcessor;
@@ -71,16 +74,16 @@ public class LongpollManagerImpl implements ILongpollManager, Longpoll.Callback 
         return keepAlivePublisher.onBackpressureBuffer();
     }
 
-    private Longpoll createLongpoll(int accountId){
+    private Longpoll createLongpoll(int accountId) {
         return new Longpoll(networker, accountId, this);
     }
 
     @Override
     public void forceDestroy(int accountId) {
         Logger.d(TAG, "forceDestroy, accountId: " + accountId);
-        synchronized (lock){
+        synchronized (lock) {
             LongpollEntry entry = map.get(accountId);
-            if(nonNull(entry)){
+            if (nonNull(entry)) {
                 entry.destroy();
             }
         }
@@ -89,9 +92,9 @@ public class LongpollManagerImpl implements ILongpollManager, Longpoll.Callback 
     @Override
     public void keepAlive(int accountId) {
         Logger.d(TAG, "keepAlive, accountId: " + accountId);
-        synchronized (lock){
+        synchronized (lock) {
             LongpollEntry entry = map.get(accountId);
-            if(nonNull(entry)){
+            if (nonNull(entry)) {
                 entry.deferDestroy();
             } else {
                 entry = new LongpollEntry(createLongpoll(accountId), this);
@@ -101,16 +104,14 @@ public class LongpollManagerImpl implements ILongpollManager, Longpoll.Callback 
         }
     }
 
-    @Override
-    public void notifyDestroy(LongpollEntry entry) {
+    void notifyDestroy(LongpollEntry entry) {
         Logger.d(TAG, "destroyed, accountId: " + entry.getAccountId());
-        synchronized (lock){
+        synchronized (lock) {
             map.remove(entry.getAccountId());
         }
     }
 
-    @Override
-    public void notifyPreDestroy(LongpollEntry entry) {
+    void notifyPreDestroy(LongpollEntry entry) {
         Logger.d(TAG, "pre-destroy, accountId: " + entry.getAccountId());
         keepAlivePublisher.onNext(entry.getAccountId());
     }
@@ -186,5 +187,97 @@ public class LongpollManagerImpl implements ILongpollManager, Longpoll.Callback 
         }
 
         return actions;
+    }
+
+    private static final class LongpollEntry {
+
+        final Longpoll longpoll;
+        final SocketHandler handler;
+        boolean released;
+        final WeakReference<AndroidLongpollManager> managerReference;
+        final int accountId;
+
+        LongpollEntry(Longpoll longpoll, AndroidLongpollManager manager) {
+            this.longpoll = longpoll;
+            this.accountId = longpoll.getAccountId();
+            this.managerReference = new WeakReference<>(manager);
+            this.handler = new SocketHandler(this);
+        }
+
+        void connect() {
+            longpoll.connect();
+            handler.restartPreDestroy();
+        }
+
+        void destroy() {
+            handler.release();
+            longpoll.shutdown();
+            released = true;
+
+            AndroidLongpollManager manager = managerReference.get();
+            if (nonNull(manager)) {
+                manager.notifyDestroy(this);
+            }
+        }
+
+        void deferDestroy() {
+            handler.restartPreDestroy();
+        }
+
+        int getAccountId() {
+            return accountId;
+        }
+
+        void firePreDestroy() {
+            AndroidLongpollManager manager = managerReference.get();
+            if (nonNull(manager)) {
+                manager.notifyPreDestroy(this);
+            }
+        }
+    }
+
+    private static final class SocketHandler extends android.os.Handler {
+
+        final static int PRE_DESTROY = 2;
+        final static int DESTROY = 3;
+
+        final WeakReference<LongpollEntry> reference;
+
+        SocketHandler(AndroidLongpollManager.LongpollEntry holder) {
+            super(Looper.getMainLooper());
+            this.reference = new WeakReference<>(holder);
+        }
+
+        void restartPreDestroy() {
+            removeMessages(PRE_DESTROY);
+            removeMessages(DESTROY);
+            sendEmptyMessageDelayed(PRE_DESTROY, 30_000L);
+        }
+
+        void postDestroy() {
+            sendEmptyMessageDelayed(DESTROY, 30_000L);
+        }
+
+        void release() {
+            removeMessages(PRE_DESTROY);
+            removeMessages(DESTROY);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            LongpollEntry holder = reference.get();
+            if (holder != null && !holder.released) {
+                switch (msg.what) {
+                    case PRE_DESTROY:
+                        postDestroy();
+                        holder.firePreDestroy();
+                        break;
+
+                    case DESTROY:
+                        holder.destroy();
+                        break;
+                }
+            }
+        }
     }
 }
