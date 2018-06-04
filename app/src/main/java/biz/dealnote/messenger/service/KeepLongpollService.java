@@ -59,7 +59,7 @@ public class KeepLongpollService extends Service {
     }
 
     public static void stop(@NonNull Context context) {
-        context.startService(new Intent(context, KeepLongpollService.class).setAction(ACTION_STOP));
+        context.stopService(new Intent(context, KeepLongpollService.class));
     }
 
     private void sendKeepAlive() {
@@ -74,18 +74,21 @@ public class KeepLongpollService extends Service {
         if (intent != null && ACTION_STOP.equals(intent.getAction())) {
             stopSelf();
         }
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        compositeDisposable.dispose();
-
+    private void cancelNotification(){
         NotificationManager manager = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
         if (manager != null) {
             manager.cancel(FOREGROUND_SERVICE);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        compositeDisposable.dispose();
+        cancelNotification();
+        super.onDestroy();
     }
 
     @Nullable
