@@ -8,8 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -47,6 +45,7 @@ import biz.dealnote.messenger.media.record.AudioRecordException;
 import biz.dealnote.messenger.media.record.AudioRecordWrapper;
 import biz.dealnote.messenger.media.record.Recorder;
 import biz.dealnote.messenger.model.AbsModel;
+import biz.dealnote.messenger.model.ChatConfig;
 import biz.dealnote.messenger.model.DraftMessage;
 import biz.dealnote.messenger.model.FwdMessages;
 import biz.dealnote.messenger.model.LoadMoreState;
@@ -130,7 +129,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     private String mSubtitle;
     private AudioRecordWrapper mAudioRecordWrapper;
     private boolean mEndOfContent;
-    private OutConfig mOutConfig;
+    private ChatConfig mOutConfig;
     private String mDraftMessageText;
     private Integer mDraftMessageId;
     private TextingNotifier mTextingNotifier;
@@ -147,7 +146,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     private final IMessagesInteractor messagesInteractor;
     private final ILongpollManager longpollManager;
 
-    public ChatPrensenter(int accountId, int messagesOwnerId, @NonNull Peer initialPeer, @NonNull OutConfig config, @Nullable Bundle savedInstanceState) {
+    public ChatPrensenter(int accountId, int messagesOwnerId, @NonNull Peer initialPeer, @NonNull ChatConfig config, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.messagesInteractor = InteractorFactory.createMessagesInteractor();
         this.longpollManager = LongpollInstance.get();
@@ -490,7 +489,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
         List<Message> fwds = new ArrayList<>();
 
-        for (AbsModel model : mOutConfig.models) {
+        for (AbsModel model : mOutConfig.getModels()) {
             if (model instanceof FwdMessages) {
                 fwds.addAll(((FwdMessages) model).fwds);
             } else {
@@ -500,7 +499,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
         builder.setForwardMessages(fwds);
 
-        mOutConfig.models.clear();
+        mOutConfig.getModels().clear();
 
         mOutConfig.setInitialText(null);
 
@@ -571,7 +570,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
         UploadDestination destination = UploadDestination.forMessage(mDraftMessageId);
 
-        getView().goToMessageAttachmentsEditor(getAccountId(), messagesOwnerId, destination, mDraftMessageText, mOutConfig.models); // TODO: 15.08.2017
+        getView().goToMessageAttachmentsEditor(getAccountId(), messagesOwnerId, destination, mDraftMessageText, mOutConfig.getModels()); // TODO: 15.08.2017
     }
 
     private boolean canSendNormalMessage() {
@@ -946,7 +945,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         if (isGuiReady()) {
             String typingText = getString(R.string.user_type_message);
             getView().displayToolbarSubtitle(typingText);
-            mToolbarSubtitleHandler.restoreToolbarWithDelay(3000);
+            mToolbarSubtitleHandler.restoreToolbarWithDelay();
         }
     }
 
@@ -1019,7 +1018,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
     private int calculateAttachmentsCount() {
         int outConfigCount = 0;
-        for (AbsModel model : mOutConfig.models) {
+        for (AbsModel model : mOutConfig.getModels()) {
             if (model instanceof FwdMessages) {
                 outConfigCount = outConfigCount + ((FwdMessages) model).fwds.size();
             } else {
@@ -1313,7 +1312,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     }
 
     public void fireForwardToHereClick(@NonNull ArrayList<Message> messages) {
-        mOutConfig.models.append(new FwdMessages(messages));
+        mOutConfig.getModels().append(new FwdMessages(messages));
 
         resolveAttachmentsCounter();
         resolveSendButtonState();
@@ -1560,86 +1559,8 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
             removeMessages(RESTORE_TOLLBAR);
         }
 
-        void restoreToolbarWithDelay(int delayMillis) {
-            sendMessageDelayed(android.os.Message.obtain(this, RESTORE_TOLLBAR), delayMillis);
-        }
-    }
-
-    public static final class OutConfig implements Parcelable {
-
-        public static final Creator<OutConfig> CREATOR = new Creator<OutConfig>() {
-            @Override
-            public OutConfig createFromParcel(Parcel in) {
-                return new OutConfig(in);
-            }
-
-            @Override
-            public OutConfig[] newArray(int size) {
-                return new OutConfig[size];
-            }
-        };
-
-        private ModelsBundle models;
-        private boolean closeOnSend;
-        private String initialText;
-        private ArrayList<Uri> uploadFiles;
-
-        public OutConfig() {
-            this.models = new ModelsBundle();
-        }
-
-        OutConfig(Parcel in) {
-            this.closeOnSend = in.readByte() != 0;
-            this.models = in.readParcelable(ModelsBundle.class.getClassLoader());
-            this.initialText = in.readString();
-            this.uploadFiles = in.createTypedArrayList(Uri.CREATOR);
-        }
-
-        public void setModels(ModelsBundle models) {
-            this.models = models;
-        }
-
-        private boolean isCloseOnSend() {
-            return closeOnSend;
-        }
-
-        public void setCloseOnSend(boolean closeOnSend) {
-            this.closeOnSend = closeOnSend;
-        }
-
-        private String getInitialText() {
-            return initialText;
-        }
-
-        public void setInitialText(String initialText) {
-            this.initialText = initialText;
-        }
-
-        private ArrayList<Uri> getUploadFiles() {
-            return uploadFiles;
-        }
-
-        public void setUploadFiles(ArrayList<Uri> uploadFiles) {
-            this.uploadFiles = uploadFiles;
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeByte((byte) (closeOnSend ? 1 : 0));
-            dest.writeParcelable(models, flags);
-            dest.writeString(initialText);
-            dest.writeTypedList(uploadFiles);
-        }
-
-        public void appendAll(Iterable<? extends AbsModel> models) {
-            for (AbsModel model : models) {
-                this.models.append(model);
-            }
+        void restoreToolbarWithDelay() {
+            sendMessageDelayed(android.os.Message.obtain(this, RESTORE_TOLLBAR), 3000);
         }
     }
 }

@@ -125,7 +125,7 @@ public abstract class RxSupportPresenter<V extends IMvpView> extends AbsPresente
         }
     }
 
-    protected void safeShowError(IErrorView view, String text) {
+    protected static void safeShowError(IErrorView view, String text) {
         if (nonNull(view)) {
             view.showError(text);
         }

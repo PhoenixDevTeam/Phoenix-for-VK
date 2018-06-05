@@ -50,6 +50,7 @@ import biz.dealnote.messenger.fragment.sheet.MessageAttachmentsFragment;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
+import biz.dealnote.messenger.model.ChatConfig;
 import biz.dealnote.messenger.model.FwdMessages;
 import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.Message;
@@ -64,7 +65,6 @@ import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.InputTextDialog;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.view.InputViewController;
 import biz.dealnote.messenger.view.LoadMoreFooterHelper;
@@ -255,8 +255,8 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
     }
 
     @NonNull
-    private ChatPrensenter.OutConfig createStartConfig() {
-        ChatPrensenter.OutConfig config = new ChatPrensenter.OutConfig();
+    private ChatConfig createStartConfig() {
+        ChatConfig config = new ChatConfig();
 
         config.setCloseOnSend(getActivity() instanceof SendAttachmentsActivity);
 
@@ -845,11 +845,5 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
         super.onDestroyView();
         mInputViewController.destroyView();
         mInputViewController = null;
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        Logger.d(TAG, "finalize");
-        super.finalize();
     }
 }

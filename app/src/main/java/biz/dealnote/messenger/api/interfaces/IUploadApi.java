@@ -10,6 +10,7 @@ import biz.dealnote.messenger.api.model.upload.UploadOwnerPhotoDto;
 import biz.dealnote.messenger.api.model.upload.UploadPhotoToAlbumDto;
 import biz.dealnote.messenger.api.model.upload.UploadPhotoToMessageDto;
 import biz.dealnote.messenger.api.model.upload.UploadPhotoToWallDto;
+import io.reactivex.Single;
 import retrofit2.Call;
 
 /**
@@ -24,6 +25,8 @@ public interface IUploadApi {
     Call<UploadPhotoToWallDto> uploadPhotoToWall(String server, @NonNull InputStream photo, PercentageListener listener);
 
     Call<UploadPhotoToMessageDto> uploadPhotoToMessage(String server, @NonNull InputStream photo, PercentageListener listener);
+
+    Single<UploadPhotoToMessageDto> uploadPhotoToMessageRx(String server, @NonNull InputStream is, PercentageListener listener);
 
     Call<UploadPhotoToAlbumDto> uploadPhotoToAlbum(String server, @NonNull InputStream file1, PercentageListener listener);
 }

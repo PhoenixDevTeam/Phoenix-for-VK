@@ -5,6 +5,7 @@ import biz.dealnote.messenger.api.model.upload.UploadOwnerPhotoDto;
 import biz.dealnote.messenger.api.model.upload.UploadPhotoToAlbumDto;
 import biz.dealnote.messenger.api.model.upload.UploadPhotoToMessageDto;
 import biz.dealnote.messenger.api.model.upload.UploadPhotoToWallDto;
+import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Multipart;
@@ -33,6 +34,10 @@ public interface IUploadService {
     @Multipart
     @POST
     Call<UploadPhotoToMessageDto> uploadPhotoToMessage(@Url String server, @Part MultipartBody.Part photo);
+
+    @Multipart
+    @POST
+    Single<UploadPhotoToMessageDto> uploadPhotoToMessageRx(@Url String server, @Part MultipartBody.Part photo);
 
     @Multipart
     @POST

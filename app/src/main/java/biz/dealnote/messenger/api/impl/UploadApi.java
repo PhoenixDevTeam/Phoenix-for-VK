@@ -15,6 +15,7 @@ import biz.dealnote.messenger.api.model.upload.UploadPhotoToWallDto;
 import biz.dealnote.messenger.api.services.IUploadService;
 import biz.dealnote.messenger.api.util.ProgressRequestBody;
 import biz.dealnote.messenger.util.Objects;
+import io.reactivex.Single;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -69,6 +70,13 @@ public class UploadApi implements IUploadApi {
         ProgressRequestBody body = new ProgressRequestBody(is, wrapPercentageListener(listener), MediaType.parse("image/*"));
         MultipartBody.Part part = MultipartBody.Part.createFormData("photo", "photo.jpg", body);
         return service().uploadPhotoToMessage(server, part);
+    }
+
+    @Override
+    public Single<UploadPhotoToMessageDto> uploadPhotoToMessageRx(String server, @NonNull InputStream is, PercentageListener listener) {
+        ProgressRequestBody body = new ProgressRequestBody(is, wrapPercentageListener(listener), MediaType.parse("image/*"));
+        MultipartBody.Part part = MultipartBody.Part.createFormData("photo", "photo.jpg", body);
+        return service().uploadPhotoToMessageRx(server, part);
     }
 
     @Override

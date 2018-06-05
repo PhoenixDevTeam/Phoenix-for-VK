@@ -37,19 +37,14 @@ import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
 abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
         PlaceSupportPresenter<V> implements IVoicePlayer.IPlayerStatusListener {
 
-    //private static final String SAVE_DATA = "save_data";
-
     private final ArrayList<Message> mData;
     private IVoicePlayer mVoicePlayer;
     private Lookup mVoiceMessageLookup;
 
     AbsMessageListPresenter(int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-        //if(savedInstanceState != null){
-        //    mData = savedInstanceState.getParcelableArrayList(SAVE_DATA);
-        //} else {
-            mData = new ArrayList<>();
-        //}
+
+        mData = new ArrayList<>();
 
         mVoicePlayer = Injection.provideVoicePlayerFactory().createPlayer();
         mVoicePlayer.setCallback(this);
@@ -75,12 +70,6 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
         if(isGuiReady()) {
             getView().displayMessages(mData);
         }
-    }
-
-    @Override
-    public void saveState(@NonNull Bundle outState) {
-        super.saveState(outState);
-        //outState.putParcelableArrayList(SAVE_DATA, mData);
     }
 
     @NonNull
@@ -201,8 +190,6 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
     }
 
     public void fireVoicePlayButtonClick(int voiceHolderId, int voiceMessageId, @NonNull VoiceMessage voiceMessage){
-        Logger.d(tag(), "fireVoicePlayButtonClick, voiceMessageId: " + voiceMessageId + ", voiceMessage: " + voiceMessage);
-
         try {
             boolean messageChanged = mVoicePlayer.toggle(voiceMessageId, voiceMessage);
             if(messageChanged){
@@ -212,8 +199,8 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
                 float progress = mVoicePlayer.getProgress();
                 getView().bindVoiceHolderById(voiceHolderId, true, paused, progress, false);
             }
-        } catch (PrepareException e) {
-            e.printStackTrace();
+        } catch (PrepareException ignored) {
+
         }
 
         syncVoiceLookupState();
@@ -228,7 +215,6 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
             } else {
                 float progress = mVoicePlayer.getProgress();
                 boolean paused = !mVoicePlayer.isSupposedToPlay();
-                Logger.d(tag(), "resolveVoiceMessagePlayingState, progress: " + progress + ", paused: " + paused);
 
                 getView().configNowVoiceMessagePlaying(optionalVoiceMessageId.get(), progress, paused, anim);
             }
@@ -246,8 +232,6 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
     }
 
     public void fireVoiceHolderCreated(int voiceMessageId, int voiceHolderId) {
-        Logger.d(tag(), "fireVoiceHolderCreated, voiceMessageId: " + voiceMessageId + ", voiceHolderId: " + voiceHolderId);
-
         Optional<Integer> currentVoiceId = mVoicePlayer.getPlayingVoiceId();
         boolean play = currentVoiceId.nonEmpty() && currentVoiceId.get() == voiceMessageId;
         boolean paused = play && !mVoicePlayer.isSupposedToPlay();
@@ -257,8 +241,7 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
 
     @Override
     public void onPlayerStatusChange(int status) {
-        Optional<Integer> voiceMessageId = mVoicePlayer.getPlayingVoiceId();
-        Logger.d(tag(), "onPlayerStatusChange, voiceMessageId: " + voiceMessageId.get() + ", status: " + status);
+        //Optional<Integer> voiceMessageId = mVoicePlayer.getPlayingVoiceId();
     }
 
     @Override

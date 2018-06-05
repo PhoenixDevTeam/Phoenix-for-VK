@@ -10,28 +10,92 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.Apis;
+import biz.dealnote.messenger.api.PercentageListener;
 import biz.dealnote.messenger.api.WeakPercentageListener;
+import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.api.model.upload.UploadPhotoToMessageDto;
 import biz.dealnote.messenger.db.AttachToType;
 import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
+import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.upload.BaseUploadResponse;
 import biz.dealnote.messenger.upload.UploadCallback;
 import biz.dealnote.messenger.upload.UploadObject;
 import biz.dealnote.messenger.util.IOUtils;
-import biz.dealnote.messenger.util.Objects;
+import io.reactivex.Completable;
+import io.reactivex.Single;
 import retrofit2.Call;
 
+import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;
+import static biz.dealnote.messenger.util.Utils.safelyClose;
 
 public class PhotoMessageUploadTask extends AbstractUploadTask<PhotoMessageUploadTask.Response> {
 
     public PhotoMessageUploadTask(@NonNull Context context, @NonNull UploadCallback callback,
                                   @NonNull UploadObject uploadObject, @Nullable UploadServer server) {
         super(context, callback, uploadObject, server);
+    }
+
+    @SuppressWarnings("unused")
+    private static Single<Response> doUploadRx(@NonNull Context context, @NonNull INetworker networker, @Nullable UploadServer initialServer,
+                                        @NonNull UploadObject upload, @Nullable PercentageListener listener) {
+        final int accountId = upload.getAccountId();
+        final int messageId = upload.getDestination().getId();
+
+        Single<UploadServer> serverSingle;
+        if (nonNull(initialServer)) {
+            serverSingle = Single.just(initialServer);
+        } else {
+            serverSingle = networker.vkDefault(accountId)
+                    .photos()
+                    .getMessagesUploadServer().map(s -> s);
+        }
+
+        return serverSingle.flatMap(server -> {
+            final InputStream[] is = new InputStream[1];
+
+            try {
+                is[0] = openStream(context, upload.getFileUri(), upload.getSize());
+                return networker.uploads()
+                        .uploadPhotoToMessageRx(server.getUrl(), is[0], listener)
+                        .doFinally(() -> safelyClose(is[0]))
+                        .flatMap(dto -> networker.vkDefault(accountId)
+                                .photos()
+                                .saveMessagesPhoto(dto.server, dto.photo, dto.hash)
+                                .flatMap(photos -> {
+                                    if(photos.isEmpty()){
+                                        return Single.error(new NotFoundException());
+                                    }
+
+                                    Photo photo = Dto2Model.transform(photos.get(0));
+
+                                    Response response = new Response();
+                                    response.setServer(server);
+                                    response.setPhoto(photo);
+
+                                    if(upload.isAutoCommit()){
+                                        return attachIntoDatabaseRx(accountId, messageId, photo)
+                                                .andThen(Single.just(response));
+                                    } else {
+                                        return Single.just(response);
+                                    }
+                                }));
+            } catch (Exception e){
+                return Single.error(e);
+            } finally {
+                safelyClose(is[0]);
+            }
+        });
+    }
+
+    private static Completable attachIntoDatabaseRx(int accountId, int messageId, Photo photo){
+        return Injection.provideAttachmentsRepository()
+                .attach(accountId, AttachToType.MESSAGE, messageId, Collections.singletonList(photo))
+                .andThen(Stores.getInstance().messages().notifyMessageHasAttachments(accountId, messageId));
     }
 
     @Override
@@ -91,7 +155,7 @@ public class PhotoMessageUploadTask extends AbstractUploadTask<PhotoMessageUploa
             if (safeCountOf(photos) == 1) {
                 VKApiPhoto dto = photos.get(0);
 
-                if(uploadObject.isAutoCommit()){
+                if (uploadObject.isAutoCommit()) {
                     attachIntoDatabase(dto);
                 }
 
@@ -122,9 +186,13 @@ public class PhotoMessageUploadTask extends AbstractUploadTask<PhotoMessageUploa
 
         public Photo photo;
 
+        public void setPhoto(Photo photo) {
+            this.photo = photo;
+        }
+
         @Override
         public boolean isSuccess() {
-            return Objects.nonNull(photo);
+            return nonNull(photo);
         }
     }
 }

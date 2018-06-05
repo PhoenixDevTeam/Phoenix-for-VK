@@ -204,7 +204,7 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
         resolveEmptyViewVisibility();
     }
 
-    private static List<AttachmenEntry> create(List<Pair<Integer, AbsModel>> pairs) {
+    private static List<AttachmenEntry> entities2entries(List<Pair<Integer, AbsModel>> pairs) {
         List<AttachmenEntry> entries = new ArrayList<>(pairs.size());
         for (Pair<Integer, AbsModel> pair : pairs) {
             entries.add(new AttachmenEntry(true, pair.getSecond())
@@ -214,7 +214,7 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
     }
 
     private void onAttachmentsAdded(List<Pair<Integer, AbsModel>> pairs) {
-        onDataReceived(create(pairs));
+        onDataReceived(entities2entries(pairs));
     }
 
     private void loadData() {
@@ -226,7 +226,7 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
     private Single<List<AttachmenEntry>> createLoadAllSingle() {
         return attachmentsRepository
                 .getAttachmentsWithIds(messageOwnerId, AttachToType.MESSAGE, messageId)
-                .map(MessageAttachmentsPresenter::create)
+                .map(MessageAttachmentsPresenter::entities2entries)
                 .zipWith(repositories.uploads().getByDestination(messageOwnerId, destination), (atts, uploads) -> {
                     List<AttachmenEntry> data = new ArrayList<>(atts.size() + uploads.size());
                     for (UploadObject u : uploads) {
@@ -338,8 +338,6 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
             this.currentPhotoCameraUri = FileUtil.getExportedUriForFile(getApplicationContext(), file);
             getView().startCamera(currentPhotoCameraUri);
         } catch (IOException e) {
-            e.printStackTrace();
-
             safeShowError(getView(), e.getMessage());
         }
     }
