@@ -85,7 +85,6 @@ import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 import static biz.dealnote.messenger.util.AppTextUtils.safeTrimmedIsEmpty;
-import static biz.dealnote.messenger.util.CompareUtils.compareInts;
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.RxUtils.dummy;
@@ -121,10 +120,10 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     private static final Comparator<Message> MESSAGES_COMPARATOR = (rhs, lhs) -> {
         // соблюдаем сортировку как при запросе в бд
         if (lhs.getStatus() == rhs.getStatus()) {
-            return compareInts(lhs.getId(), rhs.getId());
+            return Integer.compare(lhs.getId(), rhs.getId());
         }
 
-        return compareInts(lhs.getStatus(), rhs.getStatus());
+        return Integer.compare(lhs.getStatus(), rhs.getStatus());
     };
 
     private Peer mPeer;

@@ -29,7 +29,6 @@ import biz.dealnote.messenger.mvp.view.IDialogsView;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.AssertUtils;
-import biz.dealnote.messenger.util.CompareUtils;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.ShortcutUtils;
@@ -350,11 +349,11 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
 
     private void checkLongpoll(){
         if(isGuiResumed() && getAccountId() != ISettings.IAccountsSettings.INVALID_ID){
-            longpollManager.keepAlive(getAccountId());
+            longpollManager.keepAlive(dialogsOwnerId);
         }
     }
 
-    private static final Comparator<Dialog> COMPARATOR = (rhs, lhs) -> CompareUtils.compareInts(lhs.getLastMessageId(), rhs.getLastMessageId());
+    private static final Comparator<Dialog> COMPARATOR = (rhs, lhs) -> Integer.compare(lhs.getLastMessageId(), rhs.getLastMessageId());
 
     public void fireRefresh() {
         this.cacheLoadingDisposable.dispose();

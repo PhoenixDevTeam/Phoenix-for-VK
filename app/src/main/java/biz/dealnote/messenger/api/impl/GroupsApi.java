@@ -11,6 +11,7 @@ import biz.dealnote.messenger.api.model.GroupSettingsDto;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiUser;
+import biz.dealnote.messenger.api.model.response.GroupLongpollServer;
 import biz.dealnote.messenger.api.model.response.GroupWallInfoResponse;
 import biz.dealnote.messenger.api.services.IGroupsService;
 import biz.dealnote.messenger.exception.NotFoundException;
@@ -150,6 +151,14 @@ class GroupsApi extends AbsApi implements IGroupsApi {
         return provideService(IGroupsService.class, TokenType.USER)
                 .flatMap(service -> service
                         .get(userId, integerFromBoolean(extended), filter, fields, offset, count)
+                        .map(extractResponseWithErrorHandling()));
+    }
+
+    @Override
+    public Single<GroupLongpollServer> getLongPollServer(int groupId) {
+        return provideService(IGroupsService.class, TokenType.COMMUNITY)
+                .flatMap(service -> service
+                        .getLongPollServer(groupId)
                         .map(extractResponseWithErrorHandling()));
     }
 

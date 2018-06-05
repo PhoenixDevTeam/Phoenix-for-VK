@@ -21,7 +21,6 @@ import biz.dealnote.messenger.model.criteria.WallCriteria;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
 import biz.dealnote.messenger.mvp.view.IWallView;
 import biz.dealnote.messenger.util.Analytics;
-import biz.dealnote.messenger.util.CompareUtils;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
@@ -420,10 +419,10 @@ public abstract class AbsWallPresenter<V extends IWallView> extends PlaceSupport
 
     private static final Comparator<Post> COMPARATOR = (rhs, lhs) -> {
         if (rhs.isPinned() == lhs.isPinned()) {
-            return CompareUtils.compareInts(lhs.getVkid(), rhs.getVkid());
+            return Integer.compare(lhs.getVkid(), rhs.getVkid());
         }
 
-        return CompareUtils.compareBoolean(lhs.isPinned(), rhs.isPinned());
+        return Boolean.compare(lhs.isPinned(), rhs.isPinned());
     };
 
     private int findByVkid(int ownerId, int vkid) {

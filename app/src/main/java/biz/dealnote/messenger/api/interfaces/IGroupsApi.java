@@ -9,6 +9,7 @@ import biz.dealnote.messenger.api.model.GroupSettingsDto;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiUser;
+import biz.dealnote.messenger.api.model.response.GroupLongpollServer;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
@@ -58,4 +59,6 @@ public interface IGroupsApi {
     Single<List<VKApiCommunity>> getById(Collection<Integer> ids, Collection<String> domains,
                                          String groupId, String fields);
 
+    @CheckResult
+    Single<GroupLongpollServer> getLongPollServer(int groupId);
 }

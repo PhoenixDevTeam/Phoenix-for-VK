@@ -16,7 +16,7 @@ import io.reactivex.disposables.Disposable;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
-class Longpoll {
+class UserLongpoll implements ILongpoll {
 
     private static final String TAG = "Longpoll_TAG";
     private static final int DELAY_ON_ERROR = 10 * 1000;
@@ -28,12 +28,13 @@ class Longpoll {
     private Callback callback;
     private final INetworker networker;
 
-    Longpoll(INetworker networker, int accountId, Callback callback) {
+    UserLongpoll(INetworker networker, int accountId, Callback callback) {
         this.accountId = accountId;
         this.callback = callback;
         this.networker = networker;
     }
 
+    @Override
     public int getAccountId() {
         return accountId;
     }
@@ -44,12 +45,14 @@ class Longpoll {
         this.ts = null;
     }
 
-    void shutdown() {
+    @Override
+    public void shutdown() {
         Logger.d(TAG, "shutdown, aid: " + accountId);
         resetUpdatesDisposable();
     }
 
-    void connect() {
+    @Override
+    public void connect() {
         Logger.d(TAG, "connect, aid: " + accountId);
         if (!isListeningNow()) {
             get();

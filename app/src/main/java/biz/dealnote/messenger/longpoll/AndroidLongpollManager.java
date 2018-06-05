@@ -19,6 +19,7 @@ import biz.dealnote.messenger.api.model.longpoll.MessageFlagsSetUpdate;
 import biz.dealnote.messenger.api.model.longpoll.OutputMessagesSetReadUpdate;
 import biz.dealnote.messenger.api.model.longpoll.UserIsOfflineUpdate;
 import biz.dealnote.messenger.api.model.longpoll.UserIsOnlineUpdate;
+import biz.dealnote.messenger.api.model.longpoll.VkApiGroupLongpollUpdates;
 import biz.dealnote.messenger.api.model.longpoll.VkApiLongpollUpdates;
 import biz.dealnote.messenger.api.model.longpoll.WriteTextInDialogUpdate;
 import biz.dealnote.messenger.longpoll.model.AbsRealtimeAction;
@@ -41,7 +42,7 @@ import io.reactivex.schedulers.Schedulers;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
-public class AndroidLongpollManager implements ILongpollManager, Longpoll.Callback {
+public class AndroidLongpollManager implements ILongpollManager, UserLongpoll.Callback, GroupLongpoll.Callback {
 
     private final Context app;
     private final SparseArray<LongpollEntry> map;
@@ -74,8 +75,8 @@ public class AndroidLongpollManager implements ILongpollManager, Longpoll.Callba
         return keepAlivePublisher.onBackpressureBuffer();
     }
 
-    private Longpoll createLongpoll(int accountId) {
-        return new Longpoll(networker, accountId, this);
+    private ILongpoll createLongpoll(int accountId) {
+        return accountId > 0 ? new UserLongpoll(networker, accountId, this) : new GroupLongpoll(networker, Math.abs(accountId), this);
     }
 
     @Override
@@ -189,15 +190,20 @@ public class AndroidLongpollManager implements ILongpollManager, Longpoll.Callba
         return actions;
     }
 
+    @Override
+    public void onUpdates(int groupId, @NonNull VkApiGroupLongpollUpdates updates) {
+
+    }
+
     private static final class LongpollEntry {
 
-        final Longpoll longpoll;
+        final ILongpoll longpoll;
         final SocketHandler handler;
         boolean released;
         final WeakReference<AndroidLongpollManager> managerReference;
         final int accountId;
 
-        LongpollEntry(Longpoll longpoll, AndroidLongpollManager manager) {
+        LongpollEntry(ILongpoll longpoll, AndroidLongpollManager manager) {
             this.longpoll = longpoll;
             this.accountId = longpoll.getAccountId();
             this.managerReference = new WeakReference<>(manager);

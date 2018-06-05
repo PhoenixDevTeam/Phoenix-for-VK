@@ -7,6 +7,7 @@ import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.response.BaseResponse;
+import biz.dealnote.messenger.api.model.response.GroupLongpollServer;
 import biz.dealnote.messenger.api.model.response.GroupWallInfoResponse;
 import io.reactivex.Single;
 import retrofit2.http.Field;
@@ -82,6 +83,10 @@ public interface IGroupsService {
                                                        @Field("sort") Integer sort,
                                                        @Field("offset") Integer offset,
                                                        @Field("count") Integer count);
+
+    @FormUrlEncoded
+    @POST("groups.getLongPollServer")
+    Single<BaseResponse<GroupLongpollServer>> getLongPollServer(@Field("group_id") int groupId);
 
     //https://vk.com/dev/groups.leave
     @FormUrlEncoded
