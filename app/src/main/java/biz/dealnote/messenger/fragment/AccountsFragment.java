@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -356,7 +355,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
 
         User user = (User) account.getOwner();
 
-        final Context app = getActivity().getApplicationContext();
+        final Context app = requireContext().getApplicationContext();
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
@@ -372,8 +371,8 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
 
             @Override
             protected void onPostExecute(String s) {
-                if (isAdded() && !TextUtils.isEmpty(s)) {
-                    Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
+                if (Utils.nonEmpty(s)) {
+                    Toast.makeText(app, s, Toast.LENGTH_LONG).show();
                 }
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
