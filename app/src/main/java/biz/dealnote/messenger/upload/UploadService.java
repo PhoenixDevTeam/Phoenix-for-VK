@@ -26,16 +26,13 @@ import biz.dealnote.messenger.upload.task.PhotoToAlbumTask;
 import biz.dealnote.messenger.upload.task.PhotoWallUploadTask;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Logger;
-import biz.dealnote.messenger.util.MagicKey;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.RxUtils;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
-import static biz.dealnote.messenger.util.RxUtils.dummy;
 import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
@@ -256,10 +253,7 @@ public class UploadService extends Service implements UploadCallback {
     public void onCanceled(UploadObject upload) {
         mCurrenTask = null;
 
-        uploadsRepository.removeWithId(upload.getId())
-                .subscribeOn(Schedulers.io())
-                .subscribe(dummy(), ignore());
-
+        RxUtils.subscribeOnIOAndIgnore(uploadsRepository.removeWithId(upload.getId()));
         uploadFirstInQueue();
     }
 
@@ -269,9 +263,7 @@ public class UploadService extends Service implements UploadCallback {
     }
 
     private void fireStatusChange(UploadObject uploadObject) {
-        uploadsRepository.changeStatus(uploadObject.getId(), uploadObject.getStatus())
-                .subscribeOn(Schedulers.io())
-                .subscribe(dummy(), ignore());
+        RxUtils.subscribeOnIOAndIgnore(uploadsRepository.changeStatus(uploadObject.getId(), uploadObject.getStatus()));
     }
 
     /**
@@ -297,62 +289,58 @@ public class UploadService extends Service implements UploadCallback {
             return false;
         }
 
-        uploadsRepository.removeWithId(id)
-                .subscribeOn(Schedulers.io())
-                .subscribe(dummy(), ignore());
-
+        RxUtils.subscribeOnIOAndIgnore(uploadsRepository.removeWithId(id));
         return true;
     }
 
-    private HashMap<MagicKey, UploadServer> mServersMap = new HashMap<>();
+    private HashMap<String, UploadServer> mServersMap = new HashMap<>();
 
     private void saveServerToCache(UploadObject upload, UploadServer server) {
-        mServersMap.put(createKey(upload), server);
+        mServersMap.put(createServerKey(upload), server);
     }
 
     private UploadServer findServerFor(UploadObject upload) {
-        MagicKey key = createKey(upload);
+        String key = createServerKey(upload);
         UploadServer targetServer = mServersMap.get(key);
 
         Logger.d(TAG, "Try to re-use server, from cache: " + (targetServer == null ? "null" : targetServer.getUrl()) + ", key: " + key);
         return targetServer;
     }
 
-    @NonNull
-    private MagicKey createKey(UploadObject upload) {
+    private static String createServerKey(UploadObject upload) {
         UploadDestination dest = upload.getDestination();
 
-        MagicKey bundle = new MagicKey();
-        bundle.put(Extra.ACCOUNT_ID, upload.getAccountId());
-        bundle.put(Extra.METHOD, dest.getMethod());
+        StringBuilder builder = new StringBuilder();
+        builder.append(Extra.ACCOUNT_ID).append(upload.getAccountId());
+        builder.append(Extra.METHOD).append(dest.getMethod());
 
         switch (upload.getDestination().getMethod()) {
             case Method.DOCUMENT:
                 if (dest.getOwnerId() < 0) {
-                    bundle.put(Extra.GROUP_ID, Math.abs(dest.getOwnerId()));
+                    builder.append(Extra.GROUP_ID).append(Math.abs(dest.getOwnerId()));
                 }
                 break;
             case Method.PHOTO_TO_ALBUM:
-                bundle.put(Extra.ALBUM_ID, dest.getId());
+                builder.append(Extra.ALBUM_ID).append(dest.getId());
                 if (dest.getOwnerId() < 0) {
-                    bundle.put(Extra.GROUP_ID, Math.abs(dest.getOwnerId()));
+                    builder.append(Extra.GROUP_ID).append(Math.abs(dest.getOwnerId()));
                 }
                 break;
             case Method.PHOTO_TO_COMMENT:
             case Method.PHOTO_TO_WALL:
                 if (dest.getOwnerId() < 0) {
-                    bundle.put(Extra.GROUP_ID, Math.abs(dest.getOwnerId()));
+                    builder.append(Extra.GROUP_ID).append(Math.abs(dest.getOwnerId()));
                 }
                 break;
             case Method.PHOTO_TO_MESSAGE:
                 //do nothink
                 break;
             case Method.PHOTO_TO_PROFILE:
-                bundle.put(Extra.OWNER_ID, dest.getOwnerId());
+                builder.append(Extra.OWNER_ID).append(dest.getOwnerId());
                 break;
         }
 
-        return bundle;
+        return builder.toString();
     }
 
     private static final class ServiceStub extends IUploadService.Stub {
