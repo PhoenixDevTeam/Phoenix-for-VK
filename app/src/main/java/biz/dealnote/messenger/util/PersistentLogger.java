@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import biz.dealnote.messenger.Injection;
-import biz.dealnote.messenger.db.interfaces.ILogsStore;
+import biz.dealnote.messenger.db.interfaces.ILogsStorage;
 import biz.dealnote.messenger.model.LogEvent;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -18,7 +18,7 @@ import static biz.dealnote.messenger.util.Utils.safelyClose;
 public class PersistentLogger {
 
     public static void logThrowable(String tag, Throwable throwable){
-        ILogsStore store = Injection.provideLogsStore();
+        ILogsStorage store = Injection.provideLogsStore();
         Throwable cause = Utils.getCauseIfRuntime(throwable);
 
         getStackTrace(cause)

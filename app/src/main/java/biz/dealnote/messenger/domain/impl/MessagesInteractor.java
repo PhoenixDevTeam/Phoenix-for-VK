@@ -30,9 +30,9 @@ import biz.dealnote.messenger.crypt.CryptHelper;
 import biz.dealnote.messenger.crypt.KeyLocationPolicy;
 import biz.dealnote.messenger.crypt.KeyPairDoesNotExistException;
 import biz.dealnote.messenger.db.column.UserColumns;
-import biz.dealnote.messenger.db.interfaces.IDialogsStore;
-import biz.dealnote.messenger.db.interfaces.IMessagesStore;
-import biz.dealnote.messenger.db.interfaces.IStores;
+import biz.dealnote.messenger.db.interfaces.IDialogsStorage;
+import biz.dealnote.messenger.db.interfaces.IMessagesStorage;
+import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.db.model.MessagePatch;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
@@ -85,11 +85,11 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
 public class MessagesInteractor implements IMessagesInteractor {
 
     private final IOwnersInteractor ownersInteractor;
-    private final IStores stores;
+    private final IStorages stores;
     private final INetworker networker;
     private final IMessagesDecryptor decryptor;
 
-    public MessagesInteractor(INetworker networker, IOwnersInteractor ownersInteractor, IStores stores) {
+    public MessagesInteractor(INetworker networker, IOwnersInteractor ownersInteractor, IStorages stores) {
         this.ownersInteractor = ownersInteractor;
         this.networker = networker;
         this.stores = stores;
@@ -250,7 +250,7 @@ public class MessagesInteractor implements IMessagesInteractor {
     @Override
     public Single<List<Dialog>> getDialogs(int accountId, int count, Integer startMessageId) {
         final boolean clear = isNull(startMessageId);
-        final IDialogsStore dialogsStore = this.stores.dialogs();
+        final IDialogsStorage dialogsStore = this.stores.dialogs();
 
         return networker.vkDefault(accountId)
                 .messages()
@@ -438,7 +438,7 @@ public class MessagesInteractor implements IMessagesInteractor {
 
     @Override
     public Single<Integer> send(int accountId, int dbid) {
-        final IMessagesStore store = this.stores.messages();
+        final IMessagesStorage store = this.stores.messages();
 
         return store
                 .findMessagesByIds(accountId, Collections.singletonList(dbid), true, false)
@@ -461,7 +461,7 @@ public class MessagesInteractor implements IMessagesInteractor {
 
     @Override
     public Single<SentMsg> sendUnsentMessage(Collection<Integer> accountIds) {
-        final IMessagesStore store = this.stores.messages();
+        final IMessagesStorage store = this.stores.messages();
 
         return store
                 .findFirstUnsentMessage(accountIds, true, false)

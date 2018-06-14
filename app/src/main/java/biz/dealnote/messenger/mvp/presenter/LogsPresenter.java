@@ -9,7 +9,7 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.interfaces.ILogsStore;
+import biz.dealnote.messenger.db.interfaces.ILogsStorage;
 import biz.dealnote.messenger.model.LogEvent;
 import biz.dealnote.messenger.model.LogEventType;
 import biz.dealnote.messenger.model.LogEventWrapper;
@@ -30,7 +30,7 @@ public class LogsPresenter extends RxSupportPresenter<ILogsView> {
 
     private final List<LogEventWrapper> events;
 
-    private final ILogsStore store;
+    private final ILogsStorage store;
 
     public LogsPresenter(@Nullable Bundle savedInstanceState) {
         super(savedInstanceState);

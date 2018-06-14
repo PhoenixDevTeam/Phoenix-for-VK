@@ -13,7 +13,7 @@ import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.db.column.GroupColumns;
 import biz.dealnote.messenger.db.column.UserColumns;
-import biz.dealnote.messenger.db.interfaces.IOwnersStore;
+import biz.dealnote.messenger.db.interfaces.IOwnersStorage;
 import biz.dealnote.messenger.db.model.entity.CareerEntity;
 import biz.dealnote.messenger.db.model.entity.CommunityEntity;
 import biz.dealnote.messenger.db.model.entity.UserDetailsEntity;
@@ -83,9 +83,9 @@ public class OwnersInteractor implements IOwnersInteractor {
             VERIFIED, BLACKLISTED, SITE, ACTIVITY, "member_status", "can_message", "cover");
 
     private final INetworker networker;
-    private final IOwnersStore cache;
+    private final IOwnersStorage cache;
 
-    public OwnersInteractor(INetworker networker, IOwnersStore ownersRepository) {
+    public OwnersInteractor(INetworker networker, IOwnersStorage ownersRepository) {
         this.networker = networker;
         this.cache = ownersRepository;
     }

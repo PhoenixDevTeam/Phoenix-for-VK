@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.db.AttachToType;
-import biz.dealnote.messenger.db.interfaces.IAttachmentsStore;
+import biz.dealnote.messenger.db.interfaces.IAttachmentsStorage;
 import biz.dealnote.messenger.db.model.entity.Entity;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
@@ -29,10 +29,10 @@ public class AttachmentsRepository implements IAttachmentsRepository {
     private final PublishSubject<IAddEvent> addPublishSubject;
     private final PublishSubject<IRemoveEvent> removePublishSubject;
 
-    private final IAttachmentsStore store;
+    private final IAttachmentsStorage store;
     private final IOwnersInteractor ownersInteractor;
 
-    public AttachmentsRepository(IAttachmentsStore store, IOwnersInteractor ownersInteractor) {
+    public AttachmentsRepository(IAttachmentsStorage store, IOwnersInteractor ownersInteractor) {
         this.store = store;
         this.ownersInteractor = ownersInteractor;
         this.addPublishSubject = PublishSubject.create();

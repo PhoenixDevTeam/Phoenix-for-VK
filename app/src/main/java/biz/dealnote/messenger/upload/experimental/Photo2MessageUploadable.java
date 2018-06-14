@@ -11,7 +11,7 @@ import biz.dealnote.messenger.api.PercentageListener;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.db.AttachToType;
-import biz.dealnote.messenger.db.interfaces.IMessagesStore;
+import biz.dealnote.messenger.db.interfaces.IMessagesStorage;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.exception.NotFoundException;
@@ -28,9 +28,9 @@ public class Photo2MessageUploadable extends AbstractUploadable<Photo> {
     private final Context context;
     private final INetworker networker;
     private final IAttachmentsRepository attachmentsRepository;
-    private final IMessagesStore messagesStore;
+    private final IMessagesStorage messagesStore;
 
-    public Photo2MessageUploadable(Context context, INetworker networker, IAttachmentsRepository attachmentsRepository, IMessagesStore messagesStore) {
+    public Photo2MessageUploadable(Context context, INetworker networker, IAttachmentsRepository attachmentsRepository, IMessagesStorage messagesStore) {
         this.context = context;
         this.networker = networker;
         this.attachmentsRepository = attachmentsRepository;

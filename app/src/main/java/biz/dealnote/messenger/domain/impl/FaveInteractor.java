@@ -10,7 +10,7 @@ import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.db.column.UserColumns;
-import biz.dealnote.messenger.db.interfaces.IStores;
+import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.db.model.entity.FaveLinkEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.PhotoEntity;
@@ -48,10 +48,10 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
 public class FaveInteractor implements IFaveInteractor {
 
     private final INetworker networker;
-    private final IStores cache;
+    private final IStorages cache;
     private final IOwnersInteractor ownersInteractor;
 
-    public FaveInteractor(INetworker networker, IStores cache) {
+    public FaveInteractor(INetworker networker, IStorages cache) {
         this.networker = networker;
         this.cache = cache;
         this.ownersInteractor = new OwnersInteractor(networker, cache.owners());

@@ -10,8 +10,8 @@ import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.IAttachmentToken;
 import biz.dealnote.messenger.api.model.IdPair;
 import biz.dealnote.messenger.api.model.VKApiPost;
-import biz.dealnote.messenger.db.interfaces.IStores;
-import biz.dealnote.messenger.db.interfaces.IWallStore;
+import biz.dealnote.messenger.db.interfaces.IStorages;
+import biz.dealnote.messenger.db.interfaces.IWallStorage;
 import biz.dealnote.messenger.db.model.PostPatch;
 import biz.dealnote.messenger.db.model.PostUpdate;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
@@ -51,7 +51,7 @@ public class WallsImpl implements IWalls {
 
     private final INetworker networker;
 
-    private final IStores repositories;
+    private final IStorages repositories;
 
     private final IOwnersInteractor ownersInteractor;
 
@@ -61,7 +61,7 @@ public class WallsImpl implements IWalls {
 
     private final PublishSubject<biz.dealnote.messenger.model.IdPair> postInvalidatePublisher;
 
-    public WallsImpl(INetworker networker, IStores repositories) {
+    public WallsImpl(INetworker networker, IStorages repositories) {
         this.minorUpdatesPublisher = PublishSubject.create();
         this.majorUpdatesPublisher = PublishSubject.create();
         this.postInvalidatePublisher = PublishSubject.create();
@@ -387,7 +387,7 @@ public class WallsImpl implements IWalls {
     }
 
     private Single<Post> getAndStorePost(int accountId, int ownerId, int postId) {
-        IWallStore cache = repositories.wall();
+        IWallStorage cache = repositories.wall();
 
         return networker.vkDefault(accountId)
                 .wall()

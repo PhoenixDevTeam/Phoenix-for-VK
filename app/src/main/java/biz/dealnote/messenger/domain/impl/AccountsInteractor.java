@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.db.column.UserColumns;
-import biz.dealnote.messenger.db.interfaces.IStores;
+import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.db.model.UserPatch;
 import biz.dealnote.messenger.domain.IAccountsInteractor;
 import biz.dealnote.messenger.domain.IBlacklistRepository;
@@ -31,13 +31,13 @@ import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
  */
 public class AccountsInteractor implements IAccountsInteractor {
 
-    private final IStores repositories;
+    private final IStorages repositories;
     private final INetworker networker;
     private final ISettings.IAccountsSettings settings;
     private final IOwnersInteractor ownersInteractor;
     private final IBlacklistRepository blacklistRepository;
 
-    public AccountsInteractor(IStores repositories, INetworker networker, ISettings.IAccountsSettings settings, IBlacklistRepository blacklistRepository) {
+    public AccountsInteractor(IStorages repositories, INetworker networker, ISettings.IAccountsSettings settings, IBlacklistRepository blacklistRepository) {
         this.repositories = repositories;
         this.networker = networker;
         this.settings = settings;

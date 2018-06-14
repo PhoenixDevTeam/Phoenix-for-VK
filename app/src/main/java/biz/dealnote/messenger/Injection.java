@@ -6,10 +6,10 @@ import biz.dealnote.messenger.api.CaptchaProvider;
 import biz.dealnote.messenger.api.ICaptchaProvider;
 import biz.dealnote.messenger.api.impl.Networker;
 import biz.dealnote.messenger.api.interfaces.INetworker;
-import biz.dealnote.messenger.db.impl.AppStores;
-import biz.dealnote.messenger.db.impl.LogsStore;
-import biz.dealnote.messenger.db.interfaces.ILogsStore;
-import biz.dealnote.messenger.db.interfaces.IStores;
+import biz.dealnote.messenger.db.impl.AppStorages;
+import biz.dealnote.messenger.db.impl.LogsStorage;
+import biz.dealnote.messenger.db.interfaces.ILogsStorage;
+import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.domain.IBlacklistRepository;
 import biz.dealnote.messenger.domain.IWalls;
@@ -120,8 +120,8 @@ public class Injection {
         return networkerInstance;
     }
 
-    public static IStores provideStores(){
-        return AppStores.getInstance(App.getInstance());
+    public static IStorages provideStores(){
+        return AppStorages.getInstance(App.getInstance());
     }
 
     private static volatile IBlacklistRepository blacklistRepository;
@@ -141,13 +141,13 @@ public class Injection {
         return SettingsImpl.getInstance(App.getInstance());
     }
 
-    private static volatile ILogsStore logsStore;
+    private static volatile ILogsStorage logsStore;
 
-    public static ILogsStore provideLogsStore(){
+    public static ILogsStorage provideLogsStore(){
         if(isNull(logsStore)){
             synchronized (Injection.class){
                 if(isNull(logsStore)){
-                    logsStore = new LogsStore(provideApplicationContext());
+                    logsStore = new LogsStorage(provideApplicationContext());
                 }
             }
         }

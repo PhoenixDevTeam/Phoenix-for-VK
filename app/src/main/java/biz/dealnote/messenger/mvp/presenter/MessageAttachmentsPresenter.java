@@ -15,7 +15,7 @@ import java.util.List;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.AttachToType;
 import biz.dealnote.messenger.db.Stores;
-import biz.dealnote.messenger.db.interfaces.IStores;
+import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.model.AbsModel;
@@ -59,7 +59,7 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
     private final List<AttachmenEntry> entries;
 
     private final IAttachmentsRepository attachmentsRepository;
-    private final IStores repositories;
+    private final IStorages repositories;
     private final UploadDestination destination;
 
     private Uri currentPhotoCameraUri;

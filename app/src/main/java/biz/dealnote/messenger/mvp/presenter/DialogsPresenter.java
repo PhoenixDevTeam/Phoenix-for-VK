@@ -14,7 +14,7 @@ import java.util.List;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.db.Stores;
-import biz.dealnote.messenger.db.interfaces.IDialogsStore;
+import biz.dealnote.messenger.db.interfaces.IDialogsStorage;
 import biz.dealnote.messenger.domain.IMessagesInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.exception.UnauthorizedException;
@@ -79,7 +79,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         this.messagesInteractor = InteractorFactory.createMessagesInteractor();
         this.longpollManager = LongpollInstance.get();
 
-        final IDialogsStore store = Stores.getInstance().dialogs();
+        final IDialogsStorage store = Stores.getInstance().dialogs();
 
         appendDisposable(store
                 .observeDialogUpdates()
@@ -263,7 +263,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         resolveRefreshingView();
     }
 
-    private void onDialogUpdate(IDialogsStore.IDialogUpdate update) {
+    private void onDialogUpdate(IDialogsStorage.IDialogUpdate update) {
         if (this.dialogsOwnerId != update.getAccountId()) {
             return;
         }

@@ -1,7 +1,7 @@
 package biz.dealnote.messenger.domain.impl;
 
 import biz.dealnote.messenger.api.interfaces.INetworker;
-import biz.dealnote.messenger.db.interfaces.IStickersStore;
+import biz.dealnote.messenger.db.interfaces.IStickersStorage;
 import biz.dealnote.messenger.domain.IStickersInteractor;
 import io.reactivex.Completable;
 
@@ -12,9 +12,9 @@ import io.reactivex.Completable;
 public class StickersInteractor implements IStickersInteractor {
 
     private final INetworker networker;
-    private final IStickersStore repository;
+    private final IStickersStorage repository;
 
-    public StickersInteractor(INetworker networker, IStickersStore repository) {
+    public StickersInteractor(INetworker networker, IStickersStorage repository) {
         this.networker = networker;
         this.repository = repository;
     }

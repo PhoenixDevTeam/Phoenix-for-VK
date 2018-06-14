@@ -6,7 +6,7 @@ import java.util.List;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.db.column.UserColumns;
-import biz.dealnote.messenger.db.interfaces.IStores;
+import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.db.model.entity.UserEntity;
 import biz.dealnote.messenger.domain.IRelationshipInteractor;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
@@ -27,10 +27,10 @@ import io.reactivex.Single;
  */
 public class RelationshipInteractor implements IRelationshipInteractor {
 
-    private final IStores repositories;
+    private final IStorages repositories;
     private final INetworker networker;
 
-    public RelationshipInteractor(IStores repositories, INetworker networker) {
+    public RelationshipInteractor(IStorages repositories, INetworker networker) {
         this.repositories = repositories;
         this.networker = networker;
     }

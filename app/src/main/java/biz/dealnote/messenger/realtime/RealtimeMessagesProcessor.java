@@ -17,7 +17,7 @@ import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.api.model.longpoll.AddMessageUpdate;
 import biz.dealnote.messenger.crypt.KeyExchangeService;
-import biz.dealnote.messenger.db.interfaces.IStores;
+import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.domain.IMessagesInteractor;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
@@ -54,7 +54,7 @@ class RealtimeMessagesProcessor implements IRealtimeMessagesProcessor {
     private static final AtomicInteger ID_GENERATOR = new AtomicInteger();
 
     private final PublishSubject<TmpResult> publishSubject;
-    private final IStores repositories;
+    private final IStorages repositories;
     private final INetworker networker;
     private final Object stateLock = new Object();
     private final List<Entry> queue;

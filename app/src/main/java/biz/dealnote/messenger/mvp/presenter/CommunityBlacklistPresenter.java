@@ -10,7 +10,7 @@ import java.util.List;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.interfaces.INetworker;
-import biz.dealnote.messenger.db.interfaces.IOwnersStore;
+import biz.dealnote.messenger.db.interfaces.IOwnersStorage;
 import biz.dealnote.messenger.db.model.BanAction;
 import biz.dealnote.messenger.domain.IGroupSettingsInteractor;
 import biz.dealnote.messenger.domain.impl.GroupSettingsInteractor;
@@ -51,7 +51,7 @@ public class CommunityBlacklistPresenter extends AccountDependencyPresenter<ICom
         this.moreStartFrom = new IntNextFrom(0);
 
         INetworker networker = Injection.provideNetworkInterfaces();
-        IOwnersStore repository = Injection.provideStores().owners();
+        IOwnersStorage repository = Injection.provideStores().owners();
 
         this.groupSettingsInteractor = new GroupSettingsInteractor(networker, repository);
 
