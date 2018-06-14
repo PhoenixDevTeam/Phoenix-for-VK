@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import biz.dealnote.messenger.db.UploadSqliteHelper;
 import biz.dealnote.messenger.db.column.UploadQueueColumns;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.exception.DatabaseException;
 import biz.dealnote.messenger.upload.BaseUploadResponse;
 import biz.dealnote.messenger.upload.Method;
@@ -40,7 +40,7 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
  * Created by ruslan.kolbasa on 27.01.2017.
  * phoenix
  */
-class UploadQueueStorage extends AbsStorage implements IUploadQueueStore {
+class UploadQueueStorage extends AbsStorage implements IUploadQueueStorage {
 
     private static final int PROGRESS_LOOKUP_DELAY = 500;
 

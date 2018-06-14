@@ -20,7 +20,7 @@ import io.reactivex.Single;
  * Created by ruslan.kolbasa on 27.01.2017.
  * phoenix
  */
-public interface IUploadQueueStore {
+public interface IUploadQueueStorage {
 
     Single<List<UploadObject>> getAll(Predicate<UploadObject> filter);
 

@@ -16,7 +16,7 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.AttachToType;
 import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.db.interfaces.IStorages;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
@@ -135,8 +135,8 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
         }
     }
 
-    private void onUploadProgressUpdates(List<IUploadQueueStore.IProgressUpdate> updates) {
-        for (IUploadQueueStore.IProgressUpdate update : updates) {
+    private void onUploadProgressUpdates(List<IUploadQueueStorage.IProgressUpdate> updates) {
+        for (IUploadQueueStorage.IProgressUpdate update : updates) {
             int index = findUploadObjectIndex(update.getId());
             if (index != -1) {
                 UploadObject upload = (UploadObject) entries.get(index).getAttachment();
@@ -151,7 +151,7 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
         }
     }
 
-    private void onUploadStatusChanges(IUploadQueueStore.IStatusUpdate update) {
+    private void onUploadStatusChanges(IUploadQueueStorage.IStatusUpdate update) {
         int index = findUploadObjectIndex(update.getId());
         if (index != -1) {
             ((UploadObject) entries.get(index).getAttachment()).setStatus(update.getStatus());
@@ -159,10 +159,10 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
         }
     }
 
-    private void onUploadQueueChanged(List<IUploadQueueStore.IQueueUpdate> updates) {
+    private void onUploadQueueChanged(List<IUploadQueueStorage.IQueueUpdate> updates) {
         int addCount = 0;
         for (int i = updates.size() - 1; i >= 0; i--) {
-            IUploadQueueStore.IQueueUpdate update = updates.get(i);
+            IUploadQueueStorage.IQueueUpdate update = updates.get(i);
 
             if (update.isAdding()) {
                 UploadObject o = update.object();

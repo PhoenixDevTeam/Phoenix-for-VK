@@ -10,7 +10,7 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
 import biz.dealnote.messenger.domain.IPhotosInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
@@ -59,7 +59,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
 
     private final IPhotosInteractor interactor;
     private final IOwnersInteractor ownersInteractor;
-    private final IUploadQueueStore uploadsQueue;
+    private final IUploadQueueStorage uploadsQueue;
 
     private final List<SelectablePhotoWrapper> photos;
     private final List<UploadObject> uploads;
@@ -186,8 +186,8 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         }
     }
 
-    private void onUploadQueueUpdates(List<IUploadQueueStore.IQueueUpdate> updates) {
-        List<IUploadQueueStore.IQueueUpdate> added = copyListWithPredicate(updates, update -> {
+    private void onUploadQueueUpdates(List<IUploadQueueStorage.IQueueUpdate> updates) {
+        List<IUploadQueueStorage.IQueueUpdate> added = copyListWithPredicate(updates, update -> {
             if (update.isAdding()) {
                 UploadObject o = update.object();
                 AssertUtils.requireNonNull(o);
@@ -200,7 +200,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         if (nonEmpty(added)) {
             int startUploadSize = this.uploads.size();
 
-            for (IUploadQueueStore.IQueueUpdate update : added) {
+            for (IUploadQueueStorage.IQueueUpdate update : added) {
                 this.uploads.add(update.object());
             }
 
@@ -211,7 +211,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
             return;
         }
 
-        for (IUploadQueueStore.IQueueUpdate update : updates) {
+        for (IUploadQueueStorage.IQueueUpdate update : updates) {
             if (!update.isAdding()) {
                 int index = findIndexById(this.uploads, update.getId());
 
@@ -232,7 +232,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         }
     }
 
-    private void onUploadStatusUpdate(IUploadQueueStore.IStatusUpdate update) {
+    private void onUploadStatusUpdate(IUploadQueueStorage.IStatusUpdate update) {
         Pair<Integer, UploadObject> info = findInfoById(this.uploads, update.getId());
 
         if (nonNull(info)) {
@@ -247,8 +247,8 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         }
     }
 
-    private void onUploadProgressUpdate(List<IUploadQueueStore.IProgressUpdate> updates) {
-        for (IUploadQueueStore.IProgressUpdate update : updates) {
+    private void onUploadProgressUpdate(List<IUploadQueueStorage.IProgressUpdate> updates) {
+        for (IUploadQueueStorage.IProgressUpdate update : updates) {
             Pair<Integer, UploadObject> info = findInfoById(this.uploads, update.getId());
 
             if (nonNull(info)) {

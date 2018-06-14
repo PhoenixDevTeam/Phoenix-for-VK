@@ -14,7 +14,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.db.interfaces.IMessagesStorage;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.model.MessageStatus;
 import biz.dealnote.messenger.service.ErrorLocalizer;
 import biz.dealnote.messenger.service.MessageSender;
@@ -46,7 +46,7 @@ public class UploadService extends Service implements UploadCallback {
 
     private final IBinder mBinder = new ServiceStub(this);
 
-    private IUploadQueueStore uploadsRepository;
+    private IUploadQueueStorage uploadsRepository;
     private IMessagesStorage messagesStore;
 
     private AbstractUploadTask<?> mCurrenTask;

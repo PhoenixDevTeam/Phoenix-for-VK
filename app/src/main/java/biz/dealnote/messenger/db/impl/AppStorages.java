@@ -24,7 +24,7 @@ import biz.dealnote.messenger.db.interfaces.IStickersStorage;
 import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.db.interfaces.ITempDataStorage;
 import biz.dealnote.messenger.db.interfaces.ITopicsStore;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.db.interfaces.IVideoAlbumsStorage;
 import biz.dealnote.messenger.db.interfaces.IVideoStorage;
 import biz.dealnote.messenger.db.interfaces.IWallStorage;
@@ -34,6 +34,29 @@ import static biz.dealnote.messenger.util.Objects.isNull;
 public class AppStorages extends ContextWrapper implements IStorages {
 
     private static AppStorages sStoresInstance;
+    private final ITempDataStorage tempData = new TempDataStorage(this);
+    private IOwnersStorage owners;
+    private IFeedStorage feed;
+    private IRelativeshipStorage relativeship;
+    private IPhotosStorage photos;
+    private IFaveStorage fave;
+    private IWallStorage wall;
+    private IMessagesStorage messages;
+    private IDialogsStorage dialogs;
+    private IFeedbackStorage feedback;
+    private ILocalMediaStorage localMedia;
+    private KeysPersistStorage keysPersist;
+    private KeysRamStorage keysRam;
+    private IAttachmentsStorage attachments;
+    private volatile IVideoStorage video;
+    private volatile IVideoAlbumsStorage videoAlbums;
+    private volatile ICommentsStorage comments;
+    private volatile IPhotoAlbumsStorage photoAlbums;
+    private volatile ITopicsStore topics;
+    private volatile IDocsStorage docs;
+    private volatile IStickersStorage stickers;
+    private volatile IDatabaseStore database;
+    private volatile IUploadQueueStorage uploadQueue;
 
     private AppStorages(Context base) {
         super(base);
@@ -51,175 +74,149 @@ public class AppStorages extends ContextWrapper implements IStorages {
         return sStoresInstance;
     }
 
-    private IOwnersStorage ownersStore;
-    private IFeedStorage feedStore;
-    private IRelativeshipStorage relativeshipStore;
-    private IPhotosStorage photosStore;
-    private IFaveStorage faveStore;
-    private IWallStorage wallStore;
-    private IMessagesStorage messagesStore;
-    private IDialogsStorage dialogsStore;
-    private IFeedbackStorage feedbackStore;
-    private ILocalMediaStorage localMediaStore;
-    private KeysPersistStorage keysPersistStore;
-    private KeysRamStorage keysRamStore;
-    private IAttachmentsStorage attachmentsStore;
-    private volatile IVideoStorage videoStore;
-    private volatile IVideoAlbumsStorage videoAlbumsStore;
-    private volatile ICommentsStorage commentsStore;
-    private volatile IPhotoAlbumsStorage photoAlbumsStore;
-    private volatile ITopicsStore topicsStore;
-    private volatile IDocsStorage docsStore;
-    private volatile IStickersStorage stickersStore;
-    private volatile IDatabaseStore databaseStore;
-
     @Override
     public ICommentsStorage comments() {
-        if(isNull(commentsStore)){
+        if(isNull(comments)){
             synchronized (this){
-                if(isNull(commentsStore)){
-                    commentsStore = new CommentsStorage(this);
+                if(isNull(comments)){
+                    comments = new CommentsStorage(this);
                 }
             }
         }
 
-        return commentsStore;
+        return comments;
     }
 
     @Override
     public IPhotoAlbumsStorage photoAlbums() {
-        if(isNull(photoAlbumsStore)){
+        if(isNull(photoAlbums)){
             synchronized (this){
-                if(isNull(photoAlbumsStore)){
-                    photoAlbumsStore = new PhotoAlbumsStorage(this);
+                if(isNull(photoAlbums)){
+                    photoAlbums = new PhotoAlbumsStorage(this);
                 }
             }
         }
 
-        return photoAlbumsStore;
+        return photoAlbums;
     }
 
     @Override
     public ITopicsStore topics() {
-        if(isNull(topicsStore)){
+        if(isNull(topics)){
             synchronized (this){
-                if(isNull(topicsStore)){
-                    topicsStore = new TopicsStorage(this);
+                if(isNull(topics)){
+                    topics = new TopicsStorage(this);
                 }
             }
         }
 
-        return topicsStore;
+        return topics;
     }
 
     @Override
     public IDocsStorage docs() {
-        if(isNull(docsStore)){
+        if(isNull(docs)){
             synchronized (this){
-                if(isNull(docsStore)){
-                    docsStore = new DocsStorage(this);
+                if(isNull(docs)){
+                    docs = new DocsStorage(this);
                 }
             }
         }
 
-        return docsStore;
+        return docs;
     }
 
     @Override
     public IStickersStorage stickers() {
-        if(isNull(stickersStore)){
+        if(isNull(stickers)){
             synchronized (this){
-                if(isNull(stickersStore)){
-                    stickersStore = new StickersStorage(this);
+                if(isNull(stickers)){
+                    stickers = new StickersStorage(this);
                 }
             }
         }
 
-        return stickersStore;
+        return stickers;
     }
 
-    private volatile IUploadQueueStore uploadQueueRepository;
-
     @Override
-    public IUploadQueueStore uploads() {
-        if(isNull(uploadQueueRepository)){
+    public IUploadQueueStorage uploads() {
+        if(isNull(uploadQueue)){
             synchronized (this){
-                if(isNull(uploadQueueRepository)){
-                    uploadQueueRepository = new UploadQueueStorage(this);
+                if(isNull(uploadQueue)){
+                    uploadQueue = new UploadQueueStorage(this);
                 }
             }
         }
 
-        return uploadQueueRepository;
+        return uploadQueue;
     }
 
     @Override
     public IDatabaseStore database() {
-        if(isNull(databaseStore)){
+        if(isNull(database)){
             synchronized (this){
-                if(isNull(databaseStore)){
-                    databaseStore = new DatabaseStorage(this);
+                if(isNull(database)){
+                    database = new DatabaseStorage(this);
                 }
             }
         }
-        return databaseStore;
+        return database;
     }
-
-    private final ITempDataStorage tempDataStore = new TempDataStorage(this);
 
     @Override
     public ITempDataStorage tempStore() {
-        return tempDataStore;
+        return tempData;
     }
 
     public IVideoAlbumsStorage videoAlbums(){
-        if(isNull(videoAlbumsStore)){
+        if(isNull(videoAlbums)){
             synchronized (this){
-                if(isNull(videoAlbumsStore)){
-                    videoAlbumsStore = new VideoAlbumsStorage(this);
+                if(isNull(videoAlbums)){
+                    videoAlbums = new VideoAlbumsStorage(this);
                 }
             }
         }
 
-        return videoAlbumsStore;
+        return videoAlbums;
     }
 
     public IVideoStorage videos(){
-        if(isNull(videoStore)){
+        if(isNull(video)){
             synchronized (this){
-                if(isNull(videoStore)){
-                    videoStore = new VideoStorage(this);
+                if(isNull(video)){
+                    video = new VideoStorage(this);
                 }
             }
         }
 
-        return videoStore;
+        return video;
     }
 
     @NonNull
     public synchronized IAttachmentsStorage attachments(){
-        if(attachmentsStore == null){
-            attachmentsStore = new AttachmentsStorage(this);
+        if(attachments == null){
+            attachments = new AttachmentsStorage(this);
         }
 
-        return attachmentsStore;
+        return attachments;
     }
 
     @NonNull
     public synchronized IKeysStorage keys(@KeyLocationPolicy int policy){
         switch (policy){
             case KeyLocationPolicy.PERSIST:
-                if(isNull(keysPersistStore)){
-                    keysPersistStore = new KeysPersistStorage(this);
+                if(isNull(keysPersist)){
+                    keysPersist = new KeysPersistStorage(this);
                 }
 
-                return keysPersistStore;
+                return keysPersist;
             case KeyLocationPolicy.RAM:
-                if(isNull(keysRamStore)){
-                    keysRamStore = new KeysRamStorage();
+                if(isNull(keysRam)){
+                    keysRam = new KeysRamStorage();
                 }
 
-                return keysRamStore;
+                return keysRam;
             default:
                 throw new IllegalArgumentException("Unsupported key location policy");
         }
@@ -227,91 +224,91 @@ public class AppStorages extends ContextWrapper implements IStorages {
 
     @NonNull
     public synchronized ILocalMediaStorage localPhotos(){
-        if(localMediaStore == null){
-            localMediaStore = new LocalMediaStorage(this);
+        if(localMedia == null){
+            localMedia = new LocalMediaStorage(this);
         }
 
-        return localMediaStore;
+        return localMedia;
     }
 
     @NonNull
     public synchronized IFeedbackStorage notifications(){
-        if(feedbackStore == null){
-            feedbackStore = new FeedbackStorage(this);
+        if(feedback == null){
+            feedback = new FeedbackStorage(this);
         }
 
-        return feedbackStore;
+        return feedback;
     }
 
     @NonNull
     public synchronized IDialogsStorage dialogs(){
-        if(dialogsStore == null){
-            dialogsStore = new DialogsStorage(this);
+        if(dialogs == null){
+            dialogs = new DialogsStorage(this);
         }
 
-        return dialogsStore;
+        return dialogs;
     }
 
     @NonNull
     public synchronized IMessagesStorage messages(){
-        if(messagesStore == null){
-            messagesStore = new MessagesStorage(this);
+        if(messages == null){
+            messages = new MessagesStorage(this);
         }
 
-        return messagesStore;
+        return messages;
     }
 
     @NonNull
     public synchronized IWallStorage wall(){
-        if(wallStore == null){
-            wallStore = new WallStorage(this);
+        if(wall == null){
+            wall = new WallStorage(this);
         }
 
-        return wallStore;
+        return wall;
     }
 
     @NonNull
     public synchronized IFaveStorage fave(){
-        if(faveStore == null){
-            faveStore = new FaveStorage(this);
+        if(fave == null){
+            fave = new FaveStorage(this);
         }
 
-        return faveStore;
+        return fave;
     }
 
     @NonNull
     public synchronized IPhotosStorage photos(){
-        if(photosStore == null){
-            photosStore = new PhotosStorage(this);
+        if(photos == null){
+            photos = new PhotosStorage(this);
         }
 
-        return photosStore;
+        return photos;
     }
 
     @NonNull
     public synchronized IRelativeshipStorage relativeship(){
-        if(relativeshipStore == null){
-            relativeshipStore = new RelativeshipStorage(this);
+        if(relativeship == null){
+            relativeship = new RelativeshipStorage(this);
         }
 
-        return relativeshipStore;
+        return relativeship;
     }
 
     @NonNull
     public synchronized IFeedStorage feed(){
-        if(feedStore == null){
-            feedStore = new FeedStorage(this);
+        if(feed == null){
+            feed = new FeedStorage(this);
         }
 
-        return feedStore;
+        return feed;
     }
 
     @NonNull
     public synchronized IOwnersStorage owners(){
-        if(ownersStore == null){
-            ownersStore = new OwnersStorage(this);
+        if(owners == null){
+            owners = new OwnersStorage(this);
         }
 
-        return ownersStore;
+        return owners;
     }
 }

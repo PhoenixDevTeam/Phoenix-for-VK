@@ -13,7 +13,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.db.Stores;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
@@ -208,7 +208,7 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
     }
 
     private void setupUploadListening() {
-        IUploadQueueStore repository = Stores.getInstance().uploads();
+        IUploadQueueStorage repository = Stores.getInstance().uploads();
 
         appendDisposable(repository.observeQueue()
                 .observeOn(Injection.provideMainThreadScheduler())

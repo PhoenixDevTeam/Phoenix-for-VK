@@ -51,7 +51,6 @@ public class AbsStorage implements IStorage {
         return mRepositoryContext.getApplicationContext();
     }
 
-
     static <T> List<T> mapAll(Cursor cursor, MapFunction<T> function, boolean close){
         List<T> data = new ArrayList<>(safeCountOf(cursor));
         if (nonNull(cursor)) {

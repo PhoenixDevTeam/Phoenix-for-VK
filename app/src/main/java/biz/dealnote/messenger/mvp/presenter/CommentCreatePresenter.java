@@ -9,7 +9,7 @@ import java.util.List;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.AttachToType;
 import biz.dealnote.messenger.db.Stores;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
@@ -41,7 +41,7 @@ public class CommentCreatePresenter extends AbsAttachmentsEditPresenter<ICreateC
 
     private final int commentId;
     private final UploadDestination destination;
-    private final IUploadQueueStore uploads;
+    private final IUploadQueueStorage uploads;
 
     private final IAttachmentsRepository attachmentsRepository;
 

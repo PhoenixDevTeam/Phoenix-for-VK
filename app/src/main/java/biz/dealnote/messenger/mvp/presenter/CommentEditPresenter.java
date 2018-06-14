@@ -9,7 +9,7 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStore;
+import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.domain.ICommentsInteractor;
 import biz.dealnote.messenger.domain.impl.CommentsInteractor;
 import biz.dealnote.messenger.model.AbsModel;
@@ -53,7 +53,7 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
         this.orig = comment;
         this.destination = new UploadDestination(comment.getId(), comment.getCommented().getSourceOwnerId(), Method.PHOTO_TO_COMMENT);
 
-        IUploadQueueStore uploadRepository = Injection.provideStores().uploads();
+        IUploadQueueStorage uploadRepository = Injection.provideStores().uploads();
 
         if (isNull(savedInstanceState)) {
             super.setTextBody(orig.getText());
@@ -77,10 +77,10 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
                 .subscribe(this::onUploadProgressUpdate));
     }
 
-    private void onUploadsQueueChanged(List<IUploadQueueStore.IQueueUpdate> updates) {
+    private void onUploadsQueueChanged(List<IUploadQueueStorage.IQueueUpdate> updates) {
         boolean hasChanges = false;
 
-        for (IUploadQueueStore.IQueueUpdate u : updates) {
+        for (IUploadQueueStorage.IQueueUpdate u : updates) {
             if (u.isAdding()) {
                 UploadObject object = u.object();
                 AssertUtils.requireNonNull(object);
