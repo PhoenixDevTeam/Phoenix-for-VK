@@ -63,19 +63,19 @@ public class PostCreateFragment extends AbsPostEditFragment<PostCreatePresenter,
     @Override
     public IPresenterFactory<PostCreatePresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
-            int ownerId = getArguments().getInt(Extra.OWNER_ID);
+            int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
+            int ownerId = requireArguments().getInt(Extra.OWNER_ID);
 
             @EditingPostType
-            int type = getArguments().getInt(EXTRA_EDITING_TYPE);
+            int type = requireArguments().getInt(EXTRA_EDITING_TYPE);
 
-            ModelsBundle bundle = getArguments().getParcelable(Extra.BUNDLE);
+            ModelsBundle bundle = requireArguments().getParcelable(Extra.BUNDLE);
 
-            WallEditorAttrs attrs = getArguments().getParcelable(Extra.ATTRS);
+            WallEditorAttrs attrs = requireArguments().getParcelable(Extra.ATTRS);
             AssertUtils.requireNonNull(attrs);
 
-            ArrayList<Uri> streams = getArguments().getParcelableArrayList(EXTRA_STREAMS);
-            getArguments().remove(EXTRA_STREAMS); // only first start
+            ArrayList<Uri> streams = requireArguments().getParcelableArrayList(EXTRA_STREAMS);
+            requireArguments().remove(EXTRA_STREAMS); // only first start
             return new PostCreatePresenter(accountId, ownerId, type, bundle, attrs, streams, saveInstanceState);
         };
     }

@@ -274,9 +274,9 @@ public class PostCreatePresenter extends AbsPostEditPresenter<IPostCreateView> {
                 .subscribe(this::onPostRestored, Analytics::logUnexpectedError));
     }
 
-    private void restoreEditingAttachmentsAsync() {
-        appendDisposable(attachmentsSingle()
-                .zipWith(uploadsSingle(), this::combine)
+    private void restoreEditingAttachmentsAsync(int postDbid) {
+        appendDisposable(attachmentsSingle(postDbid)
+                .zipWith(uploadsSingle(postDbid), this::combine)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onAttachmentsRestored, Analytics::logUnexpectedError));
     }
@@ -290,17 +290,17 @@ public class PostCreatePresenter extends AbsPostEditPresenter<IPostCreateView> {
 
         setTextBody(post.getText());
 
-        restoreEditingAttachmentsAsync();
+        restoreEditingAttachmentsAsync(post.getDbid());
     }
 
-    private Single<List<AttachmenEntry>> attachmentsSingle() {
+    private Single<List<AttachmenEntry>> attachmentsSingle(int postDbid) {
         return attachmentsRepository
-                .getAttachmentsWithIds(getAccountId(), AttachToType.POST, post.getDbid())
+                .getAttachmentsWithIds(getAccountId(), AttachToType.POST, postDbid)
                 .map(pairs -> createFrom(pairs, true));
     }
 
-    private Single<List<AttachmenEntry>> uploadsSingle() {
-        UploadDestination destination = UploadDestination.forPost(post.getDbid(), ownerId);
+    private Single<List<AttachmenEntry>> uploadsSingle(int postDbid) {
+        UploadDestination destination = UploadDestination.forPost(postDbid, ownerId);
         return uploadManager
                 .get(getAccountId(), destination)
                 .map(AbsAttachmentsEditPresenter::createFrom);
@@ -362,8 +362,7 @@ public class PostCreatePresenter extends AbsPostEditPresenter<IPostCreateView> {
                 pollAdded = true;
             }
 
-            getData().add(new AttachmenEntry(true, model)
-                    .setOptionalId(pair.getFirst()));
+            getData().add(new AttachmenEntry(true, model).setOptionalId(pair.getFirst()));
         }
 
         safelyNotifyItemsAdded(size, data.size());
