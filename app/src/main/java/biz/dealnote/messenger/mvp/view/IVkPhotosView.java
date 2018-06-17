@@ -5,7 +5,7 @@ import java.util.List;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.wrappers.SelectablePhotoWrapper;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.mvp.core.IMvpView;
 
 /**
@@ -16,7 +16,7 @@ public interface IVkPhotosView extends IMvpView, IAccountDependencyView, IErrorV
     String ACTION_SHOW_PHOTOS = "biz.dealnote.messenger.ACTION_SHOW_PHOTOS";
     String ACTION_SELECT_PHOTOS = "biz.dealnote.messenger.ACTION_SELECT_PHOTOS";
 
-    void displayData(List<SelectablePhotoWrapper> photos, List<UploadObject> uploads);
+    void displayData(List<SelectablePhotoWrapper> photos, List<Upload> uploads);
     void notifyDataSetChanged();
     void notifyPhotosAdded(int position, int count);
 

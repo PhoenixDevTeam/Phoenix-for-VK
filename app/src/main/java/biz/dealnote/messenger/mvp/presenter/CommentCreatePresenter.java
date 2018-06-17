@@ -13,9 +13,9 @@ import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.mvp.view.ICreateCommentView;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.upload.UploadDestination;
-import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.experimental.UploadUtils;
+import biz.dealnote.messenger.upload.UploadUtils;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.Predicate;
@@ -51,7 +51,7 @@ public class CommentCreatePresenter extends AbsAttachmentsEditPresenter<ICreateC
             setTextBody(body);
         }
 
-        Predicate<UploadObject> predicate = o -> destination.compareTo(o.getDestination());
+        Predicate<Upload> predicate = o -> destination.compareTo(o.getDestination());
 
         appendDisposable(uploadManager.observeAdding()
                 .observeOn(Injection.provideMainThreadScheduler())

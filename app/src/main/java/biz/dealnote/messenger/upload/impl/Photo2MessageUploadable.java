@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.upload.experimental;
+package biz.dealnote.messenger.upload.impl;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -16,7 +16,10 @@ import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.model.Photo;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.IUploadable;
+import biz.dealnote.messenger.upload.Upload;
+import biz.dealnote.messenger.upload.UploadResult;
+import biz.dealnote.messenger.upload.UploadUtils;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
@@ -24,14 +27,14 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.RxUtils.safelyCloseAction;
 import static biz.dealnote.messenger.util.Utils.safelyClose;
 
-public class Photo2Message implements IUploadable<Photo> {
+public class Photo2MessageUploadable implements IUploadable<Photo> {
 
     private final Context context;
     private final INetworker networker;
     private final IAttachmentsRepository attachmentsRepository;
     private final IMessagesStorage messagesStorage;
 
-    Photo2Message(Context context, INetworker networker, IAttachmentsRepository attachmentsRepository, IMessagesStorage messagesStorage) {
+    public Photo2MessageUploadable(Context context, INetworker networker, IAttachmentsRepository attachmentsRepository, IMessagesStorage messagesStorage) {
         this.context = context;
         this.networker = networker;
         this.attachmentsRepository = attachmentsRepository;
@@ -39,7 +42,7 @@ public class Photo2Message implements IUploadable<Photo> {
     }
 
     @Override
-    public Single<UploadResult<Photo>> doUpload(@NonNull UploadObject upload,
+    public Single<UploadResult<Photo>> doUpload(@NonNull Upload upload,
                                                 @Nullable UploadServer initialServer,
                                                 @Nullable PercentagePublisher listener) {
         final int accountId = upload.getAccountId();

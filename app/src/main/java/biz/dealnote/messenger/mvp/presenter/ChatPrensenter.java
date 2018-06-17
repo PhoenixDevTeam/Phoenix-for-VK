@@ -63,11 +63,11 @@ import biz.dealnote.messenger.service.MessageSender;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.task.TextingNotifier;
+import biz.dealnote.messenger.upload.IUploadManager;
 import biz.dealnote.messenger.upload.Method;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
-import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.experimental.IUploadManager;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.AppTextUtils;
 import biz.dealnote.messenger.util.AssertUtils;
@@ -591,7 +591,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     private boolean nowUploadingToEditingMessage() {
         if (isNull(mDraftMessageId)) return false;
 
-        Optional<UploadObject> current = uploadManager.getCurrent();
+        Optional<Upload> current = uploadManager.getCurrent();
         return current.nonEmpty()
                 && current.get().getDestination().compareTo(mDraftMessageId, UploadDestination.WITHOUT_OWNER, Method.PHOTO_TO_MESSAGE);
     }

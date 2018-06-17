@@ -15,7 +15,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.holder.IdentificableHolder;
 import biz.dealnote.messenger.adapter.holder.SharedHolders;
 import biz.dealnote.messenger.settings.CurrentTheme;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.view.CircleRoadProgress;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
@@ -28,7 +28,7 @@ public class DocsUploadAdapter extends RecyclerView.Adapter<DocsUploadAdapter.Ho
 
     private static final int ERROR_COLOR = Color.parseColor("#ff0000");
 
-    private List<UploadObject> data;
+    private List<Upload> data;
 
     private final SharedHolders<Holder> sharedHolders;
 
@@ -37,7 +37,7 @@ public class DocsUploadAdapter extends RecyclerView.Adapter<DocsUploadAdapter.Ho
     @ColorInt
     private final int nonErrorTextColor;
 
-    public DocsUploadAdapter(Context context, List<UploadObject> data, ActionListener actionListener) {
+    public DocsUploadAdapter(Context context, List<Upload> data, ActionListener actionListener) {
         this.data = data;
         this.actionListener = actionListener;
         this.sharedHolders = new SharedHolders<>(false);
@@ -50,15 +50,15 @@ public class DocsUploadAdapter extends RecyclerView.Adapter<DocsUploadAdapter.Ho
     }
 
     public interface ActionListener {
-        void onRemoveClick(UploadObject uploadObject);
+        void onRemoveClick(Upload upload);
     }
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        UploadObject upload = data.get(position);
+        Upload upload = data.get(position);
         sharedHolders.put(position, holder);
 
-        boolean inProgress = upload.getStatus() == UploadObject.STATUS_UPLOADING;
+        boolean inProgress = upload.getStatus() == Upload.STATUS_UPLOADING;
         holder.progress.setVisibility(inProgress ? View.VISIBLE : View.INVISIBLE);
         if (inProgress) {
             holder.progress.changePercentage(upload.getProgress());
@@ -70,17 +70,17 @@ public class DocsUploadAdapter extends RecyclerView.Adapter<DocsUploadAdapter.Ho
         int titleColor = nonErrorTextColor;
 
         switch (upload.getStatus()) {
-            case UploadObject.STATUS_UPLOADING:
+            case Upload.STATUS_UPLOADING:
                 String precentText = upload.getProgress() + "%";
                 holder.status.setText(precentText);
                 break;
-            case UploadObject.STATUS_CANCELLING:
+            case Upload.STATUS_CANCELLING:
                 holder.status.setText(R.string.cancelling);
                 break;
-            case UploadObject.STATUS_QUEUE:
+            case Upload.STATUS_QUEUE:
                 holder.status.setText(R.string.in_order);
                 break;
-            case UploadObject.STATUS_ERROR:
+            case Upload.STATUS_ERROR:
                 holder.status.setText(R.string.error);
                 titleColor = ERROR_COLOR;
                 break;
@@ -117,7 +117,7 @@ public class DocsUploadAdapter extends RecyclerView.Adapter<DocsUploadAdapter.Ho
         return idGenerator;
     }
 
-    public void setData(List<UploadObject> data) {
+    public void setData(List<Upload> data) {
         this.data = data;
         notifyDataSetChanged();
     }

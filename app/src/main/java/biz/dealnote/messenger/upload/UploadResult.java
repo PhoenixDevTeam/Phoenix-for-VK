@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.upload.experimental;
+package biz.dealnote.messenger.upload;
 
 import biz.dealnote.messenger.api.model.server.UploadServer;
 

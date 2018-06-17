@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.upload.experimental;
+package biz.dealnote.messenger.upload.impl;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -21,7 +21,9 @@ import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.model.Document;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.IUploadable;
+import biz.dealnote.messenger.upload.Upload;
+import biz.dealnote.messenger.upload.UploadResult;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
@@ -34,14 +36,14 @@ public class DocumentUploadable implements IUploadable<Document> {
     private final INetworker networker;
     private final IDocsStorage storage;
 
-    DocumentUploadable(Context context, INetworker networker, IDocsStorage storage) {
+    public DocumentUploadable(Context context, INetworker networker, IDocsStorage storage) {
         this.context = context;
         this.networker = networker;
         this.storage = storage;
     }
 
     @Override
-    public Single<UploadResult<Document>> doUpload(@NonNull UploadObject upload, @Nullable UploadServer initialServer, @Nullable PercentagePublisher listener) {
+    public Single<UploadResult<Document>> doUpload(@NonNull Upload upload, @Nullable UploadServer initialServer, @Nullable PercentagePublisher listener) {
         final int ownerId = upload.getDestination().getOwnerId();
         final Integer groupId = ownerId >= 0 ? null : ownerId;
         final int accountId = upload.getAccountId();
@@ -131,7 +133,7 @@ public class DocumentUploadable implements IUploadable<Document> {
         return fileName;
     }
 
-    private Completable commit(IDocsStorage storage, UploadObject upload, DocumentEntity entity){
+    private Completable commit(IDocsStorage storage, Upload upload, DocumentEntity entity){
         return storage.store(upload.getAccountId(), entity.getOwnerId(), Collections.singletonList(entity), false);
     }
 }

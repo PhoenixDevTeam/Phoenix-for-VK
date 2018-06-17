@@ -8,7 +8,7 @@ import java.util.List;
 import biz.dealnote.messenger.model.DocFilter;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.mvp.core.IMvpView;
 
 /**
@@ -33,7 +33,7 @@ public interface IDocListView extends IAccountDependencyView, IMvpView, IErrorVi
     void startSelectUploadFileActivity(int accountId);
 
     void setUploadDataVisible(boolean visible);
-    void displayUploads(List<UploadObject> data);
+    void displayUploads(List<Upload> data);
     void notifyUploadDataChanged();
     void notifyUploadItemsAdded(int position, int count);
     void notifyUploadItemChanged(int position);

@@ -5,7 +5,7 @@ import android.support.v7.app.AlertDialog;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.util.Objects;
 
 public class ImageSizeAlertDialog {
@@ -20,16 +20,16 @@ public class ImageSizeAlertDialog {
         new AlertDialog.Builder(mActivity)
                 .setTitle(mActivity.getString(R.string.select_image_size_title))
                 .setItems(R.array.array_image_sizes_names, (dialogInterface, j) -> {
-                    int selectedSize = UploadObject.IMAGE_SIZE_FULL;
+                    int selectedSize = Upload.IMAGE_SIZE_FULL;
                     switch (j) {
                         case 0:
-                            selectedSize = UploadObject.IMAGE_SIZE_800;
+                            selectedSize = Upload.IMAGE_SIZE_800;
                             break;
                         case 1:
-                            selectedSize = UploadObject.IMAGE_SIZE_1200;
+                            selectedSize = Upload.IMAGE_SIZE_1200;
                             break;
                         case 2:
-                            selectedSize = UploadObject.IMAGE_SIZE_FULL;
+                            selectedSize = Upload.IMAGE_SIZE_FULL;
                             break;
                     }
 
@@ -96,17 +96,17 @@ public class ImageSizeAlertDialog {
             AlertDialog dialog = new AlertDialog.Builder(activity)
                     .setTitle(activity.getString(R.string.select_image_size_title))
                     .setItems(R.array.array_image_sizes_names, (dialogInterface, j) -> {
-                        int selectedSize = UploadObject.IMAGE_SIZE_FULL;
+                        int selectedSize = Upload.IMAGE_SIZE_FULL;
 
                         switch (j) {
                             case 0:
-                                selectedSize = UploadObject.IMAGE_SIZE_800;
+                                selectedSize = Upload.IMAGE_SIZE_800;
                                 break;
                             case 1:
-                                selectedSize = UploadObject.IMAGE_SIZE_1200;
+                                selectedSize = Upload.IMAGE_SIZE_1200;
                                 break;
                             case 2:
-                                selectedSize = UploadObject.IMAGE_SIZE_FULL;
+                                selectedSize = Upload.IMAGE_SIZE_FULL;
                                 break;
                         }
 

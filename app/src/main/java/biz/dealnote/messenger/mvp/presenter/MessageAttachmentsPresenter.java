@@ -23,11 +23,11 @@ import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.mvp.presenter.base.RxSupportPresenter;
 import biz.dealnote.messenger.mvp.view.IMessageAttachmentsView;
 import biz.dealnote.messenger.settings.Settings;
+import biz.dealnote.messenger.upload.IUploadManager;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
-import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.experimental.IUploadManager;
-import biz.dealnote.messenger.upload.experimental.UploadUtils;
+import biz.dealnote.messenger.upload.UploadUtils;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.FileUtil;
@@ -136,8 +136,8 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
         for (IUploadManager.IProgressUpdate update : updates) {
             int index = findUploadObjectIndex(update.getId());
             if (index != -1) {
-                UploadObject upload = (UploadObject) entries.get(index).getAttachment();
-                if (upload.getStatus() != UploadObject.STATUS_UPLOADING) {
+                Upload upload = (Upload) entries.get(index).getAttachment();
+                if (upload.getStatus() != Upload.STATUS_UPLOADING) {
                     // for uploading only
                     continue;
                 }
@@ -148,10 +148,10 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
         }
     }
 
-    private void onUploadStatusChanges(UploadObject upload) {
+    private void onUploadStatusChanges(Upload upload) {
         int index = findUploadObjectIndex(upload.getId());
         if (index != -1) {
-            ((UploadObject) entries.get(index).getAttachment())
+            ((Upload) entries.get(index).getAttachment())
                     .setStatus(upload.getStatus())
                     .setErrorText(upload.getErrorText());
 
@@ -170,10 +170,10 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
         }
     }
 
-    private void onUploadsAdded(List<UploadObject> uploads) {
+    private void onUploadsAdded(List<Upload> uploads) {
         int count = 0;
         for (int i = uploads.size() - 1; i >= 0; i--) {
-            UploadObject upload = uploads.get(i);
+            Upload upload = uploads.get(i);
             if (this.destination.compareTo(upload.getDestination())) {
                 AttachmenEntry entry = new AttachmenEntry(true, upload);
                 entries.add(0, entry);
@@ -189,7 +189,7 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
     private int findUploadObjectIndex(int id) {
         return findIndexByPredicate(entries, entry -> {
             AbsModel model = entry.getAttachment();
-            return model instanceof UploadObject && ((UploadObject) model).getId() == id;
+            return model instanceof Upload && ((Upload) model).getId() == id;
         });
     }
 
@@ -231,7 +231,7 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
                 .map(MessageAttachmentsPresenter::entities2entries)
                 .zipWith(uploadManager.get(messageOwnerId, destination), (atts, uploads) -> {
                     List<AttachmenEntry> data = new ArrayList<>(atts.size() + uploads.size());
-                    for (UploadObject u : uploads) {
+                    for (Upload u : uploads) {
                         data.add(new AttachmenEntry(true, u));
                     }
 
@@ -299,8 +299,8 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
             return;
         }
 
-        if (entry.getAttachment() instanceof UploadObject) {
-            uploadManager.cancel(((UploadObject) entry.getAttachment()).getId());
+        if (entry.getAttachment() instanceof Upload) {
+            uploadManager.cancel(((Upload) entry.getAttachment()).getId());
             return;
         }
 

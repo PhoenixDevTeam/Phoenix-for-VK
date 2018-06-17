@@ -63,9 +63,9 @@ import biz.dealnote.messenger.model.SentMsg;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.criteria.DialogsCriteria;
 import biz.dealnote.messenger.model.criteria.MessagesCriteria;
+import biz.dealnote.messenger.upload.IUploadManager;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.upload.UploadDestination;
-import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.experimental.IUploadManager;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Unixtime;
@@ -808,12 +808,12 @@ public class MessagesInteractor implements IMessagesInteractor {
 
                     boolean uploadingNow = false;
 
-                    for (UploadObject o : uploads) {
-                        if (o.getStatus() == UploadObject.STATUS_CANCELLING) {
+                    for (Upload o : uploads) {
+                        if (o.getStatus() == Upload.STATUS_CANCELLING) {
                             continue;
                         }
 
-                        if (o.getStatus() == UploadObject.STATUS_ERROR) {
+                        if (o.getStatus() == Upload.STATUS_ERROR) {
                             throw new UploadNotResolvedException();
                         }
 

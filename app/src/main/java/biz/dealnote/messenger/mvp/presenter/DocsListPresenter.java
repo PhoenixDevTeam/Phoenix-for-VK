@@ -18,12 +18,12 @@ import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IDocListView;
+import biz.dealnote.messenger.upload.IUploadManager;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
-import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.experimental.IUploadManager;
-import biz.dealnote.messenger.upload.experimental.UploadResult;
-import biz.dealnote.messenger.upload.experimental.UploadUtils;
+import biz.dealnote.messenger.upload.UploadResult;
+import biz.dealnote.messenger.upload.UploadUtils;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.DisposableHolder;
 import biz.dealnote.messenger.util.Pair;
@@ -55,7 +55,7 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
     private final String mAction;
 
     private UploadDestination destination;
-    private List<UploadObject> uploadsData;
+    private List<Upload> uploadsData;
 
     private final List<DocFilter> filters;
     private final IDocsInteractor docsInteractor;
@@ -131,7 +131,7 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
         return data;
     }
 
-    private void onUploadsDataReceived(List<UploadObject> data) {
+    private void onUploadsDataReceived(List<Upload> data) {
         uploadsData.clear();
         uploadsData.addAll(data);
 
@@ -139,7 +139,7 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
         resolveUploadDataVisiblity();
     }
 
-    private void onUploadResults(Pair<UploadObject, UploadResult<?>> pair) {
+    private void onUploadResults(Pair<Upload, UploadResult<?>> pair) {
         mDocuments.add(0, (Document) pair.getSecond().getResult());
         callView(IDocListView::notifyDataSetChanged);
     }
@@ -153,15 +153,15 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
         }
     }
 
-    private void onUploadStatusUpdate(UploadObject upload) {
+    private void onUploadStatusUpdate(Upload upload) {
         int index = findIndexById(uploadsData, upload.getId());
         if (index != -1) {
             callView(view -> view.notifyUploadItemChanged(index));
         }
     }
 
-    private void onUploadsAdded(List<UploadObject> added) {
-        for (UploadObject u : added) {
+    private void onUploadsAdded(List<Upload> added) {
+        for (Upload u : added) {
             if (destination.compareTo(u.getDestination())) {
                 int index = uploadsData.size();
                 uploadsData.add(u);
@@ -379,8 +379,8 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
         uploadManager.enqueue(Collections.singletonList(intent));
     }
 
-    public void fireRemoveClick(UploadObject uploadObject) {
-        uploadManager.cancel(uploadObject.getId());
+    public void fireRemoveClick(Upload upload) {
+        uploadManager.cancel(upload.getId());
     }
 
     public void fireFilterClick(DocFilter entry) {
@@ -399,7 +399,7 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
     }
 
     public void fireLocalPhotosForUploadSelected(ArrayList<LocalPhoto> photos) {
-        List<UploadIntent> intents = UploadUtils.createIntents(getAccountId(), destination, photos, UploadObject.IMAGE_SIZE_FULL, true);
+        List<UploadIntent> intents = UploadUtils.createIntents(getAccountId(), destination, photos, Upload.IMAGE_SIZE_FULL, true);
         uploadManager.enqueue(intents);
     }
 }

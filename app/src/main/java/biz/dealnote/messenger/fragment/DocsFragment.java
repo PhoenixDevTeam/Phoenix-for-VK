@@ -46,7 +46,7 @@ import biz.dealnote.messenger.mvp.view.IDocListView;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
@@ -296,7 +296,7 @@ public class DocsFragment extends BasePresenterFragment<DocsListPresenter, IDocL
     }
 
     @Override
-    public void displayUploads(List<UploadObject> data) {
+    public void displayUploads(List<Upload> data) {
         if (nonNull(mUploadAdapter)) {
             mUploadAdapter.setData(data);
         }
@@ -407,7 +407,7 @@ public class DocsFragment extends BasePresenterFragment<DocsListPresenter, IDocL
     }
 
     @Override
-    public void onRemoveClick(UploadObject uploadObject) {
-        getPresenter().fireRemoveClick(uploadObject);
+    public void onRemoveClick(Upload upload) {
+        getPresenter().fireRemoveClick(upload);
     }
 }

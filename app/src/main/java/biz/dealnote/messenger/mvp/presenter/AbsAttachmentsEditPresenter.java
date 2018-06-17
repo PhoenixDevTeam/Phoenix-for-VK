@@ -24,8 +24,8 @@ import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IBaseAttachmentsEditView;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.experimental.IUploadManager;
+import biz.dealnote.messenger.upload.IUploadManager;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.util.FileUtil;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Pair;
@@ -132,16 +132,16 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
         Logger.d(tag(), "onUploadProgressUpdate, updates:" + updates + ", class: " + updates.getClass());
 
         for(IUploadManager.IProgressUpdate update : updates){
-            Predicate<AttachmenEntry> predicate = entry -> entry.getAttachment() instanceof UploadObject
-                    && ((UploadObject) entry.getAttachment()).getId() == update.getId();
+            Predicate<AttachmenEntry> predicate = entry -> entry.getAttachment() instanceof Upload
+                    && ((Upload) entry.getAttachment()).getId() == update.getId();
 
             Pair<Integer, AttachmenEntry> info = findInfoByPredicate(getData(), predicate);
 
             if(nonNull(info)){
                 AttachmenEntry entry = info.getSecond();
 
-                UploadObject object = (UploadObject) entry.getAttachment();
-                if(object.getStatus() != UploadObject.STATUS_UPLOADING) {
+                Upload object = (Upload) entry.getAttachment();
+                if(object.getStatus() != Upload.STATUS_UPLOADING) {
                     continue;
                 }
 
@@ -159,11 +159,11 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
         }
     }
 
-    void onUploadQueueUpdates(List<UploadObject> updates, Predicate<UploadObject> predicate){
+    void onUploadQueueUpdates(List<Upload> updates, Predicate<Upload> predicate){
         int startSize = data.size();
         int count = 0;
 
-        for(UploadObject u : updates){
+        for(Upload u : updates){
             if(predicate.test(u)){
                 data.add(new AttachmenEntry(true, u));
                 count++;
@@ -188,7 +188,7 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
         return data;
     }
 
-    void onUploadStatusUpdate(UploadObject update){
+    void onUploadStatusUpdate(Upload update){
         Logger.d(tag(), "onUploadStatusUpdate, id: " + update.getId() + ", status: " + update.getStatus());
         int index = findUploadIndexById(update.getId());
         if(index != -1){
@@ -196,9 +196,9 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
         }
     }
 
-    static List<AttachmenEntry> createFrom(List<UploadObject> objects){
+    static List<AttachmenEntry> createFrom(List<Upload> objects){
         List<AttachmenEntry> data = new ArrayList<>(objects.size());
-        for (UploadObject object : objects) {
+        for (Upload object : objects) {
             data.add(new AttachmenEntry(true, object));
         }
 
@@ -220,8 +220,8 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
     }
 
     public final void fireRemoveClick(int index, @NonNull AttachmenEntry attachment) {
-        if (attachment.getAttachment() instanceof UploadObject) {
-            UploadObject upload = (UploadObject) attachment.getAttachment();
+        if (attachment.getAttachment() instanceof Upload) {
+            Upload upload = (Upload) attachment.getAttachment();
             uploadManager.cancel(upload.getId());
             return;
         }
@@ -428,7 +428,7 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
 
     boolean hasUploads(){
         for(AttachmenEntry entry : data){
-            if(entry.getAttachment() instanceof UploadObject){
+            if(entry.getAttachment() instanceof Upload){
                 return true;
             }
         }
@@ -439,7 +439,7 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
     int findUploadIndexById(int id) {
         for (int i = 0; i < data.size(); i++) {
             AttachmenEntry item = data.get(i);
-            if (item.getAttachment() instanceof UploadObject && ((UploadObject) item.getAttachment()).getId() == id) {
+            if (item.getAttachment() instanceof Upload && ((Upload) item.getAttachment()).getId() == id) {
                 return i;
             }
         }

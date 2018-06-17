@@ -40,7 +40,7 @@ import biz.dealnote.messenger.model.wrappers.SelectablePhotoWrapper;
 import biz.dealnote.messenger.mvp.presenter.VkPhotosPresenter;
 import biz.dealnote.messenger.mvp.view.IVkPhotosView;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.mvp.core.IPresenterFactory;
@@ -203,12 +203,12 @@ public class VKPhotosFragment extends BasePresenterFragment<VkPhotosPresenter, I
     }
 
     @Override
-    public void onUploadRemoveClicked(UploadObject uploadObject) {
-        getPresenter().fireUploadRemoveClick(uploadObject);
+    public void onUploadRemoveClicked(Upload upload) {
+        getPresenter().fireUploadRemoveClick(upload);
     }
 
     @Override
-    public void displayData(List<SelectablePhotoWrapper> photos, List<UploadObject> uploads) {
+    public void displayData(List<SelectablePhotoWrapper> photos, List<Upload> uploads) {
         if (nonNull(mAdapter)) {
             mAdapter.setData(BigVkPhotosAdapter.DATA_TYPE_UPLOAD, uploads);
             mAdapter.setData(BigVkPhotosAdapter.DATA_TYPE_PHOTO, photos);

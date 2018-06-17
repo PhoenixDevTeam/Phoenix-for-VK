@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.upload.experimental;
+package biz.dealnote.messenger.upload.impl;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -15,9 +15,12 @@ import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.model.Photo;
+import biz.dealnote.messenger.upload.IUploadable;
 import biz.dealnote.messenger.upload.Method;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.upload.UploadDestination;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.UploadResult;
+import biz.dealnote.messenger.upload.UploadUtils;
 import biz.dealnote.messenger.util.Objects;
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -25,20 +28,20 @@ import io.reactivex.Single;
 import static biz.dealnote.messenger.util.RxUtils.safelyCloseAction;
 import static biz.dealnote.messenger.util.Utils.safelyClose;
 
-public class Photo2Wall implements IUploadable<Photo> {
+public class Photo2WallUploadable implements IUploadable<Photo> {
 
     private final Context context;
     private final INetworker networker;
     private final IAttachmentsRepository attachmentsRepository;
 
-    Photo2Wall(Context context, INetworker networker, IAttachmentsRepository attachmentsRepository) {
+    public Photo2WallUploadable(Context context, INetworker networker, IAttachmentsRepository attachmentsRepository) {
         this.context = context;
         this.networker = networker;
         this.attachmentsRepository = attachmentsRepository;
     }
 
     @Override
-    public Single<UploadResult<Photo>> doUpload(@NonNull UploadObject upload, @Nullable UploadServer initialServer, @Nullable PercentagePublisher listener) {
+    public Single<UploadResult<Photo>> doUpload(@NonNull Upload upload, @Nullable UploadServer initialServer, @Nullable PercentagePublisher listener) {
         int subjectOwnerId = upload.getDestination().getOwnerId();
         final Integer userId = subjectOwnerId > 0 ? subjectOwnerId : null;
         final Integer groupId = subjectOwnerId < 0 ? Math.abs(subjectOwnerId) : null;
@@ -86,7 +89,7 @@ public class Photo2Wall implements IUploadable<Photo> {
         });
     }
 
-    private Completable commit(IAttachmentsRepository repository, UploadObject upload, Photo photo){
+    private Completable commit(IAttachmentsRepository repository, Upload upload, Photo photo){
         int accountId = upload.getAccountId();
         UploadDestination dest = upload.getDestination();
 

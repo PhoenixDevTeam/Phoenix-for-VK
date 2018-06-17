@@ -1,19 +1,16 @@
-package biz.dealnote.messenger.upload.experimental;
+package biz.dealnote.messenger.upload;
 
 import android.support.annotation.NonNull;
 
 import java.util.List;
 
-import biz.dealnote.messenger.upload.UploadDestination;
-import biz.dealnote.messenger.upload.UploadIntent;
-import biz.dealnote.messenger.upload.UploadObject;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Pair;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 public interface IUploadManager {
-    Single<List<UploadObject>> get(int accountId, @NonNull UploadDestination destination);
+    Single<List<Upload>> get(int accountId, @NonNull UploadDestination destination);
 
     void enqueue(@NonNull List<UploadIntent> intents);
 
@@ -21,15 +18,15 @@ public interface IUploadManager {
 
     void cancelAll(int accountId, @NonNull UploadDestination destination);
 
-    Optional<UploadObject> getCurrent();
+    Optional<Upload> getCurrent();
 
     Flowable<int[]> observeDeleting(boolean includeCompleted);
 
-    Flowable<List<UploadObject>> observeAdding();
+    Flowable<List<Upload>> observeAdding();
 
-    Flowable<UploadObject> obseveStatus();
+    Flowable<Upload> obseveStatus();
 
-    Flowable<Pair<UploadObject, UploadResult<?>>> observeResults();
+    Flowable<Pair<Upload, UploadResult<?>>> observeResults();
 
     Flowable<List<IProgressUpdate>> observeProgress();
 

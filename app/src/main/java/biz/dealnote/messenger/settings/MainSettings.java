@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 
 import biz.dealnote.messenger.model.PhotoSize;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.util.Optional;
 
 /**
@@ -64,11 +64,11 @@ class MainSettings implements ISettings.IMainSettings {
         String i = getDefaultPreferences().getString(KEY_IMAGE_SIZE, "0");
         switch (i) {
             case "1":
-                return UploadObject.IMAGE_SIZE_800;
+                return Upload.IMAGE_SIZE_800;
             case "2":
-                return UploadObject.IMAGE_SIZE_1200;
+                return Upload.IMAGE_SIZE_1200;
             case "3":
-                return UploadObject.IMAGE_SIZE_FULL;
+                return Upload.IMAGE_SIZE_FULL;
             default:
                 return null;
         }

@@ -24,11 +24,11 @@ import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.WallEditorAttrs;
 import biz.dealnote.messenger.mvp.view.IBaseAttachmentsEditView;
 import biz.dealnote.messenger.mvp.view.IPostEditView;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
-import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.experimental.UploadResult;
-import biz.dealnote.messenger.upload.experimental.UploadUtils;
+import biz.dealnote.messenger.upload.UploadResult;
+import biz.dealnote.messenger.upload.UploadUtils;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Pair;
@@ -56,7 +56,7 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
 
     private final Post post;
     private final UploadDestination uploadDestination;
-    private final Predicate<UploadObject> uploadPredicate;
+    private final Predicate<Upload> uploadPredicate;
 
     private final IWalls wallInteractor;
 
@@ -213,7 +213,7 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
 
     @Override
     ArrayList<AttachmenEntry> getNeedParcelSavingEntries() {
-        return copyToArrayListWithPredicate(getData(), entry -> !(entry.getAttachment() instanceof UploadObject));
+        return copyToArrayListWithPredicate(getData(), entry -> !(entry.getAttachment() instanceof Upload));
     }
 
     private static Post safelyClone(Post post) {
@@ -224,8 +224,8 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
         }
     }
 
-    private void onUploadComplete(Pair<UploadObject, UploadResult<?>> data) {
-        UploadObject upload = data.getFirst();
+    private void onUploadComplete(Pair<Upload, UploadResult<?>> data) {
+        Upload upload = data.getFirst();
         UploadResult<?> result = data.getSecond();
 
         int index = findUploadIndexById(upload.getId());

@@ -28,7 +28,7 @@ import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.settings.CurrentTheme;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.view.CircleRoadProgress;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
@@ -142,35 +142,35 @@ public class AttchmentsEditorAdapter extends RecyclerBindableAdapter<AttachmenEn
         }
     }
 
-    private void configUploadObject(UploadObject uploadObject, ViewHolder holder) {
-        holder.pbProgress.setVisibility(uploadObject.getStatus() == UploadObject.STATUS_UPLOADING ? View.VISIBLE : View.GONE);
+    private void configUploadObject(Upload upload, ViewHolder holder) {
+        holder.pbProgress.setVisibility(upload.getStatus() == Upload.STATUS_UPLOADING ? View.VISIBLE : View.GONE);
         holder.vTint.setVisibility(View.VISIBLE);
 
-        switch (uploadObject.getStatus()) {
-            case UploadObject.STATUS_ERROR:
+        switch (upload.getStatus()) {
+            case Upload.STATUS_ERROR:
                 holder.tvTitle.setText(R.string.error);
                 holder.tvTitle.setTextColor(ERROR_COLOR);
                 break;
-            case UploadObject.STATUS_QUEUE:
+            case Upload.STATUS_QUEUE:
                 holder.tvTitle.setText(R.string.in_order);
                 holder.tvTitle.setTextColor(nonErrorTextColor);
                 break;
-            case UploadObject.STATUS_CANCELLING:
+            case Upload.STATUS_CANCELLING:
                 holder.tvTitle.setText(R.string.cancelling);
                 holder.tvTitle.setTextColor(nonErrorTextColor);
                 break;
             default:
                 holder.tvTitle.setTextColor(nonErrorTextColor);
-                String progressLine = uploadObject.getProgress() + "%";
+                String progressLine = upload.getProgress() + "%";
                 holder.tvTitle.setText(progressLine);
                 break;
         }
 
-        holder.pbProgress.changePercentage(uploadObject.getProgress());
+        holder.pbProgress.changePercentage(upload.getProgress());
 
-        if (uploadObject.hasThumbnail()) {
+        if (upload.hasThumbnail()) {
             PicassoInstance.with()
-                    .load(uploadObject.buildThumnailUri())
+                    .load(upload.buildThumnailUri())
                     .placeholder(R.drawable.background_gray)
                     .into(holder.photoImageView);
         } else {
@@ -310,8 +310,8 @@ public class AttchmentsEditorAdapter extends RecyclerBindableAdapter<AttachmenEn
             bindDoc(holder, (Document) model);
         } else if (model instanceof FwdMessages) {
             bindFwdMessages(holder, (FwdMessages) model);
-        } else if (model instanceof UploadObject) {
-            configUploadObject((UploadObject) model, holder);
+        } else if (model instanceof Upload) {
+            configUploadObject((Upload) model, holder);
         } else if (model instanceof Link) {
             bindLink(holder, (Link) model);
         } else {

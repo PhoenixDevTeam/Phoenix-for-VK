@@ -22,12 +22,12 @@ import biz.dealnote.messenger.model.PhotoAlbum;
 import biz.dealnote.messenger.model.wrappers.SelectablePhotoWrapper;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IVkPhotosView;
+import biz.dealnote.messenger.upload.IUploadManager;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
-import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.experimental.IUploadManager;
-import biz.dealnote.messenger.upload.experimental.UploadResult;
-import biz.dealnote.messenger.upload.experimental.UploadUtils;
+import biz.dealnote.messenger.upload.UploadResult;
+import biz.dealnote.messenger.upload.UploadUtils;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.RxUtils;
@@ -59,7 +59,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
     private final IUploadManager uploadManager;
 
     private final List<SelectablePhotoWrapper> photos;
-    private final List<UploadObject> uploads;
+    private final List<Upload> uploads;
 
     private final UploadDestination destination;
     private final String action;
@@ -189,11 +189,11 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         }
     }
 
-    private void onUploadQueueAdded(List<UploadObject> added) {
+    private void onUploadQueueAdded(List<Upload> added) {
         int startUploadSize = uploads.size();
         int count = 0;
 
-        for (UploadObject upload : added) {
+        for (Upload upload : added) {
             if (destination.compareTo(upload.getDestination())) {
                 uploads.add(upload);
                 count++;
@@ -217,7 +217,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         }
     }
 
-    private void onUploadResults(Pair<UploadObject, UploadResult<?>> pair) {
+    private void onUploadResults(Pair<Upload, UploadResult<?>> pair) {
         if (destination.compareTo(pair.getFirst().getDestination())) {
             Photo photo = (Photo) pair.getSecond().getResult();
             photos.add(0, new SelectablePhotoWrapper(photo));
@@ -225,7 +225,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         }
     }
 
-    private void onUploadStatusUpdate(UploadObject upload) {
+    private void onUploadStatusUpdate(Upload upload) {
         int index = findIndexById(uploads, upload.getId());
         if (index != -1) {
             callView(view -> view.notifyUploadItemChanged(index));
@@ -303,7 +303,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
                 .subscribe(this::onInitialDataReceived));
     }
 
-    private void onInitialDataReceived(Pair<List<Photo>, List<UploadObject>> data) {
+    private void onInitialDataReceived(Pair<List<Photo>, List<Upload>> data) {
         photos.clear();
         photos.addAll(wrappersOf(data.getFirst()));
 
@@ -326,7 +326,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         return VkPhotosPresenter.class.getSimpleName();
     }
 
-    public void fireUploadRemoveClick(UploadObject o) {
+    public void fireUploadRemoveClick(Upload o) {
         uploadManager.cancel(o.getId());
     }
 

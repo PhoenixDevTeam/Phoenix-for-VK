@@ -26,7 +26,7 @@ import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.settings.CurrentTheme;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.view.CircleRoadProgress;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
@@ -91,8 +91,8 @@ public class AttachmentsBottomSheetAdapter extends RecyclerView.Adapter<Recycler
 
         if (model instanceof Photo) {
             bindImageHolder(holder, (Photo) model);
-        } else if (model instanceof UploadObject) {
-            bindUploading(holder, (UploadObject) model);
+        } else if (model instanceof Upload) {
+            bindUploading(holder, (Upload) model);
         } else if(model instanceof Post){
             bindPost(holder, (Post) model);
         } else if(model instanceof Video){
@@ -161,10 +161,10 @@ public class AttachmentsBottomSheetAdapter extends RecyclerView.Adapter<Recycler
         bindImageView(holder, imgUrl);
     }
 
-    private void bindUploading(EntryHolder holder, UploadObject upload) {
+    private void bindUploading(EntryHolder holder, Upload upload) {
         holder.tintView.setVisibility(View.VISIBLE);
 
-        boolean inProgress = upload.getStatus() == UploadObject.STATUS_UPLOADING;
+        boolean inProgress = upload.getStatus() == Upload.STATUS_UPLOADING;
         holder.progress.setVisibility(inProgress ? View.VISIBLE : View.INVISIBLE);
         if (inProgress) {
             holder.progress.changePercentage(upload.getProgress());
@@ -176,17 +176,17 @@ public class AttachmentsBottomSheetAdapter extends RecyclerView.Adapter<Recycler
         int titleColor = nonErrorTextColor;
 
         switch (upload.getStatus()) {
-            case UploadObject.STATUS_UPLOADING:
+            case Upload.STATUS_UPLOADING:
                 String precentText = upload.getProgress() + "%";
                 holder.title.setText(precentText);
                 break;
-            case UploadObject.STATUS_CANCELLING:
+            case Upload.STATUS_CANCELLING:
                 holder.title.setText(R.string.cancelling);
                 break;
-            case UploadObject.STATUS_QUEUE:
+            case Upload.STATUS_QUEUE:
                 holder.title.setText(R.string.in_order);
                 break;
-            case UploadObject.STATUS_ERROR:
+            case Upload.STATUS_ERROR:
                 holder.title.setText(R.string.error);
                 titleColor = ERROR_COLOR;
                 break;

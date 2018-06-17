@@ -24,7 +24,7 @@ import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.model.wrappers.SelectablePhotoWrapper;
 import biz.dealnote.messenger.settings.CurrentTheme;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.util.AppTextUtils;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Utils;
@@ -51,14 +51,14 @@ public class BigVkPhotosAdapter extends DifferentDataAdapter {
     private PhotosActionListener mPhotosActionListener;
     private UploadActionListener mUploadActionListener;
 
-    public BigVkPhotosAdapter(Context context, @NonNull List<UploadObject> uploadObjects, @NonNull List<SelectablePhotoWrapper> photoWrappers, String picassoTag){
+    public BigVkPhotosAdapter(Context context, @NonNull List<Upload> uploads, @NonNull List<SelectablePhotoWrapper> photoWrappers, String picassoTag){
         this.mContext = context;
         this.mPhotoHolders = new HashSet<>();
         this.mUploadViewHolders = new SharedHolders<>(false);
         this.mPicassoTag = picassoTag;
         this.mColorPrimaryWithAlpha = Utils.adjustAlpha(CurrentTheme.getColorPrimary(mContext), 0.75F);
 
-        super.setData(DATA_TYPE_UPLOAD, uploadObjects);
+        super.setData(DATA_TYPE_UPLOAD, uploads);
         super.setData(DATA_TYPE_PHOTO, photoWrappers);
     }
 
@@ -95,21 +95,21 @@ public class BigVkPhotosAdapter extends DifferentDataAdapter {
         }
     }
 
-    private void bindUploadViewHolder(UploadViewHolder holder, final UploadObject uploadObject){
-        mUploadViewHolders.put(uploadObject.getId(), holder);
+    private void bindUploadViewHolder(UploadViewHolder holder, final Upload upload){
+        mUploadViewHolders.put(upload.getId(), holder);
 
-        holder.setupProgress(uploadObject.getStatus(), uploadObject.getProgress(), false);
-        holder.setupTitle(uploadObject.getStatus(), uploadObject.getProgress());
+        holder.setupProgress(upload.getStatus(), upload.getProgress(), false);
+        holder.setupTitle(upload.getStatus(), upload.getProgress());
 
         PicassoInstance.with()
-                .load(LocalPhoto.buildUriForPicasso(uploadObject.getFileId()))
+                .load(LocalPhoto.buildUriForPicasso(upload.getFileId()))
                 .tag(mPicassoTag)
                 .placeholder(R.drawable.background_gray)
                 .into(holder.image);
 
         holder.progressRoot.setOnClickListener(v -> {
             if(mUploadActionListener != null){
-                mUploadActionListener.onUploadRemoveClicked(uploadObject);
+                mUploadActionListener.onUploadRemoveClicked(upload);
             }
         });
     }
@@ -212,7 +212,7 @@ public class BigVkPhotosAdapter extends DifferentDataAdapter {
     }
 
     public interface UploadActionListener {
-        void onUploadRemoveClicked(UploadObject uploadObject);
+        void onUploadRemoveClicked(Upload upload);
     }
 
     private class UploadViewHolder extends RecyclerView.ViewHolder implements IdentificableHolder {
@@ -235,27 +235,27 @@ public class BigVkPhotosAdapter extends DifferentDataAdapter {
         }
 
         void setupProgress(int status, int progressValue, boolean smoothly){
-            if(smoothly && status == UploadObject.STATUS_UPLOADING){
+            if(smoothly && status == Upload.STATUS_UPLOADING){
                 progress.changePercentageSmoothly(progressValue);
             } else {
-                progress.setVisibility(status == UploadObject.STATUS_UPLOADING ? View.VISIBLE : View.GONE);
-                progress.changePercentage(status == UploadObject.STATUS_UPLOADING ? progressValue : 0);
+                progress.setVisibility(status == Upload.STATUS_UPLOADING ? View.VISIBLE : View.GONE);
+                progress.changePercentage(status == Upload.STATUS_UPLOADING ? progressValue : 0);
             }
         }
 
         void setupTitle(int status, int progress){
             switch (status){
-                case UploadObject.STATUS_QUEUE:
+                case Upload.STATUS_QUEUE:
                     title.setText(R.string.in_order);
                     break;
-                case UploadObject.STATUS_UPLOADING:
+                case Upload.STATUS_UPLOADING:
                     String progressText = progress + "%";
                     title.setText(progressText);
                     break;
-                case UploadObject.STATUS_ERROR:
+                case Upload.STATUS_ERROR:
                     title.setText(R.string.error);
                     break;
-                case UploadObject.STATUS_CANCELLING:
+                case Upload.STATUS_CANCELLING:
                     title.setText(R.string.cancelling);
                     break;
             }

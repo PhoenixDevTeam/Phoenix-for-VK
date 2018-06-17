@@ -19,11 +19,11 @@ import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.mvp.view.ICommentEditView;
 import biz.dealnote.messenger.upload.Method;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
-import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.experimental.UploadResult;
-import biz.dealnote.messenger.upload.experimental.UploadUtils;
+import biz.dealnote.messenger.upload.UploadResult;
+import biz.dealnote.messenger.upload.UploadUtils;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.Predicate;
 import biz.dealnote.messenger.util.RxUtils;
@@ -63,7 +63,7 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onUploadsReceived));
 
-        Predicate<UploadObject> predicate = upload -> upload.getAccountId() == getAccountId() && destination.compareTo(upload.getDestination());
+        Predicate<Upload> predicate = upload -> upload.getAccountId() == getAccountId() && destination.compareTo(upload.getDestination());
 
         appendDisposable(uploadManager.observeAdding()
                 .observeOn(Injection.provideMainThreadScheduler())
@@ -86,8 +86,8 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
                 .subscribe(this::onUploadsQueueChanged));
     }
 
-    private void onUploadsQueueChanged(Pair<UploadObject, UploadResult<?>> pair) {
-        UploadObject upload = pair.getFirst();
+    private void onUploadsQueueChanged(Pair<Upload, UploadResult<?>> pair) {
+        Upload upload = pair.getFirst();
         UploadResult<?> result = pair.getSecond();
 
         int index = findUploadIndexById(upload.getId());
@@ -120,7 +120,7 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
         uploadManager.enqueue(intents);
     }
 
-    private void onUploadsReceived(List<UploadObject> uploads) {
+    private void onUploadsReceived(List<Upload> uploads) {
         getData().addAll(createFrom(uploads));
         safeNotifyDataSetChanged();
     }
@@ -128,7 +128,7 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
     @Override
     ArrayList<AttachmenEntry> getNeedParcelSavingEntries() {
         // сохраняем все, кроме аплоада
-        return Utils.copyToArrayListWithPredicate(getData(), entry -> !(entry.getAttachment() instanceof UploadObject));
+        return Utils.copyToArrayListWithPredicate(getData(), entry -> !(entry.getAttachment() instanceof Upload));
     }
 
     @OnGuiCreated

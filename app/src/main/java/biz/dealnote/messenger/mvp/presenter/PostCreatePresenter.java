@@ -30,10 +30,10 @@ import biz.dealnote.messenger.model.WallEditorAttrs;
 import biz.dealnote.messenger.mvp.view.IPostCreateView;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.upload.Method;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
-import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.experimental.UploadUtils;
+import biz.dealnote.messenger.upload.UploadUtils;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Optional;
@@ -223,7 +223,7 @@ public class PostCreatePresenter extends AbsPostEditPresenter<IPostCreateView> {
         Predicate<AttachmenEntry> predicate = entry -> {
             // сохраняем только те, что не лежат в базе
             AbsModel model = entry.getAttachment();
-            return !(model instanceof UploadObject) && entry.getOptionalId() == 0;
+            return !(model instanceof Upload) && entry.getOptionalId() == 0;
         };
 
         return copyToArrayListWithPredicate(getData(), predicate);
@@ -259,7 +259,7 @@ public class PostCreatePresenter extends AbsPostEditPresenter<IPostCreateView> {
                 .subscribe(updates -> onUploadQueueUpdates(updates, this::isUploadToThis)));
     }
 
-    private boolean isUploadToThis(UploadObject upload) {
+    private boolean isUploadToThis(Upload upload) {
         UploadDestination dest = upload.getDestination();
         return nonNull(post)
                 && dest.getMethod() == Method.PHOTO_TO_WALL

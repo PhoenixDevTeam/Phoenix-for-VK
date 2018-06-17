@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.upload.experimental;
+package biz.dealnote.messenger.upload;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -23,10 +23,11 @@ import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.model.MessageStatus;
 import biz.dealnote.messenger.service.SendService;
-import biz.dealnote.messenger.upload.Method;
-import biz.dealnote.messenger.upload.UploadDestination;
-import biz.dealnote.messenger.upload.UploadIntent;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.impl.DocumentUploadable;
+import biz.dealnote.messenger.upload.impl.OwnerPhotoUploadable;
+import biz.dealnote.messenger.upload.impl.Photo2AlbumUploadable;
+import biz.dealnote.messenger.upload.impl.Photo2MessageUploadable;
+import biz.dealnote.messenger.upload.impl.Photo2WallUploadable;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.Utils;
@@ -51,13 +52,13 @@ public class UploadManagerImpl implements IUploadManager {
     private final IAttachmentsRepository attachmentsRepository;
     private final IWalls walls;
     private final SendService sendService;
-    private final List<UploadObject> queue = new ArrayList<>();
+    private final List<Upload> queue = new ArrayList<>();
     private final Scheduler scheduler;
 
-    private final PublishProcessor<List<UploadObject>> addingProcessor = PublishProcessor.create();
+    private final PublishProcessor<List<Upload>> addingProcessor = PublishProcessor.create();
     private final PublishProcessor<int[]> deletingProcessor = PublishProcessor.create();
-    private final PublishProcessor<Pair<UploadObject, UploadResult<?>>> completeProcessor = PublishProcessor.create();
-    private final PublishProcessor<UploadObject> statusProcessor = PublishProcessor.create();
+    private final PublishProcessor<Pair<Upload, UploadResult<?>>> completeProcessor = PublishProcessor.create();
+    private final PublishProcessor<Upload> statusProcessor = PublishProcessor.create();
 
     private final Flowable<Long> timer;
 
@@ -74,14 +75,14 @@ public class UploadManagerImpl implements IUploadManager {
     }
 
     @Override
-    public Single<List<UploadObject>> get(int accountId, @NonNull UploadDestination destination) {
+    public Single<List<Upload>> get(int accountId, @NonNull UploadDestination destination) {
         return Single.fromCallable(() -> getByDestination(accountId, destination));
     }
 
-    private List<UploadObject> getByDestination(int accountId, @NonNull UploadDestination destination) {
+    private List<Upload> getByDestination(int accountId, @NonNull UploadDestination destination) {
         synchronized (UploadManagerImpl.this) {
-            List<UploadObject> data = new ArrayList<>();
-            for (UploadObject upload : queue) {
+            List<Upload> data = new ArrayList<>();
+            for (Upload upload : queue) {
                 if (accountId == upload.getAccountId() && destination.compareTo(upload.getDestination())) {
                     data.add(upload);
                 }
@@ -90,34 +91,33 @@ public class UploadManagerImpl implements IUploadManager {
         }
     }
 
-    private static UploadObject intent2Object(UploadIntent intent) {
-        return new UploadObject(intent.getAccountId())
+    private static Upload intent2Upload(UploadIntent intent) {
+        return new Upload(intent.getAccountId())
                 .setAutoCommit(intent.isAutoCommit())
                 .setDestination(intent.getDestination())
                 .setFileId(intent.getFileId())
                 .setFileUri(intent.getFileUri())
-                .setStatus(UploadObject.STATUS_QUEUE)
+                .setStatus(Upload.STATUS_QUEUE)
                 .setSize(intent.getSize());
     }
 
     @Override
     public void enqueue(@NonNull List<UploadIntent> intents) {
         synchronized (this) {
-            List<UploadObject> all = new ArrayList<>(intents.size());
+            List<Upload> all = new ArrayList<>(intents.size());
 
             for (UploadIntent intent : intents) {
-                UploadObject o = intent2Object(intent);
-                all.add(o);
-                queue.add(o);
+                Upload upload = intent2Upload(intent);
+                all.add(upload);
+                queue.add(upload);
             }
 
             addingProcessor.onNext(all);
-
             startIfNotStarted();
         }
     }
 
-    private volatile UploadObject current;
+    private volatile Upload current;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private void startIfNotStarted() {
@@ -126,10 +126,10 @@ public class UploadManagerImpl implements IUploadManager {
                 .subscribe(this::startIfNotStartedInternal));
     }
 
-    private UploadObject findFirstQueue() {
-        UploadObject first = null;
-        for (UploadObject u : queue) {
-            if (u.getStatus() == UploadObject.STATUS_QUEUE) {
+    private Upload findFirstQueue() {
+        Upload first = null;
+        for (Upload u : queue) {
+            if (u.getStatus() == Upload.STATUS_QUEUE) {
                 first = u;
                 break;
             }
@@ -139,12 +139,12 @@ public class UploadManagerImpl implements IUploadManager {
 
     private void startIfNotStartedInternal() {
         synchronized (this) {
-            final UploadObject first = findFirstQueue();
+            final Upload first = findFirstQueue();
             if (current != null || first == null) return;
 
             this.current = first;
 
-            first.setStatus(UploadObject.STATUS_UPLOADING).setErrorText(null);
+            first.setStatus(Upload.STATUS_UPLOADING).setErrorText(null);
             statusProcessor.onNext(first);
 
             final IUploadable<?> uploadable = createUploadable(first);
@@ -157,7 +157,7 @@ public class UploadManagerImpl implements IUploadManager {
         }
     }
 
-    private void onUploadComplete(UploadObject upload, UploadResult<?> result) {
+    private void onUploadComplete(Upload upload, UploadResult<?> result) {
         synchronized (this) {
             queue.remove(upload);
 
@@ -203,22 +203,22 @@ public class UploadManagerImpl implements IUploadManager {
 
     private static final class WeakProgressPublisgher implements PercentagePublisher {
 
-        final WeakReference<UploadObject> reference;
+        final WeakReference<Upload> reference;
 
-        WeakProgressPublisgher(UploadObject upload) {
+        WeakProgressPublisgher(Upload upload) {
             this.reference = new WeakReference<>(upload);
         }
 
         @Override
         public void onProgressChanged(int percentage) {
-            UploadObject upload = reference.get();
+            Upload upload = reference.get();
             if (upload != null) {
                 upload.setProgress(percentage);
             }
         }
     }
 
-    private void onUploadFail(UploadObject upload, Throwable t) {
+    private void onUploadFail(Upload upload, Throwable t) {
         synchronized (this) {
             if (current == upload) {
                 current = null;
@@ -229,7 +229,7 @@ public class UploadManagerImpl implements IUploadManager {
             }
 
             String errorMessage = firstNonEmptyString(t.getMessage(), t.toString());
-            upload.setStatus(UploadObject.STATUS_ERROR).setErrorText(errorMessage);
+            upload.setStatus(Upload.STATUS_ERROR).setErrorText(errorMessage);
             statusProcessor.onNext(upload);
 
             startIfNotStartedInternal();
@@ -262,11 +262,11 @@ public class UploadManagerImpl implements IUploadManager {
                 current = null;
             }
 
-            List<UploadObject> target = new ArrayList<>();
+            List<Upload> target = new ArrayList<>();
 
-            Iterator<UploadObject> iterator = queue.iterator();
+            Iterator<Upload> iterator = queue.iterator();
             while (iterator.hasNext()) {
-                UploadObject next = iterator.next();
+                Upload next = iterator.next();
                 if (accountId == next.getAccountId() && destination.compareTo(next.getDestination())) {
                     iterator.remove();
                     target.add(next);
@@ -286,7 +286,7 @@ public class UploadManagerImpl implements IUploadManager {
     }
 
     @Override
-    public Optional<UploadObject> getCurrent() {
+    public Optional<Upload> getCurrent() {
         synchronized (this) {
             return Optional.wrap(current);
         }
@@ -305,17 +305,17 @@ public class UploadManagerImpl implements IUploadManager {
     }
 
     @Override
-    public Flowable<List<UploadObject>> observeAdding() {
+    public Flowable<List<Upload>> observeAdding() {
         return addingProcessor.onBackpressureBuffer();
     }
 
     @Override
-    public Flowable<UploadObject> obseveStatus() {
+    public Flowable<Upload> obseveStatus() {
         return statusProcessor.onBackpressureBuffer();
     }
 
     @Override
-    public Flowable<Pair<UploadObject, UploadResult<?>>> observeResults() {
+    public Flowable<Pair<Upload, UploadResult<?>>> observeResults() {
         return completeProcessor.onBackpressureBuffer();
     }
 
@@ -354,19 +354,19 @@ public class UploadManagerImpl implements IUploadManager {
         }
     }
 
-    private IUploadable<?> createUploadable(UploadObject upload) {
+    private IUploadable<?> createUploadable(Upload upload) {
         final UploadDestination destination = upload.getDestination();
 
         switch (destination.getMethod()) {
             case Method.PHOTO_TO_MESSAGE:
-                return new Photo2Message(context, networker, attachmentsRepository, storages.messages());
+                return new Photo2MessageUploadable(context, networker, attachmentsRepository, storages.messages());
             case Method.PHOTO_TO_ALBUM:
-                return new Photo2Album(context, networker, storages.photos());
+                return new Photo2AlbumUploadable(context, networker, storages.photos());
             case Method.DOCUMENT:
                 return new DocumentUploadable(context, networker, storages.docs());
             case Method.PHOTO_TO_COMMENT:
             case Method.PHOTO_TO_WALL:
-                return new Photo2Wall(context, networker, attachmentsRepository);
+                return new Photo2WallUploadable(context, networker, attachmentsRepository);
             case Method.PHOTO_TO_PROFILE:
                 return new OwnerPhotoUploadable(context, networker, walls);
         }
@@ -376,7 +376,7 @@ public class UploadManagerImpl implements IUploadManager {
 
     private final Map<String, UploadServer> serverMap = Collections.synchronizedMap(new HashMap<>());
 
-    private static String createServerKey(UploadObject upload) {
+    private static String createServerKey(Upload upload) {
         UploadDestination dest = upload.getDestination();
 
         StringBuilder builder = new StringBuilder();

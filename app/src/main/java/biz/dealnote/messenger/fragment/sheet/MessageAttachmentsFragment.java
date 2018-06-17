@@ -34,7 +34,7 @@ import biz.dealnote.messenger.model.selection.Sources;
 import biz.dealnote.messenger.model.selection.VkPhotosSelectableSource;
 import biz.dealnote.messenger.mvp.presenter.MessageAttachmentsPresenter;
 import biz.dealnote.messenger.mvp.view.IMessageAttachmentsView;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.mvp.core.IPresenterFactory;
@@ -170,7 +170,7 @@ public class MessageAttachmentsFragment extends AbsPresenterBottomSheetFragment<
 
     @Override
     public void displaySelectUploadPhotoSizeDialog(List<LocalPhoto> photos) {
-        int[] values = {UploadObject.IMAGE_SIZE_800, UploadObject.IMAGE_SIZE_1200, UploadObject.IMAGE_SIZE_FULL};
+        int[] values = {Upload.IMAGE_SIZE_800, Upload.IMAGE_SIZE_1200, Upload.IMAGE_SIZE_FULL};
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.select_image_size_title)
                 .setItems(R.array.array_image_sizes_names, (dialogInterface, j)

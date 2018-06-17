@@ -45,7 +45,7 @@ import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.mvp.presenter.AbsAttachmentsEditPresenter;
 import biz.dealnote.messenger.mvp.view.IBaseAttachmentsEditView;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.util.Action;
 import biz.dealnote.messenger.util.AppTextUtils;
 import biz.dealnote.messenger.util.AssertUtils;
@@ -358,7 +358,7 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
 
     @Override
     public void displaySelectUploadPhotoSizeDialog(@NonNull List<LocalPhoto> photos) {
-        int[] values = {UploadObject.IMAGE_SIZE_800, UploadObject.IMAGE_SIZE_1200, UploadObject.IMAGE_SIZE_FULL};
+        int[] values = {Upload.IMAGE_SIZE_800, Upload.IMAGE_SIZE_1200, Upload.IMAGE_SIZE_FULL};
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.select_image_size_title)
                 .setItems(R.array.array_image_sizes_names,

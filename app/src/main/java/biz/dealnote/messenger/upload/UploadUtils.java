@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.upload.experimental;
+package biz.dealnote.messenger.upload;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.model.LocalPhoto;
-import biz.dealnote.messenger.upload.UploadDestination;
-import biz.dealnote.messenger.upload.UploadIntent;
-import biz.dealnote.messenger.upload.UploadObject;
 import biz.dealnote.messenger.util.IOUtils;
 
 public final class UploadUtils {
@@ -25,7 +22,7 @@ public final class UploadUtils {
 
     }
 
-    static InputStream openStream(Context context, Uri uri, int size) throws IOException {
+    public static InputStream openStream(Context context, Uri uri, int size) throws IOException {
         InputStream originalStream;
 
         File filef = new File(uri.getPath());
@@ -35,7 +32,7 @@ public final class UploadUtils {
             originalStream = context.getContentResolver().openInputStream(uri);
         }
 
-        if (size == UploadObject.IMAGE_SIZE_FULL) {
+        if (size == Upload.IMAGE_SIZE_FULL) {
             return originalStream;
         }
 

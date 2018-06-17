@@ -12,7 +12,7 @@ import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.util.ParcelUtils;
 
-public class UploadObject extends AbsModel implements Parcelable, Identificable {
+public class Upload extends AbsModel implements Parcelable, Identificable {
 
     public static final int IMAGE_SIZE_800 = 800;
     public static final int IMAGE_SIZE_1200 = 1200;
@@ -52,7 +52,7 @@ public class UploadObject extends AbsModel implements Parcelable, Identificable 
 
     private boolean autoCommit;
 
-    public UploadObject(int accountId) {
+    public Upload(int accountId) {
         this.accountId = accountId;
         this.id = getIncrementedUploadId();
     }
@@ -61,12 +61,12 @@ public class UploadObject extends AbsModel implements Parcelable, Identificable 
         return autoCommit;
     }
 
-    public UploadObject setAutoCommit(boolean autoCommit) {
+    public Upload setAutoCommit(boolean autoCommit) {
         this.autoCommit = autoCommit;
         return this;
     }
 
-    public UploadObject setId(int id) {
+    public Upload setId(int id) {
         this.id = id;
         return this;
     }
@@ -92,7 +92,7 @@ public class UploadObject extends AbsModel implements Parcelable, Identificable 
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UploadObject that = (UploadObject) o;
+        Upload that = (Upload) o;
         return id == that.id;
     }
 
@@ -101,7 +101,7 @@ public class UploadObject extends AbsModel implements Parcelable, Identificable 
         return id;
     }
 
-    protected UploadObject(Parcel in) {
+    protected Upload(Parcel in) {
         super(in);
         this.accountId = in.readInt();
         this.id = in.readInt();
@@ -114,15 +114,15 @@ public class UploadObject extends AbsModel implements Parcelable, Identificable 
         this.fileId = ParcelUtils.readObjectLong(in);
     }
 
-    public static final Creator<UploadObject> CREATOR = new Creator<UploadObject>() {
+    public static final Creator<Upload> CREATOR = new Creator<Upload>() {
         @Override
-        public UploadObject createFromParcel(Parcel in) {
-            return new UploadObject(in);
+        public Upload createFromParcel(Parcel in) {
+            return new Upload(in);
         }
 
         @Override
-        public UploadObject[] newArray(int size) {
-            return new UploadObject[size];
+        public Upload[] newArray(int size) {
+            return new Upload[size];
         }
     };
 
@@ -145,37 +145,37 @@ public class UploadObject extends AbsModel implements Parcelable, Identificable 
         ParcelUtils.writeObjectLong(dest, fileId);
     }
 
-    public UploadObject setFileUri(Uri fileUri) {
+    public Upload setFileUri(Uri fileUri) {
         this.fileUri = fileUri;
         return this;
     }
 
-    public UploadObject setDestination(UploadDestination destination) {
+    public Upload setDestination(UploadDestination destination) {
         this.destination = destination;
         return this;
     }
 
-    public UploadObject setSize(int size) {
+    public Upload setSize(int size) {
         this.size = size;
         return this;
     }
 
-    public UploadObject setStatus(int status) {
+    public Upload setStatus(int status) {
         this.status = status;
         return this;
     }
 
-    public UploadObject setProgress(int progress) {
+    public Upload setProgress(int progress) {
         this.progress = progress;
         return this;
     }
 
-    public UploadObject setErrorText(String errorText) {
+    public Upload setErrorText(String errorText) {
         this.errorText = errorText;
         return this;
     }
 
-    public UploadObject setFileId(Long fileId) {
+    public Upload setFileId(Long fileId) {
         this.fileId = fileId;
         return this;
     }

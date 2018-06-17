@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.upload.experimental;
+package biz.dealnote.messenger.upload.impl;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,7 +12,10 @@ import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.model.Post;
-import biz.dealnote.messenger.upload.UploadObject;
+import biz.dealnote.messenger.upload.IUploadable;
+import biz.dealnote.messenger.upload.Upload;
+import biz.dealnote.messenger.upload.UploadResult;
+import biz.dealnote.messenger.upload.UploadUtils;
 import io.reactivex.Single;
 
 import static biz.dealnote.messenger.util.Utils.safelyClose;
@@ -23,14 +26,14 @@ public class OwnerPhotoUploadable implements IUploadable<Post> {
     private final INetworker networker;
     private final IWalls walls;
 
-    OwnerPhotoUploadable(Context context, INetworker networker, IWalls walls) {
+    public OwnerPhotoUploadable(Context context, INetworker networker, IWalls walls) {
         this.context = context;
         this.networker = networker;
         this.walls = walls;
     }
 
     @Override
-    public Single<UploadResult<Post>> doUpload(@NonNull UploadObject upload, @Nullable UploadServer initialServer, @Nullable PercentagePublisher listener) {
+    public Single<UploadResult<Post>> doUpload(@NonNull Upload upload, @Nullable UploadServer initialServer, @Nullable PercentagePublisher listener) {
         final int accountId = upload.getAccountId();
         final int ownerId = upload.getDestination().getOwnerId();
 
