@@ -30,15 +30,18 @@ public class SendService {
     private Collection<Integer> registeredAccounts;
     private final Context app;
 
-    SendService(Context context, IMessagesInteractor interactor, ISettings.IAccountsSettings settings){
+    SendService(Context context, ISettings.IAccountsSettings settings){
         this.app = context.getApplicationContext();
-        this.messagesInteractor = interactor;
         this.registeredAccounts = settings.getRegistered();
         this.senderScheduler = Schedulers.from(Executors.newFixedThreadPool(1));
 
         compositeDisposable.add(settings.observeRegistered()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onAccountsChanged, RxUtils.ignore()));
+    }
+
+    public void setMessagesInteractor(IMessagesInteractor messagesInteractor) {
+        this.messagesInteractor = messagesInteractor;
     }
 
     private void onAccountsChanged(ISettings.IAccountsSettings settings){
@@ -115,6 +118,10 @@ public class SendService {
     }
 
     private void sendMessage(Collection<Integer> accountIds) {
+        if(messagesInteractor == null){
+            throw new IllegalStateException("'messagesInteractor' was not initialized");
+        }
+
         nowSending = true;
         compositeDisposable.add(messagesInteractor.sendUnsentMessage(accountIds)
                 .subscribeOn(senderScheduler)

@@ -1,19 +1,16 @@
 package biz.dealnote.messenger.link;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.VKPhotosFragment;
 import biz.dealnote.messenger.fragment.fave.FaveTabsFragment;
 import biz.dealnote.messenger.fragment.search.SearchContentType;

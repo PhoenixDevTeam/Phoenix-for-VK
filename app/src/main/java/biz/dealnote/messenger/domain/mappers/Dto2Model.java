@@ -73,7 +73,6 @@ import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.model.VoiceMessage;
 import biz.dealnote.messenger.model.WikiPage;
 import biz.dealnote.messenger.util.Objects;
-import biz.dealnote.messenger.util.Utils;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
@@ -190,22 +189,12 @@ public class Dto2Model {
     }
 
     public static List<Community> transformCommunities(List<VKApiCommunity> dtos) {
-        List<Community> communities = new ArrayList<>(dtos.size());
-        for (VKApiCommunity dto : dtos) {
-            communities.add(transformCommunity(dto));
-        }
-
-        return communities;
+        return MapUtil.mapAll(dtos, Dto2Model::transformCommunity);
     }
 
 
     public static List<User> transformUsers(List<VKApiUser> dtos) {
-        List<User> users = new ArrayList<>(dtos.size());
-        for (VKApiUser dto : dtos) {
-            users.add(transformUser(dto));
-        }
-
-        return users;
+        return MapUtil.mapAll(dtos, Dto2Model::transformUser);
     }
 
     public static User transformUser(VKApiUser user) {
@@ -318,7 +307,7 @@ public class Dto2Model {
             appMessage.setAttachments(Dto2Model.buildAttachments(message.attachments, owners));
         }
 
-        if (!Utils.safeIsEmpty(message.fwd_messages)) {
+        if (nonEmpty(message.fwd_messages)) {
             for (VKApiMessage fwd : message.fwd_messages) {
                 appMessage.prepareFwd(message.fwd_messages.size()).add(transform(aid, fwd, owners));
             }

@@ -118,10 +118,6 @@
             android:name=".service.QuickReplyService"
             android:exported="false"/>
 
-        <service
-            android:name=".upload.UploadService"
-            android:exported="false"/>
-
         <activity
             android:name=".activity.PhotosActivity"
             android:label="@string/photos" />

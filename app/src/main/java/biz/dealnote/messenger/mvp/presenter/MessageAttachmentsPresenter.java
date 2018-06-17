@@ -14,9 +14,6 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.AttachToType;
-import biz.dealnote.messenger.db.Stores;
-import biz.dealnote.messenger.db.interfaces.IStorages;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
@@ -29,8 +26,8 @@ import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
 import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.UploadUtils;
-import biz.dealnote.messenger.util.Analytics;
+import biz.dealnote.messenger.upload.experimental.IUploadManager;
+import biz.dealnote.messenger.upload.experimental.UploadUtils;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.FileUtil;
@@ -59,10 +56,10 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
     private final List<AttachmenEntry> entries;
 
     private final IAttachmentsRepository attachmentsRepository;
-    private final IStorages repositories;
     private final UploadDestination destination;
 
     private Uri currentPhotoCameraUri;
+    private final IUploadManager uploadManager;
 
     public MessageAttachmentsPresenter(int accountId, int messageOwnerId, int messageId, @Nullable ModelsBundle bundle, @Nullable Bundle savedInstanceState) {
         super(savedInstanceState);
@@ -71,10 +68,10 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
         this.messageOwnerId = messageOwnerId;
         this.destination = UploadDestination.forMessage(messageId);
         this.entries = new ArrayList<>();
-        this.repositories = Stores.getInstance();
         this.attachmentsRepository = Injection.provideAttachmentsRepository();
+        this.uploadManager = Injection.provideUploadManager();
 
-        if(nonNull(savedInstanceState)){
+        if (nonNull(savedInstanceState)) {
             this.currentPhotoCameraUri = savedInstanceState.getParcelable(SAVE_CAMERA_FILE_URI);
             ArrayList<AttachmenEntry> accompanying = savedInstanceState.getParcelableArrayList(SAVE_ACCOMPANYING_ENTRIES);
             AssertUtils.requireNonNull(accompanying);
@@ -82,8 +79,6 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
         } else {
             handleInputModels(bundle);
         }
-
-        loadData();
 
         Predicate<IAttachmentsRepository.IBaseEvent> predicate = event -> event.getAttachToType() == AttachToType.MESSAGE
                 && event.getAttachToId() == messageId
@@ -101,42 +96,44 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(event -> onAttachmentRemoved(event.getGeneratedId())));
 
-        appendDisposable(repositories.uploads()
-                .observeQueue()
+        appendDisposable(uploadManager.observeAdding()
                 .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(this::onUploadQueueChanged));
+                .subscribe(this::onUploadsAdded));
 
-        appendDisposable(repositories.uploads()
-                .observeStatusUpdates()
+        appendDisposable(uploadManager.observeDeleting(true)
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onUploadsRemoved));
+
+        appendDisposable(uploadManager.obseveStatus()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onUploadStatusChanges));
 
-        appendDisposable(repositories.uploads()
-                .observeProgress()
+        appendDisposable(uploadManager.observeProgress()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onUploadProgressUpdates));
+
+        loadData();
     }
 
-    private void handleInputModels(ModelsBundle bundle){
-        if(isNull(bundle)){
+    private void handleInputModels(ModelsBundle bundle) {
+        if (isNull(bundle)) {
             return;
         }
 
-        for(AbsModel model : bundle){
-            this.entries.add(new AttachmenEntry(true, model)
-                    .setAccompanying(true));
+        for (AbsModel model : bundle) {
+            entries.add(new AttachmenEntry(true, model).setAccompanying(true));
         }
     }
 
     @OnGuiCreated
-    private void resolveEmptyViewVisibility(){
-        if(isGuiReady()){
+    private void resolveEmptyViewVisibility() {
+        if (isGuiReady()) {
             getView().setEmptyViewVisible(entries.isEmpty());
         }
     }
 
-    private void onUploadProgressUpdates(List<IUploadQueueStorage.IProgressUpdate> updates) {
-        for (IUploadQueueStorage.IProgressUpdate update : updates) {
+    private void onUploadProgressUpdates(List<IUploadManager.IProgressUpdate> updates) {
+        for (IUploadManager.IProgressUpdate update : updates) {
             int index = findUploadObjectIndex(update.getId());
             if (index != -1) {
                 UploadObject upload = (UploadObject) entries.get(index).getAttachment();
@@ -151,36 +148,41 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
         }
     }
 
-    private void onUploadStatusChanges(IUploadQueueStorage.IStatusUpdate update) {
-        int index = findUploadObjectIndex(update.getId());
+    private void onUploadStatusChanges(UploadObject upload) {
+        int index = findUploadObjectIndex(upload.getId());
         if (index != -1) {
-            ((UploadObject) entries.get(index).getAttachment()).setStatus(update.getStatus());
+            ((UploadObject) entries.get(index).getAttachment())
+                    .setStatus(upload.getStatus())
+                    .setErrorText(upload.getErrorText());
+
             callView(view -> view.notifyItemChanged(index));
         }
     }
 
-    private void onUploadQueueChanged(List<IUploadQueueStorage.IQueueUpdate> updates) {
-        int addCount = 0;
-        for (int i = updates.size() - 1; i >= 0; i--) {
-            IUploadQueueStorage.IQueueUpdate update = updates.get(i);
+    private void onUploadsRemoved(int[] ids) {
+        for (int id : ids) {
+            int index = findUploadObjectIndex(id);
+            if (index != -1) {
+                entries.remove(index);
+                callView(view -> view.notifyEntryRemoved(index));
+                resolveEmptyViewVisibility();
+            }
+        }
+    }
 
-            if (update.isAdding()) {
-                UploadObject o = update.object();
-                AttachmenEntry entry = new AttachmenEntry(true, o);
-
+    private void onUploadsAdded(List<UploadObject> uploads) {
+        int count = 0;
+        for (int i = uploads.size() - 1; i >= 0; i--) {
+            UploadObject upload = uploads.get(i);
+            if (this.destination.compareTo(upload.getDestination())) {
+                AttachmenEntry entry = new AttachmenEntry(true, upload);
                 entries.add(0, entry);
-                addCount++;
-            } else {
-                int index = findUploadObjectIndex(update.getId());
-                if (index != -1) {
-                    entries.remove(index);
-                    callView(view -> view.notifyEntryRemoved(index));
-                }
+                count++;
             }
         }
 
-        final int finalAddCount = addCount;
-        callView(view -> view.notifyDataAdded(0, finalAddCount));
+        int finalCount = count;
+        callView(view -> view.notifyDataAdded(0, finalCount));
         resolveEmptyViewVisibility();
     }
 
@@ -220,14 +222,14 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
     private void loadData() {
         appendDisposable(createLoadAllSingle()
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onDataReceived, Analytics::logUnexpectedError));
+                .subscribe(this::onDataReceived, RxUtils.ignore()));
     }
 
     private Single<List<AttachmenEntry>> createLoadAllSingle() {
         return attachmentsRepository
                 .getAttachmentsWithIds(messageOwnerId, AttachToType.MESSAGE, messageId)
                 .map(MessageAttachmentsPresenter::entities2entries)
-                .zipWith(repositories.uploads().getByDestination(messageOwnerId, destination), (atts, uploads) -> {
+                .zipWith(uploadManager.get(messageOwnerId, destination), (atts, uploads) -> {
                     List<AttachmenEntry> data = new ArrayList<>(atts.size() + uploads.size());
                     for (UploadObject u : uploads) {
                         data.add(new AttachmenEntry(true, u));
@@ -288,7 +290,7 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
 
     private void doUploadPhotos(List<LocalPhoto> photos, int size) {
         List<UploadIntent> intents = UploadUtils.createIntents(messageOwnerId, destination, photos, size, true);
-        UploadUtils.upload(getApplicationContext(), intents);
+        uploadManager.enqueue(intents);
     }
 
     public void fireRemoveClick(AttachmenEntry entry) {
@@ -297,14 +299,14 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
             return;
         }
 
-        if(entry.getAttachment() instanceof UploadObject){
-            UploadUtils.cancelById(getApplicationContext(), ((UploadObject) entry.getAttachment()).getId());
+        if (entry.getAttachment() instanceof UploadObject) {
+            uploadManager.cancel(((UploadObject) entry.getAttachment()).getId());
             return;
         }
 
-        if(entry.isAccompanying()){
-            for(int i = 0; i < entries.size(); i++){
-                if(entries.get(i).getId() == entry.getId()){
+        if (entry.isAccompanying()) {
+            for (int i = 0; i < entries.size(); i++) {
+                if (entries.get(i).getId() == entry.getId()) {
                     entries.remove(i);
                     getView().notifyEntryRemoved(i);
                     syncAccompanyingWithParent();
@@ -319,20 +321,20 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
     }
 
     public void fireCameraPermissionResolved() {
-        if(AppPerms.hasCameraPermision(getApplicationContext())){
+        if (AppPerms.hasCameraPermision(getApplicationContext())) {
             makePhotoInternal();
         }
     }
 
     public void fireButtonCameraClick() {
-        if(AppPerms.hasCameraPermision(getApplicationContext())){
+        if (AppPerms.hasCameraPermision(getApplicationContext())) {
             makePhotoInternal();
         } else {
             getView().requestCameraPermission();
         }
     }
 
-    private void makePhotoInternal(){
+    private void makePhotoInternal() {
         try {
             File file = FileUtil.createImageFile();
             this.currentPhotoCameraUri = FileUtil.getExportedUriForFile(getApplicationContext(), file);
@@ -352,8 +354,8 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
 
         // сохраняем в outState только неПерсистентные данные
         ArrayList<AttachmenEntry> accompanying = new ArrayList<>();
-        for(AttachmenEntry entry : entries){
-            if(entry.isAccompanying()){
+        for (AttachmenEntry entry : entries) {
+            if (entry.isAccompanying()) {
                 accompanying.add(entry);
             }
         }
@@ -361,10 +363,10 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
         outState.putParcelableArrayList(SAVE_ACCOMPANYING_ENTRIES, accompanying);
     }
 
-    private void syncAccompanyingWithParent(){
+    private void syncAccompanyingWithParent() {
         ModelsBundle bundle = new ModelsBundle();
-        for(AttachmenEntry entry : entries){
-            if(entry.isAccompanying()){
+        for (AttachmenEntry entry : entries) {
+            if (entry.isAccompanying()) {
                 bundle.append(entry.getAttachment());
             }
         }

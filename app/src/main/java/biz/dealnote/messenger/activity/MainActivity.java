@@ -116,8 +116,6 @@ import biz.dealnote.messenger.push.IPushRegistrationResolver;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.upload.UploadService;
-import biz.dealnote.messenger.upload.UploadUtils;
 import biz.dealnote.messenger.util.Accounts;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.AssertUtils;
@@ -165,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private MusicUtils.ServiceToken mAudioPlayServiceToken;
-    private UploadUtils.ServiceToken mUploadServiceToken;
 
     private FragmentManager.OnBackStackChangedListener mOnBackStackChangedListener = () -> {
         resolveToolbarNavigationIcon();
@@ -189,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 .subscribe(this::onCurrentAccountChange));
 
         bindToAudioPlayService();
-        bindToUploadService();
 
         setTheme(Settings.get()
                 .ui()
@@ -271,12 +267,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 .subscribe(() -> {/*ignore*/}, Throwable::printStackTrace));
 
         //RequestHelper.checkPushRegistration(this);
-    }
-
-    private void bindToUploadService() {
-        if (!isActivityDestroyed()) {
-            mUploadServiceToken = UploadUtils.bindToService(this, this);
-        }
     }
 
     private void bindToAudioPlayService() {
@@ -604,16 +594,8 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
         getSupportFragmentManager().removeOnBackStackChangedListener(mOnBackStackChangedListener);
 
-        unbindFromUploadService();
         unbindFromAudioPlayService();
         super.onDestroy();
-    }
-
-    private void unbindFromUploadService() {
-        if (mUploadServiceToken != null) {
-            UploadUtils.unbindFromService(mUploadServiceToken);
-            mUploadServiceToken = null;
-        }
     }
 
     private void unbindFromAudioPlayService() {
@@ -1174,12 +1156,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             Logger.d(TAG, "Disconnected from MusicPlaybackService");
             mAudioPlayServiceToken = null;
             bindToAudioPlayService();
-        }
-
-        if (name.getClassName().equals(UploadService.class.getName())) {
-            Logger.d(TAG, "Disconnected from UploadService");
-            mUploadServiceToken = null;
-            bindToUploadService();
         }
     }
 

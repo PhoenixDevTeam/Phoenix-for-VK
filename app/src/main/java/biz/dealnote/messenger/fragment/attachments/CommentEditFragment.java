@@ -16,6 +16,7 @@ import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.model.Comment;
 import biz.dealnote.messenger.mvp.presenter.CommentEditPresenter;
 import biz.dealnote.messenger.mvp.view.ICommentEditView;
+import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
@@ -45,8 +46,9 @@ public class CommentEditFragment extends AbsAttachmentsEditFragment<CommentEditP
     @Override
     public IPresenterFactory<CommentEditPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int aid = getArguments().getInt(Extra.ACCOUNT_ID);
-            Comment comment = getArguments().getParcelable(Extra.COMMENT);
+            int aid = requireArguments().getInt(Extra.ACCOUNT_ID);
+            Comment comment = requireArguments().getParcelable(Extra.COMMENT);
+            AssertUtils.requireNonNull(comment);
             return new CommentEditPresenter(comment, aid, saveInstanceState);
         };
     }
@@ -79,7 +81,7 @@ public class CommentEditFragment extends AbsAttachmentsEditFragment<CommentEditP
                 .setBlockNavigationDrawer(true)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -101,12 +103,12 @@ public class CommentEditFragment extends AbsAttachmentsEditFragment<CommentEditP
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, data);
         }
 
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 
     @Override
     public void showConfirmWithoutSavingDialog() {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.confirmation)
                 .setMessage(R.string.save_changes_question)
                 .setPositiveButton(R.string.button_yes, (dialog, which) -> getPresenter().fireReadyClick())
@@ -117,6 +119,6 @@ public class CommentEditFragment extends AbsAttachmentsEditFragment<CommentEditP
 
     @Override
     public void goBack() {
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 }

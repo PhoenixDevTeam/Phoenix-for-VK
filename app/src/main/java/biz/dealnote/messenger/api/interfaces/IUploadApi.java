@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import java.io.InputStream;
 
-import biz.dealnote.messenger.api.PercentageListener;
+import biz.dealnote.messenger.api.PercentagePublisher;
 import biz.dealnote.messenger.api.model.upload.UploadDocDto;
 import biz.dealnote.messenger.api.model.upload.UploadOwnerPhotoDto;
 import biz.dealnote.messenger.api.model.upload.UploadPhotoToAlbumDto;
@@ -18,15 +18,23 @@ import retrofit2.Call;
  * phoenix
  */
 public interface IUploadApi {
-    Call<UploadDocDto> uploadDocument(String server, String filename, @NonNull InputStream doc, PercentageListener listener);
+    Call<UploadDocDto> uploadDocument(String server, String filename, @NonNull InputStream doc, PercentagePublisher listener);
 
-    Call<UploadOwnerPhotoDto> uploadOwnerPhoto(String server, @NonNull InputStream photo, PercentageListener listener);
+    Single<UploadDocDto> uploadDocumentRx(String server, String filename, @NonNull InputStream doc, PercentagePublisher listener);
 
-    Call<UploadPhotoToWallDto> uploadPhotoToWall(String server, @NonNull InputStream photo, PercentageListener listener);
+    Call<UploadOwnerPhotoDto> uploadOwnerPhoto(String server, @NonNull InputStream photo, PercentagePublisher listener);
 
-    Call<UploadPhotoToMessageDto> uploadPhotoToMessage(String server, @NonNull InputStream photo, PercentageListener listener);
+    Single<UploadOwnerPhotoDto> uploadOwnerPhotoRx(String server, @NonNull InputStream photo, PercentagePublisher listener);
 
-    Single<UploadPhotoToMessageDto> uploadPhotoToMessageRx(String server, @NonNull InputStream is, PercentageListener listener);
+    Call<UploadPhotoToWallDto> uploadPhotoToWall(String server, @NonNull InputStream photo, PercentagePublisher listener);
 
-    Call<UploadPhotoToAlbumDto> uploadPhotoToAlbum(String server, @NonNull InputStream file1, PercentageListener listener);
+    Single<UploadPhotoToWallDto> uploadPhotoToWallRx(String server, @NonNull InputStream photo, PercentagePublisher listener);
+
+    Call<UploadPhotoToMessageDto> uploadPhotoToMessage(String server, @NonNull InputStream photo, PercentagePublisher listener);
+
+    Single<UploadPhotoToMessageDto> uploadPhotoToMessageRx(String server, @NonNull InputStream is, PercentagePublisher listener);
+
+    Call<UploadPhotoToAlbumDto> uploadPhotoToAlbum(String server, @NonNull InputStream file1, PercentagePublisher listener);
+
+    Single<UploadPhotoToAlbumDto> uploadPhotoToAlbumRx(String server, @NonNull InputStream file1, PercentagePublisher listener);
 }

@@ -11,7 +11,6 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.domain.IDocsInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.DocFilter;
@@ -19,21 +18,21 @@ import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IDocListView;
-import biz.dealnote.messenger.upload.BaseUploadResponse;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
 import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.UploadUtils;
-import biz.dealnote.messenger.upload.task.DocumentUploadTask;
+import biz.dealnote.messenger.upload.experimental.IUploadManager;
+import biz.dealnote.messenger.upload.experimental.UploadResult;
+import biz.dealnote.messenger.upload.experimental.UploadUtils;
 import biz.dealnote.messenger.util.AppPerms;
-import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.DisposableHolder;
+import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
 
+import static biz.dealnote.messenger.Injection.provideMainThreadScheduler;
 import static biz.dealnote.messenger.util.Objects.isNull;
-import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.findIndexById;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
@@ -60,10 +59,12 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
 
     private final List<DocFilter> filters;
     private final IDocsInteractor docsInteractor;
+    private final IUploadManager uploadManager;
 
     public DocsListPresenter(int accountId, int ownerId, @Nullable String action, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.docsInteractor = InteractorFactory.createDocsInteractor();
+        this.uploadManager = Injection.provideUploadManager();
 
         this.mOwnerId = ownerId;
 
@@ -72,7 +73,31 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
         this.mAction = action;
 
         this.destination = UploadDestination.forDocuments(ownerId);
-        connectToUploadRepository();
+
+        appendDisposable(uploadManager.get(getAccountId(), destination)
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::onUploadsDataReceived));
+
+        appendDisposable(uploadManager.observeAdding()
+                .observeOn(provideMainThreadScheduler())
+                .subscribe(this::onUploadsAdded));
+
+        appendDisposable(uploadManager.observeDeleting(true)
+                .observeOn(provideMainThreadScheduler())
+                .subscribe(this::onUploadDeleted));
+
+        appendDisposable(uploadManager.observeResults()
+                .filter(pair -> destination.compareTo(pair.getFirst().getDestination()))
+                .observeOn(provideMainThreadScheduler())
+                .subscribe(this::onUploadResults));
+
+        appendDisposable(uploadManager.obseveStatus()
+                .observeOn(provideMainThreadScheduler())
+                .subscribe(this::onUploadStatusUpdate));
+
+        appendDisposable(uploadManager.observeProgress()
+                .observeOn(provideMainThreadScheduler())
+                .subscribe(this::onProgressUpdates));
 
         int filter = isNull(savedInstanceState) ? DocFilter.Type.ALL : savedInstanceState.getInt(SAVE_FILTER);
         this.filters = createFilters(filter);
@@ -107,117 +132,56 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
     }
 
     private void onUploadsDataReceived(List<UploadObject> data) {
-        this.uploadsData.clear();
-        this.uploadsData.addAll(data);
+        uploadsData.clear();
+        uploadsData.addAll(data);
 
-        if (isGuiReady()) {
-            getView().notifyUploadDataChanged();
+        callView(IDocListView::notifyDataSetChanged);
+        resolveUploadDataVisiblity();
+    }
+
+    private void onUploadResults(Pair<UploadObject, UploadResult<?>> pair) {
+        mDocuments.add(0, (Document) pair.getSecond().getResult());
+        callView(IDocListView::notifyDataSetChanged);
+    }
+
+    private void onProgressUpdates(List<IUploadManager.IProgressUpdate> updates) {
+        for(IUploadManager.IProgressUpdate update : updates){
+            int index = findIndexById(uploadsData, update.getId());
+            if (index != -1) {
+                callView(view -> view.notifyUploadProgressChanged(index, update.getProgress(), true));
+            }
+        }
+    }
+
+    private void onUploadStatusUpdate(UploadObject upload) {
+        int index = findIndexById(uploadsData, upload.getId());
+        if (index != -1) {
+            callView(view -> view.notifyUploadItemChanged(index));
+        }
+    }
+
+    private void onUploadsAdded(List<UploadObject> added) {
+        for (UploadObject u : added) {
+            if (destination.compareTo(u.getDestination())) {
+                int index = uploadsData.size();
+                uploadsData.add(u);
+                callView(view -> view.notifyUploadItemsAdded(index, 1));
+            }
         }
 
         resolveUploadDataVisiblity();
     }
 
-    private void connectToUploadRepository() {
-        IUploadQueueStorage repository = Injection.provideStores().uploads();
-
-        appendDisposable(repository.getByDestination(getAccountId(), destination)
-                .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onUploadsDataReceived));
-
-        appendDisposable(repository.observeQueue()
-                .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(this::onUploadQueueUpdates));
-
-        appendDisposable(repository.observeStatusUpdates()
-                .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(this::onUploadStatusUpdate));
-
-        appendDisposable(repository.observeProgress()
-                .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(updates -> {
-                    for (IUploadQueueStorage.IProgressUpdate update : updates) {
-                        onProgressUpdates(update.getId(), update.getProgress());
-                    }
-                }));
-    }
-
-    private void onProgressUpdates(int id, int progress) {
-        int index = findIndexById(this.uploadsData, id);
-        if (index != -1) {
-            UploadObject u = this.uploadsData.get(index);
-
-            if (u.getStatus() == UploadObject.STATUS_UPLOADING && u.getProgress() != progress) {
-                u.setProgress(progress);
-
-                if (isGuiReady()) {
-                    getView().notifyUploadProgressChanged(index, progress, true);
-                }
-            }
-        }
-    }
-
-    private void onUploadStatusUpdate(IUploadQueueStorage.IStatusUpdate update) {
-        int index = findIndexById(this.uploadsData, update.getId());
-
-        if (index != -1) {
-            UploadObject upload = this.uploadsData.get(index);
-            upload.setStatus(update.getStatus());
-
-            if (isGuiReady()) {
-                getView().notifyUploadItemChanged(index);
-            }
-        }
-    }
-
-    private void onUploadQueueUpdates(List<IUploadQueueStorage.IQueueUpdate> updates) {
-        boolean hasChanges = false;
-
-        for (IUploadQueueStorage.IQueueUpdate update : updates) {
-            if (update.isAdding()) {
-                UploadObject upload = update.object();
-                AssertUtils.requireNonNull(upload);
-
-                if (!this.destination.compareTo(upload.getDestination())) {
-                    continue;
-                }
-
-                int index = this.uploadsData.size();
-                this.uploadsData.add(upload);
-
-                if (isGuiReady()) {
-                    getView().notifyUploadItemsAdded(index, 1);
-                }
-
-                hasChanges = true;
-            } else {
-                int index = findIndexById(this.uploadsData, update.getId());
-
-                if (index != -1) {
-                    uploadsData.remove(index);
-
-                    if (isGuiReady()) {
-                        getView().notifyUploadItemRemoved(index);
-                    }
-
-                    BaseUploadResponse response = update.response();
-
-                    if (nonNull(response)) {
-                        List<Document> documents = ((DocumentUploadTask.Response) response).documents;
-                        this.mDocuments.addAll(0, documents);
-
-                        if (isGuiReady()) {
-                            getView().notifyDataSetChanged();
-                        }
-                    }
-
-                    hasChanges = true;
-                }
+    private void onUploadDeleted(int[] ids) {
+        for (int id : ids) {
+            int index = findIndexById(uploadsData, id);
+            if (index != -1) {
+                uploadsData.remove(index);
+                callView(view -> view.notifyUploadItemRemoved(index));
             }
         }
 
-        if (hasChanges) {
-            resolveUploadDataVisiblity();
-        }
+        resolveUploadDataVisiblity();
     }
 
     @OnGuiCreated
@@ -326,13 +290,13 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
     }
 
     @OnGuiCreated
-    private void resolveDocsListData(){
-        if(isGuiReady()){
+    private void resolveDocsListData() {
+        if (isGuiReady()) {
             getView().displayData(mDocuments, isImagesOnly());
         }
     }
 
-    private boolean isImagesOnly(){
+    private boolean isImagesOnly() {
         return Utils.intValueIn(getSelectedFilter(), DocFilter.Type.IMAGE, DocFilter.Type.GIF);
     }
 
@@ -412,11 +376,11 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
                 .setAutoCommit(true)
                 .setFileUri(Uri.parse(file));
 
-        UploadUtils.upload(getApplicationContext(), Collections.singletonList(intent));
+        uploadManager.enqueue(Collections.singletonList(intent));
     }
 
     public void fireRemoveClick(UploadObject uploadObject) {
-        UploadUtils.cancelById(getApplicationContext(), uploadObject.getId());
+        uploadManager.cancel(uploadObject.getId());
     }
 
     public void fireFilterClick(DocFilter entry) {
@@ -435,9 +399,7 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
     }
 
     public void fireLocalPhotosForUploadSelected(ArrayList<LocalPhoto> photos) {
-        List<UploadIntent> intents = UploadUtils.createIntents(getAccountId(),
-                destination, photos, UploadObject.IMAGE_SIZE_FULL, true);
-
-        UploadUtils.upload(getApplicationContext(), intents);
+        List<UploadIntent> intents = UploadUtils.createIntents(getAccountId(), destination, photos, UploadObject.IMAGE_SIZE_FULL, true);
+        uploadManager.enqueue(intents);
     }
 }

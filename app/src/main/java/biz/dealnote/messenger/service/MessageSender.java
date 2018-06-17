@@ -16,7 +16,8 @@ public final class MessageSender {
         if(sendService == null){
             synchronized (MessageSender.class){
                 if(sendService == null){
-                    sendService = new SendService(App.getInstance(), InteractorFactory.createMessagesInteractor(), Settings.get().accounts());
+                    sendService = new SendService(App.getInstance(), Settings.get().accounts());
+                    sendService.setMessagesInteractor(InteractorFactory.createMessagesInteractor());
                 }
             }
         }

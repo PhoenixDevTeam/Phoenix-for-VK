@@ -1,5 +1,9 @@
 package biz.dealnote.messenger.util;
 
+import android.support.annotation.Nullable;
+
+import java.io.Closeable;
+
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Injection;
 import io.reactivex.Completable;
@@ -32,6 +36,10 @@ public class RxUtils {
                 ((Throwable) t).printStackTrace();
             }
         };
+    }
+
+    public static Action safelyCloseAction(@Nullable Closeable closeable){
+        return () -> Utils.safelyClose(closeable);
     }
 
     public static <T> Disposable subscribeOnIOAndIgnore(Single<T> single) {

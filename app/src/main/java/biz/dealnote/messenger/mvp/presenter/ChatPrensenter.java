@@ -67,12 +67,12 @@ import biz.dealnote.messenger.upload.Method;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
 import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.UploadUtils;
+import biz.dealnote.messenger.upload.experimental.IUploadManager;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.AppTextUtils;
 import biz.dealnote.messenger.util.AssertUtils;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Lookup;
+import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Unixtime;
@@ -83,7 +83,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
-import static biz.dealnote.messenger.util.AppTextUtils.safeTrimmedIsEmpty;
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.RxUtils.dummy;
@@ -95,6 +94,7 @@ import static biz.dealnote.messenger.util.Utils.hasFlag;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
+import static biz.dealnote.messenger.util.Utils.trimmedNonEmpty;
 
 /**
  * Created by ruslan.kolbasa on 05.10.2016.
@@ -145,11 +145,13 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
     private final IMessagesInteractor messagesInteractor;
     private final ILongpollManager longpollManager;
+    private final IUploadManager uploadManager;
 
     public ChatPrensenter(int accountId, int messagesOwnerId, @NonNull Peer initialPeer, @NonNull ChatConfig config, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.messagesInteractor = InteractorFactory.createMessagesInteractor();
         this.longpollManager = LongpollInstance.get();
+        this.uploadManager = Injection.provideUploadManager();
         this.messagesOwnerId = messagesOwnerId;
 
         mAudioRecordWrapper = new AudioRecordWrapper.Builder(App.getInstance())
@@ -416,10 +418,8 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     private void requestFromNet(Integer startMessageId) {
         setNetLoadingNow(true);
 
-        final int ownerId = this.messagesOwnerId;
         final int peerId = this.getPeerId();
-
-        appendDisposable(messagesInteractor.getPeerMessages(ownerId, peerId, COUNT, null, startMessageId, true)
+        appendDisposable(messagesInteractor.getPeerMessages(messagesOwnerId, peerId, COUNT, null, startMessageId, true)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(messages -> onNetDataReceived(messages, startMessageId), this::onMessagesGetError));
     }
@@ -574,17 +574,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     }
 
     private boolean canSendNormalMessage() {
-        boolean hasAttachments = calculateAttachmentsCount() > 0;
-
-        boolean hasNonEmptyText = !safeTrimmedIsEmpty(mDraftMessageText);
-
-        boolean nowUpload = nowUploadingToEditingMessage();
-
-        Logger.d(TAG, "canSendNormalMessage, hasAttachments: " + hasAttachments +
-                ", hasNonEmptyText: " + hasNonEmptyText +
-                ", nowUpload: " + nowUpload);
-
-        return hasAttachments || hasNonEmptyText || nowUpload;
+        return calculateAttachmentsCount() > 0 || trimmedNonEmpty(mDraftMessageText) || nowUploadingToEditingMessage();
     }
 
     @OnGuiCreated
@@ -601,8 +591,9 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     private boolean nowUploadingToEditingMessage() {
         if (isNull(mDraftMessageId)) return false;
 
-        UploadObject currentUploadObject = UploadUtils.getCurrent();
-        return currentUploadObject != null && isUploadToThis(currentUploadObject);
+        Optional<UploadObject> current = uploadManager.getCurrent();
+        return current.nonEmpty()
+                && current.get().getDestination().compareTo(mDraftMessageId, UploadDestination.WITHOUT_OWNER, Method.PHOTO_TO_MESSAGE);
     }
 
     @OnGuiCreated
@@ -1181,7 +1172,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
     private void cancelWaitingForUploadMessage(int messageId) {
         UploadDestination destination = UploadDestination.forMessage(messageId);
-        UploadUtils.cancelByDestination(App.getInstance(), destination);
+        uploadManager.cancelAll(messagesOwnerId, destination);
     }
 
     public void fireSendAgainClick(@NonNull Message message) {
@@ -1289,7 +1280,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
                     .setSize(size));
         }
 
-        UploadUtils.upload(getApplicationContext(), intents);
+        uploadManager.enqueue(intents);
     }
 
     public void fireUploadCancelClick() {
@@ -1328,13 +1319,6 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         if (nonEmpty(selected)) {
             getView().diplayForwardTypeSelectDialog(selected);
         }
-    }
-
-    private boolean isUploadToThis(@NonNull UploadObject uploadObject) {
-        return nonNull(mDraftMessageId)
-                && uploadObject.getAccountId() == messagesOwnerId
-                && uploadObject.getDestination().getId() == mDraftMessageId
-                && uploadObject.getDestination().getMethod() == Method.PHOTO_TO_MESSAGE;
     }
 
     @OnGuiCreated

@@ -24,7 +24,6 @@ import biz.dealnote.messenger.db.interfaces.IStickersStorage;
 import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.db.interfaces.ITempDataStorage;
 import biz.dealnote.messenger.db.interfaces.ITopicsStore;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.db.interfaces.IVideoAlbumsStorage;
 import biz.dealnote.messenger.db.interfaces.IVideoStorage;
 import biz.dealnote.messenger.db.interfaces.IWallStorage;
@@ -56,9 +55,8 @@ public class AppStorages extends ContextWrapper implements IStorages {
     private volatile IDocsStorage docs;
     private volatile IStickersStorage stickers;
     private volatile IDatabaseStore database;
-    private volatile IUploadQueueStorage uploadQueue;
 
-    private AppStorages(Context base) {
+    public AppStorages(Context base) {
         super(base);
     }
 
@@ -137,19 +135,6 @@ public class AppStorages extends ContextWrapper implements IStorages {
         }
 
         return stickers;
-    }
-
-    @Override
-    public IUploadQueueStorage uploads() {
-        if(isNull(uploadQueue)){
-            synchronized (this){
-                if(isNull(uploadQueue)){
-                    uploadQueue = new UploadQueueStorage(this);
-                }
-            }
-        }
-
-        return uploadQueue;
     }
 
     @Override

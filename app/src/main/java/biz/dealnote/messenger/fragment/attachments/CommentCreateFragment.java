@@ -62,10 +62,10 @@ public class CommentCreateFragment extends AbsAttachmentsEditFragment<CommentCre
     @Override
     public IPresenterFactory<CommentCreatePresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
-            int commentDbid = getArguments().getInt(Extra.COMMENT_ID);
-            int sourceOwnerId = getArguments().getInt(Extra.COMMENT_ID);
-            String body = getArguments().getString(Extra.BODY);
+            int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
+            int commentDbid = requireArguments().getInt(Extra.COMMENT_ID);
+            int sourceOwnerId = requireArguments().getInt(Extra.COMMENT_ID);
+            String body = requireArguments().getString(Extra.BODY);
             return new CommentCreatePresenter(accountId, commentDbid, sourceOwnerId, body, saveInstanceState);
         };
     }
@@ -82,7 +82,7 @@ public class CommentCreateFragment extends AbsAttachmentsEditFragment<CommentCre
                 .setBlockNavigationDrawer(true)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
 
         if(getActivity() instanceof OnSectionResumeCallback){
             ((OnSectionResumeCallback) getActivity()).onClearSelection();
@@ -111,6 +111,6 @@ public class CommentCreateFragment extends AbsAttachmentsEditFragment<CommentCre
 
     @Override
     public void goBack() {
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 }

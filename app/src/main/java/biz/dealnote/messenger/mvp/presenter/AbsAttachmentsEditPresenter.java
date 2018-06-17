@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.Audio;
@@ -24,14 +24,12 @@ import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IBaseAttachmentsEditView;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.upload.BaseUploadResponse;
 import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.UploadUtils;
+import biz.dealnote.messenger.upload.experimental.IUploadManager;
 import biz.dealnote.messenger.util.FileUtil;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.Predicate;
-import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
 
 import static biz.dealnote.messenger.util.AppPerms.hasCameraPermision;
@@ -58,9 +56,12 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
     private final ArrayList<AttachmenEntry> data;
     private Uri currentPhotoCameraUri;
     private Long timerValue;
+    final IUploadManager uploadManager;
 
     AbsAttachmentsEditPresenter(int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
+        this.uploadManager = Injection.provideUploadManager();
+
         if (nonNull(savedInstanceState)) {
             currentPhotoCameraUri = savedInstanceState.getParcelable(SAVE_CURRENT_PHOTO_CAMERA_URI);
             textBody = savedInstanceState.getString(SAVE_BODY);
@@ -127,10 +128,10 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
         }
     }
 
-    void onUploadProgressUpdate(List<IUploadQueueStorage.IProgressUpdate> updates){
+    void onUploadProgressUpdate(List<IUploadManager.IProgressUpdate> updates){
         Logger.d(tag(), "onUploadProgressUpdate, updates:" + updates + ", class: " + updates.getClass());
 
-        for(IUploadQueueStorage.IProgressUpdate update : updates){
+        for(IUploadManager.IProgressUpdate update : updates){
             Predicate<AttachmenEntry> predicate = entry -> entry.getAttachment() instanceof UploadObject
                     && ((UploadObject) entry.getAttachment()).getId() == update.getId();
 
@@ -144,58 +145,40 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
                     continue;
                 }
 
-                object.setProgress(update.getProgress());
-
-                if(isGuiReady()){
-                    getView().updateProgressAtIndex(entry.getId(), update.getProgress());
-                }
+                callView(v -> v.updateProgressAtIndex(entry.getId(), update.getProgress()));
             }
         }
     }
 
-    boolean onUploadObjectRemovedFromQueue(int id, @Nullable BaseUploadResponse response){
-        int index = findUploadIndexById(id);
-        if(index != -1){
-            manuallyRemoveElement(index);
-            return true;
+    void onUploadObjectRemovedFromQueue(int[] ids){
+        for(int id : ids){
+            int index = findUploadIndexById(id);
+            if(index != -1){
+                manuallyRemoveElement(index);
+            }
         }
-
-        return false;
     }
 
-    void onUploadQueueUpdates(List<IUploadQueueStorage.IQueueUpdate> updates, Predicate<UploadObject> predicate){
-        //boolean hasChanges = false;
-        List<IUploadQueueStorage.IQueueUpdate> added = Utils.copyListWithPredicate(updates,
-                update -> update.isAdding() && predicate.test(update.object()));
+    void onUploadQueueUpdates(List<UploadObject> updates, Predicate<UploadObject> predicate){
+        int startSize = data.size();
+        int count = 0;
 
-        if(nonEmpty(added)){
-            int startSize = this.data.size();
-            for(IUploadQueueStorage.IQueueUpdate update : added){
-                this.data.add(new AttachmenEntry(true, update.object()));
-            }
-
-            safelyNotifyItemsAdded(startSize, added.size());
-        }
-
-        for(IUploadQueueStorage.IQueueUpdate update : updates){
-            if(!update.isAdding()){
-                onUploadObjectRemovedFromQueue(update.getId(), update.response());
+        for(UploadObject u : updates){
+            if(predicate.test(u)){
+                data.add(new AttachmenEntry(true, u));
+                count++;
             }
         }
 
-        //if(hasChanges){
-        //    safeNotifyDataSetChanged();
-        //}
+        if(count > 0){
+            safelyNotifyItemsAdded(startSize, count);
+        }
     }
 
     void safelyNotifyItemsAdded(int position, int count){
         if (isGuiReady()){
             getView().notifyItemRangeInsert(position, count);
         }
-    }
-
-    void safelyNotifyItemAdded(int position){
-        safelyNotifyItemsAdded(position, 1);
     }
 
     List<AttachmenEntry> combine(List<AttachmenEntry> first, List<AttachmenEntry> second){
@@ -205,15 +188,10 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
         return data;
     }
 
-    void onUploadStatusUpdate(IUploadQueueStorage.IStatusUpdate update){
+    void onUploadStatusUpdate(UploadObject update){
         Logger.d(tag(), "onUploadStatusUpdate, id: " + update.getId() + ", status: " + update.getStatus());
-
         int index = findUploadIndexById(update.getId());
-
         if(index != -1){
-            UploadObject object = (UploadObject) getData().get(index).getAttachment();
-            object.setStatus(update.getStatus());
-
             safeNotifyDataSetChanged();
         }
     }
@@ -244,8 +222,7 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
     public final void fireRemoveClick(int index, @NonNull AttachmenEntry attachment) {
         if (attachment.getAttachment() instanceof UploadObject) {
             UploadObject upload = (UploadObject) attachment.getAttachment();
-
-            UploadUtils.cancelById(getApplicationContext(), upload.getId());
+            uploadManager.cancel(upload.getId());
             return;
         }
 

@@ -9,7 +9,6 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.domain.ICommentsInteractor;
 import biz.dealnote.messenger.domain.impl.CommentsInteractor;
 import biz.dealnote.messenger.model.AbsModel;
@@ -17,14 +16,16 @@ import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.Comment;
 import biz.dealnote.messenger.model.Commented;
 import biz.dealnote.messenger.model.LocalPhoto;
+import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.mvp.view.ICommentEditView;
 import biz.dealnote.messenger.upload.Method;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
 import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.UploadUtils;
-import biz.dealnote.messenger.upload.task.PhotoWallUploadTask;
-import biz.dealnote.messenger.util.AssertUtils;
+import biz.dealnote.messenger.upload.experimental.UploadResult;
+import biz.dealnote.messenger.upload.experimental.UploadUtils;
+import biz.dealnote.messenger.util.Pair;
+import biz.dealnote.messenger.util.Predicate;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
@@ -53,70 +54,59 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
         this.orig = comment;
         this.destination = new UploadDestination(comment.getId(), comment.getCommented().getSourceOwnerId(), Method.PHOTO_TO_COMMENT);
 
-        IUploadQueueStorage uploadRepository = Injection.provideStores().uploads();
-
         if (isNull(savedInstanceState)) {
             super.setTextBody(orig.getText());
             initialPopulateEntries();
         }
 
-        appendDisposable(uploadRepository.getByDestination(getAccountId(), destination)
+        appendDisposable(uploadManager.get(getAccountId(), destination)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onUploadsReceived));
 
-        appendDisposable(uploadRepository.observeQueue()
-                .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(this::onUploadsQueueChanged));
+        Predicate<UploadObject> predicate = upload -> upload.getAccountId() == getAccountId() && destination.compareTo(upload.getDestination());
 
-        appendDisposable(uploadRepository.observeStatusUpdates()
+        appendDisposable(uploadManager.observeAdding()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(added -> onUploadQueueUpdates(added, predicate)));
+
+        appendDisposable(uploadManager.observeDeleting(false)
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onUploadObjectRemovedFromQueue));
+
+        appendDisposable(uploadManager.obseveStatus()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onUploadStatusUpdate));
 
-        appendDisposable(uploadRepository.observeProgress()
+        appendDisposable(uploadManager.observeProgress()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onUploadProgressUpdate));
+
+        appendDisposable(uploadManager.observeResults()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onUploadsQueueChanged));
     }
 
-    private void onUploadsQueueChanged(List<IUploadQueueStorage.IQueueUpdate> updates) {
-        boolean hasChanges = false;
+    private void onUploadsQueueChanged(Pair<UploadObject, UploadResult<?>> pair) {
+        UploadObject upload = pair.getFirst();
+        UploadResult<?> result = pair.getSecond();
 
-        for (IUploadQueueStorage.IQueueUpdate u : updates) {
-            if (u.isAdding()) {
-                UploadObject object = u.object();
-                AssertUtils.requireNonNull(object);
+        int index = findUploadIndexById(upload.getId());
 
-                if (!destination.equals(object.getDestination())) {
-                    continue;
-                }
-
-                getData().add(new AttachmenEntry(true, object));
-                hasChanges = true;
-            } else {
-                int index = findUploadIndexById(u.getId());
-
-                if (nonNull(u.response())) {
-                    PhotoWallUploadTask.Response response = (PhotoWallUploadTask.Response) u.response();
-                    AssertUtils.requireNonNull(response);
-
-                    AttachmenEntry entry = new AttachmenEntry(true, response.photo);
-
-                    if (index != -1) {
-                        getData().set(index, entry);
-                    } else {
-                        getData().add(0, entry);
-                    }
-
-                    hasChanges = true;
-                } else if (index != -1) {
-                    getData().remove(index);
-                    hasChanges = true;
-                }
-            }
+        final AttachmenEntry entry;
+        if (result.getResult() instanceof Photo) {
+            entry = new AttachmenEntry(true, (Photo) result.getResult());
+        } else {
+            // not supported!!!
+            return;
         }
 
-        if (hasChanges) {
-            safeNotifyDataSetChanged();
+        if (index != -1) {
+            getData().set(index, entry);
+        } else {
+            getData().add(0, entry);
         }
+
+        safeNotifyDataSetChanged();
     }
 
     @Override
@@ -127,7 +117,7 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
     @Override
     protected void doUploadPhotos(List<LocalPhoto> photos, int size) {
         List<UploadIntent> intents = UploadUtils.createIntents(getAccountId(), destination, photos, size, false);
-        UploadUtils.upload(getApplicationContext(), intents);
+        uploadManager.enqueue(intents);
     }
 
     private void onUploadsReceived(List<UploadObject> uploads) {
@@ -225,9 +215,8 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
     }
 
     public void fireSavingCancelClick() {
-        UploadUtils.cancelByDestination(getApplicationContext(), destination);
+        uploadManager.cancelAll(getAccountId(), destination);
         this.canGoBack = true;
-
         getView().goBack();
     }
 }

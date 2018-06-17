@@ -80,7 +80,8 @@ public class InteractorFactory {
     }
 
     public static IMessagesInteractor createMessagesInteractor(){
-        return new MessagesInteractor(Injection.provideNetworkInterfaces(), createOwnerInteractor(), Injection.provideStores());
+        return new MessagesInteractor(Injection.provideNetworkInterfaces(),
+                createOwnerInteractor(), Injection.provideStores(), Injection.provideUploadManager());
     }
 
     public static IGroupSettingsInteractor createGroupSettingsInteractor(){

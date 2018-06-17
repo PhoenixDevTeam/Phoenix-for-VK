@@ -48,7 +48,5 @@ public interface IStorages {
 
     IStickersStorage stickers();
 
-    IUploadQueueStorage uploads();
-
     IDatabaseStore database();
 }

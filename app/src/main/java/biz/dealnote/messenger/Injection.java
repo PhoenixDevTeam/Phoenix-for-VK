@@ -26,10 +26,13 @@ import biz.dealnote.messenger.push.IDevideIdProvider;
 import biz.dealnote.messenger.push.IGcmTokenProvider;
 import biz.dealnote.messenger.push.IPushRegistrationResolver;
 import biz.dealnote.messenger.push.PushRegistrationResolver;
+import biz.dealnote.messenger.service.MessageSender;
 import biz.dealnote.messenger.settings.IProxySettings;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.ProxySettingsImpl;
 import biz.dealnote.messenger.settings.SettingsImpl;
+import biz.dealnote.messenger.upload.experimental.IUploadManager;
+import biz.dealnote.messenger.upload.experimental.UploadManagerImpl;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -73,6 +76,22 @@ public class Injection {
         }
 
         return resolver;
+    }
+
+    private static volatile IUploadManager uploadManager;
+    private static final Object UPLOADMANAGERLOCK = new Object();
+
+    public static IUploadManager provideUploadManager(){
+        if(uploadManager == null){
+            synchronized (UPLOADMANAGERLOCK){
+                if(uploadManager == null){
+                    uploadManager = new UploadManagerImpl(App.getInstance(), provideNetworkInterfaces(),
+                            provideStores(), provideAttachmentsRepository(), provideWalls(), MessageSender.getSendService());
+                }
+            }
+        }
+
+        return uploadManager;
     }
 
     public static ICaptchaProvider provideCaptchaProvider() {

@@ -48,9 +48,9 @@ public class PostEditFragment extends AbsPostEditFragment<PostEditPresenter, IPo
     @Override
     public IPresenterFactory<PostEditPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
-            Post post = getArguments().getParcelable(Extra.POST);
-            int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
-            WallEditorAttrs attrs = getArguments().getParcelable(Extra.ATTRS);
+            Post post = requireArguments().getParcelable(Extra.POST);
+            int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
+            WallEditorAttrs attrs = requireArguments().getParcelable(Extra.ATTRS);
 
             AssertUtils.requireNonNull(post);
             AssertUtils.requireNonNull(attrs);
@@ -72,7 +72,7 @@ public class PostEditFragment extends AbsPostEditFragment<PostEditPresenter, IPo
                 .setBlockNavigationDrawer(true)
                 .setStatusBarColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -93,12 +93,12 @@ public class PostEditFragment extends AbsPostEditFragment<PostEditPresenter, IPo
 
     @Override
     public void closeAsSuccess() {
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 
     @Override
     public void showConfirmExitDialog() {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.confirmation)
                 .setMessage(R.string.save_changes_question)
                 .setPositiveButton(R.string.button_yes, (dialog, which) -> getPresenter().fireExitWithSavingConfirmed())

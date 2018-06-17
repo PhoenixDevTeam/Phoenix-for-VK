@@ -39,14 +39,6 @@ class MapUtil {
     }
 
     static <O, R> List<R> mapAll(@Nullable Collection<O> orig, @NonNull MapF<O, R> function) {
-        if (orig != null) {
-            List<R> list = new ArrayList<>(orig.size());
-            for (O o : orig) {
-                list.add(function.map(o));
-            }
-            return list;
-        } else {
-            return new ArrayList<>(0);
-        }
+        return mapAll(orig, function, true);
     }
 }

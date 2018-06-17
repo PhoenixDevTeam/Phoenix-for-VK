@@ -14,17 +14,12 @@ import biz.dealnote.messenger.model.Types;
 import biz.dealnote.messenger.mvp.presenter.DocsListPresenter;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceProvider;
-import biz.dealnote.messenger.upload.UploadUtils;
 
 public class AttachmentsActivity extends NoMainActivity implements PlaceProvider {
-
-    private UploadUtils.ServiceToken mUploadServiceToken;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUploadServiceToken = UploadUtils.bindToService(this, null);
-
         if (savedInstanceState == null) {
             Fragment fragment = null;
 
@@ -53,12 +48,6 @@ public class AttachmentsActivity extends NoMainActivity implements PlaceProvider
         return new Intent(context, AttachmentsActivity.class)
                 .putExtra(Extra.TYPE, type)
                 .putExtra(Extra.ACCOUNT_ID, accountId);
-    }
-
-    @Override
-    protected void onDestroy() {
-        UploadUtils.unbindFromService(mUploadServiceToken);
-        super.onDestroy();
     }
 
     @Override

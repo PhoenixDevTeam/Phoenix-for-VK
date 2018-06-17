@@ -2,24 +2,22 @@ package biz.dealnote.messenger.api;
 
 import java.lang.ref.WeakReference;
 
-import biz.dealnote.messenger.util.Objects;
-
 /**
  * Created by Ruslan Kolbasa on 31.07.2017.
  * phoenix
  */
-public class WeakPercentageListener implements PercentageListener {
+public class WeakPercentagePublisher implements PercentagePublisher {
 
-    private final WeakReference<PercentageListener> ref;
+    private final WeakReference<PercentagePublisher> ref;
 
-    public WeakPercentageListener(PercentageListener listener) {
+    public WeakPercentagePublisher(PercentagePublisher listener) {
         this.ref = new WeakReference<>(listener);
     }
 
     @Override
     public void onProgressChanged(int percentage) {
-        PercentageListener orig = ref.get();
-        if(Objects.nonNull(orig)){
+        PercentagePublisher orig = ref.get();
+        if(orig != null){
             orig.onProgressChanged(percentage);
         }
     }

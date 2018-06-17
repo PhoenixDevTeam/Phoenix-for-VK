@@ -8,8 +8,6 @@ import java.util.List;
 
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.AttachToType;
-import biz.dealnote.messenger.db.Stores;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
@@ -17,7 +15,7 @@ import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.mvp.view.ICreateCommentView;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.UploadUtils;
+import biz.dealnote.messenger.upload.experimental.UploadUtils;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.Predicate;
@@ -41,15 +39,11 @@ public class CommentCreatePresenter extends AbsAttachmentsEditPresenter<ICreateC
 
     private final int commentId;
     private final UploadDestination destination;
-    private final IUploadQueueStorage uploads;
-
     private final IAttachmentsRepository attachmentsRepository;
 
     public CommentCreatePresenter(int accountId, int commentDbid, int sourceOwnerId, String body, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-
         this.attachmentsRepository = Injection.provideAttachmentsRepository();
-        this.uploads = Stores.getInstance().uploads();
         this.commentId = commentDbid;
         this.destination = UploadDestination.forComment(commentId, sourceOwnerId);
 
@@ -59,17 +53,21 @@ public class CommentCreatePresenter extends AbsAttachmentsEditPresenter<ICreateC
 
         Predicate<UploadObject> predicate = o -> destination.compareTo(o.getDestination());
 
-        appendDisposable(uploads.observeQueue()
+        appendDisposable(uploadManager.observeAdding()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(updates -> onUploadQueueUpdates(updates, predicate)));
 
-        appendDisposable(uploads.observeStatusUpdates()
+        appendDisposable(uploadManager.obseveStatus()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onUploadStatusUpdate));
 
-        appendDisposable(uploads.observeProgress()
+        appendDisposable(uploadManager.observeProgress()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onUploadProgressUpdate));
+
+        appendDisposable(uploadManager.observeDeleting(true)
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onUploadObjectRemovedFromQueue));
 
         appendDisposable(attachmentsRepository.observeAdding()
                 .filter(this::filterAttachEvents)
@@ -117,7 +115,7 @@ public class CommentCreatePresenter extends AbsAttachmentsEditPresenter<ICreateC
     }
 
     private Single<List<AttachmenEntry>> uploadsSingle() {
-        return uploads.getAll(uploadObject -> destination.compareTo(uploadObject.getDestination()))
+        return uploadManager.get(getAccountId(), destination)
                 .map(AbsAttachmentsEditPresenter::createFrom);
     }
 
@@ -155,7 +153,7 @@ public class CommentCreatePresenter extends AbsAttachmentsEditPresenter<ICreateC
 
     @Override
     protected void doUploadPhotos(List<LocalPhoto> photos, int size) {
-        UploadUtils.upload(getApplicationContext(), UploadUtils.createIntents(getAccountId(), destination, photos, size, true));
+        uploadManager.enqueue(UploadUtils.createIntents(getAccountId(), destination, photos, size, true));
     }
 
     @Override
@@ -170,7 +168,7 @@ public class CommentCreatePresenter extends AbsAttachmentsEditPresenter<ICreateC
         }
     }
 
-    private void returnDataToParent(){
+    private void returnDataToParent() {
         getView().returnDataToParent(getTextBody());
     }
 

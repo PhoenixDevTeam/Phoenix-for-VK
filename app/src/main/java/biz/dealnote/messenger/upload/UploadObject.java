@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import biz.dealnote.messenger.api.model.Identificable;
@@ -100,27 +101,10 @@ public class UploadObject extends AbsModel implements Parcelable, Identificable 
         return id;
     }
 
-    @Override
-    public String toString() {
-        return "UploadObject{" +
-                "accountId=" + accountId +
-                ", id=" + id +
-                //", destination=" + destination +
-                ", status=" + status +
-                ", progress=" + progress +
-                ", errorText='" + errorText + '\'' +
-                '}';
-    }
-
     protected UploadObject(Parcel in) {
         super(in);
         this.accountId = in.readInt();
         this.id = in.readInt();
-
-        if(id >= IDGEN.get()){
-            IDGEN.set(id + 1);
-        }
-
         this.fileUri = in.readParcelable(Uri.class.getClassLoader());
         this.destination = in.readParcelable(UploadDestination.class.getClassLoader());
         this.size = in.readInt();
@@ -224,7 +208,7 @@ public class UploadObject extends AbsModel implements Parcelable, Identificable 
         return fileId;
     }
 
-    private static final AtomicInteger IDGEN = new AtomicInteger();
+    private static final AtomicInteger IDGEN = new AtomicInteger(new Random().nextInt(5000));
 
     private int getIncrementedUploadId() {
         return IDGEN.incrementAndGet();

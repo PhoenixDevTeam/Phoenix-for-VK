@@ -12,8 +12,6 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiPost;
-import biz.dealnote.messenger.db.Stores;
-import biz.dealnote.messenger.db.interfaces.IUploadQueueStorage;
 import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
@@ -24,15 +22,16 @@ import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.WallEditorAttrs;
+import biz.dealnote.messenger.mvp.view.IBaseAttachmentsEditView;
 import biz.dealnote.messenger.mvp.view.IPostEditView;
-import biz.dealnote.messenger.upload.BaseUploadResponse;
 import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.upload.UploadIntent;
 import biz.dealnote.messenger.upload.UploadObject;
-import biz.dealnote.messenger.upload.UploadUtils;
-import biz.dealnote.messenger.upload.task.PhotoWallUploadTask;
+import biz.dealnote.messenger.upload.experimental.UploadResult;
+import biz.dealnote.messenger.upload.experimental.UploadUtils;
 import biz.dealnote.messenger.util.Analytics;
 import biz.dealnote.messenger.util.Logger;
+import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.Predicate;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Unixtime;
@@ -109,7 +108,25 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
         this.uploadPredicate = object -> object.getAccountId() == getAccountId()
                 && object.getDestination().compareTo(uploadDestination);
 
-        setupUploadListening();
+        appendDisposable(uploadManager.observeAdding()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(updates -> onUploadQueueUpdates(updates, uploadPredicate)));
+
+        appendDisposable(uploadManager.observeProgress()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onUploadProgressUpdate));
+
+        appendDisposable(uploadManager.obseveStatus()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onUploadStatusUpdate));
+
+        appendDisposable(uploadManager.observeDeleting(false)
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onUploadObjectRemovedFromQueue));
+
+        appendDisposable(uploadManager.observeResults()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onUploadComplete));
     }
 
     @NonNull
@@ -137,11 +154,11 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
     }
 
     private boolean postIsMine() {
-        if(post.getCreatorId() > 0 && post.getCreatorId() == getAccountId()){
+        if (post.getCreatorId() > 0 && post.getCreatorId() == getAccountId()) {
             return true;
         }
 
-        if(post.getSignerId() > 0 && post.getSignerId() == getAccountId()){
+        if (post.getSignerId() > 0 && post.getSignerId() == getAccountId()) {
             return true;
         }
 
@@ -207,39 +224,23 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
         }
     }
 
-    private void setupUploadListening() {
-        IUploadQueueStorage repository = Stores.getInstance().uploads();
+    private void onUploadComplete(Pair<UploadObject, UploadResult<?>> data) {
+        UploadObject upload = data.getFirst();
+        UploadResult<?> result = data.getSecond();
 
-        appendDisposable(repository.observeQueue()
-                .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(updates -> onUploadQueueUpdates(updates, uploadPredicate)));
-
-        appendDisposable(repository.observeProgress()
-                .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(this::onUploadProgressUpdate));
-
-        appendDisposable(repository.observeStatusUpdates()
-                .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(this::onUploadStatusUpdate));
-    }
-
-    @Override
-    boolean onUploadObjectRemovedFromQueue(int id, @Nullable BaseUploadResponse response) {
-        int index = findUploadIndexById(id);
+        int index = findUploadIndexById(upload.getId());
         if (index == -1) {
-            return false;
+            return;
         }
 
-        if (response instanceof PhotoWallUploadTask.Response) {
-            Photo photo = ((PhotoWallUploadTask.Response) response).photo;
-            if (nonNull(photo)) {
-                getData().set(index, new AttachmenEntry(true, photo));
-                return true;
-            }
+        if (result.getResult() instanceof Photo) {
+            Photo photo = (Photo) result.getResult();
+            getData().set(index, new AttachmenEntry(true, photo));
+        } else {
+            super.getData().remove(index);
         }
 
-        super.getData().remove(index);
-        return true;
+        callView(IBaseAttachmentsEditView::notifyDataSetChanged);
     }
 
     private void setEditingNow(boolean editingNow) {
@@ -267,9 +268,8 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
     private void save() {
         Logger.d(TAG, "save, author: " + post.getAuthor() + ", signer: " + post.getCreator());
 
-        appendDisposable(Stores.getInstance()
-                .uploads()
-                .getByDestination(getAccountId(), uploadDestination)
+        appendDisposable(uploadManager
+                .get(getAccountId(), uploadDestination)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(data -> {
                     if (data.isEmpty()) {
@@ -403,7 +403,7 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
     @Override
     protected void doUploadPhotos(List<LocalPhoto> photos, int size) {
         List<UploadIntent> intents = UploadUtils.createIntents(getAccountId(), uploadDestination, photos, size, false);
-        UploadUtils.upload(getApplicationContext(), intents);
+        uploadManager.enqueue(intents);
     }
 
     @Override
@@ -496,8 +496,7 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
 
     public void fireExitWithoutSavingClick() {
         this.canExit = true;
-
-        UploadUtils.cancelByDestination(getApplicationContext(), uploadDestination);
+        uploadManager.cancelAll(getAccountId(),uploadDestination);
         getView().closeAsSuccess();
     }
 }

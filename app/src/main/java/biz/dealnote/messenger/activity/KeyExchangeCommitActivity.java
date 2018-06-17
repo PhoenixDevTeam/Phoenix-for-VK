@@ -15,7 +15,6 @@ import biz.dealnote.messenger.crypt.ExchangeMessage;
 import biz.dealnote.messenger.crypt.KeyExchangeService;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.settings.CurrentTheme;
-import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.ViewUtils;
 
 /**

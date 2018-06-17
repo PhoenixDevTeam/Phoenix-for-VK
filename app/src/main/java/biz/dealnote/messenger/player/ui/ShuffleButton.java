@@ -16,7 +16,6 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.player.MusicPlaybackService;
