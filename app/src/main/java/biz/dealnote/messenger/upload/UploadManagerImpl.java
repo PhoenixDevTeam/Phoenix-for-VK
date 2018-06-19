@@ -163,6 +163,8 @@ public class UploadManagerImpl implements IUploadManager {
                 .subscribe(this::updateNotification));
     }
 
+    private boolean needCreateChannel;
+
     private void updateNotification(List<IProgressUpdate> updates) {
         if(nonEmpty(updates)){
             int progress = updates.get(0).getProgress();
@@ -174,10 +176,13 @@ public class UploadManagerImpl implements IUploadManager {
 
             final NotificationCompat.Builder builder;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, context.getString(R.string.channel_upload_files), NotificationManager.IMPORTANCE_LOW);
-                notificationManager.createNotificationChannel(channel);
+                if(needCreateChannel){
+                    NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, context.getString(R.string.channel_upload_files), NotificationManager.IMPORTANCE_LOW);
+                    notificationManager.createNotificationChannel(channel);
+                    needCreateChannel = false;
+                }
 
-                builder = new NotificationCompat.Builder(context, channel.getId());
+                builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
             } else {
                 builder = new NotificationCompat.Builder(context).setPriority(Notification.PRIORITY_LOW);
             }
