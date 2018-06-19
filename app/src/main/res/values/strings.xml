@@ -1192,5 +1192,7 @@
     <string name="keep_longpoll_notification_title">Phoenix Notifications</string>
     <string name="settings_keep_longpoll_title">Keep longpoll</string>
     <string name="settings_keep_longpoll_summary">Keep connection to notification service.\nATTENTION! This can cause increased battery usage!</string>
+    <string name="channel_upload_files">Uploading files</string>
+    <string name="files_uploading_notification_title">Uploading files</string>
 
 </resources>

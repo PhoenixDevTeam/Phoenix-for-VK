@@ -1,7 +1,12 @@
 package biz.dealnote.messenger.upload;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -15,12 +20,15 @@ import java.util.concurrent.TimeUnit;
 
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
+import biz.dealnote.messenger.Injection;
+import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PercentagePublisher;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.longpoll.NotificationHelper;
 import biz.dealnote.messenger.model.MessageStatus;
 import biz.dealnote.messenger.service.SendService;
 import biz.dealnote.messenger.upload.impl.DocumentUploadable;
@@ -39,12 +47,16 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.processors.PublishProcessor;
 import io.reactivex.schedulers.Schedulers;
 
+import static biz.dealnote.messenger.util.Objects.isNull;
+import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
+import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
 public class UploadManagerImpl implements IUploadManager {
 
     private static final int PROGRESS_LOOKUP_DELAY = 500;
+    private static final String NOTIFICATION_CHANNEL_ID = "upload_files";
 
     private final Context context;
     private final INetworker networker;
@@ -61,6 +73,11 @@ public class UploadManagerImpl implements IUploadManager {
     private final PublishProcessor<Upload> statusProcessor = PublishProcessor.create();
 
     private final Flowable<Long> timer;
+    private final CompositeDisposable notificationUpdateDisposable = new CompositeDisposable();
+    private final Map<String, UploadServer> serverMap = Collections.synchronizedMap(new HashMap<>());
+    private volatile Upload current;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private CompositeDisposable otherDisposables = new CompositeDisposable();
 
     public UploadManagerImpl(Context context, INetworker networker, IStorages storages, IAttachmentsRepository attachmentsRepository,
                              IWalls walls, SendService sendService) {
@@ -72,6 +89,52 @@ public class UploadManagerImpl implements IUploadManager {
         this.sendService = sendService;
         this.scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
         this.timer = Flowable.interval(PROGRESS_LOOKUP_DELAY, PROGRESS_LOOKUP_DELAY, TimeUnit.MILLISECONDS);
+    }
+
+    private static Upload intent2Upload(UploadIntent intent) {
+        return new Upload(intent.getAccountId())
+                .setAutoCommit(intent.isAutoCommit())
+                .setDestination(intent.getDestination())
+                .setFileId(intent.getFileId())
+                .setFileUri(intent.getFileUri())
+                .setStatus(Upload.STATUS_QUEUE)
+                .setSize(intent.getSize());
+    }
+
+    private static String createServerKey(Upload upload) {
+        UploadDestination dest = upload.getDestination();
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(Extra.ACCOUNT_ID).append(upload.getAccountId());
+        builder.append(Extra.METHOD).append(dest.getMethod());
+
+        switch (upload.getDestination().getMethod()) {
+            case Method.DOCUMENT:
+                if (dest.getOwnerId() < 0) {
+                    builder.append(Extra.GROUP_ID).append(Math.abs(dest.getOwnerId()));
+                }
+                break;
+            case Method.PHOTO_TO_ALBUM:
+                builder.append(Extra.ALBUM_ID).append(dest.getId());
+                if (dest.getOwnerId() < 0) {
+                    builder.append(Extra.GROUP_ID).append(Math.abs(dest.getOwnerId()));
+                }
+                break;
+            case Method.PHOTO_TO_COMMENT:
+            case Method.PHOTO_TO_WALL:
+                if (dest.getOwnerId() < 0) {
+                    builder.append(Extra.GROUP_ID).append(Math.abs(dest.getOwnerId()));
+                }
+                break;
+            case Method.PHOTO_TO_MESSAGE:
+                //do nothink
+                break;
+            case Method.PHOTO_TO_PROFILE:
+                builder.append(Extra.OWNER_ID).append(dest.getOwnerId());
+                break;
+        }
+
+        return builder.toString();
     }
 
     @Override
@@ -91,14 +154,49 @@ public class UploadManagerImpl implements IUploadManager {
         }
     }
 
-    private static Upload intent2Upload(UploadIntent intent) {
-        return new Upload(intent.getAccountId())
-                .setAutoCommit(intent.isAutoCommit())
-                .setDestination(intent.getDestination())
-                .setFileId(intent.getFileId())
-                .setFileUri(intent.getFileUri())
-                .setStatus(Upload.STATUS_QUEUE)
-                .setSize(intent.getSize());
+    private void startWithNotification() {
+        updateNotification(Collections.emptyList());
+
+        notificationUpdateDisposable.add(observeProgress()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::updateNotification));
+    }
+
+    private void updateNotification(List<IProgressUpdate> updates) {
+        if(nonEmpty(updates)){
+            int progress = updates.get(0).getProgress();
+
+            final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            if(isNull(notificationManager)){
+                return;
+            }
+
+            final NotificationCompat.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, context.getString(R.string.channel_upload_files), NotificationManager.IMPORTANCE_LOW);
+                notificationManager.createNotificationChannel(channel);
+
+                builder = new NotificationCompat.Builder(context, channel.getId());
+            } else {
+                builder = new NotificationCompat.Builder(context).setPriority(Notification.PRIORITY_LOW);
+            }
+
+            builder.setContentTitle(context.getString(R.string.files_uploading_notification_title))
+                    .setSmallIcon(R.drawable.ic_notification_upload)
+                    .setOngoing(true)
+                    .setProgress(100, progress, false)
+                    .build();
+
+            notificationManager.notify(NotificationHelper.NOTIFICATION_UPLOAD, builder.build());
+        }
+    }
+
+    private void stopNotification() {
+        notificationUpdateDisposable.clear();
+        final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if(nonNull(notificationManager)){
+            notificationManager.cancel(NotificationHelper.NOTIFICATION_UPLOAD);
+        }
     }
 
     @Override
@@ -116,9 +214,6 @@ public class UploadManagerImpl implements IUploadManager {
             startIfNotStarted();
         }
     }
-
-    private volatile Upload current;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private void startIfNotStarted() {
         compositeDisposable.add(Completable.complete()
@@ -140,7 +235,14 @@ public class UploadManagerImpl implements IUploadManager {
     private void startIfNotStartedInternal() {
         synchronized (this) {
             final Upload first = findFirstQueue();
-            if (current != null || first == null) return;
+            if (current != null) return;
+
+            if(first == null){
+                stopNotification();
+                return;
+            }
+
+            startWithNotification();
 
             this.current = first;
 
@@ -178,8 +280,6 @@ public class UploadManagerImpl implements IUploadManager {
         }
     }
 
-    private CompositeDisposable otherDisposables = new CompositeDisposable();
-
     private void sendMessageIfWaitForUpload(int accountId, int messageId) {
         // если загружали в личное сообщение, то отправляем это сообщение (в случае, если оно с статусе "Ожидание загрузки")
         otherDisposables.add(storages.messages()
@@ -199,23 +299,6 @@ public class UploadManagerImpl implements IUploadManager {
                         sendService.runSendingQueue();
                     }
                 }, ignore()));
-    }
-
-    private static final class WeakProgressPublisgher implements PercentagePublisher {
-
-        final WeakReference<Upload> reference;
-
-        WeakProgressPublisgher(Upload upload) {
-            this.reference = new WeakReference<>(upload);
-        }
-
-        @Override
-        public void onProgressChanged(int percentage) {
-            Upload upload = reference.get();
-            if (upload != null) {
-                upload.setProgress(percentage);
-            }
-        }
     }
 
     private void onUploadFail(Upload upload, Throwable t) {
@@ -333,27 +416,6 @@ public class UploadManagerImpl implements IUploadManager {
         });
     }
 
-    private static final class ProgressUpdate implements IProgressUpdate {
-
-        final int id;
-        final int progress;
-
-        private ProgressUpdate(int id, int progress) {
-            this.id = id;
-            this.progress = progress;
-        }
-
-        @Override
-        public int getId() {
-            return id;
-        }
-
-        @Override
-        public int getProgress() {
-            return progress;
-        }
-    }
-
     private IUploadable<?> createUploadable(Upload upload) {
         final UploadDestination destination = upload.getDestination();
 
@@ -374,41 +436,41 @@ public class UploadManagerImpl implements IUploadManager {
         throw new UnsupportedOperationException();
     }
 
-    private final Map<String, UploadServer> serverMap = Collections.synchronizedMap(new HashMap<>());
+    private static final class WeakProgressPublisgher implements PercentagePublisher {
 
-    private static String createServerKey(Upload upload) {
-        UploadDestination dest = upload.getDestination();
+        final WeakReference<Upload> reference;
 
-        StringBuilder builder = new StringBuilder();
-        builder.append(Extra.ACCOUNT_ID).append(upload.getAccountId());
-        builder.append(Extra.METHOD).append(dest.getMethod());
-
-        switch (upload.getDestination().getMethod()) {
-            case Method.DOCUMENT:
-                if (dest.getOwnerId() < 0) {
-                    builder.append(Extra.GROUP_ID).append(Math.abs(dest.getOwnerId()));
-                }
-                break;
-            case Method.PHOTO_TO_ALBUM:
-                builder.append(Extra.ALBUM_ID).append(dest.getId());
-                if (dest.getOwnerId() < 0) {
-                    builder.append(Extra.GROUP_ID).append(Math.abs(dest.getOwnerId()));
-                }
-                break;
-            case Method.PHOTO_TO_COMMENT:
-            case Method.PHOTO_TO_WALL:
-                if (dest.getOwnerId() < 0) {
-                    builder.append(Extra.GROUP_ID).append(Math.abs(dest.getOwnerId()));
-                }
-                break;
-            case Method.PHOTO_TO_MESSAGE:
-                //do nothink
-                break;
-            case Method.PHOTO_TO_PROFILE:
-                builder.append(Extra.OWNER_ID).append(dest.getOwnerId());
-                break;
+        WeakProgressPublisgher(Upload upload) {
+            this.reference = new WeakReference<>(upload);
         }
 
-        return builder.toString();
+        @Override
+        public void onProgressChanged(int percentage) {
+            Upload upload = reference.get();
+            if (upload != null) {
+                upload.setProgress(percentage);
+            }
+        }
+    }
+
+    private static final class ProgressUpdate implements IProgressUpdate {
+
+        final int id;
+        final int progress;
+
+        private ProgressUpdate(int id, int progress) {
+            this.id = id;
+            this.progress = progress;
+        }
+
+        @Override
+        public int getId() {
+            return id;
+        }
+
+        @Override
+        public int getProgress() {
+            return progress;
+        }
     }
 }

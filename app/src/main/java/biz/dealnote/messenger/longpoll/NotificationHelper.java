@@ -177,6 +177,7 @@ public class NotificationHelper {
     public static final int NOTIFICATION_NEW_POSTS_ID = 70;
     public static final int NOTIFICATION_LIKE = 71;
     public static final int NOTIFICATION_BIRTHDAY = 72;
+    public static final int NOTIFICATION_UPLOAD = 73;
 
     public static Uri findNotificationSound() {
         try {
