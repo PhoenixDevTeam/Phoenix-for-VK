@@ -163,7 +163,7 @@ public class UploadManagerImpl implements IUploadManager {
                 .subscribe(this::updateNotification));
     }
 
-    private boolean needCreateChannel;
+    private boolean needCreateChannel = true;
 
     private void updateNotification(List<IProgressUpdate> updates) {
         if(nonEmpty(updates)){
