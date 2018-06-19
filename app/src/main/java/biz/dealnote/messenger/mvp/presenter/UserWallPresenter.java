@@ -86,11 +86,20 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
                 .subscribe(this::onUploadFinished, RxUtils.ignore()));
     }
 
+    @Override
+    protected void onRefresh() {
+        requestActualFullInfo();
+    }
+
     private void onUploadFinished(Pair<Upload, UploadResult<?>> pair) {
         UploadDestination destination = pair.getFirst().getDestination();
-        if(destination.getMethod() == Method.PHOTO_TO_PROFILE && destination.getOwnerId() == ownerId && isGuiResumed()){
-            Post post = (Post) pair.getSecond().getResult();
-            getView().showAvatarUploadedMessage(getAccountId(), post);
+        if(destination.getMethod() == Method.PHOTO_TO_PROFILE && destination.getOwnerId() == ownerId){
+            requestActualFullInfo();
+
+            if(isGuiResumed()){
+                Post post = (Post) pair.getSecond().getResult();
+                getView().showAvatarUploadedMessage(getAccountId(), post);
+            }
         }
     }
 
