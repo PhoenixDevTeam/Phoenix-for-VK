@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.domain.IAccountsInteractor;
@@ -19,12 +20,21 @@ import biz.dealnote.messenger.domain.IRelationshipInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.friends.FriendsTabsFragment;
 import biz.dealnote.messenger.model.FriendsCounters;
+import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.model.Peer;
+import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.PostFilter;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.UserDetails;
 import biz.dealnote.messenger.model.criteria.WallCriteria;
 import biz.dealnote.messenger.mvp.view.IUserWallView;
+import biz.dealnote.messenger.upload.IUploadManager;
+import biz.dealnote.messenger.upload.Method;
+import biz.dealnote.messenger.upload.Upload;
+import biz.dealnote.messenger.upload.UploadDestination;
+import biz.dealnote.messenger.upload.UploadIntent;
+import biz.dealnote.messenger.upload.UploadResult;
+import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
 
@@ -40,15 +50,15 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
     private static final String TAG = UserWallPresenter.class.getSimpleName();
 
     private final List<PostFilter> filters;
-
-    private User user;
-    private UserDetails details;
-
     private final IOwnersInteractor ownersInteractor;
     private final IRelationshipInteractor relationshipInteractor;
     private final IAccountsInteractor accountInteractor;
     private final IPhotosInteractor photosInteractor;
     private final IFaveInteractor faveInteractor;
+    private final IUploadManager uploadManager;
+    private User user;
+    private UserDetails details;
+    private boolean loadingAvatarPhotosNow;
 
     public UserWallPresenter(int accountId, int ownerId, @Nullable User owner, @Nullable Bundle savedInstanceState) {
         super(accountId, ownerId, savedInstanceState);
@@ -58,6 +68,7 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
         this.accountInteractor = InteractorFactory.createAccountInteractor();
         this.photosInteractor = InteractorFactory.createPhotosInteractor();
         this.faveInteractor = InteractorFactory.createFaveInteractor();
+        this.uploadManager = Injection.provideUploadManager();
 
         this.filters = new ArrayList<>();
         this.filters.addAll(createPostFilters());
@@ -69,11 +80,23 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
         syncFilterCountersWithDetails();
 
         refreshUserDetails();
+
+        appendDisposable(uploadManager.observeResults()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onUploadFinished, RxUtils.ignore()));
+    }
+
+    private void onUploadFinished(Pair<Upload, UploadResult<?>> pair) {
+        UploadDestination destination = pair.getFirst().getDestination();
+        if(destination.getMethod() == Method.PHOTO_TO_PROFILE && destination.getOwnerId() == ownerId && isGuiResumed()){
+            Post post = (Post) pair.getSecond().getResult();
+            getView().showAvatarUploadedMessage(getAccountId(), post);
+        }
     }
 
     @OnGuiCreated
-    private void resolveCounters(){
-        if(isGuiReady()){
+    private void resolveCounters() {
+        if (isGuiReady()) {
             getView().displayCounters(details.getFriendsCount(),
                     details.getFollowersCount(),
                     details.getGroupsCount(),
@@ -84,8 +107,8 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
     }
 
     @OnGuiCreated
-    private void resolveBaseUserInfoViews(){
-        if(isGuiReady()){
+    private void resolveBaseUserInfoViews() {
+        if (isGuiReady()) {
             getView().displayBaseUserInfo(user);
         }
     }
@@ -441,8 +464,6 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
         }
     }
 
-    private boolean loadingAvatarPhotosNow;
-
     @OnGuiCreated
     private void resolveProgressDialogView() {
         if (isGuiReady()) {
@@ -465,7 +486,7 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
             return;
         }
 
-        getView().showAvatarContextMenu();
+        getView().showAvatarContextMenu(isMyWall());
     }
 
     public void fireOpenAvatarsPhotoAlbum() {
@@ -496,5 +517,15 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
                 .setTitle(user.getFullName());
 
         getView().openChatWith(accountId, accountId, peer);
+    }
+
+    public void fireNewAvatarPhotoSelected(LocalPhoto photo) {
+        UploadIntent intent = new UploadIntent(getAccountId(), UploadDestination.forProfilePhoto(ownerId))
+                .setAutoCommit(true)
+                .setFileId(photo.getImageId())
+                .setFileUri(photo.getFullImageUri())
+                .setSize(Upload.IMAGE_SIZE_FULL);
+
+        uploadManager.enqueue(Collections.singletonList(intent));
     }
 }

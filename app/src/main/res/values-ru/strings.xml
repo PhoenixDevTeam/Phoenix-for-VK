@@ -1035,4 +1035,9 @@
     <string name="share_to_wall_label">На стену</string>
     <string name="error_post_creation_no_auth">Нет активных аккаунтов в приложении! Публикация отменена.</string>
     <string name="select_post_destination_label">Выберите назначение публикации</string>
+    <string name="avatar_was_changed_successfully">Новый аватар успешно загружен!</string>
+    <string name="button_show">Показать</string>
+    <string name="upload_new_photo">Сменить аватар</string>
+    <string name="channel_upload_files">Загрузка файлов</string>
+    <string name="files_uploading_notification_title">Загрузка файлов</string>
 </resources>

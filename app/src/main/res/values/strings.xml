@@ -1194,5 +1194,8 @@
     <string name="settings_keep_longpoll_summary">Keep connection to notification service.\nATTENTION! This can cause increased battery usage!</string>
     <string name="channel_upload_files">Uploading files</string>
     <string name="files_uploading_notification_title">Uploading files</string>
+    <string name="upload_new_photo">Change profile avatar</string>
+    <string name="button_show">Show</string>
+    <string name="avatar_was_changed_successfully">Your avatar was changed successfully!</string>
 
 </resources>

@@ -1033,4 +1033,9 @@
     <string name="share_to_wall_label">На стіну</string>
     <string name="error_post_creation_no_auth">Не знайдено активних акаунтів в додатку! Публікація скасована.</string>
     <string name="select_post_destination_label">Виберіть призначення публікації</string>
+    <string name="avatar_was_changed_successfully">Новий аватар успішно завантажений!</string>
+    <string name="button_show">Показати</string>
+    <string name="upload_new_photo">Змінити аватар</string>
+    <string name="channel_upload_files">Завантаження файлів</string>
+    <string name="files_uploading_notification_title">Завантаження файлів</string>
 </resources>

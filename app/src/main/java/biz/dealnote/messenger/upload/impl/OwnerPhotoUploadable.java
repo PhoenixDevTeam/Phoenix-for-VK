@@ -67,9 +67,8 @@ public class OwnerPhotoUploadable implements IUploadable<Post> {
                                             .map(post -> new UploadResult<>(server, post));
                                 }));
             } catch (Exception e) {
-                return Single.error(e);
-            } finally {
                 safelyClose(is[0]);
+                return Single.error(e);
             }
         });
     }

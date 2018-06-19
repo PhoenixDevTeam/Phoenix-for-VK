@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
@@ -51,6 +51,7 @@ import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
+import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
 public class UploadManagerImpl implements IUploadManager {
@@ -305,10 +306,13 @@ public class UploadManagerImpl implements IUploadManager {
         synchronized (this) {
             if (current == upload) {
                 current = null;
-            }
 
-            if (BuildConfig.DEBUG) {
-                t.printStackTrace();
+                Throwable cause = getCauseIfRuntime(t);
+                final String message = firstNonEmptyString(cause.getMessage(), cause.toString());
+                compositeDisposable.add(Completable.complete()
+                        .observeOn(Injection.provideMainThreadScheduler())
+                        .subscribe(() -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show()));
+
             }
 
             String errorMessage = firstNonEmptyString(t.getMessage(), t.toString());

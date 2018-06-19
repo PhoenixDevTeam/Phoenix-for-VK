@@ -1,6 +1,8 @@
 package biz.dealnote.messenger.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,16 +19,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityUtils;
+import biz.dealnote.messenger.activity.PhotosActivity;
 import biz.dealnote.messenger.adapter.horizontal.HorizontalOptionsAdapter;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.model.FriendsCounters;
+import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.model.ParcelableOwnerWrapper;
+import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.PostFilter;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.UserDetails;
@@ -50,6 +56,8 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  */
 public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPresenter>
         implements IUserWallView {
+
+    private static final int REQUEST_UPLOAD_AVATAR = 46;
 
     private UserHeaderHolder mHeaderHolder;
 
@@ -83,6 +91,16 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
     @Override
     public void openUserDetails(int accountId, @NonNull User user, @NonNull UserDetails details) {
         PlaceFactory.getUserDetailsPlace(accountId, user, details).tryOpenWith(requireActivity());
+    }
+
+    @Override
+    public void showAvatarUploadedMessage(int accountId, Post post) {
+        new android.support.v7.app.AlertDialog.Builder(requireActivity())
+                .setTitle(R.string.success)
+                .setMessage(R.string.avatar_was_changed_successfully)
+                .setPositiveButton(R.string.button_show, (dialog, which) -> PlaceFactory.getPostPreviewPlace(accountId, post.getVkid(), post.getOwnerId(), post).tryOpenWith(requireActivity()))
+                .setNegativeButton(R.string.button_ok, null)
+                .show();
     }
 
     /*@Override
@@ -247,24 +265,37 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
     }
 
     @Override
-    public void showAvatarContextMenu() {
-        //String[] items = {getString(R.string.open_photo_album), getString(R.string.upload_new_photo)};
-        String[] items = {getString(R.string.open_photo_album)};
+    public void showAvatarContextMenu(boolean canUploadAvatar) {
+        String[] items;
+        if(canUploadAvatar){
+            items = new String[]{getString(R.string.open_photo_album), getString(R.string.upload_new_photo)};
+        } else {
+            items = new String[]{getString(R.string.open_photo_album)};
+        }
 
         new AlertDialog.Builder(getActivity()).setItems(items, (dialogInterface, i) -> {
             switch (i) {
                 case 0:
                     getPresenter().fireOpenAvatarsPhotoAlbum();
                     break;
-                //case 1:
-                    //Intent attachPhotoIntent = new Intent(getActivity(), PhotosActivity.class);
-                    //attachPhotoIntent.putExtra(PhotosActivity.EXTRA_MAX_SELECTION_COUNT, 1);
-                    //startActivityForResult(attachPhotoIntent, REQUEST_UPLOAD_AVATAR);
-
-                    // TODO: 26.03.2017
-                    //break;
+                case 1:
+                    Intent attachPhotoIntent = new Intent(getActivity(), PhotosActivity.class);
+                    attachPhotoIntent.putExtra(PhotosActivity.EXTRA_MAX_SELECTION_COUNT, 1);
+                    startActivityForResult(attachPhotoIntent, REQUEST_UPLOAD_AVATAR);
+                    break;
             }
         }).setCancelable(true).show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_UPLOAD_AVATAR && resultCode == Activity.RESULT_OK){
+            ArrayList<LocalPhoto> photos = data.getParcelableArrayListExtra(Extra.PHOTOS);
+            if(nonEmpty(photos)){
+                getPresenter().fireNewAvatarPhotoSelected(photos.get(0));
+            }
+        }
     }
 
     @Override

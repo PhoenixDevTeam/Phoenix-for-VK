@@ -7,6 +7,7 @@ import android.support.annotation.StringRes;
 import java.util.List;
 
 import biz.dealnote.messenger.model.FriendsCounters;
+import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.PostFilter;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.UserDetails;
@@ -30,7 +31,7 @@ public interface IUserWallView extends IWallView, IProgressView, ISnackbarView {
 
     void showAddToFriendsMessageDialog();
 
-    void showAvatarContextMenu();
+    void showAvatarContextMenu(boolean canUploadAvatar);
 
     void displayCounters(int friends, int followers, int groups, int photos, int audios, int videos);
 
@@ -39,4 +40,6 @@ public interface IUserWallView extends IWallView, IProgressView, ISnackbarView {
     void displayBaseUserInfo(User user);
 
     void openUserDetails(int accountId, @NonNull User user, @NonNull UserDetails details);
+
+    void showAvatarUploadedMessage(int accountId, Post post);
 }
