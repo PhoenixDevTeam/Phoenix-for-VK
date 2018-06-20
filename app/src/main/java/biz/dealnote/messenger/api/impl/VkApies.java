@@ -91,7 +91,7 @@ class VkApies implements IAccountApis {
                     } else if (intValueIn(TokenType.SERVICE, tokenPolicy)) {
                         return provider.provideServiceRetrofit();
                     } else {
-                        throw new UnsupportedOperationException("Unsupported account_id: " + aid + " with token_policy: " + Arrays.toString(tokenPolicy));
+                        return Single.error(new UnsupportedOperationException("Unsupported account_id: " + aid + " with token_policy: " + Arrays.toString(tokenPolicy)));
                     }
                 } else {
                     if (intValueIn(TokenType.USER, tokenPolicy)) {
@@ -99,7 +99,7 @@ class VkApies implements IAccountApis {
                     } else if (intValueIn(TokenType.SERVICE, tokenPolicy)) {
                         return provider.provideServiceRetrofit();
                     } else {
-                        throw new UnsupportedOperationException("Unsupported account_id: " + aid + " with token_policy: " + Arrays.toString(tokenPolicy));
+                        return Single.error(new UnsupportedOperationException("Unsupported account_id: " + aid + " with token_policy: " + Arrays.toString(tokenPolicy)));
                     }
                 }
             }
