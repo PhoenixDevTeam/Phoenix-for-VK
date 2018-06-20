@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
     @Override
     protected void onPause() {
-        resumed = true;
+        resumed = false;
         super.onPause();
     }
 
