@@ -76,7 +76,8 @@ public class AndroidLongpollManager implements ILongpollManager, UserLongpoll.Ca
     }
 
     private ILongpoll createLongpoll(int accountId) {
-        return accountId > 0 ? new UserLongpoll(networker, accountId, this) : new GroupLongpoll(networker, Math.abs(accountId), this);
+        //return accountId > 0 ? new UserLongpoll(networker, accountId, this) : new GroupLongpoll(networker, Math.abs(accountId), this);
+        return new UserLongpoll(networker, accountId, this);
     }
 
     @Override

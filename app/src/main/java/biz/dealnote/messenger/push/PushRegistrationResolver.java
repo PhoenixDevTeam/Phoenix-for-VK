@@ -224,13 +224,18 @@ public class PushRegistrationResolver implements IPushRegistrationResolver {
     }
 
     private Single<Data> getInfo() {
-        return Single.fromCallable(() -> {
-            String deviceId = devideIdProvider.getDeviceId();
-            String gcmToken = gcmTokenProvider.getToken();
-            return new Data(gcmToken, deviceId);
+        return Single.create(emitter -> {
+            try {
+                String deviceId = devideIdProvider.getDeviceId();
+                String gcmToken = gcmTokenProvider.getToken();
+                emitter.onSuccess(new Data(gcmToken, deviceId));
+            } catch (Exception e){
+                emitter.onError(e);
+            }
         });
     }
 
+    @SuppressWarnings("unused")
     private VkPushRegistration createCurrent() throws IOException {
         int accountId = settings.accounts().getCurrent();
 
