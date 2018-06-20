@@ -19,7 +19,12 @@ import biz.dealnote.messenger.util.Utils;
 
 public class ResolveDomainDialog extends AccountDependencyDialogFragment {
 
-    public static Bundle buildArgs(int aid, String url, String domain){
+    private int mAccountId;
+    private String url;
+    private String domain;
+    private IUtilsInteractor mUtilsInteractor;
+
+    public static Bundle buildArgs(int aid, String url, String domain) {
         Bundle args = new Bundle();
         args.putInt(Extra.ACCOUNT_ID, aid);
         args.putString(Extra.URL, url);
@@ -27,20 +32,15 @@ public class ResolveDomainDialog extends AccountDependencyDialogFragment {
         return args;
     }
 
-    public static ResolveDomainDialog newInstance(int aid, String url, String domain){
+    public static ResolveDomainDialog newInstance(int aid, String url, String domain) {
         return newInstance(buildArgs(aid, url, domain));
     }
 
-    public static ResolveDomainDialog newInstance(Bundle args){
+    public static ResolveDomainDialog newInstance(Bundle args) {
         ResolveDomainDialog domainDialog = new ResolveDomainDialog();
         domainDialog.setArguments(args);
         return domainDialog;
     }
-
-    private int mAccountId;
-    private String url;
-    private String domain;
-    private IUtilsInteractor mUtilsInteractor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,28 +64,28 @@ public class ResolveDomainDialog extends AccountDependencyDialogFragment {
         return progressDialog;
     }
 
-    private void request(){
+    private void request() {
         appendDisposable(mUtilsInteractor.resolveDomain(mAccountId, domain)
-        .compose(RxUtils.applySingleIOToMainSchedulers())
-        .subscribe(this::onResolveResult, this::onResolveError));
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::onResolveResult, this::onResolveError));
     }
 
-    private void onResolveError(Throwable t){
+    private void onResolveError(Throwable t) {
         showErrorAlert(Utils.getCauseIfRuntime(t).getMessage());
     }
 
-    private void onResolveResult(Optional<Owner> optionalOwner){
-        if(optionalOwner.isEmpty()){
-            PlaceFactory.getExternalLinkPlace(getAccountId(), url).tryOpenWith(getActivity());
+    private void onResolveResult(Optional<Owner> optionalOwner) {
+        if (optionalOwner.isEmpty()) {
+            PlaceFactory.getExternalLinkPlace(getAccountId(), url).tryOpenWith(requireActivity());
         } else {
-            PlaceFactory.getOwnerWallPlace(mAccountId, optionalOwner.get()).tryOpenWith(getActivity());
+            PlaceFactory.getOwnerWallPlace(mAccountId, optionalOwner.get()).tryOpenWith(requireActivity());
         }
 
-        dismiss();
+        dismissAllowingStateLoss();
     }
 
-    private void showErrorAlert(String error){
-        new AlertDialog.Builder(getActivity())
+    private void showErrorAlert(String error) {
+        new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.error)
                 .setMessage(error).setPositiveButton(R.string.try_again, (dialog, which) -> request())
                 .setNegativeButton(R.string.cancel, (dialog, which) -> dismiss())
