@@ -17,13 +17,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ListView
-                android:id="@android:id/list"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:choiceMode="singleChoice"
-                android:divider="@null"
-                android:dividerHeight="0.0dp" />
+                android:scrollbars="vertical"/>
+
         </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
