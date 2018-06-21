@@ -29,8 +29,10 @@ public class MessageDtoAdapter extends AbsAdapter implements JsonDeserializer<VK
 
         dto.id = optInt(root, "id");
         dto.out = optIntAsBoolean(root, "out");
+        dto.peer_id = optInt(root, "peer_id");
+        dto.from_id = optInt(root, "from_id");
 
-        int user_id = optInt(root, "user_id");
+        /*int user_id = optInt(root, "user_id");
         int chat_id = optInt(root, "chat_id");
 
         if (chat_id != 0) {
@@ -45,7 +47,7 @@ public class MessageDtoAdapter extends AbsAdapter implements JsonDeserializer<VK
             if (!dto.out) {
                 dto.from_id = user_id;
             }
-        }
+        }*/
 
         dto.date = optLong(root, "date");
         dto.read_state = optIntAsBoolean(root, "read_state");
@@ -65,7 +67,6 @@ public class MessageDtoAdapter extends AbsAdapter implements JsonDeserializer<VK
             }
         }
 
-        dto.emoji = optIntAsBoolean(root, "emoji");
         dto.deleted = optIntAsBoolean(root, "deleted");
         dto.important = optIntAsBoolean(root, "important");
 

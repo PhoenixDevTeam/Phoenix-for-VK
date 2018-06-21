@@ -60,11 +60,6 @@ public class VKApiMessage {
     public List<VKApiMessage> fwd_messages;
 
     /**
-     *	Whether the message contains smiles (false — no, true — yes).
-     */
-    public boolean emoji;
-
-    /**
      * Whether the message is deleted (false — no, true — yes).
      */
     public boolean important;

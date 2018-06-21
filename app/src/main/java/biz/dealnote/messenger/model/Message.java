@@ -180,6 +180,8 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
             return ChatAction.PIN_MESSAGE;
         } else if ("chat_unpin_message".equalsIgnoreCase(action)) {
             return ChatAction.UNPIN_MESSAGE;
+        } else if ("chat_invite_user_by_link".equalsIgnoreCase(action)) {
+            return ChatAction.INVITE_USER_BY_LINK;
         } else {
             return ChatAction.NO_ACTION;
         }
@@ -520,8 +522,9 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
             case ChatAction.UNPIN_MESSAGE:
                 result = context.getString(R.string.service_unpinned_message, sender.getFullName());
                 break;
+            case ChatAction.INVITE_USER_BY_LINK:
+                result = context.getString(R.string.service_invite_user_by_link, sender.getFullName());
             case ChatAction.NO_ACTION:
-
                 break;
         }
 

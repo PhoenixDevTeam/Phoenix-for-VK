@@ -197,6 +197,7 @@
     <string name="service_left_this_chat">%1$s left this chat</string>
     <string name="service_pinned_message">%1$s pinned message</string>
     <string name="service_unpinned_message">%1$s unpinned message</string>
+    <string name="service_invite_user_by_link">%1$s joined the conversation by link</string>
     <string name="group_chat_leave">Leave chat</string>
 
     <string name="unknown_first_name">Unknown</string>
