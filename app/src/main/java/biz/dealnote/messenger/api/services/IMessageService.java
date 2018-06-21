@@ -31,7 +31,8 @@ public interface IMessageService {
                                               @Field("message_id") int messageId,
                                               @Field("message") String message,
                                               @Field("attchment") String attachment,
-                                              @Field("forward_messages") String forwardMessages);
+                                              @Field("keep_forward_messages") Integer keepForwardMessages,
+                                              @Field("keep_snippets") Integer keepSnippets);
 
     /**
      * Allows the current user to leave a chat or, if the current user started the chat,

@@ -1,11 +1,13 @@
 package biz.dealnote.messenger.domain;
 
 import android.support.annotation.CheckResult;
+import android.support.annotation.NonNull;
 
 import java.util.Collection;
 import java.util.List;
 
 import biz.dealnote.messenger.api.model.VKApiMessage;
+import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.Message;
@@ -20,6 +22,8 @@ import io.reactivex.Single;
  * phoenix
  */
 public interface IMessagesInteractor {
+    Completable edit(int accountId, @NonNull Message message, String body, @NonNull List<AbsModel> attachments, boolean keepForwardMessages);
+
     /**
      * Получить все закэшированные сообщения в локальной БД
      * @param accountId идентификатор аккаунта

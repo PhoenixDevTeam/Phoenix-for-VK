@@ -27,7 +27,7 @@ import io.reactivex.Single;
 public interface IMessagesApi {
 
     @CheckResult
-    Completable edit(int peerId, int messageIs, String message, List<IAttachmentToken> attachments, boolean keepFwd);
+    Completable edit(int peerId, int messageId, String message, List<IAttachmentToken> attachments, boolean keepFwd, Boolean keepSnippets);
 
     @CheckResult
     Single<Boolean> removeChatUser(int chatId, int userId);

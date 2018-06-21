@@ -460,16 +460,6 @@ public class Utils {
     }
 
     @NonNull
-    public static <T extends Identificable> SparseArray<T> convertToSparseArray(@NonNull Collection<T> data) {
-        SparseArray<T> map = new SparseArray<>(data.size());
-        for (T item : data) {
-            map.put(item.getId(), item);
-        }
-
-        return map;
-    }
-
-    @NonNull
     public static <T extends ISelectable> ArrayList<T> getSelected(@NonNull List<T> fullData) {
         return getSelected(fullData, false);
     }

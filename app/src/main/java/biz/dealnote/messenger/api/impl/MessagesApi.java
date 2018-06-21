@@ -43,13 +43,11 @@ class MessagesApi extends AbsApi implements IMessagesApi {
     }
 
     @Override
-    public Completable edit(int peerId, int messageId, String message, List<IAttachmentToken> attachments, boolean keepFwd) {
+    public Completable edit(int peerId, int messageId, String message, List<IAttachmentToken> attachments, boolean keepFwd, Boolean keepSnippets) {
         String atts = join(attachments, ",", AbsApi::formatAttachmentToken);
-
-        String fwd = keepFwd ? "-" + messageId : null; // todo not working!!!
         return serviceRx(TokenType.USER, TokenType.COMMUNITY)
                 .flatMapCompletable(service -> service
-                        .editMessage(peerId, messageId, message, atts, fwd)
+                        .editMessage(peerId, messageId, message, atts, integerFromBoolean(keepFwd), integerFromBoolean(keepSnippets))
                         .toCompletable());
     }
 

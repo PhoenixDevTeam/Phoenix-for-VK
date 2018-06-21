@@ -122,7 +122,7 @@ class AbsApi {
         return accountId;
     }
 
-    Integer integerFromBoolean(Boolean value) {
+    static Integer integerFromBoolean(Boolean value) {
         return isNull(value) ? null : (value ? 1 : 0);
     }
 

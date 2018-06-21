@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.domain.impl;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,9 +49,11 @@ import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.domain.mappers.Entity2Dto;
 import biz.dealnote.messenger.domain.mappers.Entity2Model;
+import biz.dealnote.messenger.domain.mappers.Model2Dto;
 import biz.dealnote.messenger.domain.mappers.Model2Entity;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.exception.UploadNotResolvedException;
+import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.CryptStatus;
 import biz.dealnote.messenger.model.Dialog;
@@ -101,6 +104,14 @@ public class MessagesInteractor implements IMessagesInteractor {
         this.stores = stores;
         this.decryptor = new MessagesDecryptor(stores);
         this.uploadManager = uploadManager;
+    }
+
+    @Override
+    public Completable edit(int accountId, @NonNull Message message, String body, @NonNull List<AbsModel> attachments, boolean keepForwardMessages) {
+        List<IAttachmentToken> attachmentTokens = Model2Dto.createTokens(attachments);
+        return networker.vkDefault(accountId)
+                .messages()
+                .edit(message.getPeerId(), message.getId(), body, attachmentTokens, keepForwardMessages, null);
     }
 
     @Override
