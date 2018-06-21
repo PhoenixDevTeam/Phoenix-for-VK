@@ -26,15 +26,17 @@ import biz.dealnote.messenger.adapter.AttachmentsBottomSheetAdapter;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.LocalPhoto;
+import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.ModelsBundle;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.Types;
 import biz.dealnote.messenger.model.selection.LocalPhotosSelectableSource;
 import biz.dealnote.messenger.model.selection.Sources;
 import biz.dealnote.messenger.model.selection.VkPhotosSelectableSource;
-import biz.dealnote.messenger.mvp.presenter.MessageAttachmentsPresenter;
-import biz.dealnote.messenger.mvp.view.IMessageAttachmentsView;
+import biz.dealnote.messenger.mvp.presenter.MessageEditPresenter;
+import biz.dealnote.messenger.mvp.view.IMessageEditView;
 import biz.dealnote.messenger.upload.Upload;
+import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.mvp.core.IPresenterFactory;
@@ -45,21 +47,21 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 14.04.2017.
  * phoenix
  */
-public class MessageAttachmentsFragment extends AbsPresenterBottomSheetFragment<MessageAttachmentsPresenter,
-        IMessageAttachmentsView> implements IMessageAttachmentsView, AttachmentsBottomSheetAdapter.ActionListener {
+public class MessageEditFragment extends AbsPresenterBottomSheetFragment<MessageEditPresenter,
+        IMessageEditView> implements IMessageEditView, AttachmentsBottomSheetAdapter.ActionListener {
 
     private static final int REQUEST_ADD_VKPHOTO = 17;
     private static final int REQUEST_PERMISSION_CAMERA = 16;
     private static final int REQUEST_PHOTO_FROM_CAMERA = 15;
     private static final int REQUEST_SELECT_ATTACHMENTS = 14;
 
-    public static MessageAttachmentsFragment newInstance(int accountId, int messageOwnerId, int messageId, ModelsBundle bundle) {
+    public static MessageEditFragment newInstance(int accountId, int messageOwnerId, int messageId, ModelsBundle bundle) {
         Bundle args = new Bundle();
         args.putInt(Extra.ACCOUNT_ID, accountId);
         args.putInt(Extra.MESSAGE_ID, messageId);
         args.putInt(Extra.OWNER_ID, messageOwnerId);
         args.putParcelable(Extra.BUNDLE, bundle);
-        MessageAttachmentsFragment fragment = new MessageAttachmentsFragment();
+        MessageEditFragment fragment = new MessageEditFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -116,24 +118,23 @@ public class MessageAttachmentsFragment extends AbsPresenterBottomSheetFragment<
     }
 
     @Override
-    public void savePresenterState(@NonNull MessageAttachmentsPresenter presenter, @NonNull Bundle outState) {
+    public void savePresenterState(@NonNull MessageEditPresenter presenter, @NonNull Bundle outState) {
         presenter.saveState(outState);
     }
 
     @Override
-    public IPresenterFactory<MessageAttachmentsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
+    public IPresenterFactory<MessageEditPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
             int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
-            int messageId = getArguments().getInt(Extra.MESSAGE_ID);
-            int messageOwnerId = getArguments().getInt(Extra.OWNER_ID);
-            ModelsBundle bundle = getArguments().getParcelable(Extra.BUNDLE);
-            return new MessageAttachmentsPresenter(accountId, messageOwnerId, messageId, bundle, saveInstanceState);
+            Message message = getArguments().getParcelable(Extra.MESSAGE);
+            AssertUtils.requireNonNull(message);
+            return new MessageEditPresenter(accountId, message, saveInstanceState);
         };
     }
 
     @Override
     protected String tag() {
-        return MessageAttachmentsFragment.class.getSimpleName();
+        return MessageEditFragment.class.getSimpleName();
     }
 
     @Override
@@ -211,15 +212,6 @@ public class MessageAttachmentsFragment extends AbsPresenterBottomSheetFragment<
         if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
             startActivityForResult(takePictureIntent, REQUEST_PHOTO_FROM_CAMERA);
-        }
-    }
-
-    @Override
-    public void syncAccompanyingWithParent(ModelsBundle accompanying) {
-        if(nonNull(getTargetFragment())){
-            Intent data = new Intent()
-                    .putExtra(Extra.BUNDLE, accompanying);
-            getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, data);
         }
     }
 

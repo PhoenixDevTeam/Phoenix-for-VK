@@ -455,29 +455,10 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
                 getPresenter().fireEditMessageResult(bundle);
             }
 
-            //String body = data.getStringExtra(Extra.BODY);
-            //Attachments accompanyingState = data.getParcelableExtra("accompanying_state");
-
-            //if (isPresenterPrepared()) {
-            //    getPresenter().fireEditMessageResult(body, accompanyingState);
-            //}
-
             if (resultCode == Activity.RESULT_OK) {
                 getPresenter().fireSendClickFromAttachmens();
             }
         }
-
-        //if (requestCode == REQUEST_FORWARD_MESSAGE) {
-        //    App.getInstance().setFwdBuffer(null);
-        //getPresenter().fireMessageToAnotherConversationSent();
-        //}
-
-        //if (requestCode == PhotosGridView.REQUEST_CODE_ATTACH_QUICK_ALBUM && resultCode == Activity.RESULT_OK && data != null) {
-        //    int albumId = data.getIntExtra(Extra.ALBUM_ID, 0);
-        //    int ownerId = data.getIntExtra(Extra.OWNER_ID, 0);
-        //    AppPrefs.storeQuickPhotosAttrs(getActivity(), getAccountId(), albumId, ownerId);
-        //    mInputViewController.getEmojiPopup().refreshQuickPhotos();
-        //}
     }
 
     @Override
@@ -546,12 +527,7 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
 
     @Override
     public void goToSearchMessage(int accountId, @NonNull Peer peer) {
-        // TODO: 17.10.2016 peer
-        //PlaceFactory.getSearchPlace(accountId, SeachTabsFragment.TAB_MESSAGES, null)
-        //        .tryOpenWith(getActivity());
-
-        MessageSeachCriteria criteria = new MessageSeachCriteria("")
-                .setPeerId(peer.getId());
+        MessageSeachCriteria criteria = new MessageSeachCriteria("").setPeerId(peer.getId());
 
         PlaceFactory.getSingleTabSearchPlace(accountId, SearchContentType.MESSAGES, criteria).tryOpenWith(requireActivity());
     }

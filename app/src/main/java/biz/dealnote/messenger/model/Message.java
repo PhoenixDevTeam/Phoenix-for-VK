@@ -158,24 +158,6 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         this.hasAttachments = in.readInt() == 1;
     }
 
-    public Message setHasAttachments(boolean hasAttachments) {
-        this.hasAttachments = hasAttachments;
-        return this;
-    }
-
-    public boolean isHasAttachments() {
-        return hasAttachments;
-    }
-
-    public Message setForwardMessagesCount(int forwardMessagesCount) {
-        this.forwardMessagesCount = forwardMessagesCount;
-        return this;
-    }
-
-    public int getForwardMessagesCount() {
-        return forwardMessagesCount;
-    }
-
     @ChatAction
     public static int fromApiChatAction(String action) {
         if (Objects.isNull(action) || action.length() == 0) {
@@ -194,9 +176,31 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
             return ChatAction.INVITE_USER;
         } else if ("chat_kick_user".equalsIgnoreCase(action)) {
             return ChatAction.KICK_USER;
+        } else if ("chat_pin_message".equalsIgnoreCase(action)) {
+            return ChatAction.PIN_MESSAGE;
+        } else if ("chat_unpin_message".equalsIgnoreCase(action)) {
+            return ChatAction.UNPIN_MESSAGE;
         } else {
             return ChatAction.NO_ACTION;
         }
+    }
+
+    public boolean isHasAttachments() {
+        return hasAttachments;
+    }
+
+    public Message setHasAttachments(boolean hasAttachments) {
+        this.hasAttachments = hasAttachments;
+        return this;
+    }
+
+    public int getForwardMessagesCount() {
+        return forwardMessagesCount;
+    }
+
+    public Message setForwardMessagesCount(int forwardMessagesCount) {
+        this.forwardMessagesCount = forwardMessagesCount;
+        return this;
     }
 
     public String getBody() {
@@ -509,7 +513,12 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
                 } else {
                     result = context.getString(R.string.service_removed, sender.getFullName(), actionSubject);
                 }
-
+                break;
+            case ChatAction.PIN_MESSAGE:
+                result = context.getString(R.string.service_pinned_message, sender.getFullName());
+                break;
+            case ChatAction.UNPIN_MESSAGE:
+                result = context.getString(R.string.service_unpinned_message, sender.getFullName());
                 break;
             case ChatAction.NO_ACTION:
 
@@ -598,6 +607,11 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         return extras;
     }
 
+    public Message setExtras(Map<Integer, String> extras) {
+        this.extras = extras;
+        return this;
+    }
+
     public boolean isChatTitleUpdate() {
         return action == ChatAction.TITLE_UPDATE;
     }
@@ -623,10 +637,5 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
 
     public static final class Extra {
         public static final int VOICE_RECORD = 1;
-    }
-
-    public Message setExtras(Map<Integer, String> extras) {
-        this.extras = extras;
-        return this;
     }
 }

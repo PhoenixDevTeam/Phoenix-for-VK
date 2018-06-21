@@ -195,6 +195,8 @@
     <string name="service_invited">%1$s invited %2$s</string>
     <string name="service_removed">%1$s removed %2$s</string>
     <string name="service_left_this_chat">%1$s left this chat</string>
+    <string name="service_pinned_message">%1$s pinned message</string>
+    <string name="service_unpinned_message">%1$s unpinned message</string>
     <string name="group_chat_leave">Leave chat</string>
 
     <string name="unknown_first_name">Unknown</string>

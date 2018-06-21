@@ -1038,4 +1038,6 @@
     <string name="upload_new_photo">Змінити аватар</string>
     <string name="channel_upload_files">Завантаження файлів</string>
     <string name="files_uploading_notification_title">Завантаження файлів</string>
+    <string name="service_pinned_message">%1$s закріпив повідомлення</string>
+    <string name="service_unpinned_message">%1$s відкріпив повідомлення</string>
 </resources>
