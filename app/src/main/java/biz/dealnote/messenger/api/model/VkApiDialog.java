@@ -19,4 +19,23 @@ public class VkApiDialog {
     public VkApiDialog(){
 
     }
+
+    public static final class Peer {
+
+        @SerializedName("id")
+        public int id;
+
+
+    }
+
+    public static final class Settings {
+
+        @SerializedName("pinned_message")
+        public VKApiMessage pinnedMesage;
+
+        @SerializedName("title")
+        public String title;
+
+
+    }
 }

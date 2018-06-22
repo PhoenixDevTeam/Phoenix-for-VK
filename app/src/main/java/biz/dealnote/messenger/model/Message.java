@@ -62,13 +62,6 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
     private ArrayList<Message> fwd;
 
     //chat_columns
-    private String chatActive;
-
-    //private String pushSettings;
-
-    private int usersCount;
-
-    private int adminId;
 
     @ChatAction
     private int action;
@@ -133,10 +126,6 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         this.attachments = in.readParcelable(Attachments.class.getClassLoader());
         this.fwd = in.createTypedArrayList(Message.CREATOR);
         this.originalId = in.readInt();
-        this.chatActive = in.readString();
-        //this.pushSettings = in.readString();
-        this.usersCount = in.readInt();
-        this.adminId = in.readInt();
 
         @ChatAction
         int tmpChatAction = in.readInt();
@@ -368,42 +357,6 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         return this;
     }
 
-    public String getChatActive() {
-        return chatActive;
-    }
-
-    public Message setChatActive(String chatActive) {
-        this.chatActive = chatActive;
-        return this;
-    }
-
-    /*public String getPushSettings() {
-        return pushSettings;
-    }
-
-    public Message setPushSettings(String pushSettings) {
-        this.pushSettings = pushSettings;
-        return this;
-    }*/
-
-    public int getUsersCount() {
-        return usersCount;
-    }
-
-    public Message setUsersCount(int usersCount) {
-        this.usersCount = usersCount;
-        return this;
-    }
-
-    public int getAdminId() {
-        return adminId;
-    }
-
-    public Message setAdminId(int adminId) {
-        this.adminId = adminId;
-        return this;
-    }
-
     @ChatAction
     public int getAction() {
         return action;
@@ -570,10 +523,6 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         dest.writeParcelable(attachments, flags);
         dest.writeTypedList(fwd);
         dest.writeInt(originalId);
-        dest.writeString(chatActive);
-        //dest.writeString(pushSettings);
-        dest.writeInt(usersCount);
-        dest.writeInt(adminId);
         dest.writeInt(action);
         dest.writeInt(actionMid);
         dest.writeString(actionEmail);

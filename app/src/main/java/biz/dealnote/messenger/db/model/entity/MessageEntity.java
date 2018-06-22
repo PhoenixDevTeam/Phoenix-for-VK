@@ -43,12 +43,6 @@ public class MessageEntity extends Entity {
 
     private int originalId;
 
-    private String chatActive;
-
-    private int usersCount;
-
-    private int adminId;
-
     @ChatAction
     private int action;
 
@@ -200,33 +194,6 @@ public class MessageEntity extends Entity {
 
     public MessageEntity setOriginalId(int originalId) {
         this.originalId = originalId;
-        return this;
-    }
-
-    public String getChatActive() {
-        return chatActive;
-    }
-
-    public MessageEntity setChatActive(String chatActive) {
-        this.chatActive = chatActive;
-        return this;
-    }
-
-    public int getUsersCount() {
-        return usersCount;
-    }
-
-    public MessageEntity setUsersCount(int usersCount) {
-        this.usersCount = usersCount;
-        return this;
-    }
-
-    public int getAdminId() {
-        return adminId;
-    }
-
-    public MessageEntity setAdminId(int adminId) {
-        this.adminId = adminId;
         return this;
     }
 

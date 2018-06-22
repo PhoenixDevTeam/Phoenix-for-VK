@@ -90,9 +90,6 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
         cv.put(MessageColumns.HAS_ATTACHMENTS, dbo.isHasAttachmens());
         cv.put(MessageColumns.STATUS, dbo.getStatus());
         cv.put(MessageColumns.ORIGINAL_ID, dbo.getOriginalId());
-        cv.put(MessageColumns.CHAT_ACTIVE, dbo.getChatActive());
-        cv.put(MessageColumns.USER_COUNT, dbo.getUsersCount());
-        cv.put(MessageColumns.ADMIN_ID, dbo.getAdminId());
         cv.put(MessageColumns.ACTION, dbo.getAction());
         cv.put(MessageColumns.ACTION_MID, dbo.getActionMemberId());
         cv.put(MessageColumns.ACTION_EMAIL, dbo.getActionEmail());
@@ -457,9 +454,6 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
                 .setTitle(cursor.getString(cursor.getColumnIndex(MessageColumns.TITLE)))
                 .setOriginalId(cursor.getInt(cursor.getColumnIndex(MessageColumns.ORIGINAL_ID)))
                 .setImportant(cursor.getInt(cursor.getColumnIndex(MessageColumns.IMPORTANT)) == 1)
-                .setChatActive(cursor.getString(cursor.getColumnIndex(MessageColumns.CHAT_ACTIVE)))
-                .setUsersCount(cursor.getInt(cursor.getColumnIndex(MessageColumns.USER_COUNT)))
-                .setAdminId(cursor.getInt(cursor.getColumnIndex(MessageColumns.ADMIN_ID)))
                 .setAction(action)
                 .setActionMemberId(cursor.getInt(cursor.getColumnIndex(MessageColumns.ACTION_MID)))
                 .setActionEmail(cursor.getString(cursor.getColumnIndex(MessageColumns.ACTION_EMAIL)))

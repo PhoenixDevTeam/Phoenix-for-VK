@@ -70,27 +70,6 @@ public class VKApiMessage {
     public boolean deleted;
 
     /**
-     * 	идентификаторы участников беседы.
-     */
-    public String chat_active;
-
-    /**
-     * 	настройки уведомлений для беседы, если они есть.
-     * 	sound и disabled_until
-     */
-    public PushSettings push_settings;
-
-    /**
-     * 	количество участников беседы.
-     */
-    public int users_count;
-
-    /**
-     * идентификатор создателя беседы.
-     */
-    public int admin_id;
-
-    /**
      * 	поле передано, если это служебное сообщение
      * 	строка, может быть chat_photo_update или chat_photo_remove,
      * 	а с версии 5.14 еще и chat_create, chat_title_update, chat_invite_user, chat_kick_user
@@ -110,28 +89,19 @@ public class VKApiMessage {
     public String action_email;
 
     /**
+     * изображение-обложка чата
+     */
+    public String action_photo_50;
+
+    public String action_photo_100;
+
+    public String action_photo_200;
+
+    /**
      * 	название беседы
      * 	строка, для служебных сообщений с action равным chat_create или chat_title_update
      */
     public String action_text;
-
-    /**
-     * 	url копии фотографии беседы шириной 50px.
-     * 	строка
-     */
-    public String photo_50;
-
-    /**
-     * 	url копии фотографии беседы шириной 100px.
-     * 	строка
-     */
-    public String photo_100;
-
-    /**
-     * 	url копии фотографии беседы шириной 200px.
-     * 	строка
-     */
-    public String photo_200;
 
     /**
      * идентификатор, используемый при отправке сообщения. Возвращается только для исходящих сообщений.
@@ -142,6 +112,8 @@ public class VKApiMessage {
      * is edited?
      */
     public String payload; // "payload":"null"
+
+    public int conversation_message_id;
 
     /**
      * Creates empty Country instance.
