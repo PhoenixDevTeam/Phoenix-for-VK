@@ -427,6 +427,8 @@ public class MessengerContentProvider extends ContentProvider {
         sDialogsProjectionMap.put(DialogsColumns._ID, DialogsColumns.FULL_ID);
         sDialogsProjectionMap.put(DialogsColumns.UNREAD, DialogsColumns.FULL_UNREAD);
         sDialogsProjectionMap.put(DialogsColumns.TITLE, DialogsColumns.FULL_TITLE);
+        sDialogsProjectionMap.put(DialogsColumns.IN_READ, DialogsColumns.FULL_IN_READ);
+        sDialogsProjectionMap.put(DialogsColumns.OUT_READ, DialogsColumns.FULL_OUT_READ);
         sDialogsProjectionMap.put(DialogsColumns.PHOTO_50, DialogsColumns.FULL_PHOTO_50);
         sDialogsProjectionMap.put(DialogsColumns.PHOTO_100, DialogsColumns.FULL_PHOTO_100);
         sDialogsProjectionMap.put(DialogsColumns.PHOTO_200, DialogsColumns.FULL_PHOTO_200);

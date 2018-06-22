@@ -20,8 +20,6 @@ public class DialogEntity extends Entity {
 
     private MessageEntity message;
 
-    private int adminId;
-
     private int lastMessageId;
 
     public DialogEntity(int peerId) {
@@ -83,15 +81,6 @@ public class DialogEntity extends Entity {
 
     public DialogEntity setMessage(MessageEntity message) {
         this.message = message;
-        return this;
-    }
-
-    public int getAdminId() {
-        return adminId;
-    }
-
-    public DialogEntity setAdminId(int adminId) {
-        this.adminId = adminId;
         return this;
     }
 

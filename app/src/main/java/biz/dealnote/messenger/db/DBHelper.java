@@ -51,7 +51,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 159;
+    private static final int DATABASE_VERSION = 160;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -608,6 +608,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "  [" + DialogsColumns._ID + "] INTEGER PRIMARY KEY ON CONFLICT REPLACE AUTOINCREMENT NOT NULL UNIQUE, " +
                 "  [" + DialogsColumns.UNREAD + "] INTEGER, " +
                 "  [" + DialogsColumns.TITLE + "] TEXT, " +
+                "  [" + DialogsColumns.IN_READ + "] INTEGER, " +
+                "  [" + DialogsColumns.OUT_READ + "] INTEGER, " +
                 "  [" + DialogsColumns.PHOTO_50 + "] TEXT, " +
                 "  [" + DialogsColumns.PHOTO_100 + "] TEXT, " +
                 "  [" + DialogsColumns.PHOTO_200 + "] TEXT, " +
