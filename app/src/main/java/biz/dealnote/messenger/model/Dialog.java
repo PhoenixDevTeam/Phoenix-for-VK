@@ -32,8 +32,6 @@ public class Dialog implements Identificable, Parcelable {
 
     private Message message;
 
-    private int adminId;
-
     private Owner interlocutor;
 
     private int lastMessageId;
@@ -50,7 +48,6 @@ public class Dialog implements Identificable, Parcelable {
         this.photo100 = in.readString();
         this.photo200 = in.readString();
         this.message = in.readParcelable(Message.class.getClassLoader());
-        this.adminId = in.readInt();
 
         boolean interlocutorIsNull = in.readInt() == 1;
         if (!interlocutorIsNull) {
@@ -146,15 +143,6 @@ public class Dialog implements Identificable, Parcelable {
 
     public Dialog setMessage(Message message) {
         this.message = message;
-        return this;
-    }
-
-    public int getAdminId() {
-        return adminId;
-    }
-
-    public Dialog setAdminId(int adminId) {
-        this.adminId = adminId;
         return this;
     }
 
@@ -268,7 +256,6 @@ public class Dialog implements Identificable, Parcelable {
         dest.writeString(photo100);
         dest.writeString(photo200);
         dest.writeParcelable(message, flags);
-        dest.writeInt(adminId);
 
         dest.writeInt(interlocutor == null ? 1 : 0);
         if (interlocutor != null) {

@@ -7,6 +7,7 @@ import java.util.List;
 
 import biz.dealnote.messenger.api.model.VKApiChat;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
+import biz.dealnote.messenger.db.model.entity.SimpleDialogEntity;
 import biz.dealnote.messenger.model.Chat;
 import biz.dealnote.messenger.model.criteria.DialogsCriteria;
 import biz.dealnote.messenger.util.Optional;
@@ -26,6 +27,10 @@ public interface IDialogsStorage extends IStorage {
     Observable<Pair<Integer, Integer>> observeUnreadDialogsCount();
 
     void setUnreadDialogsCount(int accountId, int unreadCount);
+
+    Single<Optional<SimpleDialogEntity>> findSimple(int accountId, int peerId);
+
+    Completable saveSimple(int accountId, @NonNull SimpleDialogEntity entity);
 
     Single<List<DialogEntity>> getDialogs(@NonNull DialogsCriteria criteria);
 

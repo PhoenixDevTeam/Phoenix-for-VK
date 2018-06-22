@@ -1,10 +1,6 @@
 package biz.dealnote.messenger.db.model.entity;
 
-/**
- * Created by admin on 04.09.2017.
- * phoenix
- */
-public class DialogEntity extends Entity {
+public class SimpleDialogEntity {
 
     private final int peerId;
 
@@ -22,30 +18,10 @@ public class DialogEntity extends Entity {
 
     private int outRead;
 
-    private MessageEntity message;
-
     private int lastMessageId;
 
-    public DialogEntity(int peerId) {
+    public SimpleDialogEntity(int peerId) {
         this.peerId = peerId;
-    }
-
-    public DialogEntity setInRead(int inRead) {
-        this.inRead = inRead;
-        return this;
-    }
-
-    public int getInRead() {
-        return inRead;
-    }
-
-    public int getOutRead() {
-        return outRead;
-    }
-
-    public DialogEntity setOutRead(int outRead) {
-        this.outRead = outRead;
-        return this;
     }
 
     public int getPeerId() {
@@ -56,7 +32,7 @@ public class DialogEntity extends Entity {
         return title;
     }
 
-    public DialogEntity setTitle(String title) {
+    public SimpleDialogEntity setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -65,7 +41,7 @@ public class DialogEntity extends Entity {
         return unreadCount;
     }
 
-    public DialogEntity setUnreadCount(int unreadCount) {
+    public SimpleDialogEntity setUnreadCount(int unreadCount) {
         this.unreadCount = unreadCount;
         return this;
     }
@@ -74,7 +50,7 @@ public class DialogEntity extends Entity {
         return photo50;
     }
 
-    public DialogEntity setPhoto50(String photo50) {
+    public SimpleDialogEntity setPhoto50(String photo50) {
         this.photo50 = photo50;
         return this;
     }
@@ -83,7 +59,7 @@ public class DialogEntity extends Entity {
         return photo100;
     }
 
-    public DialogEntity setPhoto100(String photo100) {
+    public SimpleDialogEntity setPhoto100(String photo100) {
         this.photo100 = photo100;
         return this;
     }
@@ -92,17 +68,26 @@ public class DialogEntity extends Entity {
         return photo200;
     }
 
-    public DialogEntity setPhoto200(String photo200) {
+    public SimpleDialogEntity setPhoto200(String photo200) {
         this.photo200 = photo200;
         return this;
     }
 
-    public MessageEntity getMessage() {
-        return message;
+    public int getInRead() {
+        return inRead;
     }
 
-    public DialogEntity setMessage(MessageEntity message) {
-        this.message = message;
+    public SimpleDialogEntity setInRead(int inRead) {
+        this.inRead = inRead;
+        return this;
+    }
+
+    public int getOutRead() {
+        return outRead;
+    }
+
+    public SimpleDialogEntity setOutRead(int outRead) {
+        this.outRead = outRead;
         return this;
     }
 
@@ -110,7 +95,7 @@ public class DialogEntity extends Entity {
         return lastMessageId;
     }
 
-    public DialogEntity setLastMessageId(int lastMessageId) {
+    public SimpleDialogEntity setLastMessageId(int lastMessageId) {
         this.lastMessageId = lastMessageId;
         return this;
     }

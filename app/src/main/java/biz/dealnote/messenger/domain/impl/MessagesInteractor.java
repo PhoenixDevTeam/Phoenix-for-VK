@@ -2,6 +2,7 @@ package biz.dealnote.messenger.domain.impl;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,6 +27,7 @@ import biz.dealnote.messenger.api.model.VKApiChat;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.api.model.VKApiUser;
+import biz.dealnote.messenger.api.model.VkApiConversation;
 import biz.dealnote.messenger.api.model.VkApiDialog;
 import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.api.model.response.SearchDialogsResponse;
@@ -42,10 +44,12 @@ import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
+import biz.dealnote.messenger.db.model.entity.SimpleDialogEntity;
 import biz.dealnote.messenger.db.model.entity.StickerEntity;
 import biz.dealnote.messenger.domain.IMessagesDecryptor;
 import biz.dealnote.messenger.domain.IMessagesInteractor;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.Mode;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.domain.mappers.Entity2Dto;
@@ -56,6 +60,7 @@ import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.exception.UploadNotResolvedException;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
+import biz.dealnote.messenger.model.Conversation;
 import biz.dealnote.messenger.model.CryptStatus;
 import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.Message;
@@ -75,6 +80,7 @@ import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Unixtime;
 import biz.dealnote.messenger.util.VKOwnIds;
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.SingleTransformer;
 
@@ -85,6 +91,7 @@ import static biz.dealnote.messenger.util.Utils.isEmpty;
 import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;
+import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
 import static biz.dealnote.messenger.util.Utils.safelyClose;
 
 /**
@@ -93,18 +100,113 @@ import static biz.dealnote.messenger.util.Utils.safelyClose;
  */
 public class MessagesInteractor implements IMessagesInteractor {
 
+    private static final SingleTransformer<List<VKApiMessage>, List<MessageEntity>> DTO_TO_DBO = single -> single
+            .map(dtos -> {
+                List<MessageEntity> dbos = new ArrayList<>(dtos.size());
+
+                for (VKApiMessage dto : dtos) {
+                    dbos.add(Dto2Entity.buildMessageDbo(dto));
+                }
+
+                return dbos;
+            });
     private final IOwnersInteractor ownersInteractor;
-    private final IStorages stores;
+    private final IStorages storages;
     private final INetworker networker;
     private final IMessagesDecryptor decryptor;
     private final IUploadManager uploadManager;
 
-    public MessagesInteractor(INetworker networker, IOwnersInteractor ownersInteractor, IStorages stores, IUploadManager uploadManager) {
+    public MessagesInteractor(INetworker networker, IOwnersInteractor ownersInteractor, IStorages storages, IUploadManager uploadManager) {
         this.ownersInteractor = ownersInteractor;
         this.networker = networker;
-        this.stores = stores;
-        this.decryptor = new MessagesDecryptor(stores);
+        this.storages = storages;
+        this.decryptor = new MessagesDecryptor(storages);
         this.uploadManager = uploadManager;
+    }
+
+    private static Conversation entity2Model(SimpleDialogEntity entity, @Nullable Owner interlocutor) {
+        return new Conversation(entity.getPeerId())
+                .setInRead(entity.getInRead())
+                .setOutRead(entity.getOutRead())
+                .setLastMessageId(entity.getLastMessageId())
+                .setPhoto50(entity.getPhoto50())
+                .setPhoto100(entity.getPhoto100())
+                .setPhoto200(entity.getPhoto200())
+                .setUnreadCount(entity.getUnreadCount())
+                .setTitle(entity.getTitle())
+                .setInterlocutor(interlocutor);
+    }
+
+    @Override
+    public Flowable<Conversation> getConversation(int accountId, int peerId, @NonNull Mode mode) {
+        Single<Optional<Conversation>> cached = storages.dialogs()
+                .findSimple(accountId, peerId)
+                .flatMap(optional -> {
+                    if (optional.isEmpty()) {
+                        return Single.just(Optional.<Conversation>empty());
+                    }
+
+                    return Single.just(optional.get())
+                            .compose(simpleEntity2Conversation(accountId, Collections.emptyList()))
+                            .map(Optional::wrap);
+                });
+
+        Single<Conversation> actual = networker.vkDefault(accountId)
+                .messages()
+                .getConversations(Collections.singletonList(peerId), true, Constants.MAIN_OWNER_FIELDS)
+                .flatMap(response -> {
+                    if(safeIsEmpty(response.items)){
+                        return Single.error(new NotFoundException());
+                    }
+
+                    VkApiConversation dto = response.items.get(0);
+                    SimpleDialogEntity entity = Dto2Entity.dto2Entity(dto);
+
+                    List<Owner> existsOwners = Dto2Model.transformOwners(response.profiles, response.groups);
+                    OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
+
+                    return ownersInteractor.insertOwners(accountId, ownerEntities)
+                            .andThen(storages.dialogs().saveSimple(accountId, entity))
+                            .andThen(Single.just(entity))
+                            .compose(simpleEntity2Conversation(accountId, existsOwners));
+                });
+
+        switch (mode){
+            case ANY:
+                return cached
+                        .flatMap(optional -> optional.isEmpty() ? actual : Single.just(optional.get()))
+                        .toFlowable();
+            case NET:
+                return actual.toFlowable();
+            case CACHE:
+                return cached
+                        .flatMap(optional -> optional.isEmpty() ? Single.error(new NotFoundException()) : Single.just(optional.get()))
+                        .toFlowable();
+            case CACHE_THEN_ACTUAL:
+                Flowable<Conversation> cachedFlowable = cached.toFlowable()
+                        .filter(Optional::nonEmpty)
+                        .map(Optional::get);
+
+                return Flowable.concat(cachedFlowable, actual.toFlowable());
+        }
+
+        throw new IllegalArgumentException("Unsupported mode: " + mode);
+    }
+
+    private SingleTransformer<SimpleDialogEntity, Conversation> simpleEntity2Conversation(int accountId, Collection<Owner> existingOwners) {
+        return single -> single
+                .flatMap(entity -> {
+                    if (Peer.isGroupChat(entity.getPeerId())) {
+                        return Single.just(entity2Model(entity, null));
+                    }
+
+                    Collection<Integer> owners = Collections.singletonList(entity.getPeerId());
+                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, owners, IOwnersInteractor.MODE_ANY, existingOwners)
+                            .map(bundle -> {
+                                Owner owner = bundle.getById(entity.getPeerId());
+                                return entity2Model(entity, owner);
+                            });
+                });
     }
 
     @Override
@@ -118,10 +220,9 @@ public class MessagesInteractor implements IMessagesInteractor {
     @Override
     public Single<List<Message>> getCachedPeerMessages(int accountId, int peerId) {
         final MessagesCriteria criteria = new MessagesCriteria(accountId, peerId);
-
-        return stores.messages()
+        return storages.messages()
                 .getByCriteria(criteria, true, true)
-                .compose(toMessageModels(accountId))
+                .compose(entities2Models(accountId))
                 .compose(decryptor.withMessagesDecryption(accountId));
     }
 
@@ -129,7 +230,7 @@ public class MessagesInteractor implements IMessagesInteractor {
     public Single<List<Dialog>> getCachedDialogs(int accountId) {
         DialogsCriteria criteria = new DialogsCriteria(accountId);
 
-        return stores.dialogs()
+        return storages.dialogs()
                 .getDialogs(criteria)
                 .flatMap(dbos -> {
                     VKOwnIds ownIds = new VKOwnIds();
@@ -173,7 +274,7 @@ public class MessagesInteractor implements IMessagesInteractor {
                 });
     }
 
-    private SingleTransformer<List<MessageEntity>, List<Message>> toMessageModels(int accountId) {
+    private SingleTransformer<List<MessageEntity>, List<Message>> entities2Models(int accountId) {
         return single -> single
                 .flatMap(dbos -> {
                     VKOwnIds ownIds = new VKOwnIds();
@@ -196,25 +297,14 @@ public class MessagesInteractor implements IMessagesInteractor {
     private Completable insertPeerMessages(int accountId, int peerId, List<VKApiMessage> messages, boolean clearBefore) {
         return Single.just(messages)
                 .compose(DTO_TO_DBO)
-                .flatMapCompletable(dbos -> stores.messages().insertPeerDbos(accountId, peerId, dbos, clearBefore));
+                .flatMapCompletable(dbos -> storages.messages().insertPeerDbos(accountId, peerId, dbos, clearBefore));
     }
-
-    private static final SingleTransformer<List<VKApiMessage>, List<MessageEntity>> DTO_TO_DBO = single -> single
-            .map(dtos -> {
-                List<MessageEntity> dbos = new ArrayList<>(dtos.size());
-
-                for (VKApiMessage dto : dtos) {
-                    dbos.add(Dto2Entity.buildMessageDbo(dto));
-                }
-
-                return dbos;
-            });
 
     @Override
     public Completable insertMessages(int accountId, List<VKApiMessage> messages) {
         return Single.just(messages)
                 .compose(DTO_TO_DBO)
-                .flatMap(dbos -> stores.messages().insertDbos(accountId, dbos))
+                .flatMap(dbos -> storages.messages().insertDbos(accountId, dbos))
                 .toCompletable();
     }
 
@@ -269,7 +359,7 @@ public class MessagesInteractor implements IMessagesInteractor {
     @Override
     public Single<List<Dialog>> getDialogs(int accountId, int count, Integer startMessageId) {
         final boolean clear = isNull(startMessageId);
-        final IDialogsStorage dialogsStore = this.stores.dialogs();
+        final IDialogsStorage dialogsStore = this.storages.dialogs();
 
         return networker.vkDefault(accountId)
                 .messages()
@@ -341,37 +431,37 @@ public class MessagesInteractor implements IMessagesInteractor {
 
     @Override
     public Single<List<Message>> findCachedMessages(int accountId, List<Integer> ids) {
-        return stores.messages()
+        return storages.messages()
                 .findMessagesByIds(accountId, ids, true, true)
-                .compose(toMessageModels(accountId))
+                .compose(entities2Models(accountId))
                 .compose(decryptor.withMessagesDecryption(accountId));
     }
 
     @Override
     public Completable fixDialogs(int accountId, int peerId) {
-        return stores.messages()
+        return storages.messages()
                 .findLastSentMessageIdForPeer(accountId, peerId)
                 .flatMapCompletable(id -> {
                     if (id.isEmpty()) {
-                        return stores.dialogs().removePeerWithId(accountId, peerId);
+                        return storages.dialogs().removePeerWithId(accountId, peerId);
                     }
 
-                    return stores.messages()
+                    return storages.messages()
                             .calculateUnreadCount(accountId, peerId)
-                            .flatMapCompletable(count -> stores.dialogs().updatePeerWithId(accountId, peerId, id.get(), count));
+                            .flatMapCompletable(count -> storages.dialogs().updatePeerWithId(accountId, peerId, id.get(), count));
                 });
     }
 
     @Override
     public Completable fixDialogs(int accountId, int peerId, int unreadCount) {
-        return stores.messages()
+        return storages.messages()
                 .findLastSentMessageIdForPeer(accountId, peerId)
                 .flatMapCompletable(id -> {
                     if (id.isEmpty()) {
-                        return stores.dialogs().removePeerWithId(accountId, peerId);
+                        return storages.dialogs().removePeerWithId(accountId, peerId);
                     }
 
-                    return stores.dialogs().updatePeerWithId(accountId, peerId, id.get(), unreadCount);
+                    return storages.dialogs().updatePeerWithId(accountId, peerId, id.get(), unreadCount);
                 });
     }
 
@@ -432,15 +522,15 @@ public class MessagesInteractor implements IMessagesInteractor {
 
                                 Single<Integer> storeSingle;
                                 if (nonNull(draftMessageId)) {
-                                    storeSingle = stores.messages().applyPatch(accountId, draftMessageId, patch);
+                                    storeSingle = storages.messages().applyPatch(accountId, draftMessageId, patch);
                                 } else {
-                                    storeSingle = stores.messages().insert(accountId, peerId, patch);
+                                    storeSingle = storages.messages().insert(accountId, peerId, patch);
                                 }
 
                                 return storeSingle
-                                        .flatMap(resultMid -> stores.messages()
+                                        .flatMap(resultMid -> storages.messages()
                                                 .findMessagesByIds(accountId, Collections.singletonList(resultMid), true, true)
-                                                .compose(toMessageModels(accountId))
+                                                .compose(entities2Models(accountId))
                                                 .map(messages -> {
                                                     if (messages.isEmpty()) {
                                                         throw new NotFoundException();
@@ -461,7 +551,7 @@ public class MessagesInteractor implements IMessagesInteractor {
 
     @Override
     public Single<Integer> send(int accountId, int dbid) {
-        final IMessagesStorage store = this.stores.messages();
+        final IMessagesStorage store = this.storages.messages();
 
         return store
                 .findMessagesByIds(accountId, Collections.singletonList(dbid), true, false)
@@ -484,7 +574,7 @@ public class MessagesInteractor implements IMessagesInteractor {
 
     @Override
     public Single<SentMsg> sendUnsentMessage(Collection<Integer> accountIds) {
-        final IMessagesStorage store = this.stores.messages();
+        final IMessagesStorage store = this.storages.messages();
 
         return store
                 .findFirstUnsentMessage(accountIds, true, false)
@@ -642,9 +732,9 @@ public class MessagesInteractor implements IMessagesInteractor {
         return networker.vkDefault(accountId)
                 .messages()
                 .deleteDialog(peedId, offset, count)
-                .flatMapCompletable(ignored -> stores.dialogs()
+                .flatMapCompletable(ignored -> storages.dialogs()
                         .removePeerWithId(accountId, peedId)
-                        .andThen(stores.messages()
+                        .andThen(storages.messages()
                                 .insertPeerDbos(accountId, peedId, Collections.emptyList(), true)));
     }
 
@@ -671,7 +761,7 @@ public class MessagesInteractor implements IMessagesInteractor {
         return networker.vkDefault(accountId)
                 .messages()
                 .editChat(chatId, title)
-                .flatMapCompletable(ignored -> stores.dialogs()
+                .flatMapCompletable(ignored -> storages.dialogs()
                         .changeTitle(accountId, Peer.fromChatId(chatId), title));
     }
 
@@ -688,7 +778,7 @@ public class MessagesInteractor implements IMessagesInteractor {
         return networker.vkDefault(accountId)
                 .messages()
                 .markAsRead(null, peerId, null)
-                .flatMapCompletable(ignored -> stores.messages().markAsRead(accountId, peerId))
+                .flatMapCompletable(ignored -> storages.messages().markAsRead(accountId, peerId))
                 .andThen(fixDialogs(accountId, peerId));
     }
 
@@ -737,7 +827,7 @@ public class MessagesInteractor implements IMessagesInteractor {
             return Single.just(Optional.empty());
         }
 
-        return stores.messages()
+        return storages.messages()
                 .getForwardMessageIds(accountId, dbo.getId())
                 .map(Optional::wrap);
     }
@@ -770,7 +860,7 @@ public class MessagesInteractor implements IMessagesInteractor {
                                                 IAttachmentToken token = AttachmentsTokenCreator.ofDocument(dto.id, dto.ownerId, dto.accessKey);
                                                 return Optional.wrap(token);
                                             }));
-                        } catch (FileNotFoundException e){
+                        } catch (FileNotFoundException e) {
                             safelyClose(is[0]);
                             return Single.error(e);
                         }
@@ -788,7 +878,7 @@ public class MessagesInteractor implements IMessagesInteractor {
         @KeyLocationPolicy
         int policy = builder.getKeyLocationPolicy();
 
-        return stores.keys(policy)
+        return storages.keys(policy)
                 .findLastKeyPair(builder.getAccountId(), builder.getPeerId())
                 .map(key -> {
                     if (key.isEmpty()) {

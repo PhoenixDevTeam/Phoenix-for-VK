@@ -330,7 +330,6 @@ public class Entity2Model {
         Message message = buildMessageFromDbo(accountId, dbo.getMessage(), owners);
 
         Dialog dialog = new Dialog()
-                .setAdminId(dbo.getAdminId())
                 .setLastMessageId(dbo.getLastMessageId())
                 .setPeerId(dbo.getPeerId())
                 .setPhoto50(dbo.getPhoto50())

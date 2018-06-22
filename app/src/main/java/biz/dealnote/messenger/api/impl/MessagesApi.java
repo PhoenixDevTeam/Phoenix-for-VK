@@ -13,9 +13,11 @@ import biz.dealnote.messenger.api.model.IAttachmentToken;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiChat;
 import biz.dealnote.messenger.api.model.VKApiMessage;
+import biz.dealnote.messenger.api.model.VkApiConversation;
 import biz.dealnote.messenger.api.model.VkApiLongpollServer;
 import biz.dealnote.messenger.api.model.response.AttachmentsHistoryResponse;
 import biz.dealnote.messenger.api.model.response.DialogsResponse;
+import biz.dealnote.messenger.api.model.response.ItemsProfilesGroupsResponse;
 import biz.dealnote.messenger.api.model.response.LongpollHistoryResponse;
 import biz.dealnote.messenger.api.model.response.MessageHistoryResponse;
 import biz.dealnote.messenger.api.model.response.SearchDialogsResponse;
@@ -185,6 +187,15 @@ class MessagesApi extends AbsApi implements IMessagesApi {
                 .flatMap(service -> service
                         .send(randomId, peerId, domain, message, latitude, longitude, atts,
                                 join(forwardMessages, ","), stickerId)
+                        .map(extractResponseWithErrorHandling()));
+    }
+
+    @Override
+    public Single<ItemsProfilesGroupsResponse<VkApiConversation>> getConversations(List<Integer> peers, Boolean extended, String fields) {
+        final String ids = join(peers, ",", Object::toString);
+        return serviceRx(TokenType.USER, TokenType.COMMUNITY)
+                .flatMap(service -> service
+                        .getConversationsById(ids, integerFromBoolean(extended), fields)
                         .map(extractResponseWithErrorHandling()));
     }
 

@@ -31,6 +31,7 @@ import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.api.model.VKApiVideoAlbum;
 import biz.dealnote.messenger.api.model.VKApiWikiPage;
 import biz.dealnote.messenger.api.model.VkApiAttachments;
+import biz.dealnote.messenger.api.model.VkApiConversation;
 import biz.dealnote.messenger.api.model.VkApiDialog;
 import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.api.model.VkApiPostSource;
@@ -72,6 +73,7 @@ import biz.dealnote.messenger.db.model.entity.PollEntity;
 import biz.dealnote.messenger.db.model.entity.PostEntity;
 import biz.dealnote.messenger.db.model.entity.PrivacyEntity;
 import biz.dealnote.messenger.db.model.entity.SchoolEntity;
+import biz.dealnote.messenger.db.model.entity.SimpleDialogEntity;
 import biz.dealnote.messenger.db.model.entity.StickerEntity;
 import biz.dealnote.messenger.db.model.entity.TopicEntity;
 import biz.dealnote.messenger.db.model.entity.UniversityEntity;
@@ -607,13 +609,34 @@ public class Dto2Entity {
                 .setAttachments(attachmentsEntities);
     }
 
+    public static SimpleDialogEntity dto2Entity(VkApiConversation dto){
+        SimpleDialogEntity entity = new SimpleDialogEntity(dto.peer.id)
+                .setInRead(dto.inRead)
+                .setOutRead(dto.outRead)
+                .setLastMessageId(dto.lastMessageId)
+                .setUnreadCount(dto.unreadCount);
+
+        if(nonNull(dto.settings)){
+            entity.setTitle(dto.settings.title);
+
+            if(nonNull(dto.settings.photo)){
+                entity.setPhoto50(dto.settings.photo.photo50)
+                        .setPhoto100(dto.settings.photo.photo100)
+                        .setPhoto200(dto.settings.photo.photo200);
+            }
+        }
+
+        return entity;
+    }
+
     public static DialogEntity buildDialogDbo(VkApiDialog dto) {
-        MessageEntity messageDbo = buildMessageDbo(dto.lastMessage);
+        MessageEntity messageEntity = buildMessageDbo(dto.lastMessage);
 
-        DialogEntity entity = new DialogEntity(messageDbo.getPeerId())
-                .setLastMessageId(messageDbo.getId())
-                .setMessage(messageDbo)
-
+        DialogEntity entity = new DialogEntity(messageEntity.getPeerId())
+                .setLastMessageId(messageEntity.getId())
+                .setMessage(messageEntity)
+                .setInRead(dto.conversation.inRead)
+                .setOutRead(dto.conversation.outRead)
                 .setUnreadCount(dto.conversation.unreadCount);
 
         if(nonNull(dto.conversation.settings)){

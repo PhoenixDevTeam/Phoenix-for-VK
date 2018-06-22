@@ -9,12 +9,14 @@ import java.util.List;
 import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
+import biz.dealnote.messenger.model.Conversation;
 import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.SaveMessageBuilder;
 import biz.dealnote.messenger.model.SentMsg;
 import biz.dealnote.messenger.model.User;
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 /**
@@ -22,6 +24,8 @@ import io.reactivex.Single;
  * phoenix
  */
 public interface IMessagesInteractor {
+    Flowable<Conversation> getConversation(int accountId, int peerId, @NonNull Mode mode);
+
     Completable edit(int accountId, @NonNull Message message, String body, @NonNull List<AbsModel> attachments, boolean keepForwardMessages);
 
     /**
