@@ -359,7 +359,7 @@ public class Entity2Model {
         Message message = new Message(dbo.getId())
                 .setAccountId(accountId)
                 .setBody(dbo.getBody())
-                .setTitle(dbo.getTitle())
+                //.setTitle(dbo.getTitle())
                 .setPeerId(dbo.getPeerId())
                 .setSenderId(dbo.getFromId())
                 .setRead(dbo.isRead())

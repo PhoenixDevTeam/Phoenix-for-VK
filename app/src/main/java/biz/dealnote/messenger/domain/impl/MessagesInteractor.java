@@ -41,6 +41,7 @@ import biz.dealnote.messenger.db.model.MessagePatch;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
+import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.StickerEntity;
 import biz.dealnote.messenger.domain.IMessagesDecryptor;
 import biz.dealnote.messenger.domain.IMessagesInteractor;
@@ -272,7 +273,7 @@ public class MessagesInteractor implements IMessagesInteractor {
 
         return networker.vkDefault(accountId)
                 .messages()
-                .getDialogs(null, count, startMessageId)
+                .getDialogs(null, count, startMessageId, true, Constants.MAIN_OWNER_FIELDS)
                 .map(response -> {
                     if (nonNull(startMessageId) && safeCountOf(response.dialogs) > 0) {
                         // remove first item, because we will have duplicate with previous response
@@ -296,8 +297,11 @@ public class MessagesInteractor implements IMessagesInteractor {
                         ownerIds = Collections.emptyList();
                     }
 
+                    List<Owner> existsOwners = Dto2Model.transformOwners(response.profiles, response.groups);
+                    OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
+
                     return ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ownerIds, IOwnersInteractor.MODE_NET)
+                            .findBaseOwnersDataAsBundle(accountId, ownerIds, IOwnersInteractor.MODE_ANY, existsOwners)
                             .flatMap(owners -> {
                                 int resultCount = safeCountOf(response.dialogs);
 
@@ -321,7 +325,8 @@ public class MessagesInteractor implements IMessagesInteractor {
 
                                 final Completable insertCompletable = dialogsStore
                                         .insertDialogs(accountId, dbos, clear)
-                                        .doOnComplete(() -> dialogsStore.setUnreadDialogsCount(accountId, response.unread));
+                                        .andThen(ownersInteractor.insertOwners(accountId, ownerEntities))
+                                        .doOnComplete(() -> dialogsStore.setUnreadDialogsCount(accountId, response.unreadCount));
 
                                 if (nonEmpty(messages)) {
                                     return insertCompletable.andThen(Single.just(messages)

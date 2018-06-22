@@ -51,7 +51,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 157;
+    private static final int DATABASE_VERSION = 159;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -501,7 +501,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " [" + MessageColumns.DATE + "] BIGINT, " +
                 " [" + MessageColumns.READ_STATE + "] BOOLEAN, " +
                 " [" + MessageColumns.OUT + "] BOOLEAN, " +
-                " [" + MessageColumns.TITLE + "] TEXT, " +
+                //" [" + MessageColumns.TITLE + "] TEXT, " +
                 " [" + MessageColumns.BODY + "] TEXT, " +
                 " [" + MessageColumns.ENCRYPTED + "] BOOLEAN, " +
                 " [" + MessageColumns.DELETED + "] BOOLEAN, " +
@@ -510,10 +510,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 " [" + MessageColumns.HAS_ATTACHMENTS + "] BOOLEAN, " +
                 " [" + MessageColumns.ATTACH_TO + "] INTEGER REFERENCES " + MessageColumns.TABLENAME + "([" + MessageColumns._ID + "]) ON DELETE CASCADE ON UPDATE CASCADE, " +
                 " [" + MessageColumns.STATUS + "] INTEGER, " +
-                " [" + MessageColumns.CHAT_ACTIVE + "] TEXT, " +
-                //" [" + MessageColumns.PUSH_SETTINGS + "] TEXT, " +
-                " [" + MessageColumns.USER_COUNT + "] INTEGER, " +
-                " [" + MessageColumns.ADMIN_ID + "] INTEGER, " +
                 " [" + MessageColumns.ACTION + "] INTEGER, " +
                 " [" + MessageColumns.ACTION_MID + "] INTEGER, " +
                 " [" + MessageColumns.ACTION_EMAIL + "] TEXT, " +
@@ -615,8 +611,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "  [" + DialogsColumns.PHOTO_50 + "] TEXT, " +
                 "  [" + DialogsColumns.PHOTO_100 + "] TEXT, " +
                 "  [" + DialogsColumns.PHOTO_200 + "] TEXT, " +
-                "  [" + DialogsColumns.LAST_MESSAGE_ID + "] INTEGER, " +
-                "  [" + DialogsColumns.ADMIN_ID + "] INTEGER);";
+                "  [" + DialogsColumns.LAST_MESSAGE_ID + "] INTEGER);";
         db.execSQL(sql);
     }
 

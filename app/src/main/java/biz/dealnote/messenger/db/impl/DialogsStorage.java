@@ -183,7 +183,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
     }
 
     @Override
-    public Completable insertDialogs(int accountId, List<DialogEntity> dbos, boolean clearBefore) {
+    public Completable insertDialogs(int accountId, List<DialogEntity> entities, boolean clearBefore) {
         return Completable.create(emitter -> {
             final long start = System.currentTimeMillis();
             final Uri uri = MessengerContentProvider.getDialogsContentUriFor(accountId);
@@ -193,17 +193,17 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                 operations.add(ContentProviderOperation.newDelete(uri).build());
             }
 
-            for(DialogEntity dbo : dbos){
-                ContentValues cv = createCv(dbo);
+            for(DialogEntity entity : entities){
+                ContentValues cv = createCv(entity);
                 operations.add(ContentProviderOperation.newInsert(uri).withValues(cv).build());
 
-                MessagesStorage.appendDboOperation(accountId, dbo.getMessage(), operations, null, null);
+                MessagesStorage.appendDboOperation(accountId, entity.getMessage(), operations, null, null);
             }
 
             getContentResolver().applyBatch(MessengerContentProvider.AUTHORITY, operations);
             emitter.onComplete();
 
-            Exestime.log("DialogsStorage.insertDialogs", start, "count: " + dbos.size() + ", clearBefore: " + clearBefore);
+            Exestime.log("DialogsStorage.insertDialogs", start, "count: " + entities.size() + ", clearBefore: " + clearBefore);
         });
     }
 
@@ -217,17 +217,16 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
         });
     }
 
-    private ContentValues createCv(DialogEntity dbo){
+    private ContentValues createCv(DialogEntity entity){
         ContentValues cv = new ContentValues();
-        MessageEntity messageDbo = dbo.getMessage();
+        MessageEntity messageDbo = entity.getMessage();
 
         cv.put(DialogsColumns._ID, messageDbo.getPeerId());
-        cv.put(DialogsColumns.UNREAD, dbo.getUnreadCount());
-        cv.put(DialogsColumns.TITLE, messageDbo.getTitle());
-        cv.put(DialogsColumns.PHOTO_50, messageDbo.getPhoto50());
-        cv.put(DialogsColumns.PHOTO_100, messageDbo.getPhoto100());
-        cv.put(DialogsColumns.PHOTO_200, messageDbo.getPhoto200());
-        cv.put(DialogsColumns.ADMIN_ID, messageDbo.getAdminId());
+        cv.put(DialogsColumns.UNREAD, entity.getUnreadCount());
+        cv.put(DialogsColumns.TITLE, entity.getTitle());
+        cv.put(DialogsColumns.PHOTO_50, entity.getPhoto50());
+        cv.put(DialogsColumns.PHOTO_100, entity.getPhoto100());
+        cv.put(DialogsColumns.PHOTO_200, entity.getPhoto200());
         cv.put(DialogsColumns.LAST_MESSAGE_ID, messageDbo.getId());
         return cv;
     }
@@ -307,7 +306,6 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                     DialogsColumns.PHOTO_200,
                     DialogsColumns.PHOTO_100,
                     DialogsColumns.PHOTO_50,
-                    DialogsColumns.ADMIN_ID
             };
 
             Uri uri = MessengerContentProvider.getDialogsContentUriFor(accountId);
@@ -321,8 +319,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                     chat.setTitle(cursor.getString(cursor.getColumnIndex(DialogsColumns.TITLE)))
                             .setPhoto200(cursor.getString(cursor.getColumnIndex(DialogsColumns.PHOTO_200)))
                             .setPhoto100(cursor.getString(cursor.getColumnIndex(DialogsColumns.PHOTO_100)))
-                            .setPhoto50(cursor.getString(cursor.getColumnIndex(DialogsColumns.PHOTO_50)))
-                            .setAdminId(cursor.getInt(cursor.getColumnIndex(DialogsColumns.ADMIN_ID)));
+                            .setPhoto50(cursor.getString(cursor.getColumnIndex(DialogsColumns.PHOTO_50)));
                 }
 
                 cursor.close();
@@ -346,7 +343,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                 .setBody(cursor.getString(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_BODY)))
                 .setDate(cursor.getLong(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_DATE)))
                 .setOut(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_OUT)) == 1)
-                .setTitle(cursor.getString(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_TITLE)))
+                //.setTitle(cursor.getString(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_TITLE)))
                 .setRead(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_READ_STATE)) == 1)
                 .setHasAttachmens(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_HAS_ATTACHMENTS)) == 1)
                 .setForwardCount(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_FWD_COUNT)))
@@ -360,7 +357,6 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                 .setPhoto100(cursor.getString(cursor.getColumnIndex(DialogsColumns.PHOTO_100)))
                 .setPhoto200(cursor.getString(cursor.getColumnIndex(DialogsColumns.PHOTO_200)))
                 .setUnreadCount(cursor.getInt(cursor.getColumnIndex(DialogsColumns.UNREAD)))
-                .setAdminId(cursor.getInt(cursor.getColumnIndex(DialogsColumns.ADMIN_ID)))
                 .setLastMessageId(cursor.getInt(cursor.getColumnIndex(DialogsColumns.LAST_MESSAGE_ID)));
     }
 }

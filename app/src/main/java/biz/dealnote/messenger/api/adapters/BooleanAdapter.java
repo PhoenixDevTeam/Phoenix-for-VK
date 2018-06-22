@@ -23,6 +23,10 @@ public class BooleanAdapter implements JsonSerializer<Boolean>, JsonDeserializer
 
     @Override
     public Boolean deserialize(JsonElement arg0, Type arg1, JsonDeserializationContext arg2) throws JsonParseException {
-        return arg0.getAsInt() == 1;
+        try {
+            return arg0.getAsInt() == 1;
+        } catch (Exception e){
+            return arg0.getAsBoolean();
+        }
     }
 }

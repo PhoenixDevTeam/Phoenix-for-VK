@@ -13,7 +13,6 @@ import biz.dealnote.messenger.api.model.IAttachmentToken;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiChat;
 import biz.dealnote.messenger.api.model.VKApiMessage;
-import biz.dealnote.messenger.api.model.VkApiDialog;
 import biz.dealnote.messenger.api.model.VkApiLongpollServer;
 import biz.dealnote.messenger.api.model.response.AttachmentsHistoryResponse;
 import biz.dealnote.messenger.api.model.response.DialogsResponse;
@@ -25,7 +24,6 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
-import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 
 /**
@@ -154,10 +152,10 @@ class MessagesApi extends AbsApi implements IMessagesApi {
                 .flatMap(service -> service
                         .search(query, peerId, date, previewLength, offset, count)
                         .map(extractResponseWithErrorHandling())
-                        .map(response -> {
+                        /*.map(response -> {
                             fixMessageList(response.getItems());
                             return response;
-                        }));
+                        })*/);
     }
 
     @Override
@@ -191,19 +189,19 @@ class MessagesApi extends AbsApi implements IMessagesApi {
     }
 
     @Override
-    public Single<DialogsResponse> getDialogs(Integer offset, Integer count, Integer startMessageId) {
+    public Single<DialogsResponse> getDialogs(Integer offset, Integer count, Integer startMessageId, Boolean extended, String fields) {
         return serviceRx(TokenType.USER, TokenType.COMMUNITY)
                 .flatMap(service -> service
-                        .getDialogs(offset, count, startMessageId, null, null, null)
+                        .getDialogs(offset, count, startMessageId, integerFromBoolean(extended), fields)
                         .map(extractResponseWithErrorHandling())
-                        .map(response -> {
+                        /*.map(response -> {
                             if (nonNull(response.dialogs)) {
                                 for (VkApiDialog dialog : response.dialogs) {
                                     fixMessage(dialog.message);
                                 }
                             }
                             return response;
-                        }));
+                        })*/);
     }
 
     @Override
@@ -216,24 +214,24 @@ class MessagesApi extends AbsApi implements IMessagesApi {
                         .map(extractResponseWithErrorHandling())
                         .map(response -> {
                             List<VKApiMessage> messages = response.getItems();
-                            fixMessageList(messages);
+                            //fixMessageList(messages);
                             return messages;
                         }));
     }
 
-    private void fixMessage(VKApiMessage message) {
+    /*private void fixMessage(VKApiMessage message) { // пофикшено вроде в 5.80
         if (message.from_id == 0) {
             if (message.out) {
                 message.from_id = getAccountId();
             }
         }
-    }
+    }*/
 
-    private void fixMessageList(Collection<VKApiMessage> dtos) {
+    /*private void fixMessageList(Collection<VKApiMessage> dtos) {
         for (VKApiMessage message : dtos) {
             fixMessage(message);
         }
-    }
+    }*/
 
     @Override
     public Single<MessageHistoryResponse> getHistory(Integer offset, Integer count, int peerId, Integer startMessageId, Boolean rev) {
@@ -241,10 +239,10 @@ class MessagesApi extends AbsApi implements IMessagesApi {
                 .flatMap(service -> service
                         .getHistory(offset, count, peerId, startMessageId, rev != null && rev ? 1 : 0)
                         .map(extractResponseWithErrorHandling())
-                        .map(history -> {
+                        /*.map(history -> {
                             fixMessageList(history.messages);
                             return history;
-                        }));
+                        })*/);
     }
 
     @Override

@@ -1,8 +1,11 @@
 package biz.dealnote.messenger.domain;
 
+import android.support.annotation.NonNull;
+
 import java.util.Collection;
 import java.util.List;
 
+import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.fragment.search.criteria.PeopleSearchCriteria;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.CommunityDetails;
@@ -43,4 +46,6 @@ public interface IOwnersInteractor {
     Single<List<Owner>> getCommunitiesWhereAdmin(int accountId, boolean admin, boolean editor, boolean moderator);
 
     Single<List<User>> searchPeoples(int accountId, PeopleSearchCriteria criteria, int count, int offset);
+
+    Completable insertOwners(int accountId, @NonNull OwnerEntities entities);
 }

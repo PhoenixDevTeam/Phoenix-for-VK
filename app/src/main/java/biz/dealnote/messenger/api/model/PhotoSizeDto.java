@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class PhotoSizeDto {
 
     @SerializedName("src")
-    public String src;
+    public String url;
 
     @SerializedName("type")
     public char type;
@@ -22,7 +22,7 @@ public class PhotoSizeDto {
 
     public static PhotoSizeDto create(char type, String url) {
         PhotoSizeDto dto = new PhotoSizeDto();
-        dto.src = url;
+        dto.url = url;
         dto.type = type;
         return dto;
     }

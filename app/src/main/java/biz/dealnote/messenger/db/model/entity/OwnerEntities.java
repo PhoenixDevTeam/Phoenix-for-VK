@@ -1,5 +1,7 @@
 package biz.dealnote.messenger.db.model.entity;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ public class OwnerEntities {
 
     private final List<CommunityEntity> communityEntities;
 
-    public OwnerEntities(List<UserEntity> userEntities, List<CommunityEntity> communityEntities) {
+    public OwnerEntities(@NonNull List<UserEntity> userEntities, @NonNull List<CommunityEntity> communityEntities) {
         this.userEntities = userEntities;
         this.communityEntities = communityEntities;
     }
@@ -23,5 +25,9 @@ public class OwnerEntities {
 
     public List<UserEntity> getUserEntities() {
         return userEntities;
+    }
+
+    public int size(){
+        return userEntities.size() + communityEntities.size();
     }
 }

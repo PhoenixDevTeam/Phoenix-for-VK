@@ -81,7 +81,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
         cv.put(MessageColumns.DATE, dbo.getDate());
         cv.put(MessageColumns.READ_STATE, dbo.isRead());
         cv.put(MessageColumns.OUT, dbo.isOut());
-        cv.put(MessageColumns.TITLE, dbo.getTitle());
+        //cv.put(MessageColumns.TITLE, dbo.getTitle());
         cv.put(MessageColumns.BODY, dbo.getBody());
         cv.put(MessageColumns.ENCRYPTED, dbo.isEncrypted());
         cv.put(MessageColumns.IMPORTANT, dbo.isImportant());
@@ -308,7 +308,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
             cv.put(MessageColumns.DATE, patch.getDate());
             cv.put(MessageColumns.READ_STATE, patch.isRead());
             cv.put(MessageColumns.OUT, patch.isOut());
-            cv.put(MessageColumns.TITLE, patch.getTitle());
+            //cv.put(MessageColumns.TITLE, patch.getTitle());
             cv.put(MessageColumns.BODY, patch.getBody());
             cv.put(MessageColumns.ENCRYPTED, patch.isEncrypted());
             cv.put(MessageColumns.IMPORTANT, patch.isImportant());
@@ -361,7 +361,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
                             cv.put(MessageColumns.DATE, patch.getDate());
                             cv.put(MessageColumns.READ_STATE, patch.isRead());
                             cv.put(MessageColumns.OUT, patch.isOut());
-                            cv.put(MessageColumns.TITLE, patch.getTitle());
+                            //cv.put(MessageColumns.TITLE, patch.getTitle());
                             cv.put(MessageColumns.BODY, patch.getBody());
                             cv.put(MessageColumns.ENCRYPTED, patch.isEncrypted());
                             cv.put(MessageColumns.IMPORTANT, patch.isImportant());
@@ -451,7 +451,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
                 .setHasAttachmens(cursor.getInt(cursor.getColumnIndex(MessageColumns.HAS_ATTACHMENTS)) == 1)
                 .setForwardCount(cursor.getInt(cursor.getColumnIndex(MessageColumns.FORWARD_COUNT)))
                 .setDeleted(cursor.getInt(cursor.getColumnIndex(MessageColumns.DELETED)) == 1)
-                .setTitle(cursor.getString(cursor.getColumnIndex(MessageColumns.TITLE)))
+                //.setTitle(cursor.getString(cursor.getColumnIndex(MessageColumns.TITLE)))
                 .setOriginalId(cursor.getInt(cursor.getColumnIndex(MessageColumns.ORIGINAL_ID)))
                 .setImportant(cursor.getInt(cursor.getColumnIndex(MessageColumns.IMPORTANT)) == 1)
                 .setAction(action)

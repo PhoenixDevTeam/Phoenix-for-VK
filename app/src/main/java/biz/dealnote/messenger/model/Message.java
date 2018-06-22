@@ -34,7 +34,7 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
 
     private String body;
 
-    private String title;
+    //private String title;
 
     private int peerId;
 
@@ -105,7 +105,7 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         this.id = in.readInt();
         this.body = in.readString();
         this.decryptedBody = in.readString();
-        this.title = in.readString();
+        //this.title = in.readString();
         this.peerId = in.readInt();
         this.senderId = in.readInt();
         this.read = in.readInt() == 1;
@@ -339,14 +339,14 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         return this;
     }
 
-    public String getTitle() {
+    /*public String getTitle() {
         return title;
     }
 
     public Message setTitle(String title) {
         this.title = title;
         return this;
-    }
+    }*/
 
     public boolean isImportant() {
         return important;
@@ -509,7 +509,7 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         dest.writeInt(id);
         dest.writeString(body);
         dest.writeString(decryptedBody);
-        dest.writeString(title);
+        //dest.writeString(title);
         dest.writeInt(peerId);
         dest.writeInt(senderId);
         dest.writeInt(read ? 1 : 0);

@@ -127,6 +127,8 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
     }
 
     private void onActualFeedGetError(Throwable t) {
+        t.printStackTrace();
+
         this.loadingNow = false;
         this.loadingNowNextFrom = null;
 

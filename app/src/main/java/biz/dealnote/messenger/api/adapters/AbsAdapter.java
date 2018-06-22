@@ -26,6 +26,10 @@ public class AbsAdapter {
         return optInt(json, name) == 1;
     }
 
+    public static boolean optBoolean(JsonObject json, String name){
+        return json.has(name) && json.get(name).getAsBoolean();
+    }
+
     public static int optInt(JsonObject json, String name){
         return optInt(json, name, 0);
     }

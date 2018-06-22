@@ -227,7 +227,7 @@ public class Dto2Model {
         message.peer_id = update.peer_id;
         message.from_id = message.out ? accountUid : (Peer.isGroupChat(update.peer_id) ? update.from : update.peer_id);
         message.body = VKStringUtils.unescape(update.text);
-        message.title = update.subject;
+        //message.title = update.subject;
         message.date = update.timestamp;
         message.action_mid = update.sourceMid;
         message.action_text = update.sourceText;
@@ -245,8 +245,8 @@ public class Dto2Model {
         return data;
     }
 
-    public static Dialog transform(int aid, @NonNull VkApiDialog dialog, @NonNull IOwnersBundle bundle) {
-        VKApiMessage message = dialog.message;
+    public static Dialog transform(int accountId, @NonNull VkApiDialog dto, @NonNull IOwnersBundle bundle) {
+        VKApiMessage message = dto.lastMessage;
 
         Owner interlocutor;
         if (Peer.isGroup(message.peer_id) || Peer.isUser(message.peer_id)) {
@@ -255,17 +255,24 @@ public class Dto2Model {
             interlocutor = bundle.getById(message.from_id);
         }
 
-        return new Dialog()
+        Dialog dialog = new Dialog()
                 .setPeerId(message.peer_id)
-                .setTitle(message.title)
-                .setUnreadCount(dialog.unread)
-                .setPhoto50(message.photo_50)
-                .setPhoto100(message.photo_100)
-                .setPhoto200(message.photo_200)
-                .setMessage(transform(aid, message, bundle))
-                .setAdminId(message.admin_id)
+                .setUnreadCount(dto.conversation.unreadCount)
+                .setMessage(transform(accountId, message, bundle))
                 .setLastMessageId(message.id)
                 .setInterlocutor(interlocutor);
+
+        if(nonNull(dto.conversation.settings)){
+            dialog.setTitle(dto.conversation.settings.title);
+
+            if(nonNull(dto.conversation.settings.photo)){
+                dialog.setPhoto50(dto.conversation.settings.photo.photo50)
+                        .setPhoto100(dto.conversation.settings.photo.photo100)
+                        .setPhoto200(dto.conversation.settings.photo.photo200);
+            }
+        }
+
+        return dialog;
     }
 
     public static Message transform(int aid, @NonNull VKApiMessage message, @NonNull IOwnersBundle owners) {
@@ -273,7 +280,7 @@ public class Dto2Model {
         Message appMessage = new Message(message.id)
                 .setAccountId(aid)
                 .setBody(message.body)
-                .setTitle(message.title)
+                //.setTitle(message.title)
                 .setPeerId(message.peer_id)
                 .setSenderId(message.from_id)
                 .setRead(message.read_state)
@@ -286,16 +293,13 @@ public class Dto2Model {
                 .setOriginalId(message.id)
                 .setCryptStatus(encrypted ? CryptStatus.ENCRYPTED : CryptStatus.NO_ENCRYPTION)
                 .setImportant(message.important)
-                .setChatActive(message.chat_active)
-                .setUsersCount(message.users_count)
-                .setAdminId(message.admin_id)
                 .setAction(Message.fromApiChatAction(message.action))
                 .setActionMid(message.action_mid)
                 .setActionEmail(message.action_email)
                 .setActionText(message.action_text)
-                .setPhoto50(message.photo_50)
-                .setPhoto100(message.photo_100)
-                .setPhoto200(message.photo_200)
+                .setPhoto50(message.action_photo_50)
+                .setPhoto100(message.action_photo_100)
+                .setPhoto200(message.action_photo_200)
                 .setSender(owners.getById(message.from_id));
 
         if (message.action_mid != 0) {
@@ -338,7 +342,7 @@ public class Dto2Model {
     }
 
     private static PhotoSizes.Size dto2model(PhotoSizeDto dto) {
-        return new PhotoSizes.Size(dto.width, dto.height, dto.src);
+        return new PhotoSizes.Size(dto.width, dto.height, dto.url);
     }
 
     public static PhotoSizes transform(List<PhotoSizeDto> dtos) {

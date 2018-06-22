@@ -430,6 +430,17 @@ class OwnersStorage extends AbsStorage implements IOwnersStorage {
     }
 
     @Override
+    public Completable storeOwnerEntities(int accountId, OwnerEntities entities) {
+        return Completable.create(emitter -> {
+            ArrayList<ContentProviderOperation> operations = new ArrayList<>(entities.size());
+            appendUsersInsertOperation(operations, accountId, entities.getUserEntities());
+            appendCommunitiesInsertOperation(operations, accountId, entities.getCommunityEntities());
+            getContentResolver().applyBatch(MessengerContentProvider.AUTHORITY, operations);
+            emitter.onComplete();
+        });
+    }
+
+    @Override
     public Completable storeCommunityDbos(int accountId, List<CommunityEntity> communityEntities) {
         return Completable.create(emitter -> {
             ArrayList<ContentProviderOperation> operations = new ArrayList<>(communityEntities.size());

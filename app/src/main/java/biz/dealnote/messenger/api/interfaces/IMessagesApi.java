@@ -83,7 +83,7 @@ public interface IMessagesApi {
                          Collection<Integer> forwardMessages, Integer stickerId);
 
     @CheckResult
-    Single<DialogsResponse> getDialogs(Integer offset, Integer count, Integer startMessageId);
+    Single<DialogsResponse> getDialogs(Integer offset, Integer count, Integer startMessageId, Boolean extended, String fields);
 
     @CheckResult
     Single<List<VKApiMessage>> getById(Collection<Integer> ids);

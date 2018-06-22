@@ -14,8 +14,6 @@ import biz.dealnote.messenger.api.model.CommentsDto;
 import biz.dealnote.messenger.api.model.PhotoSizeDto;
 import biz.dealnote.messenger.api.model.VKApiPhoto;
 
-import static biz.dealnote.messenger.util.Utils.nonEmpty;
-
 /**
  * Created by ruslan.kolbasa on 26.12.2016.
  * phoenix
@@ -35,13 +33,6 @@ public class PhotoDtoAdapter extends AbsAdapter implements JsonDeserializer<VKAp
         photo.owner_id = optInt(root, "owner_id");
         photo.text = optString(root, "text");
         photo.access_key = optString(root, "access_key");
-
-        String photo_75 = optString(root, "photo_75");
-        String photo_130 = optString(root, "photo_130");
-        String photo_604 = optString(root, "photo_604");
-        String photo_807 = optString(root, "photo_807");
-        String photo_1280 = optString(root, "photo_1280");
-        String photo_2560 = optString(root, "photo_2560");
 
         if (root.has("likes")) {
             JsonObject likesRoot = root.get("likes").getAsJsonObject();
@@ -87,70 +78,8 @@ public class PhotoDtoAdapter extends AbsAdapter implements JsonDeserializer<VKAp
                         break;
                 }
             }
-        } else {
-            photo.sizes = new ArrayList<>();
-
-            int w = photo.width;
-            int h = photo.height;
-
-            if (nonEmpty(photo_75)) {
-                photo.sizes.add(manualCreate(PhotoSizeDto.Type.S, photo_75, w, h, 75));
-            }
-
-            if (nonEmpty(photo_130)) {
-                photo.sizes.add(manualCreate(PhotoSizeDto.Type.M, photo_130, w, h, 130));
-            }
-
-            if (nonEmpty(photo_604)) {
-                photo.sizes.add(manualCreate(PhotoSizeDto.Type.X, photo_604, w, h, 604));
-            }
-
-            if (nonEmpty(photo_807)) {
-                photo.sizes.add(manualCreate(PhotoSizeDto.Type.Y, photo_807, w, h, 807));
-            }
-
-            if (nonEmpty(photo_1280)) {
-                photo.sizes.add(manualCreate(PhotoSizeDto.Type.Z, photo_1280, w, h, 1280));
-            }
-
-            if (nonEmpty(photo_2560)) {
-                photo.sizes.add(manualCreate(PhotoSizeDto.Type.W, photo_2560, w, h, 2560));
-            }
         }
 
         return photo;
-    }
-
-    private static PhotoSizeDto manualCreate(char type, String url, int origw, int origh, int trimToSize) {
-        PhotoSizeDto dto = new PhotoSizeDto();
-        dto.src = url;
-        dto.type = type;
-
-        WH trimmed = trimSizeTo(origw, origh, trimToSize);
-        dto.width = trimmed.w;
-        dto.height = trimmed.h;
-        return dto;
-    }
-
-    private static WH trimSizeTo(int origw, int origh, float max) {
-        if (origh < max && origw < max) {
-            return new WH(origw, origh);
-        }
-
-        float ratio = Math.min(max / origw, max / origh);
-        int width = Math.round(ratio * origw);
-        int height = Math.round(ratio * origh);
-        return new WH(width, height);
-    }
-
-    private static final class WH {
-
-        final int w;
-        final int h;
-
-        WH(int w, int h) {
-            this.w = w;
-            this.h = h;
-        }
     }
 }

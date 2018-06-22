@@ -36,21 +36,21 @@ public class MessagePatch {
 
     private Map<Integer, String> extras;
 
-    private String title;
+    //private String title;
 
     public MessagePatch(int status, int senderId) {
         this.status = status;
         this.senderId = senderId;
     }
 
-    public MessagePatch setTitle(String title) {
+    /*public MessagePatch setTitle(String title) {
         this.title = title;
         return this;
     }
 
     public String getTitle() {
         return title;
-    }
+    }*/
 
     public MessagePatch setRead(boolean read) {
         this.read = read;

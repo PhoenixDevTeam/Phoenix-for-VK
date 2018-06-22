@@ -145,8 +145,8 @@ public class VKOwnIds {
     }
 
     public VKOwnIds append(VkApiDialog dialog) {
-        if (dialog.message != null) {
-            append(dialog.message);
+        if (dialog.lastMessage != null) {
+            append(dialog.lastMessage);
         }
 
         return this;
@@ -189,7 +189,6 @@ public class VKOwnIds {
     public VKOwnIds append(@NonNull Message message) {
         append(message.getSenderId());
         append(message.getActionMid()); // тут 100% пользователь, нюанс в том, что он может быть < 0, если email
-        append(message.getAdminId());
 
         if (!Peer.isGroupChat(message.getPeerId())) {
             append(message.getPeerId());

@@ -32,8 +32,8 @@ public class MessageDtoAdapter extends AbsAdapter implements JsonDeserializer<VK
 
         dto.date = optLong(root, "date");
         dto.read_state = optIntAsBoolean(root, "read_state");
-        dto.title = VKStringUtils.unescape(optString(root, "title"));
-        dto.body = VKStringUtils.unescape(optString(root, "body"));
+        //dto.title = VKStringUtils.unescape(optString(root, "title"));
+        dto.body = VKStringUtils.unescape(optString(root, "text"));
 
         if(root.has("attachments")){
             dto.attachments = context.deserialize(root.get("attachments"), VkApiAttachments.class);
@@ -49,7 +49,7 @@ public class MessageDtoAdapter extends AbsAdapter implements JsonDeserializer<VK
         }
 
         dto.deleted = optIntAsBoolean(root, "deleted");
-        dto.important = optIntAsBoolean(root, "important");
+        dto.important = optBoolean(root, "important");
 
         dto.random_id = optString(root, "random_id");
         dto.payload = optString(root, "payload");

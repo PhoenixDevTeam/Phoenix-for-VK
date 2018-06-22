@@ -11,6 +11,7 @@ import biz.dealnote.messenger.db.model.BanAction;
 import biz.dealnote.messenger.db.model.UserPatch;
 import biz.dealnote.messenger.db.model.entity.CommunityEntity;
 import biz.dealnote.messenger.db.model.entity.FriendListEntity;
+import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.UserDetailsEntity;
 import biz.dealnote.messenger.db.model.entity.UserEntity;
 import biz.dealnote.messenger.model.Manager;
@@ -43,6 +44,8 @@ public interface IOwnersStorage extends IStorage {
     Completable storeUserDbos(int accountId, List<UserEntity> users);
 
     Completable storeCommunityDbos(int accountId, List<CommunityEntity> communityEntities);
+
+    Completable storeOwnerEntities(int accountId, OwnerEntities entities);
 
     @CheckResult
     Single<Collection<Integer>> getMissingUserIds(int accountId, @NonNull Collection<Integer> ids);

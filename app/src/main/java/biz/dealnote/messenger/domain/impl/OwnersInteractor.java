@@ -1,5 +1,7 @@
 package biz.dealnote.messenger.domain.impl;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,6 +18,7 @@ import biz.dealnote.messenger.db.column.UserColumns;
 import biz.dealnote.messenger.db.interfaces.IOwnersStorage;
 import biz.dealnote.messenger.db.model.entity.CareerEntity;
 import biz.dealnote.messenger.db.model.entity.CommunityEntity;
+import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.UserDetailsEntity;
 import biz.dealnote.messenger.db.model.entity.UserEntity;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
@@ -219,6 +222,11 @@ public class OwnersInteractor implements IOwnersInteractor {
                     owners.addAll(Dto2Model.transformCommunities(groups));
                     return owners;
                 });
+    }
+
+    @Override
+    public Completable insertOwners(int accountId, @NonNull OwnerEntities entities) {
+        return cache.storeOwnerEntities(accountId, entities);
     }
 
     @Override

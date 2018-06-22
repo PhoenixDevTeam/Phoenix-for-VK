@@ -42,7 +42,7 @@ public class VKApiMessage {
     /**
      * Title of message or chat.
      */
-    public String title;
+    //public String title;
 
     /**
      * Body of the message.

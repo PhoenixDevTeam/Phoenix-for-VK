@@ -24,7 +24,7 @@ public class MessageEntity extends Entity {
 
     private boolean out;
 
-    private String title;
+    //private String title;
 
     private String body;
 
@@ -116,14 +116,14 @@ public class MessageEntity extends Entity {
         return this;
     }
 
-    public String getTitle() {
+    /*public String getTitle() {
         return title;
     }
 
     public MessageEntity setTitle(String title) {
         this.title = title;
         return this;
-    }
+    }*/
 
     public String getBody() {
         return body;

@@ -141,6 +141,8 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     private void onDialogsGetError(Throwable t) {
         Throwable cause = getCauseIfRuntime(t);
 
+        cause.printStackTrace();
+
         setNetLoadnigNow(false);
 
         if (cause instanceof UnauthorizedException) {
