@@ -19,7 +19,7 @@ public class AddMessageUpdate extends AbsLongpollEvent {
     public String text;
     public int from;
     public boolean outbox;
-    //public boolean unread;
+    public boolean unread;
     public boolean important;
     public boolean deleted;
     public boolean hasMedia;
