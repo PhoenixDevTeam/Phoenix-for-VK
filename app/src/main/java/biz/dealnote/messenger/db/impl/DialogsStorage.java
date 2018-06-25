@@ -199,6 +199,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
         cv.put(PeersColumns.PHOTO_50, entity.getPhoto50());
         cv.put(PeersColumns.PHOTO_100, entity.getPhoto100());
         cv.put(PeersColumns.PHOTO_200, entity.getPhoto200());
+        cv.put(PeersColumns.PINNED, serializeJson(entity.getPinned()));
         return cv;
     }
 
@@ -223,7 +224,8 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                     PeersColumns.OUT_READ,
                     PeersColumns.PHOTO_50,
                     PeersColumns.PHOTO_100,
-                    PeersColumns.PHOTO_200
+                    PeersColumns.PHOTO_200,
+                    PeersColumns.PINNED
             };
 
             Uri uri = MessengerContentProvider.getPeersContentUriFor(accountId);
@@ -239,7 +241,8 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                             .setPhoto100(cursor.getString(cursor.getColumnIndex(PeersColumns.PHOTO_100)))
                             .setPhoto50(cursor.getString(cursor.getColumnIndex(PeersColumns.PHOTO_50)))
                             .setInRead(cursor.getInt(cursor.getColumnIndex(PeersColumns.IN_READ)))
-                            .setOutRead(cursor.getInt(cursor.getColumnIndex(PeersColumns.OUT_READ)));
+                            .setOutRead(cursor.getInt(cursor.getColumnIndex(PeersColumns.OUT_READ)))
+                            .setPinned(deserializeJson(cursor, PeersColumns.PINNED, MessageEntity.class));
                 }
 
                 cursor.close();

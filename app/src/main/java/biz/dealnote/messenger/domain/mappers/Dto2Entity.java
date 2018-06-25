@@ -618,6 +618,10 @@ public class Dto2Entity {
         if(nonNull(dto.settings)){
             entity.setTitle(dto.settings.title);
 
+            if(nonNull(dto.settings.pinnedMesage)){
+                entity.setPinned(buildMessageDbo(dto.settings.pinnedMesage));
+            }
+
             if(nonNull(dto.settings.photo)){
                 entity.setPhoto50(dto.settings.photo.photo50)
                         .setPhoto100(dto.settings.photo.photo100)
@@ -628,7 +632,7 @@ public class Dto2Entity {
         return entity;
     }
 
-    public static DialogEntity buildDialogDbo(VkApiDialog dto) {
+    public static DialogEntity dialog(VkApiDialog dto) {
         MessageEntity messageEntity = buildMessageDbo(dto.lastMessage);
 
         DialogEntity entity = new DialogEntity(messageEntity.getPeerId())
@@ -640,6 +644,10 @@ public class Dto2Entity {
 
         if(nonNull(dto.conversation.settings)){
             entity.setTitle(dto.conversation.settings.title);
+
+            if(nonNull(dto.conversation.settings.pinnedMesage)){
+                entity.setPinned(buildMessageDbo(dto.conversation.settings.pinnedMesage));
+            }
 
             if(nonNull(dto.conversation.settings.photo)){
                 entity.setPhoto50(dto.conversation.settings.photo.photo50)

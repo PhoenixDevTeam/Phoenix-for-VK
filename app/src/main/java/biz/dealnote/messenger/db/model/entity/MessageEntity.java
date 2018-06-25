@@ -1,5 +1,7 @@
 package biz.dealnote.messenger.db.model.entity;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +64,7 @@ public class MessageEntity extends Entity {
 
     private Map<Integer, String> extras;
 
-    private List<Entity> attachments;
+    private EntitiesWrapper attachments = EntitiesWrapper.EMPTY;
 
     private List<MessageEntity> forwardMessages;
 
@@ -288,11 +290,12 @@ public class MessageEntity extends Entity {
     }
 
     public MessageEntity setAttachments(List<Entity> attachments) {
-        this.attachments = attachments;
+        this.attachments = EntitiesWrapper.wrap(attachments);
         return this;
     }
 
+    @NonNull
     public List<Entity> getAttachments() {
-        return attachments;
+        return attachments.get();
     }
 }

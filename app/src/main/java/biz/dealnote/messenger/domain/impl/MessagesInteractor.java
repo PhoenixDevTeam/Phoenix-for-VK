@@ -2,7 +2,6 @@ package biz.dealnote.messenger.domain.impl;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,6 +62,7 @@ import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
 import biz.dealnote.messenger.model.CryptStatus;
 import biz.dealnote.messenger.model.Dialog;
+import biz.dealnote.messenger.model.IOwnersBundle;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.MessageStatus;
 import biz.dealnote.messenger.model.Owner;
@@ -123,7 +123,7 @@ public class MessagesInteractor implements IMessagesInteractor {
         this.uploadManager = uploadManager;
     }
 
-    private static Conversation entity2Model(SimpleDialogEntity entity, @Nullable Owner interlocutor) {
+    private static Conversation entity2Model(int accountId, SimpleDialogEntity entity, IOwnersBundle owners) {
         return new Conversation(entity.getPeerId())
                 .setInRead(entity.getInRead())
                 .setOutRead(entity.getOutRead())
@@ -132,7 +132,8 @@ public class MessagesInteractor implements IMessagesInteractor {
                 .setPhoto200(entity.getPhoto200())
                 .setUnreadCount(entity.getUnreadCount())
                 .setTitle(entity.getTitle())
-                .setInterlocutor(interlocutor);
+                .setInterlocutor(Peer.isGroup(entity.getPeerId()) || Peer.isUser(entity.getPeerId()) ? owners.getById(entity.getPeerId()) : null)
+                .setPinned(isNull(entity.getPinned()) ? null : Entity2Model.message(accountId, entity.getPinned(), owners));
     }
 
     @Override
@@ -194,16 +195,17 @@ public class MessagesInteractor implements IMessagesInteractor {
     private SingleTransformer<SimpleDialogEntity, Conversation> simpleEntity2Conversation(int accountId, Collection<Owner> existingOwners) {
         return single -> single
                 .flatMap(entity -> {
-                    if (Peer.isGroupChat(entity.getPeerId())) {
-                        return Single.just(entity2Model(entity, null));
+                    VKOwnIds owners = new VKOwnIds();
+                    if(Peer.isGroup(entity.getPeerId()) || Peer.isUser(entity.getPeerId())){
+                        owners.append(entity.getPeerId());
                     }
 
-                    Collection<Integer> owners = Collections.singletonList(entity.getPeerId());
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, owners, IOwnersInteractor.MODE_ANY, existingOwners)
-                            .map(bundle -> {
-                                Owner owner = bundle.getById(entity.getPeerId());
-                                return entity2Model(entity, owner);
-                            });
+                    if(nonNull(entity.getPinned())){
+                        Entity2Model.fillOwnerIds(owners, Collections.singletonList(entity.getPinned()));
+                    }
+
+                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, owners.getAll(), IOwnersInteractor.MODE_ANY, existingOwners)
+                            .map(bundle -> entity2Model(accountId, entity, bundle));
                 });
     }
 
@@ -284,7 +286,7 @@ public class MessagesInteractor implements IMessagesInteractor {
                                 final List<Message> messages = new ArrayList<>(dbos.size());
 
                                 for (MessageEntity dbo : dbos) {
-                                    messages.add(Entity2Model.buildMessageFromDbo(accountId, dbo, owners));
+                                    messages.add(Entity2Model.message(accountId, dbo, owners));
                                 }
 
                                 return messages;
@@ -398,7 +400,7 @@ public class MessagesInteractor implements IMessagesInteractor {
                                 final List<Message> encryptedMessages = new ArrayList<>(0);
 
                                 for (VkApiDialog dto : apiDialogs) {
-                                    DialogEntity entity = Dto2Entity.buildDialogDbo(dto);
+                                    DialogEntity entity = Dto2Entity.dialog(dto);
                                     entities.add(entity);
 
                                     Dialog dialog = Dto2Model.transform(accountId, dto, owners);

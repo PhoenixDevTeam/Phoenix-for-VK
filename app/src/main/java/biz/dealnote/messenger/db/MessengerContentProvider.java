@@ -461,6 +461,7 @@ public class MessengerContentProvider extends ContentProvider {
         sPeersProjectionMap.put(PeersColumns.PHOTO_50, PeersColumns.FULL_PHOTO_50);
         sPeersProjectionMap.put(PeersColumns.PHOTO_100, PeersColumns.FULL_PHOTO_100);
         sPeersProjectionMap.put(PeersColumns.PHOTO_200, PeersColumns.FULL_PHOTO_200);
+        sPeersProjectionMap.put(PeersColumns.PINNED, PeersColumns.FULL_PINNED);
 
         sDocsProjectionMap = new HashMap<>();
         sDocsProjectionMap.put(DocColumns._ID, DocColumns.FULL_ID);

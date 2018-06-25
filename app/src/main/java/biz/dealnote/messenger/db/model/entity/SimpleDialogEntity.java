@@ -18,6 +18,17 @@ public class SimpleDialogEntity {
 
     private int outRead;
 
+    private MessageEntity pinned;
+
+    public SimpleDialogEntity setPinned(MessageEntity pinned) {
+        this.pinned = pinned;
+        return this;
+    }
+
+    public MessageEntity getPinned() {
+        return pinned;
+    }
+
     public SimpleDialogEntity(int peerId) {
         this.peerId = peerId;
     }

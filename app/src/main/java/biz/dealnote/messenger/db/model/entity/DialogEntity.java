@@ -24,6 +24,8 @@ public class DialogEntity extends Entity {
 
     private MessageEntity message;
 
+    private MessageEntity pinned;
+
     private int lastMessageId;
 
     public DialogEntity(int peerId) {
@@ -33,6 +35,15 @@ public class DialogEntity extends Entity {
     public DialogEntity setInRead(int inRead) {
         this.inRead = inRead;
         return this;
+    }
+
+    public DialogEntity setPinned(MessageEntity pinned) {
+        this.pinned = pinned;
+        return this;
+    }
+
+    public MessageEntity getPinned() {
+        return pinned;
     }
 
     public int getInRead() {
@@ -87,7 +98,8 @@ public class DialogEntity extends Entity {
                 .setPhoto50(photo50)
                 .setOutRead(outRead)
                 .setInRead(outRead)
-                .setUnreadCount(unreadCount);
+                .setUnreadCount(unreadCount)
+                .setPinned(pinned);
     }
 
     public String getPhoto100() {

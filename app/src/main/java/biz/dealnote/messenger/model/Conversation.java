@@ -28,8 +28,19 @@ public class Conversation {
 
     private Owner interlocutor;
 
+    private Message pinned;
+
     public Conversation(int id) {
         this.id = id;
+    }
+
+    public Conversation setPinned(Message pinned) {
+        this.pinned = pinned;
+        return this;
+    }
+
+    public Message getPinned() {
+        return pinned;
     }
 
     public Conversation setInterlocutor(Owner interlocutor) {

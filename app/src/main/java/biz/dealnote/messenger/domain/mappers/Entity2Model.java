@@ -327,7 +327,7 @@ public class Entity2Model {
     }
 
     public static Dialog buildDialogFromDbo(int accountId, DialogEntity dbo, IOwnersBundle owners) {
-        Message message = buildMessageFromDbo(accountId, dbo.getMessage(), owners);
+        Message message = message(accountId, dbo.getMessage(), owners);
 
         Dialog dialog = new Dialog()
                 .setLastMessageId(dbo.getLastMessageId())
@@ -354,7 +354,7 @@ public class Entity2Model {
         return dialog;
     }
 
-    public static Message buildMessageFromDbo(int accountId, MessageEntity dbo, IOwnersBundle owners) {
+    public static Message message(int accountId, MessageEntity dbo, IOwnersBundle owners) {
         Message message = new Message(dbo.getId())
                 .setAccountId(accountId)
                 .setBody(dbo.getBody())
@@ -392,7 +392,7 @@ public class Entity2Model {
 
         if (nonEmpty(dbo.getForwardMessages())) {
             for (MessageEntity fwdDbo : dbo.getForwardMessages()) {
-                message.prepareFwd(dbo.getForwardMessages().size()).add(buildMessageFromDbo(accountId, fwdDbo, owners));
+                message.prepareFwd(dbo.getForwardMessages().size()).add(message(accountId, fwdDbo, owners));
             }
         }
 
