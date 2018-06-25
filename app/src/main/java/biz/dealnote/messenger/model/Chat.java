@@ -17,8 +17,6 @@ public class Chat extends AbsModel implements Parcelable {
 
     private String photo200;
 
-    private int adminId;
-
     public Chat(int id) {
         this.id = id;
     }
@@ -63,15 +61,6 @@ public class Chat extends AbsModel implements Parcelable {
         return this;
     }
 
-    public int getAdminId() {
-        return adminId;
-    }
-
-    public Chat setAdminId(int adminId) {
-        this.adminId = adminId;
-        return this;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -85,7 +74,6 @@ public class Chat extends AbsModel implements Parcelable {
         dest.writeString(photo50);
         dest.writeString(photo100);
         dest.writeString(photo200);
-        dest.writeInt(adminId);
     }
 
     public Chat(Parcel in) {
@@ -95,7 +83,6 @@ public class Chat extends AbsModel implements Parcelable {
         this.photo50 = in.readString();
         this.photo100 = in.readString();
         this.photo200 = in.readString();
-        this.adminId = in.readInt();
     }
 
     public static Parcelable.Creator<Chat> CREATOR = new Parcelable.Creator<Chat>() {

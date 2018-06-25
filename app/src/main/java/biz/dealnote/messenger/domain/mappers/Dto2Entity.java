@@ -613,7 +613,6 @@ public class Dto2Entity {
         SimpleDialogEntity entity = new SimpleDialogEntity(dto.peer.id)
                 .setInRead(dto.inRead)
                 .setOutRead(dto.outRead)
-                .setLastMessageId(dto.lastMessageId)
                 .setUnreadCount(dto.unreadCount);
 
         if(nonNull(dto.settings)){

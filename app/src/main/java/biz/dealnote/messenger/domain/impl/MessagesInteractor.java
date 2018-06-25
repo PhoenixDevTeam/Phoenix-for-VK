@@ -91,7 +91,6 @@ import static biz.dealnote.messenger.util.Utils.isEmpty;
 import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;
-import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
 import static biz.dealnote.messenger.util.Utils.safelyClose;
 
 /**
@@ -128,7 +127,6 @@ public class MessagesInteractor implements IMessagesInteractor {
         return new Conversation(entity.getPeerId())
                 .setInRead(entity.getInRead())
                 .setOutRead(entity.getOutRead())
-                .setLastMessageId(entity.getLastMessageId())
                 .setPhoto50(entity.getPhoto50())
                 .setPhoto100(entity.getPhoto100())
                 .setPhoto200(entity.getPhoto200())
@@ -155,7 +153,7 @@ public class MessagesInteractor implements IMessagesInteractor {
                 .messages()
                 .getConversations(Collections.singletonList(peerId), true, Constants.MAIN_OWNER_FIELDS)
                 .flatMap(response -> {
-                    if(safeIsEmpty(response.items)){
+                    if (isEmpty(response.items)) {
                         return Single.error(new NotFoundException());
                     }
 
@@ -171,7 +169,7 @@ public class MessagesInteractor implements IMessagesInteractor {
                             .compose(simpleEntity2Conversation(accountId, existsOwners));
                 });
 
-        switch (mode){
+        switch (mode) {
             case ANY:
                 return cached
                         .flatMap(optional -> optional.isEmpty() ? actual : Single.just(optional.get()))
@@ -372,13 +370,15 @@ public class MessagesInteractor implements IMessagesInteractor {
                     return response;
                 })
                 .flatMap(response -> {
+                    List<VkApiDialog> apiDialogs = listEmptyIfNull(response.dialogs);
+
                     final Collection<Integer> ownerIds;
 
-                    if (nonEmpty(response.dialogs)) {
+                    if (nonEmpty(apiDialogs)) {
                         VKOwnIds vkOwnIds = new VKOwnIds();
                         vkOwnIds.append(accountId); // добавляем свой профайл на всякий случай
 
-                        for (VkApiDialog dialog : response.dialogs) {
+                        for (VkApiDialog dialog : apiDialogs) {
                             vkOwnIds.append(dialog);
                         }
 
@@ -393,33 +393,29 @@ public class MessagesInteractor implements IMessagesInteractor {
                     return ownersInteractor
                             .findBaseOwnersDataAsBundle(accountId, ownerIds, IOwnersInteractor.MODE_ANY, existsOwners)
                             .flatMap(owners -> {
-                                int resultCount = safeCountOf(response.dialogs);
+                                final List<DialogEntity> entities = new ArrayList<>(apiDialogs.size());
+                                final List<Dialog> dialogs = new ArrayList<>(apiDialogs.size());
+                                final List<Message> encryptedMessages = new ArrayList<>(0);
 
-                                final List<DialogEntity> dbos = new ArrayList<>(resultCount);
-                                final List<Dialog> dialogs = new ArrayList<>(resultCount);
-                                final List<Message> messages = new ArrayList<>(0);
+                                for (VkApiDialog dto : apiDialogs) {
+                                    DialogEntity entity = Dto2Entity.buildDialogDbo(dto);
+                                    entities.add(entity);
 
-                                if (nonNull(response.dialogs)) {
-                                    for (VkApiDialog dto : response.dialogs) {
-                                        DialogEntity dbo = Dto2Entity.buildDialogDbo(dto);
-                                        dbos.add(dbo);
+                                    Dialog dialog = Dto2Model.transform(accountId, dto, owners);
+                                    dialogs.add(dialog);
 
-                                        Dialog dialog = Dto2Model.transform(accountId, dto, owners);
-                                        dialogs.add(dialog);
-
-                                        if (dbo.getMessage().isEncrypted()) {
-                                            messages.add(dialog.getMessage());
-                                        }
+                                    if (entity.getMessage().isEncrypted()) {
+                                        encryptedMessages.add(dialog.getMessage());
                                     }
                                 }
 
                                 final Completable insertCompletable = dialogsStore
-                                        .insertDialogs(accountId, dbos, clear)
+                                        .insertDialogs(accountId, entities, clear)
                                         .andThen(ownersInteractor.insertOwners(accountId, ownerEntities))
                                         .doOnComplete(() -> dialogsStore.setUnreadDialogsCount(accountId, response.unreadCount));
 
-                                if (nonEmpty(messages)) {
-                                    return insertCompletable.andThen(Single.just(messages)
+                                if (nonEmpty(encryptedMessages)) {
+                                    return insertCompletable.andThen(Single.just(encryptedMessages)
                                             .compose(decryptor.withMessagesDecryption(accountId))
                                             .map(ignored -> dialogs));
                                 }

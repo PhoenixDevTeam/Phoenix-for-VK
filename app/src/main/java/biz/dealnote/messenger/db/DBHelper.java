@@ -34,6 +34,7 @@ import biz.dealnote.messenger.db.column.KeyColumns;
 import biz.dealnote.messenger.db.column.MessageColumns;
 import biz.dealnote.messenger.db.column.NewsColumns;
 import biz.dealnote.messenger.db.column.NotificationColumns;
+import biz.dealnote.messenger.db.column.PeersColumns;
 import biz.dealnote.messenger.db.column.PhotoAlbumsColumns;
 import biz.dealnote.messenger.db.column.PhotosColumns;
 import biz.dealnote.messenger.db.column.PostAttachmentsColumns;
@@ -51,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 160;
+    private static final int DATABASE_VERSION = 161;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -157,6 +158,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         createAttachmentsTable(db);
         createDialogTable(db);
+        createPeersTable(db);
         createPhotoTable(db);
         createDocsTable(db);
         createVideosTable(db);
@@ -229,6 +231,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CommentsAttachmentsColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + CommentsColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + DialogsColumns.TABLENAME);
+        db.execSQL("DROP TABLE IF EXISTS " + PeersColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + DocColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + GroupColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + GroupContactsColumns.TABLENAME);
@@ -614,6 +617,19 @@ public class DBHelper extends SQLiteOpenHelper {
                 "  [" + DialogsColumns.PHOTO_100 + "] TEXT, " +
                 "  [" + DialogsColumns.PHOTO_200 + "] TEXT, " +
                 "  [" + DialogsColumns.LAST_MESSAGE_ID + "] INTEGER);";
+        db.execSQL(sql);
+    }
+
+    private void createPeersTable(SQLiteDatabase db) {
+        String sql = "CREATE TABLE [" + PeersColumns.TABLENAME + "] (\n" +
+                "  [" + PeersColumns._ID + "] INTEGER PRIMARY KEY ON CONFLICT REPLACE NOT NULL UNIQUE, " +
+                "  [" + PeersColumns.UNREAD + "] INTEGER, " +
+                "  [" + PeersColumns.TITLE + "] TEXT, " +
+                "  [" + PeersColumns.IN_READ + "] INTEGER, " +
+                "  [" + PeersColumns.OUT_READ + "] INTEGER, " +
+                "  [" + PeersColumns.PHOTO_50 + "] TEXT, " +
+                "  [" + PeersColumns.PHOTO_100 + "] TEXT, " +
+                "  [" + PeersColumns.PHOTO_200 + "] TEXT);";
         db.execSQL(sql);
     }
 

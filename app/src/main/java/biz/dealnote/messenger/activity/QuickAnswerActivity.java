@@ -48,7 +48,6 @@ public class QuickAnswerActivity extends AppCompatActivity {
 
     public static final String PARAM_BODY = "body";
     public static final String PARAM_MESSAGE_ID = "message_id";
-    public static final String PARAM_LAST_SEEN = "last_seen";
     public static final String PARAM_MESSAGE_SENT_TIME = "message_sent_time";
 
     public static final String EXTRA_FOCUS_TO_FIELD = "focus_to_field";
@@ -99,12 +98,10 @@ public class QuickAnswerActivity extends AppCompatActivity {
         ImageButton btnSend = findViewById(R.id.activity_quick_answer_send);
 
         String messageTime = AppTextUtils.getDateFromUnixTime(this, getIntent().getLongExtra(PARAM_MESSAGE_SENT_TIME, 0));
-        String onlineTime = AppTextUtils.getDateFromUnixTime(this, getIntent().getLongExtra(PARAM_LAST_SEEN, 0));
         final String title = getIntent().getStringExtra(Extra.TITLE);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
-            getSupportActionBar().setSubtitle(onlineTime);
         }
 
         tvMessage.setText(getIntent().getStringExtra(PARAM_BODY), TextView.BufferType.SPANNABLE);
@@ -174,14 +171,13 @@ public class QuickAnswerActivity extends AppCompatActivity {
         return true;
     }
 
-    public static Intent forStart(Context context, int accountId, int peerId, String body, int mid, long lastSeen, long messageTime, String imgUrl, String title) {
+    public static Intent forStart(Context context, int accountId, int peerId, String body, int mid, long messageTime, String imgUrl, String title) {
         Intent intent = new Intent(context, QuickAnswerActivity.class);
         intent.putExtra(PARAM_BODY, body);
         intent.putExtra(Extra.ACCOUNT_ID, accountId);
         intent.putExtra(PARAM_MESSAGE_ID, mid);
         intent.putExtra(Extra.PEER_ID, peerId);
         intent.putExtra(Extra.TITLE, title);
-        intent.putExtra(PARAM_LAST_SEEN, lastSeen);
         intent.putExtra(PARAM_MESSAGE_SENT_TIME, messageTime);
         intent.putExtra(Extra.IMAGE, imgUrl);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

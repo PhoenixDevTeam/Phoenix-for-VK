@@ -79,6 +79,17 @@ public class DialogEntity extends Entity {
         return this;
     }
 
+    public SimpleDialogEntity simplify(){
+        return new SimpleDialogEntity(peerId)
+                .setTitle(title)
+                .setPhoto200(photo200)
+                .setPhoto100(photo100)
+                .setPhoto50(photo50)
+                .setOutRead(outRead)
+                .setInRead(outRead)
+                .setUnreadCount(unreadCount);
+    }
+
     public String getPhoto100() {
         return photo100;
     }

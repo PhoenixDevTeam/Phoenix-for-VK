@@ -39,6 +39,7 @@ import biz.dealnote.messenger.db.column.KeyColumns;
 import biz.dealnote.messenger.db.column.MessageColumns;
 import biz.dealnote.messenger.db.column.NewsColumns;
 import biz.dealnote.messenger.db.column.NotificationColumns;
+import biz.dealnote.messenger.db.column.PeersColumns;
 import biz.dealnote.messenger.db.column.PhotoAlbumsColumns;
 import biz.dealnote.messenger.db.column.PhotosColumns;
 import biz.dealnote.messenger.db.column.PostAttachmentsColumns;
@@ -60,6 +61,7 @@ public class MessengerContentProvider extends ContentProvider {
     private static Map<String, String> sAttachmentsProjectionMap;
     private static Map<String, String> sPhotosProjectionMap;
     private static Map<String, String> sDialogsProjectionMap;
+    private static Map<String, String> sPeersProjectionMap;
     private static Map<String, String> sDocsProjectionMap;
     private static Map<String, String> sVideosProjectionMap;
     private static Map<String, String> sPostsProjectionMap;
@@ -132,6 +134,7 @@ public class MessengerContentProvider extends ContentProvider {
     static final int URI_FEED_LISTS = 62;
     static final int URI_FRIEND_LISTS = 64;
     static final int URI_KEYS = 65;
+    static final int URI_PEERS = 66;
 
     // path
     static final String USER_PATH = "users";
@@ -139,6 +142,7 @@ public class MessengerContentProvider extends ContentProvider {
     static final String ATTACHMENTS_PATH = "attachments";
     static final String PHOTOS_PATH = "photos";
     static final String DIALOGS_PATH = "dialogs";
+    static final String PEERS_PATH = "peers";
     static final String DOCS_PATH = "docs";
     static final String VIDEOS_PATH = "videos";
     static final String POSTS_PATH = "posts";
@@ -179,6 +183,7 @@ public class MessengerContentProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, PHOTOS_PATH, URI_PHOTOS);
         sUriMatcher.addURI(AUTHORITY, PHOTOS_PATH + "/#", URI_PHOTOS_ID);
         sUriMatcher.addURI(AUTHORITY, DIALOGS_PATH, URI_DIALOGS);
+        sUriMatcher.addURI(AUTHORITY, PEERS_PATH, URI_PEERS);
         sUriMatcher.addURI(AUTHORITY, DOCS_PATH, URI_DOCS);
         sUriMatcher.addURI(AUTHORITY, DOCS_PATH + "/#", URI_DOCS_ID);
         sUriMatcher.addURI(AUTHORITY, VIDEOS_PATH, URI_VIDEOS);
@@ -235,6 +240,9 @@ public class MessengerContentProvider extends ContentProvider {
 
     private static final Uri DIALOGS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + DIALOGS_PATH);
     static final String DIALOGS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + DIALOGS_PATH;
+
+    private static final Uri PEERS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + PEERS_PATH);
+    static final String PEERS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + PEERS_PATH;
 
     private static final Uri DOCS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + DOCS_PATH);
     static final String DOCS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + DOCS_PATH;
@@ -443,6 +451,16 @@ public class MessengerContentProvider extends ContentProvider {
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_FWD_COUNT, MessageColumns.FULL_FORWARD_COUNT + " AS " + DialogsColumns.FOREIGN_MESSAGE_FWD_COUNT);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_ACTION, MessageColumns.FULL_ACTION + " AS " + DialogsColumns.FOREIGN_MESSAGE_ACTION);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_ENCRYPTED, MessageColumns.FULL_ENCRYPTED + " AS " + DialogsColumns.FOREIGN_MESSAGE_ENCRYPTED);
+
+        sPeersProjectionMap = new HashMap<>();
+        sPeersProjectionMap.put(PeersColumns._ID, PeersColumns.FULL_ID);
+        sPeersProjectionMap.put(PeersColumns.UNREAD, PeersColumns.FULL_UNREAD);
+        sPeersProjectionMap.put(PeersColumns.TITLE, PeersColumns.FULL_TITLE);
+        sPeersProjectionMap.put(PeersColumns.IN_READ, PeersColumns.FULL_IN_READ);
+        sPeersProjectionMap.put(PeersColumns.OUT_READ, PeersColumns.FULL_OUT_READ);
+        sPeersProjectionMap.put(PeersColumns.PHOTO_50, PeersColumns.FULL_PHOTO_50);
+        sPeersProjectionMap.put(PeersColumns.PHOTO_100, PeersColumns.FULL_PHOTO_100);
+        sPeersProjectionMap.put(PeersColumns.PHOTO_200, PeersColumns.FULL_PHOTO_200);
 
         sDocsProjectionMap = new HashMap<>();
         sDocsProjectionMap.put(DocColumns._ID, DocColumns.FULL_ID);
@@ -854,6 +872,10 @@ public class MessengerContentProvider extends ContentProvider {
         return appendAccountId(DIALOGS_CONTENT_URI, aid);
     }
 
+    public static Uri getPeersContentUriFor(int aid) {
+        return appendAccountId(PEERS_CONTENT_URI, aid);
+    }
+
     public static Uri getRelativeshipContentUriFor(int aid){
         return appendAccountId(RELATIVESHIP_CONTENT_URI, aid);
     }
@@ -1010,10 +1032,13 @@ public class MessengerContentProvider extends ContentProvider {
                 rowId = db.insert(PhotosColumns.TABLENAME, null, values);
                 resultUri = ContentUris.withAppendedId(PHOTOS_CONTENT_URI, rowId);
                 break;
-
             case URI_DIALOGS:
                 rowId = db.insert(DialogsColumns.TABLENAME, null, values);
                 resultUri = ContentUris.withAppendedId(DIALOGS_CONTENT_URI, rowId);
+                break;
+            case URI_PEERS:
+                rowId = db.insert(PeersColumns.TABLENAME, null, values);
+                resultUri = ContentUris.withAppendedId(PEERS_CONTENT_URI, rowId);
                 break;
             case URI_DOCS:
                 rowId = db.insert(DocColumns.TABLENAME, null, values);
@@ -1233,6 +1258,12 @@ public class MessengerContentProvider extends ContentProvider {
                 _QB.setTables(DialogsColumns.TABLENAME + " LEFT OUTER JOIN " + MessageColumns.TABLENAME + " ON " + DialogsColumns.FULL_LAST_MESSAGE_ID + " = " + MessageColumns.FULL_ID);
                 _QB.setProjectionMap(sDialogsProjectionMap);
                 _TableType = URI_DIALOGS;
+                break;
+
+            case URI_PEERS:
+                _QB.setTables(PeersColumns.TABLENAME);
+                _QB.setProjectionMap(sPeersProjectionMap);
+                _TableType = URI_PEERS;
                 break;
 
             case URI_DOCS:
@@ -1488,6 +1519,10 @@ public class MessengerContentProvider extends ContentProvider {
                     _OrderBy = MessageColumns.FULL_DATE + " DESC";
                     break;
 
+                case URI_PEERS:
+                    _OrderBy = PeersColumns.FULL_ID + " DESC";
+                    break;
+
                 case URI_DOCS:
                     _OrderBy = DocColumns.FULL_ID + " ASC";
                     break;
@@ -1622,6 +1657,8 @@ public class MessengerContentProvider extends ContentProvider {
                 return PHOTOS_CONTENT_ITEM_TYPE;
             case URI_DIALOGS:
                 return DIALOGS_CONTENT_TYPE;
+            case URI_PEERS:
+                return PEERS_CONTENT_TYPE;
             case URI_DOCS:
                 return DOCS_CONTENT_TYPE;
             case URI_DOCS_ID:

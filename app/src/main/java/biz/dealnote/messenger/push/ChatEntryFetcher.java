@@ -5,9 +5,9 @@ import android.graphics.Bitmap;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Mode;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Peer;
-import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.util.Optional;
 import io.reactivex.Single;
 
@@ -20,7 +20,6 @@ public class ChatEntryFetcher {
             case Peer.USER:
             case Peer.GROUP:
                 int ownerId = Peer.toOwnerId(peerId);
-
                 return OwnerInfo.getRx(app, accountId, ownerId)
                         .map(info -> {
                             Owner owner = info.getOwner();
@@ -29,12 +28,11 @@ public class ChatEntryFetcher {
                             response.title = owner.getFullName();
                             response.img = owner.get100photoOrSmaller();
                             response.icon = info.getAvatar();
-                            response.last_seen = owner instanceof User ? ((User) owner).getLastSeen() : 0L;
                             return response;
                         });
                 case Peer.CHAT:
-                    return InteractorFactory.createDialogsInteractor()
-                            .getChatById(accountId, peerId)
+                    return InteractorFactory.createMessagesInteractor()
+                            .getConversation(accountId, peerId, Mode.ANY).singleOrError()
                             .flatMap(chat -> NotificationUtils.loadRoundedImageRx(app, chat.get100orSmallerAvatar(), R.drawable.ic_group_chat)
                                     .map(Optional::wrap)
                                     .onErrorReturnItem(Optional.empty())
@@ -54,6 +52,5 @@ public class ChatEntryFetcher {
         public String title;
         public String img;
         public Bitmap icon;
-        public long last_seen;
     }
 }

@@ -106,7 +106,6 @@ public class Dto2Model {
 
     public static Chat transform(VKApiChat chat) {
         return new Chat(chat.id)
-                .setAdminId(chat.admin_id)
                 .setPhoto50(chat.photo_50)
                 .setPhoto100(chat.photo_100)
                 .setPhoto200(chat.photo_200)

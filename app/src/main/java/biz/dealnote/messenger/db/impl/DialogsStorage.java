@@ -19,6 +19,7 @@ import java.util.Set;
 import biz.dealnote.messenger.api.model.VKApiChat;
 import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.DialogsColumns;
+import biz.dealnote.messenger.db.column.PeersColumns;
 import biz.dealnote.messenger.db.interfaces.IDialogsStorage;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
@@ -143,8 +144,14 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
             }
 
             for (DialogEntity entity : entities) {
-                ContentValues cv = createCv(entity);
-                operations.add(ContentProviderOperation.newInsert(uri).withValues(cv).build());
+                SimpleDialogEntity simple = entity.simplify();
+
+                operations.add(ContentProviderOperation.newInsert(uri).withValues(createCv(entity)).build());
+
+                operations.add(ContentProviderOperation
+                        .newInsert(MessengerContentProvider.getPeersContentUriFor(accountId))
+                        .withValues(createPeerCv(simple))
+                        .build());
 
                 MessagesStorage.appendDboOperation(accountId, entity.getMessage(), operations, null, null);
             }
@@ -182,26 +189,25 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
         return cv;
     }
 
-    private ContentValues createCv(SimpleDialogEntity entity) {
+    private ContentValues createPeerCv(SimpleDialogEntity entity) {
         ContentValues cv = new ContentValues();
-        cv.put(DialogsColumns._ID, entity.getPeerId());
-        cv.put(DialogsColumns.UNREAD, entity.getUnreadCount());
-        cv.put(DialogsColumns.TITLE, entity.getTitle());
-        cv.put(DialogsColumns.IN_READ, entity.getInRead());
-        cv.put(DialogsColumns.OUT_READ, entity.getOutRead());
-        cv.put(DialogsColumns.PHOTO_50, entity.getPhoto50());
-        cv.put(DialogsColumns.PHOTO_100, entity.getPhoto100());
-        cv.put(DialogsColumns.PHOTO_200, entity.getPhoto200());
-        cv.put(DialogsColumns.LAST_MESSAGE_ID, entity.getLastMessageId());
+        cv.put(PeersColumns._ID, entity.getPeerId());
+        cv.put(PeersColumns.UNREAD, entity.getUnreadCount());
+        cv.put(PeersColumns.TITLE, entity.getTitle());
+        cv.put(PeersColumns.IN_READ, entity.getInRead());
+        cv.put(PeersColumns.OUT_READ, entity.getOutRead());
+        cv.put(PeersColumns.PHOTO_50, entity.getPhoto50());
+        cv.put(PeersColumns.PHOTO_100, entity.getPhoto100());
+        cv.put(PeersColumns.PHOTO_200, entity.getPhoto200());
         return cv;
     }
 
     @Override
     public Completable saveSimple(int accountId, @NonNull SimpleDialogEntity entity) {
         return Completable.create(emitter -> {
-            final Uri uri = MessengerContentProvider.getDialogsContentUriFor(accountId);
+            final Uri uri = MessengerContentProvider.getPeersContentUriFor(accountId);
             final ArrayList<ContentProviderOperation> operations = new ArrayList<>();
-            operations.add(ContentProviderOperation.newInsert(uri).withValues( createCv(entity)).build());
+            operations.add(ContentProviderOperation.newInsert(uri).withValues(createPeerCv(entity)).build());
             getContentResolver().applyBatch(MessengerContentProvider.AUTHORITY, operations);
             emitter.onComplete();
         });
@@ -211,31 +217,29 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
     public Single<Optional<SimpleDialogEntity>> findSimple(int accountId, int peerId) {
         return Single.create(emitter -> {
             String[] projection = {
-                    DialogsColumns.UNREAD,
-                    DialogsColumns.TITLE,
-                    DialogsColumns.IN_READ,
-                    DialogsColumns.OUT_READ,
-                    DialogsColumns.PHOTO_50,
-                    DialogsColumns.PHOTO_100,
-                    DialogsColumns.PHOTO_200,
-                    DialogsColumns.LAST_MESSAGE_ID
+                    PeersColumns.UNREAD,
+                    PeersColumns.TITLE,
+                    PeersColumns.IN_READ,
+                    PeersColumns.OUT_READ,
+                    PeersColumns.PHOTO_50,
+                    PeersColumns.PHOTO_100,
+                    PeersColumns.PHOTO_200
             };
 
-            Uri uri = MessengerContentProvider.getDialogsContentUriFor(accountId);
+            Uri uri = MessengerContentProvider.getPeersContentUriFor(accountId);
             Cursor cursor = getContentResolver().query(uri, projection,
-                    DialogsColumns.FULL_ID + " = ?", new String[]{String.valueOf(peerId)}, null);
+                    PeersColumns.FULL_ID + " = ?", new String[]{String.valueOf(peerId)}, null);
 
             SimpleDialogEntity entity = null;
             if (cursor != null) {
                 if (cursor.moveToNext()) {
                     entity = new SimpleDialogEntity(peerId)
-                            .setTitle(cursor.getString(cursor.getColumnIndex(DialogsColumns.TITLE)))
-                            .setPhoto200(cursor.getString(cursor.getColumnIndex(DialogsColumns.PHOTO_200)))
-                            .setPhoto100(cursor.getString(cursor.getColumnIndex(DialogsColumns.PHOTO_100)))
-                            .setPhoto50(cursor.getString(cursor.getColumnIndex(DialogsColumns.PHOTO_50)))
-                            .setLastMessageId(cursor.getInt(cursor.getColumnIndex(DialogsColumns.LAST_MESSAGE_ID)))
-                            .setInRead(cursor.getInt(cursor.getColumnIndex(DialogsColumns.IN_READ)))
-                            .setOutRead(cursor.getInt(cursor.getColumnIndex(DialogsColumns.OUT_READ)));
+                            .setTitle(cursor.getString(cursor.getColumnIndex(PeersColumns.TITLE)))
+                            .setPhoto200(cursor.getString(cursor.getColumnIndex(PeersColumns.PHOTO_200)))
+                            .setPhoto100(cursor.getString(cursor.getColumnIndex(PeersColumns.PHOTO_100)))
+                            .setPhoto50(cursor.getString(cursor.getColumnIndex(PeersColumns.PHOTO_50)))
+                            .setInRead(cursor.getInt(cursor.getColumnIndex(PeersColumns.IN_READ)))
+                            .setOutRead(cursor.getInt(cursor.getColumnIndex(PeersColumns.OUT_READ)));
                 }
 
                 cursor.close();

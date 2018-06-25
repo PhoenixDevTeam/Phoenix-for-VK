@@ -30,6 +30,7 @@ import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.domain.IMessagesInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Mode;
 import biz.dealnote.messenger.exception.UploadNotResolvedException;
 import biz.dealnote.messenger.longpoll.ILongpollManager;
 import biz.dealnote.messenger.longpoll.LongpollInstance;
@@ -46,6 +47,7 @@ import biz.dealnote.messenger.media.record.AudioRecordWrapper;
 import biz.dealnote.messenger.media.record.Recorder;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.ChatConfig;
+import biz.dealnote.messenger.model.Conversation;
 import biz.dealnote.messenger.model.DraftMessage;
 import biz.dealnote.messenger.model.FwdMessages;
 import biz.dealnote.messenger.model.LoadMoreState;
@@ -304,14 +306,23 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     private void loadAllCachedData() {
         setCacheLoadingNow(true);
 
-        cacheLoadingDisposable.add(messagesInteractor
-                .getCachedPeerMessages(this.messagesOwnerId, this.getPeerId())
+        cacheLoadingDisposable.add(messagesInteractor.getConversation(messagesOwnerId, mPeer.getId(), Mode.ANY).singleOrError()
+                .zipWith(messagesInteractor.getCachedPeerMessages(messagesOwnerId, mPeer.getId()), Pair::create)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onCachedDataReceived, Throwable::printStackTrace));
+                .subscribe(this::onCachedDataReceived, ignore()));
     }
 
     private Integer getLastMessageIdInList() {
         return getData().size() > 0 ? getData().get(getData().size() - 1).getId() : null;
+    }
+
+    private Conversation conversation;
+
+    private void onCachedDataReceived(Pair<Conversation, List<Message>> data){
+        setCacheLoadingNow(false);
+
+        conversation = data.getFirst();
+        onAllDataLoaded(data.getSecond(), false);
     }
 
     private void onCachedDataReceived(List<Message> messages) {

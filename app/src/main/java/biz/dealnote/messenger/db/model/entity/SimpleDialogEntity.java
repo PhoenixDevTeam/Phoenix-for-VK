@@ -18,8 +18,6 @@ public class SimpleDialogEntity {
 
     private int outRead;
 
-    private int lastMessageId;
-
     public SimpleDialogEntity(int peerId) {
         this.peerId = peerId;
     }
@@ -88,15 +86,6 @@ public class SimpleDialogEntity {
 
     public SimpleDialogEntity setOutRead(int outRead) {
         this.outRead = outRead;
-        return this;
-    }
-
-    public int getLastMessageId() {
-        return lastMessageId;
-    }
-
-    public SimpleDialogEntity setLastMessageId(int lastMessageId) {
-        this.lastMessageId = lastMessageId;
         return this;
     }
 }
