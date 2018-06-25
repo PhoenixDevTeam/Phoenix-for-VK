@@ -21,6 +21,7 @@ import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.DialogsColumns;
 import biz.dealnote.messenger.db.column.PeersColumns;
 import biz.dealnote.messenger.db.interfaces.IDialogsStorage;
+import biz.dealnote.messenger.db.model.PeerPatch;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
 import biz.dealnote.messenger.db.model.entity.SimpleDialogEntity;
@@ -36,6 +37,7 @@ import io.reactivex.Single;
 import io.reactivex.subjects.PublishSubject;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.Utils.nonEmpty;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;
 
 /**
@@ -316,6 +318,55 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
     }
 
     @Override
+    public Completable applyPatches(int accountId, @NonNull List<PeerPatch> patches) {
+        return Completable.create(emitter -> {
+            Uri dialogsUri = MessengerContentProvider.getDialogsContentUriFor(accountId);
+            Uri peersUri = MessengerContentProvider.getPeersContentUriFor(accountId);
+
+            ArrayList<ContentProviderOperation> operations = new ArrayList<>(patches.size() * 2);
+
+            for (PeerPatch patch : patches) {
+                ContentValues dialogscv = new ContentValues();
+                ContentValues peerscv = new ContentValues();
+
+                if (nonNull(patch.getInRead())) {
+                    dialogscv.put(DialogsColumns.IN_READ, patch.getInRead().getId());
+                    dialogscv.put(DialogsColumns.UNREAD, patch.getInRead().getUnreadCount());
+                    peerscv.put(PeersColumns.IN_READ, patch.getInRead().getId());
+                    peerscv.put(PeersColumns.UNREAD, patch.getInRead().getUnreadCount());
+                }
+
+                if (nonNull(patch.getOutRead())) {
+                    dialogscv.put(DialogsColumns.OUT_READ, patch.getOutRead().getId());
+                    peerscv.put(PeersColumns.OUT_READ, patch.getOutRead().getId());
+                }
+
+                String[] args = {String.valueOf(patch.getId())};
+
+                if (dialogscv.size() > 0) {
+                    operations.add(ContentProviderOperation.newUpdate(dialogsUri)
+                            .withSelection(DialogsColumns._ID + " = ?", args)
+                            .withValues(dialogscv)
+                            .build());
+                }
+
+                if (peerscv.size() > 0) {
+                    operations.add(ContentProviderOperation.newUpdate(peersUri)
+                            .withSelection(PeersColumns._ID + " = ?", args)
+                            .withValues(peerscv)
+                            .build());
+                }
+            }
+
+            if (nonEmpty(operations)) {
+                getContentResolver().applyBatch(MessengerContentProvider.AUTHORITY, operations);
+            }
+
+            emitter.onComplete();
+        });
+    }
+
+    @Override
     public Single<Optional<Chat>> findChatById(int accountId, int peerId) {
         return Single.fromCallable(() -> {
             String[] projection = {
@@ -361,7 +412,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                 .setDate(cursor.getLong(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_DATE)))
                 .setOut(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_OUT)) == 1)
                 //.setTitle(cursor.getString(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_TITLE)))
-                .setRead(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_READ_STATE)) == 1)
+                //.setRead(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_READ_STATE)) == 1)
                 .setHasAttachmens(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_HAS_ATTACHMENTS)) == 1)
                 .setForwardCount(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_FWD_COUNT)))
                 .setAction(action)

@@ -27,6 +27,7 @@ import biz.dealnote.messenger.api.model.VKApiStickerSet;
 import biz.dealnote.messenger.link.internal.LinkActionAdapter;
 import biz.dealnote.messenger.link.internal.OwnerLinkSpanFactory;
 import biz.dealnote.messenger.model.CryptStatus;
+import biz.dealnote.messenger.model.LastReadId;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.MessageStatus;
 import biz.dealnote.messenger.settings.CurrentTheme;
@@ -59,10 +60,16 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
     private EmojiconTextView.OnHashTagClickListener onHashTagClickListener;
     private OnMessageActionListener onMessageActionListener;
     private AttachmentsViewBinder.OnAttachmentsActionCallback attachmentsActionCallback;
+    private LastReadId lastReadId;
 
     public MessagesAdapter(Context context, List<Message> items, AttachmentsViewBinder.OnAttachmentsActionCallback callback) {
+        this(context, items, new LastReadId(0, 0), callback);
+    }
+
+    public MessagesAdapter(Context context, List<Message> items, LastReadId lastReadId, AttachmentsViewBinder.OnAttachmentsActionCallback callback) {
         super(items);
         this.context = context;
+        this.lastReadId = lastReadId;
         this.attachmentsActionCallback = callback;
         this.attachmentsViewBinder = new AttachmentsViewBinder(context, callback);
         this.avatarTransformation = CurrentTheme.createTransformationForAvatar(context);
@@ -90,6 +97,11 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
                 bindStickerHolder((StickerMessageHolder) viewHolder, message);
                 break;
         }
+    }
+
+    public void setItems(List<Message> messages, LastReadId lastReadId){
+        this.lastReadId = lastReadId;
+        setItems(messages);
     }
 
     private void bindStickerHolder(StickerMessageHolder holder, final Message message) {
@@ -145,7 +157,10 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
         holder.important.setVisibility(message.isImportant() ? View.VISIBLE : View.GONE);
 
         bindStatusText(holder.status, message.getStatus(), message.getDate());
-        bindReadState(holder.itemView, message.isRead());
+
+        boolean read = message.isOut() ? lastReadId.getOut() >= message.getId() : lastReadId.getIn() >= message.getId();
+
+        bindReadState(holder.itemView, message.getStatus() == MessageStatus.SENT && read);
 
         if (message.isSelected()) {
             holder.avatar.setBackground(selectedDrawable);

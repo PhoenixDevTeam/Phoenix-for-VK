@@ -30,6 +30,7 @@ public interface IMessagesStorage extends IStorage {
 
     Single<int[]> insertDbos(int accountId, @NonNull List<MessageEntity> dbos);
 
+    @Deprecated
     Single<Integer> calculateUnreadCount(int accountId, int peerId);
 
     Single<List<MessageEntity>> getByCriteria(@NonNull MessagesCriteria criteria, boolean withAtatchments, boolean withForwardMessages);

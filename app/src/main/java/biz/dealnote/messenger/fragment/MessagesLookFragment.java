@@ -27,6 +27,7 @@ import biz.dealnote.messenger.adapter.MessagesAdapter;
 import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.model.FwdMessages;
+import biz.dealnote.messenger.model.LastReadId;
 import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.mvp.presenter.MessagesLookPresenter;
@@ -112,8 +113,8 @@ public class MessagesLookFragment extends PlaceSupportPresenterFragment<Messages
     }
 
     @Override
-    public void displayMessages(@NonNull List<Message> messages) {
-        mMessagesAdapter = new MessagesAdapter(getActivity(), messages, this);
+    public void displayMessages(@NonNull List<Message> messages, @NonNull LastReadId lastReadId) {
+        mMessagesAdapter = new MessagesAdapter(getActivity(), messages, lastReadId, this);
         mMessagesAdapter.setOnMessageActionListener(this);
         mMessagesAdapter.addFooter(mHeaderView);
         mMessagesAdapter.addHeader(mFooterView);

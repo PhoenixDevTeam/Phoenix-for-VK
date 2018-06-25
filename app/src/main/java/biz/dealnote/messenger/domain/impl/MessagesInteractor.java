@@ -39,6 +39,7 @@ import biz.dealnote.messenger.db.interfaces.IDialogsStorage;
 import biz.dealnote.messenger.db.interfaces.IMessagesStorage;
 import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.db.model.MessagePatch;
+import biz.dealnote.messenger.db.model.PeerPatch;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
@@ -57,6 +58,7 @@ import biz.dealnote.messenger.domain.mappers.Model2Dto;
 import biz.dealnote.messenger.domain.mappers.Model2Entity;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.exception.UploadNotResolvedException;
+import biz.dealnote.messenger.longpoll.model.MessagesRead;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
@@ -121,6 +123,23 @@ public class MessagesInteractor implements IMessagesInteractor {
         this.storages = storages;
         this.decryptor = new MessagesDecryptor(storages);
         this.uploadManager = uploadManager;
+    }
+
+    @Override
+    public Completable handleMessagesRead(int accountId, @NonNull List<MessagesRead> reads) {
+        List<PeerPatch> patches = new ArrayList<>(reads.size());
+
+        for(MessagesRead read : reads){
+            PeerPatch patch = new PeerPatch(read.getPeerId());
+
+            if(read.isOut()){
+                patch.withOutRead(read.getToMessageId(), read.getUnreadCount());
+            } else {
+                patch.withInRead(read.getToMessageId(), read.getUnreadCount());
+            }
+        }
+
+        return storages.dialogs().applyPatches(accountId, patches);
     }
 
     private static Conversation entity2Model(int accountId, SimpleDialogEntity entity, IOwnersBundle owners) {

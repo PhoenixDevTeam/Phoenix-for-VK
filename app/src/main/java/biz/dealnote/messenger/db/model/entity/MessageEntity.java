@@ -22,7 +22,7 @@ public class MessageEntity extends Entity {
 
     private long date;
 
-    private boolean read;
+    //private boolean read;
 
     private boolean out;
 
@@ -100,14 +100,14 @@ public class MessageEntity extends Entity {
         return date;
     }
 
-    public boolean isRead() {
+    /*public boolean isRead() {
         return read;
     }
 
     public MessageEntity setRead(boolean read) {
         this.read = read;
         return this;
-    }
+    }*/
 
     public boolean isOut() {
         return out;

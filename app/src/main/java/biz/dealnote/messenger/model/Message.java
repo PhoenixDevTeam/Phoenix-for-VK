@@ -40,8 +40,6 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
 
     private int senderId;
 
-    private boolean read;
-
     private boolean out;
 
     @MessageStatus
@@ -108,7 +106,6 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         //this.title = in.readString();
         this.peerId = in.readInt();
         this.senderId = in.readInt();
-        this.read = in.readInt() == 1;
         this.out = in.readInt() == 1;
         this.important = in.readInt() == 1;
 
@@ -218,15 +215,6 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
 
     public Message setSender(Owner sender) {
         this.sender = sender;
-        return this;
-    }
-
-    public boolean isRead() {
-        return read;
-    }
-
-    public Message setRead(boolean read) {
-        this.read = read;
         return this;
     }
 
@@ -512,7 +500,6 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         //dest.writeString(title);
         dest.writeInt(peerId);
         dest.writeInt(senderId);
-        dest.writeInt(read ? 1 : 0);
         dest.writeInt(out ? 1 : 0);
         dest.writeInt(important ? 1 : 0);
         dest.writeInt(status);

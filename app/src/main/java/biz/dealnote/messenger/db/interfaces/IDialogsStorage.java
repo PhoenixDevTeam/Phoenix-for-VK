@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import biz.dealnote.messenger.api.model.VKApiChat;
+import biz.dealnote.messenger.db.model.PeerPatch;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.SimpleDialogEntity;
 import biz.dealnote.messenger.model.Chat;
@@ -55,6 +56,8 @@ public interface IDialogsStorage extends IStorage {
     Completable insertChats(int accountId, List<VKApiChat> chats);
 
     Observable<IDeletedDialog> observeDialogsDeleting();
+
+    Completable applyPatches(int accountId, @NonNull List<PeerPatch> patches);
 
     interface IDialogUpdate {
         int getAccountId();

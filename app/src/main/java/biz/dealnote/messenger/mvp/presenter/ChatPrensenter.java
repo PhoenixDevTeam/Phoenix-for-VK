@@ -322,6 +322,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         setCacheLoadingNow(false);
 
         conversation = data.getFirst();
+        lastReadId.setIn(conversation.getInRead()).setOut(conversation.getOutRead());
         onAllDataLoaded(data.getSecond(), false);
     }
 
@@ -465,9 +466,8 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
             setupSendButtonState(newState, true);
         }
 
-        Message lastMessage = safeIsEmpty(getData()) ? null : getData().get(0);
-
-        if (nonNull(lastMessage) && !lastMessage.isOut() && !lastMessage.isRead()) {
+        Message lastMessage = isEmpty(getData()) ? null : getData().get(0);
+        if (nonNull(lastMessage) && !lastMessage.isOut() && lastMessage.getId() > lastReadId.getIn()) {
             readAllUnreadMessages();
         }
 
@@ -805,10 +805,10 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
         int index = indexOf(message.getId());
         if (index != -1) {
-            Message exist = getData().get(index);
-            if (exist.isRead()) {
-                message.setRead(true);
-            }
+            //Message exist = getData().get(index);
+            //if (exist.isRead()) {
+            //    message.setRead(true);
+            //}
 
             getData().remove(index);
         }
@@ -839,6 +839,18 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
     private void onLongpollMessagesRead(int accountId, int peerId, boolean out, int localId) {
         if (messagesOwnerId != accountId || getPeerId() != peerId) return;
 
+        if(nonNull(conversation)){
+            if(out){
+                conversation.setOutRead(localId);
+                lastReadId.setOut(localId);
+            } else {
+                conversation.setInRead(localId);
+                lastReadId.setIn(localId);
+            }
+        }
+
+        safeNotifyDataChanged();
+
         // у нас сообщения в списке от нового к старому
         // ......
         // 896325
@@ -848,7 +860,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
         //onLongpollMessagesRead, out: true, localId: 1004485, last: 1001210, first: 1004485
 
-        boolean hasChanges = false;
+        /*boolean hasChanges = false;
         for (Message message : getData()) {
             if (!message.isSent()) {
                 continue;
@@ -871,7 +883,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
         if (hasChanges) {
             safeNotifyDataChanged();
-        }
+        }*/
     }
 
     private void onMessageFlagSet(MessageFlagsSet action) {
@@ -919,10 +931,10 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         }
 
         boolean changed = false;
-        if (hasFlag(reset.getMask(), MessageFlag.UNREAD) && !message.isRead()) {
-            message.setRead(true);
-            changed = true;
-        }
+        //if (hasFlag(reset.getMask(), MessageFlag.UNREAD) && !message.isRead()) {
+        //    message.setRead(true);
+        //    changed = true;
+        //}
 
         if (hasFlag(reset.getMask(), MessageFlag.IMPORTANT) && message.isImportant()) {
             message.setImportant(false);
@@ -1088,9 +1100,9 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         boolean has = false;
 
         for (Message message : getData()) {
-            if (!message.isOut() && !message.isRead()) {
-                message.setRead(true);
+            if (!message.isOut() && message.getId() < lastReadId.getIn()) {
                 has = true;
+                break;
             }
         }
 

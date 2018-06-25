@@ -31,7 +31,7 @@ public class MessageDtoAdapter extends AbsAdapter implements JsonDeserializer<VK
         dto.from_id = optInt(root, "from_id");
 
         dto.date = optLong(root, "date");
-        dto.read_state = optIntAsBoolean(root, "read_state");
+        //dto.read_state = optIntAsBoolean(root, "read_state");
         //dto.title = VKStringUtils.unescape(optString(root, "title"));
         dto.body = VKStringUtils.unescape(optString(root, "text"));
 

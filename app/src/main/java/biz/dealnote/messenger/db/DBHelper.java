@@ -52,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 162;
+    private static final int DATABASE_VERSION = 163;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -502,7 +502,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " [" + MessageColumns.PEER_ID + "] INTEGER, " +
                 " [" + MessageColumns.FROM_ID + "] INTEGER, " +
                 " [" + MessageColumns.DATE + "] BIGINT, " +
-                " [" + MessageColumns.READ_STATE + "] BOOLEAN, " +
+                //" [" + MessageColumns.READ_STATE + "] BOOLEAN, " +
                 " [" + MessageColumns.OUT + "] BOOLEAN, " +
                 //" [" + MessageColumns.TITLE + "] TEXT, " +
                 " [" + MessageColumns.BODY + "] TEXT, " +

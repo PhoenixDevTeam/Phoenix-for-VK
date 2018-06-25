@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by ruslan.kolbasa on 23.11.2016.
  * phoenix
  */
-public class MessagesRead extends AbsRealtimeVkAction implements Parcelable {
+public final class MessagesRead extends AbsRealtimeVkAction implements Parcelable {
 
     private final int peerId;
 
@@ -15,18 +15,22 @@ public class MessagesRead extends AbsRealtimeVkAction implements Parcelable {
 
     private final boolean out;
 
-    public MessagesRead(int accountId, int peerId, int toMessageId, boolean out) {
+    private final int unreadCount;
+
+    public MessagesRead(int accountId, int peerId, int toMessageId, boolean out, int unreadCount) {
         super(accountId, RealtimeAction.MESSAGES_READ);
         this.peerId = peerId;
         this.toMessageId = toMessageId;
         this.out = out;
+        this.unreadCount = unreadCount;
     }
 
-    protected MessagesRead(Parcel in) {
+    private MessagesRead(Parcel in) {
         super(in);
         peerId = in.readInt();
         toMessageId = in.readInt();
         out = in.readByte() != 0;
+        unreadCount = in.readInt();
     }
 
     @Override
@@ -35,6 +39,11 @@ public class MessagesRead extends AbsRealtimeVkAction implements Parcelable {
         dest.writeInt(peerId);
         dest.writeInt(toMessageId);
         dest.writeByte((byte) (out ? 1 : 0));
+        dest.writeInt(unreadCount);
+    }
+
+    public int getUnreadCount() {
+        return unreadCount;
     }
 
     public static final Creator<MessagesRead> CREATOR = new Creator<MessagesRead>() {
@@ -64,14 +73,5 @@ public class MessagesRead extends AbsRealtimeVkAction implements Parcelable {
 
     public int getToMessageId() {
         return toMessageId;
-    }
-
-    @Override
-    public String toString() {
-        return "MessagesRead{" +
-                "peerId=" + peerId +
-                ", toMessageId=" + toMessageId +
-                ", out=" + out +
-                '}';
     }
 }

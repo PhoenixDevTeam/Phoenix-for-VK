@@ -110,6 +110,7 @@ public class LongpollUpdateAdapter extends AbsAdapter implements JsonDeserialize
                 InputMessagesSetReadUpdate x = new InputMessagesSetReadUpdate();
                 x.peer_id = optInt(array, 1);
                 x.local_id = optInt(array, 2);
+                x.unread_count = optInt(array, 3); // undocumented
 
                 if(x.peer_id == 0){
                     Logger.e(TAG, "InputMessagesSetReadUpdate.peer_id=0, array: " + array);
@@ -122,6 +123,7 @@ public class LongpollUpdateAdapter extends AbsAdapter implements JsonDeserialize
                 OutputMessagesSetReadUpdate x1 = new OutputMessagesSetReadUpdate();
                 x1.peer_id = optInt(array, 1);
                 x1.local_id = optInt(array, 2);
+                x1.unread_count = optInt(array, 3); // undocumented
 
                 if(x1.peer_id == 0){
                     Logger.e(TAG, "OutputMessagesSetReadUpdate.peer_id=0, array: " + array);
@@ -144,7 +146,7 @@ public class LongpollUpdateAdapter extends AbsAdapter implements JsonDeserialize
         update.timestamp = optLong(array, 4);
         update.text = VKStringUtils.unescape(optString(array, 5));
         update.outbox = hasFlag(flags, VKApiMessage.FLAG_OUTBOX);
-        update.unread = hasFlag(flags, VKApiMessage.FLAG_UNREAD);
+        //update.unread = hasFlag(flags, VKApiMessage.FLAG_UNREAD);
         update.important = hasFlag(flags, VKApiMessage.FLAG_IMPORTANT);
         update.deleted = hasFlag(flags, VKApiMessage.FLAG_DELETED);
 

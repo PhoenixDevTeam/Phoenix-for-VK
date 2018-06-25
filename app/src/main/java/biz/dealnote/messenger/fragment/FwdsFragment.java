@@ -23,6 +23,7 @@ import biz.dealnote.messenger.adapter.AttachmentsViewBinder;
 import biz.dealnote.messenger.adapter.MessagesAdapter;
 import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
+import biz.dealnote.messenger.model.LastReadId;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.VoiceMessage;
 import biz.dealnote.messenger.mvp.presenter.FwdsPresenter;
@@ -113,9 +114,9 @@ public class FwdsFragment extends PlaceSupportPresenterFragment<FwdsPresenter, I
     }
 
     @Override
-    public void displayMessages(@NonNull List<Message> messages) {
+    public void displayMessages(@NonNull List<Message> messages, @NonNull LastReadId lastReadId) {
         if(Objects.nonNull(mAdapter)){
-            mAdapter.setItems(messages);
+            mAdapter.setItems(messages, lastReadId);
         }
     }
 

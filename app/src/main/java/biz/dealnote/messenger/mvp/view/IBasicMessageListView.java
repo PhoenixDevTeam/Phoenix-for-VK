@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import biz.dealnote.messenger.model.LastReadId;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;
 import biz.dealnote.mvp.core.IMvpView;
@@ -13,8 +14,6 @@ import biz.dealnote.mvp.core.IMvpView;
  * phoenix
  */
 public interface IBasicMessageListView extends IMvpView, IAttachmentsPlacesView, IAccountDependencyView, IToastView {
-
-    void displayMessages(@NonNull List<Message> messages);
     void notifyMessagesUpAdded(int position, int count);
     void notifyDataChanged();
     void notifyMessagesDownAdded(int count);
@@ -25,4 +24,6 @@ public interface IBasicMessageListView extends IMvpView, IAttachmentsPlacesView,
 
     void showActionMode(String title);
     void finishActionMode();
+
+    void displayMessages(@NonNull List<Message> mData, @NonNull LastReadId lastReadId);
 }

@@ -52,7 +52,7 @@ public class Model2Entity {
     public static MessageEntity buildMessageEntity(Message message) {
         return new MessageEntity(message.getId(), message.getPeerId(), message.getSenderId())
                 .setDate(message.getDate())
-                .setRead(message.isRead())
+                //.setRead(message.isRead())
                 .setOut(message.isOut())
                 //.setTitle(message.getTitle())
                 .setBody(message.getBody())

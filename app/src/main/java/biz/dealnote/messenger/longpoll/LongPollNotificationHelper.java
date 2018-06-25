@@ -33,9 +33,9 @@ public class LongPollNotificationHelper {
             return;
         }
 
-        if (message.isRead()) {
-            return;
-        }
+        //if (message.isRead()) {
+        //    return;
+        //}
 
         //boolean needSendNotif = needNofinicationFor(message.getAccountId(), message.getPeerId());
         //if(!needSendNotif){

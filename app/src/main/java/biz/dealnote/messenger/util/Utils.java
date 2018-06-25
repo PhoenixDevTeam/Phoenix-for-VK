@@ -46,6 +46,10 @@ import static biz.dealnote.messenger.util.Objects.isNull;
 
 public class Utils {
 
+    public static <T> T lastOf(@NonNull List<T> data){
+        return data.get(data.size() - 1);
+    }
+
     public static String stringEmptyIfNull(String orig) {
         return orig == null ? "" : orig;
     }

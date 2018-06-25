@@ -8,17 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import biz.dealnote.messenger.api.model.VKApiMessage;
-import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;
 import biz.dealnote.messenger.api.model.longpoll.MessageFlagsResetUpdate;
 import biz.dealnote.messenger.api.model.longpoll.MessageFlagsSetUpdate;
-import biz.dealnote.messenger.api.model.longpoll.OutputMessagesSetReadUpdate;
 import biz.dealnote.messenger.api.model.longpoll.UserIsOfflineUpdate;
 import biz.dealnote.messenger.api.model.longpoll.UserIsOnlineUpdate;
 import biz.dealnote.messenger.db.column.MessageColumns;
 import biz.dealnote.messenger.db.column.UserColumns;
 
 import static biz.dealnote.messenger.util.Utils.hasFlag;
-import static biz.dealnote.messenger.util.Utils.safeCountOfMultiple;
 import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
 
 public class LongPollOperation {
@@ -43,9 +40,9 @@ public class LongPollOperation {
                 cv.put(MessageColumns.IMPORTANT, 0);
             }
 
-            if(hasFlag(update.mask, VKApiMessage.FLAG_UNREAD)){
-                cv.put(MessageColumns.READ_STATE, 1);
-            }
+            //if(hasFlag(update.mask, VKApiMessage.FLAG_UNREAD)){
+                //cv.put(MessageColumns.READ_STATE, 1);
+            //}
 
             if(cv.size() > 0){
                 String where = MessageColumns._ID + " = ?";
@@ -128,61 +125,6 @@ public class LongPollOperation {
                         .withSelection(UserColumns._ID + " = ?", new String[]{String.valueOf(Math.abs(u.user_id))})
                         .withValues(cv)
                         .build());
-            }
-        }
-
-        return operations;
-    }
-
-    /**
-     * Получение списка операции для сохранения уведомлений о прочтении сообщений
-     *
-     * @param input  уведомления о прочтении входящих сообщений
-     * @param output уведомления о прочтении исходящих сообщений
-     * @return список операций
-     */
-    public static ArrayList<ContentProviderOperation> forMessagesReadUpdate(int accountId, List<InputMessagesSetReadUpdate> input, List<OutputMessagesSetReadUpdate> output) {
-        ArrayList<ContentProviderOperation> operations = new ArrayList<>(safeCountOfMultiple(input, output));
-        ContentValues cv = new ContentValues();
-        cv.put(MessageColumns.READ_STATE, 1);
-
-        if (!safeIsEmpty(input)) {
-            for (InputMessagesSetReadUpdate i : input) {
-                operations.add(ContentProviderOperation
-                        .newUpdate(MessengerContentProvider.getMessageContentUriFor(accountId))
-                        .withValues(cv)
-                        .withSelection(MessageColumns.PEER_ID + " = ? " +
-                                        " AND " + MessageColumns.ATTACH_TO + " = ? " +
-                                        " AND " + MessageColumns.OUT + " = ? " +
-                                        " AND " + MessageColumns._ID + " <= ? " +
-                                        " AND " + MessageColumns._ID + " != ?",
-                                new String[]{
-                                        String.valueOf(i.peer_id),
-                                        String.valueOf(MessageColumns.DONT_ATTACH),
-                                        "0",
-                                        String.valueOf(i.local_id),
-                                        "0"
-                                }).build());
-            }
-        }
-
-        if (!safeIsEmpty(output)) {
-            for (OutputMessagesSetReadUpdate o : output) {
-                operations.add(ContentProviderOperation
-                        .newUpdate(MessengerContentProvider.getMessageContentUriFor(accountId))
-                        .withValues(cv)
-                        .withSelection(MessageColumns.PEER_ID + " = ? " +
-                                        " AND " + MessageColumns.ATTACH_TO + " = ? " +
-                                        " AND " + MessageColumns.OUT + " = ? " +
-                                        " AND " + MessageColumns._ID + " <= ?" +
-                                        " AND " + MessageColumns._ID + " != ?",
-                                new String[]{
-                                        String.valueOf(o.peer_id),
-                                        String.valueOf(MessageColumns.DONT_ATTACH),
-                                        "1",
-                                        String.valueOf(o.local_id),
-                                        "0"
-                                }).build());
             }
         }
 

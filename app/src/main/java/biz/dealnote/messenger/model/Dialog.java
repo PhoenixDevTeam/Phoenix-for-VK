@@ -36,6 +36,10 @@ public class Dialog implements Identificable, Parcelable {
 
     private int lastMessageId;
 
+    private int inRead;
+
+    private int outRead;
+
     public Dialog() {
 
     }
@@ -57,6 +61,8 @@ public class Dialog implements Identificable, Parcelable {
         }
 
         this.lastMessageId = in.readInt();
+        this.inRead = in.readInt();
+        this.outRead = in.readInt();
     }
 
     public static final Creator<Dialog> CREATOR = new Creator<Dialog>() {
@@ -164,10 +170,6 @@ public class Dialog implements Identificable, Parcelable {
         return this;
     }
 
-    public boolean isLastMessageRead() {
-        return message != null && message.isRead();
-    }
-
     public boolean isLastMessageOut() {
         return message != null && message.isOut();
     }
@@ -237,6 +239,28 @@ public class Dialog implements Identificable, Parcelable {
         }
     }
 
+    public Dialog setInRead(int inRead) {
+        this.inRead = inRead;
+        return this;
+    }
+
+    public Dialog setOutRead(int outRead) {
+        this.outRead = outRead;
+        return this;
+    }
+
+    public int getInRead() {
+        return inRead;
+    }
+
+    public boolean isLastMessageRead(){
+        return isLastMessageOut() ? getLastMessageId() <= outRead : getLastMessageId() <= inRead;
+    }
+
+    public int getOutRead() {
+        return outRead;
+    }
+
     @Override
     public int getId() {
         return peerId;
@@ -264,5 +288,7 @@ public class Dialog implements Identificable, Parcelable {
         }
 
         dest.writeInt(lastMessageId);
+        dest.writeInt(inRead);
+        dest.writeInt(outRead);
     }
 }

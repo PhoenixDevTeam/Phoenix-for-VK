@@ -45,7 +45,7 @@ public final class DialogsColumns implements BaseColumns {
     public static final String FOREIGN_MESSAGE_BODY = "message_body";
     public static final String FOREIGN_MESSAGE_DATE = "message_date";
     public static final String FOREIGN_MESSAGE_OUT = "message_out";
-    public static final String FOREIGN_MESSAGE_READ_STATE = "message_read_state";
+    //public static final String FOREIGN_MESSAGE_READ_STATE = "message_read_state";
     public static final String FOREIGN_MESSAGE_HAS_ATTACHMENTS = "message_has_attachments";
     public static final String FOREIGN_MESSAGE_FWD_COUNT = "message_forward_count";
     public static final String FOREIGN_MESSAGE_ACTION = "message_action";

@@ -385,7 +385,7 @@ public class MessengerContentProvider extends ContentProvider {
         sMessagesProjectionMap.put(MessageColumns.PEER_ID, MessageColumns.FULL_PEER_ID);
         sMessagesProjectionMap.put(MessageColumns.FROM_ID, MessageColumns.FULL_FROM_ID);
         sMessagesProjectionMap.put(MessageColumns.DATE, MessageColumns.FULL_DATE);
-        sMessagesProjectionMap.put(MessageColumns.READ_STATE, MessageColumns.FULL_READ_STATE);
+        //sMessagesProjectionMap.put(MessageColumns.READ_STATE, MessageColumns.FULL_READ_STATE);
         sMessagesProjectionMap.put(MessageColumns.OUT, MessageColumns.FULL_OUT);
         //sMessagesProjectionMap.put(MessageColumns.TITLE, MessageColumns.FULL_TITLE);
         sMessagesProjectionMap.put(MessageColumns.BODY, MessageColumns.FULL_BODY);
@@ -446,7 +446,7 @@ public class MessengerContentProvider extends ContentProvider {
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_BODY, MessageColumns.FULL_BODY + " AS " + DialogsColumns.FOREIGN_MESSAGE_BODY);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_DATE, MessageColumns.FULL_DATE + " AS " + DialogsColumns.FOREIGN_MESSAGE_DATE);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_OUT, MessageColumns.FULL_OUT + " AS " + DialogsColumns.FOREIGN_MESSAGE_OUT);
-        sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_READ_STATE, MessageColumns.FULL_READ_STATE + " AS " + DialogsColumns.FOREIGN_MESSAGE_READ_STATE);
+        //sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_READ_STATE, MessageColumns.FULL_READ_STATE + " AS " + DialogsColumns.FOREIGN_MESSAGE_READ_STATE);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_HAS_ATTACHMENTS, MessageColumns.FULL_HAS_ATTACHMENTS + " AS " + DialogsColumns.FOREIGN_MESSAGE_HAS_ATTACHMENTS);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_FWD_COUNT, MessageColumns.FULL_FORWARD_COUNT + " AS " + DialogsColumns.FOREIGN_MESSAGE_FWD_COUNT);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_ACTION, MessageColumns.FULL_ACTION + " AS " + DialogsColumns.FOREIGN_MESSAGE_ACTION);
@@ -1930,6 +1930,9 @@ public class MessengerContentProvider extends ContentProvider {
                 break;
             case URI_DIALOGS:
                 tbName = DialogsColumns.TABLENAME;
+                break;
+            case URI_PEERS:
+                tbName = PeersColumns.TABLENAME;
                 break;
             case URI_POSTS:
                 tbName = PostsColumns.TABLENAME;

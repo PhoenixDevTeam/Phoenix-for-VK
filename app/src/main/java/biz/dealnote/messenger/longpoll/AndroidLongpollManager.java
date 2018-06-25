@@ -178,13 +178,13 @@ public class AndroidLongpollManager implements ILongpollManager, UserLongpoll.Ca
 
         if (nonEmpty(updates.getInputMessagesSetReadUpdates())) {
             for (InputMessagesSetReadUpdate update : updates.getInputMessagesSetReadUpdates()) {
-                actions.add(new MessagesRead(accountId, update.getPeerId(), update.getLocalId(), false));
+                actions.add(new MessagesRead(accountId, update.getPeerId(), update.getLocalId(), false, update.getUnreadCount()));
             }
         }
 
         if (nonEmpty(updates.getOutputMessagesSetReadUpdates())) {
             for (OutputMessagesSetReadUpdate update : updates.getOutputMessagesSetReadUpdates()) {
-                actions.add(new MessagesRead(accountId, update.getPeerId(), update.getLocalId(), true));
+                actions.add(new MessagesRead(accountId, update.getPeerId(), update.getLocalId(), true, update.getUnreadCount()));
             }
         }
 

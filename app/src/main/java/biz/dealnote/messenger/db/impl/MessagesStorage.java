@@ -79,7 +79,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
         cv.put(MessageColumns.PEER_ID, dbo.getPeerId());
         cv.put(MessageColumns.FROM_ID, dbo.getFromId());
         cv.put(MessageColumns.DATE, dbo.getDate());
-        cv.put(MessageColumns.READ_STATE, dbo.isRead());
+        //cv.put(MessageColumns.READ_STATE, dbo.isRead());
         cv.put(MessageColumns.OUT, dbo.isOut());
         //cv.put(MessageColumns.TITLE, dbo.getTitle());
         cv.put(MessageColumns.BODY, dbo.getBody());
@@ -220,11 +220,11 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
                     .getReadableDatabase()
                     .rawQuery("SELECT COUNT(" + MessageColumns._ID + ") FROM " + MessageColumns.TABLENAME +
                                     " WHERE " + MessageColumns.PEER_ID + " = ?" +
-                                    " AND " + MessageColumns.READ_STATE + " = ?" +
+                                    //" AND " + MessageColumns.READ_STATE + " = ?" +
                                     " AND " + MessageColumns.OUT + " = ?" +
                                     " AND " + MessageColumns.ATTACH_TO + " = ?" +
                                     " AND " + MessageColumns.DELETED + " = ?",
-                            new String[]{String.valueOf(peerId), "0", "0", "0", "0"});
+                            new String[]{String.valueOf(peerId), "0", /*"0",*/ "0", "0"});
 
             if (cursor.moveToNext()) {
                 result = cursor.getInt(0);
@@ -306,7 +306,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
             cv.put(MessageColumns.PEER_ID, peerId);
             cv.put(MessageColumns.FROM_ID, patch.getSenderId());
             cv.put(MessageColumns.DATE, patch.getDate());
-            cv.put(MessageColumns.READ_STATE, patch.isRead());
+            //cv.put(MessageColumns.READ_STATE, patch.isRead());
             cv.put(MessageColumns.OUT, patch.isOut());
             //cv.put(MessageColumns.TITLE, patch.getTitle());
             cv.put(MessageColumns.BODY, patch.getBody());
@@ -359,7 +359,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
                             ContentValues cv = new ContentValues();
                             cv.put(MessageColumns.FROM_ID, patch.getSenderId());
                             cv.put(MessageColumns.DATE, patch.getDate());
-                            cv.put(MessageColumns.READ_STATE, patch.isRead());
+                            //cv.put(MessageColumns.READ_STATE, patch.isRead());
                             cv.put(MessageColumns.OUT, patch.isOut());
                             //cv.put(MessageColumns.TITLE, patch.getTitle());
                             cv.put(MessageColumns.BODY, patch.getBody());
@@ -444,7 +444,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
                 .setAction(action)
                 .setExtras(extras)
                 .setBody(cursor.getString(cursor.getColumnIndex(MessageColumns.BODY)))
-                .setRead(cursor.getInt(cursor.getColumnIndex(MessageColumns.READ_STATE)) == 1)
+                //.setRead(cursor.getInt(cursor.getColumnIndex(MessageColumns.READ_STATE)) == 1)
                 .setOut(cursor.getInt(cursor.getColumnIndex(MessageColumns.OUT)) == 1)
                 .setStatus(status)
                 .setDate(cursor.getLong(cursor.getColumnIndex(MessageColumns.DATE)))
@@ -649,9 +649,10 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
         });
     }
 
+    @Deprecated
     private int markAsRead(Uri uri, String where, String[] args) {
         ContentValues cv = new ContentValues();
-        cv.put(MessageColumns.READ_STATE, true);
+        //cv.put(MessageColumns.READ_STATE, true);
         return getContentResolver().update(uri, cv, where, args);
     }
 
@@ -683,7 +684,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
                 MessageEntity dbo = this.fullMapDbo(accountId, cursor, withAttachments, true, cancelable);
 
                 // Хз куда это еще влепить
-                dbo.setRead(true);
+                //dbo.setRead(true);
                 dbo.setOut(dbo.getFromId() == accountId);
                 dbos.add(dbos.size() - cursor.getPosition(), dbo);
             }

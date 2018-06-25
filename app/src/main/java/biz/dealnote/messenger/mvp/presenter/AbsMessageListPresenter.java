@@ -16,6 +16,7 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.media.voice.IVoicePlayer;
 import biz.dealnote.messenger.media.voice.PrepareException;
+import biz.dealnote.messenger.model.LastReadId;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.VoiceMessage;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
@@ -65,10 +66,12 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
         }
     }
 
+    protected final LastReadId lastReadId = new LastReadId(0, 0);
+
     @OnGuiCreated
     public void resolveListView(){
         if(isGuiReady()) {
-            getView().displayMessages(mData);
+            getView().displayMessages(mData, lastReadId);
         }
     }
 

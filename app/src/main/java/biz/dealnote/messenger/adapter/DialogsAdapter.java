@@ -117,9 +117,10 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
         spannable.setSpan(mForegroundColorSpan, 0, aurhorText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         holder.mDialogMessage.setText(spannable, TextView.BufferType.SPANNABLE);
 
-        int titleTextStyle = getTextStyle(dialog.isChat(), dialog.isLastMessageOut(), dialog.isLastMessageRead());
+        boolean lastMessageRead = dialog.isLastMessageRead();
+        int titleTextStyle = getTextStyle(dialog.isChat(), dialog.isLastMessageOut(), lastMessageRead);
         holder.mDialogTitle.setTypeface(null, titleTextStyle);
-        holder.mDialogMessage.setBackgroundColor(dialog.isLastMessageRead() ? Color.TRANSPARENT : mDialogsUnreadColor);
+        holder.mDialogMessage.setBackgroundColor(lastMessageRead ? Color.TRANSPARENT : mDialogsUnreadColor);
 
         boolean online = false;
         boolean onlineMobile = false;

@@ -52,6 +52,7 @@ import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.ChatConfig;
 import biz.dealnote.messenger.model.FwdMessages;
+import biz.dealnote.messenger.model.LastReadId;
 import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.ModelsBundle;
@@ -185,9 +186,9 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
     }
 
     @Override
-    public void displayMessages(@NonNull List<Message> messages) {
+    public void displayMessages(@NonNull List<Message> messages, @NonNull LastReadId lastReadId) {
         if (nonNull(mRecyclerView)) {
-            mAdapter = new MessagesAdapter(getActivity(), messages, this);
+            mAdapter = new MessagesAdapter(getActivity(), messages, lastReadId, this);
             mAdapter.setOnMessageActionListener(this);
             mAdapter.setVoiceActionListener(this);
             mAdapter.addFooter(mHeaderView);

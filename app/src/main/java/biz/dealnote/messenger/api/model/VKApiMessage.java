@@ -32,7 +32,7 @@ public class VKApiMessage {
     /**
      * Message status (false — not read, true — read). (Not returned for forwarded messages.)
      */
-    public boolean read_state;
+    //public boolean read_state;
 
     /**
      * Message type (false — received, true — sent). (Not returned for forwarded messages.)

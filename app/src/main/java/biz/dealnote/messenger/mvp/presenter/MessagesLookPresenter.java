@@ -52,7 +52,7 @@ public class MessagesLookPresenter extends AbsMessageListPresenter<IMessagesLook
     @Override
     public void onGuiCreated(@NonNull IMessagesLookView viewHost) {
         super.onGuiCreated(viewHost);
-        viewHost.displayMessages(getData());
+        viewHost.displayMessages(getData(), lastReadId);
         resolveHeaders();
     }
 

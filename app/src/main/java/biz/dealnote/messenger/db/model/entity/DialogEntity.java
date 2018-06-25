@@ -97,7 +97,7 @@ public class DialogEntity extends Entity {
                 .setPhoto100(photo100)
                 .setPhoto50(photo50)
                 .setOutRead(outRead)
-                .setInRead(outRead)
+                .setInRead(inRead)
                 .setUnreadCount(unreadCount)
                 .setPinned(pinned);
     }

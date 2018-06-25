@@ -12,7 +12,7 @@ public final class MessageColumns implements BaseColumns {
     public static final String PEER_ID = "peer_id";
     public static final String FROM_ID = "from_id";
     public static final String DATE = "date";
-    public static final String READ_STATE = "read_state";
+    //public static final String READ_STATE = "read_state";
     public static final String OUT = "out";
    // public static final String TITLE = "title";
     public static final String BODY = "body";
@@ -42,7 +42,7 @@ public final class MessageColumns implements BaseColumns {
     public static final String FULL_PEER_ID = TABLENAME + "." + PEER_ID;
     public static final String FULL_FROM_ID = TABLENAME + "." + FROM_ID;
     public static final String FULL_DATE = TABLENAME + "." + DATE;
-    public static final String FULL_READ_STATE = TABLENAME + "." + READ_STATE;
+    //public static final String FULL_READ_STATE = TABLENAME + "." + READ_STATE;
     public static final String FULL_OUT = TABLENAME + "." + OUT;
     //public static final String FULL_TITLE = TABLENAME + "." + TITLE;
     public static final String FULL_BODY = TABLENAME + "." + BODY;

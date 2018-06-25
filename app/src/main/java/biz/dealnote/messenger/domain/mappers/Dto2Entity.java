@@ -873,7 +873,7 @@ public class Dto2Entity {
 
         MessageEntity entity = new MessageEntity(dto.id, dto.peer_id, dto.from_id)
                 .setDate(dto.date)
-                .setRead(dto.read_state)
+                //.setRead(dto.read_state)
                 .setOut(dto.out)
                 //.setTitle(dto.title)
                 .setBody(dto.body)

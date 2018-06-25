@@ -326,20 +326,22 @@ public class Entity2Model {
                 .setDeleted(dbo.isDeleted());
     }
 
-    public static Dialog buildDialogFromDbo(int accountId, DialogEntity dbo, IOwnersBundle owners) {
-        Message message = message(accountId, dbo.getMessage(), owners);
+    public static Dialog buildDialogFromDbo(int accountId, DialogEntity entity, IOwnersBundle owners) {
+        Message message = message(accountId, entity.getMessage(), owners);
 
         Dialog dialog = new Dialog()
-                .setLastMessageId(dbo.getLastMessageId())
-                .setPeerId(dbo.getPeerId())
-                .setPhoto50(dbo.getPhoto50())
-                .setPhoto100(dbo.getPhoto100())
-                .setPhoto200(dbo.getPhoto200())
-                .setTitle(dbo.getTitle())
+                .setLastMessageId(entity.getLastMessageId())
+                .setPeerId(entity.getPeerId())
+                .setPhoto50(entity.getPhoto50())
+                .setPhoto100(entity.getPhoto100())
+                .setPhoto200(entity.getPhoto200())
+                .setTitle(entity.getTitle())
                 .setMessage(message)
-                .setUnreadCount(dbo.getUnreadCount());
+                .setUnreadCount(entity.getUnreadCount())
+                .setOutRead(entity.getOutRead())
+                .setInRead(entity.getInRead());
 
-        switch (Peer.getType(dbo.getPeerId())) {
+        switch (Peer.getType(entity.getPeerId())) {
             case Peer.GROUP:
             case Peer.USER:
                 dialog.setInterlocutor(owners.getById(dialog.getPeerId()));
@@ -361,7 +363,7 @@ public class Entity2Model {
                 //.setTitle(dbo.getTitle())
                 .setPeerId(dbo.getPeerId())
                 .setSenderId(dbo.getFromId())
-                .setRead(dbo.isRead())
+                //.setRead(dbo.isRead())
                 .setOut(dbo.isOut())
                 .setStatus(dbo.getStatus())
                 .setDate(dbo.getDate())
