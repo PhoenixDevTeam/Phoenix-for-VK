@@ -790,13 +790,17 @@ public class MessagesInteractor implements IMessagesInteractor {
     }
 
     @Override
-    public Completable markAsRead(int accountId, int peerId) {
+    public Completable markAsRead(int accountId, int peerId, int toId) {
         // TODO: 07.10.2017 Dialogs table update?
+
+        PeerPatch patch = new PeerPatch(peerId).withInRead(toId, 0);
         return networker.vkDefault(accountId)
                 .messages()
-                .markAsRead(null, peerId, null)
-                .flatMapCompletable(ignored -> storages.messages().markAsRead(accountId, peerId))
-                .andThen(fixDialogs(accountId, peerId));
+                .markAsRead(peerId, toId)
+                .flatMapCompletable(ignored -> storages.dialogs().applyPatches(accountId, Collections.singletonList(patch)));
+
+                //.flatMapCompletable(ignored -> storages.messages().markAsRead(accountId, peerId))
+                //.andThen(fixDialogs(accountId, peerId));
     }
 
     private Single<Integer> internalSend(int accountId, MessageEntity dbo) {

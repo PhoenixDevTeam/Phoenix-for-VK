@@ -131,10 +131,10 @@ class MessagesApi extends AbsApi implements IMessagesApi {
     }
 
     @Override
-    public Single<Boolean> markAsRead(Collection<Integer> messageIds, Integer peerId, Integer startMessageId) {
+    public Single<Boolean> markAsRead(Integer peerId, Integer startMessageId) {
         return serviceRx(TokenType.USER, TokenType.COMMUNITY)
                 .flatMap(service -> service
-                        .markAsRead(join(messageIds, ","), peerId, startMessageId)
+                        .markAsRead(peerId, startMessageId)
                         .map(extractResponseWithErrorHandling())
                         .map(response -> response == 1));
     }

@@ -59,7 +59,7 @@ public interface IMessagesApi {
     Single<Map<String, Integer>> delete(Collection<Integer> messageIds, Boolean deleteForAll, Boolean spam);
 
     @CheckResult
-    Single<Boolean> markAsRead(Collection<Integer> messageIds, Integer peerId, Integer startMessageId);
+    Single<Boolean> markAsRead(Integer peerId, Integer startMessageId);
 
     @CheckResult
     Single<Boolean> setActivity(int peerId, boolean typing);

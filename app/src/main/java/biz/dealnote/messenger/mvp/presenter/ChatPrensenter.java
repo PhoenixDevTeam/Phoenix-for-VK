@@ -466,10 +466,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
             setupSendButtonState(newState, true);
         }
 
-        Message lastMessage = isEmpty(getData()) ? null : getData().get(0);
-        if (nonNull(lastMessage) && !lastMessage.isOut() && lastMessage.getId() > lastReadId.getIn()) {
-            readAllUnreadMessages();
-        }
+        readAllUnreadMessagesIfExists();
 
         mTextingNotifier.notifyAboutTyping(getPeerId());
     }
@@ -1092,25 +1089,19 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         if (message.getStatus() == MessageStatus.ERROR) {
             getView().showErrorSendDialog(message);
         } else {
-            readAllUnreadMessages();
+            readAllUnreadMessagesIfExists();
         }
     }
 
-    private void readAllUnreadMessages() {
-        boolean has = false;
+    private void readAllUnreadMessagesIfExists() {
+        Message last = nonEmpty(getData()) ? getData().get(0) : null;
 
-        for (Message message : getData()) {
-            if (!message.isOut() && message.getId() < lastReadId.getIn()) {
-                has = true;
-                break;
-            }
-        }
+        if (nonNull(last) && !last.isOut() && last.getId() > lastReadId.getIn()) {
+            lastReadId.setIn(last.getId());
 
-        if (has) {
             safeNotifyDataChanged();
-            final int peedId = getPeerId();
 
-            appendDisposable(messagesInteractor.markAsRead(messagesOwnerId, peedId)
+            appendDisposable(messagesInteractor.markAsRead(messagesOwnerId, mPeer.getId(), last.getId())
                     .compose(RxUtils.applyCompletableIOToMainSchedulers())
                     .subscribe(dummy(), t -> showError(getView(), t)));
         }

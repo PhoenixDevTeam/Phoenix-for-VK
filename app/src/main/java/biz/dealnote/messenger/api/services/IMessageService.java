@@ -169,15 +169,13 @@ public interface IMessageService {
     /**
      * Marks messages as read.
      *
-     * @param messageIds     IDs of messages to mark as read. List of comma-separated positive numbers
      * @param peerId         Destination ID.
      * @param startMessageId Message ID to start from
      * @return 1
      */
     @FormUrlEncoded
     @POST("messages.markAsRead")
-    Single<BaseResponse<Integer>> markAsRead(@Field("message_ids") String messageIds,
-                                             @Field("peer_id") Integer peerId,
+    Single<BaseResponse<Integer>> markAsRead(@Field("peer_id") Integer peerId,
                                              @Field("start_message_id") Integer startMessageId);
 
     /**

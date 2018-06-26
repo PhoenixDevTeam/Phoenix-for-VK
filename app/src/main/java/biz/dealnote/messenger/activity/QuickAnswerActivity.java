@@ -47,7 +47,6 @@ import static biz.dealnote.messenger.util.Utils.isEmpty;
 public class QuickAnswerActivity extends AppCompatActivity {
 
     public static final String PARAM_BODY = "body";
-    public static final String PARAM_MESSAGE_ID = "message_id";
     public static final String PARAM_MESSAGE_SENT_TIME = "message_sent_time";
 
     public static final String EXTRA_FOCUS_TO_FIELD = "focus_to_field";
@@ -57,6 +56,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
     private int peerId;
     private TextingNotifier notifier;
     private int accountId;
+    private int messageId;
 
     private boolean mMessageIsRead;
     private IMessagesInteractor mMessagesInteractor;
@@ -75,6 +75,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
 
         setTheme(R.style.QuickReply);
 
+        messageId = getIntent().getExtras().getInt(Extra.MESSAGE_ID);
         accountId = getIntent().getExtras().getInt(Extra.ACCOUNT_ID);
         peerId = getIntent().getExtras().getInt(Extra.PEER_ID);
         notifier = new TextingNotifier(accountId);
@@ -175,7 +176,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
         Intent intent = new Intent(context, QuickAnswerActivity.class);
         intent.putExtra(PARAM_BODY, body);
         intent.putExtra(Extra.ACCOUNT_ID, accountId);
-        intent.putExtra(PARAM_MESSAGE_ID, mid);
+        intent.putExtra(Extra.MESSAGE_ID, mid);
         intent.putExtra(Extra.PEER_ID, peerId);
         intent.putExtra(Extra.TITLE, title);
         intent.putExtra(PARAM_MESSAGE_SENT_TIME, messageTime);
@@ -231,7 +232,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     private void setMessageAsRead() {
-        mCompositeDisposable.add(mMessagesInteractor.markAsRead(accountId, peerId)
+        mCompositeDisposable.add(mMessagesInteractor.markAsRead(accountId, peerId, messageId)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
                 .subscribe(RxUtils.dummy(), ignore()));
     }

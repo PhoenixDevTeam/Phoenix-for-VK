@@ -109,5 +109,5 @@ public interface IMessagesInteractor {
 
     Single<Integer> createGroupChat(int accountId, Collection<Integer> users, String title);
 
-    Completable markAsRead(int accountId, int peerId);
+    Completable markAsRead(int accountId, int peerId, int toId);
 }
