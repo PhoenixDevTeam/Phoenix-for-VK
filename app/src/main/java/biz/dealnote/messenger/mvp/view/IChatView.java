@@ -13,6 +13,7 @@ import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.ModelsBundle;
 import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.upload.UploadDestination;
+import biz.dealnote.messenger.util.Optional;
 
 /**
  * Created by ruslan.kolbasa on 05.10.2016.
@@ -30,6 +31,8 @@ public interface IChatView extends IBasicMessageListView, IErrorView {
     void requestRecordPermissions();
     void displayRecordingDuration(long time);
     void doCloseAfterSend();
+
+    void displayPinnedMessage(@NonNull Optional<Message> pinned);
 
     void goToMessageAttachmentsEditor(int accountId, int messageOwnerId, @NonNull UploadDestination destination,
                                       String body, @Nullable ModelsBundle attachments);

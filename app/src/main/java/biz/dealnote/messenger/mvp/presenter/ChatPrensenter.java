@@ -237,6 +237,11 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         updateSubtitle();
     }
 
+    @OnGuiCreated
+    private void resolvePinnedMessageView(){
+        if(isGuiReady()) getView().displayPinnedMessage(nonNull(conversation) && nonNull(conversation.getPinned()) ? Optional.wrap(conversation.getPinned()) : Optional.empty());
+    }
+
     private void onLongpollKeepAliveRequest() {
         checkLongpoll();
     }
@@ -322,6 +327,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         setCacheLoadingNow(false);
 
         conversation = data.getFirst();
+        resolvePinnedMessageView();
         lastReadId.setIn(conversation.getInRead()).setOut(conversation.getOutRead());
         onAllDataLoaded(data.getSecond(), false);
     }

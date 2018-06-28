@@ -1,24 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <include
-        layout="@layout/toolbar_with_elevation"/>
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:clipToPadding="true"
+            app:popupTheme="?toolbarPopupStyle"
+            app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
+            app:theme="?toolbarAppStyle"
+            app:titleTextAppearance="@style/Theme.Title.Toolbar" />
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:background="?attr/colorPrimaryDark"
+            android:id="@+id/pinned_root_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp">
+
+            <ImageView
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_centerVertical="true"
+                android:id="@+id/pinned_avatar"
+                android:layout_width="28dp"
+                android:layout_height="28dp" />
+
+            <LinearLayout
+                android:layout_toRightOf="@+id/pinned_avatar"
+                android:layout_toEndOf="@+id/pinned_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_toLeftOf="@+id/button_unpin"
+                android:layout_toStartOf="@+id/button_unpin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/pinned_title"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/textColorPrimaryOnColoredBack"
+                    tools:text="Artem Kolbasa" />
+
+                <TextView
+                    android:id="@+id/pinned_subtitle"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:textColor="?attr/textColorPrimaryOnColoredBack"
+                    tools:text="Здравствуйте! Меня зовут Игорь Гофман" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:id="@+id/button_unpin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="?attr/toolbarCloseIcon" />
+
+        </RelativeLayout>
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:scrollbars="vertical"
         android:id="@+id/fragment_friend_dialog_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linearLayout"
-        android:layout_below="@id/toolbar" />
+        android:layout_below="@id/appbar"
+        android:scrollbars="vertical" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:id="@+id/linearLayout"
         android:orientation="horizontal">
 
         <include
@@ -28,15 +106,14 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/fragment_chat_empty_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/chat_empty_text"
-        android:id="@+id/fragment_chat_empty_text"
-        android:gravity="center"
         android:layout_above="@+id/linearLayout"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/chat_empty_text"
         android:textColor="?android:textColorPrimary"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:textSize="@dimen/font_size_subtitle" />
 
 </RelativeLayout>

@@ -24,6 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -56,6 +57,7 @@ import biz.dealnote.messenger.model.LastReadId;
 import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.ModelsBundle;
+import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.model.VoiceMessage;
 import biz.dealnote.messenger.mvp.presenter.ChatPrensenter;
@@ -67,6 +69,8 @@ import biz.dealnote.messenger.upload.UploadDestination;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.InputTextDialog;
 import biz.dealnote.messenger.util.Objects;
+import biz.dealnote.messenger.util.Optional;
+import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.messenger.view.InputViewController;
 import biz.dealnote.messenger.view.LoadMoreFooterHelper;
 import biz.dealnote.messenger.view.emoji.EmojiconTextView;
@@ -123,6 +127,11 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
         setHasOptionsMenu(true);
     }
 
+    private View mPinnedView;
+    private ImageView mPinnedAvatar;
+    private TextView mPinnedTitle;
+    private TextView mPinnedSubtitle;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -152,6 +161,11 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
 
         mInputViewController.setRecordActionsCallback(this);
         mInputViewController.setOnSickerClickListener(this);
+
+        mPinnedView = root.findViewById(R.id.pinned_root_view);
+        mPinnedAvatar = mPinnedView.findViewById(R.id.pinned_avatar);
+        mPinnedTitle = mPinnedView.findViewById(R.id.pinned_title);
+        mPinnedSubtitle = mPinnedView.findViewById(R.id.pinned_subtitle);
         return root;
     }
 
@@ -346,6 +360,20 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
             requireActivity().finish();
         } catch (Exception ignored){
 
+        }
+    }
+
+    @Override
+    public void displayPinnedMessage(@NonNull Optional<Message> pinned) {
+        if(nonNull(mPinnedView)){
+            mPinnedView.setVisibility(pinned.isEmpty() ? View.GONE : View.VISIBLE);
+            if(pinned.nonEmpty()){
+                Message message = pinned.get();
+                Owner sender = message.getSender();
+                ViewUtils.displayAvatar(mPinnedAvatar, CurrentTheme.createTransformationForAvatar(requireContext()), sender.get100photoOrSmaller(), null);
+                mPinnedTitle.setText(sender.getFullName());
+                mPinnedSubtitle.setText(message.getBody());
+            }
         }
     }
 
