@@ -99,7 +99,7 @@ public class FeedbackInteractor implements IFeedbackInteractor {
         return networker.vkDefault(accountId)
                 .notifications()
                 .markAsViewed()
-                .toCompletable();
+                .ignoreElement();
     }
 
     private Single<List<Feedback>> getCachedFeedbacksByCriteria(NotificationsCriteria criteria) {

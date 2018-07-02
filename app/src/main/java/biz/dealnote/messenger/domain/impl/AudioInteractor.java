@@ -52,7 +52,7 @@ public class AudioInteractor implements IAudioInteractor {
         return networker.vkDefault(accountId)
                 .audio()
                 .delete(audioId, ownerId)
-                .toCompletable();
+                .ignoreElement();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class AudioInteractor implements IAudioInteractor {
         return networker.vkDefault(accountId)
                 .audio()
                 .restore(audioId, ownerId)
-                .toCompletable();
+                .ignoreElement();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class AudioInteractor implements IAudioInteractor {
         return networker.vkDefault(accountId)
                 .audio()
                 .setBroadcast(new IdPair(audioId, audioOwnerId), targetIds)
-                .toCompletable();
+                .ignoreElement();
     }
 
     @Override

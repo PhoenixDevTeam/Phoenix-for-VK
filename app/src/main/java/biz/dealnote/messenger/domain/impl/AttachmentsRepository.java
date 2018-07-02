@@ -65,7 +65,7 @@ public class AttachmentsRepository implements IAttachmentsRepository {
                     AddEvent event = new AddEvent(accountId, attachToType, attachToDbid, events);
                     addPublishSubject.onNext(event);
                 })
-                .toCompletable();
+                .ignoreElement();
     }
 
     @Override

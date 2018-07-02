@@ -282,6 +282,6 @@ public class FaveInteractor implements IFaveInteractor {
         return networker.vkDefault(accountId)
                 .fave()
                 .addUser(userId)
-                .toCompletable();
+                .ignoreElement();
     }
 }

@@ -38,7 +38,7 @@ class GroupsApi extends AbsApi implements IGroupsApi {
                 .flatMapCompletable(service -> service
                         .editManager(groupId, userId, role, integerFromBoolean(isContact), contactPosition, contactPhone, contactEmail)
                         .map(extractResponseWithErrorHandling())
-                        .toCompletable());
+                        .ignoreElement());
     }
 
     @Override
@@ -47,7 +47,7 @@ class GroupsApi extends AbsApi implements IGroupsApi {
                 .flatMapCompletable(service -> service
                         .unbanUser(groupId, userId)
                         .map(extractResponseWithErrorHandling())
-                        .toCompletable());
+                        .ignoreElement());
     }
 
     @Override
@@ -56,7 +56,7 @@ class GroupsApi extends AbsApi implements IGroupsApi {
                 .flatMapCompletable(service -> service
                         .banUser(groupId, userId, endDate, reason, comment, integerFromBoolean(commentVisible))
                         .map(extractResponseWithErrorHandling())
-                        .toCompletable());
+                        .ignoreElement());
     }
 
     @Override

@@ -23,7 +23,7 @@ public class PersistentLogger {
 
         getStackTrace(cause)
                 .flatMapCompletable(s -> store.add(LogEvent.Type.ERROR, tag, s)
-                        .toCompletable())
+                        .ignoreElement())
                 .onErrorComplete()
                 .subscribeOn(Schedulers.io())
                 .subscribe(() -> {}, ignore -> {});

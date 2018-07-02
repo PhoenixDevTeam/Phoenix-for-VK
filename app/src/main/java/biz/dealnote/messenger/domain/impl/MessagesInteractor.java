@@ -324,7 +324,7 @@ public class MessagesInteractor implements IMessagesInteractor {
         return Single.just(messages)
                 .compose(DTO_TO_DBO)
                 .flatMap(dbos -> storages.messages().insertDbos(accountId, dbos))
-                .toCompletable();
+                .ignoreElement();
     }
 
     @Override
@@ -716,7 +716,7 @@ public class MessagesInteractor implements IMessagesInteractor {
         return networker.vkDefault(accountId)
                 .messages()
                 .removeChatUser(chatId, userId)
-                .toCompletable();
+                .ignoreElement();
     }
 
     @Override
@@ -730,7 +730,7 @@ public class MessagesInteractor implements IMessagesInteractor {
                     List<AppChatUser> data = new ArrayList<>();
 
                     for (User user : users) {
-                        completable = completable.andThen(api.addChatUser(chatId, user.getId()).toCompletable());
+                        completable = completable.andThen(api.addChatUser(chatId, user.getId()).ignoreElement());
 
                         AppChatUser chatUser = new AppChatUser(user, accountId, "profile")
                                 .setCanRemove(true)
@@ -761,7 +761,7 @@ public class MessagesInteractor implements IMessagesInteractor {
         return networker.vkDefault(accountId)
                 .messages()
                 .delete(ids, null, null)
-                .toCompletable();
+                .ignoreElement();
     }
 
     @Override
@@ -770,7 +770,7 @@ public class MessagesInteractor implements IMessagesInteractor {
         return networker.vkDefault(accountId)
                 .messages()
                 .restore(messageId)
-                .toCompletable();
+                .ignoreElement();
     }
 
     @Override

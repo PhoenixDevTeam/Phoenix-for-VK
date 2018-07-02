@@ -157,7 +157,7 @@ public class PushRegistrationResolver implements IPushRegistrationResolver {
             return networker.vkManual(registration.getUserId(), registration.getVkToken())
                     .account()
                     .registerDevice(registration.getGmcToken(), deviceModel, null, registration.getDeviceId(), osVersion, targetSettingsStr)
-                    .toCompletable();
+                    .ignoreElement();
         } catch (JSONException e) {
             return Completable.error(e);
         }
@@ -167,7 +167,7 @@ public class PushRegistrationResolver implements IPushRegistrationResolver {
         return networker.vkManual(registration.getUserId(), registration.getVkToken())
                 .account()
                 .unregisterDevice(registration.getDeviceId())
-                .toCompletable()
+                .ignoreElement()
                 .onErrorResumeNext(t -> {
                     Throwable cause = getCauseIfRuntime(t);
 

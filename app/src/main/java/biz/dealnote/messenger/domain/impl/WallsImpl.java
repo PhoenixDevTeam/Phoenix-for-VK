@@ -91,7 +91,7 @@ public class WallsImpl implements IWalls {
                 .wall()
                 .edit(ownerId, postId, friendsOnly, message, tokens, services,
                         signed, publishDate, latitude, longitude, placeId, markAsAds)
-                .flatMapCompletable(aBoolean -> getAndStorePost(accountId, ownerId, postId).toCompletable());
+                .flatMapCompletable(aBoolean -> getAndStorePost(accountId, ownerId, postId).ignoreElement());
     }
 
     @Override

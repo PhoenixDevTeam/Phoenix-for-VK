@@ -70,7 +70,7 @@ public class CommunitiesInteractor implements ICommunitiesInteractor {
         return networker.vkDefault(accountId)
                 .groups()
                 .join(groupId, null)
-                .toCompletable();
+                .ignoreElement();
     }
 
     @Override
@@ -78,6 +78,6 @@ public class CommunitiesInteractor implements ICommunitiesInteractor {
         return networker.vkDefault(accountId)
                 .groups()
                 .leave(groupId)
-                .toCompletable();
+                .ignoreElement();
     }
 }

@@ -113,7 +113,7 @@ public class VideosInteractor implements IVideosInteractor {
         return networker.vkDefault(accountId)
                 .video()
                 .addVideo(targetOwnerId, videoId, videoOwnerId)
-                .toCompletable();
+                .ignoreElement();
     }
 
     @Override

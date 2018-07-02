@@ -116,7 +116,7 @@ public class CommentsInteractor implements ICommentsInteractor {
 
         return Single.just(data)
                 .flatMapCompletable(dbos -> cache.comments().insert(accountId, sourceId, ownerId, type, dbos, owners, invalidateCache)
-                        .toCompletable());
+                        .ignoreElement());
     }
 
     private Single<List<Comment>> transform(int accountId, @NonNull Commented commented, @NonNull List<VKApiComment> comments, Collection<VKApiUser> users, Collection<VKApiCommunity> groups) {
@@ -451,7 +451,7 @@ public class CommentsInteractor implements ICommentsInteractor {
                                     tempData.append(response, continueToCommentId);
                                     return response;
                                 }
-                        ).toCompletable());
+                        ).ignoreElement());
     }
 
     private Single<DefaultCommentsResponse> getDefaultCommentsService(int accountId, Commented commented, Integer startCommentId,
@@ -578,7 +578,7 @@ public class CommentsInteractor implements ICommentsInteractor {
 
                         storeCompletable = cache.comments()
                                 .insert(accountId, sourceId, ownerId, sourceType, dbos, Dto2Entity.buildOwnerDbos(users, communities), false)
-                                .toCompletable();
+                                .ignoreElement();
                     } else {
                         storeCompletable = Completable.complete();
                     }

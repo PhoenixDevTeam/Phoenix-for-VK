@@ -24,7 +24,7 @@ public class TextingNotifier {
                 .messages()
                 .setActivity(peerId, true)
                 .delay(5, TimeUnit.SECONDS)
-                .toCompletable();
+                .ignoreElement();
     }
 
     public void notifyAboutTyping(int peerId) {
