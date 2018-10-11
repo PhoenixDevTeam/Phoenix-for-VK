@@ -19,9 +19,9 @@ import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.ViewUtils;
+import biz.dealnote.mvp.compat.AbsMvpFragment;
 import biz.dealnote.mvp.core.AbsPresenter;
 import biz.dealnote.mvp.core.IMvpView;
-import biz.dealnote.mvp.ui.AbsPresenterFragment;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
@@ -29,8 +29,8 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by ruslan.kolbasa on 11.10.2016.
  * phoenix
  */
-public abstract class BasePresenterFragment<P extends AbsPresenter<V>, V extends IMvpView>
-        extends AbsPresenterFragment<P, V> implements IMvpView, IAccountDependencyView, IProgressView, IErrorView, IToastView, IToolbarView {
+public abstract class BaseMvpFragment<P extends AbsPresenter<V>, V extends IMvpView>
+        extends AbsMvpFragment<P, V> implements IMvpView, IAccountDependencyView, IProgressView, IErrorView, IToastView, IToolbarView {
 
     public static final String EXTRA_HIDE_TOOLBAR = "extra_hide_toolbar";
 
@@ -71,11 +71,6 @@ public abstract class BasePresenterFragment<P extends AbsPresenter<V>, V extends
     @Override
     public void setToolbarTitle(String title) {
         ActivityUtils.setToolbarTitle(this, title);
-    }
-
-    @Override
-    public void savePresenterState(@NonNull P presenter, @NonNull Bundle outState) {
-        presenter.saveState(outState);
     }
 
     @Override

@@ -47,8 +47,6 @@ import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
  */
 public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
 
-    private static final String TAG = UserWallPresenter.class.getSimpleName();
-
     private final List<PostFilter> filters;
     private final IOwnersInteractor ownersInteractor;
     private final IRelationshipInteractor relationshipInteractor;
@@ -207,11 +205,6 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
         }
 
         return filters;
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void fireStatusClick() {

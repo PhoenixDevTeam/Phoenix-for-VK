@@ -69,9 +69,4 @@ public class ChatAttachmentAudioPresenter extends BaseChatAttachmentsPresenter<A
             getView().setToolbarSubtitle(getString(R.string.audios_count, safeCountOf(data)));
         }
     }
-
-    @Override
-    protected String tag() {
-        return ChatAttachmentAudioPresenter.class.getSimpleName();
-    }
 }

@@ -37,7 +37,6 @@ import biz.dealnote.messenger.mvp.presenter.MessageEditPresenter;
 import biz.dealnote.messenger.mvp.view.IMessageEditView;
 import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.util.AssertUtils;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
@@ -98,8 +97,6 @@ public class MessageEditFragment extends AbsPresenterBottomSheetFragment<Message
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bundle extras = nonNull(data) ? data.getExtras() : null;
-        Logger.d(tag(), "onActivityResult, extras: " + extras);
 
         if(requestCode == REQUEST_ADD_VKPHOTO && resultCode == Activity.RESULT_OK){
             ArrayList<Photo> vkphotos = data.getParcelableArrayListExtra(Extra.ATTACHMENTS);
@@ -118,11 +115,6 @@ public class MessageEditFragment extends AbsPresenterBottomSheetFragment<Message
     }
 
     @Override
-    public void savePresenterState(@NonNull MessageEditPresenter presenter, @NonNull Bundle outState) {
-        presenter.saveState(outState);
-    }
-
-    @Override
     public IPresenterFactory<MessageEditPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
             int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
@@ -130,11 +122,6 @@ public class MessageEditFragment extends AbsPresenterBottomSheetFragment<Message
             AssertUtils.requireNonNull(message);
             return new MessageEditPresenter(accountId, message, saveInstanceState);
         };
-    }
-
-    @Override
-    protected String tag() {
-        return MessageEditFragment.class.getSimpleName();
     }
 
     @Override

@@ -25,8 +25,6 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  */
 public class CommunityOptionsPresenter extends AccountDependencyPresenter<ICommunityOptionsView> {
 
-    private static final String TAG = CommunityOptionsPresenter.class.getSimpleName();
-
     private final VKApiCommunity community;
 
     private final GroupSettings settings;
@@ -104,11 +102,6 @@ public class CommunityOptionsPresenter extends AccountDependencyPresenter<ICommu
                 }
             }
         }
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void onCategoryClick() {

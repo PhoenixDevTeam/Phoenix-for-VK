@@ -321,11 +321,6 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         super.onDestroyed();
     }
 
-    @Override
-    protected String tag() {
-        return VkPhotosPresenter.class.getSimpleName();
-    }
-
     public void fireUploadRemoveClick(Upload o) {
         uploadManager.cancel(o.getId());
     }

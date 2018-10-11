@@ -9,7 +9,6 @@ import java.util.List;
 
 import biz.dealnote.messenger.model.AccessIdPair;
 import biz.dealnote.messenger.model.Photo;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.RxUtils;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
@@ -56,13 +55,6 @@ public class SimplePhotoPresenter extends PhotoPagerPresenter {
         onPhotoListRefresh(photos);
     }
 
-    private static final String TAG = SimplePhotoPresenter.class.getSimpleName();
-
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     private void onPhotoListRefresh(@NonNull List<Photo> photos) {
         List<Photo> originalData = super.getData();
 
@@ -76,8 +68,6 @@ public class SimplePhotoPresenter extends PhotoPagerPresenter {
 
                     // если у фото до этого не было ссылок на файлы
                     if (isGuiReady() && (isNull(orig.getSizes()) || orig.getSizes().isEmpty())) {
-                        Logger.d(TAG, "Rebind holder at " + i);
-
                         getView().rebindPhotoAt(i);
                     }
                     break;

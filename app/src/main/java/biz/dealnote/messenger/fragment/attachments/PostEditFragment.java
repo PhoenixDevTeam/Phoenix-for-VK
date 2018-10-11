@@ -87,11 +87,6 @@ public class PostEditFragment extends AbsPostEditFragment<PostEditPresenter, IPo
     }
 
     @Override
-    protected String tag() {
-        return PostEditFragment.class.getSimpleName();
-    }
-
-    @Override
     public void closeAsSuccess() {
         requireActivity().onBackPressed();
     }

@@ -19,7 +19,7 @@ import java.util.List;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.LocalPhotoAlbumsAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.LocalImageAlbum;
 import biz.dealnote.messenger.mvp.presenter.LocalPhotoAlbumsPresenter;
@@ -29,7 +29,7 @@ import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-public class LocalImageAlbumsFragment extends BasePresenterFragment<LocalPhotoAlbumsPresenter, ILocalPhotoAlbumsView>
+public class LocalImageAlbumsFragment extends BaseMvpFragment<LocalPhotoAlbumsPresenter, ILocalPhotoAlbumsView>
         implements LocalPhotoAlbumsAdapter.ClickListener, SwipeRefreshLayout.OnRefreshListener, ILocalPhotoAlbumsView {
 
     private static final int REQYEST_PERMISSION_READ_EXTERNAL_STORAGE = 89;
@@ -124,16 +124,6 @@ public class LocalImageAlbumsFragment extends BasePresenterFragment<LocalPhotoAl
         if(requestCode == REQYEST_PERMISSION_READ_EXTERNAL_STORAGE){
             getPresenter().fireReadExternalStoregePermissionResolved();
         }
-    }
-
-    @Override
-    protected String tag() {
-        return LocalImageAlbumsFragment.class.getSimpleName();
-    }
-
-    @Override
-    public void savePresenterState(@NonNull LocalPhotoAlbumsPresenter presenter, @NonNull Bundle outState) {
-        presenter.saveState(outState);
     }
 
     @Override

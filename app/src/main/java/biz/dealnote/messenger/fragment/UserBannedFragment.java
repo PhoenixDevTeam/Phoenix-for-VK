@@ -27,7 +27,7 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.SelectProfilesActivity;
 import biz.dealnote.messenger.adapter.PeopleAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.fragment.friends.FriendsTabsFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
@@ -46,7 +46,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 09.07.2017.
  * phoenix
  */
-public class UserBannedFragment extends BasePresenterFragment<UserBannedPresenter, IUserBannedView> implements IUserBannedView, PeopleAdapter.LongClickListener {
+public class UserBannedFragment extends BaseMvpFragment<UserBannedPresenter, IUserBannedView> implements IUserBannedView, PeopleAdapter.LongClickListener {
 
     private static final int REQUEST_SELECT = 13;
 
@@ -202,11 +202,6 @@ public class UserBannedFragment extends BasePresenterFragment<UserBannedPresente
                 requireArguments().getInt(Extra.ACCOUNT_ID),
                 saveInstanceState
         );
-    }
-
-    @Override
-    protected String tag() {
-        return UserBannedFragment.class.getSimpleName();
     }
 
     @Override

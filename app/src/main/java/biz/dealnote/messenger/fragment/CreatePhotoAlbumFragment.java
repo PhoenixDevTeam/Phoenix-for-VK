@@ -17,7 +17,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.model.PhotoAlbum;
 import biz.dealnote.messenger.model.PhotoAlbumEditor;
@@ -35,7 +35,7 @@ import biz.dealnote.messenger.view.steppers.impl.CreatePhotoAlbumStep4Holder;
 import biz.dealnote.messenger.view.steppers.impl.CreatePhotoAlbumStepsHost;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-public class CreatePhotoAlbumFragment extends BasePresenterFragment<EditPhotoAlbumPresenter, IEditPhotoAlbumView>
+public class CreatePhotoAlbumFragment extends BaseMvpFragment<EditPhotoAlbumPresenter, IEditPhotoAlbumView>
         implements BackPressCallback, BaseHolderListener, IEditPhotoAlbumView, CreatePhotoAlbumStep4Holder.ActionListener, CreatePhotoAlbumStep3Holder.ActionListener, CreatePhotoAlbumStep2Holder.ActionListener, CreatePhotoAlbumStep1Holder.ActionListener {
 
     private static final String TAG = CreatePhotoAlbumFragment.class.getSimpleName();
@@ -245,11 +245,6 @@ public class CreatePhotoAlbumFragment extends BasePresenterFragment<EditPhotoAlb
                 .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
-    }
-
-    @Override
-    protected String tag() {
-        return CreatePhotoAlbumFragment.class.getSimpleName();
     }
 
     /*private void onPhotoAlbumCreated(@NonNull VKApiPhotoAlbum album) {

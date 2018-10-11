@@ -69,11 +69,6 @@ public class ChatAttachmentPhotoPresenter extends BaseChatAttachmentsPresenter<P
         }
     }
 
-    @Override
-    protected String tag() {
-        return ChatAttachmentPhotoPresenter.class.getSimpleName();
-    }
-
     private DisposableHolder<Void> openGalleryDisposableHolder = new DisposableHolder<>();
 
     @Override

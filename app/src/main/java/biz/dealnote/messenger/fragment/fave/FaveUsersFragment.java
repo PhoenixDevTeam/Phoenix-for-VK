@@ -18,7 +18,7 @@ import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.fave.FaveUsersAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.User;
@@ -30,7 +30,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class FaveUsersFragment extends BasePresenterFragment<FaveUsersPresenter, IFaveUsersView> implements IFaveUsersView, FaveUsersAdapter.ClickListener {
+public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFaveUsersView> implements IFaveUsersView, FaveUsersAdapter.ClickListener {
 
     public static FaveUsersFragment newInstance(int accountId){
         Bundle args = new Bundle();
@@ -79,11 +79,6 @@ public class FaveUsersFragment extends BasePresenterFragment<FaveUsersPresenter,
         if(nonNull(mEmpty) && nonNull(mAdapter)){
             mEmpty.setVisibility(mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
         }
-    }
-
-    @Override
-    protected String tag() {
-        return FaveUsersFragment.class.getSimpleName();
     }
 
     @Override

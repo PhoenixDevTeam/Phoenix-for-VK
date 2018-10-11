@@ -165,11 +165,6 @@ public class AllFriendsPresenter extends AccountDependencyPresenter<IAllFriendsV
         return this.data.get(ALL).users;
     }
 
-    @Override
-    protected String tag() {
-        return AllFriendsPresenter.class.getSimpleName();
-    }
-
     public void fireRefresh() {
         if (!isSeacrhNow()) {
             this.cacheDisposable.clear();

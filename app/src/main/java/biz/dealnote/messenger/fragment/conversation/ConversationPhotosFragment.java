@@ -50,11 +50,6 @@ public class ConversationPhotosFragment extends AbsChatAttachmentsFragment<Photo
     }
 
     @Override
-    protected String tag() {
-        return ConversationPhotosFragment.class.getSimpleName();
-    }
-
-    @Override
     public void displayAttachments(List<Photo> data) {
         FavePhotosAdapter adapter = (FavePhotosAdapter) getAdapter();
         adapter.setData(data);

@@ -87,11 +87,6 @@ public class ChatMembersPresenter extends AccountDependencyPresenter<IChatMember
         callView(IChatMembersView::notifyDataSetChanged);
     }
 
-    @Override
-    protected String tag() {
-        return ChatMembersPresenter.class.getSimpleName();
-    }
-
     public void fireRefresh() {
         if (!refreshing) {
             requestData();

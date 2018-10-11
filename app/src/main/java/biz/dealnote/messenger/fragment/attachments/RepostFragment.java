@@ -88,11 +88,6 @@ public class RepostFragment extends AbsAttachmentsEditFragment<RepostPresenter, 
     }
 
     @Override
-    protected String tag() {
-        return RepostFragment.class.getSimpleName();
-    }
-
-    @Override
     public IPresenterFactory<RepostPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
             Post post = getArguments().getParcelable(EXTRA_POST);

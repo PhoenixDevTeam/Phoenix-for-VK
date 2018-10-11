@@ -2,7 +2,6 @@ package biz.dealnote.messenger.fragment.base;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -41,15 +40,10 @@ import biz.dealnote.mvp.core.IMvpView;
  * Created by ruslan.kolbasa on 04.10.2016.
  * phoenix
  */
-public abstract class PlaceSupportPresenterFragment<P extends PlaceSupportPresenter<V>, V extends IMvpView & IAttachmentsPlacesView & IAccountDependencyView>
-        extends BasePresenterFragment<P, V> implements AttachmentsViewBinder.OnAttachmentsActionCallback, IAttachmentsPlacesView, OwnerClickListener {
+public abstract class PlaceSupportMvpFragment<P extends PlaceSupportPresenter<V>, V extends IMvpView & IAttachmentsPlacesView & IAccountDependencyView>
+        extends BaseMvpFragment<P, V> implements AttachmentsViewBinder.OnAttachmentsActionCallback, IAttachmentsPlacesView, OwnerClickListener {
 
     private static final int REQUEST_POST_SHARE = 45;
-
-    @Override
-    public void savePresenterState(@NonNull P presenter, @NonNull Bundle outState) {
-        presenter.saveState(outState);
-    }
 
     @Override
     public void onOwnerClick(int ownerId) {

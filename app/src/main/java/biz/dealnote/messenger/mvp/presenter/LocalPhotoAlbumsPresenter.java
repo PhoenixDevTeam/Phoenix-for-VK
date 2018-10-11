@@ -22,8 +22,6 @@ import biz.dealnote.messenger.util.Utils;
  */
 public class LocalPhotoAlbumsPresenter extends RxSupportPresenter<ILocalPhotoAlbumsView> {
 
-    private static final String TAG = LocalPhotoAlbumsPresenter.class.getSimpleName();
-
     private boolean permissionRequestedOnce;
     private List<LocalImageAlbum> mLocalImageAlbums;
 
@@ -91,11 +89,6 @@ public class LocalPhotoAlbumsPresenter extends RxSupportPresenter<ILocalPhotoAlb
 
     private void resolveEmptyTextView() {
         if (isGuiReady()) getView().setEmptyTextVisible(Utils.safeIsEmpty(mLocalImageAlbums));
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void fireRefresh() {

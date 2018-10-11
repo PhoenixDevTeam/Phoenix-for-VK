@@ -93,11 +93,6 @@ public class LocalPhotosPresenter extends RxSupportPresenter<ILocalPhotosView> {
         }
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     public void fireFabClick() {
         ArrayList<LocalPhoto> localPhotos = Utils.getSelected(mLocalPhotos);
         if (localPhotos.size() > 0) {

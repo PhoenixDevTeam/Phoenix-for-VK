@@ -66,11 +66,6 @@ public class ProxyManagerPresenter extends RxSupportPresenter<IProxyManagerView>
 
     }
 
-    @Override
-    protected String tag() {
-        return ProxyManagerPresenter.class.getSimpleName();
-    }
-
     public void fireDeleteClick(ProxyConfig config) {
         if (config.equals(settings.getActiveProxy())) {
             showError(getView(), new Exception("Proxy is active. First, disable the proxy"));

@@ -21,11 +21,6 @@ public class FollowersFragment extends AbsOwnersListFragment<FollowersPresenter,
     }
 
     @Override
-    protected String tag() {
-        return FollowersFragment.class.getSimpleName();
-    }
-
-    @Override
     public IPresenterFactory<FollowersPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new FollowersPresenter(getArguments().getInt(Extra.ACCOUNT_ID),
                 getArguments().getInt(Extra.USER_ID),

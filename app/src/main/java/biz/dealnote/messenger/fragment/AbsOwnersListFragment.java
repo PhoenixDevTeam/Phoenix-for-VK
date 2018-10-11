@@ -17,7 +17,7 @@ import java.util.List;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.OwnersAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.Owner;
@@ -31,7 +31,7 @@ import biz.dealnote.messenger.util.ViewUtils;
  * Created by Ruslan Kolbasa on 08.09.2017.
  * phoenix
  */
-public abstract class AbsOwnersListFragment<P extends SimpleOwnersPresenter<V>, V extends ISimpleOwnersView> extends BasePresenterFragment<P, V> implements ISimpleOwnersView {
+public abstract class AbsOwnersListFragment<P extends SimpleOwnersPresenter<V>, V extends ISimpleOwnersView> extends BaseMvpFragment<P, V> implements ISimpleOwnersView {
 
     protected RecyclerView mRecyclerView;
     protected SwipeRefreshLayout mSwipeRefreshLayout;

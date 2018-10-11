@@ -119,11 +119,6 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
     }
 
     @Override
-    protected String tag() {
-        return GroupWallFragment.class.getSimpleName();
-    }
-
-    @Override
     protected int headerLayout() {
         return R.layout.header_group;
     }

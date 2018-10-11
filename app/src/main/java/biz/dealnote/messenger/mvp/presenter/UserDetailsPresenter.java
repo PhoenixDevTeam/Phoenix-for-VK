@@ -483,11 +483,6 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
         view.displayData(createData());
     }
 
-    @Override
-    protected String tag() {
-        return UserDetailsPresenter.class.getSimpleName();
-    }
-
     public void fireItemClick(AdvancedItem item) {
         Object tag = item.getTag();
 

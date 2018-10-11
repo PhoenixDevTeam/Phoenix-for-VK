@@ -26,7 +26,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.model.Banned;
 import biz.dealnote.messenger.model.IdOption;
@@ -47,7 +47,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
  * Created by admin on 17.06.2017.
  * phoenix
  */
-public class CommunityBanEditFragment extends BasePresenterFragment<CommunityBanEditPresenter, ICommunityBanEditView>
+public class CommunityBanEditFragment extends BaseMvpFragment<CommunityBanEditPresenter, ICommunityBanEditView>
         implements ICommunityBanEditView {
 
     public static CommunityBanEditFragment newInstance(int accountId, int groupId, Banned banned) {
@@ -161,11 +161,6 @@ public class CommunityBanEditFragment extends BasePresenterFragment<CommunityBan
             return Objects.nonNull(banned) ? new CommunityBanEditPresenter(accountId, groupId, banned, saveInstanceState)
                     : new CommunityBanEditPresenter(accountId, groupId, users, saveInstanceState);
         };
-    }
-
-    @Override
-    protected String tag() {
-        return CommunityBanEditFragment.class.getSimpleName();
     }
 
     @Override

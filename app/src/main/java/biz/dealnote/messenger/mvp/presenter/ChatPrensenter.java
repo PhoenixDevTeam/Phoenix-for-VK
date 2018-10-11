@@ -384,11 +384,6 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         resolveEmptyTextVisibility();
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     private boolean cacheLoadingNow;
 
     private void setCacheLoadingNow(boolean cacheLoadingNow) {

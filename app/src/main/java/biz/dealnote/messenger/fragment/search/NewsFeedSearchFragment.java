@@ -98,9 +98,4 @@ public class NewsFeedSearchFragment extends AbsSearchFragment<NewsFeedSearchPres
                 saveInstanceState
         );
     }
-
-    @Override
-    protected String tag() {
-        return NewsFeedSearchFragment.class.getSimpleName();
-    }
 }

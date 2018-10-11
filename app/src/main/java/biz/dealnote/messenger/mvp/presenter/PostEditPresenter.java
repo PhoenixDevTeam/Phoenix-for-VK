@@ -386,11 +386,6 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
     }
 
     @Override
-    protected String tag() {
-        return TAG;
-    }
-
-    @Override
     void onAttachmentRemoveClick(int index, @NonNull AttachmenEntry attachment) {
         super.manuallyRemoveElement(index);
 

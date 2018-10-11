@@ -326,11 +326,6 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
         }
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     private static List<FeedSource> createDefaultFeedSources() {
         List<FeedSource> data = new ArrayList<>(4);
         data.add(new FeedSource(null, R.string.news_feed));

@@ -37,8 +37,6 @@ import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
  */
 public class PhotoAlbumsPresenter extends AccountDependencyPresenter<IPhotoAlbumsView> {
 
-    private static final String TAG = PhotoAlbumsPresenter.class.getSimpleName();
-
     private int mOwnerId;
     private Owner mOwner;
     private String mAction;
@@ -204,12 +202,6 @@ public class PhotoAlbumsPresenter extends AccountDependencyPresenter<IPhotoAlbum
         if (isGuiReady()) {
             getView().setToolbarSubtitle(Objects.isNull(mOwner) || isMy() ? null : mOwner.getFullName());
         }
-    }
-
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     private void doAlbumRemove(@NonNull PhotoAlbum album) {

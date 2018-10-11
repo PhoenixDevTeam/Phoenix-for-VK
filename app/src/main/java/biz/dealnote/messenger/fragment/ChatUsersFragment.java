@@ -26,7 +26,7 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.SelectProfilesActivity;
 import biz.dealnote.messenger.adapter.ChatMembersListAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.fragment.friends.FriendsTabsFragment;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.SelectProfileCriteria;
@@ -41,7 +41,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class ChatUsersFragment extends BasePresenterFragment<ChatMembersPresenter, IChatMembersView>
+public class ChatUsersFragment extends BaseMvpFragment<ChatMembersPresenter, IChatMembersView>
         implements IChatMembersView, ChatMembersListAdapter.ActionListener {
 
     public static Bundle buildArgs(int accountId, int chatId) {
@@ -110,11 +110,6 @@ public class ChatUsersFragment extends BasePresenterFragment<ChatMembersPresente
                 .setStatusBarColored(getActivity(), true)
                 .build()
                 .apply(requireActivity());
-    }
-
-    @Override
-    protected String tag() {
-        return ChatUsersFragment.class.getSimpleName();
     }
 
     @Override

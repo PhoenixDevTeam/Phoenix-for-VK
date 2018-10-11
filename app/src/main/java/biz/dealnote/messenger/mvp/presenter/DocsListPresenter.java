@@ -42,8 +42,6 @@ import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
  */
 public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> {
 
-    private static final String TAG = DocsListPresenter.class.getSimpleName();
-
     private static final String SAVE_FILTER = "save_filter";
 
     public static final String ACTION_SELECT = "biz.dealnote.messenger.select.docs";
@@ -307,11 +305,6 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
         showError(getView(), throwable);
 
         resolveRefreshingView();
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     @Override

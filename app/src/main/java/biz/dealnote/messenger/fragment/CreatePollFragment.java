@@ -23,7 +23,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.mvp.presenter.CreatePollPresenter;
@@ -36,7 +36,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 20.12.2016.
  * phoenix
  */
-public class CreatePollFragment extends BasePresenterFragment<CreatePollPresenter, ICreatePollView> implements ICreatePollView {
+public class CreatePollFragment extends BaseMvpFragment<CreatePollPresenter, ICreatePollView> implements ICreatePollView {
 
     public static CreatePollFragment newInstance(Bundle args) {
         CreatePollFragment fragment = new CreatePollFragment();
@@ -113,11 +113,6 @@ public class CreatePollFragment extends BasePresenterFragment<CreatePollPresente
                 requireArguments().getInt(Extra.ACCOUNT_ID),
                 requireArguments().getInt(Extra.OWNER_ID),
                 saveInstanceState);
-    }
-
-    @Override
-    protected String tag() {
-        return CreatePollFragment.class.getSimpleName();
     }
 
     @Override

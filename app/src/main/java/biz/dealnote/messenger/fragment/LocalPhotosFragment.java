@@ -24,7 +24,7 @@ import java.util.List;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.LocalPhotosAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.LocalImageAlbum;
 import biz.dealnote.messenger.model.LocalPhoto;
@@ -35,7 +35,7 @@ import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-public class LocalPhotosFragment extends BasePresenterFragment<LocalPhotosPresenter, ILocalPhotosView>
+public class LocalPhotosFragment extends BaseMvpFragment<LocalPhotosPresenter, ILocalPhotosView>
         implements ILocalPhotosView, LocalPhotosAdapter.ClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String EXTRA_MAX_SELECTION_COUNT = "max_selection_count";
@@ -53,11 +53,6 @@ public class LocalPhotosFragment extends BasePresenterFragment<LocalPhotosPresen
         LocalPhotosFragment fragment = new LocalPhotosFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    protected String tag() {
-        return LocalPhotosFragment.class.getSimpleName();
     }
 
     @Override
@@ -152,11 +147,6 @@ public class LocalPhotosFragment extends BasePresenterFragment<LocalPhotosPresen
     @Override
     public void showError(@StringRes int titleRes, Object... params) {
         if(isAdded()) showError(getString(titleRes, params));
-    }
-
-    @Override
-    public void savePresenterState(@NonNull LocalPhotosPresenter presenter, @NonNull Bundle outState) {
-        presenter.saveState(outState);
     }
 
     @Override

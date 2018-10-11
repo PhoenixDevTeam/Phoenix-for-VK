@@ -24,7 +24,6 @@ import io.reactivex.disposables.CompositeDisposable;
  */
 public class TopicsPresenter extends AccountDependencyPresenter<ITopicsView> {
 
-    private static final String TAG = TopicsPresenter.class.getSimpleName();
     private static final int COUNT_PER_REQUEST = 20;
 
     private final int ownerId;
@@ -147,11 +146,6 @@ public class TopicsPresenter extends AccountDependencyPresenter<ITopicsView> {
 
             getView().setupLoadMore(LoadMoreState.END_OF_LIST);
         }
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void fireLoadMoreClick() {

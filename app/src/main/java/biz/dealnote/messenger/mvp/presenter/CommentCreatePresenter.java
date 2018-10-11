@@ -156,11 +156,6 @@ public class CommentCreatePresenter extends AbsAttachmentsEditPresenter<ICreateC
         uploadManager.enqueue(UploadUtils.createIntents(getAccountId(), destination, photos, size, true));
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     @OnGuiCreated
     private void resolveButtonsVisibility() {
         if (isGuiReady()) {

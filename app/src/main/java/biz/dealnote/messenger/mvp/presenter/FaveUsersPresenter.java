@@ -133,11 +133,6 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
         super.onDestroyed();
     }
 
-    @Override
-    protected String tag() {
-        return FaveUsersPresenter.class.getSimpleName();
-    }
-
     public void fireScrollToEnd() {
         if (!endOfContent && nonEmpty(users) && actualDataReceived && !cacheLoadingNow && !actualDataLoading) {
             loadActualData(this.users.size());

@@ -8,7 +8,7 @@ import java.util.Collections;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.EditingPostType;
 import biz.dealnote.messenger.mvp.presenter.BaseDocumentPresenter;
@@ -21,7 +21,7 @@ import biz.dealnote.messenger.util.Utils;
  * phoenix
  */
 public abstract class AbsDocumentPreviewFragment<P extends BaseDocumentPresenter<V>, V
-        extends IBasicDocumentView> extends BasePresenterFragment<P, V> implements IBasicDocumentView {
+        extends IBasicDocumentView> extends BaseMvpFragment<P, V> implements IBasicDocumentView {
 
     private static final int REQUEST_WRITE_PERMISSION = 160;
 

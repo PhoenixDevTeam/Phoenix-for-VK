@@ -10,7 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import biz.dealnote.mvp.Logger;
 import biz.dealnote.mvp.reflect.AnnotatedHandlerFinder;
 import biz.dealnote.mvp.reflect.EventHandler;
 
@@ -20,8 +19,6 @@ import biz.dealnote.mvp.reflect.EventHandler;
  */
 public abstract class AbsPresenter<V extends IMvpView> implements IPresenter<V> {
 
-    private static final String TAG = AbsPresenter.class.getSimpleName();
-
     /**
      * V (View Host - это не значит, что существуют реальные вьюхи,
      * с которыми можно работать и менять их состояние. Это значит,
@@ -30,11 +27,10 @@ public abstract class AbsPresenter<V extends IMvpView> implements IPresenter<V> 
      * но при перевороте его вьюв был уничтожен, но не был заново создан, ибо фрагмент не в топе
      * контейнера и не added)
      */
-    private WeakReference<V> mViewHost;
-    private boolean mIsGuiReady;
+    private WeakReference<V> viewReference;
+    private boolean guiCreated;
 
     private static final AtomicInteger IDGEN = new AtomicInteger();
-
     private int mPresenterId;
 
     public AbsPresenter(@Nullable Bundle savedInstanceState){
@@ -48,31 +44,25 @@ public abstract class AbsPresenter<V extends IMvpView> implements IPresenter<V> 
         }
     }
 
+    private static final String SAVE_ID = "save_presenter_id";
+
     public int getPresenterId(){
         return mPresenterId;
     }
 
-    private static final String SAVE_ID = "save_presenter_id";
+    @CallSuper
+    protected void onViewHostAttached(@NonNull V view) {
 
-    @Override
-    public void onViewHostAttached(@NonNull V viewHost) {
-        Logger.d(TAG, "onViewHostAttached, tag: " + tag());
-        this.mViewHost = new WeakReference<>(viewHost);
-    }
-
-    @Override
-    public void onViewHostDetached() {
-        Logger.d(TAG, "onViewHostDetached, tag: " + tag());
-        this.mViewHost = null;
     }
 
     @CallSuper
-    @Override
-    public void onGuiCreated(@NonNull V viewHost) {
-        Logger.d(TAG, "onGuiCreated, tag: " + tag());
+    protected void onViewHostDetached() {
 
-        mIsGuiReady = true;
-        executeAllResolveViewMethods();
+    }
+
+    @CallSuper
+    protected void onGuiCreated(@NonNull V viewHost) {
+
     }
 
     private void executeAllResolveViewMethods(){
@@ -90,60 +80,98 @@ public abstract class AbsPresenter<V extends IMvpView> implements IPresenter<V> 
         }
     }
 
-    @Override
-    public void onGuiDestroyed() {
-        Logger.d(TAG, "onGuiDestroyed, tag: " + tag());
-        mIsGuiReady = false;
+    @CallSuper
+    protected void onGuiDestroyed() {
+
     }
 
-    private boolean mDestroyed;
+    private boolean destroyed;
 
-    private boolean mResumed;
-
-    @Override
-    public boolean isGuiResumed() {
-        return mResumed;
-    }
-
-    @Override
-    public void onGuiResumed() {
-        mResumed = true;
-        Logger.d(TAG, "onGuiResumed, tag: " + tag());
-    }
-
-    @Override
-    public void onGuiPaused() {
-        mResumed = false;
-        Logger.d(TAG, "onGuiPaused, tag: " + tag());
-    }
-
-    @Override
-    public void onDestroyed() {
-        Logger.d(TAG, "onDestroyed, tag: " + tag());
-        mDestroyed = true;
-    }
+    private boolean guiResumed;
 
     public boolean isDestroyed() {
-        return mDestroyed;
+        return destroyed;
     }
 
+    public boolean isGuiResumed() {
+        return guiResumed;
+    }
+
+    @CallSuper
+    protected void onGuiResumed() {
+
+    }
+
+    @CallSuper
+    protected void onGuiPaused() {
+
+    }
+
+    @Override
+    public final void destroy() {
+        destroyed = true;
+        onDestroyed();
+    }
+
+    @Override
+    public final void resumeView() {
+        guiResumed = true;
+        onGuiResumed();
+    }
+
+    public boolean isViewHostAttached(){
+        return viewReference.get() != null;
+    }
+
+    @Override
+    public final void pauseView() {
+        guiResumed = false;
+        onGuiPaused();
+    }
+
+    @Override
+    public final void attachViewHost(@NonNull V view) {
+        viewReference = new WeakReference<>(view);
+        onViewHostAttached(view);
+    }
+
+    @Override
+    public final void detachViewHost() {
+        viewReference = new WeakReference<>(null);
+        onViewHostDetached();
+    }
+
+    @Override
+    public final void createView(@NonNull V view) {
+        guiCreated = true;
+        executeAllResolveViewMethods();
+        onGuiCreated(view);
+    }
+
+    @Override
+    public final void destroyView() {
+        guiCreated = false;
+        onGuiDestroyed();
+    }
+
+    @CallSuper
+    public void onDestroyed() {
+
+    }
+
+    @Override
+    @CallSuper
     public void saveState(@NonNull Bundle outState) {
         outState.putInt(SAVE_ID, mPresenterId);
-        Logger.d(TAG, "saveState, tag: " + tag());
     }
 
-    @Override
-    public boolean isGuiReady() {
-        return mIsGuiReady;
+    public final boolean isGuiReady() {
+        return guiCreated;
     }
 
+    //@Nullable
     public V getView() {
-        return mViewHost == null ? null : mViewHost.get();
-    }
-
-    @Override
-    public boolean isViewHostAttached() {
-        return getView() != null;
+        return viewReference == null ? null : viewReference.get();
     }
 
     protected void callView(ViewAction<V> action){
@@ -151,6 +179,4 @@ public abstract class AbsPresenter<V extends IMvpView> implements IPresenter<V> 
             action.call(getView());
         }
     }
-
-    protected abstract String tag();
 }

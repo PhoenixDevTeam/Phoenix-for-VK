@@ -132,11 +132,6 @@ public class FaveVideosPresenter extends AccountDependencyPresenter<IFaveVideosV
         viewHost.displayData(mVideos);
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     private boolean canLoadMore() {
         return !mVideos.isEmpty() && !cacheLoadingNow && !netLoadingNow && !mEndOfContent;
     }

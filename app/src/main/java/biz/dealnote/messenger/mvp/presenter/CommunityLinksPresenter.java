@@ -100,11 +100,6 @@ public class CommunityLinksPresenter extends AccountDependencyPresenter<ICommuni
         callView(ICommunityLinksView::notifyDataSetChanged);
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     public void fireRefresh() {
         requestLinks();
     }

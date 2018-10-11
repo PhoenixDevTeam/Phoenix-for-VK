@@ -20,7 +20,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.NewsfeedCommentsAdapter;
-import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
+import biz.dealnote.messenger.fragment.base.PlaceSupportMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.NewsfeedComment;
@@ -39,7 +39,7 @@ import static biz.dealnote.messenger.util.Utils.isLandscape;
  * Created by admin on 08.05.2017.
  * phoenix
  */
-public class NewsfeedCommentsFragment extends PlaceSupportPresenterFragment<NewsfeedCommentsPresenter, INewsfeedCommentsView>
+public class NewsfeedCommentsFragment extends PlaceSupportMvpFragment<NewsfeedCommentsPresenter, INewsfeedCommentsView>
         implements INewsfeedCommentsView, NewsfeedCommentsAdapter.ActionListener {
 
     public static NewsfeedCommentsFragment newInstance(int accountId) {
@@ -113,11 +113,6 @@ public class NewsfeedCommentsFragment extends PlaceSupportPresenterFragment<News
                 .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
-    }
-
-    @Override
-    protected String tag() {
-        return NewsfeedCommentsFragment.class.getSimpleName();
     }
 
     @Override

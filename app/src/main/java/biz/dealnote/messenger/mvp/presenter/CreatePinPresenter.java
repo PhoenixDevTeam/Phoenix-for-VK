@@ -15,7 +15,6 @@ import biz.dealnote.mvp.reflect.OnGuiCreated;
  */
 public class CreatePinPresenter extends RxSupportPresenter<ICreatePinView> {
 
-    private static final String TAG = CreatePinPresenter.class.getSimpleName();
     private static final int LAST_CIRCLE_VISIBILITY_DELAY = 200;
     private static final int NO_VALUE = -1;
 
@@ -44,11 +43,6 @@ public class CreatePinPresenter extends RxSupportPresenter<ICreatePinView> {
             resetPin(mCreatedPin);
             resetPin(mRepeatedPin);
         }
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public boolean fireBackButtonClick(){

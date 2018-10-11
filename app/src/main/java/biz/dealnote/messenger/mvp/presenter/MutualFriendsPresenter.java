@@ -100,9 +100,4 @@ public class MutualFriendsPresenter extends SimpleOwnersPresenter<ISimpleOwnersV
         actualDataDisposable.dispose();
         super.onDestroyed();
     }
-
-    @Override
-    protected String tag() {
-        return MutualFriendsPresenter.class.getSimpleName();
-    }
 }

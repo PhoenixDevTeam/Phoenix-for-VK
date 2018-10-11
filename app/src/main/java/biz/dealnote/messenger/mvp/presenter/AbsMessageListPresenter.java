@@ -21,7 +21,6 @@ import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.VoiceMessage;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
 import biz.dealnote.messenger.mvp.view.IBasicMessageListView;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Lookup;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Utils;
@@ -56,8 +55,6 @@ abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
     @OnGuiCreated
     private void syncVoiceLookupState(){
         boolean needLookup = mVoicePlayer.isSupposedToPlay() && isGuiReady();
-
-        Logger.d(tag(), "syncVoiceLookupState, needLookup: " + needLookup);
 
         if(needLookup){
             mVoiceMessageLookup.start();

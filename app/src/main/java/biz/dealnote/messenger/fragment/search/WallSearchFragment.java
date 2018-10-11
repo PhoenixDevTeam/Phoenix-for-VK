@@ -43,11 +43,6 @@ public class WallSearchFragment extends AbsSearchFragment<WallSearchPresenter, I
     }
 
     @Override
-    protected String tag() {
-        return WallSearchFragment.class.getSimpleName();
-    }
-
-    @Override
     void setAdapterData(RecyclerView.Adapter adapter, List<Post> data) {
         ((WallAdapter) adapter).setItems(data);
     }

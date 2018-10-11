@@ -27,7 +27,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.VkPhotoAlbumsAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.Owner;
@@ -43,7 +43,7 @@ import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-public class VKPhotoAlbumsFragment extends BasePresenterFragment<PhotoAlbumsPresenter, IPhotoAlbumsView> implements IPhotoAlbumsView,
+public class VKPhotoAlbumsFragment extends BaseMvpFragment<PhotoAlbumsPresenter, IPhotoAlbumsView> implements IPhotoAlbumsView,
         VkPhotoAlbumsAdapter.ClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String ACTION_SELECT_ALBUM = "biz.dealnote.messenger.ACTION_SELECT_ALBUM";
@@ -117,11 +117,6 @@ public class VKPhotoAlbumsFragment extends BasePresenterFragment<PhotoAlbumsPres
                 .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
-    }
-
-    @Override
-    protected String tag() {
-        return VKPhotoAlbumsFragment.class.getCanonicalName();
     }
 
     @Override

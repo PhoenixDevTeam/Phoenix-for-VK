@@ -19,7 +19,7 @@ import java.util.List;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
+import biz.dealnote.messenger.fragment.base.PlaceSupportMvpFragment;
 import biz.dealnote.messenger.fragment.search.options.BaseOption;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.mvp.presenter.search.AbsSearchPresenter;
@@ -33,7 +33,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * phoenix
  */
 public abstract class AbsSearchFragment<P extends AbsSearchPresenter<V, ?, T, ?>, V extends IBaseSearchView<T>, T>
-        extends PlaceSupportPresenterFragment<P, V> implements IBaseSearchView<T> {
+        extends PlaceSupportMvpFragment<P, V> implements IBaseSearchView<T> {
 
     private static final int REQUEST_FILTER_EDIT = 19;
     private RecyclerView.Adapter mAdapter;

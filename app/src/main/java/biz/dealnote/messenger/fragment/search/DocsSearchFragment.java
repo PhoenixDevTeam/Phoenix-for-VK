@@ -63,9 +63,4 @@ public class DocsSearchFragment extends AbsSearchFragment<DocsSearchPresenter, I
                 saveInstanceState
         );
     }
-
-    @Override
-    protected String tag() {
-        return DocsSearchFragment.class.getSimpleName();
-    }
 }

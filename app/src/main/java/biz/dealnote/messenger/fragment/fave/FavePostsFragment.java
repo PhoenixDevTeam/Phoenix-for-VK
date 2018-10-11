@@ -20,7 +20,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.WallAdapter;
 import biz.dealnote.messenger.domain.ILikesInteractor;
-import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
+import biz.dealnote.messenger.fragment.base.PlaceSupportMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.Poll;
@@ -33,7 +33,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class FavePostsFragment extends PlaceSupportPresenterFragment<FavePostsPresenter, IFavePostsView>
+public class FavePostsFragment extends PlaceSupportMvpFragment<FavePostsPresenter, IFavePostsView>
         implements WallAdapter.ClickListener, IFavePostsView {
 
     public static FavePostsFragment newInstance(int accountId) {
@@ -59,7 +59,7 @@ public class FavePostsFragment extends PlaceSupportPresenterFragment<FavePostsPr
         mEmpty = root.findViewById(R.id.empty);
 
         RecyclerView.LayoutManager manager;
-        if (Utils.is600dp(getActivity())) {
+        if (Utils.is600dp(requireActivity())) {
             manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         } else {
             manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -130,11 +130,6 @@ public class FavePostsFragment extends PlaceSupportPresenterFragment<FavePostsPr
     @Override
     public void onLikeClick(Post post) {
         getPresenter().fireLikeClick(post);
-    }
-
-    @Override
-    protected String tag() {
-        return FavePostsFragment.class.getSimpleName();
     }
 
     @Override

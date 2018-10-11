@@ -23,7 +23,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.fragment.NavigationFragment;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.FriendsCounters;
 import biz.dealnote.messenger.mvp.presenter.FriendsTabsPresenter;
@@ -33,7 +33,7 @@ import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-public class FriendsTabsFragment extends BasePresenterFragment<FriendsTabsPresenter, IFriendsTabsView> implements IFriendsTabsView {
+public class FriendsTabsFragment extends BaseMvpFragment<FriendsTabsPresenter, IFriendsTabsView> implements IFriendsTabsView {
 
     public static final int TAB_ALL_FRIENDS = 0;
     public static final int TAB_ONLINE = 1;
@@ -100,7 +100,7 @@ public class FriendsTabsFragment extends BasePresenterFragment<FriendsTabsPresen
         try {
             String targetTitle = titles[position] + (count > 0 ? " " + count : "");
             adapter.setPageTitle(position, targetTitle);
-        } catch (Exception ignored){
+        } catch (Exception ignored) {
         }
     }
 
@@ -114,7 +114,7 @@ public class FriendsTabsFragment extends BasePresenterFragment<FriendsTabsPresen
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(getActivity(),true)
+                .setStatusBarColored(getActivity(), true)
                 .build()
                 .apply(getActivity());
     }
@@ -187,14 +187,14 @@ public class FriendsTabsFragment extends BasePresenterFragment<FriendsTabsPresen
             mFragmentTitles.add(TAB_ONLINE, context.getString(R.string.online));
             mFragmentTitles.add(TAB_FOLLOWERS, context.getString(R.string.counter_followers));
 
-            if(showMutualTab){
+            if (showMutualTab) {
                 mFragmentTitles.add(TAB_MUTUAL, context.getString(R.string.mutual_friends));
             }
         }
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
+            switch (position) {
                 case TAB_ALL_FRIENDS:
                     return AllFriendsFragment.newInstance(accountId, userId);
                 case TAB_ONLINE:
@@ -221,10 +221,5 @@ public class FriendsTabsFragment extends BasePresenterFragment<FriendsTabsPresen
         void setPageTitle(int position, String title) {
             mFragmentTitles.set(position, title);
         }
-    }
-
-    @Override
-    protected String tag() {
-        return FriendsTabsFragment.class.getSimpleName();
     }
 }

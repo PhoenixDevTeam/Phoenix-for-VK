@@ -276,11 +276,6 @@ public class CommunityManagerEditPresenter extends AccountDependencyPresenter<IC
         showError(getView(), throwable);
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     public void fireAvatarClick() {
         getView().showUserProfile(getAccountId(), getCurrentUser());
     }

@@ -28,8 +28,6 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  */
 public class WallSearchPresenter extends AbsSearchPresenter<IWallSearchView, WallSearchCriteria, Post, IntNextFrom> {
 
-    private static final String TAG = WallSearchPresenter.class.getSimpleName();
-
     private final IWalls walls;
 
     public WallSearchPresenter(int accountId, @Nullable WallSearchCriteria criteria, @Nullable Bundle savedInstanceState) {
@@ -87,11 +85,6 @@ public class WallSearchPresenter extends AbsSearchPresenter<IWallSearchView, Wal
     @Override
     boolean isAtLast(IntNextFrom startFrom) {
         return startFrom.getOffset() == 0;
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     private static final int COUNT = 30;

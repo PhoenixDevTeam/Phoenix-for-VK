@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.mvp.presenter.EnterPinPresenter;
 import biz.dealnote.messenger.mvp.view.IEnterPinView;
 import biz.dealnote.messenger.settings.CurrentTheme;
@@ -26,10 +26,8 @@ import biz.dealnote.mvp.core.IPresenterFactory;
  * Created by ruslan.kolbasa on 30-May-16.
  * mobilebankingandroid
  */
-public class EnterPinFragment extends BasePresenterFragment<EnterPinPresenter, IEnterPinView>
+public class EnterPinFragment extends BaseMvpFragment<EnterPinPresenter, IEnterPinView>
         implements IEnterPinView, KeyboardView.OnKeyboardClickListener {
-
-    private static final String TAG = EnterPinFragment.class.getSimpleName();
 
     public static EnterPinFragment newInstance(){
         Bundle bundle = new Bundle();
@@ -59,11 +57,6 @@ public class EnterPinFragment extends BasePresenterFragment<EnterPinPresenter, I
         mValuesCircles[2] = root.findViewById(R.id.pincode_digit_2_root).findViewById(R.id.pincode_digit_circle);
         mValuesCircles[3] = root.findViewById(R.id.pincode_digit_3_root).findViewById(R.id.pincode_digit_circle);
         return root;
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     @Override

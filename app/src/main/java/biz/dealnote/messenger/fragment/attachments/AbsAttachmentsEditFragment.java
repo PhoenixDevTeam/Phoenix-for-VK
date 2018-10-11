@@ -31,7 +31,7 @@ import biz.dealnote.messenger.activity.PhotoAlbumsActivity;
 import biz.dealnote.messenger.activity.PhotosActivity;
 import biz.dealnote.messenger.adapter.AttchmentsEditorAdapter;
 import biz.dealnote.messenger.fragment.VKPhotosFragment;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.model.AttachmenEntry;
@@ -61,7 +61,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * phoenix
  */
 public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPresenter<V>, V extends IBaseAttachmentsEditView>
-        extends BasePresenterFragment<P, V> implements IBaseAttachmentsEditView, AttchmentsEditorAdapter.Callback, BackPressCallback {
+        extends BaseMvpFragment<P, V> implements IBaseAttachmentsEditView, AttchmentsEditorAdapter.Callback, BackPressCallback {
 
     private static final int PERMISSION_REQUEST_CAMERA = 14;
     private static final int PERMISSION_REQUEST_READ_STORAGE = 15;

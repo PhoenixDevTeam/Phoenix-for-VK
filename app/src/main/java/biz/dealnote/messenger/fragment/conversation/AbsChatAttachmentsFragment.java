@@ -15,7 +15,7 @@ import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
-import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
+import biz.dealnote.messenger.fragment.base.PlaceSupportMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.mvp.presenter.history.BaseChatAttachmentsPresenter;
@@ -25,7 +25,7 @@ import biz.dealnote.messenger.util.ViewUtils;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
 public abstract class AbsChatAttachmentsFragment<T, P extends BaseChatAttachmentsPresenter<T, V>, V extends IBaseChatAttachmentsView<T>>
-        extends PlaceSupportPresenterFragment<P, V> implements IBaseChatAttachmentsView<T> {
+        extends PlaceSupportMvpFragment<P, V> implements IBaseChatAttachmentsView<T> {
 
     public static final String TAG = ConversationPhotosFragment.class.getSimpleName();
 

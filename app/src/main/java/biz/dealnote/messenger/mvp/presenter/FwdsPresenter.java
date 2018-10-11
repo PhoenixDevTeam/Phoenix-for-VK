@@ -18,9 +18,4 @@ public class FwdsPresenter extends AbsMessageListPresenter<IFwdsView> {
         super(accountId, savedInstanceState);
         getData().addAll(messages);
     }
-
-    @Override
-    protected String tag() {
-        return FwdsPresenter.class.getSimpleName();
-    }
 }

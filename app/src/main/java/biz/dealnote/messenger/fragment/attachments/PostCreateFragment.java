@@ -92,11 +92,6 @@ public class PostCreateFragment extends AbsPostEditFragment<PostCreatePresenter,
     }
 
     @Override
-    protected String tag() {
-        return PostCreateFragment.class.getSimpleName();
-    }
-
-    @Override
     public void displayUploadUriSizeDialog(@NonNull List<Uri> uris) {
         new ImageSizeAlertDialog.Builder(getActivity())
                 .setOnSelectedCallback(size -> getPresenter().fireUriUploadSizeSelected(uris, size))

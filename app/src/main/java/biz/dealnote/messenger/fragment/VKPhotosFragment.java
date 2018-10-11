@@ -27,7 +27,7 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.PhotosActivity;
 import biz.dealnote.messenger.adapter.BigVkPhotosAdapter;
 import biz.dealnote.messenger.dialog.ImageSizeAlertDialog;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
@@ -48,7 +48,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
-public class VKPhotosFragment extends BasePresenterFragment<VkPhotosPresenter, IVkPhotosView>
+public class VKPhotosFragment extends BaseMvpFragment<VkPhotosPresenter, IVkPhotosView>
         implements BigVkPhotosAdapter.PhotosActionListener, BigVkPhotosAdapter.UploadActionListener, IVkPhotosView {
 
     private static final String TAG = VKPhotosFragment.class.getSimpleName();
@@ -185,11 +185,6 @@ public class VKPhotosFragment extends BasePresenterFragment<VkPhotosPresenter, I
     public void onDestroyView() {
         mAdapter.cleanup();
         super.onDestroyView();
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     @Override

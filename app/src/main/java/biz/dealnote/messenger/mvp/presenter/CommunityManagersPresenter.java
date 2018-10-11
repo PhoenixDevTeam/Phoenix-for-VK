@@ -25,8 +25,6 @@ import biz.dealnote.messenger.util.Utils;
  */
 public class CommunityManagersPresenter extends AccountDependencyPresenter<ICommunityManagersView> {
 
-    private static final String TAG = CommunityMembersPresenter.class.getSimpleName();
-
     private final int groupId;
 
     private final List<Manager> data;
@@ -115,11 +113,6 @@ public class CommunityManagersPresenter extends AccountDependencyPresenter<IComm
         this.data.addAll(managers);
 
         callView(ICommunityManagersView::notifyDataSetChanged);
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void fireRefresh() {

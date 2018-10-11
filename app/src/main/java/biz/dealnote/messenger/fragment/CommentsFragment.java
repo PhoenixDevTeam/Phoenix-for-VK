@@ -35,7 +35,7 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.adapter.CommentsAdapter;
 import biz.dealnote.messenger.adapter.OwnersListAdapter;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
+import biz.dealnote.messenger.fragment.base.PlaceSupportMvpFragment;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
@@ -65,7 +65,7 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  * Created by Ruslan Kolbasa on 07.06.2017.
  * phoenix
  */
-public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPresenter, ICommentsView> implements
+public class CommentsFragment extends PlaceSupportMvpFragment<CommentsPresenter, ICommentsView> implements
         ICommentsView, StickersGridView.OnStickerClickedListener, CommentsInputViewController.OnInputActionCallback,
         CommentsAdapter.OnCommentActionListener, EmojiconTextView.OnHashTagClickListener, BackPressCallback {
 
@@ -188,11 +188,6 @@ public class CommentsFragment extends PlaceSupportPresenterFragment<CommentsPres
 
             return new CommentsPresenter(accountId, commented, focusTo, saveInstanceState);
         };
-    }
-
-    @Override
-    protected String tag() {
-        return CommentsFragment.class.getSimpleName();
     }
 
     @Override

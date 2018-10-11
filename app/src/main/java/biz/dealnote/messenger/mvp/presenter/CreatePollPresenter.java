@@ -26,8 +26,6 @@ import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
  */
 public class CreatePollPresenter extends AccountDependencyPresenter<ICreatePollView> {
 
-    private static final String TAG = CreatePollPresenter.class.getSimpleName();
-
     private String mQuestion;
     private String[] mOptions;
     private int mOwnerId;
@@ -104,11 +102,6 @@ public class CreatePollPresenter extends AccountDependencyPresenter<ICreatePollV
         } else {
             getView().dismissProgressDialog();
         }
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void fireQuestionEdited(CharSequence text) {

@@ -19,8 +19,6 @@ import biz.dealnote.mvp.reflect.OnGuiCreated;
  */
 public class RepostPresenter extends AbsAttachmentsEditPresenter<IRepostView> {
 
-    private static final String TAG = RepostPresenter.class.getSimpleName();
-
     private final Post post;
     private final Integer targetGroupId;
     private boolean publishingNow;
@@ -78,10 +76,5 @@ public class RepostPresenter extends AbsAttachmentsEditPresenter<IRepostView> {
         appendDisposable(walls.repost(accountId, post.getVkid(), post.getOwnerId(), targetGroupId, body)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onPublishComplete, this::onPublishError));
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 }

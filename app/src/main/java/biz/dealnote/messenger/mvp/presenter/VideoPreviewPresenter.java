@@ -118,11 +118,6 @@ public class VideoPreviewPresenter extends AccountDependencyPresenter<IVideoPrev
                 .subscribe(this::onActualInfoReceived, throwable -> onVideoInfoGetError(getCauseIfRuntime(throwable))));
     }
 
-    @Override
-    protected String tag() {
-        return VideoPreviewPresenter.class.getSimpleName();
-    }
-
     private boolean isMy() {
         return super.getAccountId() == ownerId;
     }

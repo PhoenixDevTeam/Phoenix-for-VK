@@ -23,7 +23,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.adapter.VideosAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
@@ -41,7 +41,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 21.11.2016.
  * phoenix
  */
-public class VideosFragment extends BasePresenterFragment<VideosListPresenter, IVideosListView>
+public class VideosFragment extends BaseMvpFragment<VideosListPresenter, IVideosListView>
         implements IVideosListView, VideosAdapter.VideoOnClickListener {
 
     public static final String EXTRA_IN_TABS_CONTAINER = "in_tabs_container";
@@ -130,11 +130,6 @@ public class VideosFragment extends BasePresenterFragment<VideosListPresenter, I
                     .build()
                     .apply(requireActivity());
         }
-    }
-
-    @Override
-    protected String tag() {
-        return null;
     }
 
     @Override

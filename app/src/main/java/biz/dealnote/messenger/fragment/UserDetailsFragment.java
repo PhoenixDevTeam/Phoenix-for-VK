@@ -23,7 +23,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.RecyclerMenuAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.User;
@@ -41,7 +41,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 3/19/2018.
  * Phoenix-for-VK
  */
-public class UserDetailsFragment extends BasePresenterFragment<UserDetailsPresenter, IUserDetailsView> implements IUserDetailsView, RecyclerMenuAdapter.ActionListener {
+public class UserDetailsFragment extends BaseMvpFragment<UserDetailsPresenter, IUserDetailsView> implements IUserDetailsView, RecyclerMenuAdapter.ActionListener {
 
     public static UserDetailsFragment newInstance(int accountId, @NonNull User user, @NonNull UserDetails details) {
         Bundle args = new Bundle();
@@ -103,11 +103,6 @@ public class UserDetailsFragment extends BasePresenterFragment<UserDetailsPresen
                 .setStatusBarColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
-    }
-
-    @Override
-    protected String tag() {
-        return UserDetailsFragment.class.getSimpleName();
     }
 
     @Override

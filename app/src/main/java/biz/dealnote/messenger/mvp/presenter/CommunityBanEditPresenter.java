@@ -173,11 +173,6 @@ public class CommunityBanEditPresenter extends AccountDependencyPresenter<ICommu
         }
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     private boolean requestNow;
 
     private void setRequestNow(boolean requestNow) {

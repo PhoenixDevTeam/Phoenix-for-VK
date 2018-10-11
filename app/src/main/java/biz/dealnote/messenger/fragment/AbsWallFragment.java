@@ -32,7 +32,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.adapter.WallAdapter;
-import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
+import biz.dealnote.messenger.fragment.base.PlaceSupportMvpFragment;
 import biz.dealnote.messenger.fragment.search.SearchContentType;
 import biz.dealnote.messenger.fragment.search.criteria.WallSearchCriteria;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
@@ -60,7 +60,7 @@ import static biz.dealnote.messenger.util.Utils.isLandscape;
  * phoenix
  */
 public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPresenter<V>>
-        extends PlaceSupportPresenterFragment<P, V> implements IWallView, WallAdapter.ClickListener, WallAdapter.NonPublishedPostActionListener {
+        extends PlaceSupportMvpFragment<P, V> implements IWallView, WallAdapter.ClickListener, WallAdapter.NonPublishedPostActionListener {
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private WallAdapter mWallAdapter;

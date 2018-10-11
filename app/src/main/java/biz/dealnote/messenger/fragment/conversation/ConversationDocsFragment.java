@@ -48,11 +48,6 @@ public class ConversationDocsFragment extends AbsChatAttachmentsFragment<Documen
     }
 
     @Override
-    protected String tag() {
-        return ConversationDocsFragment.class.getSimpleName();
-    }
-
-    @Override
     public void onDocClick(int index, @NonNull Document doc) {
         getPresenter().fireDocClick(doc);
     }

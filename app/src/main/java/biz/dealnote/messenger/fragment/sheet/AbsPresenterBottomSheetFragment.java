@@ -8,21 +8,21 @@ import android.view.View;
 
 import biz.dealnote.mvp.core.IMvpView;
 import biz.dealnote.mvp.core.IPresenter;
-import biz.dealnote.mvp.core.ViewHostDelegate;
+import biz.dealnote.mvp.compat.ViewHostDelegate;
 
 /**
  * Created by admin on 14.04.2017.
  * phoenix
  */
 public abstract class AbsPresenterBottomSheetFragment<P extends IPresenter<V>, V extends IMvpView>
-        extends BottomSheetDialogFragment implements ViewHostDelegate.PresenterLifecycleCallback<P,V> {
+        extends BottomSheetDialogFragment implements ViewHostDelegate.IFactoryProvider<P,V> {
 
-    private ViewHostDelegate<P, V> mViewHostDelegate;
+    private final ViewHostDelegate<P, V> delegate = new ViewHostDelegate<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getPresenterDelegate().onCreate(getActivity(), getPresenterViewHost(), getLoaderManager(), savedInstanceState);
+        delegate.onCreate(requireActivity(), getPresenterViewHost(), this, getLoaderManager(), savedInstanceState);
     }
 
     @Override
@@ -32,53 +32,38 @@ public abstract class AbsPresenterBottomSheetFragment<P extends IPresenter<V>, V
     }
 
     public void fireViewCreated(){
-        getPresenterDelegate().onViewCreated();
+        delegate.onViewCreated();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getPresenterDelegate().onSaveInstanceState(outState);
-    }
-
-    @NonNull
-    public ViewHostDelegate<P, V> getPresenterDelegate() {
-        if (mViewHostDelegate == null) {
-            mViewHostDelegate = new ViewHostDelegate<>(this, tag());
-        }
-
-        return mViewHostDelegate;
+        delegate.onSaveInstanceState(outState);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getPresenterDelegate().onPause();
+        delegate.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getPresenterDelegate().onResume();
+        delegate.onResume();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getPresenterDelegate().onDestroyView();
+        delegate.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
-        getPresenterDelegate().onDestroy();
+        delegate.onDestroy();
         super.onDestroy();
     }
-
-    protected boolean isViewReady() {
-        return getPresenterDelegate().isViewReady();
-    }
-
-    protected abstract String tag();
 
     // Override in case of fragment not implementing IPresenter<View> interface
     @SuppressWarnings("unchecked")
@@ -87,17 +72,7 @@ public abstract class AbsPresenterBottomSheetFragment<P extends IPresenter<V>, V
         return (V) this;
     }
 
-    @Override
-    public void onPresenterDestroyed() {
-
-    }
-
-    @Override
-    public void onPresenterReceived(@NonNull P presenter) {
-
-    }
-
     protected P getPresenter(){
-        return getPresenterDelegate().getPresenter();
+        return delegate.getPresenter();
     }
 }

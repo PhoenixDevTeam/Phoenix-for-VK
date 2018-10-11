@@ -182,11 +182,6 @@ public class FeedbackPresenter extends PlaceSupportPresenter<IFeedbackView> {
         super.onDestroyed();
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     public void fireItemClick(@NonNull Feedback notification) {
         getView().showLinksDialog(getAccountId(), notification);
     }

@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName;
  */
 public class PhotoSizeDto {
 
-    @SerializedName("src")
+    @SerializedName("url")
     public String url;
 
     @SerializedName("type")
-    public char type;
+    public String type;
 
     @SerializedName("width")
     public int width;
@@ -20,7 +20,7 @@ public class PhotoSizeDto {
     @SerializedName("height")
     public int height;
 
-    public static PhotoSizeDto create(char type, String url) {
+    public static PhotoSizeDto create(String type, String url) {
         PhotoSizeDto dto = new PhotoSizeDto();
         dto.url = url;
         dto.type = type;
@@ -31,32 +31,32 @@ public class PhotoSizeDto {
         /**
          * пропорциональная копия изображения с максимальной шириной 75px
          */
-        public static final char S = 's';
+        public static final String S = "s";
 
         /**
          * пропорциональная копия изображения с максимальной шириной 130px
          */
-        public static final char M = 'm';
+        public static final String M = "m";
 
         /**
          * пропорциональная копия изображения с максимальной шириной 604px
          */
-        public static final char X = 'x';
+        public static final String X = "x";
 
         /**
          * пропорциональная копия изображения с максимальной стороной 807px
          */
-        public static final char Y = 'y';
+        public static final String Y = "y";
 
         /**
          * пропорциональная копия изображения с максимальным размером 1280x1024
          */
-        public static final char Z = 'z';
+        public static final String Z = "z";
 
         /**
          * пропорциональная копия изображения с максимальным размером 2560x2048px
          */
-        public static final char W = 'w';
+        public static final String W = "w";
 
         /**
          * если соотношение "ширина/высота" исходного изображения меньше или равно 3:2,
@@ -64,7 +64,7 @@ public class PhotoSizeDto {
          * Если соотношение "ширина/высота" больше 3:2, то копия обрезанного слева изображения
          * с максимальной шириной 130px и соотношением сторон 3:2
          */
-        public static final char O = 'o';
+        public static final String O = "o";
 
         /**
          * если соотношение "ширина/высота" исходного изображения меньше или равно 3:2,
@@ -72,7 +72,7 @@ public class PhotoSizeDto {
          * Если соотношение "ширина/высота" больше 3:2, то копия обрезанного слева и
          * справа изображения с максимальной шириной 200px и соотношением сторон 3:2
          */
-        public static final char P = 'p';
+        public static final String P = "p";
 
         /**
          * если соотношение "ширина/высота" исходного изображения меньше или равно 3:2,
@@ -80,7 +80,7 @@ public class PhotoSizeDto {
          * Если соотношение "ширина/высота" больше 3:2, то копия обрезанного слева и
          * справа изображения с максимальной шириной 320px и соотношением сторон 3:2
          */
-        public static final char Q = 'q';
+        public static final String Q = "q";
 
         /**
          * если соотношение "ширина/высота" исходного изображения меньше или равно 3:2,
@@ -88,6 +88,6 @@ public class PhotoSizeDto {
          * Если соотношение "ширина/высота" больше 3:2, то копия обрезанного слева
          * и справа изображения с максимальной шириной 510px и соотношением сторон 3:2
          */
-        public static final char R = 'r';
+        public static final String R = "r";
     }
 }

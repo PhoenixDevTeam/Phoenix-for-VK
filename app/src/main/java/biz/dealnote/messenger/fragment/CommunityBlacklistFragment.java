@@ -21,7 +21,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.SelectProfilesActivity;
 import biz.dealnote.messenger.adapter.CommunityBannedAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.fragment.search.SearchContentType;
 import biz.dealnote.messenger.fragment.search.criteria.PeopleSearchCriteria;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
@@ -40,7 +40,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
  * Created by admin on 13.06.2017.
  * phoenix
  */
-public class CommunityBlacklistFragment extends BasePresenterFragment<CommunityBlacklistPresenter, ICommunityBlacklistView>
+public class CommunityBlacklistFragment extends BaseMvpFragment<CommunityBlacklistPresenter, ICommunityBlacklistView>
         implements ICommunityBlacklistView, CommunityBannedAdapter.ActionListener {
 
     private static final int REQUEST_SELECT_PROFILES = 17;
@@ -90,11 +90,6 @@ public class CommunityBlacklistFragment extends BasePresenterFragment<CommunityB
                 requireArguments().getInt(Extra.GROUP_ID),
                 saveInstanceState
         );
-    }
-
-    @Override
-    protected String tag() {
-        return CommunityBlacklistFragment.class.getSimpleName();
     }
 
     @Override

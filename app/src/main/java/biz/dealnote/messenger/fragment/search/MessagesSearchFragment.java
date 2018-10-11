@@ -81,11 +81,6 @@ public class MessagesSearchFragment extends AbsSearchFragment<MessagesSearchPres
     }
 
     @Override
-    protected String tag() {
-        return MessagesSearchFragment.class.getSimpleName();
-    }
-
-    @Override
     public void goToMessagesLookup(int accountId, int peerId, int messageId) {
         PlaceFactory.getMessagesLookupPlace(accountId, peerId, messageId).tryOpenWith(getActivity());
     }

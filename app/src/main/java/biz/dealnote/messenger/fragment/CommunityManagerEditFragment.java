@@ -23,7 +23,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.model.Manager;
 import biz.dealnote.messenger.model.User;
@@ -41,7 +41,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
  * Created by Ruslan Kolbasa on 21.06.2017.
  * phoenix
  */
-public class CommunityManagerEditFragment extends BasePresenterFragment<CommunityManagerEditPresenter, ICommunityManagerEditView> implements ICommunityManagerEditView {
+public class CommunityManagerEditFragment extends BaseMvpFragment<CommunityManagerEditPresenter, ICommunityManagerEditView> implements ICommunityManagerEditView {
 
     public static CommunityManagerEditFragment newInstance(int accountId, int groupId, ArrayList<User> users) {
         Bundle args = new Bundle();
@@ -194,11 +194,6 @@ public class CommunityManagerEditFragment extends BasePresenterFragment<Communit
                     ? new CommunityManagerEditPresenter(accountId, groupId, manager, saveInstanceState)
                     : new CommunityManagerEditPresenter(accountId, groupId, users, saveInstanceState);
         };
-    }
-
-    @Override
-    protected String tag() {
-        return CommunityManagerEditFragment.class.getSimpleName();
     }
 
     @Override

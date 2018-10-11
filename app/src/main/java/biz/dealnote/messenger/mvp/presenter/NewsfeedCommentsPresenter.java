@@ -107,11 +107,6 @@ public class NewsfeedCommentsPresenter extends PlaceSupportPresenter<INewsfeedCo
         viewHost.displayData(data);
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     private boolean canLoadMore(){
         return nonEmpty(nextFrom) && !loadingNow;
     }

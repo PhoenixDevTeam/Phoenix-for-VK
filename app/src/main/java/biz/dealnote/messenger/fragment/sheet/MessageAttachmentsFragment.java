@@ -35,7 +35,6 @@ import biz.dealnote.messenger.model.selection.VkPhotosSelectableSource;
 import biz.dealnote.messenger.mvp.presenter.MessageAttachmentsPresenter;
 import biz.dealnote.messenger.mvp.view.IMessageAttachmentsView;
 import biz.dealnote.messenger.upload.Upload;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
@@ -97,7 +96,6 @@ public class MessageAttachmentsFragment extends AbsPresenterBottomSheetFragment<
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bundle extras = nonNull(data) ? data.getExtras() : null;
-        Logger.d(tag(), "onActivityResult, extras: " + extras);
 
         if(requestCode == REQUEST_ADD_VKPHOTO && resultCode == Activity.RESULT_OK){
             ArrayList<Photo> vkphotos = data.getParcelableArrayListExtra(Extra.ATTACHMENTS);
@@ -116,11 +114,6 @@ public class MessageAttachmentsFragment extends AbsPresenterBottomSheetFragment<
     }
 
     @Override
-    public void savePresenterState(@NonNull MessageAttachmentsPresenter presenter, @NonNull Bundle outState) {
-        presenter.saveState(outState);
-    }
-
-    @Override
     public IPresenterFactory<MessageAttachmentsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
             int accountId = getArguments().getInt(Extra.ACCOUNT_ID);
@@ -129,11 +122,6 @@ public class MessageAttachmentsFragment extends AbsPresenterBottomSheetFragment<
             ModelsBundle bundle = getArguments().getParcelable(Extra.BUNDLE);
             return new MessageAttachmentsPresenter(accountId, messageOwnerId, messageId, bundle, saveInstanceState);
         };
-    }
-
-    @Override
-    protected String tag() {
-        return MessageAttachmentsFragment.class.getSimpleName();
     }
 
     @Override

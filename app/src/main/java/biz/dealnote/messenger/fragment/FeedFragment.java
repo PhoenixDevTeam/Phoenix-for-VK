@@ -31,7 +31,7 @@ import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.FeedAdapter;
 import biz.dealnote.messenger.adapter.horizontal.HorizontalOptionsAdapter;
 import biz.dealnote.messenger.domain.ILikesInteractor;
-import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
+import biz.dealnote.messenger.fragment.base.PlaceSupportMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
@@ -45,7 +45,6 @@ import biz.dealnote.messenger.mvp.view.IFeedView;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.LoadMoreFooterHelper;
 import biz.dealnote.mvp.core.IPresenterFactory;
@@ -53,10 +52,8 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
-public class FeedFragment extends PlaceSupportPresenterFragment<FeedPresenter, IFeedView> implements IFeedView,
+public class FeedFragment extends PlaceSupportMvpFragment<FeedPresenter, IFeedView> implements IFeedView,
         SwipeRefreshLayout.OnRefreshListener, FeedAdapter.ClickListener, HorizontalOptionsAdapter.Listener<FeedSource> {
-
-    private static final String TAG = FeedFragment.class.getSimpleName();
 
     private FeedAdapter mAdapter;
     private TextView mEmptyText;
@@ -78,12 +75,6 @@ public class FeedFragment extends PlaceSupportPresenterFragment<FeedPresenter, I
 
     public static FeedFragment newInstance(int accountId) {
         return newInstance(buildArgs(accountId));
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        Logger.d(TAG, "finalize");
-        super.finalize();
     }
 
     public static FeedFragment newInstance(Bundle args) {
@@ -317,11 +308,6 @@ public class FeedFragment extends PlaceSupportPresenterFragment<FeedPresenter, I
 
         getPresenter().fireScrollStateOnPause(json);
         super.onPause();
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     /*@Override

@@ -51,9 +51,4 @@ public class ConversationVideosFragment extends AbsChatAttachmentsFragment<Video
             return new ChatAttachmentVideoPresenter(peerId, accountId, saveInstanceState);
         };
     }
-
-    @Override
-    protected String tag() {
-        return ConversationVideosFragment.class.getSimpleName();
-    }
 }

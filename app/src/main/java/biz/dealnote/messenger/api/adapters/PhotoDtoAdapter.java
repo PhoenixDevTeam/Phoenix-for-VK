@@ -61,10 +61,7 @@ public class PhotoDtoAdapter extends AbsAdapter implements JsonDeserializer<VKAp
                 PhotoSizeDto photoSizeDto = context.deserialize(sizesArray.get(i).getAsJsonObject(), PhotoSizeDto.class);
                 photo.sizes.add(photoSizeDto);
 
-                if (photo.width != 0 && photo.height != 0) {
-                    continue;
-                }
-
+                //find biggest photo size
                 switch (photoSizeDto.type) {
                     case PhotoSizeDto.Type.O:
                     case PhotoSizeDto.Type.P:
@@ -73,6 +70,10 @@ public class PhotoDtoAdapter extends AbsAdapter implements JsonDeserializer<VKAp
                         continue;
 
                     default:
+                        if (photo.width > photoSizeDto.width && photo.height > photoSizeDto.height) {
+                            continue;
+                        }
+
                         photo.width = photoSizeDto.width;
                         photo.height = photoSizeDto.height;
                         break;

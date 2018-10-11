@@ -25,8 +25,6 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  */
 public class VideosListPresenter extends AccountDependencyPresenter<IVideosListView> {
 
-    private static final String TAG = VideosListPresenter.class.getSimpleName();
-
     private static final int COUNT = 50;
 
     private final int ownerId;
@@ -161,11 +159,6 @@ public class VideosListPresenter extends AccountDependencyPresenter<IVideosListV
         cacheDisposable.dispose();
         netDisposable.dispose();
         super.onDestroyed();
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void fireRefresh() {

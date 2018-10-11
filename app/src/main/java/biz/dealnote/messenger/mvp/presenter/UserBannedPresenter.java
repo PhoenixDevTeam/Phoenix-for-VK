@@ -133,11 +133,6 @@ public class UserBannedPresenter extends AccountDependencyPresenter<IUserBannedV
                         throwable -> onBannedPartGetError(getCauseIfRuntime(throwable))));
     }
 
-    @Override
-    protected String tag() {
-        return UserBannedPresenter.class.getSimpleName();
-    }
-
     public void fireRefresh() {
         loadNextPart(0);
     }

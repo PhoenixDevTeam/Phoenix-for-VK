@@ -174,11 +174,6 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
     }
 
     @Override
-    protected String tag() {
-        return UserWallFragment.class.getSimpleName();
-    }
-
-    @Override
     protected int headerLayout() {
         return R.layout.header_user_profile;
     }

@@ -24,7 +24,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.CommunitiesAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.AppStyleable;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
@@ -47,7 +47,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 19.09.2017.
  * phoenix
  */
-public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresenter, ICommunitiesView>
+public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, ICommunitiesView>
         implements ICommunitiesView, MySearchView.OnQueryTextListener, CommunitiesAdapter.ActionListener, BackPressCallback, MySearchView.OnBackButtonClickListener {
 
     public static CommunitiesFragment newInstance(int accountId, int userId) {
@@ -199,11 +199,6 @@ public class CommunitiesFragment extends BasePresenterFragment<CommunitiesPresen
                 requireArguments().getInt(Extra.USER_ID),
                 saveInstanceState
         );
-    }
-
-    @Override
-    protected String tag() {
-        return CommunitiesFragment.class.getSimpleName();
     }
 
     @Override

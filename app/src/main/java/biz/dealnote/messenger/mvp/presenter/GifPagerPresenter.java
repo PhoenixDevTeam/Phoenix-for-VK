@@ -29,7 +29,6 @@ import biz.dealnote.mvp.reflect.OnGuiCreated;
  */
 public class GifPagerPresenter extends BaseDocumentPresenter<IGifPagerView> implements IGifPlayer.IStatusChangeListener, IGifPlayer.IVideoSizeChangeListener {
 
-    private static final String TAG = GifPagerPresenter.class.getSimpleName();
     private static final String SAVE_PAGER_INDEX = "save_pager_index";
 
     private IGifPlayer mGifPlayer;
@@ -60,11 +59,6 @@ public class GifPagerPresenter extends BaseDocumentPresenter<IGifPagerView> impl
         if (isGuiReady()) {
             getView().displayData(mDocuments.size(), mCurrentIndex);
         }
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void fireSurfaceCreated(int adapterPosition) {

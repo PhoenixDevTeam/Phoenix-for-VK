@@ -209,11 +209,6 @@ public class WallPostPresenter extends PlaceSupportPresenter<IWallPostView> {
         outState.putParcelable(SAVE_OWNER, new ParcelableOwnerWrapper(owner));
     }
 
-    @Override
-    protected String tag() {
-        return WallPostPresenter.class.getSimpleName();
-    }
-
     public void fireOptionViewCreated(IWallPostView.IOptionView view) {
         view.setCanPin(nonNull(post) && !post.isPinned() && post.isCanPin() && !post.isDeleted());
         view.setCanUnpin(nonNull(post) && post.isPinned() && post.isCanPin() && !post.isDeleted());

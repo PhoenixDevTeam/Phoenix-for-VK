@@ -25,10 +25,10 @@ import biz.dealnote.messenger.model.DrawerCategory;
 import biz.dealnote.messenger.mvp.presenter.DrawerEditPresenter;
 import biz.dealnote.messenger.mvp.view.IDrawerEditView;
 import biz.dealnote.messenger.util.Objects;
+import biz.dealnote.mvp.compat.AbsMvpFragment;
 import biz.dealnote.mvp.core.IPresenterFactory;
-import biz.dealnote.mvp.ui.AbsPresenterFragment;
 
-public class DrawerEditFragment extends AbsPresenterFragment<DrawerEditPresenter, IDrawerEditView> implements IDrawerEditView {
+public class DrawerEditFragment extends AbsMvpFragment<DrawerEditPresenter, IDrawerEditView> implements IDrawerEditView {
 
     public static DrawerEditFragment newInstance() {
         Bundle args = new Bundle();
@@ -120,16 +120,6 @@ public class DrawerEditFragment extends AbsPresenterFragment<DrawerEditPresenter
             actionBar.setTitle(R.string.drawer_edit_title);
             actionBar.setSubtitle(null);
         }
-    }
-
-    @Override
-    protected String tag() {
-        return DrawerEditFragment.class.getSimpleName();
-    }
-
-    @Override
-    public void savePresenterState(@NonNull DrawerEditPresenter presenter, @NonNull Bundle outState) {
-        presenter.saveState(outState);
     }
 
     @Override

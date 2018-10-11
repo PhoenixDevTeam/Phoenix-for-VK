@@ -12,17 +12,10 @@ import biz.dealnote.messenger.mvp.view.ICommunityMembersView;
  */
 public class CommunityMembersPresenter extends AccountDependencyPresenter<ICommunityMembersView> {
 
-    private static final String TAG = CommunityMembersPresenter.class.getSimpleName();
-
     private final int groupId;
 
     public CommunityMembersPresenter(int accountId, int groupId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.groupId = groupId;
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 }

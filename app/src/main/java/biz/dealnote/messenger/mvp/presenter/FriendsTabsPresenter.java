@@ -93,9 +93,4 @@ public class FriendsTabsPresenter extends AccountDependencyPresenter<IFriendsTab
         view.configTabs(getAccountId(), userId, userId != getAccountId());
         view.displayConters(this.counters);
     }
-
-    @Override
-    protected String tag() {
-        return FriendsTabsPresenter.class.getSimpleName();
-    }
 }

@@ -21,7 +21,7 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.AttachmentsViewBinder;
 import biz.dealnote.messenger.adapter.MessagesAdapter;
-import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
+import biz.dealnote.messenger.fragment.base.PlaceSupportMvpFragment;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.LastReadId;
 import biz.dealnote.messenger.model.Message;
@@ -33,7 +33,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class FwdsFragment extends PlaceSupportPresenterFragment<FwdsPresenter, IFwdsView>
+public class FwdsFragment extends PlaceSupportMvpFragment<FwdsPresenter, IFwdsView>
         implements MessagesAdapter.OnMessageActionListener, IFwdsView, AttachmentsViewBinder.VoiceActionListener {
 
     public static Bundle buildArgs(int accountId, ArrayList<Message> messages){
@@ -85,11 +85,6 @@ public class FwdsFragment extends PlaceSupportPresenterFragment<FwdsPresenter, I
                 .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
-    }
-
-    @Override
-    protected String tag() {
-        return FwdsFragment.class.getSimpleName();
     }
 
     @Override

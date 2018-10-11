@@ -330,9 +330,4 @@ public class EnterPinPresenter extends RxSupportPresenter<IEnterPinView> {
         super.saveState(outState);
         outState.putIntArray(SAVE_VALUE, mValues);
     }
-
-    @Override
-    protected String tag() {
-        return TAG;
-    }
 }

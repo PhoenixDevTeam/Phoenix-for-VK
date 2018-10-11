@@ -29,11 +29,6 @@ public class BaseDocumentPresenter<V extends IBasicDocumentView> extends Account
         this.docsInteractor = InteractorFactory.createDocsInteractor();
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     public final void fireWritePermissionResolved() {
         onWritePermissionResolved();
     }

@@ -59,9 +59,4 @@ public class VideoSearchFragment extends AbsSearchFragment<VideosSearchPresenter
                 saveInstanceState
         );
     }
-
-    @Override
-    protected String tag() {
-        return VideoSearchFragment.class.getSimpleName();
-    }
 }

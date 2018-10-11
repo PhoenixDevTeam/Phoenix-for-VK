@@ -21,7 +21,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.TopicsAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.model.Commented;
 import biz.dealnote.messenger.model.LoadMoreState;
@@ -29,14 +29,13 @@ import biz.dealnote.messenger.model.Topic;
 import biz.dealnote.messenger.mvp.presenter.TopicsPresenter;
 import biz.dealnote.messenger.mvp.view.ITopicsView;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.messenger.view.LoadMoreFooterHelper;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class TopicsFragment extends BasePresenterFragment<TopicsPresenter, ITopicsView>
+public class TopicsFragment extends BaseMvpFragment<TopicsPresenter, ITopicsView>
         implements SwipeRefreshLayout.OnRefreshListener, ITopicsView, TopicsAdapter.ActionListener {
 
     public static Bundle buildArgs(int accountId, int ownerId){
@@ -112,18 +111,12 @@ public class TopicsFragment extends BasePresenterFragment<TopicsPresenter, ITopi
     }
 
     @Override
-    protected String tag() {
-        return TopicsFragment.class.getSimpleName();
-    }
-
-    @Override
     public void onRefresh() {
         getPresenter().fireRefresh();
     }
 
     @Override
     public void displayData(@NonNull List<Topic> topics) {
-        Logger.d(tag(), "displayData, size: " + topics.size());
         if(nonNull(mAdapter)){
             mAdapter.setItems(topics);
         }

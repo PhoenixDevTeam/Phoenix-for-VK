@@ -128,11 +128,6 @@ public class AudiosPresenter extends AccountDependencyPresenter<IAudiosView> {
         view.setBlockedScreen(!audioAvailable);
     }
 
-    @Override
-    protected String tag() {
-        return AudiosPresenter.class.getSimpleName();
-    }
-
     public void fireScrollToEnd() {
         if (actualReceived && !endOfContent) {
             requestNext();

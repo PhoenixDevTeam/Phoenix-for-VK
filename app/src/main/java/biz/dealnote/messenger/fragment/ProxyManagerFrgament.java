@@ -18,7 +18,7 @@ import java.util.List;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.ProxiesAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.model.ProxyConfig;
 import biz.dealnote.messenger.mvp.presenter.ProxyManagerPresenter;
 import biz.dealnote.messenger.mvp.view.IProxyManagerView;
@@ -31,7 +31,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 10.07.2017.
  * phoenix
  */
-public class ProxyManagerFrgament extends BasePresenterFragment<ProxyManagerPresenter, IProxyManagerView>
+public class ProxyManagerFrgament extends BaseMvpFragment<ProxyManagerPresenter, IProxyManagerView>
         implements IProxyManagerView, ProxiesAdapter.ActionListener {
 
     public static ProxyManagerFrgament newInstance() {
@@ -84,12 +84,6 @@ public class ProxyManagerFrgament extends BasePresenterFragment<ProxyManagerPres
     public IPresenterFactory<ProxyManagerPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new ProxyManagerPresenter(saveInstanceState);
     }
-
-    @Override
-    protected String tag() {
-        return ProxyManagerFrgament.class.getSimpleName();
-    }
-
 
     @Override
     public void displayData(List<ProxyConfig> configs, ProxyConfig active) {

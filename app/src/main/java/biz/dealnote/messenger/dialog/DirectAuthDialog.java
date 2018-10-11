@@ -145,11 +145,6 @@ public class DirectAuthDialog extends BasePresenterDialogFragment<DirectAuthPres
     }
 
     @Override
-    protected String tag() {
-        return DirectAuthDialog.class.getSimpleName();
-    }
-
-    @Override
     public void setLoginButtonEnabled(boolean enabled) {
         Button buttonLogin = ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE);
 

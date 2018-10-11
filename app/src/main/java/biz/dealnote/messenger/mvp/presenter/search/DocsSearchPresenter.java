@@ -55,9 +55,4 @@ public class DocsSearchPresenter extends AbsSearchPresenter<IDocSearchView, Docu
     boolean canSearch(DocumentSearchCriteria criteria) {
         return Utils.nonEmpty(criteria.getQuery());
     }
-
-    @Override
-    protected String tag() {
-        return DocsSearchPresenter.class.getSimpleName();
-    }
 }

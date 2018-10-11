@@ -140,11 +140,6 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
         resolveLoadingView();
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     public final void firePageSelected(int position) {
         int old = mCurrentIndex;
         changePageTo(position);

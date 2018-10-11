@@ -51,7 +51,6 @@ import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
  */
 public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
 
-    private static final String TAG = DialogsPresenter.class.getSimpleName();
     private static final int COUNT = 30;
 
     private static final String SAVE_DIALOGS_OWNER_ID = "save-dialogs-owner-id";
@@ -328,11 +327,6 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         if (isGuiReady()) {
             getView().notifyDataSetChanged();
         }
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     @Override

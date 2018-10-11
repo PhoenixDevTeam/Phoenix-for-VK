@@ -23,8 +23,6 @@ import static biz.dealnote.messenger.util.Utils.trimmedNonEmpty;
  */
 public class MessagesSearchPresenter extends AbsSearchPresenter<IMessagesSearchView, MessageSeachCriteria, Message, IntNextFrom> {
 
-    private static final String TAG = MessagesSearchPresenter.class.getSimpleName();
-
     private final IMessagesInteractor messagesInteractor;
 
     public MessagesSearchPresenter(int accountId, @Nullable MessageSeachCriteria criteria, @Nullable Bundle savedInstanceState) {
@@ -64,11 +62,6 @@ public class MessagesSearchPresenter extends AbsSearchPresenter<IMessagesSearchV
     @Override
     boolean canSearch(MessageSeachCriteria criteria) {
         return trimmedNonEmpty(criteria.getQuery());
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void fireMessageClick(Message message) {

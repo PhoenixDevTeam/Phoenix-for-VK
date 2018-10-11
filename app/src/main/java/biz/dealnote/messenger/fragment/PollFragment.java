@@ -24,7 +24,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.PollAnswersAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.mvp.presenter.PollPresenter;
 import biz.dealnote.messenger.mvp.view.IPollView;
@@ -39,7 +39,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 19.12.2016.
  * phoenix
  */
-public class PollFragment extends BasePresenterFragment<PollPresenter, IPollView>
+public class PollFragment extends BaseMvpFragment<PollPresenter, IPollView>
         implements IPollView, PollAnswersAdapter.OnAnswerChangedCallback {
 
     public static Bundle buildArgs(int aid, Poll poll){
@@ -157,11 +157,6 @@ public class PollFragment extends BasePresenterFragment<PollPresenter, IPollView
             AssertUtils.requireNonNull(poll);
             return new PollPresenter(aid, poll, saveInstanceState);
         };
-    }
-
-    @Override
-    protected String tag() {
-        return PollFragment.class.getSimpleName();
     }
 
     @Override

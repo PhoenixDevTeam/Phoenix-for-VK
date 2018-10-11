@@ -292,9 +292,4 @@ public class MessagesLookPresenter extends AbsMessageListPresenter<IMessagesLook
             getView().notifyMessagesDownAdded(messages.size());
         }
     }
-
-    @Override
-    protected String tag() {
-        return TAG;
-    }
 }

@@ -136,11 +136,6 @@ public class FavePhotosPresenter extends AccountDependencyPresenter<IFavePhotosV
         viewHost.displayData(mPhotos);
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     private boolean canLoadMore() {
         return !mPhotos.isEmpty() && !requestNow && !mEndOfContent && !cacheLoadingNow;
     }

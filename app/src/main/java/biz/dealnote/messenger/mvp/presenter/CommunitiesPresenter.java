@@ -14,7 +14,6 @@ import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.DataWrapper;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.ICommunitiesView;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Translit;
@@ -100,8 +99,6 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
     }
 
     private void onActualDataReceived(int offset, List<Community> communities) {
-        Logger.d(tag(), "onActualDataReceived, count: " + communities.size());
-
         //reset cache loading
         this.cacheDisposable.clear();
         this.cacheLoadingNow = false;
@@ -148,11 +145,6 @@ public class CommunitiesPresenter extends AccountDependencyPresenter<ICommunitie
         this.own.get().clear();
         this.own.get().addAll(communities);
         callView(ICommunitiesView::notifyDataSetChanged);
-    }
-
-    @Override
-    protected String tag() {
-        return CommunitiesPresenter.class.getSimpleName();
     }
 
     private String filter;

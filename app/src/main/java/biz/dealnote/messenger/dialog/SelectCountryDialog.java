@@ -30,11 +30,6 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
 public class SelectCountryDialog extends BasePresenterDialogFragment<CountriesPresenter, ICountriesView>
         implements CountriesAdapter.Listener, ICountriesView {
 
-    @Override
-    protected String tag() {
-        return SelectCountryDialog.class.getSimpleName();
-    }
-
     private CountriesAdapter mAdapter;
     private View mLoadingView;
 

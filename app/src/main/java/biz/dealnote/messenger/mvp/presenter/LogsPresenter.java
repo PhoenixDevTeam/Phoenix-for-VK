@@ -127,11 +127,6 @@ public class LogsPresenter extends RxSupportPresenter<ILogsView> {
         return types;
     }
 
-    @Override
-    protected String tag() {
-        return LogsPresenter.class.getSimpleName();
-    }
-
     public void fireTypeClick(LogEventType entry) {
         if(getSelectedType() == entry.getType()){
             return;

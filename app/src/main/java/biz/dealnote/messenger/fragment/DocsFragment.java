@@ -32,7 +32,7 @@ import biz.dealnote.messenger.adapter.DocsAsImagesAdapter;
 import biz.dealnote.messenger.adapter.DocsUploadAdapter;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
 import biz.dealnote.messenger.adapter.horizontal.HorizontalOptionsAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.DocFilter;
@@ -58,7 +58,7 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  * Created by admin on 25.12.2016.
  * phoenix
  */
-public class DocsFragment extends BasePresenterFragment<DocsListPresenter, IDocListView>
+public class DocsFragment extends BaseMvpFragment<DocsListPresenter, IDocListView>
         implements IDocListView, DocsAdapter.ActionListener, DocsUploadAdapter.ActionListener, DocsAsImagesAdapter.ActionListener {
 
     private static final int PERM_REQUEST_READ_STORAGE = 17;
@@ -366,11 +366,6 @@ public class DocsFragment extends BasePresenterFragment<DocsListPresenter, IDocL
                 requireArguments().getString(Extra.ACTION),
                 saveInstanceState
         );
-    }
-
-    @Override
-    protected String tag() {
-        return DocsFragment.class.getSimpleName();
     }
 
     @Override

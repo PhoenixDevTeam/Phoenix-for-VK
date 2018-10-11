@@ -23,7 +23,6 @@ import io.reactivex.disposables.CompositeDisposable;
 public class VideoAlbumsPresenter extends AccountDependencyPresenter<IVideoAlbumsView> {
 
     private static final int COUNT_PER_LOAD = 40;
-    private static final String TAG = VideoAlbumsPresenter.class.getSimpleName();
 
     private final int ownerId;
     private final String action;
@@ -126,11 +125,6 @@ public class VideoAlbumsPresenter extends AccountDependencyPresenter<IVideoAlbum
     public void onGuiCreated(@NonNull IVideoAlbumsView view) {
         super.onGuiCreated(view);
         view.displayData(this.data);
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     private boolean canLoadMore() {

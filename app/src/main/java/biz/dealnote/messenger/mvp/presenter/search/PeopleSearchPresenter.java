@@ -56,11 +56,6 @@ public class PeopleSearchPresenter extends AbsSearchPresenter<IPeopleSearchView,
         return true;
     }
 
-    @Override
-    protected String tag() {
-        return PeopleSearchPresenter.class.getSimpleName();
-    }
-
     public void fireUserClick(User user) {
         getView().openUserWall(getAccountId(), user);
     }

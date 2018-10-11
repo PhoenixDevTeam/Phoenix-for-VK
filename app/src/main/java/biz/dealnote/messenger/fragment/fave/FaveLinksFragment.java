@@ -18,7 +18,7 @@ import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.fave.FaveLinksAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.link.LinkHelper;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
@@ -29,7 +29,7 @@ import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-public class FaveLinksFragment extends BasePresenterFragment<FaveLinksPresenter, IFaveLinksView> implements IFaveLinksView, FaveLinksAdapter.ClickListener {
+public class FaveLinksFragment extends BaseMvpFragment<FaveLinksPresenter, IFaveLinksView> implements IFaveLinksView, FaveLinksAdapter.ClickListener {
 
     public static FaveLinksFragment newInstance(int accountId) {
         Bundle args = new Bundle();
@@ -100,11 +100,6 @@ public class FaveLinksFragment extends BasePresenterFragment<FaveLinksPresenter,
     @Override
     public void onLinkDelete(int index, FaveLink link) {
         getPresenter().fireDeleteClick(link);
-    }
-
-    @Override
-    protected String tag() {
-        return FaveLinksFragment.class.getSimpleName();
     }
 
     @Override

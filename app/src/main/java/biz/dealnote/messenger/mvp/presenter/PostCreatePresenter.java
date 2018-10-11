@@ -373,11 +373,6 @@ public class PostCreatePresenter extends AbsPostEditPresenter<IPostCreateView> {
     }
 
     @Override
-    protected String tag() {
-        return TAG;
-    }
-
-    @Override
     protected void onPollCreateClick() {
         getView().openPollCreationWindow(getAccountId(), ownerId);
     }

@@ -21,7 +21,7 @@ import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.FriendsRecycleAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.User;
@@ -35,7 +35,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class AllFriendsFragment extends BasePresenterFragment<AllFriendsPresenter, IAllFriendsView>
+public class AllFriendsFragment extends BaseMvpFragment<AllFriendsPresenter, IAllFriendsView>
         implements FriendsRecycleAdapter.Listener, IAllFriendsView {
 
     private FriendsRecycleAdapter mAdapter;
@@ -99,11 +99,6 @@ public class AllFriendsFragment extends BasePresenterFragment<AllFriendsPresente
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
         return root;
-    }
-
-    @Override
-    protected String tag() {
-        return AllFriendsFragment.class.getSimpleName();
     }
 
     @Override

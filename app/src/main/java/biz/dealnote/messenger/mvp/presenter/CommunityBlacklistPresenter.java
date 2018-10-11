@@ -32,7 +32,6 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
 public class CommunityBlacklistPresenter extends AccountDependencyPresenter<ICommunityBlacklistView> {
 
     private static final int COUNT = 20;
-    private final String TAG = CommunityBlacklistPresenter.class.getSimpleName();
 
     private final int groupId;
     private final List<Banned> data;
@@ -131,11 +130,6 @@ public class CommunityBlacklistPresenter extends AccountDependencyPresenter<ICom
         }
 
         setLoadingNow(false);
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void fireRefresh() {

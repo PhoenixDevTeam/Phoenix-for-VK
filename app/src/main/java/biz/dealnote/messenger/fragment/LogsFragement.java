@@ -21,7 +21,7 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.LogsAdapter;
 import biz.dealnote.messenger.adapter.horizontal.HorizontalOptionsAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.LogEvent;
 import biz.dealnote.messenger.model.LogEventType;
@@ -37,7 +37,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by Ruslan Kolbasa on 26.04.2017.
  * phoenix
  */
-public class LogsFragement extends BasePresenterFragment<LogsPresenter, ILogsView>
+public class LogsFragement extends BaseMvpFragment<LogsPresenter, ILogsView>
         implements ILogsView, HorizontalOptionsAdapter.Listener<LogEventType>, LogsAdapter.ActionListener {
 
     public static LogsFragement newInstance() {
@@ -152,11 +152,6 @@ public class LogsFragement extends BasePresenterFragment<LogsPresenter, ILogsVie
     @Override
     public IPresenterFactory<LogsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new LogsPresenter(saveInstanceState);
-    }
-
-    @Override
-    protected String tag() {
-        return LogsFragement.class.getSimpleName();
     }
 
     @Override

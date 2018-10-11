@@ -85,11 +85,6 @@ public class CommunitiesSearchPresenter extends AbsSearchPresenter<ICommunitiesS
         return nonEmpty(criteria.getQuery());
     }
 
-    @Override
-    protected String tag() {
-        return CommunitiesSearchPresenter.class.getSimpleName();
-    }
-
     public void fireCommunityClick(Community community) {
         getView().openCommunityWall(getAccountId(), community);
     }

@@ -100,9 +100,4 @@ public class OnlineFriendsPresenter extends SimpleOwnersPresenter<ISimpleOwnersV
         actualDataDisposable.dispose();
         super.onDestroyed();
     }
-
-    @Override
-    protected String tag() {
-        return OnlineFriendsPresenter.class.getSimpleName();
-    }
 }

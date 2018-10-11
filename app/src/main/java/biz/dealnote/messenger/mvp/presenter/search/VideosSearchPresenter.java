@@ -56,9 +56,4 @@ public class VideosSearchPresenter extends AbsSearchPresenter<IVideosSearchView,
     boolean canSearch(VideoSearchCriteria criteria) {
         return nonEmpty(criteria.getQuery());
     }
-
-    @Override
-    protected String tag() {
-        return VideosSearchPresenter.class.getSimpleName();
-    }
 }

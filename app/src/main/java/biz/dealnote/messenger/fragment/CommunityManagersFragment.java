@@ -21,7 +21,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.SelectProfilesActivity;
 import biz.dealnote.messenger.adapter.CommunityManagersAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.fragment.search.SearchContentType;
 import biz.dealnote.messenger.fragment.search.criteria.PeopleSearchCriteria;
 import biz.dealnote.messenger.model.Manager;
@@ -39,7 +39,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
  * Created by admin on 13.06.2017.
  * phoenix
  */
-public class CommunityManagersFragment extends BasePresenterFragment<CommunityManagersPresenter, ICommunityManagersView>
+public class CommunityManagersFragment extends BaseMvpFragment<CommunityManagersPresenter, ICommunityManagersView>
         implements ICommunityManagersView {
 
     private static final int REQUEST_SELECT_PROFILES = 19;
@@ -102,11 +102,6 @@ public class CommunityManagersFragment extends BasePresenterFragment<CommunityMa
                 requireArguments().getInt(Extra.GROUP_ID),
                 saveInstanceState
         );
-    }
-
-    @Override
-    protected String tag() {
-        return CommunityManagersFragment.class.getSimpleName();
     }
 
     @Override

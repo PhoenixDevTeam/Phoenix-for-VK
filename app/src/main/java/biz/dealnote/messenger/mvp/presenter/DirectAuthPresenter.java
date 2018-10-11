@@ -47,11 +47,6 @@ public class DirectAuthPresenter extends RxSupportPresenter<IDirectAuthView> {
         this.networker = Injection.provideNetworkInterfaces();
     }
 
-    @Override
-    protected String tag() {
-        return DirectAuthPresenter.class.getSimpleName();
-    }
-
     public void fireLoginClick() {
         doLogin(false);
     }

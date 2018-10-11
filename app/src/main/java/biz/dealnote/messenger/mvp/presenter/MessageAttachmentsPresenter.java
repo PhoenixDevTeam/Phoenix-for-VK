@@ -48,8 +48,6 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  */
 public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAttachmentsView> {
 
-    private static final String TAG = MessageAttachmentsPresenter.class.getSimpleName();
-
     private final int accountId;
     private final int messageOwnerId;
     private final int messageId;
@@ -256,11 +254,6 @@ public class MessageAttachmentsPresenter extends RxSupportPresenter<IMessageAtta
     public void onGuiCreated(@NonNull IMessageAttachmentsView viewHost) {
         super.onGuiCreated(viewHost);
         viewHost.displayAttachments(entries);
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void fireAddPhotoButtonClick() {

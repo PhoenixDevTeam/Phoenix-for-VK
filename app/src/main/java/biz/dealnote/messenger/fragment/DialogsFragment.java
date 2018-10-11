@@ -34,7 +34,7 @@ import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.SelectProfilesActivity;
 import biz.dealnote.messenger.adapter.DialogsAdapter;
 import biz.dealnote.messenger.dialog.DialogNotifOptionsDialog;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.fragment.search.SearchContentType;
 import biz.dealnote.messenger.fragment.search.criteria.DialogsSearchCriteria;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
@@ -61,7 +61,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by hp-dv6 on 05.06.2016.
  * VKMessenger
  */
-public class DialogsFragment extends BasePresenterFragment<DialogsPresenter, IDialogsView>
+public class DialogsFragment extends BaseMvpFragment<DialogsPresenter, IDialogsView>
         implements IDialogsView, DialogsAdapter.ClickListener {
 
     public static DialogsFragment newInstance(int accountId, int dialogsOwnerId, @Nullable String subtitle) {
@@ -299,11 +299,6 @@ public class DialogsFragment extends BasePresenterFragment<DialogsPresenter, IDi
         }
 
         super.onDestroyView();
-    }
-
-    @Override
-    protected String tag() {
-        return DialogsFragment.class.getSimpleName();
     }
 
     @Override

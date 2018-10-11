@@ -85,11 +85,6 @@ public class CommentEditFragment extends AbsAttachmentsEditFragment<CommentEditP
     }
 
     @Override
-    protected String tag() {
-        return CommentEditFragment.class.getSimpleName();
-    }
-
-    @Override
     public boolean onBackPressed() {
         return getPresenter().onBackPressed();
     }

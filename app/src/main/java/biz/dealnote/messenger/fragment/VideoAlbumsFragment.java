@@ -17,7 +17,7 @@ import java.util.List;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.VideoAlbumsNewAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.VideoAlbum;
@@ -28,7 +28,7 @@ import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-public class VideoAlbumsFragment extends BasePresenterFragment<VideoAlbumsPresenter, IVideoAlbumsView>
+public class VideoAlbumsFragment extends BaseMvpFragment<VideoAlbumsPresenter, IVideoAlbumsView>
         implements VideoAlbumsNewAdapter.Listener, IVideoAlbumsView {
 
     public static VideoAlbumsFragment newInstance(Bundle args){
@@ -83,11 +83,6 @@ public class VideoAlbumsFragment extends BasePresenterFragment<VideoAlbumsPresen
 
         resolveEmptyTextVisibility();
         return root;
-    }
-
-    @Override
-    protected String tag() {
-        return VideoAlbumsFragment.class.getSimpleName();
     }
 
     @Override

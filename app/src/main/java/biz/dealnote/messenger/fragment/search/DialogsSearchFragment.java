@@ -40,11 +40,6 @@ public class DialogsSearchFragment extends AbsSearchFragment<DialogsSearchPresen
     }
 
     @Override
-    protected String tag() {
-        return DialogsSearchFragment.class.getSimpleName();
-    }
-
-    @Override
     void setAdapterData(RecyclerView.Adapter adapter, List<Object> data) {
         ((DialogPreviewAdapter) adapter).setData(data);
     }

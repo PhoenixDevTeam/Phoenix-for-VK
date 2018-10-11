@@ -18,7 +18,7 @@ import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.VideosAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.Video;
@@ -30,7 +30,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class FaveVideosFragment extends BasePresenterFragment<FaveVideosPresenter, IFaveVideosView>
+public class FaveVideosFragment extends BaseMvpFragment<FaveVideosPresenter, IFaveVideosView>
         implements IFaveVideosView, SwipeRefreshLayout.OnRefreshListener, VideosAdapter.VideoOnClickListener {
 
     public static FaveVideosFragment newInstance(int accountId){
@@ -76,11 +76,6 @@ public class FaveVideosFragment extends BasePresenterFragment<FaveVideosPresente
 
         resolveEmptyTextVisibility();
         return root;
-    }
-
-    @Override
-    protected String tag() {
-        return FaveVideosFragment.class.getSimpleName();
     }
 
     @Override

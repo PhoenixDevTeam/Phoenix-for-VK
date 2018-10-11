@@ -134,9 +134,4 @@ public class FollowersPresenter extends SimpleOwnersPresenter<ISimpleOwnersView>
         actualDataDisposable.dispose();
         super.onDestroyed();
     }
-
-    @Override
-    protected String tag() {
-        return FollowersPresenter.class.getSimpleName();
-    }
 }

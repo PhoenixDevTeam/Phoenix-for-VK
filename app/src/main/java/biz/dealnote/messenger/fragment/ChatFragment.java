@@ -44,7 +44,7 @@ import biz.dealnote.messenger.adapter.MessagesAdapter;
 import biz.dealnote.messenger.api.model.VKApiAttachment;
 import biz.dealnote.messenger.crypt.KeyLocationPolicy;
 import biz.dealnote.messenger.dialog.ImageSizeAlertDialog;
-import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
+import biz.dealnote.messenger.fragment.base.PlaceSupportMvpFragment;
 import biz.dealnote.messenger.fragment.search.SearchContentType;
 import biz.dealnote.messenger.fragment.search.criteria.MessageSeachCriteria;
 import biz.dealnote.messenger.fragment.sheet.MessageAttachmentsFragment;
@@ -84,7 +84,7 @@ import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
  * Created by ruslan.kolbasa on 05.10.2016.
  * phoenix
  */
-public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, IChatView>
+public class ChatFragment extends PlaceSupportMvpFragment<ChatPrensenter, IChatView>
         implements IChatView, InputViewController.OnInputActionCallback, BackPressCallback,
         MessagesAdapter.OnMessageActionListener, InputViewController.RecordActionsCallback, AttachmentsViewBinder.VoiceActionListener, StickersGridView.OnStickerClickedListener, EmojiconTextView.OnHashTagClickListener {
 
@@ -251,11 +251,6 @@ public class ChatFragment extends PlaceSupportPresenterFragment<ChatPrensenter, 
         if (nonNull(mAdapter)) {
             mAdapter.disableVoiceMessagePlaying();
         }
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     @Override

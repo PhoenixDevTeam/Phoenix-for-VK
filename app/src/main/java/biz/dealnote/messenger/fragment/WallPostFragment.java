@@ -27,7 +27,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.adapter.AttachmentsHolder;
 import biz.dealnote.messenger.adapter.AttachmentsViewBinder;
-import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
+import biz.dealnote.messenger.fragment.base.PlaceSupportMvpFragment;
 import biz.dealnote.messenger.fragment.search.SearchContentType;
 import biz.dealnote.messenger.fragment.search.criteria.NewsFeedCriteria;
 import biz.dealnote.messenger.link.internal.LinkActionAdapter;
@@ -50,7 +50,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class WallPostFragment extends PlaceSupportPresenterFragment<WallPostPresenter, IWallPostView>
+public class WallPostFragment extends PlaceSupportMvpFragment<WallPostPresenter, IWallPostView>
         implements EmojiconTextView.OnHashTagClickListener, IWallPostView {
 
     private TextView mSignerNameText;
@@ -319,11 +319,6 @@ public class WallPostFragment extends PlaceSupportPresenterFragment<WallPostPres
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.single_post_menu, menu);
-    }
-
-    @Override
-    protected String tag() {
-        return WallPostFragment.class.getSimpleName();
     }
 
     @Override

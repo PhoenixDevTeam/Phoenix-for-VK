@@ -210,11 +210,6 @@ public class RequestExecutePresenter extends AccountDependencyPresenter<IRequest
                 });
     }
 
-    @Override
-    protected String tag() {
-        return RequestExecutePresenter.class.getSimpleName();
-    }
-
     public void fireSaveClick() {
         saveToFile();
     }

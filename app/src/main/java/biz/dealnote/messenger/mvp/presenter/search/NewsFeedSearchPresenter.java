@@ -81,11 +81,6 @@ public class NewsFeedSearchPresenter extends AbsSearchPresenter<INewsFeedSearchV
         return Utils.nonEmpty(criteria.getQuery());
     }
 
-    @Override
-    protected String tag() {
-        return NewsFeedSearchPresenter.class.getSimpleName();
-    }
-
     public void fireLikeClick(Post post) {
         final int accountId = super.getAccountId();
 

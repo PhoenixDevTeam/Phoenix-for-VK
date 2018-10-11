@@ -148,11 +148,6 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
         }
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     public void fireReadyClick() {
         if (hasUploads()) {
             safeShowError(getView(), R.string.upload_not_resolved_exception_message);

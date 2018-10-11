@@ -32,11 +32,6 @@ public class DialogsSearchPresenter extends AbsSearchPresenter<IDialogsSearchVie
     }
 
     @Override
-    protected String tag() {
-        return DialogsSearchPresenter.class.getSimpleName();
-    }
-
-    @Override
     IntNextFrom getInitialNextFrom() {
         return new IntNextFrom(0);
     }

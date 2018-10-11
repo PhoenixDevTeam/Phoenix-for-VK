@@ -114,11 +114,6 @@ public class CountriesPresenter extends RxSupportPresenter<ICountriesView> {
                 .subscribe(this::onDataReceived, this::onDataGetError));
     }
 
-    @Override
-    protected String tag() {
-        return CountriesPresenter.class.getSimpleName();
-    }
-
     public void fireCountryClick(Country country) {
         getView().returnSelection(country);
     }

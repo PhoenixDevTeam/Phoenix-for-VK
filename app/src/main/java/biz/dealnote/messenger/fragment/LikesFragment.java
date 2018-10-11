@@ -55,11 +55,6 @@ public class LikesFragment extends AbsOwnersListFragment<LikesListPresenter, ISi
     }
 
     @Override
-    protected String tag() {
-        return LikesFragment.class.getSimpleName();
-    }
-
-    @Override
     public IPresenterFactory<LikesListPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new LikesListPresenter(
                 requireArguments().getInt(Extra.ACCOUNT_ID),

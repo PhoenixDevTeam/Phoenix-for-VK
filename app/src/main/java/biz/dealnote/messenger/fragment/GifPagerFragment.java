@@ -43,8 +43,6 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresenter, IGifPagerView>
         implements IGifPagerView {
 
-    private static final String TAG = GifPagerFragment.class.getSimpleName();
-
     private ViewPager mViewPager;
 
     private Toolbar mToolbar;
@@ -140,11 +138,6 @@ public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresent
         if (Objects.nonNull(mButtonsRoot)) {
             mButtonsRoot.setVisibility(mFullscreen ? View.GONE : View.VISIBLE);
         }
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     @Override

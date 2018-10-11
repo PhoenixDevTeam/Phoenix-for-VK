@@ -91,11 +91,6 @@ public class LikesListPresenter extends SimpleOwnersPresenter<ISimpleOwnersView>
     }
 
     @Override
-    protected String tag() {
-        return LikesListPresenter.class.getSimpleName();
-    }
-
-    @Override
     public void onDestroyed() {
         netDisposable.dispose();
         super.onDestroyed();

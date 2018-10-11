@@ -24,7 +24,7 @@ import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.AttachmentsViewBinder;
 import biz.dealnote.messenger.adapter.feedback.FeedbackAdapter;
 import biz.dealnote.messenger.dialog.FeedbackLinkDialog;
-import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
+import biz.dealnote.messenger.fragment.base.PlaceSupportMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
@@ -40,7 +40,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class FeedbackFragment extends PlaceSupportPresenterFragment<FeedbackPresenter, IFeedbackView> implements SwipeRefreshLayout.OnRefreshListener,
+public class FeedbackFragment extends PlaceSupportMvpFragment<FeedbackPresenter, IFeedbackView> implements SwipeRefreshLayout.OnRefreshListener,
         IFeedbackView, FeedbackAdapter.ClickListener, AttachmentsViewBinder.OnAttachmentsActionCallback {
 
     private static final String TAG = FeedbackFragment.class.getSimpleName();
@@ -124,11 +124,6 @@ public class FeedbackFragment extends PlaceSupportPresenterFragment<FeedbackPres
                 .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     @Override

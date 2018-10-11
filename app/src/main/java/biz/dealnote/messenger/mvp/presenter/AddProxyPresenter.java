@@ -38,11 +38,6 @@ public class AddProxyPresenter extends RxSupportPresenter<IAddProxyView> {
         viewHost.setAuthChecked(authEnabled);
     }
 
-    @Override
-    protected String tag() {
-        return AddProxyPresenter.class.getSimpleName();
-    }
-
     public void fireAddressEdit(CharSequence s) {
         address = s.toString();
     }

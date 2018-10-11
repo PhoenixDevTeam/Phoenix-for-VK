@@ -64,9 +64,4 @@ public class ChatAttachmentVideoPresenter extends BaseChatAttachmentsPresenter<V
             getView().setToolbarSubtitle(getString(R.string.videos_count, safeCountOf(data)));
         }
     }
-
-    @Override
-    protected String tag() {
-        return ChatAttachmentVideoPresenter.class.getSimpleName();
-    }
 }

@@ -42,7 +42,6 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  */
 public abstract class AbsWallPresenter<V extends IWallView> extends PlaceSupportPresenter<V> {
 
-    private static final String TAG = AbsWallPresenter.class.getSimpleName();
     private static final int COUNT = 20;
 
     protected final int ownerId;
@@ -282,11 +281,6 @@ public abstract class AbsWallPresenter<V extends IWallView> extends PlaceSupport
 
             getView().setupLoadMoreFooter(state);
         }
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     private boolean canLoadMore() {

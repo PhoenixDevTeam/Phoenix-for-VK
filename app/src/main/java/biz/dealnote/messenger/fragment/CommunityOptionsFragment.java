@@ -16,7 +16,7 @@ import java.util.List;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.Day;
 import biz.dealnote.messenger.model.GroupSettings;
@@ -32,7 +32,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
  * Created by admin on 13.06.2017.
  * phoenix
  */
-public class CommunityOptionsFragment extends BasePresenterFragment<CommunityOptionsPresenter, ICommunityOptionsView>
+public class CommunityOptionsFragment extends BaseMvpFragment<CommunityOptionsPresenter, ICommunityOptionsView>
         implements ICommunityOptionsView {
 
     public static CommunityOptionsFragment newInstance(int accountId, Community community, GroupSettings settings) {
@@ -118,11 +118,6 @@ public class CommunityOptionsFragment extends BasePresenterFragment<CommunityOpt
             GroupSettings settings = requireArguments().getParcelable(Extra.SETTINGS);
             return new CommunityOptionsPresenter(accountId, community, settings, saveInstanceState);
         };
-    }
-
-    @Override
-    protected String tag() {
-        return CommunityOptionsFragment.class.getSimpleName();
     }
 
     @Override

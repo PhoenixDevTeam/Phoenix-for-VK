@@ -1,5 +1,6 @@
 package biz.dealnote.mvp.core;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 /**
@@ -7,18 +8,13 @@ import android.support.annotation.NonNull;
  * mvpcore
  */
 public interface IPresenter<V extends IMvpView> {
+    void saveState(@NonNull Bundle savedState);
 
-    void onViewHostAttached(@NonNull V viewHost);
-    void onViewHostDetached();
-    boolean isViewHostAttached();
-
-    void onGuiCreated(@NonNull V viewHost);
-    void onGuiDestroyed();
-    void onGuiResumed();
-    void onGuiPaused();
-
-    boolean isGuiReady();
-    boolean isGuiResumed();
-
-    void onDestroyed();
+    void destroy();
+    void resumeView();
+    void pauseView();
+    void attachViewHost(@NonNull V view);
+    void detachViewHost();
+    void createView(@NonNull V view);
+    void destroyView();
 }

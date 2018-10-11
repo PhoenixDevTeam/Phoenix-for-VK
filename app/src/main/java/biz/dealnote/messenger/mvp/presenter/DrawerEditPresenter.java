@@ -85,11 +85,6 @@ public class DrawerEditPresenter extends AbsPresenter<IDrawerEditView> {
         viewHost.displayData(data);
     }
 
-    @Override
-    protected String tag() {
-        return DrawerEditPresenter.class.getSimpleName();
-    }
-
     private void save() {
         @SwitchableCategory
         int[] postions = new int[data.size()];

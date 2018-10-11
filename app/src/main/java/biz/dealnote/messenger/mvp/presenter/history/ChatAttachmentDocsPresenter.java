@@ -65,9 +65,4 @@ public class ChatAttachmentDocsPresenter extends BaseChatAttachmentsPresenter<Do
             getView().setToolbarSubtitle(getString(R.string.documents_count, safeCountOf(data)));
         }
     }
-
-    @Override
-    protected String tag() {
-        return ChatAttachmentDocsPresenter.class.getSimpleName();
-    }
 }

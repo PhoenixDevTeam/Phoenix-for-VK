@@ -34,7 +34,7 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
 import biz.dealnote.messenger.domain.ILikesInteractor;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.model.Commented;
 import biz.dealnote.messenger.model.EditingPostType;
 import biz.dealnote.messenger.model.Photo;
@@ -67,7 +67,7 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  * Created by admin on 24.09.2016.
  * phoenix
  */
-public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresenter, IPhotoPagerView>
+public class PhotoPagerFragment extends BaseMvpFragment<PhotoPagerPresenter, IPhotoPagerView>
         implements IPhotoPagerView, GoBackCallback {
 
     private static final String EXTRA_FOCUS_PHOTO_ID = "focus_photo_id";
@@ -292,16 +292,6 @@ public class PhotoPagerFragment extends BasePresenterFragment<PhotoPagerPresente
     @Override
     public void displayAccountNotSupported() {
 
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
-    @Override
-    public void savePresenterState(@NonNull PhotoPagerPresenter presenter, @NonNull Bundle outState) {
-        presenter.saveState(outState);
     }
 
     @Override

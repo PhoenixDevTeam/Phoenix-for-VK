@@ -20,7 +20,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.CommunityLinksAdapter;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.mvp.presenter.CommunityLinksPresenter;
 import biz.dealnote.messenger.mvp.view.ICommunityLinksView;
 import biz.dealnote.mvp.core.IPresenterFactory;
@@ -31,7 +31,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  * Created by admin on 13.06.2017.
  * phoenix
  */
-public class CommunityLinksFragment extends BasePresenterFragment<CommunityLinksPresenter, ICommunityLinksView>
+public class CommunityLinksFragment extends BaseMvpFragment<CommunityLinksPresenter, ICommunityLinksView>
         implements ICommunityLinksView, CommunityLinksAdapter.ActionListener {
 
     private CommunityLinksAdapter mLinksAdapter;
@@ -73,11 +73,6 @@ public class CommunityLinksFragment extends BasePresenterFragment<CommunityLinks
                 requireArguments().getInt(Extra.GROUP_ID),
                 saveInstanceState
         );
-    }
-
-    @Override
-    protected String tag() {
-        return CommunityLinksFragment.class.getSimpleName();
     }
 
     @Override

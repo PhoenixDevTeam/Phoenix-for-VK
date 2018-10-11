@@ -20,7 +20,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.AudioRecyclerAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.Audio;
@@ -36,7 +36,7 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
 /**
  * Audio is not supported :-(
  */
-public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudiosView>
+public class AudiosFragment extends BaseMvpFragment<AudiosPresenter, IAudiosView>
         implements IAudiosView {
 
     public static AudiosFragment newInstance(int accountId, int ownerId) {
@@ -103,11 +103,6 @@ public class AudiosFragment extends BasePresenterFragment<AudiosPresenter, IAudi
                 .setStatusBarColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
-    }
-
-    @Override
-    protected String tag() {
-        return AudiosFragment.class.getSimpleName();
     }
 
     @Override

@@ -23,11 +23,6 @@ public class MutualFriendsFragment extends AbsOwnersListFragment<MutualFriendsPr
     }
 
     @Override
-    protected String tag() {
-        return MutualFriendsFragment.class.getSimpleName();
-    }
-
-    @Override
     public IPresenterFactory<MutualFriendsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new MutualFriendsPresenter(
                 getArguments().getInt(Extra.ACCOUNT_ID),

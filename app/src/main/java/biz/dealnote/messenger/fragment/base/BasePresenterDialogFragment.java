@@ -1,7 +1,5 @@
 package biz.dealnote.messenger.fragment.base;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
 
@@ -9,9 +7,9 @@ import biz.dealnote.messenger.mvp.view.IErrorView;
 import biz.dealnote.messenger.mvp.view.IToastView;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;
 import biz.dealnote.messenger.util.Utils;
+import biz.dealnote.mvp.compat.AbsPresenterDialogFragment;
 import biz.dealnote.mvp.core.AbsPresenter;
 import biz.dealnote.mvp.core.IMvpView;
-import biz.dealnote.mvp.ui.AbsPresenterDialogFragment;
 
 /**
  * Created by ruslan.kolbasa on 11.10.2016.
@@ -39,11 +37,6 @@ public abstract class BasePresenterDialogFragment<P extends AbsPresenter<V>, V e
         if(isAdded()){
             showError(getString(titleTes, params));
         }
-    }
-
-    @Override
-    public void savePresenterState(@NonNull P presenter, @NonNull Bundle outState) {
-        presenter.saveState(outState);
     }
 
     @Override

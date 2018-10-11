@@ -18,7 +18,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.MyFragmentStatePagerAdapter;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.model.selection.AbsSelectableSource;
 import biz.dealnote.messenger.model.selection.FileManagerSelectableSource;
@@ -131,7 +131,7 @@ public class DualTabPhotosFragment extends BaseFragment implements BackPressCall
 
             if (source instanceof LocalPhotosSelectableSource) {
                 Bundle args = new Bundle();
-                args.putBoolean(BasePresenterFragment.EXTRA_HIDE_TOOLBAR, true);
+                args.putBoolean(BaseMvpFragment.EXTRA_HIDE_TOOLBAR, true);
                 LocalImageAlbumsFragment fragment = new LocalImageAlbumsFragment();
                 fragment.setArguments(args);
                 return fragment;
@@ -140,7 +140,7 @@ public class DualTabPhotosFragment extends BaseFragment implements BackPressCall
             if (source instanceof VkPhotosSelectableSource) {
                 final VkPhotosSelectableSource vksource = (VkPhotosSelectableSource) source;
                 VKPhotoAlbumsFragment fragment = VKPhotoAlbumsFragment.newInstance(vksource.getAccountId(), vksource.getOwnerId(), null, null);
-                fragment.requireArguments().putBoolean(BasePresenterFragment.EXTRA_HIDE_TOOLBAR, true);
+                fragment.requireArguments().putBoolean(BaseMvpFragment.EXTRA_HIDE_TOOLBAR, true);
                 return fragment;
             }
 

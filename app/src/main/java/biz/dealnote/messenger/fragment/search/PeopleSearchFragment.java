@@ -56,11 +56,6 @@ public class PeopleSearchFragment extends AbsSearchFragment<PeopleSearchPresente
     }
 
     @Override
-    protected String tag() {
-        return PeopleSearchFragment.class.getSimpleName();
-    }
-
-    @Override
     public void onOwnerClick(Owner owner) {
         getPresenter().fireUserClick((User)owner);
     }

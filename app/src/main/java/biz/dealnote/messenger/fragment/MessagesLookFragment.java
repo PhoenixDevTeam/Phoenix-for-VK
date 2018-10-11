@@ -24,7 +24,7 @@ import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
 import biz.dealnote.messenger.adapter.MessagesAdapter;
-import biz.dealnote.messenger.fragment.base.PlaceSupportPresenterFragment;
+import biz.dealnote.messenger.fragment.base.PlaceSupportMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.model.FwdMessages;
 import biz.dealnote.messenger.model.LastReadId;
@@ -41,7 +41,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
  * Created by ruslan.kolbasa on 03.10.2016.
  * phoenix
  */
-public class MessagesLookFragment extends PlaceSupportPresenterFragment<MessagesLookPresenter, IMessagesLookView>
+public class MessagesLookFragment extends PlaceSupportMvpFragment<MessagesLookPresenter, IMessagesLookView>
         implements IMessagesLookView, MessagesAdapter.OnMessageActionListener {
 
     private static final String TAG = MessagesLookFragment.class.getSimpleName();
@@ -241,16 +241,6 @@ public class MessagesLookFragment extends PlaceSupportPresenterFragment<Messages
     @Override
     public void forwardMessages(int accountId, @NonNull ArrayList<Message> messages) {
         SendAttachmentsActivity.startForSendAttachments(requireActivity(), accountId, new FwdMessages(messages));
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
-    @Override
-    public void savePresenterState(@NonNull MessagesLookPresenter presenter, @NonNull Bundle outState) {
-        presenter.saveState(outState);
     }
 
     @Override

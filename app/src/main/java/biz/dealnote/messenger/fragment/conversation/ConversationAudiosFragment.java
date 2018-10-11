@@ -48,9 +48,4 @@ public class ConversationAudiosFragment extends AbsChatAttachmentsFragment<Audio
                 saveInstanceState
         );
     }
-
-    @Override
-    protected String tag() {
-        return ConversationAudiosFragment.class.getSimpleName();
-    }
 }

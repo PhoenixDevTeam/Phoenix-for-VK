@@ -56,11 +56,6 @@ public class GroupsSearchFragment extends AbsSearchFragment<CommunitiesSearchPre
     }
 
     @Override
-    protected String tag() {
-        return GroupsSearchFragment.class.getSimpleName();
-    }
-
-    @Override
     public void onOwnerClick(Owner owner) {
         getPresenter().fireCommunityClick((Community) owner);
     }

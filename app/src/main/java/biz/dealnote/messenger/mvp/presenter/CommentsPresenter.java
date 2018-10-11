@@ -1064,11 +1064,6 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         super.onDestroyed();
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
-
     @OnGuiCreated
     private void resolveReplyViews() {
         if (isGuiReady()) {

@@ -43,7 +43,6 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  */
 public class MessageEditPresenter extends RxSupportPresenter<IMessageEditView> {
 
-    private static final String TAG = MessageEditPresenter.class.getSimpleName();
     private static final String SAVE_CAMERA_FILE_URI = "save-camera-file-uri";
     private final Message message;
 
@@ -168,11 +167,6 @@ public class MessageEditPresenter extends RxSupportPresenter<IMessageEditView> {
     public void onGuiCreated(@NonNull IMessageEditView view) {
         super.onGuiCreated(view);
         view.displayAttachments(entries);
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void fireAddPhotoButtonClick() {

@@ -155,11 +155,6 @@ public class FavePostsPresenter extends PlaceSupportPresenter<IFavePostsView> {
         super.onDestroyed();
     }
 
-    @Override
-    protected String tag() {
-        return FavePostsPresenter.class.getSimpleName();
-    }
-
     public void fireRefresh() {
         if (!requestNow) {
             requestActual(0);

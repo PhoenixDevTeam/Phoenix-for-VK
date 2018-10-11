@@ -141,11 +141,6 @@ public class FaveLinksPresenter extends AccountDependencyPresenter<IFaveLinksVie
         view.displayLinks(links);
     }
 
-    @Override
-    protected String tag() {
-        return FaveLinksPresenter.class.getSimpleName();
-    }
-
     public void fireDeleteClick(FaveLink link) {
         final int accountId = super.getAccountId();
         final String id = link.getId();

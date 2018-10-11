@@ -90,11 +90,6 @@ public class CommentCreateFragment extends AbsAttachmentsEditFragment<CommentCre
     }
 
     @Override
-    protected String tag() {
-        return CommentCreateFragment.class.getSimpleName();
-    }
-
-    @Override
     public boolean onBackPressed() {
         return getPresenter().onBackPressed();
     }

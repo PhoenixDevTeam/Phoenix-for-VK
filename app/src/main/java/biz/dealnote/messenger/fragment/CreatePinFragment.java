@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.fragment.base.BasePresenterFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.mvp.presenter.CreatePinPresenter;
 import biz.dealnote.messenger.mvp.view.ICreatePinView;
@@ -27,7 +27,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
  * Created by ruslan.kolbasa on 10-Jun-16.
  * mobilebankingandroid
  */
-public class CreatePinFragment extends BasePresenterFragment<CreatePinPresenter, ICreatePinView>
+public class CreatePinFragment extends BaseMvpFragment<CreatePinPresenter, ICreatePinView>
         implements ICreatePinView, KeyboardView.OnKeyboardClickListener, BackPressCallback {
 
     private static final String TAG = CreatePinFragment.class.getSimpleName();
@@ -106,11 +106,6 @@ public class CreatePinFragment extends BasePresenterFragment<CreatePinPresenter,
 
     public static int[] extractValueFromIntent(Intent intent){
         return intent.getIntArrayExtra(EXTRA_PIN_VALUE);
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     @Override

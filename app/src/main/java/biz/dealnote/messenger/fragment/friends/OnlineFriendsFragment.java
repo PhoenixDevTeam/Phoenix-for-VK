@@ -21,11 +21,6 @@ public class OnlineFriendsFragment extends AbsOwnersListFragment<OnlineFriendsPr
     }
 
     @Override
-    protected String tag() {
-        return OnlineFriendsFragment.class.getSimpleName();
-    }
-
-    @Override
     public IPresenterFactory<OnlineFriendsPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new OnlineFriendsPresenter(
                 getArguments().getInt(Extra.ACCOUNT_ID),

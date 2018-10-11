@@ -27,7 +27,6 @@ import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.upload.IUploadManager;
 import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.util.FileUtil;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.Predicate;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
@@ -129,8 +128,6 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
     }
 
     void onUploadProgressUpdate(List<IUploadManager.IProgressUpdate> updates){
-        Logger.d(tag(), "onUploadProgressUpdate, updates:" + updates + ", class: " + updates.getClass());
-
         for(IUploadManager.IProgressUpdate update : updates){
             Predicate<AttachmenEntry> predicate = entry -> entry.getAttachment() instanceof Upload
                     && ((Upload) entry.getAttachment()).getId() == update.getId();
@@ -189,7 +186,6 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
     }
 
     void onUploadStatusUpdate(Upload update){
-        Logger.d(tag(), "onUploadStatusUpdate, id: " + update.getId() + ", status: " + update.getStatus());
         int index = findUploadIndexById(update.getId());
         if(index != -1){
             safeNotifyDataSetChanged();
@@ -247,7 +243,7 @@ public abstract class AbsAttachmentsEditPresenter<V extends IBaseAttachmentsEdit
     }
 
     public final void fireTitleClick(int index, @NonNull AttachmenEntry attachment) {
-        Logger.d(tag(), "fireTitleClick, index: " + index + ", model: " + attachment.getAttachment());
+
     }
 
     private int getMaxCountOfAttachments() {

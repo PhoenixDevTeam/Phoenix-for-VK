@@ -20,8 +20,6 @@ import biz.dealnote.mvp.reflect.OnGuiCreated;
  */
 public class PollPresenter extends AccountDependencyPresenter<IPollView> {
 
-    private static final String TAG = PollPresenter.class.getSimpleName();
-
     private Poll mPoll;
     private int mTempCheckedId;
 
@@ -71,11 +69,6 @@ public class PollPresenter extends AccountDependencyPresenter<IPollView> {
         resolveVotesCountView();
         resolvePollTypeView();
         resolveVotesListView();
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     @OnGuiCreated

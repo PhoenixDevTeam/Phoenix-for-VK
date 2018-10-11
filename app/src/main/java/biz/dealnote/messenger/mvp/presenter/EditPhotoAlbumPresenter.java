@@ -20,8 +20,6 @@ import biz.dealnote.messenger.view.steppers.impl.CreatePhotoAlbumStepsHost;
  */
 public class EditPhotoAlbumPresenter extends AccountDependencyPresenter<IEditPhotoAlbumView> {
 
-    private static final String TAG = EditPhotoAlbumPresenter.class.getCanonicalName();
-
     private int ownerId;
     private PhotoAlbum album;
     private PhotoAlbumEditor editor;
@@ -78,11 +76,6 @@ public class EditPhotoAlbumPresenter extends AccountDependencyPresenter<IEditPho
                 .setUploadByAdminsOnly(editor.isUploadByAdminsOnly())
                 .setDescription(editor.getDescription())
                 .setTitle(editor.getTitle());
-    }
-
-    @Override
-    protected String tag() {
-        return TAG;
     }
 
     public void fireStepNegativeButtonClick(int clickAtStep) {
