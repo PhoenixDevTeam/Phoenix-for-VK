@@ -104,8 +104,6 @@ import static biz.dealnote.messenger.util.Utils.trimmedNonEmpty;
  */
 public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
 
-    private static final String TAG = ChatPrensenter.class.getSimpleName();
-
     private static final int COUNT = 30;
     private static final String RECORD_EXT_MP3 = "mp3";
 
@@ -330,11 +328,6 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         resolvePinnedMessageView();
         lastReadId.setIn(conversation.getInRead()).setOut(conversation.getOutRead());
         onAllDataLoaded(data.getSecond(), false);
-    }
-
-    private void onCachedDataReceived(List<Message> messages) {
-        setCacheLoadingNow(false);
-        onAllDataLoaded(messages, false);
     }
 
     private void onNetDataReceived(List<Message> messages, Integer startMessageId) {
