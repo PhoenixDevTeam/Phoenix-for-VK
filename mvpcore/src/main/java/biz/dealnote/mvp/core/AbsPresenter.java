@@ -31,23 +31,23 @@ public abstract class AbsPresenter<V extends IMvpView> implements IPresenter<V> 
     private boolean guiCreated;
 
     private static final AtomicInteger IDGEN = new AtomicInteger();
-    private int mPresenterId;
+    private int id;
 
     public AbsPresenter(@Nullable Bundle savedInstanceState){
         if(savedInstanceState != null){
-            mPresenterId = savedInstanceState.getInt(SAVE_ID);
-            if(mPresenterId >= IDGEN.get()){
-                IDGEN.set(mPresenterId + 1);
+            id = savedInstanceState.getInt(SAVE_ID);
+            if(id >= IDGEN.get()){
+                IDGEN.set(id + 1);
             }
         } else {
-            mPresenterId = IDGEN.incrementAndGet();
+            id = IDGEN.incrementAndGet();
         }
     }
 
     private static final String SAVE_ID = "save_presenter_id";
 
-    public int getPresenterId(){
-        return mPresenterId;
+    public int getId(){
+        return id;
     }
 
     @CallSuper
@@ -162,7 +162,7 @@ public abstract class AbsPresenter<V extends IMvpView> implements IPresenter<V> 
     @Override
     @CallSuper
     public void saveState(@NonNull Bundle outState) {
-        outState.putInt(SAVE_ID, mPresenterId);
+        outState.putInt(SAVE_ID, id);
     }
 
     public final boolean isGuiReady() {

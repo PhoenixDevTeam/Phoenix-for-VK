@@ -998,7 +998,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         super.onGuiResumed();
         checkLongpoll();
         Processors.realtimeMessages()
-                .registerNotificationsInterceptor(getPresenterId(), Pair.create(messagesOwnerId, getPeerId()));
+                .registerNotificationsInterceptor(getId(), Pair.create(messagesOwnerId, getPeerId()));
     }
 
     @Override
@@ -1006,7 +1006,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         super.onGuiPaused();
         checkLongpoll();
         Processors.realtimeMessages()
-                .unregisterNotificationsInterceptor(getPresenterId());
+                .unregisterNotificationsInterceptor(getId());
     }
 
     private int getPeerId() {
@@ -1474,7 +1474,7 @@ public class ChatPrensenter extends AbsMessageListPresenter<IChatView> {
         this.mPeer = new Peer(newPeerId).setTitle(title);
 
         if (isGuiResumed()) {
-            Processors.realtimeMessages().registerNotificationsInterceptor(getPresenterId(), Pair.create(messagesOwnerId, getPeerId()));
+            Processors.realtimeMessages().registerNotificationsInterceptor(getId(), Pair.create(messagesOwnerId, getPeerId()));
         }
 
         checkLongpoll();
