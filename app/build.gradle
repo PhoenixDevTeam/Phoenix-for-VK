@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     packagingOptions {
@@ -153,6 +154,10 @@ dependencies {
     implementation "com.google.firebase:firebase-database:$firebaseLibraryVersion"
     implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
     implementation "com.android.support:exifinterface:$supportLibraryVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}
