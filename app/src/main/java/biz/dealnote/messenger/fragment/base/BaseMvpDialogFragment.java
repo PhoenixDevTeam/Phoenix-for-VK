@@ -7,7 +7,7 @@ import biz.dealnote.messenger.mvp.view.IErrorView;
 import biz.dealnote.messenger.mvp.view.IToastView;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;
 import biz.dealnote.messenger.util.Utils;
-import biz.dealnote.mvp.compat.AbsPresenterDialogFragment;
+import biz.dealnote.mvp.compat.AbsMvpDialogFragment;
 import biz.dealnote.mvp.core.AbsPresenter;
 import biz.dealnote.mvp.core.IMvpView;
 
@@ -15,8 +15,8 @@ import biz.dealnote.mvp.core.IMvpView;
  * Created by ruslan.kolbasa on 11.10.2016.
  * phoenix
  */
-public abstract class BasePresenterDialogFragment<P extends AbsPresenter<V>, V extends IMvpView>
-        extends AbsPresenterDialogFragment<P, V> implements IMvpView, IAccountDependencyView, IErrorView, IToastView {
+public abstract class BaseMvpDialogFragment<P extends AbsPresenter<V>, V extends IMvpView>
+        extends AbsMvpDialogFragment<P, V> implements IMvpView, IAccountDependencyView, IErrorView, IToastView {
 
     @Override
     public void showToast(@StringRes int titleTes, boolean isLong, Object... params) {

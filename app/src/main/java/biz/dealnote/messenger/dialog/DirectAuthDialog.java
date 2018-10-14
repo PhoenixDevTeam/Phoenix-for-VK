@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.fragment.base.BasePresenterDialogFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpDialogFragment;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.mvp.presenter.DirectAuthPresenter;
 import biz.dealnote.messenger.mvp.view.IDirectAuthView;
@@ -29,7 +29,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
  * Created by admin on 16.07.2017.
  * phoenix
  */
-public class DirectAuthDialog extends BasePresenterDialogFragment<DirectAuthPresenter, IDirectAuthView> implements IDirectAuthView {
+public class DirectAuthDialog extends BaseMvpDialogFragment<DirectAuthPresenter, IDirectAuthView> implements IDirectAuthView {
 
     public static final String ACTION_LOGIN_COMPLETE = "ACTION_LOGIN_COMPLETE";
     public static final String ACTION_LOGIN_VIA_WEB = "ACTION_LOGIN_VIA_WEB";

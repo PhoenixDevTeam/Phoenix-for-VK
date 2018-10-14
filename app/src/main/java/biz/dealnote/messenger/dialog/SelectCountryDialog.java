@@ -18,7 +18,7 @@ import java.util.List;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.vkdatabase.CountriesAdapter;
-import biz.dealnote.messenger.fragment.base.BasePresenterDialogFragment;
+import biz.dealnote.messenger.fragment.base.BaseMvpDialogFragment;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.model.database.Country;
 import biz.dealnote.messenger.mvp.presenter.CountriesPresenter;
@@ -27,7 +27,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class SelectCountryDialog extends BasePresenterDialogFragment<CountriesPresenter, ICountriesView>
+public class SelectCountryDialog extends BaseMvpDialogFragment<CountriesPresenter, ICountriesView>
         implements CountriesAdapter.Listener, ICountriesView {
 
     private CountriesAdapter mAdapter;
