@@ -46,8 +46,8 @@ class WallStorage extends AbsStorage implements IWallStorage {
     }
 
     @Override
-    public Single<int[]> storeWallDbos(int accountId, @NonNull List<PostEntity> dbos,
-                                       @Nullable OwnerEntities owners, @Nullable IClearWallTask clearWall) {
+    public Single<int[]> storeWallEntities(int accountId, @NonNull List<PostEntity> dbos,
+                                           @Nullable OwnerEntities owners, @Nullable IClearWallTask clearWall) {
         return Single.create(emitter -> {
             final ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 

@@ -22,9 +22,9 @@ import io.reactivex.Single;
 public interface IWallStorage extends IStorage {
 
     @CheckResult
-    Single<int[]> storeWallDbos(int accountId, @NonNull List<PostEntity> posts,
-                              @Nullable OwnerEntities owners,
-                              @Nullable IClearWallTask clearWall);
+    Single<int[]> storeWallEntities(int accountId, @NonNull List<PostEntity> posts,
+                                    @Nullable OwnerEntities owners,
+                                    @Nullable IClearWallTask clearWall);
 
     @CheckResult
     Single<Integer> replacePost(int accountId, @NonNull PostEntity post);

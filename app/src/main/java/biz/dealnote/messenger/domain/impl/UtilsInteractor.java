@@ -102,7 +102,7 @@ public class UtilsInteractor implements IUtilsInteractor {
                 .findUserByDomain(accountId, domain)
                 .<Optional<Owner>>flatMap(optionalUserEntity -> {
                     if(optionalUserEntity.nonEmpty()){
-                        User user = Entity2Model.buildUserFromDbo(optionalUserEntity.get());
+                        User user = Entity2Model.map(optionalUserEntity.get());
                         return Single.just(Optional.wrap(user));
                     }
 

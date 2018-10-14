@@ -12,7 +12,7 @@ import io.reactivex.annotations.Nullable;
  * Created by admin on 3/19/2018.
  * Phoenix-for-VK
  */
-class MapUtil {
+public class MapUtil {
 
     static <O, R> void mapAndAdd(@Nullable Collection<O> orig, @NonNull MapF<O, R> function, @NonNull Collection<R> target) {
         if (orig != null) {
@@ -22,7 +22,7 @@ class MapUtil {
         }
     }
 
-    static <O, R> List<R> mapAll(@Nullable Collection<O> orig, @NonNull MapF<O, R> function, boolean mutable) {
+    public static <O, R> List<R> mapAll(@Nullable Collection<O> orig, @NonNull MapF<O, R> function, boolean mutable) {
         if (orig != null && orig.size() > 0) {
             if (mutable || orig.size() > 1) {
                 List<R> list = new ArrayList<>(orig.size());
@@ -38,7 +38,7 @@ class MapUtil {
         }
     }
 
-    static <O, R> List<R> mapAll(@Nullable Collection<O> orig, @NonNull MapF<O, R> function) {
+    public static <O, R> List<R> mapAll(@Nullable Collection<O> orig, @NonNull MapF<O, R> function) {
         return mapAll(orig, function, true);
     }
 }

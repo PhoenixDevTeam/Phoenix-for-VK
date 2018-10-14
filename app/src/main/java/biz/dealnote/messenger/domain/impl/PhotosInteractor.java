@@ -27,6 +27,8 @@ import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
+import static biz.dealnote.messenger.domain.mappers.MapUtil.mapAll;
+
 /**
  * Created by Ruslan Kolbasa on 13.07.2017.
  * phoenix
@@ -72,13 +74,7 @@ public class PhotosInteractor implements IPhotosInteractor {
 
         return cache.photos()
                 .findPhotosByCriteriaRx(criteria)
-                .map(dbos -> {
-                    List<Photo> photos = new ArrayList<>(dbos.size());
-                    for(PhotoEntity dbo : dbos){
-                        photos.add(Entity2Model.buildPhotoFromDbo(dbo));
-                    }
-                    return photos;
-                });
+                .map(entities -> mapAll(entities, Entity2Model::map));
     }
 
     @Override
@@ -102,13 +98,7 @@ public class PhotosInteractor implements IPhotosInteractor {
 
         return cache.photoAlbums()
                 .findAlbumsByCriteria(criteria)
-                .map(dbos -> {
-                    List<PhotoAlbum> albums = new ArrayList<>(dbos.size());
-                    for(PhotoAlbumEntity dbo : dbos){
-                        albums.add(Entity2Model.buildPhotoAlbumFromDbo(dbo));
-                    }
-                    return albums;
-                });
+                .map(entities -> mapAll(entities, Entity2Model::map));
     }
 
     @Override
@@ -207,12 +197,6 @@ public class PhotosInteractor implements IPhotosInteractor {
         return networker.vkDefault(accountId)
                 .photos()
                 .getById(dtoPairs)
-                .map(dtos -> {
-                    List<Photo> photos = new ArrayList<>(dtos.size());
-                    for(VKApiPhoto dto : dtos){
-                        photos.add(Dto2Model.transform(dto));
-                    }
-                    return photos;
-                });
+                .map(dtos -> mapAll(dtos, Dto2Model::transform));
     }
 }

@@ -146,7 +146,7 @@ public class Entity2Model {
     public static List<User> buildUsersFromDbo(List<UserEntity> dbos){
         List<User> users = new ArrayList<>(dbos.size());
         for(UserEntity dbo : dbos){
-            users.add(buildUserFromDbo(dbo));
+            users.add(map(dbo));
         }
 
         return users;
@@ -168,8 +168,8 @@ public class Entity2Model {
                 .setOwnWallCount(dbo.getOwnWallCount())
                 .setPostponedWallCount(dbo.getPostponedWallCount())
                 .setBdate(dbo.getBdate())
-                .setCity(isNull(dbo.getCity()) ? null : entity2model(dbo.getCity()))
-                .setCountry(isNull(dbo.getCountry()) ? null : entity2model(dbo.getCountry()))
+                .setCity(isNull(dbo.getCity()) ? null : map(dbo.getCity()))
+                .setCountry(isNull(dbo.getCountry()) ? null : map(dbo.getCountry()))
                 .setHometown(dbo.getHomeTown())
                 .setPhone(dbo.getPhone())
                 .setHomePhone(dbo.getHomePhone())
@@ -178,11 +178,11 @@ public class Entity2Model {
                 .setTwitter(dbo.getTwitter())
                 .setFacebook(dbo.getFacebook());
 
-        details.setMilitaries(mapAll(dbo.getMilitaries(), Entity2Model::entity2model));
-        details.setCareers(mapAll(dbo.getCareers(), orig -> entity2model(orig, owners)));
-        details.setUniversities(mapAll(dbo.getUniversities(), Entity2Model::entity2model));
-        details.setSchools(mapAll(dbo.getSchools(), Entity2Model::entity2model));
-        details.setRelatives(mapAll(dbo.getRelatives(), orig -> entity2model(orig, owners)));
+        details.setMilitaries(mapAll(dbo.getMilitaries(), Entity2Model::map));
+        details.setCareers(mapAll(dbo.getCareers(), orig -> map(orig, owners)));
+        details.setUniversities(mapAll(dbo.getUniversities(), Entity2Model::map));
+        details.setSchools(mapAll(dbo.getSchools(), Entity2Model::map));
+        details.setRelatives(mapAll(dbo.getRelatives(), orig -> map(orig, owners)));
 
         details.setRelation(dbo.getRelation());
         details.setRelationPartner(dbo.getRelationPartnerId() != 0 ? owners.getById(dbo.getRelationPartnerId()) : null);
@@ -208,14 +208,14 @@ public class Entity2Model {
         return details;
     }
 
-    public static UserDetails.Relative entity2model(UserDetailsEntity.RelativeEntity entity, IOwnersBundle owners) {
+    public static UserDetails.Relative map(UserDetailsEntity.RelativeEntity entity, IOwnersBundle owners) {
         return new UserDetails.Relative()
                 .setUser(entity.getId() > 0 ? (User) owners.getById(entity.getId()) : null)
                 .setName(entity.getName())
                 .setType(entity.getType());
     }
 
-    public static School entity2model(SchoolEntity entity) {
+    public static School map(SchoolEntity entity) {
         return new School()
                 .setCityId(entity.getCityId())
                 .setCountryId(entity.getCountryId())
@@ -227,7 +227,7 @@ public class Entity2Model {
                 .setYearGraduated(entity.getYearGraduated());
     }
 
-    public static University entity2model(UniversityEntity entity) {
+    public static University map(UniversityEntity entity) {
         return new University()
                 .setName(entity.getName())
                 .setCityId(entity.getCityId())
@@ -242,7 +242,7 @@ public class Entity2Model {
                 .setForm(entity.getForm());
     }
 
-    public static Military entity2model(MilitaryEntity entity) {
+    public static Military map(MilitaryEntity entity) {
         return new Military()
                 .setCountryId(entity.getCountryId())
                 .setFrom(entity.getFrom())
@@ -251,7 +251,7 @@ public class Entity2Model {
                 .setUnitId(entity.getUnitId());
     }
 
-    public static Career entity2model(CareerEntity entity, IOwnersBundle bundle) {
+    public static Career map(CareerEntity entity, IOwnersBundle bundle) {
         return new Career()
                 .setCityId(entity.getCityId())
                 .setCompany(entity.getCompany())
@@ -262,49 +262,49 @@ public class Entity2Model {
                 .setGroup(entity.getGroupId() == 0 ? null : (Community) bundle.getById(-entity.getGroupId()));
     }
 
-    public static Country entity2model(CountryEntity entity) {
+    public static Country map(CountryEntity entity) {
         return new Country(entity.getId(), entity.getTitle());
     }
 
-    public static City entity2model(CityEntity entity) {
+    public static City map(CityEntity entity) {
         return new City(entity.getId(), entity.getTitle())
                 .setArea(entity.getArea())
                 .setImportant(entity.isImportant())
                 .setRegion(entity.getRegion());
     }
 
-    public static User buildUserFromDbo(UserEntity dbo){
-        return new User(dbo.getId())
-                .setFirstName(dbo.getFirstName())
-                .setLastName(dbo.getLastName())
-                .setOnline(dbo.isOnline())
-                .setOnlineMobile(dbo.isOnlineMobile())
-                .setOnlineApp(dbo.getOnlineApp())
-                .setPhoto50(dbo.getPhoto50())
-                .setPhoto100(dbo.getPhoto100())
-                .setPhoto200(dbo.getPhoto200())
-                .setLastSeen(dbo.getLastSeen())
-                .setPlatform(dbo.getPlatform())
-                .setStatus(dbo.getStatus())
-                .setSex(dbo.getSex())
-                .setDomain(dbo.getDomain())
-                .setFriend(dbo.isFriend())
-                .setFriendStatus(dbo.getFriendStatus());
+    public static User map(UserEntity entity){
+        return new User(entity.getId())
+                .setFirstName(entity.getFirstName())
+                .setLastName(entity.getLastName())
+                .setOnline(entity.isOnline())
+                .setOnlineMobile(entity.isOnlineMobile())
+                .setOnlineApp(entity.getOnlineApp())
+                .setPhoto50(entity.getPhoto50())
+                .setPhoto100(entity.getPhoto100())
+                .setPhoto200(entity.getPhoto200())
+                .setLastSeen(entity.getLastSeen())
+                .setPlatform(entity.getPlatform())
+                .setStatus(entity.getStatus())
+                .setSex(entity.getSex())
+                .setDomain(entity.getDomain())
+                .setFriend(entity.isFriend())
+                .setFriendStatus(entity.getFriendStatus());
     }
 
-    public static PhotoAlbum buildPhotoAlbumFromDbo(PhotoAlbumEntity dbo){
-        return new PhotoAlbum(dbo.getId(), dbo.getOwnerId())
-                .setSize(dbo.getSize())
-                .setTitle(dbo.getTitle())
-                .setDescription(dbo.getDescription())
-                .setCanUpload(dbo.isCanUpload())
-                .setUpdatedTime(dbo.getUpdatedTime())
-                .setCreatedTime(dbo.getCreatedTime())
-                .setSizes(nonNull(dbo.getSizes()) ? buildPhotoSizesFromDbo(dbo.getSizes()) : PhotoSizes.empty())
-                .setPrivacyView(nonNull(dbo.getPrivacyView()) ? buildPrivacyFromDbo(dbo.getPrivacyView()) : null)
-                .setPrivacyComment(nonNull(dbo.getPrivacyComment()) ? buildPrivacyFromDbo(dbo.getPrivacyComment()) : null)
-                .setUploadByAdminsOnly(dbo.isUploadByAdminsOnly())
-                .setCommentsDisabled(dbo.isCommentsDisabled());
+    public static PhotoAlbum map(PhotoAlbumEntity entity){
+        return new PhotoAlbum(entity.getId(), entity.getOwnerId())
+                .setSize(entity.getSize())
+                .setTitle(entity.getTitle())
+                .setDescription(entity.getDescription())
+                .setCanUpload(entity.isCanUpload())
+                .setUpdatedTime(entity.getUpdatedTime())
+                .setCreatedTime(entity.getCreatedTime())
+                .setSizes(nonNull(entity.getSizes()) ? buildPhotoSizesFromDbo(entity.getSizes()) : PhotoSizes.empty())
+                .setPrivacyView(nonNull(entity.getPrivacyView()) ? buildPrivacyFromDbo(entity.getPrivacyView()) : null)
+                .setPrivacyComment(nonNull(entity.getPrivacyComment()) ? buildPrivacyFromDbo(entity.getPrivacyComment()) : null)
+                .setUploadByAdminsOnly(entity.isUploadByAdminsOnly())
+                .setCommentsDisabled(entity.isCommentsDisabled());
     }
 
     public static Comment buildCommentFromDbo(CommentEntity dbo, IOwnersBundle owners){
@@ -413,7 +413,7 @@ public class Entity2Model {
 
     public static AbsModel buildAttachmentFromDbo(Entity entity, IOwnersBundle owners) {
         if (entity instanceof PhotoEntity) {
-            return buildPhotoFromDbo((PhotoEntity) entity);
+            return map((PhotoEntity) entity);
         }
 
         if (entity instanceof VideoEntity) {
@@ -558,7 +558,7 @@ public class Entity2Model {
                 .setTitle(dbo.getTitle())
                 .setCaption(dbo.getCaption())
                 .setDescription(dbo.getDescription())
-                .setPhoto(nonNull(dbo.getPhoto()) ? buildPhotoFromDbo(dbo.getPhoto()) : null);
+                .setPhoto(nonNull(dbo.getPhoto()) ? map(dbo.getPhoto()) : null);
     }
 
     public static News buildNewsFromDbo(NewsEntity dbo, IOwnersBundle owners){
@@ -708,7 +708,7 @@ public class Entity2Model {
                 .setCanAdd(entity.isCanAdd());
     }
 
-    public static Photo buildPhotoFromDbo(PhotoEntity dbo) {
+    public static Photo map(PhotoEntity dbo) {
         return new Photo()
                 .setId(dbo.getId())
                 .setAlbumId(dbo.getAlbumId())

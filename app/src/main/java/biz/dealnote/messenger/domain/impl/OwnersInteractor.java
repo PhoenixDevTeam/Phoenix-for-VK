@@ -131,7 +131,7 @@ public class OwnersInteractor implements IOwnersInteractor {
     private Single<Pair<User, UserDetails>> getCachedFullData(int accountId, int userId) {
         return cache.findUserDboById(accountId, userId)
                 .zipWith(getCachedDetails(accountId, userId), (userEntityOptional, userDetailsOptional) -> {
-                    User user = userEntityOptional.isEmpty() ? null : Entity2Model.buildUserFromDbo(userEntityOptional.get());
+                    User user = userEntityOptional.isEmpty() ? null : Entity2Model.map(userEntityOptional.get());
                     return Pair.create(user, userDetailsOptional.get());
                 });
     }

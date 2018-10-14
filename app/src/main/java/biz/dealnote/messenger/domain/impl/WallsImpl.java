@@ -51,24 +51,20 @@ public class WallsImpl implements IWalls {
 
     private final INetworker networker;
 
-    private final IStorages repositories;
+    private final IStorages storages;
 
     private final IOwnersInteractor ownersInteractor;
 
-    private final PublishSubject<PostUpdate> minorUpdatesPublisher;
+    private final PublishSubject<PostUpdate> minorUpdatesPublisher = PublishSubject.create();
 
-    private final PublishSubject<Post> majorUpdatesPublisher;
+    private final PublishSubject<Post> majorUpdatesPublisher = PublishSubject.create();
 
-    private final PublishSubject<biz.dealnote.messenger.model.IdPair> postInvalidatePublisher;
+    private final PublishSubject<biz.dealnote.messenger.model.IdPair> postInvalidatePublisher = PublishSubject.create();
 
-    public WallsImpl(INetworker networker, IStorages repositories) {
-        this.minorUpdatesPublisher = PublishSubject.create();
-        this.majorUpdatesPublisher = PublishSubject.create();
-        this.postInvalidatePublisher = PublishSubject.create();
-
+    public WallsImpl(INetworker networker, IStorages storages) {
         this.networker = networker;
-        this.repositories = repositories;
-        this.ownersInteractor = new OwnersInteractor(networker, repositories.owners());
+        this.storages = storages;
+        this.ownersInteractor = new OwnersInteractor(networker, storages.owners());
     }
 
     @Override
@@ -131,7 +127,7 @@ public class WallsImpl implements IWalls {
     private Completable invalidatePost(int accountId, int postId, int ownerId) {
         biz.dealnote.messenger.model.IdPair pair = new biz.dealnote.messenger.model.IdPair(postId, ownerId);
 
-        return repositories.wall()
+        return storages.wall()
                 .invalidatePost(accountId, postId, ownerId)
                 .doOnComplete(() -> postInvalidatePublisher.onNext(pair));
     }
@@ -199,14 +195,14 @@ public class WallsImpl implements IWalls {
                                     dbos.add(Dto2Entity.buildPostEntity(dto));
                                 }
 
-                                return repositories.wall()
-                                        .storeWallDbos(accountId, dbos, ownerEntities, offset == 0 ? () -> ownerId : null)
+                                return storages.wall()
+                                        .storeWallEntities(accountId, dbos, ownerEntities, offset == 0 ? () -> ownerId : null)
                                         .map(optional -> posts);
                             });
                 });
     }
 
-    private SingleTransformer<List<PostEntity>, List<Post>> dbos2models(int accountId) {
+    private SingleTransformer<List<PostEntity>, List<Post>> entities2models(int accountId) {
         return single -> single
                 .flatMap(dbos -> {
                     final VKOwnIds ids = new VKOwnIds();
@@ -224,7 +220,7 @@ public class WallsImpl implements IWalls {
                 });
     }
 
-    private SingleTransformer<PostEntity, Post> dbo2model(int accountId) {
+    private SingleTransformer<PostEntity, Post> entity2model(int accountId) {
         return single -> single
                 .flatMap(dbo -> {
                     final VKOwnIds ids = new VKOwnIds();
@@ -241,15 +237,15 @@ public class WallsImpl implements IWalls {
     @Override
     public Single<List<Post>> getCachedWall(int accountId, int ownerId, int wallFilter) {
         WallCriteria criteria = new WallCriteria(accountId, ownerId).setMode(wallFilter);
-        return repositories.wall()
+        return storages.wall()
                 .findDbosByCriteria(criteria)
-                .compose(dbos2models(accountId));
+                .compose(entities2models(accountId));
     }
 
     private Completable applyPatch(final PostUpdate update) {
         final PostPatch patch = update2patch(update);
 
-        return repositories.wall()
+        return storages.wall()
                 .update(update.getAccountId(), update.getOwnerId(), update.getPostId(), patch)
                 .andThen(Completable.fromAction(() -> minorUpdatesPublisher.onNext(update)));
     }
@@ -330,9 +326,9 @@ public class WallsImpl implements IWalls {
 
     @Override
     public Single<Post> getEditingPost(int accountId, int ownerId, int type, boolean withAttachments) {
-        return repositories.wall()
+        return storages.wall()
                 .getEditingPost(accountId, ownerId, type, withAttachments)
-                .compose(dbo2model(accountId));
+                .compose(entity2model(accountId));
     }
 
     @Override
@@ -359,16 +355,15 @@ public class WallsImpl implements IWalls {
 
     @Override
     public Single<Integer> cachePostWithIdSaving(int accountId, Post post) {
-        final PostEntity dbo = Model2Entity.buildPostDbo(post);
+        final PostEntity entity = Model2Entity.buildPostDbo(post);
 
-        return repositories.wall()
-                .replacePost(accountId, dbo);
+        return storages.wall()
+                .replacePost(accountId, entity);
     }
 
     @Override
     public Completable deleteFromCache(int accountId, int postDbid) {
-        return repositories.wall()
-                .deletePost(accountId, postDbid);
+        return storages.wall().deletePost(accountId, postDbid);
     }
 
     private static String convertToApiFilter(int filter) {
@@ -387,7 +382,7 @@ public class WallsImpl implements IWalls {
     }
 
     private Single<Post> getAndStorePost(int accountId, int ownerId, int postId) {
-        IWallStorage cache = repositories.wall();
+        IWallStorage cache = storages.wall();
 
         return networker.vkDefault(accountId)
                 .wall()
@@ -400,12 +395,12 @@ public class WallsImpl implements IWalls {
                     PostEntity dbo = Dto2Entity.buildPostEntity(response.posts.get(0));
 
                     OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
-                    return cache.storeWallDbos(accountId, Collections.singletonList(dbo), ownerEntities, null)
+                    return cache.storeWallEntities(accountId, Collections.singletonList(dbo), ownerEntities, null)
                             .map(ints -> ints[0])
                             .flatMap(dbid -> cache
                                     .findPostById(accountId, dbid)
                                     .map(Optional::get)
-                                    .compose(dbo2model(accountId)));
+                                    .compose(entity2model(accountId)));
                 })
                 .map(post -> {
                     majorUpdatesPublisher.onNext(post);

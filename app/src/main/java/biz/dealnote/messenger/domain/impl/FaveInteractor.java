@@ -117,7 +117,7 @@ public class FaveInteractor implements IFaveInteractor {
                 .map(photoDbos -> {
                     List<Photo> photos = new ArrayList<>(photoDbos.size());
                     for(PhotoEntity dbo : photoDbos){
-                        photos.add(Entity2Model.buildPhotoFromDbo(dbo));
+                        photos.add(Entity2Model.map(dbo));
                     }
                     return photos;
                 });
