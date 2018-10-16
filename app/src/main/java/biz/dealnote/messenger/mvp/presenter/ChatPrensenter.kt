@@ -38,8 +38,6 @@ import biz.dealnote.messenger.upload.Method
 import biz.dealnote.messenger.upload.UploadDestination
 import biz.dealnote.messenger.upload.UploadIntent
 import biz.dealnote.messenger.util.*
-import biz.dealnote.messenger.util.Objects.isNull
-import biz.dealnote.messenger.util.Objects.nonNull
 import biz.dealnote.messenger.util.Optional
 import biz.dealnote.messenger.util.RxUtils.*
 import biz.dealnote.messenger.util.Utils.*
@@ -191,7 +189,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                     for (msg in result.data) {
                         val m = msg.message
 
-                        if (nonNull(m) && peerId == m.peerId) {
+                        if (m != null && peerId == m.peerId) {
                             onRealtimeMessageReceived(m)
                         }
                     }
@@ -202,7 +200,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     @OnGuiCreated
     private fun resolvePinnedMessageView() {
-        view?.displayPinnedMessage(if (nonNull(conversation) && nonNull(conversation!!.pinned)) Optional.wrap(conversation!!.pinned) else Optional.empty())
+        view?.displayPinnedMessage(if (conversation != null && conversation!!.pinned != null) Optional.wrap(conversation!!.pinned) else Optional.empty())
     }
 
     private fun onLongpollKeepAliveRequest() {
@@ -271,8 +269,9 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         conversation = data.first
         resolvePinnedMessageView()
-        lastReadId.`in` = conversation!!.inRead
-        lastReadId.out = conversation!!.outRead
+
+        lastReadId.`in` = data.first.inRead
+        lastReadId.out = data.first.outRead
         onAllDataLoaded(data.second, false)
     }
 
@@ -283,7 +282,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         this.mEndOfContent = isEmpty(messages)
 
         setNetLoadingNow(false)
-        onAllDataLoaded(messages, nonNull(startMessageId))
+        onAllDataLoaded(messages, startMessageId != null)
     }
 
     private fun onAllDataLoaded(messages: List<Message>, appendToList: Boolean) {
@@ -691,9 +690,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
 
         if (message.isOut && message.randomId > 0) {
-            val indexByRandomId = findUnsentMessageIndexWithRandomId(message.randomId)
-            if (indexByRandomId != -1) {
-                data.removeAt(indexByRandomId)
+            findUnsentMessageIndexWithRandomId(message.randomId)?.run {
+                data.removeAt(this)
             }
         }
 
@@ -701,7 +699,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         view?.notifyDataChanged()
     }
 
-    private fun findUnsentMessageIndexWithRandomId(randomId: Int): Int {
+    private fun findUnsentMessageIndexWithRandomId(randomId: Int): Int? {
         for (i in 0 until data.size) {
             val message = data[i]
             if (message.isSent) continue
@@ -710,7 +708,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             }
         }
 
-        return -1
+        return null
     }
 
     private fun onLongpollMessagesRead(accountId: Int, peerId: Int, out: Boolean, localId: Int) {
@@ -947,10 +945,10 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     private fun readAllUnreadMessagesIfExists() {
         val last = if (nonEmpty(data)) data[0] else return
 
-        if (nonNull(last) && !last.isOut && last.id > lastReadId.getIn()) {
+        if (!last.isOut && last.id > lastReadId.getIn()) {
             lastReadId.setIn(last.id)
 
-            safeNotifyDataChanged()
+            view?.notifyDataChanged()
 
             appendDisposable(messagesInteractor.markAsRead(messagesOwnerId, mPeer.id, last.id)
                     .fromIOToMain()
@@ -1099,10 +1097,10 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 .main()
                 .uploadImageSize
 
-        if (isNull(size)) {
+        if (size == null) {
             view?.showImageSizeSelectDialog(streams)
         } else {
-            uploadStreamsImpl(streams, size!!)
+            uploadStreamsImpl(streams, size)
         }
     }
 
