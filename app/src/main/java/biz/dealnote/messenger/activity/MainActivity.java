@@ -485,7 +485,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         } else {
             Logger.d(TAG, "Create new chat fragment");
 
-            ChatFragment chatFragment = ChatFragment.newInstance(accountId, messagesOwnerId, peer);
+            ChatFragment chatFragment = ChatFragment.Companion.newInstance(accountId, messagesOwnerId, peer);
             attachToFront(chatFragment);
         }
     }

@@ -14,14 +14,12 @@ object AnnotatedHandlerFinder {
      */
     private val cache = HashMap<Class<*>, MutableSet<Method>>()
 
-    private fun loadAnnotatedSubscriberMethods(listenerClass: Class<*>, methods: MutableSet<Method>,
-                                               includeSuperclass: Class<*>) {
+    private fun loadAnnotatedSubscriberMethods(listenerClass: Class<*>, methods: MutableSet<Method>, includeSuperclass: Class<*>) {
         loadAnnotatedMethods(listenerClass, methods)
 
-        if (listenerClass == includeSuperclass) return
-
-        val superclass = listenerClass.superclass
-        loadAnnotatedSubscriberMethods(superclass, methods, includeSuperclass)
+        if (listenerClass != includeSuperclass) {
+            loadAnnotatedSubscriberMethods(listenerClass.superclass, methods, includeSuperclass)
+        }
     }
 
     /**

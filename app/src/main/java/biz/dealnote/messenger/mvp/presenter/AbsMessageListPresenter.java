@@ -34,7 +34,7 @@ import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
  * Created by ruslan.kolbasa on 03.10.2016.
  * phoenix
  */
-abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
+public abstract class AbsMessageListPresenter<V extends IBasicMessageListView> extends
         PlaceSupportPresenter<V> implements IVoicePlayer.IPlayerStatusListener {
 
     private final ArrayList<Message> mData;

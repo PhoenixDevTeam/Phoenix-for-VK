@@ -34,8 +34,11 @@ abstract class AbsPresenter<V : IMvpView>(savedInstanceState: Bundle?) : IPresen
     val isViewHostAttached: Boolean
         get() = viewReference.get() != null
 
-    val view: V?
+    val viewhost: V?
         get() = viewReference.get()
+
+    val view: V?
+        get() = if(isGuiReady) viewReference.get() else null
 
     init {
         if (savedInstanceState != null) {
@@ -115,7 +118,7 @@ abstract class AbsPresenter<V : IMvpView>(savedInstanceState: Bundle?) : IPresen
         onViewHostDetached()
     }
 
-    override fun createView(view: V) {
+    final override fun createView(view: V) {
         isGuiReady = true
         executeAllResolveViewMethods()
         onGuiCreated(view)
