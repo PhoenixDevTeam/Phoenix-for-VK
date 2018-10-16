@@ -8,9 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.content.ContextCompat
-import biz.dealnote.messenger.App
-import biz.dealnote.messenger.Injection
-import biz.dealnote.messenger.R
+import biz.dealnote.messenger.*
 import biz.dealnote.messenger.crypt.AesKeyPair
 import biz.dealnote.messenger.crypt.KeyExchangeService
 import biz.dealnote.messenger.crypt.KeyLocationPolicy
@@ -50,7 +48,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Predicate
-import io.reactivex.schedulers.Schedulers
 import java.io.File
 import java.lang.ref.WeakReference
 import java.util.*
@@ -119,14 +116,14 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 .setFileExt(RECORD_EXT_MP3)
                 .build()
 
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             mPeer = initialPeer
             mOutConfig = config
 
             if (nonEmpty(config.initialText)) {
                 mDraftMessageText = config.initialText
             }
-        } else{
+        } else {
             mPeer = savedInstanceState.getParcelable(SAVE_PEER)
             mOutConfig = savedInstanceState.getParcelable(SAVE_CONFIG)
             restoreFromInstanceState(savedInstanceState)
@@ -135,17 +132,17 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         loadAllCachedData()
         requestAtStart()
 
-        if (isNull(savedInstanceState)) {
+        if (savedInstanceState == null) {
             tryToRestoreDraftMessage(nonEmpty(this.mDraftMessageText))
         }
 
         resolveAccountHotSwapSupport()
         mTextingNotifier = TextingNotifier(messagesOwnerId)
 
-        val predicate = Predicate<IAttachmentsRepository.IBaseEvent>{ event ->
-            (nonNull(mDraftMessageId)
+        val predicate = Predicate<IAttachmentsRepository.IBaseEvent> { event ->
+            mDraftMessageId != null
                     && event.accountId == messagesOwnerId
-                    && event.attachToId == mDraftMessageId)
+                    && event.attachToId == mDraftMessageId
         }
 
         val attachmentsRepository = Injection.provideAttachmentsRepository()
@@ -153,20 +150,20 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         appendDisposable(attachmentsRepository
                 .observeAdding()
                 .filter(predicate)
-                .observeOn(Injection.provideMainThreadScheduler())
+                .toMainThread()
                 .subscribe { event -> onRepositoryAttachmentsAdded(event.attachments.size) })
 
         appendDisposable(attachmentsRepository
                 .observeRemoving()
                 .filter(predicate)
-                .observeOn(Injection.provideMainThreadScheduler())
+                .toMainThread()
                 .subscribe { _ -> onRepositoryAttachmentsRemoved() })
 
         appendDisposable(Stores.getInstance()
                 .messages()
                 .observeMessageUpdates()
-                .filter { update -> update.accountId == messagesOwnerId && nonNull(update.statusUpdate) }
-                .observeOn(Injection.provideMainThreadScheduler())
+                .filter { update -> update.accountId == messagesOwnerId && update.statusUpdate != null }
+                .toMainThread()
                 .subscribe { update ->
                     onMessageStatusChange(update.messageId, update.sentUpdate?.vkid, update.statusUpdate.status)
                 })
@@ -179,17 +176,17 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 }
 
         appendDisposable(longpollManager.observe()
-                .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(Consumer<List<AbsRealtimeAction>> { this.onRealtimeVkActionReceive(it) }, ignore()))
+                .toMainThread()
+                .subscribe(Consumer { this.onRealtimeVkActionReceive(it) }, ignore()))
 
         appendDisposable(longpollManager.observeKeepAlive()
-                .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(Consumer{ onLongpollKeepAliveRequest() }, ignore()))
+                .toMainThread()
+                .subscribe(Consumer { onLongpollKeepAliveRequest() }, ignore()))
 
         appendDisposable(Processors.realtimeMessages()
                 .observeResults()
                 .filter { result -> result.accountId == messagesOwnerId }
-                .observeOn(Injection.provideMainThreadScheduler())
+                .toMainThread()
                 .subscribe { result ->
                     for (msg in result.data) {
                         val m = msg.message
@@ -263,10 +260,9 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private fun loadAllCachedData() {
         setCacheLoadingNow(true)
-
         cacheLoadingDisposable.add(messagesInteractor.getConversation(messagesOwnerId, mPeer.id, Mode.ANY).singleOrError()
-                .zipWith<List<Message>, Pair<Conversation, List<Message>>>(messagesInteractor.getCachedPeerMessages(messagesOwnerId, mPeer.id), BiFunction<Conversation, List<Message>, Pair<Conversation, List<Message>>> { first, second -> Pair.create(first, second) })
-                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .zipWith(messagesInteractor.getCachedPeerMessages(messagesOwnerId, mPeer.id), BiFunction<Conversation, List<Message>, Pair<Conversation, List<Message>>> { first, second -> Pair.create(first, second) })
+                .fromIOToMain()
                 .subscribe(Consumer<Pair<Conversation, List<Message>>> { this.onCachedDataReceived(it) }, ignore()))
     }
 
@@ -360,7 +356,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         val peerId = this.peerId
         appendDisposable(messagesInteractor.getPeerMessages(messagesOwnerId, peerId, COUNT, null, startMessageId, true)
-                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .fromIOToMain()
                 .subscribe({ messages -> onNetDataReceived(messages, startMessageId) }, { this.onMessagesGetError(it) }))
     }
 
@@ -374,10 +370,9 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun onMessagesRestoredSuccessfully(id: Int) {
-        val message = findById(id)
-        if (message != null) {
-            message.isDeleted = false
-            safeNotifyDataChanged()
+        findById(id)?.run {
+            isDeleted = false
+            view?.notifyDataChanged()
         }
     }
 
@@ -454,7 +449,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     @SuppressLint("CheckResult")
     private fun sendMessage(builder: SaveMessageBuilder) {
         messagesInteractor.put(builder)
-                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .fromIOToMain()
                 .doOnSuccess { _ -> startSendService() }
                 .subscribe(WeakConsumer(Consumer<Message> { this.onMessageSaveSuccess(it) }), Consumer<Throwable> { this.onMessageSaveError(it) })
     }
@@ -479,7 +474,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     fun fireAttachButtonClick() {
-        if (isNull(mDraftMessageId)) {
+        if (mDraftMessageId == null) {
             mDraftMessageId = Stores.getInstance()
                     .messages()
                     .saveDraftMessageBody(messagesOwnerId, peerId, mDraftMessageText)
@@ -487,7 +482,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
 
         val destination = UploadDestination.forMessage(mDraftMessageId!!)
-
         view?.goToMessageAttachmentsEditor(accountId, messagesOwnerId, destination, mDraftMessageText, mOutConfig.models) // TODO: 15.08.2017
     }
 
@@ -501,10 +495,10 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun nowUploadingToEditingMessage(): Boolean {
-        if (isNull(mDraftMessageId)) return false
+        val messageId = mDraftMessageId ?: return false
 
         val current = uploadManager.current
-        return current.nonEmpty() && current.get().destination.compareTo(mDraftMessageId!!, UploadDestination.WITHOUT_OWNER, Method.PHOTO_TO_MESSAGE)
+        return current.nonEmpty() && current.get().destination.compareTo(messageId, UploadDestination.WITHOUT_OWNER, Method.PHOTO_TO_MESSAGE)
     }
 
     @OnGuiCreated
@@ -584,7 +578,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             }
 
         } else {
-            safeShowLongToast(view, R.string.pause_is_not_supported)
+            view?.showToast(R.string.pause_is_not_supported, true)
         }
     }
 
@@ -645,12 +639,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun onMessageStatusChange(mdbid: Int, vkid: Int?, @MessageStatus status: Int) {
-        val sent = nonNull(vkid)
-
         val targetIndex = indexOf(mdbid)
 
-        if (sent) {
-            val alreadyExist = indexOf(vkid!!) != -1
+        if (vkid != null) {
+            // message was sent
+            val alreadyExist = indexOf(vkid) != -1
 
             if (alreadyExist) {
                 if (targetIndex != -1) {
@@ -667,18 +660,20 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 }
             }
         } else {
+            //message not sent
             if (targetIndex != -1) {
                 val message = data[targetIndex]
                 message.status = status
             }
         }
 
-        safeNotifyDataChanged()
+        view?.notifyDataChanged()
     }
 
     private fun onRealtimeMessageReceived(message: Message) {
-        if (message.peerId != mPeer.id || messagesOwnerId != message.accountId)
+        if (message.peerId != mPeer.id || messagesOwnerId != message.accountId) {
             return
+        }
 
         if (message.isChatTitleUpdate) {
             mPeer.title = message.actionText
@@ -703,7 +698,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
 
         addMessageToList(message)
-        safeNotifyDataChanged()
+        view?.notifyDataChanged()
     }
 
     private fun findUnsentMessageIndexWithRandomId(randomId: Int): Int {
@@ -769,31 +764,29 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun onMessageFlagSet(action: MessageFlagsSet) {
-        if (messagesOwnerId != action.accountId || peerId != action.peerId)
+        if (messagesOwnerId != action.accountId || peerId != action.peerId) {
             return
+        }
 
         if (!hasFlag(action.mask, MessageFlag.DELETED) && !hasFlag(action.mask, MessageFlag.IMPORTANT)) {
             return
         }
 
-        val message = findById(action.messageId)
-        if (isNull(message)) {
-            return
-        }
+        val message = findById(action.messageId) ?: return
 
         var changed = false
-        if (hasFlag(action.mask, MessageFlag.DELETED) && !message!!.isDeleted) {
+        if (hasFlag(action.mask, MessageFlag.DELETED) && !message.isDeleted) {
             message.isDeleted = true
             changed = true
         }
 
-        if (hasFlag(action.mask, MessageFlag.IMPORTANT) && !message!!.isImportant) {
+        if (hasFlag(action.mask, MessageFlag.IMPORTANT) && !message.isImportant) {
             message.isImportant = true
             changed = true
         }
 
         if (changed) {
-            safeNotifyDataChanged()
+            view?.notifyDataChanged()
         }
     }
 
@@ -807,29 +800,22 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             return
         }
 
-        val message = findById(reset.messageId)
-        if (isNull(message)) {
-            return
-        }
+        val message = findById(reset.messageId) ?: return
 
         var changed = false
-        //if (hasFlag(reset.getMask(), MessageFlag.UNREAD) && !message.isRead()) {
-        //    message.setRead(true);
-        //    changed = true;
-        //}
 
-        if (hasFlag(reset.mask, MessageFlag.IMPORTANT) && message!!.isImportant) {
+        if (hasFlag(reset.mask, MessageFlag.IMPORTANT) && message.isImportant) {
             message.isImportant = false
             changed = true
         }
 
-        if (hasFlag(reset.mask, MessageFlag.DELETED) && message!!.isDeleted) {
+        if (hasFlag(reset.mask, MessageFlag.DELETED) && message.isDeleted) {
             message.isDeleted = false
             changed = true
         }
 
         if (changed) {
-            safeNotifyDataChanged()
+            view?.notifyDataChanged()
         }
     }
 
@@ -880,8 +866,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     public override fun onGuiResumed() {
         super.onGuiResumed()
         checkLongpoll()
-        Processors.realtimeMessages()
-                .registerNotificationsInterceptor(id, Pair.create(messagesOwnerId, peerId))
+        Processors.realtimeMessages().registerNotificationsInterceptor(id, Pair.create(messagesOwnerId, peerId))
     }
 
     public override fun onGuiPaused() {
@@ -945,10 +930,10 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         val peerId = peerId
         val body = mDraftMessageText
 
-        subscribeOnIOAndIgnore(Stores.getInstance()
+        Stores.getInstance()
                 .messages()
                 .saveDraftMessageBody(messagesOwnerId, peerId, body)
-                .subscribeOn(Schedulers.io()))
+                .subscribeIOAndIgnoreResults()
     }
 
     override fun onMessageClick(message: Message) {
@@ -968,8 +953,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             safeNotifyDataChanged()
 
             appendDisposable(messagesInteractor.markAsRead(messagesOwnerId, mPeer.id, last.id)
-                    .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                    .subscribe(dummy(), Consumer{ t -> showError(view, t) }))
+                    .fromIOToMain()
+                    .subscribe(dummy(), Consumer { t -> showError(view, t) }))
         }
     }
 
@@ -979,8 +964,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private fun restoreMessage(messageId: Int) {
         appendDisposable(messagesInteractor.restoreMessage(this.messagesOwnerId, messageId)
-                .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe({ onMessagesRestoredSuccessfully(messageId) }, { t -> showError(view, getCauseIfRuntime(t)) }))
+                .fromIOToMain()
+                .subscribe({ onMessagesRestoredSuccessfully(messageId) }, { t -> showError(view, t) }))
     }
 
     fun fireEditMessageResult(accompanyingModels: ModelsBundle) {
@@ -1036,8 +1021,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         if (sent.isNotEmpty()) {
             appendDisposable(messagesInteractor.deleteMessages(messagesOwnerId, sent)
-                    .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                    .subscribe(dummy(), Consumer{ t -> showError(view, t) }))
+                    .fromIOToMain()
+                    .subscribe(dummy(), Consumer { t -> showError(view, t) }))
         }
 
         if (hasChanged) {
@@ -1054,7 +1039,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         appendDisposable(Stores.getInstance()
                 .messages()
                 .changeMessageStatus(messagesOwnerId, message.id, MessageStatus.QUEUE, null)
-                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .fromIOToMain()
                 .subscribe({ this.startSendService() }, { Analytics.logUnexpectedError(it) }))
     }
 
@@ -1083,8 +1068,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         val accountId = super.getAccountId()
 
         appendDisposable(messagesInteractor.removeChatUser(accountId, chatId, accountId)
-                .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(dummy(), Consumer{ t -> showError(view, t) }))
+                .fromIOToMain()
+                .subscribe(dummy(), Consumer { t -> showError(view, t) }))
     }
 
     fun fireChatTitleClick() {
@@ -1131,7 +1116,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         view?.resetUploadImages()
 
-        if(mDraftMessageId == null){
+        if (mDraftMessageId == null) {
             mDraftMessageId = Stores.getInstance()
                     .messages()
                     .saveDraftMessageBody(messagesOwnerId, peerId, mDraftMessageText)
@@ -1166,8 +1151,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         val chatId = Peer.fromChatId(peerId)
 
         appendDisposable(messagesInteractor.changeChatTitle(this.messagesOwnerId, chatId, newValue)
-                .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(dummy(), Consumer{ t -> showError(view, t) }))
+                .fromIOToMain()
+                .subscribe(dummy(), Consumer { t -> showError(view, t) }))
     }
 
     fun fireForwardToHereClick(messages: ArrayList<Message>) {
@@ -1240,7 +1225,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         appendDisposable(Stores.getInstance()
                 .keys(policy)
                 .getKeys(messagesOwnerId, peerId)
-                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .fromIOToMain()
                 .subscribe({ aesKeyPairs -> fireEncriptionEnableClick(policy, aesKeyPairs) }, { Analytics.logUnexpectedError(it) }))
     }
 
@@ -1361,7 +1346,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         override fun handleMessage(msg: android.os.Message) {
             mReference.get()?.run {
-                when(msg.what){
+                when (msg.what) {
                     RESTORE_TOLLBAR -> resolveToolbarSubtitle()
                 }
             }
@@ -1394,7 +1379,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         private const val REQUEST_CODE_ENABLE_ENCRYPTION = 1
         private const val REQUEST_CODE_KEY_EXCHANGE = 2
 
-        private val MESSAGES_COMPARATOR = Comparator<Message>{ rhs, lhs ->
+        private val MESSAGES_COMPARATOR = Comparator<Message> { rhs, lhs ->
             // соблюдаем сортировку как при запросе в бд
 
             if (lhs.status == rhs.status) {
