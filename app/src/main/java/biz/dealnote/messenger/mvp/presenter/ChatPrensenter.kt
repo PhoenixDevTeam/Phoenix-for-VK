@@ -118,7 +118,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             mPeer = initialPeer
             mOutConfig = config
 
-            if (nonEmpty(config.initialText)) {
+            if (config.initialText.nonEmpty()) {
                 mDraftMessageText = config.initialText
             }
         } else {
@@ -131,7 +131,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         requestAtStart()
 
         if (savedInstanceState == null) {
-            tryToRestoreDraftMessage(nonEmpty(this.mDraftMessageText))
+            tryToRestoreDraftMessage(mDraftMessageText.isNullOrEmpty())
         }
 
         resolveAccountHotSwapSupport()
@@ -304,7 +304,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         val startSize = data.size
 
-        if (all && !data.isEmpty()) {
+        if (all && data.isNotEmpty()) {
             data.clear()
             data.addAll(messages)
             view?.notifyDataChanged()
@@ -690,8 +690,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
 
         if (message.isOut && message.randomId > 0) {
-            findUnsentMessageIndexWithRandomId(message.randomId)?.run {
-                data.removeAt(this)
+            findUnsentMessageIndexWithRandomId(message.randomId)?.let { it ->
+                data.removeAt(it)
             }
         }
 
@@ -855,8 +855,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun checkLongpoll() {
-        val need = isGuiResumed && accountId != ISettings.IAccountsSettings.INVALID_ID
-        if (need) {
+        if (isGuiResumed && accountId != ISettings.IAccountsSettings.INVALID_ID) {
             longpollManager.keepAlive(accountId)
         }
     }
@@ -925,12 +924,9 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun saveDraftMessageBody() {
-        val peerId = peerId
-        val body = mDraftMessageText
-
-        Stores.getInstance()
+       Stores.getInstance()
                 .messages()
-                .saveDraftMessageBody(messagesOwnerId, peerId, body)
+                .saveDraftMessageBody(messagesOwnerId, peerId, mDraftMessageText)
                 .subscribeIOAndIgnoreResults()
     }
 
@@ -943,7 +939,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun readAllUnreadMessagesIfExists() {
-        val last = if (nonEmpty(data)) data[0] else return
+        val last = if (data.nonEmpty()) data[0] else return
 
         if (!last.isOut && last.id > lastReadId.getIn()) {
             lastReadId.setIn(last.id)
@@ -1017,7 +1013,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             }
         }
 
-        if (sent.isNotEmpty()) {
+        if (sent.nonEmpty()) {
             appendDisposable(messagesInteractor.deleteMessages(messagesOwnerId, sent)
                     .fromIOToMain()
                     .subscribe(dummy(), Consumer { t -> showError(view, t) }))
@@ -1091,7 +1087,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun uploadStreams(streams: List<Uri>) {
-        if (Utils.safeIsEmpty(streams)) return
+        if (streams.nullOrEmpty()) return
 
         val size = Settings.get()
                 .main()
@@ -1140,7 +1136,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     @OnGuiCreated
     private fun resolveInputImagesUploading() {
-        if (nonEmpty(mOutConfig.uploadFiles)) {
+        if (mOutConfig.uploadFiles.nonEmpty()) {
             uploadStreams(mOutConfig.uploadFiles)
         }
     }
@@ -1166,7 +1162,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     public override fun onActionModeForwardClick() {
         val selected = getSelected(data)
-        if (nonEmpty(selected)) {
+        if (selected.isNotEmpty()) {
             view?.diplayForwardTypeSelectDialog(selected)
         }
     }
@@ -1195,12 +1191,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun onEncryptionToggleClick() {
-        val enable = isEncryptionEnabled
-        if (enable) {
+        if (isEncryptionEnabled) {
             Settings.get().security().disableMessageEncryption(messagesOwnerId, peerId)
             resolveOptionMenu()
         } else {
-            view!!.showEncryptionKeysPolicyChooseDialog(REQUEST_CODE_ENABLE_ENCRYPTION)
+            view?.showEncryptionKeysPolicyChooseDialog(REQUEST_CODE_ENABLE_ENCRYPTION)
         }
     }
 
@@ -1228,7 +1223,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun fireEncriptionEnableClick(@KeyLocationPolicy policy: Int, pairs: List<AesKeyPair>) {
-        if (safeIsEmpty(pairs)) {
+        if (pairs.nullOrEmpty()) {
             view?.displayIniciateKeyExchangeQuestion(policy)
         } else {
             Settings.get().security().enableMessageEncryption(messagesOwnerId, peerId, policy)
@@ -1297,7 +1292,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         resetDatabaseLoading()
 
         super.getData().clear()
-        safeNotifyDataChanged()
+        view?.notifyDataChanged()
 
         loadAllCachedData()
         requestAtStart()

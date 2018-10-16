@@ -36,6 +36,12 @@ fun Cursor.getLong(columnName: String): Long? = getColumnIndex(columnName).let {
 
 fun Cursor.getString(columnName: String): String? = getString(getColumnIndex(columnName))
 
+fun <T: Any> Collection<T>?.nullOrEmpty(): Boolean = if(this == null) true else size == 0
+
+fun <T: Any> Collection<T>?.nonEmpty(): Boolean = if(this == null) false else size > 0
+
+fun CharSequence?.nonEmpty(): Boolean = if(this == null) false else length > 0
+
 fun <T : Any> Flowable<T>.subscribeIgnoreErrors(consumer: Consumer<in T>): Disposable = subscribe(consumer, RxUtils.ignore())
 
 fun <T : Any> Single<T>.subscribeIgnoreErrors(consumer: Consumer<in T>): Disposable = subscribe(consumer, RxUtils.ignore())
