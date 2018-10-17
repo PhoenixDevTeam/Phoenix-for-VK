@@ -1,7 +1,5 @@
 package biz.dealnote.messenger.util;
 
-import com.google.firebase.crash.FirebaseCrash;
-
 import biz.dealnote.messenger.BuildConfig;
 
 /**
@@ -15,6 +13,6 @@ public class Analytics {
             throwable.printStackTrace();
         }
 
-        FirebaseCrash.report(throwable);
+        //FirebaseCrash.report(throwable);
     }
 }

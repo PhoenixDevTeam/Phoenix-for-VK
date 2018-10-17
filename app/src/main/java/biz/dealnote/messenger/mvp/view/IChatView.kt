@@ -7,7 +7,6 @@ import biz.dealnote.messenger.model.Message
 import biz.dealnote.messenger.model.ModelsBundle
 import biz.dealnote.messenger.model.Peer
 import biz.dealnote.messenger.upload.UploadDestination
-import biz.dealnote.messenger.util.Optional
 import java.util.*
 
 /**

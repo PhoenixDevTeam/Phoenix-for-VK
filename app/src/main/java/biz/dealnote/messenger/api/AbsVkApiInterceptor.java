@@ -2,7 +2,6 @@ package biz.dealnote.messenger.api;
 
 import android.os.SystemClock;
 
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -93,7 +92,7 @@ abstract class AbsVkApiInterceptor implements Interceptor {
                         // no logging
                         break;
                     default:
-                        FirebaseCrash.log("ApiError, method: " + error.method + ", code: " + error.errorCode + ", message: " + error.errorMsg);
+                        //FirebaseCrash.log("ApiError, method: " + error.method + ", code: " + error.errorCode + ", message: " + error.errorMsg);
                         break;
                 }
 

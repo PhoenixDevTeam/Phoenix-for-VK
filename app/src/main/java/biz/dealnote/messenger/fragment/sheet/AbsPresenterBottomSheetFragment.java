@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.View;
 
+import biz.dealnote.mvp.compat.ViewHostDelegate;
 import biz.dealnote.mvp.core.IMvpView;
 import biz.dealnote.mvp.core.IPresenter;
-import biz.dealnote.mvp.compat.ViewHostDelegate;
 
 /**
  * Created by admin on 14.04.2017.

@@ -408,10 +408,12 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
 
         val builder = SaveMessageBuilder(messagesOwnerId, peer.id)
-                .setBody(trimmedBody)
-                .setDraftMessageId(this.draftMessageId)
-                .setRequireEncryption(encryptionEnabled)
-                .setKeyLocationPolicy(keyLocationPolicy)
+                .also {
+                    it.body = trimmedBody
+                    it.draftMessageId = draftMessageId
+                    it.isRequireEncryption = encryptionEnabled
+                    it.keyLocationPolicy = keyLocationPolicy
+                }
 
         val fwds = ArrayList<Message>()
 
@@ -450,8 +452,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         messagesInteractor.put(builder)
                 .fromIOToMain()
                 .doOnSuccess { _ -> startSendService() }
-                .subscribe(WeakConsumer(Consumer<Message> { this.onMessageSaveSuccess(it) }), Consumer<Throwable> { this.onMessageSaveError(it) })
+                .subscribe(WeakConsumer(messageSavedConsumer), WeakConsumer(messageSaveFailConsumer))
     }
+
+    private val messageSavedConsumer: Consumer<Message> = Consumer { onMessageSaveSuccess(it) }
+    private val messageSaveFailConsumer: Consumer<Throwable> = Consumer { onMessageSaveError(it) }
 
     private fun onMessageSaveError(throwable: Throwable) {
         view?.run {
@@ -679,36 +684,26 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             resolveToolbarTitle()
         }
 
-        val index = indexOf(message.id)
-        if (index != -1) {
-            //Message exist = getData().get(index);
-            //if (exist.isRead()) {
-            //    message.setRead(true);
-            //}
+        val index = data.indexOfFirst {
+            it.id == message.id
+        }
 
+        if (index != -1) {
             data.removeAt(index)
         }
 
         if (message.isOut && message.randomId > 0) {
-            findUnsentMessageIndexWithRandomId(message.randomId)?.let { it ->
-                data.removeAt(it)
+            val unsentIndex = data.indexOfFirst {
+                it.randomId == message.randomId && !it.isSent
+            }
+
+            if (unsentIndex != -1) {
+                data.removeAt(unsentIndex)
             }
         }
 
         addMessageToList(message)
         view?.notifyDataChanged()
-    }
-
-    private fun findUnsentMessageIndexWithRandomId(randomId: Int): Int? {
-        for (i in 0 until data.size) {
-            val message = data[i]
-            if (message.isSent) continue
-            if (message.id == randomId) {
-                return i
-            }
-        }
-
-        return null
     }
 
     private fun onLongpollMessagesRead(accountId: Int, peerId: Int, out: Boolean, localId: Int) {
@@ -725,40 +720,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
 
         view?.notifyDataChanged()
-
-        // у нас сообщения в списке от нового к старому
-        // ......
-        // 896325
-        // 896324
-        // 896323
-        // ......
-
-        //onLongpollMessagesRead, out: true, localId: 1004485, last: 1001210, first: 1004485
-
-        /*boolean hasChanges = false;
-        for (Message message : getData()) {
-            if (!message.isSent()) {
-                continue;
-            }
-
-            if (message.getId() > localId) {
-                continue;
-            }
-
-            if (message.isOut() == out) {
-                //if (message.isRead()) {
-                //    //ибо дальше уже должно быть все прочитано
-                //    break;
-                //}
-
-                message.setRead(true);
-                hasChanges = true;
-            }
-        }
-
-        if (hasChanges) {
-            safeNotifyDataChanged();
-        }*/
     }
 
     private fun onMessageFlagSet(action: MessageFlagsSet) {
