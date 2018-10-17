@@ -116,7 +116,7 @@ public class PhotoPagerPresenter extends AccountDependencyPresenter<IPhotoPagerV
 
     private void resolveOptionMenu() {
         if (isViewHostAttached()) {
-            getView().setupOptionMenu(canSaveYourself(), canDelete());
+            getViewhost().setupOptionMenu(canSaveYourself(), canDelete());
         }
     }
 

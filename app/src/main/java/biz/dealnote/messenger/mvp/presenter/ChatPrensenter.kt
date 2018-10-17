@@ -34,10 +34,7 @@ import biz.dealnote.messenger.service.MessageSender
 import biz.dealnote.messenger.settings.ISettings
 import biz.dealnote.messenger.settings.Settings
 import biz.dealnote.messenger.task.TextingNotifier
-import biz.dealnote.messenger.upload.IUploadManager
-import biz.dealnote.messenger.upload.Method
-import biz.dealnote.messenger.upload.UploadDestination
-import biz.dealnote.messenger.upload.UploadIntent
+import biz.dealnote.messenger.upload.*
 import biz.dealnote.messenger.util.*
 import biz.dealnote.messenger.util.RxUtils.*
 import biz.dealnote.messenger.util.Utils.*
@@ -191,7 +188,109 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                     }
                 })
 
+        appendDisposable(uploadManager.observeAdding()
+                .toMainThread()
+                .subscribe(Consumer { onUploadAdded(it) }, ignore()))
+
+        appendDisposable(uploadManager.observeDeleting(true)
+                .toMainThread()
+                .subscribe(Consumer { onUploadRemoved(it) }, ignore()))
+
+        appendDisposable(uploadManager.observeResults()
+                .toMainThread()
+                .subscribe(Consumer { onUploadResult(it) }, ignore()))
+
+        appendDisposable(uploadManager.obseveStatus()
+                .toMainThread()
+                .subscribe(Consumer { onUploadStatusChange(it) }, ignore()))
+
+        appendDisposable(uploadManager.observeProgress()
+                .toMainThread()
+                .subscribe(Consumer { onUploadProgressUpdate(it) }, ignore()))
+
         updateSubtitle()
+    }
+
+    private fun onUploadProgressUpdate(data: List<IUploadManager.IProgressUpdate>){
+        edited?.run {
+            for(update in data){
+                val index = attachments.indexOfFirst {
+                    it.attachment is Upload && (it.attachment as Upload).id == update.id
+                }
+
+                if(index != -1){
+                    val upload = attachments[index].attachment as Upload
+                    if(upload.status == Upload.STATUS_UPLOADING){
+                        upload.progress = update.progress
+                        view?.notifyEditUploadProgressUpdate(index, update.progress)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun onUploadStatusChange(upload: Upload){
+        edited?.run {
+            val index = attachments.indexOfFirst {
+                it.attachment is Upload && (it.attachment as Upload).id == upload.id
+            }
+
+            if(index != -1){
+                (attachments[index].attachment as Upload).apply {
+                    status = upload.status
+                    errorText = upload.errorText
+                }
+
+                view?.notifyEditAttachmentChanged(index)
+            }
+        }
+    }
+
+    private fun onUploadResult(pair: Pair<Upload, UploadResult<*>>){
+        edited?.run {
+            val destination = pair.first.destination
+
+            if(message.id == destination.id && destination.method == Method.PHOTO_TO_MESSAGE){
+                val photo: Photo = pair.second.result as Photo
+                val sizeBefore = attachments.size
+
+                attachments.add(AttachmenEntry(true, photo))
+                view?.notifyEditAttachmentsAdded(sizeBefore, 1)
+                resolveAttachmentsCounter()
+            }
+        }
+    }
+
+    private fun onUploadRemoved(ids: IntArray){
+        edited?.run {
+            for(id in ids){
+                val index = attachments.indexOfFirst {
+                    it.attachment is Upload && (it.attachment as Upload).id == id
+                }
+
+                if(index != -1){
+                    attachments.removeAt(index)
+                    view?.notifyEditAttachmentRemoved(index)
+                }
+            }
+        }
+    }
+
+    private fun onUploadAdded(uploads: List<Upload>) {
+        edited?.run {
+            val filtered = uploads
+                    .asSequence()
+                    .filter { u ->
+                        u.destination.id == message.id && u.destination.method == Method.PHOTO_TO_MESSAGE
+                    }.map {
+                        AttachmenEntry(true, it)
+                    }.toList()
+
+            if (filtered.isNotEmpty()) {
+                attachments.addAll(0, filtered)
+                view?.notifyEditAttachmentsAdded(0, filtered.size)
+            }
+        }
     }
 
     @OnGuiCreated
@@ -479,6 +578,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     fun fireAttachButtonClick() {
+        edited?.run {
+            view?.showEditAttachmentsDialog(attachments)
+            return
+        }
+
         if (draftMessageId == null) {
             draftMessageId = Stores.getInstance()
                     .messages()
@@ -517,12 +621,23 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     @OnGuiCreated
     private fun resolveAttachmentsCounter() {
-        view?.displayDraftMessageAttachmentsCount(calculateAttachmentsCount())
+        edited?.run {
+            view?.displayDraftMessageAttachmentsCount(calculateAttachmentsCount(this))
+        } ?: run {
+            view?.displayDraftMessageAttachmentsCount(calculateAttachmentsCount())
+        }
     }
+
+    private val isEditingNow: Boolean
+        get() = edited != null
 
     @OnGuiCreated
     private fun resolveDraftMessageText() {
-        view?.displayDraftMessageText(draftMessageText)
+        edited?.run {
+            view?.displayDraftMessageText(message.body)
+        } ?: run {
+            view?.displayDraftMessageText(draftMessageText)
+        }
     }
 
     @OnGuiCreated
@@ -840,6 +955,20 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 .findDraftMessage(messagesOwnerId, peerId)
                 .compose(RxUtils.applyMaybeIOToMainSchedulers())
                 .subscribe({ draft -> onDraftMessageRestored(draft, ignoreBody) }, { Analytics.logUnexpectedError(it) }))
+    }
+
+    private fun calculateAttachmentsCount(message: EditedMessage): Int {
+        var count = 0
+
+        for (entry in message.attachments) {
+            if (entry.attachment is FwdMessages) {
+                count += (entry.attachment as FwdMessages).fwds.size
+            } else if(entry.attachment !is Upload){
+                count++
+            }
+        }
+
+        return count
     }
 
     private fun calculateAttachmentsCount(): Int {
@@ -1296,8 +1425,90 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         fireSendClick()
     }
 
-    fun fireActionModeEditClick() {
+    private var edited: EditedMessage? = null
 
+    fun fireActionModeEditClick() {
+        val m = data.find {
+            it.isSelected
+        }
+
+        edited = if (m != null) EditedMessage(m.safelyClone()) else null
+
+        resolveDraftMessageText()
+        resolveAttachmentsCounter()
+    }
+
+    fun onBackPressed(): Boolean {
+        edited?.run {
+            val destination = UploadDestination.forMessage(message.id)
+
+            edited = null
+            resolveDraftMessageText()
+            resolveAttachmentsCounter()
+
+            uploadManager.cancelAll(accountId, destination)
+            return false
+        }
+
+        return true
+    }
+
+    fun fireEditMessageSaveClick() {
+
+    }
+
+    fun fireEditAttachmentRemoved(entry: AttachmenEntry) {
+        if(entry.attachment is Upload){
+            uploadManager.cancel((entry.attachment as Upload).id)
+            return
+        }
+
+        edited?.run {
+            val index = attachments.indexOf(entry)
+            if (index != -1) {
+                attachments.removeAt(index)
+                view?.notifyEditAttachmentRemoved(index)
+                resolveAttachmentsCounter()
+            }
+        }
+    }
+
+    fun fireEditAddImageClick() {
+        view?.startImagesSelection(accountId, messagesOwnerId)
+    }
+
+    fun fireEditLocalPhotosSelected(localPhotos: List<LocalPhoto>, imageSize: Int) {
+        edited?.run {
+            if (localPhotos.isNotEmpty()) {
+                val destination = UploadDestination.forMessage(message.id)
+
+                val intents = localPhotos.map {
+                    UploadIntent(accountId, destination).apply {
+                        isAutoCommit = false
+                        fileId = it.imageId
+                        fileUri = it.fullImageUri
+                        size = imageSize
+                    }
+                }
+
+                uploadManager.enqueue(intents)
+            }
+        }
+    }
+
+    fun fireEditPhotosSelected(vkphotos: List<Photo>) {
+        edited?.run {
+            if (vkphotos.isNotEmpty()) {
+                val additional = vkphotos.map {
+                    AttachmenEntry(true, it)
+                }
+
+                val sizeBefore = attachments.size
+                attachments.addAll(additional)
+                view?.notifyEditAttachmentsAdded(sizeBefore, additional.size)
+                resolveAttachmentsCounter()
+            }
+        }
     }
 
     private class ToolbarSubtitleHandler internal constructor(prensenter: ChatPrensenter) : Handler(Looper.getMainLooper()) {

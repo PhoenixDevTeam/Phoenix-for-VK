@@ -2,10 +2,7 @@ package biz.dealnote.messenger.mvp.view
 
 import android.net.Uri
 import biz.dealnote.messenger.crypt.KeyLocationPolicy
-import biz.dealnote.messenger.model.LoadMoreState
-import biz.dealnote.messenger.model.Message
-import biz.dealnote.messenger.model.ModelsBundle
-import biz.dealnote.messenger.model.Peer
+import biz.dealnote.messenger.model.*
 import biz.dealnote.messenger.upload.UploadDestination
 import java.util.*
 
@@ -53,4 +50,11 @@ interface IChatView : IBasicMessageListView, IErrorView {
     fun displayIniciateKeyExchangeQuestion(@KeyLocationPolicy keyStoragePolicy: Int)
     fun showEncryptionKeysPolicyChooseDialog(requestCode: Int)
     fun showEncryptionDisclaimerDialog(requestCode: Int)
+    fun showEditAttachmentsDialog(attachments: MutableList<AttachmenEntry>)
+
+    fun notifyEditAttachmentChanged(index: Int)
+    fun notifyEditAttachmentRemoved(index: Int)
+    fun startImagesSelection(accountId: Int, ownerId: Int)
+    fun notifyEditAttachmentsAdded(position: Int, size: Int)
+    fun notifyEditUploadProgressUpdate(index: Int, progress: Int)
 }

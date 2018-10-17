@@ -11,7 +11,7 @@
         android:layout_height="150dp">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -23,7 +23,7 @@
             app:altAspectRatioWidth="3" />
 
         <LinearLayout
-            android:id="@+id/empty_root"
+            android:id="@+id/emptyRootView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toEndOf="@+id/offset_view"
@@ -52,11 +52,6 @@
 
     </RelativeLayout>
 
-    <!--<View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#14ffffff" />
--->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,7 +64,7 @@
         android:paddingBottom="4dp">
 
         <ImageView
-            android:id="@+id/button_camera"
+            android:id="@+id/buttonCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -79,7 +74,7 @@
             android:tint="?icon_color_on_colored_back" />
 
         <ImageView
-            android:id="@+id/button_video"
+            android:id="@+id/buttonVideo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -89,7 +84,7 @@
             android:tint="?icon_color_on_colored_back" />
 
         <ImageView
-            android:id="@+id/button_doc"
+            android:id="@+id/buttonDoc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -99,7 +94,7 @@
             android:tint="?icon_color_on_colored_back" />
 
         <ImageButton
-            android:id="@+id/button_hide"
+            android:id="@+id/buttonHide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -108,11 +103,11 @@
             android:tint="?textColorPrimaryOnColoredBack" />
 
         <Button
-            android:id="@+id/button_send"
+            android:id="@+id/buttonSave"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/send_short"
+            android:text="@string/save"
             android:textColor="?textColorPrimaryOnColoredBack" />
     </LinearLayout>
 

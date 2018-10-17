@@ -16,7 +16,7 @@ import biz.dealnote.messenger.util.ParcelUtils;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;
 
-public class Message extends AbsModel implements Parcelable, Identificable, ISelectable {
+public class Message extends AbsModel implements Parcelable, Identificable, ISelectable, Cloneable {
 
     public static Creator<Message> CREATOR = new Creator<Message>() {
         public Message createFromParcel(Parcel source) {
@@ -92,6 +92,21 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
     private int forwardMessagesCount;
 
     private boolean hasAttachments;
+
+    @Override
+    protected Message clone() throws CloneNotSupportedException {
+        Message clone = (Message) super.clone();
+        clone.attachments = attachments == null ? null : attachments.clone();
+        return clone;
+    }
+
+    public Message safelyClone(){
+        try {
+            return clone();
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
     public Message(int id) {
         this.id = id;

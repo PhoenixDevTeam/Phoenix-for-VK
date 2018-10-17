@@ -2,11 +2,13 @@ package biz.dealnote.messenger.fragment
 
 import android.Manifest
 import android.app.Activity
+import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.AttrRes
+import android.support.design.widget.BottomSheetDialog
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -21,10 +23,8 @@ import android.widget.TextView
 import biz.dealnote.messenger.Constants
 import biz.dealnote.messenger.Extra
 import biz.dealnote.messenger.R
-import biz.dealnote.messenger.activity.ActivityFeatures
-import biz.dealnote.messenger.activity.ActivityUtils
-import biz.dealnote.messenger.activity.MainActivity
-import biz.dealnote.messenger.activity.SendAttachmentsActivity
+import biz.dealnote.messenger.activity.*
+import biz.dealnote.messenger.adapter.AttachmentsBottomSheetAdapter
 import biz.dealnote.messenger.adapter.AttachmentsViewBinder
 import biz.dealnote.messenger.adapter.MessagesAdapter
 import biz.dealnote.messenger.api.model.VKApiAttachment
@@ -38,6 +38,9 @@ import biz.dealnote.messenger.listener.BackPressCallback
 import biz.dealnote.messenger.listener.OnSectionResumeCallback
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener
 import biz.dealnote.messenger.model.*
+import biz.dealnote.messenger.model.selection.LocalPhotosSelectableSource
+import biz.dealnote.messenger.model.selection.Sources
+import biz.dealnote.messenger.model.selection.VkPhotosSelectableSource
 import biz.dealnote.messenger.mvp.presenter.ChatPrensenter
 import biz.dealnote.messenger.mvp.view.IChatView
 import biz.dealnote.messenger.place.PlaceFactory
@@ -360,6 +363,18 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         actionModeHolder?.rootView?.visibility = View.GONE
     }
 
+    private fun onEditLocalPhotosSelected(photos: List<LocalPhoto>){
+        val defaultSize = Settings.get().main().uploadImageSize
+        when(defaultSize){
+            null -> {
+                ImageSizeAlertDialog.Builder(activity)
+                        .setOnSelectedCallback { size -> presenter?.fireEditLocalPhotosSelected(photos, size) }
+                        .show()
+            }
+            else -> presenter?.fireEditLocalPhotosSelected(photos, defaultSize)
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -373,6 +388,17 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
                 presenter?.fireSendClickFromAttachmens()
             }
         }
+
+        if(requestCode == REQUEST_ADD_VKPHOTO && resultCode == Activity.RESULT_OK){
+            val vkphotos: List<Photo> = data?.getParcelableArrayListExtra(Extra.ATTACHMENTS) ?: Collections.emptyList()
+            val localPhotos: List<LocalPhoto> = data?.getParcelableArrayListExtra(Extra.PHOTOS) ?: Collections.emptyList()
+
+            if(vkphotos.isNotEmpty()){
+                presenter?.fireEditPhotosSelected(vkphotos)
+            } else if(localPhotos.isNotEmpty()){
+                onEditLocalPhotosSelected(localPhotos)
+            }
+        }
     }
 
     override fun goToMessageAttachmentsEditor(accountId: Int, messageOwnerId: Int, destination: UploadDestination,
@@ -380,6 +406,112 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         val fragment = MessageAttachmentsFragment.newInstance(accountId, messageOwnerId, destination.id, attachments)
         fragment.setTargetFragment(this, REQUEST_EDIT_MESSAGE)
         fragment.show(requireFragmentManager(), "message-attachments")
+    }
+
+    override fun startImagesSelection(accountId: Int, ownerId: Int) {
+        val sources = Sources()
+                .with(LocalPhotosSelectableSource())
+                .with(VkPhotosSelectableSource(accountId, ownerId))
+
+        val intent = DualTabPhotoActivity.createIntent(activity, 10, sources)
+        startActivityForResult(intent, REQUEST_ADD_VKPHOTO)
+    }
+
+    private class EditAttachmentsHolder(rootView: View, fragment: ChatFragment, attachments: MutableList<AttachmenEntry>) : AttachmentsBottomSheetAdapter.ActionListener, View.OnClickListener {
+        override fun onClick(v: View) {
+            when(v.id){
+                R.id.buttonHide -> reference.get()?.hideEditAttachmentsDialog()
+                R.id.buttonSave -> reference.get()?.onEditAttachmentSaveClick()
+            }
+        }
+
+        override fun onAddPhotoButtonClick() {
+            reference.get()?.presenter?.fireEditAddImageClick()
+        }
+
+        override fun onButtonRemoveClick(entry: AttachmenEntry) {
+            reference.get()?.presenter?.fireEditAttachmentRemoved(entry)
+        }
+
+        val reference = WeakReference(fragment)
+        val recyclerView: RecyclerView = rootView.findViewById(R.id.recyclerView)
+        val emptyView: View = rootView.findViewById(R.id.emptyRootView)
+        val adapter = AttachmentsBottomSheetAdapter(rootView.context, attachments, this)
+
+        init {
+            recyclerView.layoutManager = LinearLayoutManager(rootView.context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = adapter
+
+            rootView.findViewById<View>(R.id.buttonHide).setOnClickListener(this)
+            rootView.findViewById<View>(R.id.buttonVideo).setOnClickListener(this)
+            rootView.findViewById<View>(R.id.buttonDoc).setOnClickListener(this)
+            rootView.findViewById<View>(R.id.buttonCamera).setOnClickListener(this)
+            rootView.findViewById<View>(R.id.buttonSave).setOnClickListener(this)
+
+            checkEmptyViewVisibility()
+        }
+
+        fun checkEmptyViewVisibility(){
+            emptyView.visibility = if(adapter.itemCount < 2) View.VISIBLE else View.INVISIBLE
+        }
+
+        fun notifyAttachmentRemoved(index: Int){
+            adapter.notifyItemRemoved(index + 1)
+            checkEmptyViewVisibility()
+        }
+
+        fun notifyAttachmentChanged(index: Int){
+            adapter.notifyItemChanged(index + 1)
+        }
+
+        fun notifyAttachmentsAdded(position: Int, count: Int){
+            adapter.notifyItemRangeInserted(position + 1, count)
+            checkEmptyViewVisibility()
+        }
+
+        fun notifyAttachmentProgressUpdate(index: Int, progress: Int){
+            adapter.changeUploadProgress(index, progress, true)
+        }
+    }
+
+    override fun notifyEditUploadProgressUpdate(index: Int, progress: Int) {
+        editAttachmentsHolder?.notifyAttachmentProgressUpdate(index, progress)
+    }
+
+    override fun notifyEditAttachmentsAdded(position: Int, size: Int) {
+        editAttachmentsHolder?.notifyAttachmentsAdded(position, size)
+    }
+
+    override fun notifyEditAttachmentChanged(index: Int) {
+        editAttachmentsHolder?.notifyAttachmentChanged(index)
+    }
+
+    override fun notifyEditAttachmentRemoved(index: Int) {
+        editAttachmentsHolder?.notifyAttachmentRemoved(index)
+    }
+
+    private fun onEditAttachmentSaveClick() {
+        hideEditAttachmentsDialog()
+        presenter?.fireEditMessageSaveClick()
+    }
+
+    private fun hideEditAttachmentsDialog() {
+        editAttachmentsDialog?.dismiss()
+        editAttachmentsHolder = null
+    }
+
+    private var editAttachmentsHolder: EditAttachmentsHolder? = null
+    private var editAttachmentsDialog: Dialog? = null
+
+    override fun showEditAttachmentsDialog(attachments: MutableList<AttachmenEntry>) {
+        val view = View.inflate(requireActivity(), R.layout.bottom_sheet_attachments_edit, null)
+
+        editAttachmentsHolder = EditAttachmentsHolder(view, this, attachments)
+        editAttachmentsDialog = BottomSheetDialog(requireActivity())
+                .apply {
+                    setContentView(view)
+                    show()
+                }
     }
 
     override fun showErrorSendDialog(message: Message) {
@@ -642,7 +774,11 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             return false
         }
 
-        return inputViewController == null || inputViewController!!.onBackPressed()
+        if(inputViewController?.onBackPressed() == false){
+            return false
+        }
+
+        return presenter?.onBackPressed() == true
     }
 
     fun reInit(newAccountId: Int, newMessagesOwnerId: Int, newPeerId: Int, title: String) {
@@ -684,6 +820,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
         private const val REQUEST_RECORD_PERMISSIONS = 15
         private const val REQUEST_EDIT_MESSAGE = 150
+        private const val REQUEST_ADD_VKPHOTO = 151
 
         fun buildArgs(accountId: Int, peerId: Int, title: String, avaUrl: String): Bundle {
             val bundle = Bundle()
