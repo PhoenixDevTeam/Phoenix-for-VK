@@ -51,7 +51,7 @@ public class MessagesSearchPresenter extends AbsSearchPresenter<IMessagesSearchV
         final int offset = Objects.isNull(nextFrom) ? 0 : nextFrom.getOffset();
         return messagesInteractor
                 .searchMessages(accountId, criteria.getPeerId(), COUNT, offset, criteria.getQuery())
-                .map(messages -> Pair.create(messages, new IntNextFrom(offset + COUNT)));
+                .map(messages -> Pair.Companion.create(messages, new IntNextFrom(offset + COUNT)));
     }
 
     @Override

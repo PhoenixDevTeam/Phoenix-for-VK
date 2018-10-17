@@ -89,7 +89,7 @@ public class FeedInteractor implements IFeedInteractor {
                                                 news.add(Dto2Model.buildNews(dto, owners1));
                                             }
 
-                                            return Pair.create(news, nextFrom);
+                                            return Pair.Companion.create(news, nextFrom);
                                         });
                             });
                 });
@@ -116,7 +116,7 @@ public class FeedInteractor implements IFeedInteractor {
                     return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersInteractor.MODE_ANY, owners)
                             .map(ownersBundle -> {
                                 List<Post> posts = Dto2Model.transformPosts(dtos, ownersBundle);
-                                return Pair.create(posts, response.nextFrom);
+                                return Pair.Companion.create(posts, response.nextFrom);
                             });
                 });
     }

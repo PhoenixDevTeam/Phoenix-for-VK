@@ -43,7 +43,7 @@ public class PeopleSearchPresenter extends AbsSearchPresenter<IPeopleSearchView,
         final int nextOffset = offset + 50;
 
         return ownersInteractor.searchPeoples(accountId, criteria, 50, offset)
-                .map(users -> Pair.create(users, new IntNextFrom(nextOffset)));
+                .map(users -> Pair.Companion.create(users, new IntNextFrom(nextOffset)));
     }
 
     @Override

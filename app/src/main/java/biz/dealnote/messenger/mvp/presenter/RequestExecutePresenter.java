@@ -206,7 +206,7 @@ public class RequestExecutePresenter extends AccountDependencyPresenter<IRequest
                         trimmedJson = join("\n", trimmed);
                     }
 
-                    return Pair.create(fullJson, trimmedJson);
+                    return Pair.Companion.create(fullJson, trimmedJson);
                 });
     }
 

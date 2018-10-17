@@ -427,7 +427,7 @@ public class WallsImpl implements IWalls {
                     }
 
                     return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY, owners)
-                            .map(ownersBundle -> Pair.create(Dto2Model.transformPosts(dtos, ownersBundle), response.count));
+                            .map(ownersBundle -> Pair.Companion.create(Dto2Model.transformPosts(dtos, ownersBundle), response.count));
                 });
     }
 }

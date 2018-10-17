@@ -91,7 +91,7 @@ public class NewsfeedInteractor implements INewsfeedInteractor {
                                     }
                                 }
 
-                                return Pair.create(comments, response.nextFrom);
+                                return Pair.Companion.create(comments, response.nextFrom);
                             });
                 });
     }

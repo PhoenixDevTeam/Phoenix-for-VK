@@ -2,30 +2,30 @@ package biz.dealnote.messenger.model;
 
 public final class LastReadId {
 
-    private int out;
+    private int outgoing;
 
-    private int in;
+    private int incoming;
 
-    public LastReadId(int out, int in) {
-        this.out = out;
-        this.in = in;
+    public LastReadId(int outgoing, int incoming) {
+        this.outgoing = outgoing;
+        this.incoming = incoming;
     }
 
-    public int getOut() {
-        return out;
+    public int getOutgoing() {
+        return outgoing;
     }
 
-    public LastReadId setOut(int out) {
-        this.out = out;
+    public LastReadId setOutgoing(int outgoing) {
+        this.outgoing = outgoing;
         return this;
     }
 
-    public int getIn() {
-        return in;
+    public int getIncoming() {
+        return incoming;
     }
 
-    public LastReadId setIn(int in) {
-        this.in = in;
+    public LastReadId setIncoming(int in) {
+        this.incoming = in;
         return this;
     }
 }

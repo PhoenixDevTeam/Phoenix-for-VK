@@ -53,7 +53,7 @@ public class ChatAttachmentAudioPresenter extends BaseChatAttachmentsPresenter<A
                         }
                     }
 
-                    return Pair.create(response.next_from, audios);
+                    return Pair.Companion.create(response.next_from, audios);
                 });
     }
 

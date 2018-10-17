@@ -606,7 +606,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             return;
         }
 
-        mTargetPage = Pair.create(item, !longClick);
+        mTargetPage = Pair.Companion.create(item, !longClick);
 
         if (mDrawerLayout == null) {
             openTargetPage();

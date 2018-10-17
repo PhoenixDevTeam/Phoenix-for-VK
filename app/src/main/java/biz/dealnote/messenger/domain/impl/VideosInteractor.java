@@ -122,12 +122,12 @@ public class VideosInteractor implements IVideosInteractor {
             return networker.vkDefault(accountId)
                     .likes()
                     .add("video", ownerId, videoId, accessKey)
-                    .map(integer -> Pair.create(integer, true));
+                    .map(integer -> Pair.Companion.create(integer, true));
         } else {
             return networker.vkDefault(accountId)
                     .likes()
                     .delete("video", ownerId, videoId)
-                    .map(integer -> Pair.create(integer, false));
+                    .map(integer -> Pair.Companion.create(integer, false));
         }
     }
 

@@ -281,7 +281,7 @@ public class UploadManagerImpl implements IUploadManager {
 
             serverMap.put(createServerKey(upload), result.getServer());
 
-            completeProcessor.onNext(Pair.create(upload, result));
+            completeProcessor.onNext(Pair.Companion.create(upload, result));
             startIfNotStartedInternal();
         }
     }

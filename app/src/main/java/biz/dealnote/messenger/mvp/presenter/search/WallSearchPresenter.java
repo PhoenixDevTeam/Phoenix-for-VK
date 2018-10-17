@@ -95,7 +95,7 @@ public class WallSearchPresenter extends AbsSearchPresenter<IWallSearchView, Wal
         final IntNextFrom nextFrom = new IntNextFrom(offset + COUNT);
 
         return walls.search(accountId, criteria.getOwnerId(), criteria.getQuery(), true, COUNT, offset)
-                .map(pair -> Pair.create(pair.getFirst(), nextFrom));
+                .map(pair -> Pair.Companion.create(pair.getFirst(), nextFrom));
     }
 
     @Override

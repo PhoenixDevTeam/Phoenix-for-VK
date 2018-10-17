@@ -23,12 +23,12 @@ public class BlacklistRepository implements IBlacklistRepository {
 
     @Override
     public Completable fireAdd(int accountId, User user) {
-        return Completable.fromAction(() -> addPublisher.onNext(Pair.create(accountId, user)));
+        return Completable.fromAction(() -> addPublisher.onNext(Pair.Companion.create(accountId, user)));
     }
 
     @Override
     public Completable fireRemove(int accountId, int userId) {
-        return Completable.fromAction(() -> removePublisher.onNext(Pair.create(accountId, userId)));
+        return Completable.fromAction(() -> removePublisher.onNext(Pair.Companion.create(accountId, userId)));
     }
 
     @Override

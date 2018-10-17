@@ -158,7 +158,7 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
 
         bindStatusText(holder.status, message.getStatus(), message.getDate());
 
-        boolean read = message.isOut() ? lastReadId.getOut() >= message.getId() : lastReadId.getIn() >= message.getId();
+        boolean read = message.isOut() ? lastReadId.getOutgoing() >= message.getId() : lastReadId.getIncoming() >= message.getId();
 
         bindReadState(holder.itemView, message.getStatus() == MessageStatus.SENT && read);
 

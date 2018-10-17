@@ -46,7 +46,7 @@ public class DialogsSearchPresenter extends AbsSearchPresenter<IDialogsSearchVie
         return messagesInteractor.searchDialogs(accountId, 20, criteria.getQuery())
                 .map(models -> {
                     // null because load more not supported
-                    return Pair.create(models, null);
+                    return Pair.Companion.create(models, null);
                 });
     }
 

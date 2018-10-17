@@ -46,7 +46,6 @@ import biz.dealnote.messenger.settings.CurrentTheme
 import biz.dealnote.messenger.settings.Settings
 import biz.dealnote.messenger.upload.UploadDestination
 import biz.dealnote.messenger.util.InputTextDialog
-import biz.dealnote.messenger.util.Optional
 import biz.dealnote.messenger.util.Utils.safeIsEmpty
 import biz.dealnote.messenger.util.ViewUtils
 import biz.dealnote.messenger.view.InputViewController
@@ -262,11 +261,11 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
     }
 
-    override fun displayPinnedMessage(pinned: Optional<Message?>) {
+    override fun displayPinnedMessage(pinned: Message?) {
         mPinnedView?.run {
-            visibility = if (pinned.isEmpty) View.GONE else View.VISIBLE
+            visibility = if (pinned == null) View.GONE else View.VISIBLE
 
-            pinned.get()?.run {
+            pinned?.run {
                 ViewUtils.displayAvatar(mPinnedAvatar!!, CurrentTheme.createTransformationForAvatar(requireContext()),
                         sender.get100photoOrSmaller(), null)
 

@@ -53,7 +53,7 @@ public class ChatAttachmentVideoPresenter extends BaseChatAttachmentsPresenter<V
                         }
                     }
 
-                    return Pair.create(response.next_from, videos);
+                    return Pair.Companion.create(response.next_from, videos);
                 });
     }
 

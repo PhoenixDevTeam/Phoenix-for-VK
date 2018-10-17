@@ -87,7 +87,7 @@ public class GroupSettingsInteractor implements IGroupSettingsInteractor {
                                     .setContactInfo(info)
                                     .setDisplayAsContact(asContact);
                         })
-                        .flatMapCompletable(manager -> repository.fireManagementChangeAction(Pair.create(groupId, manager))));
+                        .flatMapCompletable(manager -> repository.fireManagementChangeAction(Pair.Companion.create(groupId, manager))));
     }
 
     @Override
@@ -149,7 +149,7 @@ public class GroupSettingsInteractor implements IGroupSettingsInteractor {
                                     infos.add(new Banned(Dto2Model.transformUser(u), admin, info));
                                 }
 
-                                return Pair.create(infos, nextFrom);
+                                return Pair.Companion.create(infos, nextFrom);
                             });
                 });
     }

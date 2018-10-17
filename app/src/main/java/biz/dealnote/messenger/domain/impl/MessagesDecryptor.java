@@ -47,8 +47,8 @@ public class MessagesDecryptor implements IMessagesDecryptor {
                             EncryptedMessage em = CryptHelper.parseEncryptedMessage(message.getBody());
 
                             if (nonNull(em)) {
-                                needDecryption.add(Pair.create(message, em));
-                                sessions.add(Pair.create(em.getKeyLocationPolicy(), em.getSessionId()));
+                                needDecryption.add(Pair.Companion.create(message, em));
+                                sessions.add(Pair.Companion.create(em.getKeyLocationPolicy(), em.getSessionId()));
                             } else {
                                 message.setCryptStatus(CryptStatus.DECRYPT_FAILED);
                             }

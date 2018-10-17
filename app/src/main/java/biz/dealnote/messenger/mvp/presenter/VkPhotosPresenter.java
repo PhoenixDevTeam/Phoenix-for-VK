@@ -298,7 +298,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
     private void loadInitialData() {
         final int accountId = getAccountId();
         cacheDisposable.add(interactor.getAllCachedData(accountId, ownerId, albumId)
-                .zipWith(uploadManager.get(getAccountId(), destination), Pair::create)
+                .zipWith(uploadManager.get(getAccountId(), destination), Pair.Companion::create)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onInitialDataReceived));
     }

@@ -762,7 +762,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
                 }
 
                 if (nonNull(entity)) {
-                    emitter.onSuccess(Optional.wrap(Pair.create(accountId, entity)));
+                    emitter.onSuccess(Optional.wrap(Pair.Companion.create(accountId, entity)));
                     return;
                 }
             }

@@ -59,7 +59,7 @@ public class NewsFeedSearchPresenter extends AbsSearchPresenter<INewsFeedSearchV
     @Override
     Single<Pair<List<Post>, StringNextFrom>> doSearch(int accountId, NewsFeedCriteria criteria, StringNextFrom startFrom) {
         return feedInteractor.search(accountId, criteria, 50, startFrom.getNextFrom())
-                .map(pair -> Pair.create(pair.getFirst(), new StringNextFrom(pair.getSecond())));
+                .map(pair -> Pair.Companion.create(pair.getFirst(), new StringNextFrom(pair.getSecond())));
     }
 
     @Override

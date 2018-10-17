@@ -43,7 +43,7 @@ public class DocsSearchPresenter extends AbsSearchPresenter<IDocSearchView, Docu
         final int offset = startFrom.getOffset();
         final IntNextFrom nextFrom = new IntNextFrom(50 + offset);
         return docsInteractor.search(accountId, criteria, 50, offset)
-                .map(documents -> Pair.create(documents, nextFrom));
+                .map(documents -> Pair.Companion.create(documents, nextFrom));
     }
 
     @Override

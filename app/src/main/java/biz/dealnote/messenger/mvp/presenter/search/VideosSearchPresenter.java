@@ -44,7 +44,7 @@ public class VideosSearchPresenter extends AbsSearchPresenter<IVideosSearchView,
         final int offset = startFrom.getOffset();
         final IntNextFrom nextFrom = new IntNextFrom(offset + 50);
         return videosInteractor.seacrh(accountId, criteria, 50, offset)
-                .map(videos -> Pair.create(videos, nextFrom));
+                .map(videos -> Pair.Companion.create(videos, nextFrom));
     }
 
     @Override

@@ -89,7 +89,7 @@ public class FeedbackInteractor implements IFeedbackInteractor {
                                             feedbacks.add(FeedbackEntity2Model.buildFeedback(dbo, ownersBundle));
                                         }
 
-                                        return Pair.create(feedbacks, response.nextFrom);
+                                        return Pair.Companion.create(feedbacks, response.nextFrom);
                                     }));
                 });
     }

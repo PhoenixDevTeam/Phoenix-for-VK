@@ -54,7 +54,7 @@ public class ChatAttachmentDocsPresenter extends BaseChatAttachmentsPresenter<Do
                         }
                     }
 
-                    return Pair.create(response.next_from, docs);
+                    return Pair.Companion.create(response.next_from, docs);
                 });
     }
 

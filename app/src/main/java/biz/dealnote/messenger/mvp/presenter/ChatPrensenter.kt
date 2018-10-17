@@ -38,12 +38,10 @@ import biz.dealnote.messenger.upload.Method
 import biz.dealnote.messenger.upload.UploadDestination
 import biz.dealnote.messenger.upload.UploadIntent
 import biz.dealnote.messenger.util.*
-import biz.dealnote.messenger.util.Optional
 import biz.dealnote.messenger.util.RxUtils.*
 import biz.dealnote.messenger.util.Utils.*
 import biz.dealnote.mvp.reflect.OnGuiCreated
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Predicate
 import java.io.File
@@ -58,18 +56,18 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                      initialPeer: Peer,
                      config: ChatConfig, savedInstanceState: Bundle?) : AbsMessageListPresenter<IChatView>(accountId, savedInstanceState) {
 
-    private var mPeer: Peer
-    private var mSubtitle: String? = null
-    private val mAudioRecordWrapper: AudioRecordWrapper
-    private var mEndOfContent: Boolean = false
-    private var mOutConfig: ChatConfig
-    private var mDraftMessageText: String? = null
-    private var mDraftMessageId: Int? = null
-    private var mTextingNotifier: TextingNotifier
-    private var mToolbarSubtitleHandler: ToolbarSubtitleHandler = ToolbarSubtitleHandler(this)
-    private var mDraftMessageDbAttachmentsCount: Int = 0
+    private var peer: Peer
+    private var subtitle: String? = null
+    private val audioRecordWrapper: AudioRecordWrapper
+    private var endOfContent: Boolean = false
+    private var outConfig: ChatConfig
+    private var draftMessageText: String? = null
+    private var draftMessageId: Int? = null
+    private var textingNotifier: TextingNotifier
+    private var toolbarSubtitleHandler: ToolbarSubtitleHandler = ToolbarSubtitleHandler(this)
+    private var draftMessageDbAttachmentsCount: Int = 0
 
-    private var mRecordingLookup: Lookup
+    private var recordingLookup: Lookup
 
     private val messagesInteractor: IMessagesInteractor = InteractorFactory.createMessagesInteractor()
     private val longpollManager: ILongpollManager = LongpollInstance.get()
@@ -91,7 +89,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private val isRecordingNow: Boolean
         get() {
-            val status = mAudioRecordWrapper.recorderStatus
+            val status = audioRecordWrapper.recorderStatus
             return status == Recorder.Status.PAUSED || status == Recorder.Status.RECORDING_NOW
         }
 
@@ -99,7 +97,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         get() = Peer.isGroupChat(peerId)
 
     private val peerId: Int
-        get() = mPeer.id
+        get() = peer.id
 
     private val isEncryptionSupport: Boolean
         get() = Peer.isUser(peerId) && peerId != messagesOwnerId
@@ -110,20 +108,20 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 .isMessageEncryptionEnabled(messagesOwnerId, peerId)
 
     init {
-        mAudioRecordWrapper = AudioRecordWrapper.Builder(App.getInstance())
+        audioRecordWrapper = AudioRecordWrapper.Builder(App.getInstance())
                 .setFileExt(RECORD_EXT_MP3)
                 .build()
 
         if (savedInstanceState == null) {
-            mPeer = initialPeer
-            mOutConfig = config
+            peer = initialPeer
+            outConfig = config
 
             if (config.initialText.nonEmpty()) {
-                mDraftMessageText = config.initialText
+                draftMessageText = config.initialText
             }
         } else {
-            mPeer = savedInstanceState.getParcelable(SAVE_PEER)
-            mOutConfig = savedInstanceState.getParcelable(SAVE_CONFIG)
+            peer = savedInstanceState.getParcelable(SAVE_PEER)
+            outConfig = savedInstanceState.getParcelable(SAVE_CONFIG)
             restoreFromInstanceState(savedInstanceState)
         }
 
@@ -131,16 +129,16 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         requestAtStart()
 
         if (savedInstanceState == null) {
-            tryToRestoreDraftMessage(mDraftMessageText.isNullOrEmpty())
+            tryToRestoreDraftMessage(draftMessageText.isNullOrEmpty())
         }
 
         resolveAccountHotSwapSupport()
-        mTextingNotifier = TextingNotifier(messagesOwnerId)
+        textingNotifier = TextingNotifier(messagesOwnerId)
 
         val predicate = Predicate<IAttachmentsRepository.IBaseEvent> { event ->
-            mDraftMessageId != null
+            draftMessageId != null
                     && event.accountId == messagesOwnerId
-                    && event.attachToId == mDraftMessageId
+                    && event.attachToId == draftMessageId
         }
 
         val attachmentsRepository = Injection.provideAttachmentsRepository()
@@ -166,7 +164,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                     onMessageStatusChange(update.messageId, update.sentUpdate?.vkid, update.statusUpdate.status)
                 })
 
-        mRecordingLookup = Lookup(1000)
+        recordingLookup = Lookup(1000)
                 .also {
                     it.setCallback {
                         resolveRecordingTimeView()
@@ -200,7 +198,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     @OnGuiCreated
     private fun resolvePinnedMessageView() {
-        view?.displayPinnedMessage(if (conversation != null && conversation!!.pinned != null) Optional.wrap(conversation!!.pinned) else Optional.empty())
+        view?.displayPinnedMessage(conversation?.pinned)
     }
 
     private fun onLongpollKeepAliveRequest() {
@@ -226,14 +224,14 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     private fun onUserIsOffline(userOffline: UserOffline) {
         if (isChatWithUser(userOffline.userId)) {
             val lastSeeenUnixtime = if (userOffline.isByTimeout) Unixtime.now() - 15 * 60 else Unixtime.now()
-            mSubtitle = getString(R.string.last_seen_sex_unknown, AppTextUtils.getDateFromUnixTime(lastSeeenUnixtime))
+            subtitle = getString(R.string.last_seen_sex_unknown, AppTextUtils.getDateFromUnixTime(lastSeeenUnixtime))
             resolveToolbarSubtitle()
         }
     }
 
     private fun onUserIsOnline(userOnline: UserOnline) {
         if (isChatWithUser(userOnline.userId)) {
-            mSubtitle = getString(R.string.online)
+            subtitle = getString(R.string.online)
             resolveToolbarSubtitle()
         }
     }
@@ -245,23 +243,23 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun onRepositoryAttachmentsRemoved() {
-        mDraftMessageDbAttachmentsCount--
+        draftMessageDbAttachmentsCount--
         resolveAttachmentsCounter()
         resolveSendButtonState()
     }
 
     private fun onRepositoryAttachmentsAdded(count: Int) {
-        mDraftMessageDbAttachmentsCount += count
+        draftMessageDbAttachmentsCount += count
         resolveAttachmentsCounter()
         resolveSendButtonState()
     }
 
     private fun loadAllCachedData() {
         setCacheLoadingNow(true)
-        cacheLoadingDisposable.add(messagesInteractor.getConversation(messagesOwnerId, mPeer.id, Mode.ANY).singleOrError()
-                .zipWith(messagesInteractor.getCachedPeerMessages(messagesOwnerId, mPeer.id), BiFunction<Conversation, List<Message>, Pair<Conversation, List<Message>>> { first, second -> Pair.create(first, second) })
+        cacheLoadingDisposable.add(RxKotlin.zip(messagesInteractor.getConversation(messagesOwnerId, peer.id, Mode.ANY).singleOrError(),
+                messagesInteractor.getCachedPeerMessages(messagesOwnerId, peer.id), ::Pair)
                 .fromIOToMain()
-                .subscribe(Consumer<Pair<Conversation, List<Message>>> { this.onCachedDataReceived(it) }, ignore()))
+                .subscribe(Consumer { it -> onCachedDataReceived(it) }, RxUtils.ignore()))
     }
 
     private fun onCachedDataReceived(data: Pair<Conversation, List<Message>>) {
@@ -270,16 +268,16 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         conversation = data.first
         resolvePinnedMessageView()
 
-        lastReadId.`in` = data.first.inRead
-        lastReadId.out = data.first.outRead
+        lastReadId.incoming = data.first.inRead
+        lastReadId.outgoing = data.first.outRead
         onAllDataLoaded(data.second, false)
     }
 
     private fun onNetDataReceived(messages: List<Message>, startMessageId: Int?) {
-        // reset cache loading
-        this.cacheLoadingDisposable.clear()
+        resetDatabaseLoading()
+
         this.isLoadingFromDbNow = false
-        this.mEndOfContent = isEmpty(messages)
+        this.endOfContent = messages.isEmpty()
 
         setNetLoadingNow(false)
         onAllDataLoaded(messages, startMessageId != null)
@@ -290,7 +288,9 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         //сохранение выделенных сообщений
         if (all) {
-            val selectedList = Utils.getSelected(data)
+            val selectedList = data.filter {
+                it.isSelected
+            }
 
             for (selected in selectedList) {
                 for (item in messages) {
@@ -338,7 +338,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     @OnGuiCreated
     private fun resolveLoadUpHeaderView() {
         val loading = isLoadingNow
-        view?.setupLoadUpHeaderState(if (loading) LoadMoreState.LOADING else if (mEndOfContent) LoadMoreState.INVISIBLE else LoadMoreState.CAN_LOAD_MORE)
+        view?.setupLoadUpHeaderState(if (loading) LoadMoreState.LOADING else if (endOfContent) LoadMoreState.INVISIBLE else LoadMoreState.CAN_LOAD_MORE)
     }
 
     private fun requestAtStart() {
@@ -377,7 +377,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     fun fireDraftMessageTextEdited(s: String) {
         val oldState = canSendNormalMessage()
-        mDraftMessageText = s
+        draftMessageText = s
         val newState = canSendNormalMessage()
 
         if (oldState != newState) {
@@ -386,7 +386,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         readAllUnreadMessagesIfExists()
 
-        mTextingNotifier.notifyAboutTyping(peerId)
+        textingNotifier.notifyAboutTyping(peerId)
     }
 
     fun fireSendClick() {
@@ -398,7 +398,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     private fun sendImpl() {
         val securitySettings = Settings.get().security()
 
-        val trimmedBody = AppTextUtils.safeTrim(mDraftMessageText, null)
+        val trimmedBody = AppTextUtils.safeTrim(draftMessageText, null)
         val encryptionEnabled = securitySettings.isMessageEncryptionEnabled(messagesOwnerId, peerId)
 
         @KeyLocationPolicy
@@ -407,15 +407,15 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             keyLocationPolicy = securitySettings.getEncryptionLocationPolicy(messagesOwnerId, peerId)
         }
 
-        val builder = SaveMessageBuilder(messagesOwnerId, mPeer.id)
+        val builder = SaveMessageBuilder(messagesOwnerId, peer.id)
                 .setBody(trimmedBody)
-                .setDraftMessageId(this.mDraftMessageId)
+                .setDraftMessageId(this.draftMessageId)
                 .setRequireEncryption(encryptionEnabled)
                 .setKeyLocationPolicy(keyLocationPolicy)
 
         val fwds = ArrayList<Message>()
 
-        for (model in mOutConfig.models) {
+        for (model in outConfig.models) {
             if (model is FwdMessages) {
                 fwds.addAll(model.fwds)
             } else {
@@ -425,12 +425,12 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         builder.forwardMessages = fwds
 
-        mOutConfig.models.clear()
-        mOutConfig.initialText = null
+        outConfig.models.clear()
+        outConfig.initialText = null
 
-        mDraftMessageId = null
-        mDraftMessageText = null
-        mDraftMessageDbAttachmentsCount = 0
+        draftMessageId = null
+        draftMessageText = null
+        draftMessageDbAttachmentsCount = 0
 
         view?.resetInputAttachments()
 
@@ -440,7 +440,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         sendMessage(builder)
 
-        if (mOutConfig.isCloseOnSend) {
+        if (outConfig.isCloseOnSend) {
             view?.doCloseAfterSend()
         }
     }
@@ -473,19 +473,19 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     fun fireAttachButtonClick() {
-        if (mDraftMessageId == null) {
-            mDraftMessageId = Stores.getInstance()
+        if (draftMessageId == null) {
+            draftMessageId = Stores.getInstance()
                     .messages()
-                    .saveDraftMessageBody(messagesOwnerId, peerId, mDraftMessageText)
+                    .saveDraftMessageBody(messagesOwnerId, peerId, draftMessageText)
                     .blockingGet()
         }
 
-        val destination = UploadDestination.forMessage(mDraftMessageId!!)
-        view?.goToMessageAttachmentsEditor(accountId, messagesOwnerId, destination, mDraftMessageText, mOutConfig.models) // TODO: 15.08.2017
+        val destination = UploadDestination.forMessage(draftMessageId!!)
+        view?.goToMessageAttachmentsEditor(accountId, messagesOwnerId, destination, draftMessageText, outConfig.models) // TODO: 15.08.2017
     }
 
     private fun canSendNormalMessage(): Boolean {
-        return calculateAttachmentsCount() > 0 || trimmedNonEmpty(mDraftMessageText) || nowUploadingToEditingMessage()
+        return calculateAttachmentsCount() > 0 || trimmedNonEmpty(draftMessageText) || nowUploadingToEditingMessage()
     }
 
     @OnGuiCreated
@@ -494,7 +494,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun nowUploadingToEditingMessage(): Boolean {
-        val messageId = mDraftMessageId ?: return false
+        val messageId = draftMessageId ?: return false
 
         val current = uploadManager.current
         return current.nonEmpty() && current.get().destination.compareTo(messageId, UploadDestination.WITHOUT_OWNER, Method.PHOTO_TO_MESSAGE)
@@ -516,16 +516,16 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     @OnGuiCreated
     private fun resolveDraftMessageText() {
-        view?.displayDraftMessageText(mDraftMessageText)
+        view?.displayDraftMessageText(draftMessageText)
     }
 
     @OnGuiCreated
     private fun resolveToolbarTitle() {
-        view?.displayToolbarTitle(mPeer.title)
+        view?.displayToolbarTitle(peer.title)
     }
 
     fun fireRecordCancelClick() {
-        mAudioRecordWrapper.stopRecording()
+        audioRecordWrapper.stopRecording()
         onRecordingStateChanged()
         resolveRecordPauseButton()
     }
@@ -551,7 +551,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     fun fireRecordSendClick() {
         try {
-            val file = mAudioRecordWrapper.stopRecordingAndReceiveFile()
+            val file = audioRecordWrapper.stopRecordingAndReceiveFile()
             sendRecordingMessageImpl(file)
         } catch (e: AudioRecordException) {
             e.printStackTrace()
@@ -564,11 +564,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     fun fireRecordResumePauseClick() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
-                val isRecorderPaused = mAudioRecordWrapper.recorderStatus == Recorder.Status.PAUSED
+                val isRecorderPaused = audioRecordWrapper.recorderStatus == Recorder.Status.PAUSED
                 if (!isRecorderPaused) {
-                    mAudioRecordWrapper.pause()
+                    audioRecordWrapper.pause()
                 } else {
-                    mAudioRecordWrapper.doRecord()
+                    audioRecordWrapper.doRecord()
                 }
 
                 resolveRecordPauseButton()
@@ -588,8 +588,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     @OnGuiCreated
     private fun resolveRecordPauseButton() {
-        val paused = mAudioRecordWrapper.recorderStatus == Recorder.Status.PAUSED
-        val available = mAudioRecordWrapper.isPauseSupported
+        val paused = audioRecordWrapper.recorderStatus == Recorder.Status.PAUSED
+        val available = audioRecordWrapper.isPauseSupported
         view?.setupRecordPauseButton(available, !paused)
     }
 
@@ -601,7 +601,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private fun startRecordImpl() {
         try {
-            mAudioRecordWrapper.doRecord()
+            audioRecordWrapper.doRecord()
         } catch (e: AudioRecordException) {
             e.printStackTrace()
         }
@@ -620,16 +620,16 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private fun syncRecordingLookupState() {
         if (isRecordingNow) {
-            mRecordingLookup.start()
+            recordingLookup.start()
         } else {
-            mRecordingLookup.stop()
+            recordingLookup.stop()
         }
     }
 
     @OnGuiCreated
     private fun resolveRecordingTimeView() {
         if (isRecordingNow) {
-            view?.displayRecordingDuration(mAudioRecordWrapper.currentRecordDuration)
+            view?.displayRecordingDuration(audioRecordWrapper.currentRecordDuration)
         }
     }
 
@@ -670,12 +670,12 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun onRealtimeMessageReceived(message: Message) {
-        if (message.peerId != mPeer.id || messagesOwnerId != message.accountId) {
+        if (message.peerId != peer.id || messagesOwnerId != message.accountId) {
             return
         }
 
         if (message.isChatTitleUpdate) {
-            mPeer.title = message.actionText
+            peer.title = message.actionText
             resolveToolbarTitle()
         }
 
@@ -717,10 +717,10 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         conversation?.run {
             if (out) {
                 outRead = localId
-                lastReadId.out = localId
+                lastReadId.outgoing = localId
             } else {
                 inRead = localId
-                lastReadId.setIn(localId)
+                lastReadId.incoming = localId
             }
         }
 
@@ -824,17 +824,17 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     private fun displayUserTextingInToolbar() {
         val typingText = getString(R.string.user_type_message)
         view?.displayToolbarSubtitle(typingText)
-        mToolbarSubtitleHandler.restoreToolbarWithDelay()
+        toolbarSubtitleHandler.restoreToolbarWithDelay()
     }
 
     private fun updateSubtitle() {
-        mSubtitle = null
+        subtitle = null
 
         val peerType = Peer.getType(peerId)
 
         when (peerType) {
             Peer.CHAT, Peer.GROUP -> {
-                mSubtitle = null
+                subtitle = null
                 resolveToolbarSubtitle()
             }
 
@@ -843,7 +843,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                     .getLocalizedUserActivity(messagesOwnerId, Peer.toUserId(peerId))
                     .compose(RxUtils.applyMaybeIOToMainSchedulers())
                     .subscribe({ s ->
-                        mSubtitle = s
+                        subtitle = s
                         resolveToolbarSubtitle()
                     }, { Analytics.logUnexpectedError(it) }, { this.resolveToolbarSubtitle() }))
         }
@@ -851,7 +851,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     @OnGuiCreated
     private fun resolveToolbarSubtitle() {
-        view?.displayToolbarSubtitle(mSubtitle)
+        view?.displayToolbarSubtitle(subtitle)
     }
 
     private fun checkLongpoll() {
@@ -882,7 +882,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private fun calculateAttachmentsCount(): Int {
         var outConfigCount = 0
-        for (model in mOutConfig.models) {
+        for (model in outConfig.models) {
             if (model is FwdMessages) {
                 outConfigCount += model.fwds.size
             } else {
@@ -890,15 +890,15 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             }
         }
 
-        return outConfigCount + mDraftMessageDbAttachmentsCount
+        return outConfigCount + draftMessageDbAttachmentsCount
     }
 
     private fun onDraftMessageRestored(message: DraftMessage, ignoreBody: Boolean) {
-        mDraftMessageDbAttachmentsCount = message.attachmentsCount
-        mDraftMessageId = message.id
+        draftMessageDbAttachmentsCount = message.attachmentsCount
+        draftMessageId = message.id
 
         if (!ignoreBody) {
-            mDraftMessageText = message.body
+            draftMessageText = message.body
         }
 
         resolveAttachmentsCounter()
@@ -914,19 +914,19 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         resetDatabaseLoading()
         saveDraftMessageBody()
 
-        mToolbarSubtitleHandler.release()
+        toolbarSubtitleHandler.release()
 
-        mRecordingLookup.stop()
-        mRecordingLookup.setCallback(null)
+        recordingLookup.stop()
+        recordingLookup.setCallback(null)
 
-        mTextingNotifier.shutdown()
+        textingNotifier.shutdown()
         super.onDestroyed()
     }
 
     private fun saveDraftMessageBody() {
-       Stores.getInstance()
+        Stores.getInstance()
                 .messages()
-                .saveDraftMessageBody(messagesOwnerId, peerId, mDraftMessageText)
+                .saveDraftMessageBody(messagesOwnerId, peerId, draftMessageText)
                 .subscribeIOAndIgnoreResults()
     }
 
@@ -941,12 +941,12 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     private fun readAllUnreadMessagesIfExists() {
         val last = if (data.nonEmpty()) data[0] else return
 
-        if (!last.isOut && last.id > lastReadId.getIn()) {
-            lastReadId.setIn(last.id)
+        if (!last.isOut && last.id > lastReadId.incoming) {
+            lastReadId.incoming = last.id
 
             view?.notifyDataChanged()
 
-            appendDisposable(messagesInteractor.markAsRead(messagesOwnerId, mPeer.id, last.id)
+            appendDisposable(messagesInteractor.markAsRead(messagesOwnerId, peer.id, last.id)
                     .fromIOToMain()
                     .subscribe(dummy(), Consumer { t -> showError(view, t) }))
         }
@@ -963,7 +963,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     fun fireEditMessageResult(accompanyingModels: ModelsBundle) {
-        mOutConfig.models = accompanyingModels
+        outConfig.models = accompanyingModels
 
         resolveAttachmentsCounter()
         resolveSendButtonState()
@@ -1067,7 +1067,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     fun fireChatTitleClick() {
-        view?.showChatTitleChangeDialog(mPeer.title)
+        view?.showChatTitleChangeDialog(peer.title)
     }
 
     fun fireChatMembersClick() {
@@ -1079,7 +1079,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     fun fireSearchClick() {
-        view?.goToSearchMessage(accountId, mPeer) // TODO: 15.08.2017
+        view?.goToSearchMessage(accountId, peer) // TODO: 15.08.2017
     }
 
     fun fireImageUploadSizeSelected(streams: List<Uri>, size: Int) {
@@ -1102,22 +1102,22 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     @OnGuiCreated
     private fun resolveResumePeer() {
-        view?.notifyChatResume(accountId, peerId, mPeer.title, mPeer.avaUrl) // TODO: 15.08.2017
+        view?.notifyChatResume(accountId, peerId, peer.title, peer.avaUrl) // TODO: 15.08.2017
     }
 
     private fun uploadStreamsImpl(streams: List<Uri>, size: Int) {
-        mOutConfig.uploadFiles = null
+        outConfig.uploadFiles = null
 
         view?.resetUploadImages()
 
-        if (mDraftMessageId == null) {
-            mDraftMessageId = Stores.getInstance()
+        if (draftMessageId == null) {
+            draftMessageId = Stores.getInstance()
                     .messages()
-                    .saveDraftMessageBody(messagesOwnerId, peerId, mDraftMessageText)
+                    .saveDraftMessageBody(messagesOwnerId, peerId, draftMessageText)
                     .blockingGet()
         }
 
-        val destination = UploadDestination.forMessage(mDraftMessageId!!)
+        val destination = UploadDestination.forMessage(draftMessageId!!)
         val intents = ArrayList<UploadIntent>(streams.size)
 
         for (uri in streams) {
@@ -1131,13 +1131,13 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     fun fireUploadCancelClick() {
-        mOutConfig.uploadFiles = null
+        outConfig.uploadFiles = null
     }
 
     @OnGuiCreated
     private fun resolveInputImagesUploading() {
-        if (mOutConfig.uploadFiles.nonEmpty()) {
-            uploadStreams(mOutConfig.uploadFiles)
+        if (outConfig.uploadFiles.nonEmpty()) {
+            uploadStreams(outConfig.uploadFiles)
         }
     }
 
@@ -1150,7 +1150,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     fun fireForwardToHereClick(messages: ArrayList<Message>) {
-        mOutConfig.models.append(FwdMessages(messages))
+        outConfig.models.append(FwdMessages(messages))
 
         resolveAttachmentsCounter()
         resolveSendButtonState()
@@ -1237,22 +1237,22 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     override fun saveState(outState: Bundle) {
         super.saveState(outState)
-        outState.putParcelable(SAVE_PEER, mPeer)
-        outState.putString(SAVE_DRAFT_MESSAGE_TEXT, mDraftMessageText)
-        outState.putInt(SAVE_DRAFT_MESSAGE_ATTACHMENTS_COUNT, mDraftMessageDbAttachmentsCount)
-        outState.putParcelable(SAVE_CONFIG, mOutConfig)
+        outState.putParcelable(SAVE_PEER, peer)
+        outState.putString(SAVE_DRAFT_MESSAGE_TEXT, draftMessageText)
+        outState.putInt(SAVE_DRAFT_MESSAGE_ATTACHMENTS_COUNT, draftMessageDbAttachmentsCount)
+        outState.putParcelable(SAVE_CONFIG, outConfig)
 
-        mDraftMessageId?.run {
+        draftMessageId?.run {
             outState.putInt(SAVE_DRAFT_MESSAGE_ID, this)
         }
     }
 
     private fun restoreFromInstanceState(state: Bundle) {
-        mDraftMessageText = state.getString(SAVE_DRAFT_MESSAGE_TEXT)
-        mDraftMessageDbAttachmentsCount = state.getInt(SAVE_DRAFT_MESSAGE_ATTACHMENTS_COUNT)
+        draftMessageText = state.getString(SAVE_DRAFT_MESSAGE_TEXT)
+        draftMessageDbAttachmentsCount = state.getInt(SAVE_DRAFT_MESSAGE_ATTACHMENTS_COUNT)
 
         if (state.containsKey(SAVE_DRAFT_MESSAGE_ID)) {
-            mDraftMessageId = state.getInt(SAVE_DRAFT_MESSAGE_ID)
+            draftMessageId = state.getInt(SAVE_DRAFT_MESSAGE_ID)
         }
     }
 
@@ -1280,7 +1280,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         val oldMessageOwnerId = this.messagesOwnerId
         val oldPeerId = peerId
 
-        this.mPeer = Peer(newPeerId).setTitle(title)
+        this.peer = Peer(newPeerId).setTitle(title)
 
         if (isGuiResumed) {
             Processors.realtimeMessages().registerNotificationsInterceptor(id, Pair.create(messagesOwnerId, peerId))
@@ -1303,15 +1303,15 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         resolveOptionMenu()
         resolveResumePeer()
 
-        mTextingNotifier = TextingNotifier(messagesOwnerId)
+        textingNotifier = TextingNotifier(messagesOwnerId)
 
-        this.mDraftMessageId = null
-        this.mDraftMessageText = null
-        this.mDraftMessageDbAttachmentsCount = 0
+        this.draftMessageId = null
+        this.draftMessageText = null
+        this.draftMessageDbAttachmentsCount = 0
 
-        val needToRestoreDraftMessageBody = isEmpty(mOutConfig.initialText)
+        val needToRestoreDraftMessageBody = isEmpty(outConfig.initialText)
         if (!needToRestoreDraftMessageBody) {
-            this.mDraftMessageText = mOutConfig.initialText
+            this.draftMessageText = outConfig.initialText
         }
 
         tryToRestoreDraftMessage(!needToRestoreDraftMessageBody)

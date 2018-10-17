@@ -110,7 +110,7 @@ public class RelationshipInteractor implements IRelationshipInteractor {
                 .search(userId, q, UserColumns.API_FIELDS, null, offset, count)
                 .map(items -> {
                     List<User> users = Dto2Model.transformUsers(Utils.listEmptyIfNull(items.getItems()));
-                    return Pair.create(users, items.getCount());
+                    return Pair.Companion.create(users, items.getCount());
                 });
     }
 

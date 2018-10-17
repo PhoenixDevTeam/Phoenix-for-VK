@@ -27,7 +27,7 @@ interface IChatView : IBasicMessageListView, IErrorView {
     fun displayRecordingDuration(time: Long)
     fun doCloseAfterSend()
 
-    fun displayPinnedMessage(pinned: Optional<Message?>)
+    fun displayPinnedMessage(pinned: Message?)
 
     fun goToMessageAttachmentsEditor(accountId: Int, messageOwnerId: Int, destination: UploadDestination,
                                      body: String?, attachments: ModelsBundle?)

@@ -59,7 +59,7 @@ public class AttachmentsRepository implements IAttachmentsRepository {
                     for (int i = 0; i < models.size(); i++) {
                         final AbsModel model = models.get(i);
                         final int generatedId = ids[i];
-                        events.add(Pair.create(generatedId, model));
+                        events.add(Pair.Companion.create(generatedId, model));
                     }
 
                     AddEvent event = new AddEvent(accountId, attachToType, attachToDbid, events);
@@ -85,7 +85,7 @@ public class AttachmentsRepository implements IAttachmentsRepository {
 
                                 for (Pair<Integer, Entity> pair : pairs) {
                                     AbsModel model = Entity2Model.buildAttachmentFromDbo(pair.getSecond(), owners);
-                                    models.add(Pair.create(pair.getFirst(), model));
+                                    models.add(Pair.Companion.create(pair.getFirst(), model));
                                 }
 
                                 return models;

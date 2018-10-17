@@ -132,7 +132,7 @@ public class OwnersInteractor implements IOwnersInteractor {
         return cache.findUserDboById(accountId, userId)
                 .zipWith(getCachedDetails(accountId, userId), (userEntityOptional, userDetailsOptional) -> {
                     User user = userEntityOptional.isEmpty() ? null : Entity2Model.map(userEntityOptional.get());
-                    return Pair.create(user, userDetailsOptional.get());
+                    return Pair.Companion.create(user, userDetailsOptional.get());
                 });
     }
 
@@ -168,7 +168,7 @@ public class OwnersInteractor implements IOwnersInteractor {
                         .flatMap(dto -> {
                             Community community = Dto2Model.transformCommunity(dto);
                             CommunityDetails details = Dto2Model.transformCommunityDetails(dto);
-                            return Single.just(Pair.create(community, details));
+                            return Single.just(Pair.Companion.create(community, details));
                         });
         }
 

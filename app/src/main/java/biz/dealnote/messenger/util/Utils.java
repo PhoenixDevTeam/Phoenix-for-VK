@@ -78,7 +78,7 @@ public class Utils {
         for (int i = 0; i < data.size(); i++) {
             T t = data.get(i);
             if (predicate.test(t)) {
-                return Pair.create(i, t);
+                return Pair.Companion.create(i, t);
             }
         }
 
@@ -89,7 +89,7 @@ public class Utils {
         for (int i = 0; i < data.size(); i++) {
             T t = data.get(i);
             if (t.getId() == id) {
-                return Pair.create(i, t);
+                return Pair.Companion.create(i, t);
             }
         }
 

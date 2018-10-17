@@ -56,7 +56,7 @@ public class CommunitiesSearchPresenter extends AbsSearchPresenter<ICommunitiesS
         final IntNextFrom nextFrom = new IntNextFrom(offset + 50);
 
         return communitiesInteractor.search(accountId, criteria.getQuery(), type, countryId, cityId, future, sort, 50, offset)
-                .map(communities -> Pair.create(communities, nextFrom));
+                .map(communities -> Pair.Companion.create(communities, nextFrom));
     }
 
     private static String extractTypeFromCriteria(GroupSearchCriteria criteria) {

@@ -51,7 +51,7 @@ public class ChatAttachmentPhotoPresenter extends BaseChatAttachmentsPresenter<P
                         }
                     }
 
-                    return Pair.create(response.next_from, photos);
+                    return Pair.Companion.create(response.next_from, photos);
                 });
     }
 

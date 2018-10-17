@@ -181,7 +181,7 @@ class AttachmentsStorage extends AbsStorage implements IAttachmentsStorage {
                     final String json = cursor.getString(cursor.getColumnIndex(dataColumnFor(attachToType)));
                     final Entity entity = deserializeDbo(type, json);
 
-                    dbos.add(Pair.create(id, entity));
+                    dbos.add(Pair.Companion.create(id, entity));
                 }
 
                 cursor.close();
