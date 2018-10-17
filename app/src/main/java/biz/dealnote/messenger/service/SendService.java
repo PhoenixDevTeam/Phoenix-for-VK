@@ -1,13 +1,11 @@
 package biz.dealnote.messenger.service;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 import android.widget.Toast;
 
-import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.concurrent.Executors;
 
@@ -19,6 +17,7 @@ import biz.dealnote.messenger.model.SentMsg;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
+import biz.dealnote.messenger.util.WeakMainLooperHandler;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -30,7 +29,7 @@ public class SendService {
     private Collection<Integer> registeredAccounts;
     private final Context app;
 
-    SendService(Context context, ISettings.IAccountsSettings settings){
+    SendService(Context context, ISettings.IAccountsSettings settings) {
         this.app = context.getApplicationContext();
         this.registeredAccounts = settings.getRegistered();
         this.senderScheduler = Schedulers.from(Executors.newFixedThreadPool(1));
@@ -44,43 +43,37 @@ public class SendService {
         this.messagesInteractor = messagesInteractor;
     }
 
-    private void onAccountsChanged(ISettings.IAccountsSettings settings){
+    private void onAccountsChanged(ISettings.IAccountsSettings settings) {
         registeredAccounts = settings.getRegistered();
     }
 
-    private final InternalHandler handler = new InternalHandler(Looper.getMainLooper(), this);
+    private final InternalHandler handler = new InternalHandler(this);
 
-    private static final class InternalHandler extends Handler {
-
-        final WeakReference<SendService> reference;
-
-        InternalHandler(Looper looper, SendService service) {
-            super(looper);
-            this.reference = new WeakReference<>(service);
-        }
+    private static final class InternalHandler extends WeakMainLooperHandler<SendService> {
 
         static final int SEND = 1;
 
-        void runSend(){
+        InternalHandler(SendService service) {
+            super(service);
+        }
+
+        void runSend() {
             sendEmptyMessage(SEND);
         }
 
         @Override
-        public void handleMessage(Message msg) {
-            SendService service = reference.get();
-            if(service != null){
-                switch (msg.what){
-                    case SEND:
-                        service.send();
-                        break;
-                }
+        public void handleMessage(@NonNull SendService service, @NonNull Message msg) {
+            switch (msg.what) {
+                case SEND:
+                    service.send();
+                    break;
             }
         }
     }
 
     private boolean nowSending;
 
-    public void runSendingQueue(){
+    public void runSendingQueue() {
         handler.runSend();
     }
 
@@ -99,17 +92,17 @@ public class SendService {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private void onMessageSent(SentMsg msg){
+    private void onMessageSent(SentMsg msg) {
         nowSending = false;
         NotificationHelper.tryCancelNotificationForPeer(app, msg.getAccountId(), msg.getPeerId());
         send();
     }
 
-    private void onMessageSendError(Throwable t){
+    private void onMessageSendError(Throwable t) {
         Throwable cause = Utils.getCauseIfRuntime(t);
         nowSending = false;
 
-        if(cause instanceof NotFoundException){
+        if (cause instanceof NotFoundException) {
             // no unsent messages
             return;
         }
@@ -118,7 +111,7 @@ public class SendService {
     }
 
     private void sendMessage(Collection<Integer> accountIds) {
-        if(messagesInteractor == null){
+        if (messagesInteractor == null) {
             throw new IllegalStateException("'messagesInteractor' was not initialized");
         }
 

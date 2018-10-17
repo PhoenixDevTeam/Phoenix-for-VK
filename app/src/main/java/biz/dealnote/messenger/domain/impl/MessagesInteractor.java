@@ -111,6 +111,7 @@ public class MessagesInteractor implements IMessagesInteractor {
 
                 return dbos;
             });
+
     private final IOwnersInteractor ownersInteractor;
     private final IStorages storages;
     private final INetworker networker;

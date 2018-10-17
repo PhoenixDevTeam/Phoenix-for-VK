@@ -76,9 +76,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private val cacheLoadingDisposable = CompositeDisposable()
 
-    private val lastMessageIdInList: Int?
-        get() = if (data.size > 0) data[data.size - 1].id else null
-
     private var conversation: Conversation? = null
 
     private var isLoadingFromDbNow: Boolean = false
@@ -366,11 +363,14 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun requestMore() {
-        requestFromNet(lastMessageIdInList)
+        val lastId = if (data.size > 0) data[data.size - 1].id else null
+        requestFromNet(lastId)
     }
 
     private fun onMessagesRestoredSuccessfully(id: Int) {
-        findById(id)?.run {
+        data.find {
+            it.id == id
+        }?.run {
             isDeleted = false
             view?.notifyDataChanged()
         }
