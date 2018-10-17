@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.support.v4.content.ContextCompat
 import biz.dealnote.messenger.*
 import biz.dealnote.messenger.crypt.AesKeyPair
@@ -1264,15 +1265,16 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         resolveOptionMenu()
         resolveResumePeer()
 
+        textingNotifier.shutdown()
         textingNotifier = TextingNotifier(messagesOwnerId)
 
-        this.draftMessageId = null
-        this.draftMessageText = null
-        this.draftMessageDbAttachmentsCount = 0
+        draftMessageId = null
+        draftMessageText = null
+        draftMessageDbAttachmentsCount = 0
 
-        val needToRestoreDraftMessageBody = isEmpty(outConfig.initialText)
+        val needToRestoreDraftMessageBody = outConfig.initialText.isNullOrEmpty()
         if (!needToRestoreDraftMessageBody) {
-            this.draftMessageText = outConfig.initialText
+            draftMessageText = outConfig.initialText
         }
 
         tryToRestoreDraftMessage(!needToRestoreDraftMessageBody)
@@ -1294,28 +1296,28 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         fireSendClick()
     }
 
-    private class ToolbarSubtitleHandler internal constructor(prensenter: ChatPrensenter) : Handler() {
+    private class ToolbarSubtitleHandler internal constructor(prensenter: ChatPrensenter) : Handler(Looper.getMainLooper()) {
 
-        private var mReference: WeakReference<ChatPrensenter> = WeakReference(prensenter)
+        var reference: WeakReference<ChatPrensenter> = WeakReference(prensenter)
 
         override fun handleMessage(msg: android.os.Message) {
-            mReference.get()?.run {
+            reference.get()?.run {
                 when (msg.what) {
                     RESTORE_TOLLBAR -> resolveToolbarSubtitle()
                 }
             }
         }
 
-        internal fun release() {
+        fun release() {
             removeMessages(RESTORE_TOLLBAR)
         }
 
-        internal fun restoreToolbarWithDelay() {
-            sendMessageDelayed(android.os.Message.obtain(this, RESTORE_TOLLBAR), 3000)
+        fun restoreToolbarWithDelay() {
+            sendEmptyMessageDelayed(RESTORE_TOLLBAR, 3000)
         }
 
         companion object {
-            private const val RESTORE_TOLLBAR = 12
+            const val RESTORE_TOLLBAR = 12
         }
     }
 

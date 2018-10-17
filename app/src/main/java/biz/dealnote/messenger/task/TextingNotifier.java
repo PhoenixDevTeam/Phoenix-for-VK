@@ -6,13 +6,14 @@ import biz.dealnote.messenger.api.Apis;
 import biz.dealnote.messenger.util.RxUtils;
 import io.reactivex.Completable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
 
 public class TextingNotifier {
 
     private int accountId;
     private long lastNotifyTime;
     private boolean isRequestNow;
-    private Disposable disposable;
+    private Disposable disposable = Disposables.disposed();
 
     public TextingNotifier(int accountId) {
         this.accountId = accountId;
@@ -41,13 +42,7 @@ public class TextingNotifier {
     }
 
     public void shutdown(){
-        if(disposable != null){
-            if(!disposable.isDisposed()){
-                disposable.dispose();
-            }
-
-            disposable = null;
-        }
+        disposable.dispose();
     }
 
     private boolean canNotifyNow() {
