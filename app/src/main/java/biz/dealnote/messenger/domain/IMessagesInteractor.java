@@ -29,7 +29,7 @@ public interface IMessagesInteractor {
 
     Flowable<Conversation> getConversation(int accountId, int peerId, @NonNull Mode mode);
 
-    Completable edit(int accountId, @NonNull Message message, String body, @NonNull List<AbsModel> attachments, boolean keepForwardMessages);
+    Single<Message> edit(int accountId, @NonNull Message message, String body, @NonNull List<AbsModel> attachments, boolean keepForwardMessages);
 
     /**
      * Получить все закэшированные сообщения в локальной БД

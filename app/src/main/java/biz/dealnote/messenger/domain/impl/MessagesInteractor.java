@@ -54,6 +54,7 @@ import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.domain.mappers.Entity2Dto;
 import biz.dealnote.messenger.domain.mappers.Entity2Model;
+import biz.dealnote.messenger.domain.mappers.MapUtil;
 import biz.dealnote.messenger.domain.mappers.Model2Dto;
 import biz.dealnote.messenger.domain.mappers.Model2Entity;
 import biz.dealnote.messenger.exception.NotFoundException;
@@ -230,11 +231,12 @@ public class MessagesInteractor implements IMessagesInteractor {
     }
 
     @Override
-    public Completable edit(int accountId, @NonNull Message message, String body, @NonNull List<AbsModel> attachments, boolean keepForwardMessages) {
+    public Single<Message> edit(int accountId, @NonNull Message message, String body, @NonNull List<AbsModel> attachments, boolean keepForwardMessages) {
         List<IAttachmentToken> attachmentTokens = Model2Dto.createTokens(attachments);
         return networker.vkDefault(accountId)
                 .messages()
-                .edit(message.getPeerId(), message.getId(), body, attachmentTokens, keepForwardMessages, null);
+                .edit(message.getPeerId(), message.getId(), body, attachmentTokens, keepForwardMessages, null)
+                .andThen(getById(accountId, message.getId()));
     }
 
     @Override
@@ -291,6 +293,20 @@ public class MessagesInteractor implements IMessagesInteractor {
 
                                 return Single.just(dialogs);
                             });
+                });
+    }
+
+    private Single<Message> getById(int accountId, int messageId){
+        return networker.vkDefault(accountId)
+                .messages()
+                .getById(Collections.singletonList(messageId))
+                .map(dtos -> MapUtil.mapAll(dtos, Dto2Entity::buildMessageDbo))
+                .compose(entities2Models(accountId))
+                .flatMap(messages -> {
+                    if(messages.isEmpty()){
+                        return Single.error(new NotFoundException());
+                    }
+                    return Single.just(messages.get(0));
                 });
     }
 

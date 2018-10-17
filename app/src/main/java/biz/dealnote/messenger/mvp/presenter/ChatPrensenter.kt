@@ -45,6 +45,7 @@ import io.reactivex.functions.Predicate
 import java.io.File
 import java.lang.ref.WeakReference
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by ruslan.kolbasa on 05.10.2016.
@@ -476,6 +477,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     fun fireDraftMessageTextEdited(s: String) {
+        edited?.run {
+            message.body = s
+            return
+        }
+
         val oldState = canSendNormalMessage()
         draftMessageText = s
         val newState = canSendNormalMessage()
@@ -627,9 +633,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             view?.displayDraftMessageAttachmentsCount(calculateAttachmentsCount())
         }
     }
-
-    private val isEditingNow: Boolean
-        get() = edited != null
 
     @OnGuiCreated
     private fun resolveDraftMessageText() {
@@ -1454,7 +1457,44 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     fun fireEditMessageSaveClick() {
+        edited?.run {
+            val models = ArrayList<AbsModel>()
+            var keepForward = false
 
+            for(entry in attachments){
+                when(entry.attachment){
+                    is FwdMessages -> keepForward = true
+                    is Upload -> {
+                        view?.showError(R.string.upload_not_resolved_exception_message)
+                        return
+                    }
+                    else -> models.add(entry.attachment)
+                }
+            }
+
+            appendDisposable(messagesInteractor.edit(accountId, message, message.body, models, keepForward)
+                    .fromIOToMain()
+                    .subscribe({ onMessageEdited(it) }, { t -> onMessageEditFail(t)}))
+        }
+    }
+
+    private fun onMessageEditFail(throwable: Throwable){
+        showError(view, throwable)
+    }
+
+    private fun onMessageEdited(message: Message){
+        edited = null
+        resolveAttachmentsCounter()
+        resolveDraftMessageText()
+
+        val index = data.indexOfFirst {
+            it.id == message.id
+        }
+
+        if(index != -1){
+            data[index] = message
+            view?.notifyDataChanged()
+        }
     }
 
     fun fireEditAttachmentRemoved(entry: AttachmenEntry) {

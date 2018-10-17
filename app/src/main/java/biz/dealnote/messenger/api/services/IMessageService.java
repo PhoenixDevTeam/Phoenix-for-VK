@@ -32,7 +32,7 @@ public interface IMessageService {
     Single<BaseResponse<Integer>> editMessage(@Field("peer_id") int peedId,
                                               @Field("message_id") int messageId,
                                               @Field("message") String message,
-                                              @Field("attchment") String attachment,
+                                              @Field("attachment") String attachment,
                                               @Field("keep_forward_messages") Integer keepForwardMessages,
                                               @Field("keep_snippets") Integer keepSnippets);
 
