@@ -274,8 +274,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     private fun onNetDataReceived(messages: List<Message>, startMessageId: Int?) {
         resetDatabaseLoading()
 
-        this.isLoadingFromDbNow = false
-        this.endOfContent = messages.isEmpty()
+        isLoadingFromDbNow = false
+        endOfContent = messages.isEmpty()
 
         setNetLoadingNow(false)
         onAllDataLoaded(messages, startMessageId != null)
@@ -1294,6 +1294,10 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     fun fireSendClickFromAttachmens() {
         fireSendClick()
+    }
+
+    fun fireActionModeEditClick() {
+
     }
 
     private class ToolbarSubtitleHandler internal constructor(prensenter: ChatPrensenter) : Handler(Looper.getMainLooper()) {

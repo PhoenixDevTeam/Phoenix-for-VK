@@ -10,19 +10,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
+            android:animateLayoutChanges="true"
+            android:id="@+id/toolbarRootView"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:clipToPadding="true"
-            app:popupTheme="?toolbarPopupStyle"
-            app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
-            app:theme="?toolbarAppStyle"
-            app:titleTextAppearance="@style/Theme.Title.Toolbar" />
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:clipToPadding="true"
+                app:popupTheme="?toolbarPopupStyle"
+                app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
+                app:theme="?toolbarAppStyle"
+                app:titleTextAppearance="@style/Theme.Title.Toolbar" />
+
+        </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="gone"
             android:background="?attr/colorPrimaryDark"
             android:id="@+id/pinned_root_view"
             android:layout_width="match_parent"

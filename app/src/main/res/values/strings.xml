@@ -1200,5 +1200,6 @@
     <string name="upload_new_photo">Change profile avatar</string>
     <string name="button_show">Show</string>
     <string name="avatar_was_changed_successfully">Your avatar was changed successfully!</string>
+    <string name="close">Close</string>
 
 </resources>

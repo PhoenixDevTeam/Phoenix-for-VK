@@ -20,7 +20,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,7 +120,6 @@ import biz.dealnote.messenger.util.Action;
 import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Logger;
-import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Pair;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.StatusbarUtil;
@@ -171,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     };
 
     protected int mLayoutRes = R.layout.activity_main;
-    private ActionMode mActionMode;
     private boolean mDestroyed;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -205,10 +202,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             @Override
             public void onDrawerStateChanged(int newState) {
                 if (newState != DrawerLayout.STATE_IDLE || mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    if (Objects.nonNull(mActionMode)) {
-                        mActionMode.finish();
-                    }
-
                     keyboardHide();
                 }
             }
@@ -447,25 +440,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
         mToolbar = toolbar;
         resolveToolbarNavigationIcon();
-    }
-
-    @Override
-    public void onSupportActionModeStarted(@NonNull ActionMode mode) {
-        super.onSupportActionModeStarted(mode);
-        mActionMode = mode;
-
-        if (Utils.hasLollipop()) {
-            getWindow().setStatusBarColor(CurrentTheme.getColorPrimaryDark(this));
-        }
-    }
-
-    @Override
-    public void onSupportActionModeFinished(@NonNull ActionMode mode) {
-        super.onSupportActionModeFinished(mode);
-        mActionMode = null;
-        if (Utils.hasLollipop()) {
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
     }
 
     private void openChat(int accountId, int messagesOwnerId, @NonNull Peer peer) {

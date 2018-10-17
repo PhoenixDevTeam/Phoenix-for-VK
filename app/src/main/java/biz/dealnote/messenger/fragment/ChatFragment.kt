@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.support.annotation.AttrRes
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.view.ActionMode
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.InputType
@@ -62,24 +61,24 @@ import java.util.*
  */
 class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChatView, InputViewController.OnInputActionCallback, BackPressCallback, MessagesAdapter.OnMessageActionListener, InputViewController.RecordActionsCallback, AttachmentsViewBinder.VoiceActionListener, StickersGridView.OnStickerClickedListener, EmojiconTextView.OnHashTagClickListener {
 
-    private var mHeaderView: View? = null
-    private var mLoadMoreFooterHelper: LoadMoreFooterHelper? = null
+    private var headerView: View? = null
+    private var loadMoreFooterHelper: LoadMoreFooterHelper? = null
 
-    private var mRecyclerView: RecyclerView? = null
-    private var mAdapter: MessagesAdapter? = null
+    private var recyclerView: RecyclerView? = null
+    private var adapter: MessagesAdapter? = null
 
-    private var mInputViewController: InputViewController? = null
-    private var mEmptyText: TextView? = null
+    private var inputViewController: InputViewController? = null
+    private var emptyText: TextView? = null
 
-    private var mPinnedView: View? = null
-    private var mPinnedAvatar: ImageView? = null
-    private var mPinnedTitle: TextView? = null
-    private var mPinnedSubtitle: TextView? = null
+    private var pinnedView: View? = null
+    private var pinnedAvatar: ImageView? = null
+    private var pinnedTitle: TextView? = null
+    private var pinnedSubtitle: TextView? = null
 
-    private var mActionMode: ActionMode? = null
-    private val mActionModeCallback = ActionModeCallback(this)
+    private val optionMenuSettings = SparseBooleanArray()
 
-    private val mOptionMenuSettings = SparseBooleanArray()
+    private var toolbarRootView: ViewGroup? = null
+    private var actionModeHolder: ActionModeHolder? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,10 +91,11 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
         (requireActivity() as AppCompatActivity).setSupportActionBar(root.findViewById(R.id.toolbar))
 
-        mEmptyText = root.findViewById(R.id.fragment_chat_empty_text)
+        emptyText = root.findViewById(R.id.fragment_chat_empty_text)
+        toolbarRootView = root.findViewById(R.id.toolbarRootView)
 
-        mRecyclerView = root.findViewById(R.id.fragment_friend_dialog_list)
-        mRecyclerView?.run {
+        recyclerView = root.findViewById(R.id.fragment_friend_dialog_list)
+        recyclerView?.run {
             layoutManager = createLayoutManager()
             itemAnimator.changeDuration = 0
             itemAnimator.addDuration = 0
@@ -104,24 +104,76 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             addOnScrollListener(PicassoPauseOnScrollListener(Constants.PICASSO_TAG))
         }
 
-        mHeaderView = inflater.inflate(R.layout.footer_load_more, mRecyclerView, false)
+        headerView = inflater.inflate(R.layout.footer_load_more, recyclerView, false)
 
-        mLoadMoreFooterHelper = LoadMoreFooterHelper.createFrom(mHeaderView) {
+        loadMoreFooterHelper = LoadMoreFooterHelper.createFrom(headerView) {
             presenter?.fireLoadUpButtonClick()
         }
 
-        mInputViewController = InputViewController(requireActivity(), root, true, this)
+        inputViewController = InputViewController(requireActivity(), root, true, this)
                 .also {
                     it.setSendOnEnter(Settings.get().main().isSendByEnter)
                     it.setRecordActionsCallback(this)
                     it.setOnSickerClickListener(this)
                 }
 
-        mPinnedView = root.findViewById(R.id.pinned_root_view)
-        mPinnedAvatar = mPinnedView?.findViewById(R.id.pinned_avatar)
-        mPinnedTitle = mPinnedView?.findViewById(R.id.pinned_title)
-        mPinnedSubtitle = mPinnedView?.findViewById(R.id.pinned_subtitle)
+        pinnedView = root.findViewById(R.id.pinned_root_view)
+        pinnedAvatar = pinnedView?.findViewById(R.id.pinned_avatar)
+        pinnedTitle = pinnedView?.findViewById(R.id.pinned_title)
+        pinnedSubtitle = pinnedView?.findViewById(R.id.pinned_subtitle)
         return root
+    }
+
+    private class ActionModeHolder(val rootView: View, fragment: ChatFragment): View.OnClickListener {
+
+        override fun onClick(v: View) {
+            when(v.id){
+                R.id.buttonClose -> hide()
+                R.id.buttonEdit -> {
+                    reference.get()?.presenter?.fireActionModeEditClick()
+                    hide()
+                }
+                R.id.buttonForward -> {
+                    reference.get()?.presenter?.onActionModeForwardClick()
+                    hide()
+                }
+                R.id.buttonCopy -> {
+                    reference.get()?.presenter?.fireActionModeCopyClick()
+                    hide()
+                }
+                R.id.buttonDelete -> {
+                    reference.get()?.presenter?.fireActionModeDeleteClick()
+                    hide()
+                }
+            }
+        }
+
+        val reference = WeakReference(fragment)
+        val buttonClose: View = rootView.findViewById(R.id.buttonClose)
+        val buttonEdit: View = rootView.findViewById(R.id.buttonEdit)
+        val buttonForward: View = rootView.findViewById(R.id.buttonForward)
+        val buttonCopy: View = rootView.findViewById(R.id.buttonCopy)
+        val buttonDelete: View = rootView.findViewById(R.id.buttonDelete)
+        val titleView: TextView = rootView.findViewById(R.id.actionModeTitle)
+
+        init {
+            buttonClose.setOnClickListener(this)
+            buttonEdit.setOnClickListener(this)
+            buttonForward.setOnClickListener(this)
+            buttonCopy.setOnClickListener(this)
+            buttonDelete.setOnClickListener(this)
+        }
+
+        fun show(){
+            rootView.visibility = View.VISIBLE
+        }
+
+        fun isVisible(): Boolean = rootView.visibility == View.VISIBLE
+
+        fun hide(){
+            rootView.visibility = View.GONE
+            reference.get()?.presenter?.fireActionModeDestroy()
+        }
     }
 
     override fun onRecordCancel() {
@@ -150,25 +202,25 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     override fun displayMessages(messages: List<Message>, lastReadId: LastReadId) {
-        mAdapter = MessagesAdapter(activity, messages, lastReadId, this)
+        adapter = MessagesAdapter(activity, messages, lastReadId, this)
                 .also {
                     it.setOnMessageActionListener(this)
                     it.setVoiceActionListener(this)
-                    it.addFooter(mHeaderView)
+                    it.addFooter(headerView)
                     it.setOnHashTagClickListener(this)
                 }
 
-        mRecyclerView?.adapter = mAdapter
+        recyclerView?.adapter = adapter
     }
 
     override fun notifyMessagesUpAdded(position: Int, count: Int) {
-        mAdapter?.run {
+        adapter?.run {
             notifyItemRangeChanged(position + headersCount, count) //+header if exist
         }
     }
 
     override fun notifyDataChanged() {
-        mAdapter?.notifyDataSetChanged()
+        adapter?.notifyDataSetChanged()
     }
 
     override fun notifyMessagesDownAdded(count: Int) {
@@ -176,15 +228,15 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     override fun configNowVoiceMessagePlaying(voiceId: Int, progress: Float, paused: Boolean, amin: Boolean) {
-        mAdapter?.configNowVoiceMessagePlaying(voiceId, progress, paused, amin)
+        adapter?.configNowVoiceMessagePlaying(voiceId, progress, paused, amin)
     }
 
     override fun bindVoiceHolderById(holderId: Int, play: Boolean, paused: Boolean, progress: Float, amin: Boolean) {
-        mAdapter?.bindVoiceHolderById(holderId, play, paused, progress, amin)
+        adapter?.bindVoiceHolderById(holderId, play, paused, progress, amin)
     }
 
     override fun disableVoicePlaying() {
-        mAdapter?.disableVoiceMessagePlaying()
+        adapter?.disableVoiceMessagePlaying()
     }
 
     override fun getPresenterFactory(saveInstanceState: Bundle?): IPresenterFactory<ChatPrensenter> = object : IPresenterFactory<ChatPrensenter> {
@@ -216,19 +268,19 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     override fun setupLoadUpHeaderState(@LoadMoreState state: Int) {
-        mLoadMoreFooterHelper?.switchToState(state)
+        loadMoreFooterHelper?.switchToState(state)
     }
 
     override fun displayDraftMessageAttachmentsCount(count: Int) {
-        mInputViewController?.setAttachmentsCount(count)
+        inputViewController?.setAttachmentsCount(count)
     }
 
     override fun displayDraftMessageText(text: String?) {
-        mInputViewController?.setTextQuietly(text)
+        inputViewController?.setTextQuietly(text)
     }
 
     override fun setupSendButton(canSendNormalMessage: Boolean, canSendVoiceMessage: Boolean) {
-        mInputViewController?.setup(canSendNormalMessage, canSendVoiceMessage)
+        inputViewController?.setup(canSendNormalMessage, canSendVoiceMessage)
     }
 
     override fun displayToolbarTitle(text: String?) {
@@ -240,7 +292,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     override fun setRecordModeActive(active: Boolean) {
-        mInputViewController?.swithModeTo(if (active) InputViewController.Mode.VOICE_RECORD else InputViewController.Mode.NORMAL)
+        inputViewController?.swithModeTo(if (active) InputViewController.Mode.VOICE_RECORD else InputViewController.Mode.NORMAL)
     }
 
     override fun requestRecordPermissions() {
@@ -249,7 +301,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     override fun displayRecordingDuration(time: Long) {
-        mInputViewController?.setRecordingDuration(time)
+        inputViewController?.setRecordingDuration(time)
     }
 
     override fun doCloseAfterSend() {
@@ -258,19 +310,18 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         } catch (ignored: Exception) {
 
         }
-
     }
 
     override fun displayPinnedMessage(pinned: Message?) {
-        mPinnedView?.run {
+        pinnedView?.run {
             visibility = if (pinned == null) View.GONE else View.VISIBLE
 
             pinned?.run {
-                ViewUtils.displayAvatar(mPinnedAvatar!!, CurrentTheme.createTransformationForAvatar(requireContext()),
+                ViewUtils.displayAvatar(pinnedAvatar!!, CurrentTheme.createTransformationForAvatar(requireContext()),
                         sender.get100photoOrSmaller(), null)
 
-                mPinnedTitle?.text = this.sender.fullName
-                mPinnedSubtitle?.text = this.body
+                pinnedTitle?.text = this.sender.fullName
+                pinnedSubtitle?.text = this.body
             }
         }
     }
@@ -291,55 +342,22 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         presenter?.fireHashtagClick(hashTag)
     }
 
-    private class ActionModeCallback internal constructor(fragment: ChatFragment) : ActionMode.Callback {
-
-        var fragmentWeakReference: WeakReference<ChatFragment> = WeakReference(fragment)
-
-        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-            return false
-        }
-
-        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-            val fragment = fragmentWeakReference.get() ?: return true
-
-            when (item.itemId) {
-                R.id.delete -> fragment.presenter?.fireActionModeDeleteClick()
-                R.id.copy -> fragment.presenter?.fireActionModeCopyClick()
-                R.id.forward -> fragment.presenter?.fireForwardClick()
-            }
-
-            mode.finish()
-            return true
-        }
-
-        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-            val inflater = mode.menuInflater
-            inflater.inflate(R.menu.messages_menu, menu)
-            return true
-        }
-
-        override fun onDestroyActionMode(mode: ActionMode) {
-            fragmentWeakReference.get()?.run {
-                presenter?.fireActionModeDestroy()
-                mActionMode = null
+    override fun showActionMode(title: String, canEdit: Boolean) {
+        toolbarRootView?.run {
+            if(childCount == 1){
+                val v = LayoutInflater.from(context).inflate(R.layout.view_actionmode, this, false)
+                actionModeHolder = ActionModeHolder(v, this@ChatFragment)
+                addView(v)
             }
         }
-    }
 
-    override fun showActionMode(title: String) {
-        if (mActionMode == null) {
-            mActionMode = (requireActivity() as AppCompatActivity).startSupportActionMode(mActionModeCallback)
-        }
-
-        mActionMode?.run {
-            this.title = title
-            invalidate()
-        }
+        actionModeHolder?.show()
+        actionModeHolder?.titleView?.text = title
+        actionModeHolder?.buttonEdit?.visibility = if(canEdit) View.VISIBLE else View.GONE
     }
 
     override fun finishActionMode() {
-        mActionMode?.finish()
-        mActionMode = null
+        actionModeHolder?.rootView?.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -380,20 +398,20 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     override fun notifyItemRemoved(position: Int) {
-        mAdapter?.run {
+        adapter?.run {
             notifyItemRemoved(position + headersCount) // +headers count
         }
     }
 
     override fun configOptionMenu(canLeaveChat: Boolean, canChangeTitle: Boolean, canShowMembers: Boolean,
                                   encryptionStatusVisible: Boolean, encryprionEnabled: Boolean, encryptionPlusEnabled: Boolean, keyExchangeVisible: Boolean) {
-        mOptionMenuSettings.put(LEAVE_CHAT_VISIBLE, canLeaveChat)
-        mOptionMenuSettings.put(CHANGE_CHAT_TITLE_VISIBLE, canChangeTitle)
-        mOptionMenuSettings.put(CHAT_MEMBERS_VISIBLE, canShowMembers)
-        mOptionMenuSettings.put(ENCRYPTION_STATUS_VISIBLE, encryptionStatusVisible)
-        mOptionMenuSettings.put(ENCRYPTION_ENABLED, encryprionEnabled)
-        mOptionMenuSettings.put(ENCRYPTION_PLUS_ENABLED, encryptionPlusEnabled)
-        mOptionMenuSettings.put(KEY_EXCHANGE_VISIBLE, keyExchangeVisible)
+        optionMenuSettings.put(LEAVE_CHAT_VISIBLE, canLeaveChat)
+        optionMenuSettings.put(CHANGE_CHAT_TITLE_VISIBLE, canChangeTitle)
+        optionMenuSettings.put(CHAT_MEMBERS_VISIBLE, canShowMembers)
+        optionMenuSettings.put(ENCRYPTION_STATUS_VISIBLE, encryptionStatusVisible)
+        optionMenuSettings.put(ENCRYPTION_ENABLED, encryprionEnabled)
+        optionMenuSettings.put(ENCRYPTION_PLUS_ENABLED, encryptionPlusEnabled)
+        optionMenuSettings.put(KEY_EXCHANGE_VISIBLE, keyExchangeVisible)
 
         try {
             requireActivity().invalidateOptionsMenu()
@@ -479,11 +497,11 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     override fun setEmptyTextVisible(visible: Boolean) {
-        mEmptyText?.visibility = if (visible) View.VISIBLE else View.GONE
+        emptyText?.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     override fun setupRecordPauseButton(available: Boolean, isPlaying: Boolean) {
-        mInputViewController?.setupRecordPauseButton(available, isPlaying)
+        inputViewController?.setupRecordPauseButton(available, isPlaying)
     }
 
     override fun displayIniciateKeyExchangeQuestion(@KeyLocationPolicy keyStoragePolicy: Int) {
@@ -539,13 +557,13 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
 
-        menu.findItem(R.id.action_leave_chat).isVisible = mOptionMenuSettings.get(LEAVE_CHAT_VISIBLE, false)
-        menu.findItem(R.id.action_change_chat_title).isVisible = mOptionMenuSettings.get(CHANGE_CHAT_TITLE_VISIBLE, false)
-        menu.findItem(R.id.action_chat_members).isVisible = mOptionMenuSettings.get(CHAT_MEMBERS_VISIBLE, false)
-        menu.findItem(R.id.action_key_exchange).isVisible = mOptionMenuSettings.get(KEY_EXCHANGE_VISIBLE, false)
+        menu.findItem(R.id.action_leave_chat).isVisible = optionMenuSettings.get(LEAVE_CHAT_VISIBLE, false)
+        menu.findItem(R.id.action_change_chat_title).isVisible = optionMenuSettings.get(CHANGE_CHAT_TITLE_VISIBLE, false)
+        menu.findItem(R.id.action_chat_members).isVisible = optionMenuSettings.get(CHAT_MEMBERS_VISIBLE, false)
+        menu.findItem(R.id.action_key_exchange).isVisible = optionMenuSettings.get(KEY_EXCHANGE_VISIBLE, false)
 
         val encryptionStatusItem = menu.findItem(R.id.crypt_state)
-        val encryptionStatusVisible = mOptionMenuSettings.get(ENCRYPTION_STATUS_VISIBLE, false)
+        val encryptionStatusVisible = optionMenuSettings.get(ENCRYPTION_STATUS_VISIBLE, false)
 
         encryptionStatusItem.isVisible = encryptionStatusVisible
 
@@ -553,8 +571,8 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             @AttrRes
             var attrRes = R.attr.toolbarUnlockIcon
 
-            if (mOptionMenuSettings.get(ENCRYPTION_ENABLED, false)) {
-                attrRes = if (mOptionMenuSettings.get(ENCRYPTION_PLUS_ENABLED, false)) {
+            if (optionMenuSettings.get(ENCRYPTION_ENABLED, false)) {
+                attrRes = if (optionMenuSettings.get(ENCRYPTION_PLUS_ENABLED, false)) {
                     R.attr.toolbarLockPlusIcon
                 } else {
                     R.attr.toolbarLockIcon
@@ -571,8 +589,8 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.action_refresh -> {
                 presenter?.fireRefreshClick()
                 return true
@@ -619,15 +637,24 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     override fun onBackPressed(): Boolean {
-        return mInputViewController == null || mInputViewController!!.onBackPressed()
+        if(actionModeHolder?.isVisible() == true){
+            actionModeHolder?.hide()
+            return false
+        }
+
+        return inputViewController == null || inputViewController!!.onBackPressed()
     }
 
     fun reInit(newAccountId: Int, newMessagesOwnerId: Int, newPeerId: Int, title: String) {
         presenter?.reInitWithNewPeer(newAccountId, newMessagesOwnerId, newPeerId, title)
     }
 
+    private fun isActionModeVisible(): Boolean {
+        return actionModeHolder?.rootView?.visibility == View.VISIBLE
+    }
+
     override fun onAvatarClick(message: Message, userId: Int) {
-        if (mActionMode != null) {
+        if (isActionModeVisible()) {
             presenter?.fireMessageClick(message)
         } else {
             presenter?.fireOwnerClick(userId)
@@ -649,8 +676,8 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mInputViewController?.destroyView()
-        mInputViewController = null
+        inputViewController?.destroyView()
+        inputViewController = null
     }
 
     companion object {

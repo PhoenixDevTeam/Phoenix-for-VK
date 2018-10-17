@@ -201,7 +201,7 @@ public class MessagesLookFragment extends PlaceSupportMvpFragment<MessagesLookPr
     }
 
     @Override
-    public void showActionMode(String title) {
+    public void showActionMode(String title, Boolean canEdit) {
         if (Objects.isNull(mActionMode)) {
             mActionMode = ((AppCompatActivity) requireActivity()).startSupportActionMode(mActionModeCallback);
         }
