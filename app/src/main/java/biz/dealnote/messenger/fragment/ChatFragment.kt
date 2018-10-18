@@ -497,7 +497,6 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
     private fun hideEditAttachmentsDialog() {
         editAttachmentsDialog?.dismiss()
-        editAttachmentsHolder = null
     }
 
     private var editAttachmentsHolder: EditAttachmentsHolder? = null
@@ -506,10 +505,12 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     override fun showEditAttachmentsDialog(attachments: MutableList<AttachmenEntry>) {
         val view = View.inflate(requireActivity(), R.layout.bottom_sheet_attachments_edit, null)
 
+        val reference = WeakReference(this)
         editAttachmentsHolder = EditAttachmentsHolder(view, this, attachments)
         editAttachmentsDialog = BottomSheetDialog(requireActivity())
                 .apply {
                     setContentView(view)
+                    setOnDismissListener { reference.get()?.editAttachmentsHolder = null }
                     show()
                 }
     }
