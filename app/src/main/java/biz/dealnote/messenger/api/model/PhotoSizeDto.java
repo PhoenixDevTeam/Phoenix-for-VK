@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class PhotoSizeDto {
 
-    @SerializedName("url")
+    @SerializedName(value = "url", alternate = "src")
     public String url;
 
     @SerializedName("type")
