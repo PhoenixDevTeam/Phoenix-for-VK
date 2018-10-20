@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.annotation.AttrRes
 import android.support.design.widget.BottomSheetDialog
 import android.support.v7.app.AlertDialog
@@ -14,15 +15,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.InputType
-import android.text.TextUtils
 import android.util.SparseBooleanArray
 import android.view.*
 import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
-import biz.dealnote.messenger.Constants
-import biz.dealnote.messenger.Extra
-import biz.dealnote.messenger.R
+import biz.dealnote.messenger.*
 import biz.dealnote.messenger.activity.*
 import biz.dealnote.messenger.adapter.AttachmentsBottomSheetAdapter
 import biz.dealnote.messenger.adapter.AttachmentsViewBinder
@@ -47,8 +45,8 @@ import biz.dealnote.messenger.place.PlaceFactory
 import biz.dealnote.messenger.settings.CurrentTheme
 import biz.dealnote.messenger.settings.Settings
 import biz.dealnote.messenger.upload.UploadDestination
+import biz.dealnote.messenger.util.AppPerms
 import biz.dealnote.messenger.util.InputTextDialog
-import biz.dealnote.messenger.util.Utils.safeIsEmpty
 import biz.dealnote.messenger.util.ViewUtils
 import biz.dealnote.messenger.view.InputViewController
 import biz.dealnote.messenger.view.LoadMoreFooterHelper
@@ -263,7 +261,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         config.isCloseOnSend = activity is SendAttachmentsActivity
 
         val inputStreams = ActivityUtils.checkLocalStreams(requireActivity())
-        config.uploadFiles = if (safeIsEmpty(inputStreams)) null else inputStreams
+        config.uploadFiles = if (inputStreams.nullOrEmpty()) null else inputStreams
 
         val models = activity!!.intent.getParcelableExtra<ModelsBundle>(MainActivity.EXTRA_INPUT_ATTACHMENTS)
 
@@ -271,8 +269,8 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             config.appendAll(this)
         }
 
-        val initialText = ActivityUtils.checkLinks(activity!!)
-        config.initialText = if (TextUtils.isEmpty(initialText)) null else initialText
+        val initialText = ActivityUtils.checkLinks(requireActivity())
+        config.initialText = if (initialText.isNullOrEmpty()) null else initialText
         return config
     }
 
@@ -401,9 +399,26 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             val localPhotos: List<LocalPhoto> = data?.getParcelableArrayListExtra(Extra.PHOTOS) ?: Collections.emptyList()
 
             if(vkphotos.isNotEmpty()){
-                presenter?.fireEditPhotosSelected(vkphotos)
+                presenter?.fireEditAttachmentsSelected(vkphotos)
             } else if(localPhotos.isNotEmpty()){
                 onEditLocalPhotosSelected(localPhotos)
+            }
+        }
+
+        if(requestCode == REQUEST_ADD_ATTACHMENT && resultCode == Activity.RESULT_OK){
+            val attachments: List<AbsModel> = data?.getParcelableArrayListExtra(Extra.ATTACHMENTS) ?: Collections.emptyList()
+            presenter?.fireEditAttachmentsSelected(attachments)
+        }
+
+        if (requestCode == REQUEST_PHOTO_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
+            val defaultSize = Settings.get().main().uploadImageSize
+            when(defaultSize){
+                null -> {
+                    ImageSizeAlertDialog.Builder(activity)
+                            .setOnSelectedCallback { size -> presenter?.fireEditPhotoMaked(size) }
+                            .show()
+                }
+                else -> presenter?.fireEditPhotoMaked(defaultSize)
             }
         }
     }
@@ -424,11 +439,40 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         startActivityForResult(intent, REQUEST_ADD_VKPHOTO)
     }
 
+    override fun startVideoSelection(accountId: Int, ownerId: Int) {
+        val intent = VideoSelectActivity.createIntent(activity, accountId, ownerId)
+        startActivityForResult(intent, REQUEST_ADD_ATTACHMENT)
+    }
+
+    override fun startDocSelection(accountId: Int, ownerId: Int) {
+        val intent = AttachmentsActivity.createIntent(activity, accountId, Types.DOC)
+        startActivityForResult(intent, REQUEST_ADD_ATTACHMENT)
+    }
+
+    private fun onEditCameraClick(){
+        if(AppPerms.hasCameraPermision(requireContext())){
+            presenter?.fireEditCameraClick()
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION_CAMERA_EDIT)
+        }
+    }
+
+    override fun startCamera(fileUri: Uri) {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+            startActivityForResult(intent, REQUEST_PHOTO_FROM_CAMERA)
+        }
+    }
+
     private class EditAttachmentsHolder(rootView: View, fragment: ChatFragment, attachments: MutableList<AttachmenEntry>) : AttachmentsBottomSheetAdapter.ActionListener, View.OnClickListener {
         override fun onClick(v: View) {
             when(v.id){
                 R.id.buttonHide -> reference.get()?.hideEditAttachmentsDialog()
                 R.id.buttonSave -> reference.get()?.onEditAttachmentSaveClick()
+                R.id.buttonVideo -> reference.get()?.presenter?.onEditAddVideoClick()
+                R.id.buttonDoc -> reference.get()?.presenter?.onEditAddDocClick()
+                R.id.buttonCamera -> reference.get()?.onEditCameraClick()
             }
         }
 
@@ -762,6 +806,10 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         if (requestCode == REQUEST_RECORD_PERMISSIONS) {
             presenter?.fireRecordPermissionsResolved()
         }
+
+        if(requestCode == REQUEST_PERMISSION_CAMERA_EDIT && AppPerms.hasCameraPermision(App.getInstance())){
+            presenter?.fireEditCameraClick()
+        }
     }
 
     override fun onInputTextChanged(s: String) {
@@ -829,6 +877,9 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         private const val REQUEST_RECORD_PERMISSIONS = 15
         private const val REQUEST_EDIT_MESSAGE = 150
         private const val REQUEST_ADD_VKPHOTO = 151
+        private const val REQUEST_ADD_ATTACHMENT = 152
+        private const val REQUEST_PERMISSION_CAMERA_EDIT = 153
+        private const val REQUEST_PHOTO_FROM_CAMERA = 154
 
         fun buildArgs(accountId: Int, peerId: Int, title: String, avaUrl: String): Bundle {
             val bundle = Bundle()

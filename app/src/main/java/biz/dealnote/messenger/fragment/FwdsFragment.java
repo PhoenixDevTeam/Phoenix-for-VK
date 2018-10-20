@@ -154,7 +154,7 @@ public class FwdsFragment extends PlaceSupportMvpFragment<FwdsPresenter, IFwdsVi
     }
 
     @Override
-    public void showActionMode(String title, Boolean canEdit) {
+    public void showActionMode(String title, Boolean canEdit, Boolean canPin) {
         // not supported
     }
 

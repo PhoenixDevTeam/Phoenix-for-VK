@@ -48,6 +48,7 @@ class MessagesApi extends AbsApi implements IMessagesApi {
         return serviceRx(TokenType.USER, TokenType.COMMUNITY)
                 .flatMapCompletable(service -> service
                         .editMessage(peerId, messageId, message, atts, integerFromBoolean(keepFwd), integerFromBoolean(keepSnippets))
+                        .map(extractResponseWithErrorHandling())
                         .ignoreElement());
     }
 

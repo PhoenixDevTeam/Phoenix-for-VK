@@ -2,6 +2,7 @@ package biz.dealnote.messenger.mvp.presenter
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -43,6 +44,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Predicate
 import java.io.File
+import java.io.IOException
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.collections.ArrayList
@@ -103,6 +105,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 .security()
                 .isMessageEncryptionEnabled(messagesOwnerId, peerId)
 
+    private var currentPhotoCameraUri: Uri? = null
+
     init {
         audioRecordWrapper = AudioRecordWrapper.Builder(App.getInstance())
                 .setFileExt(RECORD_EXT_MP3)
@@ -118,6 +122,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         } else {
             peer = savedInstanceState.getParcelable(SAVE_PEER)
             outConfig = savedInstanceState.getParcelable(SAVE_CONFIG)
+            currentPhotoCameraUri = savedInstanceState.getParcelable(SAVE_CAMERA_FILE_URI)
             restoreFromInstanceState(savedInstanceState)
         }
 
@@ -1335,6 +1340,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         outState.putString(SAVE_DRAFT_MESSAGE_TEXT, draftMessageText)
         outState.putInt(SAVE_DRAFT_MESSAGE_ATTACHMENTS_COUNT, draftMessageDbAttachmentsCount)
         outState.putParcelable(SAVE_CONFIG, outConfig)
+        outState.putParcelable(SAVE_CAMERA_FILE_URI, currentPhotoCameraUri)
 
         draftMessageId?.run {
             outState.putInt(SAVE_DRAFT_MESSAGE_ID, this)
@@ -1536,10 +1542,10 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
     }
 
-    fun fireEditPhotosSelected(vkphotos: List<Photo>) {
+    fun fireEditAttachmentsSelected(models: List<AbsModel>) {
         edited?.run {
-            if (vkphotos.isNotEmpty()) {
-                val additional = vkphotos.map {
+            if (models.isNotEmpty()) {
+                val additional = models.map {
                     AttachmenEntry(true, it)
                 }
 
@@ -1553,6 +1559,37 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     fun fireActionModePinClick() {
 
+    }
+
+    fun onEditAddVideoClick() {
+        view?.startVideoSelection(accountId, messagesOwnerId)
+    }
+
+    fun onEditAddDocClick() {
+        view?.startDocSelection(accountId, messagesOwnerId)
+    }
+
+    fun fireEditCameraClick() {
+        try {
+            val file = FileUtil.createImageFile()
+            currentPhotoCameraUri = FileUtil.getExportedUriForFile(applicationContext, file)
+            currentPhotoCameraUri?.run {
+                view?.startCamera(this)
+            }
+        } catch (e: IOException) {
+            safeShowError(view, e.message)
+        }
+    }
+
+    fun fireEditPhotoMaked(size: Int) {
+        val uri = currentPhotoCameraUri
+        currentPhotoCameraUri = null
+
+        val scanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri)
+        applicationContext.sendBroadcast(scanIntent)
+
+        val makedPhoto = LocalPhoto().setFullImageUri(uri)
+        fireEditLocalPhotosSelected(listOf(makedPhoto), size)
     }
 
     private class ToolbarSubtitleHandler internal constructor(prensenter: ChatPrensenter) : Handler(Looper.getMainLooper()) {
@@ -1590,6 +1627,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         private const val SAVE_DRAFT_MESSAGE_ATTACHMENTS_COUNT = "save_draft_message_attachments_count"
         private const val SAVE_DRAFT_MESSAGE_ID = "save_draft_message_id"
         private const val SAVE_CONFIG = "save_config"
+        private const val SAVE_CAMERA_FILE_URI = "save_camera_file_uri"
 
         private const val REQUEST_CODE_ENABLE_ENCRYPTION = 1
         private const val REQUEST_CODE_KEY_EXCHANGE = 2

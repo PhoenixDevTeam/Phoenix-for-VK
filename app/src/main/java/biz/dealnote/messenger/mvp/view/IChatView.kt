@@ -57,4 +57,7 @@ interface IChatView : IBasicMessageListView, IErrorView {
     fun startImagesSelection(accountId: Int, ownerId: Int)
     fun notifyEditAttachmentsAdded(position: Int, size: Int)
     fun notifyEditUploadProgressUpdate(index: Int, progress: Int)
+    fun startVideoSelection(accountId: Int, ownerId: Int)
+    fun startDocSelection(accountId: Int, ownerId: Int)
+    fun startCamera(fileUri: Uri)
 }
