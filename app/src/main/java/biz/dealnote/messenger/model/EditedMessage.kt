@@ -2,6 +2,7 @@ package biz.dealnote.messenger.model
 
 class EditedMessage(val message: Message){
 
+    var body: String? = message.body
     val attachments: MutableList<AttachmenEntry>
 
     init {

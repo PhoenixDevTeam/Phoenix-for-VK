@@ -81,6 +81,9 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     private var toolbarRootView: ViewGroup? = null
     private var actionModeHolder: ActionModeHolder? = null
 
+    private var editMessageGroup: ViewGroup? = null
+    private var editMessageText: TextView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -122,13 +125,24 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         pinnedAvatar = pinnedView?.findViewById(R.id.pinned_avatar)
         pinnedTitle = pinnedView?.findViewById(R.id.pinned_title)
         pinnedSubtitle = pinnedView?.findViewById(R.id.pinned_subtitle)
+
+        editMessageGroup = root.findViewById(R.id.editMessageGroup)
+        editMessageText = editMessageGroup?.findViewById(R.id.editMessageText)
+        editMessageGroup?.findViewById<View>(R.id.buttonCancelEditing)?.setOnClickListener { presenter?.fireCancelEditingClick() }
         return root
     }
 
-    private class ActionModeHolder(val rootView: View, fragment: ChatFragment): View.OnClickListener {
+    override fun displayEditingMessage(message: Message?) {
+        editMessageGroup?.visibility = if (message == null) View.GONE else View.VISIBLE
+        message?.run {
+            editMessageText?.text = if(body.isNullOrEmpty()) getString(R.string.attachments) else body
+        }
+    }
+
+    private class ActionModeHolder(val rootView: View, fragment: ChatFragment) : View.OnClickListener {
 
         override fun onClick(v: View) {
-            when(v.id){
+            when (v.id) {
                 R.id.buttonClose -> hide()
                 R.id.buttonEdit -> {
                     reference.get()?.presenter?.fireActionModeEditClick()
@@ -171,13 +185,13 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             buttonPin.setOnClickListener(this)
         }
 
-        fun show(){
+        fun show() {
             rootView.visibility = View.VISIBLE
         }
 
         fun isVisible(): Boolean = rootView.visibility == View.VISIBLE
 
-        fun hide(){
+        fun hide() {
             rootView.visibility = View.GONE
             reference.get()?.presenter?.fireActionModeDestroy()
         }
@@ -351,7 +365,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
     override fun showActionMode(title: String, canEdit: Boolean, canPin: Boolean) {
         toolbarRootView?.run {
-            if(childCount == 1){
+            if (childCount == 1) {
                 val v = LayoutInflater.from(context).inflate(R.layout.view_actionmode, this, false)
                 actionModeHolder = ActionModeHolder(v, this@ChatFragment)
                 addView(v)
@@ -360,17 +374,17 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
         actionModeHolder?.show()
         actionModeHolder?.titleView?.text = title
-        actionModeHolder?.buttonEdit?.visibility = if(canEdit) View.VISIBLE else View.GONE
-        actionModeHolder?.buttonPin?.visibility = if(canPin) View.VISIBLE else View.GONE
+        actionModeHolder?.buttonEdit?.visibility = if (canEdit) View.VISIBLE else View.GONE
+        actionModeHolder?.buttonPin?.visibility = if (canPin) View.VISIBLE else View.GONE
     }
 
     override fun finishActionMode() {
         actionModeHolder?.rootView?.visibility = View.GONE
     }
 
-    private fun onEditLocalPhotosSelected(photos: List<LocalPhoto>){
+    private fun onEditLocalPhotosSelected(photos: List<LocalPhoto>) {
         val defaultSize = Settings.get().main().uploadImageSize
-        when(defaultSize){
+        when (defaultSize) {
             null -> {
                 ImageSizeAlertDialog.Builder(activity)
                         .setOnSelectedCallback { size -> presenter?.fireEditLocalPhotosSelected(photos, size) }
@@ -394,25 +408,28 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             }
         }
 
-        if(requestCode == REQUEST_ADD_VKPHOTO && resultCode == Activity.RESULT_OK){
-            val vkphotos: List<Photo> = data?.getParcelableArrayListExtra(Extra.ATTACHMENTS) ?: Collections.emptyList()
-            val localPhotos: List<LocalPhoto> = data?.getParcelableArrayListExtra(Extra.PHOTOS) ?: Collections.emptyList()
+        if (requestCode == REQUEST_ADD_VKPHOTO && resultCode == Activity.RESULT_OK) {
+            val vkphotos: List<Photo> = data?.getParcelableArrayListExtra(Extra.ATTACHMENTS)
+                    ?: Collections.emptyList()
+            val localPhotos: List<LocalPhoto> = data?.getParcelableArrayListExtra(Extra.PHOTOS)
+                    ?: Collections.emptyList()
 
-            if(vkphotos.isNotEmpty()){
+            if (vkphotos.isNotEmpty()) {
                 presenter?.fireEditAttachmentsSelected(vkphotos)
-            } else if(localPhotos.isNotEmpty()){
+            } else if (localPhotos.isNotEmpty()) {
                 onEditLocalPhotosSelected(localPhotos)
             }
         }
 
-        if(requestCode == REQUEST_ADD_ATTACHMENT && resultCode == Activity.RESULT_OK){
-            val attachments: List<AbsModel> = data?.getParcelableArrayListExtra(Extra.ATTACHMENTS) ?: Collections.emptyList()
+        if (requestCode == REQUEST_ADD_ATTACHMENT && resultCode == Activity.RESULT_OK) {
+            val attachments: List<AbsModel> = data?.getParcelableArrayListExtra(Extra.ATTACHMENTS)
+                    ?: Collections.emptyList()
             presenter?.fireEditAttachmentsSelected(attachments)
         }
 
         if (requestCode == REQUEST_PHOTO_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
             val defaultSize = Settings.get().main().uploadImageSize
-            when(defaultSize){
+            when (defaultSize) {
                 null -> {
                     ImageSizeAlertDialog.Builder(activity)
                             .setOnSelectedCallback { size -> presenter?.fireEditPhotoMaked(size) }
@@ -449,8 +466,8 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         startActivityForResult(intent, REQUEST_ADD_ATTACHMENT)
     }
 
-    private fun onEditCameraClick(){
-        if(AppPerms.hasCameraPermision(requireContext())){
+    private fun onEditCameraClick() {
+        if (AppPerms.hasCameraPermision(requireContext())) {
             presenter?.fireEditCameraClick()
         } else {
             requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION_CAMERA_EDIT)
@@ -467,7 +484,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
     private class EditAttachmentsHolder(rootView: View, fragment: ChatFragment, attachments: MutableList<AttachmenEntry>) : AttachmentsBottomSheetAdapter.ActionListener, View.OnClickListener {
         override fun onClick(v: View) {
-            when(v.id){
+            when (v.id) {
                 R.id.buttonHide -> reference.get()?.hideEditAttachmentsDialog()
                 R.id.buttonSave -> reference.get()?.onEditAttachmentSaveClick()
                 R.id.buttonVideo -> reference.get()?.presenter?.onEditAddVideoClick()
@@ -502,25 +519,25 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             checkEmptyViewVisibility()
         }
 
-        fun checkEmptyViewVisibility(){
-            emptyView.visibility = if(adapter.itemCount < 2) View.VISIBLE else View.INVISIBLE
+        fun checkEmptyViewVisibility() {
+            emptyView.visibility = if (adapter.itemCount < 2) View.VISIBLE else View.INVISIBLE
         }
 
-        fun notifyAttachmentRemoved(index: Int){
+        fun notifyAttachmentRemoved(index: Int) {
             adapter.notifyItemRemoved(index + 1)
             checkEmptyViewVisibility()
         }
 
-        fun notifyAttachmentChanged(index: Int){
+        fun notifyAttachmentChanged(index: Int) {
             adapter.notifyItemChanged(index + 1)
         }
 
-        fun notifyAttachmentsAdded(position: Int, count: Int){
+        fun notifyAttachmentsAdded(position: Int, count: Int) {
             adapter.notifyItemRangeInserted(position + 1, count)
             checkEmptyViewVisibility()
         }
 
-        fun notifyAttachmentProgressUpdate(index: Int, progress: Int){
+        fun notifyAttachmentProgressUpdate(index: Int, progress: Int) {
             adapter.changeUploadProgress(index, progress, true)
         }
     }
@@ -807,7 +824,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             presenter?.fireRecordPermissionsResolved()
         }
 
-        if(requestCode == REQUEST_PERMISSION_CAMERA_EDIT && AppPerms.hasCameraPermision(App.getInstance())){
+        if (requestCode == REQUEST_PERMISSION_CAMERA_EDIT && AppPerms.hasCameraPermision(App.getInstance())) {
             presenter?.fireEditCameraClick()
         }
     }
@@ -825,12 +842,12 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     override fun onBackPressed(): Boolean {
-        if(actionModeHolder?.isVisible() == true){
+        if (actionModeHolder?.isVisible() == true) {
             actionModeHolder?.hide()
             return false
         }
 
-        if(inputViewController?.onBackPressed() == false){
+        if (inputViewController?.onBackPressed() == false) {
             return false
         }
 

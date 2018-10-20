@@ -1203,5 +1203,6 @@
     <string name="close">Close</string>
     <string name="attach">Attach</string>
     <string name="emoji">Emoij</string>
+    <string name="edit_message">Edit message</string>
 
 </resources>

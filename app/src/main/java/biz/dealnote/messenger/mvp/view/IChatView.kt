@@ -52,6 +52,8 @@ interface IChatView : IBasicMessageListView, IErrorView {
     fun showEncryptionDisclaimerDialog(requestCode: Int)
     fun showEditAttachmentsDialog(attachments: MutableList<AttachmenEntry>)
 
+    fun displayEditingMessage(message: Message?)
+
     fun notifyEditAttachmentChanged(index: Int)
     fun notifyEditAttachmentRemoved(index: Int)
     fun startImagesSelection(accountId: Int, ownerId: Int)

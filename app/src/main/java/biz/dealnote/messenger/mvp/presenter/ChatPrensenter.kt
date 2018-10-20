@@ -304,6 +304,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         view?.displayPinnedMessage(conversation?.pinned)
     }
 
+    @OnGuiCreated
+    private fun resolveEditedMessageViews(){
+        view?.displayEditingMessage(edited?.message)
+    }
+
     private fun onLongpollKeepAliveRequest() {
         checkLongpoll()
     }
@@ -483,7 +488,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     fun fireDraftMessageTextEdited(s: String) {
         edited?.run {
-            message.body = s
+            this.body = s
             return
         }
 
@@ -642,7 +647,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     @OnGuiCreated
     private fun resolveDraftMessageText() {
         edited?.run {
-            view?.displayDraftMessageText(message.body)
+            view?.displayDraftMessageText(body)
         } ?: run {
             view?.displayDraftMessageText(draftMessageText)
         }
@@ -1441,25 +1446,31 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             it.isSelected
         }
 
-        edited = if (m != null) EditedMessage(m.safelyClone()) else null
+        edited = if (m != null) EditedMessage(m) else null
 
         resolveDraftMessageText()
         resolveAttachmentsCounter()
+        resolveEditedMessageViews()
     }
 
-    fun onBackPressed(): Boolean {
+    fun fireCancelEditingClick(): Boolean {
         edited?.run {
             val destination = UploadDestination.forMessage(message.id)
 
             edited = null
             resolveDraftMessageText()
             resolveAttachmentsCounter()
+            resolveEditedMessageViews()
 
             uploadManager.cancelAll(accountId, destination)
-            return false
+            return true
         }
 
-        return true
+        return false
+    }
+
+    fun onBackPressed(): Boolean {
+        return !fireCancelEditingClick()
     }
 
     fun fireEditMessageSaveClick() {
@@ -1478,7 +1489,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 }
             }
 
-            appendDisposable(messagesInteractor.edit(accountId, message, message.body, models, keepForward)
+            appendDisposable(messagesInteractor.edit(accountId, message, body, models, keepForward)
                     .fromIOToMain()
                     .subscribe({ onMessageEdited(it) }, { t -> onMessageEditFail(t)}))
         }
@@ -1492,6 +1503,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         edited = null
         resolveAttachmentsCounter()
         resolveDraftMessageText()
+        resolveEditedMessageViews()
 
         val index = data.indexOfFirst {
             it.id == message.id
