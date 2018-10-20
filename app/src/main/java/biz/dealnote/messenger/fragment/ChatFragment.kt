@@ -98,7 +98,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         toolbarRootView = root.findViewById(R.id.toolbarRootView)
 
         recyclerView = root.findViewById(R.id.fragment_friend_dialog_list)
-        recyclerView?.run {
+        recyclerView?.apply {
             layoutManager = createLayoutManager()
             itemAnimator.changeDuration = 0
             itemAnimator.addDuration = 0
@@ -148,6 +148,10 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
                     reference.get()?.presenter?.fireActionModeDeleteClick()
                     hide()
                 }
+                R.id.buttonPin -> {
+                    reference.get()?.presenter?.fireActionModePinClick()
+                    hide()
+                }
             }
         }
 
@@ -157,6 +161,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         val buttonForward: View = rootView.findViewById(R.id.buttonForward)
         val buttonCopy: View = rootView.findViewById(R.id.buttonCopy)
         val buttonDelete: View = rootView.findViewById(R.id.buttonDelete)
+        val buttonPin: View = rootView.findViewById(R.id.buttonPin)
         val titleView: TextView = rootView.findViewById(R.id.actionModeTitle)
 
         init {
@@ -165,6 +170,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             buttonForward.setOnClickListener(this)
             buttonCopy.setOnClickListener(this)
             buttonDelete.setOnClickListener(this)
+            buttonPin.setOnClickListener(this)
         }
 
         fun show(){
@@ -345,7 +351,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         presenter?.fireHashtagClick(hashTag)
     }
 
-    override fun showActionMode(title: String, canEdit: Boolean) {
+    override fun showActionMode(title: String, canEdit: Boolean, canPin: Boolean) {
         toolbarRootView?.run {
             if(childCount == 1){
                 val v = LayoutInflater.from(context).inflate(R.layout.view_actionmode, this, false)
@@ -357,6 +363,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         actionModeHolder?.show()
         actionModeHolder?.titleView?.text = title
         actionModeHolder?.buttonEdit?.visibility = if(canEdit) View.VISIBLE else View.GONE
+        actionModeHolder?.buttonPin?.visibility = if(canPin) View.VISIBLE else View.GONE
     }
 
     override fun finishActionMode() {

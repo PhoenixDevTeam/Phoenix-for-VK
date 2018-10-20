@@ -86,6 +86,7 @@
     <attr name="toolbarUnlockIcon" format="reference" />
     <attr name="toolbarDoubleUpIcon" format="reference"/>
     <attr name="toolbarDoubleDownIcon" format="reference"/>
+    <attr name="toolbarPinIcon" format="reference"/>
     <attr name="statusbarNonColoredColor" format="color" />
     <attr name="tabsTheme" format="reference" />
 

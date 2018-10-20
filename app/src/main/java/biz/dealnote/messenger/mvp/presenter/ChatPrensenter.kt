@@ -1551,6 +1551,10 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
     }
 
+    fun fireActionModePinClick() {
+
+    }
+
     private class ToolbarSubtitleHandler internal constructor(prensenter: ChatPrensenter) : Handler(Looper.getMainLooper()) {
 
         var reference: WeakReference<ChatPrensenter> = WeakReference(prensenter)

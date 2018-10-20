@@ -47,6 +47,7 @@
         <item name="toolbarUnlockIcon">@drawable/unlock</item>
         <item name="toolbarDoubleUpIcon">@drawable/double_up</item>
         <item name="toolbarDoubleDownIcon">@drawable/double_down</item>
+        <item name="toolbarPinIcon">@drawable/ic_toolbar_pin_white</item>
         <item name="tabsTheme">@style/Theme.Tablayout.Dark</item>
         <item name="statusbarNonColoredColor">#000</item>
 

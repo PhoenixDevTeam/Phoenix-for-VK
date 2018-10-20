@@ -38,6 +38,7 @@
         <item name="toolbarUnlockIcon">@drawable/unlock_grey600</item>
         <item name="toolbarDoubleUpIcon">@drawable/double_up_grey600</item>
         <item name="toolbarDoubleDownIcon">@drawable/double_down_grey600</item>
+        <item name="toolbarPinIcon">@drawable/ic_toolbar_pin_gray600</item>
         <item name="tabsTheme">@style/Theme.Tablayout</item>
 
 

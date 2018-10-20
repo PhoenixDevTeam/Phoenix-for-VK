@@ -22,7 +22,7 @@ public interface IBasicMessageListView extends IMvpView, IAttachmentsPlacesView,
     void bindVoiceHolderById(int holderId, boolean play, boolean paused, float progress, boolean amin);
     void disableVoicePlaying();
 
-    void showActionMode(String title, Boolean canEdit);
+    void showActionMode(String title, Boolean canEdit, Boolean canPin);
     void finishActionMode();
 
     void displayMessages(@NonNull List<Message> mData, @NonNull LastReadId lastReadId);

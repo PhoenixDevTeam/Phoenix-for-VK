@@ -57,6 +57,16 @@
 
         <ImageView
             android:layout_margin="2dp"
+            android:contentDescription="@string/pin"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:id="@+id/buttonPin"
+            android:padding="8dp"
+            android:src="?attr/toolbarPinIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_margin="2dp"
             android:contentDescription="@string/forward"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:id="@+id/buttonForward"
