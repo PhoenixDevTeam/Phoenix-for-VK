@@ -10,7 +10,7 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:id="@+id/fragment_input_send_container"
+            android:id="@+id/buttonSendLayout"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentRight="true"
@@ -18,13 +18,13 @@
             android:layout_marginRight="8dp">
 
             <ImageView
-                android:id="@+id/fragment_input_send_background"
+                android:id="@+id/buttonSendBackground"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/circle_back_white" />
 
             <ImageButton
-                android:id="@+id/fragment_input_send"
+                android:id="@+id/buttonSend"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -50,12 +50,12 @@
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:layout_toLeftOf="@+id/fragment_input_send_container"
+            android:layout_toLeftOf="@+id/buttonSendLayout"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/fragment_input_attach"
+                android:id="@+id/buttonAttach"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -71,7 +71,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/fragment_input_emoji"
+                    android:id="@+id/buttonEmoji"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"

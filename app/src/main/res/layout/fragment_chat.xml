@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -11,10 +11,10 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:animateLayoutChanges="true"
             android:id="@+id/toolbarRootView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -30,61 +30,61 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:background="?attr/colorPrimaryDark"
             android:id="@+id/pinned_root_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/colorPrimaryDark"
             android:padding="4dp">
 
             <ImageView
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_centerVertical="true"
                 android:id="@+id/pinned_avatar"
                 android:layout_width="28dp"
-                android:layout_height="28dp" />
+                android:layout_height="28dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp" />
 
             <LinearLayout
-                android:layout_toRightOf="@+id/pinned_avatar"
-                android:layout_toEndOf="@+id/pinned_avatar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
-                android:layout_toLeftOf="@+id/button_unpin"
+                android:layout_marginLeft="32dp"
                 android:layout_toStartOf="@+id/button_unpin"
+                android:layout_toLeftOf="@+id/button_unpin"
+                android:layout_toEndOf="@+id/pinned_avatar"
+                android:layout_toRightOf="@+id/pinned_avatar"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/pinned_title"
-                    android:textSize="14sp"
-                    android:fontFamily="sans-serif-medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
                     android:textColor="?attr/textColorPrimaryOnColoredBack"
+                    android:textSize="14sp"
                     tools:text="Artem Kolbasa" />
 
                 <TextView
                     android:id="@+id/pinned_subtitle"
-                    android:textSize="12sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
                     android:textColor="?attr/textColorPrimaryOnColoredBack"
+                    android:textSize="12sp"
                     tools:text="Здравствуйте! Меня зовут Игорь Гофман" />
 
             </LinearLayout>
 
             <ImageView
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="8dp"
                 android:id="@+id/button_unpin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
                 android:src="?attr/toolbarCloseIcon" />
 
         </RelativeLayout>
@@ -97,6 +97,9 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/linearLayout"
         android:layout_below="@id/appbar"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:scrollbars="vertical" />
 
     <LinearLayout

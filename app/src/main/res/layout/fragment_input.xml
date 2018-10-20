@@ -1,144 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?message_bubble_color">
 
         <RelativeLayout
             android:id="@+id/fragment_input_container"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp">
 
             <RelativeLayout
-                android:id="@+id/fragment_input_send_container"
+                android:id="@+id/buttonSendLayout"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="8dp"
-                android:layout_centerVertical="true">
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp">
 
                 <ImageView
-                    android:id="@+id/fragment_input_send_background"
+                    android:id="@+id/buttonSendBackground"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/circle_back_white" />
 
-                <ImageButton
-                    android:id="@+id/fragment_input_send"
+                <ImageView
+                    android:id="@+id/buttonSend"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:clickable="true"
+                    android:contentDescription="@string/send"
                     android:padding="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/send"/>
+                    android:src="@drawable/send" />
 
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/message_input_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/fragment_input_send_container"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:id="@+id/message_input_container"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_toStartOf="@+id/buttonSendLayout"
+                android:layout_toLeftOf="@+id/buttonSendLayout"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/fragment_input_attach"
-                    style="@style/Widget.AppCompat.Button.Borderless"
+                <ImageView
+                    android:id="@+id/buttonAttach"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:contentDescription="@string/attach"
+                    android:padding="8dp"
                     android:src="@drawable/attachment"
-                    android:tint="?icon_color_static"/>
+                    android:tint="?icon_color_static" />
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/buttonEmoji"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/emoji"
+                    android:padding="8dp"
+                    android:src="@drawable/emoticon"
+                    android:tint="?icon_color_static" />
+
+                <biz.dealnote.messenger.view.emoji.EmojiconEditText
+                    android:id="@+id/fragment_input_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="?message_bubble_color">
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/text_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapSentences|textMultiLine|textLongMessage"
+                    android:maxLines="8"
+                    android:minHeight="48dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:saveEnabled="false"
+                    android:textColor="?android:textColorPrimary"
+                    android:textColorHint="?android:textColorHint"
+                    android:textSize="@dimen/font_size_subtitle"
+                    app:emojiconSize="20sp" />
 
-                    <ImageButton
-                        android:id="@+id/fragment_input_emoji"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:layout_width="36dp"
-                        android:layout_height="48dp"
-                        android:minHeight="48dp"
-                        android:src="@drawable/emoticon"
-                        android:tint="?icon_color_static"/>
-
-                    <biz.dealnote.messenger.view.emoji.EmojiconEditText xmlns:emojicon="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/fragment_input_text"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/text_hint"
-                        android:imeOptions="actionDone"
-                        android:inputType="textCapSentences|textMultiLine|textLongMessage"
-                        android:maxLines="8"
-                        android:paddingTop="4dp"
-                        android:paddingRight="4dp"
-                        android:paddingBottom="4dp"
-                        android:minHeight="48dp"
-                        android:saveEnabled="false"
-                        android:textColor="?android:textColorPrimary"
-                        android:textColorHint="?android:textColorHint"
-                        android:textSize="@dimen/font_size_subtitle"
-                        emojicon:emojiconSize="20sp" />
-
-                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/voice_input_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/fragment_input_send_container"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_toStartOf="@+id/buttonSendLayout"
+                android:layout_toLeftOf="@+id/buttonSendLayout"
                 android:gravity="center_vertical"
-                android:id="@+id/voice_input_container"
-                android:visibility="gone">
+                android:minHeight="48dp"
+                android:orientation="horizontal">
 
-                <ImageButton
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    style="?borderlessButtonStyle"
-                    android:src="@drawable/close"
-                    android:tint="?icon_color_static"
-                    android:id="@+id/cancel_voice_message"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/cancel_voice_message"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="?message_bubble_color"
-                    android:gravity="center_vertical">
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/close"
+                    android:padding="8dp"
+                    android:src="@drawable/close"
+                    android:tint="?attr/icon_color_static" />
 
-                    <ImageButton
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        style="?borderlessButtonStyle"
-                        android:src="@drawable/pause"
-                        android:tint="?icon_color_static"
-                        android:id="@+id/pause_voice_message"/>
+                <ImageView
+                    android:id="@+id/pause_voice_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/pause"
+                    android:padding="8dp"
+                    android:src="@drawable/pause"
+                    android:tint="?icon_color_static" />
 
-                    <TextView
-                        android:id="@+id/recording_duration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/recording_time"/>
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/recording_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:text="@string/recording_time" />
 
             </LinearLayout>
         </RelativeLayout>
@@ -149,22 +146,23 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_input_container"
             android:background="?android:colorBackground"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/fragment_input_att_count_conrainer"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="32dp"
+            android:layout_alignParentLeft="true"
             android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
             android:background="@drawable/circle_back_white">
 
             <TextView
                 android:id="@+id/fragment_input_att_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="false"
                 android:layout_alignParentRight="false"
                 android:layout_centerInParent="true"
                 android:gravity="center"

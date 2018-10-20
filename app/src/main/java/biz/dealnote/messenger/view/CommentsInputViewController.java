@@ -61,11 +61,11 @@ public class CommentsInputViewController {
 
         mIconColorActive = CurrentTheme.getIconColorActive(activity);
 
-        mButtonSend = rootView.findViewById(R.id.fragment_input_send);
+        mButtonSend = rootView.findViewById(R.id.buttonSend);
         mButtonSend.setOnClickListener(v -> onSendButtonClick());
         mButtonSend.setOnLongClickListener(v -> callback.onSendLongClick());
 
-        mButtonSendBackground = rootView.findViewById(R.id.fragment_input_send_background);
+        mButtonSendBackground = rootView.findViewById(R.id.buttonSendBackground);
         mButtonSendBackground.getDrawable().setColorFilter(mIconColorActive, PorterDuff.Mode.MULTIPLY);
 
         tvAttCount = rootView.findViewById(R.id.fragment_input_att_count);
@@ -75,8 +75,8 @@ public class CommentsInputViewController {
 
         rlEmojiContainer = rootView.findViewById(R.id.fragment_input_emoji_container);
 
-        ImageView ibAttach = rootView.findViewById(R.id.fragment_input_attach);
-        ibEmoji = rootView.findViewById(R.id.fragment_input_emoji);
+        ImageView ibAttach = rootView.findViewById(R.id.buttonAttach);
+        ibEmoji = rootView.findViewById(R.id.buttonEmoji);
 
         ibAttach.setOnClickListener(view -> callback.onAttachClick());
         ibEmoji.setOnClickListener(view -> onEmojiButtonClick());

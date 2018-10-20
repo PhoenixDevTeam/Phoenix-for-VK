@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,7 +33,7 @@ public class InputViewController {
     private EditText mInputField;
     private RelativeLayout rlEmojiContainer;
     private EmojiconsPopup emojiPopup;
-    private ImageButton ibEmoji;
+    private ImageView ibEmoji;
     private ViewGroup vgMessageInput;
     private ViewGroup vgVoiceInput;
 
@@ -47,10 +46,10 @@ public class InputViewController {
     private TextView tvAttCount;
     private ViewGroup attCountContainer;
 
-    private ImageButton mButtonSend;
+    private ImageView mButtonSend;
     private ImageView mButtonSendBackground;
 
-    private ImageButton mRecordResumePause;
+    private ImageView mRecordResumePause;
 
     private TextWatcherAdapter mTextWatcher;
 
@@ -84,10 +83,10 @@ public class InputViewController {
 
         mIconColorActive = CurrentTheme.getIconColorActive(activity);
 
-        mButtonSend = rootView.findViewById(R.id.fragment_input_send);
+        mButtonSend = rootView.findViewById(R.id.buttonSend);
         mButtonSend.setOnClickListener(v -> onSendButtonClick());
 
-        mButtonSendBackground = rootView.findViewById(R.id.fragment_input_send_background);
+        mButtonSendBackground = rootView.findViewById(R.id.buttonSendBackground);
         mButtonSendBackground.getDrawable().setColorFilter(mIconColorActive, PorterDuff.Mode.MULTIPLY);
 
         tvAttCount = rootView.findViewById(R.id.fragment_input_att_count);
@@ -97,8 +96,8 @@ public class InputViewController {
 
         rlEmojiContainer = rootView.findViewById(R.id.fragment_input_emoji_container);
 
-        ImageButton ibAttach = rootView.findViewById(R.id.fragment_input_attach);
-        ibEmoji = rootView.findViewById(R.id.fragment_input_emoji);
+        ImageView ibAttach = rootView.findViewById(R.id.buttonAttach);
+        ibEmoji = rootView.findViewById(R.id.buttonEmoji);
 
         ibAttach.setOnClickListener(view -> callback.onAttachClick());
         ibEmoji.setOnClickListener(view -> onEmojiButtonClick());
