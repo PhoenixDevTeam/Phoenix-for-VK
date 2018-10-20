@@ -1453,7 +1453,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         resolveEditedMessageViews()
     }
 
-    fun fireCancelEditingClick(): Boolean {
+    private fun cancelMessageEditing(): Boolean{
         edited?.run {
             val destination = UploadDestination.forMessage(message.id)
 
@@ -1469,8 +1469,12 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         return false
     }
 
+    fun fireCancelEditingClick() {
+        cancelMessageEditing()
+    }
+
     fun onBackPressed(): Boolean {
-        return !fireCancelEditingClick()
+        return !cancelMessageEditing()
     }
 
     fun fireEditMessageSaveClick() {
