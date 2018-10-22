@@ -158,8 +158,25 @@ public class MessagesInteractor implements IMessagesInteractor {
     }
 
     @Override
-    public Flowable<Conversation> getConversation(int accountId, int peerId, @NonNull Mode mode) {
-        Single<Optional<Conversation>> cached = storages.dialogs()
+    public Single<Conversation> getConversationSingle(int accountId, int peerId, @NonNull Mode mode) {
+        Single<Optional<Conversation>> cached = getCachedConversation(accountId, peerId);
+        Single<Conversation> actual = getActualConversaction(accountId, peerId);
+
+        switch (mode) {
+            case ANY:
+                return cached.flatMap(optional -> optional.isEmpty() ? actual : Single.just(optional.get()));
+            case NET:
+                return actual;
+            case CACHE:
+                return cached
+                        .flatMap(optional -> optional.isEmpty() ? Single.error(new NotFoundException()) : Single.just(optional.get()));
+        }
+
+        throw new IllegalArgumentException("Unsupported mode: " + mode);
+    }
+
+    private Single<Optional<Conversation>> getCachedConversation(int accountId, int peerId){
+        return storages.dialogs()
                 .findSimple(accountId, peerId)
                 .flatMap(optional -> {
                     if (optional.isEmpty()) {
@@ -170,8 +187,10 @@ public class MessagesInteractor implements IMessagesInteractor {
                             .compose(simpleEntity2Conversation(accountId, Collections.emptyList()))
                             .map(Optional::wrap);
                 });
+    }
 
-        Single<Conversation> actual = networker.vkDefault(accountId)
+    private Single<Conversation> getActualConversaction(int accountId, int peerId){
+        return networker.vkDefault(accountId)
                 .messages()
                 .getConversations(Collections.singletonList(peerId), true, Constants.MAIN_OWNER_FIELDS)
                 .flatMap(response -> {
@@ -190,6 +209,12 @@ public class MessagesInteractor implements IMessagesInteractor {
                             .andThen(Single.just(entity))
                             .compose(simpleEntity2Conversation(accountId, existsOwners));
                 });
+    }
+
+    @Override
+    public Flowable<Conversation> getConversation(int accountId, int peerId, @NonNull Mode mode) {
+        Single<Optional<Conversation>> cached = getCachedConversation(accountId, peerId);
+        Single<Conversation> actual = getActualConversaction(accountId, peerId);
 
         switch (mode) {
             case ANY:

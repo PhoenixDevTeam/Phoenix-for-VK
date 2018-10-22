@@ -40,7 +40,7 @@ import biz.dealnote.messenger.util.*
 import biz.dealnote.messenger.util.RxUtils.*
 import biz.dealnote.messenger.util.Utils.*
 import biz.dealnote.mvp.reflect.OnGuiCreated
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposables
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Predicate
 import java.io.File
@@ -74,13 +74,14 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     private val longpollManager: ILongpollManager = LongpollInstance.get()
     private val uploadManager: IUploadManager = Injection.provideUploadManager()
 
-    private val cacheLoadingDisposable = CompositeDisposable()
+    private var cacheLoadingDisposable = Disposables.disposed()
+    private var netLoadingDisposable = Disposables.disposed()
+    private var fetchConversationDisposable = Disposables.disposed()
 
     private var conversation: Conversation? = null
 
-    private var isLoadingFromDbNow: Boolean = false
-
-    private var isLoadingFromNetNow: Boolean = false
+    private var isLoadingFromDbNow = false
+    private var isLoadingFromNetNow = false
 
     private val isLoadingNow: Boolean
         get() = isLoadingFromDbNow || isLoadingFromNetNow
@@ -126,8 +127,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             restoreFromInstanceState(savedInstanceState)
         }
 
-        loadAllCachedData()
-        requestAtStart()
+        fetchConversationThenCachedThenActual()
 
         if (savedInstanceState == null) {
             tryToRestoreDraftMessage(draftMessageText.isNullOrEmpty())
@@ -217,16 +217,38 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         updateSubtitle()
     }
 
-    private fun onUploadProgressUpdate(data: List<IUploadManager.IProgressUpdate>){
+    private fun fetchConversationThenCachedThenActual() {
+        fetchConversationDisposable = messagesInteractor.getConversationSingle(messagesOwnerId, peer.id, Mode.ANY)
+                .fromIOToMain()
+                .subscribe({ onConveractionFetched(it) }, { onConversationFetchFail(it) })
+    }
+
+    private fun onConversationFetchFail(throwable: Throwable) {
+        showError(view, throwable)
+    }
+
+    private fun onConveractionFetched(data: Conversation) {
+        conversation = data
+
+        resolvePinnedMessageView()
+
+        lastReadId.incoming = data.inRead
+        lastReadId.outgoing = data.outRead
+
+        loadAllCachedData()
+        requestAtStart()
+    }
+
+    private fun onUploadProgressUpdate(data: List<IUploadManager.IProgressUpdate>) {
         edited?.run {
-            for(update in data){
+            for (update in data) {
                 val index = attachments.indexOfFirst {
                     it.attachment is Upload && (it.attachment as Upload).id == update.id
                 }
 
-                if(index != -1){
+                if (index != -1) {
                     val upload = attachments[index].attachment as Upload
-                    if(upload.status == Upload.STATUS_UPLOADING){
+                    if (upload.status == Upload.STATUS_UPLOADING) {
                         upload.progress = update.progress
                         view?.notifyEditUploadProgressUpdate(index, update.progress)
                     }
@@ -235,13 +257,13 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
     }
 
-    private fun onUploadStatusChange(upload: Upload){
+    private fun onUploadStatusChange(upload: Upload) {
         edited?.run {
             val index = attachments.indexOfFirst {
                 it.attachment is Upload && (it.attachment as Upload).id == upload.id
             }
 
-            if(index != -1){
+            if (index != -1) {
                 (attachments[index].attachment as Upload).apply {
                     status = upload.status
                     errorText = upload.errorText
@@ -252,11 +274,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
     }
 
-    private fun onUploadResult(pair: Pair<Upload, UploadResult<*>>){
+    private fun onUploadResult(pair: Pair<Upload, UploadResult<*>>) {
         edited?.run {
             val destination = pair.first.destination
 
-            if(message.id == destination.id && destination.method == Method.PHOTO_TO_MESSAGE){
+            if (message.id == destination.id && destination.method == Method.PHOTO_TO_MESSAGE) {
                 val photo: Photo = pair.second.result as Photo
                 val sizeBefore = attachments.size
 
@@ -267,14 +289,14 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
     }
 
-    private fun onUploadRemoved(ids: IntArray){
+    private fun onUploadRemoved(ids: IntArray) {
         edited?.run {
-            for(id in ids){
+            for (id in ids) {
                 val index = attachments.indexOfFirst {
                     it.attachment is Upload && (it.attachment as Upload).id == id
                 }
 
-                if(index != -1){
+                if (index != -1) {
                     attachments.removeAt(index)
                     view?.notifyEditAttachmentRemoved(index)
                 }
@@ -305,7 +327,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     @OnGuiCreated
-    private fun resolveEditedMessageViews(){
+    private fun resolveEditedMessageViews() {
         view?.displayEditingMessage(edited?.message)
     }
 
@@ -364,25 +386,18 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private fun loadAllCachedData() {
         setCacheLoadingNow(true)
-        cacheLoadingDisposable.add(RxKotlin.zip(messagesInteractor.getConversation(messagesOwnerId, peer.id, Mode.ANY).singleOrError(),
-                messagesInteractor.getCachedPeerMessages(messagesOwnerId, peer.id), ::Pair)
+        cacheLoadingDisposable = messagesInteractor.getCachedPeerMessages(messagesOwnerId, peer.id)
                 .fromIOToMain()
-                .subscribe(Consumer { it -> onCachedDataReceived(it) }, RxUtils.ignore()))
+                .subscribe({ onCachedDataReceived(it) }, { onCachedDataReceived(Collections.emptyList()) })
     }
 
-    private fun onCachedDataReceived(data: Pair<Conversation, List<Message>>) {
+    private fun onCachedDataReceived(data: List<Message>) {
         setCacheLoadingNow(false)
-
-        conversation = data.first
-        resolvePinnedMessageView()
-
-        lastReadId.incoming = data.first.inRead
-        lastReadId.outgoing = data.first.outRead
-        onAllDataLoaded(data.second, false)
+        onAllDataLoaded(data, false)
     }
 
     private fun onNetDataReceived(messages: List<Message>, startMessageId: Int?) {
-        resetDatabaseLoading()
+        cacheLoadingDisposable.dispose()
 
         isLoadingFromDbNow = false
         endOfContent = messages.isEmpty()
@@ -429,10 +444,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         resolveLoadUpHeaderView()
     }
 
-    private fun resetDatabaseLoading() {
-        cacheLoadingDisposable.clear()
-    }
-
     fun fireLoadUpButtonClick() {
         if (canLoadMore()) {
             requestMore()
@@ -462,9 +473,9 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         setNetLoadingNow(true)
 
         val peerId = this.peerId
-        appendDisposable(messagesInteractor.getPeerMessages(messagesOwnerId, peerId, COUNT, null, startMessageId, true)
+        netLoadingDisposable = messagesInteractor.getPeerMessages(messagesOwnerId, peerId, COUNT, null, startMessageId, true)
                 .fromIOToMain()
-                .subscribe({ messages -> onNetDataReceived(messages, startMessageId) }, { this.onMessagesGetError(it) }))
+                .subscribe({ messages -> onNetDataReceived(messages, startMessageId) }, { this.onMessagesGetError(it) })
     }
 
     private fun onMessagesGetError(t: Throwable) {
@@ -976,7 +987,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         for (entry in message.attachments) {
             if (entry.attachment is FwdMessages) {
                 count += (entry.attachment as FwdMessages).fwds.size
-            } else if(entry.attachment !is Upload){
+            } else if (entry.attachment !is Upload) {
                 count++
             }
         }
@@ -1015,7 +1026,10 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     override fun onDestroyed() {
-        resetDatabaseLoading()
+        cacheLoadingDisposable.dispose()
+        netLoadingDisposable.dispose()
+        fetchConversationDisposable.dispose()
+
         saveDraftMessageBody()
 
         toolbarSubtitleHandler.release()
@@ -1394,7 +1408,10 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         checkLongpoll()
 
         resolveAccountHotSwapSupport()
-        resetDatabaseLoading()
+
+        netLoadingDisposable.dispose()
+        cacheLoadingDisposable.dispose()
+        fetchConversationDisposable.dispose()
 
         super.getData().clear()
         view?.notifyDataChanged()
@@ -1453,7 +1470,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         resolveEditedMessageViews()
     }
 
-    private fun cancelMessageEditing(): Boolean{
+    private fun cancelMessageEditing(): Boolean {
         edited?.run {
             val destination = UploadDestination.forMessage(message.id)
 
@@ -1482,8 +1499,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             val models = ArrayList<AbsModel>()
             var keepForward = false
 
-            for(entry in attachments){
-                when(entry.attachment){
+            for (entry in attachments) {
+                when (entry.attachment) {
                     is FwdMessages -> keepForward = true
                     is Upload -> {
                         view?.showError(R.string.upload_not_resolved_exception_message)
@@ -1495,15 +1512,15 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
             appendDisposable(messagesInteractor.edit(accountId, message, body, models, keepForward)
                     .fromIOToMain()
-                    .subscribe({ onMessageEdited(it) }, { t -> onMessageEditFail(t)}))
+                    .subscribe({ onMessageEdited(it) }, { t -> onMessageEditFail(t) }))
         }
     }
 
-    private fun onMessageEditFail(throwable: Throwable){
+    private fun onMessageEditFail(throwable: Throwable) {
         showError(view, throwable)
     }
 
-    private fun onMessageEdited(message: Message){
+    private fun onMessageEdited(message: Message) {
         edited = null
         resolveAttachmentsCounter()
         resolveDraftMessageText()
@@ -1513,14 +1530,14 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             it.id == message.id
         }
 
-        if(index != -1){
+        if (index != -1) {
             data[index] = message
             view?.notifyDataChanged()
         }
     }
 
     fun fireEditAttachmentRemoved(entry: AttachmenEntry) {
-        if(entry.attachment is Upload){
+        if (entry.attachment is Upload) {
             uploadManager.cancel((entry.attachment as Upload).id)
             return
         }

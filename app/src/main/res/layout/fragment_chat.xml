@@ -29,11 +29,19 @@
 
         </RelativeLayout>
 
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/appbar"
+        android:id="@+id/pinned_root_view"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <RelativeLayout
-            android:id="@+id/pinned_root_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimaryDark"
+            android:background="?message_bubble_color"
             android:padding="4dp">
 
             <ImageView
@@ -41,15 +49,15 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp" />
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_toStartOf="@+id/button_unpin"
                 android:layout_toLeftOf="@+id/button_unpin"
                 android:layout_toEndOf="@+id/pinned_avatar"
@@ -61,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
-                    android:textColor="?attr/textColorPrimaryOnColoredBack"
+                    android:textColor="?attr/textColorPrimary"
                     android:textSize="14sp"
                     tools:text="Artem Kolbasa" />
 
@@ -70,13 +78,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
-                    android:textColor="?attr/textColorPrimaryOnColoredBack"
-                    android:textSize="12sp"
-                    tools:text="Здравствуйте! Меня зовут Игорь Гофман" />
+                    tools:text="Hi! How are you?"
+                    android:textColor="?attr/textColorSecondary"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
-            <ImageView
+            <biz.dealnote.messenger.view.ColorFilterImageView
+                app:filter_color="?attr/icon_color_static"
                 android:id="@+id/button_unpin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,14 +98,19 @@
 
         </RelativeLayout>
 
-    </android.support.design.widget.AppBarLayout>
+        <View
+            android:background="?attr/list_divider_color"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment_friend_dialog_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linearLayout"
-        android:layout_below="@id/appbar"
+        android:layout_below="@id/pinned_root_view"
         android:clipToPadding="false"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
@@ -112,7 +126,10 @@
         <RelativeLayout
             android:id="@+id/editMessageGroup"
             android:background="?message_bubble_color"
-            android:padding="4dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -141,7 +158,7 @@
                 <TextView
                     android:text="@string/edit_message"
                     android:fontFamily="sans-serif-medium"
-                    android:textColor="?attr/colorAccent"
+                    android:textColor="?attr/textColorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

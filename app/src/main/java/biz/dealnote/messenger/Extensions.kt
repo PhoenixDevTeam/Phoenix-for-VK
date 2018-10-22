@@ -36,6 +36,8 @@ fun Cursor.getLong(columnName: String): Long? = getColumnIndex(columnName).let {
 
 fun Cursor.getString(columnName: String): String? = getString(getColumnIndex(columnName))
 
+fun Disposable.notDisposed(): Boolean = !isDisposed
+
 fun <T: Any> Collection<T>?.nullOrEmpty(): Boolean = if(this == null) true else size == 0
 
 fun <T: Any> Collection<T>?.nonEmpty(): Boolean = if(this == null) false else size > 0

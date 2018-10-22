@@ -27,6 +27,8 @@ import io.reactivex.Single;
 public interface IMessagesInteractor {
     Completable handleMessagesRead(int accountId, @NonNull List<MessagesRead> reads);
 
+    Single<Conversation> getConversationSingle(int accountId, int peerId, @NonNull Mode mode);
+
     Flowable<Conversation> getConversation(int accountId, int peerId, @NonNull Mode mode);
 
     Single<Message> edit(int accountId, @NonNull Message message, String body, @NonNull List<AbsModel> attachments, boolean keepForwardMessages);
