@@ -168,7 +168,7 @@ public class CommunityBlacklistFragment extends BaseMvpFragment<CommunityBlackli
     public void onBannedLongClick(Banned banned) {
         String[] items = {getString(R.string.delete)};
         new AlertDialog.Builder(requireActivity())
-                .setTitle(banned.getUser().getFullName())
+                .setTitle(banned.getBanned().getFullName())
                 .setItems(items, (dialog, which) -> getPresenter().fireBannedRemoveClick(banned))
                 .setNegativeButton(R.string.button_cancel, null)
                 .show();

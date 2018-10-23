@@ -29,7 +29,9 @@ import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.model.Banned;
+import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.IdOption;
+import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.CommunityBanEditPresenter;
 import biz.dealnote.messenger.mvp.view.ICommunityBanEditView;
@@ -151,40 +153,55 @@ public class CommunityBanEditFragment extends BaseMvpFragment<CommunityBanEditPr
                 .apply(requireActivity());
     }
 
+    @NonNull
     @Override
     public IPresenterFactory<CommunityBanEditPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
             int accountId = requireArguments().getInt(Extra.ACCOUNT_ID);
             int groupId = requireArguments().getInt(Extra.GROUP_ID);
             Banned banned = requireArguments().getParcelable(Extra.BANNED);
+
+            if(banned != null){
+                return new CommunityBanEditPresenter(accountId, groupId, banned, saveInstanceState);
+            }
+
             ArrayList<User> users = requireArguments().getParcelableArrayList(Extra.USERS);
-            return Objects.nonNull(banned) ? new CommunityBanEditPresenter(accountId, groupId, banned, saveInstanceState)
-                    : new CommunityBanEditPresenter(accountId, groupId, users, saveInstanceState);
+            ArrayList<Owner> owners = new ArrayList<>();
+            if(Utils.nonEmpty(users)){
+                owners.addAll(users);
+            }
+
+            return new CommunityBanEditPresenter(accountId, groupId, owners, saveInstanceState);
         };
     }
 
     @Override
-    public void displayUserInfo(User user) {
+    public void displayUserInfo(Owner owner) {
         if(Objects.nonNull(mAvatar)){
-            ViewUtils.displayAvatar(mAvatar, new RoundTransformation(), user.getMaxSquareAvatar(), null);
+            ViewUtils.displayAvatar(mAvatar, new RoundTransformation(), owner.getMaxSquareAvatar(), null);
         }
 
-        safelySetText(mName, user.getFullName());
+        safelySetText(mName, owner.getFullName());
 
-        Integer iconRes = ViewUtils.getOnlineIcon(user.isOnline(), user.isOnlineMobile(), user.getPlatform(), user.getOnlineApp());
+        Integer iconRes = null;
+        if(owner instanceof User){
+            User user = (User) owner;
+            iconRes = ViewUtils.getOnlineIcon(user.isOnline(), user.isOnlineMobile(), user.getPlatform(), user.getOnlineApp());
+        }
 
         if(Objects.nonNull(mOnlineView)){
             mOnlineView.setVisibility(Objects.nonNull(iconRes) ? View.VISIBLE : View.INVISIBLE);
-
             if(Objects.nonNull(iconRes)){
                 mOnlineView.setIcon(iconRes);
             }
         }
 
-        if(Utils.nonEmpty(user.getDomain())){
-            safelySetText(mDomain, "@" + user.getDomain());
-        } else {
-            safelySetText(mDomain, "@id" + user.getId());
+        if(Utils.nonEmpty(owner.getDomain())){
+            safelySetText(mDomain, "@" + owner.getDomain());
+        } else if(owner instanceof User){
+            safelySetText(mDomain, "@id" + ((User) owner).getId());
+        } else if(owner instanceof Community){
+            safelySetText(mDomain, "@club" + ((Community) owner).getId());
         }
     }
 
@@ -246,7 +263,7 @@ public class CommunityBanEditFragment extends BaseMvpFragment<CommunityBanEditPr
     }
 
     @Override
-    public void openProfile(int accountId, User user) {
-        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(requireActivity());
+    public void openProfile(int accountId, Owner owner) {
+        PlaceFactory.getOwnerWallPlace(accountId, owner).tryOpenWith(requireActivity());
     }
 }

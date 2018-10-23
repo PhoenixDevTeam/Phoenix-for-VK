@@ -6,6 +6,7 @@ import biz.dealnote.messenger.api.model.GroupSettingsDto;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiUser;
+import biz.dealnote.messenger.api.model.VkApiBanned;
 import biz.dealnote.messenger.api.model.response.BaseResponse;
 import biz.dealnote.messenger.api.model.response.GroupLongpollServer;
 import biz.dealnote.messenger.api.model.response.GroupWallInfoResponse;
@@ -31,14 +32,14 @@ public interface IGroupsService {
                                               @Field("contact_email") String contactEmail);
 
     @FormUrlEncoded
-    @POST("groups.unbanUser")
-    Single<BaseResponse<Integer>> unbanUser(@Field("group_id") int groupId,
-                                            @Field("user_id") int userId);
+    @POST("groups.unban")
+    Single<BaseResponse<Integer>> unban(@Field("group_id") int groupId,
+                                            @Field("owner_id") int ownerId);
 
-    @POST("groups.banUser")
+    @POST("groups.ban")
     @FormUrlEncoded
-    Single<BaseResponse<Integer>> banUser(@Field("group_id") int groupId,
-                                          @Field("user_id") int userId,
+    Single<BaseResponse<Integer>> ban(@Field("group_id") int groupId,
+                                          @Field("owner_id") int ownerId,
                                           @Field("end_date") Long endDate,
                                           @Field("reason") Integer reason,
                                           @Field("comment") String comment,
@@ -51,11 +52,11 @@ public interface IGroupsService {
     //https://vk.com/dev/groups.getBanned
     @FormUrlEncoded
     @POST("groups.getBanned")
-    Single<BaseResponse<Items<VKApiUser>>> getBanned(@Field("group_id") int groupId,
-                                                     @Field("offset") Integer offset,
-                                                     @Field("count") Integer count,
-                                                     @Field("fields") String fields,
-                                                     @Field("user_id") Integer userId);
+    Single<BaseResponse<Items<VkApiBanned>>> getBanned(@Field("group_id") int groupId,
+                                                       @Field("offset") Integer offset,
+                                                       @Field("count") Integer count,
+                                                       @Field("fields") String fields,
+                                                       @Field("user_id") Integer userId);
 
     @FormUrlEncoded
     @POST("execute.getCommunityWallInfo")

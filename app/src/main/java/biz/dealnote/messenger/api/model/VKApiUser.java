@@ -469,11 +469,6 @@ public class VKApiUser extends VKApiOwner {
      */
     public String role;
 
-    /**
-     * информация о внесении в черный список сообщества.
-     */
-    public BanInfo ban_info;
-
         /**
      * Creates empty User instance.
      */

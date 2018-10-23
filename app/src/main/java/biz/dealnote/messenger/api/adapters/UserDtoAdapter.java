@@ -210,10 +210,6 @@ public class UserDtoAdapter extends AbsAdapter implements JsonDeserializer<VKApi
         dto.is_friend = optInt(root, "is_friend") == 1;
         dto.friend_status = optInt(root, "friend_status");
         dto.role = optString(root, "role");
-
-        if(root.has("ban_info")){
-            dto.ban_info = context.deserialize(root.get("ban_info"), VKApiUser.BanInfo.class);
-        }
         return dto;
     }
 }

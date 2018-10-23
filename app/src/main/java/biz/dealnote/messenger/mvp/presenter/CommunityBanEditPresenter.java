@@ -15,7 +15,7 @@ import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Banned;
 import biz.dealnote.messenger.model.BlockReason;
 import biz.dealnote.messenger.model.IdOption;
-import biz.dealnote.messenger.model.User;
+import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.ICommunityBanEditView;
 import biz.dealnote.messenger.util.Logger;
@@ -39,7 +39,7 @@ public class CommunityBanEditPresenter extends AccountDependencyPresenter<ICommu
 
     private final Banned banned;
 
-    private final ArrayList<User> users;
+    private final ArrayList<Owner> users;
 
     private int index;
 
@@ -57,7 +57,7 @@ public class CommunityBanEditPresenter extends AccountDependencyPresenter<ICommu
         super(accountId, savedInstanceState);
         this.groupId = groupId;
         this.banned = banned;
-        this.users = Utils.singletonArrayList(banned.getUser());
+        this.users = Utils.singletonArrayList(banned.getBanned());
 
         Banned.Info info = banned.getInfo();
 
@@ -69,7 +69,7 @@ public class CommunityBanEditPresenter extends AccountDependencyPresenter<ICommu
         this.interactor = InteractorFactory.createGroupSettingsInteractor();
     }
 
-    public CommunityBanEditPresenter(int accountId, int groupId, ArrayList<User> users, @Nullable Bundle savedInstanceState) {
+    public CommunityBanEditPresenter(int accountId, int groupId, ArrayList<Owner> users, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.groupId = groupId;
         this.banned = null;
@@ -80,7 +80,7 @@ public class CommunityBanEditPresenter extends AccountDependencyPresenter<ICommu
         this.interactor = InteractorFactory.createGroupSettingsInteractor();
     }
 
-    private User currentUser() {
+    private Owner currentBanned() {
         return users.get(index);
     }
 
@@ -104,7 +104,7 @@ public class CommunityBanEditPresenter extends AccountDependencyPresenter<ICommu
     @OnGuiCreated
     private void resolveUserInfoViews(){
         if(isGuiReady()){
-            getView().displayUserInfo(currentUser());
+            getView().displayUserInfo(currentBanned());
         }
     }
 
@@ -195,12 +195,12 @@ public class CommunityBanEditPresenter extends AccountDependencyPresenter<ICommu
         setRequestNow(true);
 
         final int accountId = super.getAccountId();
-        final int usetId = currentUser().getId();
+        final int ownerId = currentBanned().getOwnerId();
         final Date endDate = blockFor.getUnblockingDate();
 
         final Long endDateUnixtime = nonNull(endDate) ? endDate.getTime() / 1000 : null;
 
-        appendDisposable(interactor.banUser(accountId, groupId, usetId, endDateUnixtime, reason, comment, showCommentToUser)
+        appendDisposable(interactor.ban(accountId, groupId, ownerId, endDateUnixtime, reason, comment, showCommentToUser)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
                 .subscribe(this::onAddBanComplete, throwable -> onAddBanError(getCauseIfRuntime(throwable))));
     }
@@ -294,7 +294,7 @@ public class CommunityBanEditPresenter extends AccountDependencyPresenter<ICommu
     }
 
     public void fireAvatarClick() {
-        getView().openProfile(getAccountId(), currentUser());
+        getView().openProfile(getAccountId(), currentBanned());
     }
 
     private static final class BlockFor {

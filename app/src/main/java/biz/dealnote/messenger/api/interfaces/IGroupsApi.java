@@ -9,6 +9,7 @@ import biz.dealnote.messenger.api.model.GroupSettingsDto;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiUser;
+import biz.dealnote.messenger.api.model.VkApiBanned;
 import biz.dealnote.messenger.api.model.response.GroupLongpollServer;
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -23,16 +24,16 @@ public interface IGroupsApi {
     Completable editManager(int groupId, int userId, String role, Boolean isContact, String contactPosition, String contactPhone, String contactEmail);
 
     @CheckResult
-    Completable unbanUser(int groupId, int userId);
+    Completable unban(int groupId, int ownerId);
 
     @CheckResult
-    Completable banUser(int groupId, int userId, Long endDate, Integer reason, String comment, Boolean commentVisible);
+    Completable ban(int groupId, int ownerId, Long endDate, Integer reason, String comment, Boolean commentVisible);
 
     @CheckResult
     Single<GroupSettingsDto> getSettings(int groupId);
 
     @CheckResult
-    Single<Items<VKApiUser>> getBanned(int groupId, Integer offset, Integer count, String fields, Integer userId);
+    Single<Items<VkApiBanned>> getBanned(int groupId, Integer offset, Integer count, String fields, Integer userId);
 
     @CheckResult
     Single<VKApiCommunity> getWallInfo(String groupId, String fields);

@@ -8,13 +8,13 @@ public class BanAction {
 
     private final int groupId;
 
-    private final int userId;
+    private final int ownerId;
 
     private final boolean ban;
 
-    public BanAction(int groupId, int userId, boolean ban) {
+    public BanAction(int groupId, int ownerId, boolean ban) {
         this.groupId = groupId;
-        this.userId = userId;
+        this.ownerId = ownerId;
         this.ban = ban;
     }
 
@@ -22,8 +22,8 @@ public class BanAction {
         return groupId;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getOwnerId() {
+        return ownerId;
     }
 
     public boolean isBan() {

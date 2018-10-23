@@ -11,6 +11,7 @@ import biz.dealnote.messenger.api.model.GroupSettingsDto;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiUser;
+import biz.dealnote.messenger.api.model.VkApiBanned;
 import biz.dealnote.messenger.api.model.response.GroupLongpollServer;
 import biz.dealnote.messenger.api.model.response.GroupWallInfoResponse;
 import biz.dealnote.messenger.api.services.IGroupsService;
@@ -42,19 +43,19 @@ class GroupsApi extends AbsApi implements IGroupsApi {
     }
 
     @Override
-    public Completable unbanUser(int groupId, int userId) {
+    public Completable unban(int groupId, int ownerId) {
         return provideService(IGroupsService.class, TokenType.USER)
                 .flatMapCompletable(service -> service
-                        .unbanUser(groupId, userId)
+                        .unban(groupId, ownerId)
                         .map(extractResponseWithErrorHandling())
                         .ignoreElement());
     }
 
     @Override
-    public Completable banUser(int groupId, int userId, Long endDate, Integer reason, String comment, Boolean commentVisible) {
+    public Completable ban(int groupId, int ownerId, Long endDate, Integer reason, String comment, Boolean commentVisible) {
         return provideService(IGroupsService.class, TokenType.USER)
                 .flatMapCompletable(service -> service
-                        .banUser(groupId, userId, endDate, reason, comment, integerFromBoolean(commentVisible))
+                        .ban(groupId, ownerId, endDate, reason, comment, integerFromBoolean(commentVisible))
                         .map(extractResponseWithErrorHandling())
                         .ignoreElement());
     }
@@ -68,7 +69,7 @@ class GroupsApi extends AbsApi implements IGroupsApi {
     }
 
     @Override
-    public Single<Items<VKApiUser>> getBanned(int groupId, Integer offset, Integer count, String fields, Integer userId) {
+    public Single<Items<VkApiBanned>> getBanned(int groupId, Integer offset, Integer count, String fields, Integer userId) {
         return provideService(IGroupsService.class, TokenType.USER)
                 .flatMap(service -> service.getBanned(groupId, offset, count, fields, userId)
                         .map(extractResponseWithErrorHandling()));

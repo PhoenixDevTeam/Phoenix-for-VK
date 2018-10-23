@@ -10,6 +10,7 @@ import biz.dealnote.messenger.api.model.GroupSettingsDto;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiUser;
+import biz.dealnote.messenger.api.model.VkApiBanned;
 import biz.dealnote.messenger.db.interfaces.IOwnersStorage;
 import biz.dealnote.messenger.db.model.BanAction;
 import biz.dealnote.messenger.domain.IGroupSettingsInteractor;
@@ -62,11 +63,11 @@ public class GroupSettingsInteractor implements IGroupSettingsInteractor {
     }
 
     @Override
-    public Completable banUser(int accountId, int groupId, int userId, Long endDateUnixtime, int reason, String comment, boolean showCommentToUser) {
+    public Completable ban(int accountId, int groupId, int ownerId, Long endDateUnixtime, int reason, String comment, boolean commentVisible) {
         return networker.vkDefault(accountId)
                 .groups()
-                .banUser(groupId, userId, endDateUnixtime, reason, comment, showCommentToUser)
-                .andThen(repository.fireBanAction(new BanAction(groupId, userId, true)));
+                .ban(groupId, ownerId, endDateUnixtime, reason, comment, commentVisible)
+                .andThen(repository.fireBanAction(new BanAction(groupId, ownerId, true)));
     }
 
     @Override
@@ -91,11 +92,11 @@ public class GroupSettingsInteractor implements IGroupSettingsInteractor {
     }
 
     @Override
-    public Completable unbanUser(int accountId, int groupId, int userId) {
+    public Completable unban(int accountId, int groupId, int ownerId) {
         return networker.vkDefault(accountId)
                 .groups()
-                .unbanUser(groupId, userId)
-                .andThen(repository.fireBanAction(new BanAction(groupId, userId, false)));
+                .unban(groupId, ownerId)
+                .andThen(repository.fireBanAction(new BanAction(groupId, ownerId, false)));
     }
 
     @Override
@@ -109,31 +110,20 @@ public class GroupSettingsInteractor implements IGroupSettingsInteractor {
                 .flatMap(items -> {
                     VKOwnIds ids = new VKOwnIds();
 
-                    for (VKApiUser u : items) {
-                        ids.append(u.ban_info.admin_id);
+                    for (VkApiBanned u : items) {
+                        ids.append(u.banInfo.admin_id);
                     }
-
-                    //"ban_info": {
-                    //    "admin_id": null,
-                    //            "date": 0,
-                    //            "reason": null,
-                    //            "comment": "",
-                    //            "comment_visible": 0,
-                    //            "end_date": 0
-                    //}
-                    // UPD. В вебе написано Was removed from the blacklist.
 
                     return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY)
                             .map(bundle -> {
                                 List<Banned> infos = new ArrayList<>(items.size());
 
-                                for (VKApiUser u : items) {
-
+                                for (VkApiBanned u : items) {
                                     User admin;
-                                    VKApiUser.BanInfo banInfo = u.ban_info;
+                                    VKApiUser.BanInfo banInfo = u.banInfo;
 
                                     if (banInfo.admin_id != 0) {
-                                        admin = (User) bundle.getById(u.ban_info.admin_id);
+                                        admin = (User) bundle.getById(u.banInfo.admin_id);
                                     } else {
                                         // ignore this
                                         continue;
@@ -146,7 +136,11 @@ public class GroupSettingsInteractor implements IGroupSettingsInteractor {
                                             .setEndDate(banInfo.end_date)
                                             .setReason(banInfo.reason);
 
-                                    infos.add(new Banned(Dto2Model.transformUser(u), admin, info));
+                                    if(u.profile != null){
+                                        infos.add(new Banned(Dto2Model.transformUser(u.profile), admin, info));
+                                    } else if(u.group != null){
+                                        infos.add(new Banned(Dto2Model.transformCommunity(u.group), admin, info));
+                                    }
                                 }
 
                                 return Pair.Companion.create(infos, nextFrom);

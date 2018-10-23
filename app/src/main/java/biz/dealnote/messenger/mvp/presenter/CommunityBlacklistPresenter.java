@@ -67,7 +67,7 @@ public class CommunityBlacklistPresenter extends AccountDependencyPresenter<ICom
             //refresh data
             requestDataAtStart();
         } else {
-            int index = Utils.findIndexByPredicate(data, banned -> banned.getUser().getId() == action.getUserId());
+            int index = Utils.findIndexByPredicate(data, banned -> banned.getBanned().getOwnerId() == action.getOwnerId());
             if (index != -1) {
                 data.remove(index);
                 callView(view -> view.notifyItemRemoved(index));
@@ -152,7 +152,7 @@ public class CommunityBlacklistPresenter extends AccountDependencyPresenter<ICom
 
     public void fireBannedRemoveClick(Banned banned) {
         appendDisposable(groupSettingsInteractor
-                .unbanUser(getAccountId(), groupId, banned.getUser().getId())
+                .unban(getAccountId(), groupId, banned.getBanned().getOwnerId())
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
                 .subscribe(() -> onUnbanComplete(banned), this::onUnbanError));
     }

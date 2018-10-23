@@ -19,11 +19,11 @@ public interface IGroupSettingsInteractor {
 
     Single<GroupSettings> getGroupSettings(int accountId, int groupId);
 
-    Completable banUser(int accountId, int groupId, int userId, Long endDateUnixtime, int reason, String comment, boolean showCommentToUser);
+    Completable ban(int accountId, int groupId, int ownerId, Long endDateUnixtime, int reason, String comment, boolean commentVisible);
 
     Completable editManager(int accountId, int groupId, User user, String role, boolean asContact, String position, String email, String phone);
 
-    Completable unbanUser(int accountId, int groupId, int userId);
+    Completable unban(int accountId, int groupId, int ownerId);
 
     Single<Pair<List<Banned>, IntNextFrom>> getBanned(int accountId, int groupId, IntNextFrom startFrom, int count);
 

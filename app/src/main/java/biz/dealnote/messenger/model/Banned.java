@@ -10,20 +10,21 @@ import android.support.annotation.NonNull;
  */
 public final class Banned implements Parcelable {
 
-    private final User user;
+    private final Owner banned;
 
     private final User admin;
 
     private final Info info;
 
-    public Banned(@NonNull User user, @NonNull User admin, @NonNull Info info) {
-        this.user = user;
+    public Banned(@NonNull Owner banned, @NonNull User admin, @NonNull Info info) {
+        this.banned = banned;
         this.admin = admin;
         this.info = info;
     }
 
     private Banned(Parcel in) {
-        user = in.readParcelable(User.class.getClassLoader());
+        ParcelableOwnerWrapper wrapper = in.readParcelable(ParcelableOwnerWrapper.class.getClassLoader());
+        banned = wrapper.get();
         admin = in.readParcelable(User.class.getClassLoader());
         info = in.readParcelable(Info.class.getClassLoader());
     }
@@ -40,8 +41,8 @@ public final class Banned implements Parcelable {
         }
     };
 
-    public User getUser() {
-        return user;
+    public Owner getBanned() {
+        return banned;
     }
 
     public User getAdmin() {
@@ -55,7 +56,7 @@ public final class Banned implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(user, flags);
+        dest.writeParcelable(new ParcelableOwnerWrapper(banned), flags);
         dest.writeParcelable(admin, flags);
         dest.writeParcelable(info, flags);
     }

@@ -3,6 +3,7 @@ package biz.dealnote.messenger.mvp.view;
 import java.util.List;
 
 import biz.dealnote.messenger.model.IdOption;
+import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;
 import biz.dealnote.mvp.core.IMvpView;
@@ -12,7 +13,7 @@ import biz.dealnote.mvp.core.IMvpView;
  * phoenix
  */
 public interface ICommunityBanEditView extends IMvpView, IAccountDependencyView, IErrorView, IProgressView, IToastView {
-    void displayUserInfo(User user);
+    void displayUserInfo(Owner user);
     void displayBanStatus(int adminId, String adminName, long endDate);
     void displayBlockFor(String blockFor);
     void displayReason(String reason);
@@ -24,5 +25,5 @@ public interface ICommunityBanEditView extends IMvpView, IAccountDependencyView,
 
     void displaySelectOptionDialog(int requestCode, List<IdOption> options);
 
-    void openProfile(int accountId, User user);
+    void openProfile(int accountId, Owner owner);
 }

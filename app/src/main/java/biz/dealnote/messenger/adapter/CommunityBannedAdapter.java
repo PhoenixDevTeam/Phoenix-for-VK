@@ -19,6 +19,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.link.internal.LinkActionAdapter;
 import biz.dealnote.messenger.link.internal.OwnerLinkSpanFactory;
 import biz.dealnote.messenger.model.Banned;
+import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.FormatUtil;
@@ -53,16 +54,21 @@ public class CommunityBannedAdapter extends RecyclerView.Adapter<CommunityBanned
 
         Banned banned = data.get(position);
 
-        User user = banned.getUser();
+        Owner bannedOwner = banned.getBanned();
         User admin = banned.getAdmin();
 
         Banned.Info info = banned.getInfo();
 
-        holder.name.setText(user.getFullName());
+        holder.name.setText(bannedOwner.getFullName());
 
-        ViewUtils.displayAvatar(holder.avatar, transformation, user.getMaxSquareAvatar(), Constants.PICASSO_TAG);
+        ViewUtils.displayAvatar(holder.avatar, transformation, bannedOwner.getMaxSquareAvatar(), Constants.PICASSO_TAG);
 
-        Integer onlineViewRes = ViewUtils.getOnlineIcon(user.isOnline(), user.isOnlineMobile(), user.getPlatform(), user.getOnlineApp());
+        Integer onlineViewRes = null;
+        if(bannedOwner instanceof User){
+            User user = (User) bannedOwner;
+            onlineViewRes = ViewUtils.getOnlineIcon(user.isOnline(), user.isOnlineMobile(), user.getPlatform(), user.getOnlineApp());
+        }
+
         if(Objects.nonNull(onlineViewRes)){
             holder.onlineView.setIcon(onlineViewRes);
             holder.onlineView.setVisibility(View.VISIBLE);
