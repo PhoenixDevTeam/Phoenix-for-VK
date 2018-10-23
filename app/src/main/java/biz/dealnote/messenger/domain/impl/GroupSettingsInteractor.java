@@ -111,7 +111,7 @@ public class GroupSettingsInteractor implements IGroupSettingsInteractor {
                     VKOwnIds ids = new VKOwnIds();
 
                     for (VkApiBanned u : items) {
-                        ids.append(u.banInfo.admin_id);
+                        ids.append(u.banInfo.adminId);
                     }
 
                     return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY)
@@ -120,10 +120,10 @@ public class GroupSettingsInteractor implements IGroupSettingsInteractor {
 
                                 for (VkApiBanned u : items) {
                                     User admin;
-                                    VKApiUser.BanInfo banInfo = u.banInfo;
+                                    VkApiBanned.Info banInfo = u.banInfo;
 
-                                    if (banInfo.admin_id != 0) {
-                                        admin = (User) bundle.getById(u.banInfo.admin_id);
+                                    if (banInfo.adminId != 0) {
+                                        admin = (User) bundle.getById(u.banInfo.adminId);
                                     } else {
                                         // ignore this
                                         continue;
@@ -131,9 +131,9 @@ public class GroupSettingsInteractor implements IGroupSettingsInteractor {
 
                                     Banned.Info info = new Banned.Info()
                                             .setComment(banInfo.comment)
-                                            .setCommentVisible(banInfo.comment_visible)
+                                            .setCommentVisible(banInfo.commentVisible)
                                             .setDate(banInfo.date)
-                                            .setEndDate(banInfo.end_date)
+                                            .setEndDate(banInfo.endDate)
                                             .setReason(banInfo.reason);
 
                                     if(u.profile != null){

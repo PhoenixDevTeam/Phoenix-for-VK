@@ -861,39 +861,4 @@ public class VKApiUser extends VKApiOwner {
         public Relative() {
         }
     }
-
-    public static final class BanInfo {
-
-        /**
-         * идентификатор администратора, который добавил пользователя в черный список.
-         */
-        public int admin_id;
-
-        /**
-         * дата добавления пользователя в черный список в формате Unixtime.
-         */
-        public long date;
-
-        /**
-         * причина добавления пользователя в черный список. Возможные значения:
-         0 — другое (по умолчанию);
-         1 — спам;
-         2 — оскорбление участников;
-         3 — нецензурные выражения;
-         4 — сообщения не по теме.
-         */
-        public int reason;
-
-        /**
-         * текст комментария.
-         */
-        public String comment;
-
-        /**
-         * дата окончания блокировки (0 — блокировка вечная).
-         */
-        public long end_date;
-
-        public boolean comment_visible;
-    }
 }
