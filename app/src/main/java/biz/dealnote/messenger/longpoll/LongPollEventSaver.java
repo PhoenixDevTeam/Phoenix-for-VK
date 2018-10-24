@@ -21,8 +21,8 @@ import biz.dealnote.messenger.api.model.longpoll.VkApiLongpollUpdates;
 import biz.dealnote.messenger.db.LongPollOperation;
 import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.Stores;
-import biz.dealnote.messenger.domain.IMessagesInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IMessagesRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.longpoll.model.MessagesRead;
 import biz.dealnote.messenger.model.MessageFlag;
 import biz.dealnote.messenger.util.Exestime;
@@ -35,10 +35,10 @@ import static biz.dealnote.messenger.util.Utils.safeCountOfMultiple;
 
 public class LongPollEventSaver {
 
-    private final IMessagesInteractor messagesInteractor;
+    private final IMessagesRepository messagesInteractor;
 
     public LongPollEventSaver() {
-        this.messagesInteractor = InteractorFactory.createMessagesInteractor();
+        this.messagesInteractor = Repository.INSTANCE.getMessages();
     }
 
     private Completable saveReadUpdates(int accountId, @NonNull VkApiLongpollUpdates updates) {

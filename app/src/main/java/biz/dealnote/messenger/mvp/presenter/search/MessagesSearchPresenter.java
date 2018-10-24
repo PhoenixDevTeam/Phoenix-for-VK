@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import biz.dealnote.messenger.domain.IMessagesInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IMessagesRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.fragment.search.criteria.MessageSeachCriteria;
 import biz.dealnote.messenger.fragment.search.nextfrom.IntNextFrom;
 import biz.dealnote.messenger.model.Message;
@@ -23,11 +23,11 @@ import static biz.dealnote.messenger.util.Utils.trimmedNonEmpty;
  */
 public class MessagesSearchPresenter extends AbsSearchPresenter<IMessagesSearchView, MessageSeachCriteria, Message, IntNextFrom> {
 
-    private final IMessagesInteractor messagesInteractor;
+    private final IMessagesRepository messagesInteractor;
 
     public MessagesSearchPresenter(int accountId, @Nullable MessageSeachCriteria criteria, @Nullable Bundle savedInstanceState) {
         super(accountId, criteria, savedInstanceState);
-        this.messagesInteractor = InteractorFactory.createMessagesInteractor();
+        this.messagesInteractor = Repository.INSTANCE.getMessages();
 
         if(canSearch(getCriteria())){
             doSearch();

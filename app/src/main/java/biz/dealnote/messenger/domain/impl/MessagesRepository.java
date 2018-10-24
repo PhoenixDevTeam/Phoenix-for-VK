@@ -47,7 +47,7 @@ import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.SimpleDialogEntity;
 import biz.dealnote.messenger.db.model.entity.StickerEntity;
 import biz.dealnote.messenger.domain.IMessagesDecryptor;
-import biz.dealnote.messenger.domain.IMessagesInteractor;
+import biz.dealnote.messenger.domain.IMessagesRepository;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
 import biz.dealnote.messenger.domain.Mode;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
@@ -70,6 +70,7 @@ import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.MessageStatus;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Peer;
+import biz.dealnote.messenger.model.PeerUpdate;
 import biz.dealnote.messenger.model.SaveMessageBuilder;
 import biz.dealnote.messenger.model.SentMsg;
 import biz.dealnote.messenger.model.User;
@@ -86,6 +87,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.SingleTransformer;
+import io.reactivex.processors.PublishProcessor;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
@@ -100,7 +102,7 @@ import static biz.dealnote.messenger.util.Utils.safelyClose;
  * Created by admin on 03.09.2017.
  * В этом классе сосредоточена вся бизнес-логика для работы с сообщениями
  */
-public class MessagesInteractor implements IMessagesInteractor {
+public class MessagesRepository implements IMessagesRepository {
 
     private static final SingleTransformer<List<VKApiMessage>, List<MessageEntity>> DTO_TO_DBO = single -> single
             .map(dtos -> {
@@ -118,30 +120,45 @@ public class MessagesInteractor implements IMessagesInteractor {
     private final INetworker networker;
     private final IMessagesDecryptor decryptor;
     private final IUploadManager uploadManager;
+    private final PublishProcessor<List<PeerUpdate>> peerUpdatePublisher;
 
-    public MessagesInteractor(INetworker networker, IOwnersInteractor ownersInteractor, IStorages storages, IUploadManager uploadManager) {
+    public MessagesRepository(INetworker networker, IOwnersInteractor ownersInteractor, IStorages storages, IUploadManager uploadManager) {
         this.ownersInteractor = ownersInteractor;
         this.networker = networker;
         this.storages = storages;
         this.decryptor = new MessagesDecryptor(storages);
         this.uploadManager = uploadManager;
+        this.peerUpdatePublisher = PublishProcessor.create();
+    }
+
+    @Override
+    public Flowable<List<PeerUpdate>> observePeerUpdates() {
+        return peerUpdatePublisher.onBackpressureBuffer();
     }
 
     @Override
     public Completable handleMessagesRead(int accountId, @NonNull List<MessagesRead> reads) {
         List<PeerPatch> patches = new ArrayList<>(reads.size());
+        List<PeerUpdate> updates = new ArrayList<>(reads.size());
 
         for(MessagesRead read : reads){
             PeerPatch patch = new PeerPatch(read.getPeerId());
+            PeerUpdate update = new PeerUpdate(accountId, read.getPeerId());
 
             if(read.isOut()){
+                update.setReadOut(new PeerUpdate.Read(read.getToMessageId(), read.getUnreadCount()));
                 patch.withOutRead(read.getToMessageId(), read.getUnreadCount());
             } else {
+                update.setReadIn(new PeerUpdate.Read(read.getToMessageId(), read.getUnreadCount()));
                 patch.withInRead(read.getToMessageId(), read.getUnreadCount());
             }
+
+            patches.add(patch);
+            updates.add(update);
         }
 
-        return storages.dialogs().applyPatches(accountId, patches);
+        return storages.dialogs().applyPatches(accountId, patches)
+                .doOnComplete(() -> peerUpdatePublisher.onNext(updates));
     }
 
     private static Conversation entity2Model(int accountId, SimpleDialogEntity entity, IOwnersBundle owners) {
@@ -836,10 +853,13 @@ public class MessagesInteractor implements IMessagesInteractor {
         // TODO: 07.10.2017 Dialogs table update?
 
         PeerPatch patch = new PeerPatch(peerId).withInRead(toId, 0);
+        PeerUpdate update = new PeerUpdate(accountId, peerId);
+        update.setReadIn(new PeerUpdate.Read(toId, 0));
         return networker.vkDefault(accountId)
                 .messages()
                 .markAsRead(peerId, toId)
-                .flatMapCompletable(ignored -> storages.dialogs().applyPatches(accountId, Collections.singletonList(patch)));
+                .flatMapCompletable(ignored -> storages.dialogs().applyPatches(accountId, Collections.singletonList(patch)))
+                .doOnComplete(() -> peerUpdatePublisher.onNext(Collections.singletonList(update)));
 
                 //.flatMapCompletable(ignored -> storages.messages().markAsRead(accountId, peerId))
                 //.andThen(fixDialogs(accountId, peerId));

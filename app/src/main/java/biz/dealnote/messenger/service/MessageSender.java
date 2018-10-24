@@ -1,7 +1,7 @@
 package biz.dealnote.messenger.service;
 
 import biz.dealnote.messenger.App;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.settings.Settings;
 
 public final class MessageSender {
@@ -17,7 +17,7 @@ public final class MessageSender {
             synchronized (MessageSender.class){
                 if(sendService == null){
                     sendService = new SendService(App.getInstance(), Settings.get().accounts());
-                    sendService.setMessagesInteractor(InteractorFactory.createMessagesInteractor());
+                    sendService.setMessagesInteractor(Repository.INSTANCE.getMessages());
                 }
             }
         }

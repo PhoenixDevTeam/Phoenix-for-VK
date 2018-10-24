@@ -13,6 +13,7 @@ import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
 import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.Message;
+import biz.dealnote.messenger.model.PeerUpdate;
 import biz.dealnote.messenger.model.SaveMessageBuilder;
 import biz.dealnote.messenger.model.SentMsg;
 import biz.dealnote.messenger.model.User;
@@ -24,7 +25,9 @@ import io.reactivex.Single;
  * Created by admin on 03.09.2017.
  * phoenix
  */
-public interface IMessagesInteractor {
+public interface IMessagesRepository {
+    Flowable<List<PeerUpdate>> observePeerUpdates();
+
     Completable handleMessagesRead(int accountId, @NonNull List<MessagesRead> reads);
 
     Single<Conversation> getConversationSingle(int accountId, int peerId, @NonNull Mode mode);

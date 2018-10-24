@@ -4,8 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.domain.Mode;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.util.Optional;
@@ -31,7 +31,7 @@ public class ChatEntryFetcher {
                             return response;
                         });
                 case Peer.CHAT:
-                    return InteractorFactory.createMessagesInteractor()
+                    return Repository.INSTANCE.getMessages()
                             .getConversation(accountId, peerId, Mode.ANY).singleOrError()
                             .flatMap(chat -> NotificationUtils.loadRoundedImageRx(app, chat.get100orSmallerAvatar(), R.drawable.ic_group_chat)
                                     .map(Optional::wrap)

@@ -17,9 +17,9 @@ import biz.dealnote.messenger.crypt.KeyLocationPolicy
 import biz.dealnote.messenger.crypt.KeyPairDoesNotExistException
 import biz.dealnote.messenger.db.Stores
 import biz.dealnote.messenger.domain.IAttachmentsRepository
-import biz.dealnote.messenger.domain.IMessagesInteractor
-import biz.dealnote.messenger.domain.InteractorFactory
+import biz.dealnote.messenger.domain.IMessagesRepository
 import biz.dealnote.messenger.domain.Mode
+import biz.dealnote.messenger.domain.Repository
 import biz.dealnote.messenger.exception.UploadNotResolvedException
 import biz.dealnote.messenger.longpoll.ILongpollManager
 import biz.dealnote.messenger.longpoll.LongpollInstance
@@ -70,7 +70,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private var recordingLookup: Lookup
 
-    private val messagesInteractor: IMessagesInteractor = InteractorFactory.createMessagesInteractor()
+    private val messagesRepository: IMessagesRepository = Repository.messages
     private val longpollManager: ILongpollManager = LongpollInstance.get()
     private val uploadManager: IUploadManager = Injection.provideUploadManager()
 
@@ -218,7 +218,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun fetchConversationThenCachedThenActual() {
-        fetchConversationDisposable = messagesInteractor.getConversationSingle(messagesOwnerId, peer.id, Mode.ANY)
+        fetchConversationDisposable = messagesRepository.getConversationSingle(messagesOwnerId, peer.id, Mode.ANY)
                 .fromIOToMain()
                 .subscribe({ onConveractionFetched(it) }, { onConversationFetchFail(it) })
     }
@@ -386,7 +386,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private fun loadAllCachedData() {
         setCacheLoadingNow(true)
-        cacheLoadingDisposable = messagesInteractor.getCachedPeerMessages(messagesOwnerId, peer.id)
+        cacheLoadingDisposable = messagesRepository.getCachedPeerMessages(messagesOwnerId, peer.id)
                 .fromIOToMain()
                 .subscribe({ onCachedDataReceived(it) }, { onCachedDataReceived(Collections.emptyList()) })
     }
@@ -473,7 +473,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         setNetLoadingNow(true)
 
         val peerId = this.peerId
-        netLoadingDisposable = messagesInteractor.getPeerMessages(messagesOwnerId, peerId, COUNT, null, startMessageId, true)
+        netLoadingDisposable = messagesRepository.getPeerMessages(messagesOwnerId, peerId, COUNT, null, startMessageId, true)
                 .fromIOToMain()
                 .subscribe({ messages -> onNetDataReceived(messages, startMessageId) }, { this.onMessagesGetError(it) })
     }
@@ -576,7 +576,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     @SuppressLint("CheckResult")
     private fun sendMessage(builder: SaveMessageBuilder) {
-        messagesInteractor.put(builder)
+        messagesRepository.put(builder)
                 .fromIOToMain()
                 .doOnSuccess { _ -> startSendService() }
                 .subscribe(WeakConsumer(messageSavedConsumer), WeakConsumer(messageSaveFailConsumer))
@@ -1064,7 +1064,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
             view?.notifyDataChanged()
 
-            appendDisposable(messagesInteractor.markAsRead(messagesOwnerId, peer.id, last.id)
+            appendDisposable(messagesRepository.markAsRead(messagesOwnerId, peer.id, last.id)
                     .fromIOToMain()
                     .subscribe(dummy(), Consumer { t -> showError(view, t) }))
         }
@@ -1075,7 +1075,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun restoreMessage(messageId: Int) {
-        appendDisposable(messagesInteractor.restoreMessage(this.messagesOwnerId, messageId)
+        appendDisposable(messagesRepository.restoreMessage(this.messagesOwnerId, messageId)
                 .fromIOToMain()
                 .subscribe({ onMessagesRestoredSuccessfully(messageId) }, { t -> showError(view, t) }))
     }
@@ -1132,7 +1132,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
 
         if (sent.nonEmpty()) {
-            appendDisposable(messagesInteractor.deleteMessages(messagesOwnerId, sent)
+            appendDisposable(messagesRepository.deleteMessages(messagesOwnerId, sent)
                     .fromIOToMain()
                     .subscribe(dummy(), Consumer { t -> showError(view, t) }))
         }
@@ -1179,7 +1179,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         val chatId = Peer.toChatId(peerId)
         val accountId = super.getAccountId()
 
-        appendDisposable(messagesInteractor.removeChatUser(accountId, chatId, accountId)
+        appendDisposable(messagesRepository.removeChatUser(accountId, chatId, accountId)
                 .fromIOToMain()
                 .subscribe(dummy(), Consumer { t -> showError(view, t) }))
     }
@@ -1262,7 +1262,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     fun fireChatTitleTyped(newValue: String) {
         val chatId = Peer.fromChatId(peerId)
 
-        appendDisposable(messagesInteractor.changeChatTitle(this.messagesOwnerId, chatId, newValue)
+        appendDisposable(messagesRepository.changeChatTitle(this.messagesOwnerId, chatId, newValue)
                 .fromIOToMain()
                 .subscribe(dummy(), Consumer { t -> showError(view, t) }))
     }
@@ -1510,7 +1510,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 }
             }
 
-            appendDisposable(messagesInteractor.edit(accountId, message, body, models, keepForward)
+            appendDisposable(messagesRepository.edit(accountId, message, body, models, keepForward)
                     .fromIOToMain()
                     .subscribe({ onMessageEdited(it) }, { t -> onMessageEditFail(t) }))
         }

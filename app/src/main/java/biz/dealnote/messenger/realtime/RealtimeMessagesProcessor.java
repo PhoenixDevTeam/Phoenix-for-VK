@@ -18,9 +18,10 @@ import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.api.model.longpoll.AddMessageUpdate;
 import biz.dealnote.messenger.crypt.KeyExchangeService;
 import biz.dealnote.messenger.db.interfaces.IStorages;
-import biz.dealnote.messenger.domain.IMessagesInteractor;
+import biz.dealnote.messenger.domain.IMessagesRepository;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.longpoll.FullAndNonFullUpdates;
 import biz.dealnote.messenger.longpoll.LongPollNotificationHelper;
@@ -63,7 +64,7 @@ class RealtimeMessagesProcessor implements IRealtimeMessagesProcessor {
     private final SparseArray<Pair<Integer, Integer>> notificationsInterceptors;
     private volatile Entry current;
     private final IOwnersInteractor ownersInteractor;
-    private final IMessagesInteractor messagesInteractor;
+    private final IMessagesRepository messagesInteractor;
 
     RealtimeMessagesProcessor() {
         this.app = Injection.provideApplicationContext();
@@ -73,7 +74,7 @@ class RealtimeMessagesProcessor implements IRealtimeMessagesProcessor {
         this.queue = new LinkedList<>();
         this.notificationsInterceptors = new SparseArray<>(3);
         this.ownersInteractor = InteractorFactory.createOwnerInteractor();
-        this.messagesInteractor = InteractorFactory.createMessagesInteractor();
+        this.messagesInteractor = Repository.INSTANCE.getMessages();
     }
 
     @Override

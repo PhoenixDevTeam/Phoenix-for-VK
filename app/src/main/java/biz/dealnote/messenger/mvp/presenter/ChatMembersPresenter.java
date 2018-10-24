@@ -7,8 +7,8 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.domain.IMessagesInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IMessagesRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
@@ -26,7 +26,7 @@ public class ChatMembersPresenter extends AccountDependencyPresenter<IChatMember
 
     private final int chatId;
 
-    private final IMessagesInteractor messagesInteractor;
+    private final IMessagesRepository messagesInteractor;
 
     private final List<AppChatUser> users;
 
@@ -34,7 +34,7 @@ public class ChatMembersPresenter extends AccountDependencyPresenter<IChatMember
         super(accountId, savedInstanceState);
         this.chatId = chatId;
         this.users = new ArrayList<>();
-        this.messagesInteractor = InteractorFactory.createMessagesInteractor();
+        this.messagesInteractor = Repository.INSTANCE.getMessages();
 
         requestData();
     }

@@ -8,8 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.RemoteInput;
 
 import biz.dealnote.messenger.Extra;
-import biz.dealnote.messenger.domain.IMessagesInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IMessagesRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.SaveMessageBuilder;
 
@@ -36,7 +36,7 @@ public class QuickReplyService extends IntentService {
     }
 
     private void addMessage(int accountId, int peerId, String body) {
-        final IMessagesInteractor messagesInteractor = InteractorFactory.createMessagesInteractor();
+        final IMessagesRepository messagesInteractor = Repository.INSTANCE.getMessages();
         SaveMessageBuilder builder = new SaveMessageBuilder(accountId, peerId).setBody(body);
 
         Message message = messagesInteractor.put(builder).blockingGet();

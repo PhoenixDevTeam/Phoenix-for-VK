@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import biz.dealnote.messenger.domain.IMessagesInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IMessagesRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.mvp.view.IMessagesLookView;
@@ -31,16 +31,14 @@ public class MessagesLookPresenter extends AbsMessageListPresenter<IMessagesLook
 
     private static final int COUNT = 40;
 
-    private static final String TAG = MessagesLookPresenter.class.getSimpleName();
-
     private int mPeerId;
     private Integer mFocusMessageId;
 
-    private final IMessagesInteractor messagesInteractor;
+    private final IMessagesRepository messagesInteractor;
 
     public MessagesLookPresenter(int accountId, int peerId, Integer focusTo, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-        this.messagesInteractor = InteractorFactory.createMessagesInteractor();
+        this.messagesInteractor = Repository.INSTANCE.getMessages();
         mPeerId = peerId;
 
         if (savedInstanceState == null) {

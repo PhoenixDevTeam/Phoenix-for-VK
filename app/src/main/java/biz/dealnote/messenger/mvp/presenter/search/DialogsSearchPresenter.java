@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import biz.dealnote.messenger.domain.IMessagesInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IMessagesRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.fragment.search.criteria.DialogsSearchCriteria;
 import biz.dealnote.messenger.fragment.search.nextfrom.IntNextFrom;
 import biz.dealnote.messenger.model.Chat;
@@ -24,11 +24,11 @@ import io.reactivex.Single;
  */
 public class DialogsSearchPresenter extends AbsSearchPresenter<IDialogsSearchView, DialogsSearchCriteria, Object, IntNextFrom> {
 
-    private final IMessagesInteractor messagesInteractor;
+    private final IMessagesRepository messagesInteractor;
 
     public DialogsSearchPresenter(int accountId, @Nullable DialogsSearchCriteria criteria, @Nullable Bundle savedInstanceState) {
         super(accountId, criteria, savedInstanceState);
-        this.messagesInteractor = InteractorFactory.createMessagesInteractor();
+        this.messagesInteractor = Repository.INSTANCE.getMessages();
     }
 
     @Override

@@ -15,8 +15,9 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.db.interfaces.IDialogsStorage;
-import biz.dealnote.messenger.domain.IMessagesInteractor;
+import biz.dealnote.messenger.domain.IMessagesRepository;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.exception.UnauthorizedException;
 import biz.dealnote.messenger.longpoll.ILongpollManager;
 import biz.dealnote.messenger.longpoll.LongpollInstance;
@@ -60,7 +61,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     private final ArrayList<Dialog> dialogs;
     private boolean endOfContent;
 
-    private final IMessagesInteractor messagesInteractor;
+    private final IMessagesRepository messagesInteractor;
     private final ILongpollManager longpollManager;
 
     public DialogsPresenter(int accountId, int dialogsOwnerId, @Nullable Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
             this.dialogsOwnerId = dialogsOwnerId;
         }
 
-        this.messagesInteractor = InteractorFactory.createMessagesInteractor();
+        this.messagesInteractor = Repository.INSTANCE.getMessages();
         this.longpollManager = LongpollInstance.get();
 
         final IDialogsStorage store = Stores.getInstance().dialogs();

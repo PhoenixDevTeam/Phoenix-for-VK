@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.concurrent.Executors;
 
 import biz.dealnote.messenger.Injection;
-import biz.dealnote.messenger.domain.IMessagesInteractor;
+import biz.dealnote.messenger.domain.IMessagesRepository;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
 import biz.dealnote.messenger.model.SentMsg;
@@ -25,7 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 public class SendService {
 
     private Scheduler senderScheduler;
-    private IMessagesInteractor messagesInteractor;
+    private IMessagesRepository messagesInteractor;
     private Collection<Integer> registeredAccounts;
     private final Context app;
 
@@ -39,7 +39,7 @@ public class SendService {
                 .subscribe(this::onAccountsChanged, RxUtils.ignore()));
     }
 
-    public void setMessagesInteractor(IMessagesInteractor messagesInteractor) {
+    public void setMessagesInteractor(IMessagesRepository messagesInteractor) {
         this.messagesInteractor = messagesInteractor;
     }
 

@@ -20,8 +20,8 @@ import java.util.concurrent.TimeUnit;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.crypt.KeyLocationPolicy;
-import biz.dealnote.messenger.domain.IMessagesInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IMessagesRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
 import biz.dealnote.messenger.model.Message;
@@ -59,13 +59,13 @@ public class QuickAnswerActivity extends AppCompatActivity {
     private int messageId;
 
     private boolean mMessageIsRead;
-    private IMessagesInteractor mMessagesInteractor;
+    private IMessagesRepository mMessagesInteractor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.mMessagesInteractor = InteractorFactory.createMessagesInteractor();
+        this.mMessagesInteractor = Repository.INSTANCE.getMessages();
 
         boolean focusToField = getIntent().getBooleanExtra(EXTRA_FOCUS_TO_FIELD, true);
 

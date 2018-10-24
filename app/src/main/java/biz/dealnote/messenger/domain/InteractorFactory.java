@@ -13,7 +13,6 @@ import biz.dealnote.messenger.domain.impl.FeedInteractor;
 import biz.dealnote.messenger.domain.impl.FeedbackInteractor;
 import biz.dealnote.messenger.domain.impl.GroupSettingsInteractor;
 import biz.dealnote.messenger.domain.impl.LikesInteractor;
-import biz.dealnote.messenger.domain.impl.MessagesInteractor;
 import biz.dealnote.messenger.domain.impl.NewsfeedInteractor;
 import biz.dealnote.messenger.domain.impl.OwnersInteractor;
 import biz.dealnote.messenger.domain.impl.PhotosInteractor;
@@ -77,11 +76,6 @@ public class InteractorFactory {
 
     public static IFeedInteractor createFeedInteractor(){
         return new FeedInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores(), Settings.get().other());
-    }
-
-    public static IMessagesInteractor createMessagesInteractor(){
-        return new MessagesInteractor(Injection.provideNetworkInterfaces(),
-                createOwnerInteractor(), Injection.provideStores(), Injection.provideUploadManager());
     }
 
     public static IGroupSettingsInteractor createGroupSettingsInteractor(){
