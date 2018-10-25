@@ -69,7 +69,7 @@ public class FCMMessage {
         message.body = VKStringUtils.unescape(data.get("body"));
         message.vk_time = Long.parseLong(data.get("time"));
         message.type = data.get("type");
-        message.badge = NotificationUtils.optInt(remote.getData().get("badge"), -1);
+        message.badge = Integer.parseInt(remote.getData().get("badge"));
         //message.image = data.get("image"); //todo
         message.sound = Integer.parseInt(data.get("sound")) == 1;
         message.title = data.get("title");

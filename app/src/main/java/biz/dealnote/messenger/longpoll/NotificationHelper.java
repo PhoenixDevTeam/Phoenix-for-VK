@@ -19,6 +19,7 @@ import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.push.ChatEntryFetcher;
 import biz.dealnote.messenger.push.NotificationScheduler;
+import biz.dealnote.messenger.push.NotificationUtils;
 import biz.dealnote.messenger.service.QuickReplyService;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
@@ -41,26 +42,27 @@ public class NotificationHelper {
     public static void notifNewMessage(final Context context, final int accountId, final String text, final int peerId, final int messageId, final long messageTime) {
         ChatEntryFetcher.getRx(context, accountId, peerId)
                 .subscribeOn(NotificationScheduler.INSTANCE)
-                .subscribe(response -> showNotification(context, accountId, response.icon, response.title, text, messageId, peerId, messageTime, response.img), RxUtils.ignore());
+                .subscribe(response -> showNotification(context, accountId, response.title, text, messageId, peerId, messageTime, response.img), RxUtils.ignore());
     }
 
     /**
      * Отображение уведомления в statusbar о новом сообщении
      *
      * @param context  контекст
-     * @param img      аватар или изображение беседы
      * @param title    имя собеседника или название беседы
      * @param body     текст сообщения
      * @param mid      идентификатор сообщения
      * @param imgUrl   ссылка на аватар или изображение беседы
      */
-    private static void showNotification(Context context, int accountId, Bitmap img, String title, String body, int mid,
-                                         int peerId, long messageSentTime, String imgUrl) {
+    public static void showNotification(Context context, int accountId, String title, String body, int mid,
+                                        int peerId, long messageSentTime, String imgUrl) {
         boolean hideBody = Settings.get()
                 .security()
                 .needHideMessagesBodyForNotif();
 
         String text = hideBody ? context.getString(R.string.message_text_is_not_available) : body;
+
+        Bitmap img = NotificationUtils.loadRoundedImage(context, imgUrl, R.drawable.ic_avatar_unknown);
 
         final NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 

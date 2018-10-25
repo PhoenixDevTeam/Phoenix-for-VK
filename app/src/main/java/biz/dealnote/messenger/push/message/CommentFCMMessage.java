@@ -53,8 +53,8 @@ public class CommentFCMMessage {
 
     public static CommentFCMMessage fromRemoteMessage(@NonNull RemoteMessage remote) {
         CommentFCMMessage message = new CommentFCMMessage();
-        message.from_id = NotificationUtils.optInt(remote.getData().get("from_id"));
-        message.reply_id = NotificationUtils.optInt(remote.getData().get("reply_id"));
+        message.from_id = Integer.parseInt(remote.getData().get("from_id"));
+        message.reply_id = Integer.parseInt(remote.getData().get("reply_id"));
         //message.sex = optInt(bundle, "sex");
         //message.from = optLong(bundle, "google.sent_time");
         message.text = remote.getData().get("text");
