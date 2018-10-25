@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_sad_vector"
-                android:tint="?icon_color_on_colored_back" />
+                android:tint="?attr/icon_color_static" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                 android:gravity="center"
                 android:maxWidth="200dp"
                 android:text="@string/message_attachment_empty_text"
-                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textColor="?attr/textColorPrimary"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -76,7 +76,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
             android:src="@drawable/ic_camera_oval_vector"
-            android:tint="?icon_color_on_colored_back" />
+            android:tint="?attr/icon_color_static" />
 
         <ImageView
             android:id="@+id/button_video"
@@ -86,7 +86,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
             android:src="@drawable/video"
-            android:tint="?icon_color_on_colored_back" />
+            android:tint="?attr/icon_color_static" />
 
         <ImageView
             android:id="@+id/button_doc"
@@ -96,7 +96,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
             android:src="@drawable/book"
-            android:tint="?icon_color_on_colored_back" />
+            android:tint="?attr/icon_color_static" />
 
         <ImageButton
             android:id="@+id/button_hide"
@@ -105,7 +105,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
             android:src="@drawable/ic_arrow_down_vector"
-            android:tint="?textColorPrimaryOnColoredBack" />
+            android:tint="?attr/textColorPrimary" />
 
         <Button
             android:id="@+id/button_send"
@@ -113,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send_short"
-            android:textColor="?textColorPrimaryOnColoredBack" />
+            android:textColor="?attr/textColorPrimary" />
     </LinearLayout>
 
 </LinearLayout>

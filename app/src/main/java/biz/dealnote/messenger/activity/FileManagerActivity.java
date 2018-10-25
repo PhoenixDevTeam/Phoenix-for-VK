@@ -37,10 +37,6 @@ public class FileManagerActivity extends AppCompatActivity {
             w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             w.setStatusBarColor(CurrentTheme.getColorPrimaryDark(this));
-
-            if (Settings.get().ui().isNavigationbarColored()) {
-                w.setNavigationBarColor(CurrentTheme.getNavigationBarColor(this));
-            }
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);

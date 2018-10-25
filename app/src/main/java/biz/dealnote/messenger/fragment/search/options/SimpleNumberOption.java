@@ -31,8 +31,7 @@ public class SimpleNumberOption extends BaseOption implements Parcelable {
         if (!super.equals(o)) return false;
 
         SimpleNumberOption that = (SimpleNumberOption) o;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
-        return true;
+        return value != null ? value.equals(that.value) : that.value == null;
     }
 
     @Override

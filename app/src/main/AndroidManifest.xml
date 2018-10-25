@@ -24,7 +24,7 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/App.DayNight.Monochrome">
+        android:theme="@style/App.DayNight">
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -33,12 +33,10 @@
         <activity
             android:name=".activity.LoginActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:theme="@style/Theme.AppCompat.Light"
             android:label="@string/authorization" />
 
         <activity
             android:name=".activity.ProxyManagerActivity"
-            android:theme="@style/Base.App.DayNight"
             android:label="@string/proxy_manager_title" />
 
         <activity
@@ -96,7 +94,6 @@
 
         <activity
             android:name=".activity.PostCreateActivity"
-            android:theme="@style/Base.App.DayNight"
             android:label="@string/share_to_wall_label"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
 
@@ -113,7 +110,6 @@
             android:configChanges="keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:theme="@style/App.DayNight.Monochrome"
             android:windowSoftInputMode="adjustResize">
 
             <intent-filter>
@@ -148,14 +144,12 @@
             android:name=".activity.SelectProfilesActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name"
-            android:theme="@style/Base.App.DayNight"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
             android:name=".activity.SendAttachmentsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name"
-            android:theme="@style/Base.App.DayNight"
             android:windowSoftInputMode="adjustResize">
 
             <intent-filter>

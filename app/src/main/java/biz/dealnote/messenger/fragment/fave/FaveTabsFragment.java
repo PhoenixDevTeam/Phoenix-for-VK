@@ -84,8 +84,8 @@ public class FaveTabsFragment extends BaseFragment {
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
 
-        int tabColorPrimary = CurrentTheme.getPrimaryTextColorOnColoredBackgroundCode(getActivity());
-        int tabColorSecondary = CurrentTheme.getSecondaryTextColorOnColoredBackgroundCode(getActivity());
+        int tabColorPrimary = CurrentTheme.getPrimaryTextColorCode(getActivity());
+        int tabColorSecondary = CurrentTheme.getSecondaryTextColorCode(getActivity());
         tabLayout.setTabTextColors(tabColorSecondary, tabColorPrimary);
         tabLayout.setupWithViewPager(viewPager);
 

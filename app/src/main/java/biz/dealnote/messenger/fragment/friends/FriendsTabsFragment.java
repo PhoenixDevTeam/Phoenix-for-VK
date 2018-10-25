@@ -87,8 +87,8 @@ public class FriendsTabsFragment extends BaseMvpFragment<FriendsTabsPresenter, I
         viewPager.setOffscreenPageLimit(1);
 
         tabLayout = root.findViewById(R.id.tablayout);
-        int tabColorPrimary = CurrentTheme.getPrimaryTextColorOnColoredBackgroundCode(getActivity());
-        int tabColorSecondary = CurrentTheme.getSecondaryTextColorOnColoredBackgroundCode(getActivity());
+        int tabColorPrimary = CurrentTheme.getPrimaryTextColorCode(getActivity());
+        int tabColorSecondary = CurrentTheme.getSecondaryTextColorCode(getActivity());
 
         tabLayout.setTabTextColors(tabColorSecondary, tabColorPrimary);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);

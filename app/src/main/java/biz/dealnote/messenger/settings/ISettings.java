@@ -2,13 +2,12 @@ package biz.dealnote.messenger.settings;
 
 import android.content.Context;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StyleRes;
 
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.crypt.KeyLocationPolicy;
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.model.SwitchableCategory;
@@ -229,8 +228,6 @@ public interface ISettings {
     interface IUISettings {
         @AvatarStyle
         int getAvatarStyle();
-
-        boolean isNavigationbarColored();
 
         void storeAvatarStyle(@AvatarStyle int style);
 

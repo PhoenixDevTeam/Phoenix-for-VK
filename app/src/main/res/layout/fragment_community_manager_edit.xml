@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="end"
-                    android:textColor="?textColorPrimaryOnColoredBack"
+                    android:textColor="?attr/textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="end"
-                    android:textColor="?textColorPrimaryOnColoredBack"
+                    android:textColor="?attr/textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
 
             </LinearLayout>

@@ -80,8 +80,8 @@ public class VideosTabsFragment extends BaseFragment {
 
         TabLayout tabLayout = view.findViewById(R.id.fragment_videos_tabs);
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        int tabColorPrimary = CurrentTheme.getPrimaryTextColorOnColoredBackgroundCode(getActivity());
-        int tabColorSecondary = CurrentTheme.getSecondaryTextColorOnColoredBackgroundCode(getActivity());
+        int tabColorPrimary = CurrentTheme.getPrimaryTextColorCode(getActivity());
+        int tabColorSecondary = CurrentTheme.getSecondaryTextColorCode(getActivity());
         tabLayout.setTabTextColors(tabColorSecondary, tabColorPrimary);
         tabLayout.setupWithViewPager(viewPager);
     }

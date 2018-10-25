@@ -10,17 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -35,6 +24,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
@@ -238,8 +238,8 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         }
     }
 
-    private void postResume(Action<MainActivity> action){
-        if(resumed){
+    private void postResume(Action<MainActivity> action) {
+        if (resumed) {
             action.call(this);
         } else {
             postResumeActions.add(action);
@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     protected void onResume() {
         super.onResume();
         resumed = true;
-        for(Action<MainActivity> action : postResumeActions){
+        for (Action<MainActivity> action : postResumeActions) {
             action.call(this);
         }
         postResumeActions.clear();
@@ -750,12 +750,9 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             w.setStatusBarColor(colored ? Color.TRANSPARENT : statusbarNonColored);
+            int navigationColor = colored ? CurrentTheme.getNavigationBarColor(this) : Color.BLACK;
+            w.setNavigationBarColor(navigationColor);
 
-            if (Settings.get().ui().isNavigationbarColored()) {
-                @ColorInt
-                int navigationColor = colored ? CurrentTheme.getNavigationBarColor(this) : Color.BLACK;
-                w.setNavigationBarColor(navigationColor);
-            }
         }
 
         if (Utils.hasMarshmallow()) {
@@ -784,7 +781,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
                 w.getDecorView().setSystemUiVisibility(flags);
                 @ColorInt
-                int navigationColor = Settings.get().ui().isNavigationbarColored() && colored ?
+                int navigationColor = colored ?
                         CurrentTheme.getNavigationBarColor(this) : Color.BLACK;
                 w.setNavigationBarColor(navigationColor);
             }

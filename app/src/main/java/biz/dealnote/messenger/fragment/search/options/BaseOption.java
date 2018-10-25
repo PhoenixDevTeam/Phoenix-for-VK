@@ -85,8 +85,7 @@ public class BaseOption implements Parcelable, Cloneable {
 
         if (optionType != option.optionType) return false;
         if (key != option.key) return false;
-        if (active != option.active) return false;
-        return true;
+        return active == option.active;
     }
 
     @Override

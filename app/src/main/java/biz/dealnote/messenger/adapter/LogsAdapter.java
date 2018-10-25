@@ -118,7 +118,7 @@ public class LogsAdapter extends RecyclerBindableAdapter<LogEventWrapper, LogsAd
 
             ImageView icon = itemView.findViewById(R.id.log_icon);
             icon.getBackground().setColorFilter(CurrentTheme.getColorPrimary(context), PorterDuff.Mode.MULTIPLY);
-            icon.setColorFilter(CurrentTheme.getIconColorOnColoredBackgroundCode(context));
+            icon.setColorFilter(CurrentTheme.getIconColorStatic(context));
         }
     }
 

@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             tools:text="14"
-            android:textColor="?textColorPrimaryOnColoredBack" />
+            android:textColor="?attr/textColorPrimary" />
 
     </LinearLayout>
 

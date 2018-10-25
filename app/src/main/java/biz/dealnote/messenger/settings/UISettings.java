@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 
-import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.PreferencesFragment;
 import biz.dealnote.messenger.fragment.fave.FaveTabsFragment;
 import biz.dealnote.messenger.fragment.friends.FriendsTabsFragment;
@@ -29,12 +28,6 @@ class UISettings implements ISettings.IUISettings {
     public int getAvatarStyle() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(app);
         return preferences.getInt(PreferencesFragment.KEY_AVATAR_STYLE, AvatarStyle.CIRCLE);
-    }
-
-    @Override
-    public boolean isNavigationbarColored() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(app);
-        return preferences.getBoolean(PreferencesFragment.KEY_NAVIGATION_COLORED, false);
     }
 
     @Override

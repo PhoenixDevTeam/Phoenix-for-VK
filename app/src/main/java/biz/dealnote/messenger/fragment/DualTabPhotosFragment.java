@@ -1,18 +1,19 @@
 package biz.dealnote.messenger.fragment;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.tabs.TabLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityUtils;
@@ -74,8 +75,8 @@ public class DualTabPhotosFragment extends BaseFragment implements BackPressCall
 
         TabLayout tabLayout = root.findViewById(R.id.tablayout);
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        int tabColorPrimary = CurrentTheme.getPrimaryTextColorOnColoredBackgroundCode(getActivity());
-        int tabColorSecondary = CurrentTheme.getSecondaryTextColorOnColoredBackgroundCode(getActivity());
+        int tabColorPrimary = CurrentTheme.getPrimaryTextColorCode(getActivity());
+        int tabColorSecondary = CurrentTheme.getSecondaryTextColorCode(getActivity());
         tabLayout.setTabTextColors(tabColorSecondary, tabColorPrimary);
 
         ViewPager viewPager = root.findViewById(R.id.view_pager);
@@ -108,9 +109,7 @@ public class DualTabPhotosFragment extends BaseFragment implements BackPressCall
         if(nonNull(mPagerAdapter)){
             Fragment fragment = mPagerAdapter.findFragmentByPosition(mCurrentTab);
 
-            if(fragment instanceof BackPressCallback && !((BackPressCallback) fragment).onBackPressed()){
-                return false;
-            }
+            return !(fragment instanceof BackPressCallback) || ((BackPressCallback) fragment).onBackPressed();
         }
 
         return true;

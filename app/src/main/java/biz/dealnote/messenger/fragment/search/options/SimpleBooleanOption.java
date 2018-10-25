@@ -30,8 +30,7 @@ public class SimpleBooleanOption extends BaseOption implements Parcelable {
 
         SimpleBooleanOption that = (SimpleBooleanOption) o;
 
-        if (checked != that.checked) return false;
-        return true;
+        return checked == that.checked;
     }
 
     @Override

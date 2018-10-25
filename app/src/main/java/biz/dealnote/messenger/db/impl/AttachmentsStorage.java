@@ -5,11 +5,11 @@ import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.db.AttachToType;
 import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.AttachmentsColumns;
@@ -19,7 +19,6 @@ import biz.dealnote.messenger.db.interfaces.Cancelable;
 import biz.dealnote.messenger.db.interfaces.IAttachmentsStorage;
 import biz.dealnote.messenger.db.model.AttachmentsTypes;
 import biz.dealnote.messenger.db.model.entity.Entity;
-import biz.dealnote.messenger.exception.DatabaseException;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.util.Pair;
 import io.reactivex.Completable;
@@ -66,7 +65,7 @@ class AttachmentsStorage extends AbsStorage implements IAttachmentsStorage {
 
     static int appendAttachOperationWithStableAttachToId(@NonNull List<ContentProviderOperation> operations,
                                                          int accountId, @AttachToType int attachToType,
-                                                         int attachToDbid, @NonNull Entity entity) throws DatabaseException {
+                                                         int attachToDbid, @NonNull Entity entity) {
         ContentValues cv = new ContentValues();
         cv.put(attachToIdColumnFor(attachToType), attachToDbid);
         cv.put(typeColumnFor(attachToType), AttachmentsTypes.typeForInstance(entity));

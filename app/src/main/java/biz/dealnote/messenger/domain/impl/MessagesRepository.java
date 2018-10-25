@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.domain.impl;
 
 import android.annotation.SuppressLint;
-import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.api.interfaces.IDocsApi;
 import biz.dealnote.messenger.api.interfaces.IMessagesApi;
@@ -197,7 +197,7 @@ public class MessagesRepository implements IMessagesRepository {
                 .findSimple(accountId, peerId)
                 .flatMap(optional -> {
                     if (optional.isEmpty()) {
-                        return Single.just(Optional.<Conversation>empty());
+                        return Single.just(Optional.empty());
                     }
 
                     return Single.just(optional.get())

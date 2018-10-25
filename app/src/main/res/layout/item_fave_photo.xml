@@ -70,7 +70,7 @@
                 android:layout_marginRight="2dp"
                 android:layout_toLeftOf="@+id/vk_photo_item_comment_counter"
                 android:src="@drawable/comment_outline"
-                android:tint="?icon_color_on_colored_back" />
+                android:tint="?attr/icon_color_static" />
 
             <ImageView
                 android:id="@+id/vk_photo_item_like"
@@ -79,7 +79,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/heart"
-                android:tint="?icon_color_on_colored_back" />
+                android:tint="?attr/icon_color_static" />
 
         </RelativeLayout>
 

@@ -1,13 +1,13 @@
 package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
@@ -158,11 +158,8 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
             return true;
         }
 
-        if (post.getSignerId() > 0 && post.getSignerId() == getAccountId()) {
-            return true;
-        }
+        return post.getSignerId() > 0 && post.getSignerId() == getAccountId();
 
-        return false;
     }
 
     private boolean supportSignerInfoDisplaying() {
@@ -299,12 +296,9 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
             return post.getAuthor() instanceof Community;
         }
 
-        if (isCommunity()) {
-            // в публичных страницах всегда можно
-            return true;
-        }
+        // в публичных страницах всегда можно
+        return isCommunity();
 
-        return false;
     }
 
     private void doCommitImpl() {

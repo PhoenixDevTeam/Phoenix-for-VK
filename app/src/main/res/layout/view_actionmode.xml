@@ -28,7 +28,7 @@
         android:layout_marginLeft="72dp"
         android:text="@string/button_1"
         android:textAppearance="@style/Theme.Title.Toolbar"
-        android:textColor="?attr/textColorPrimaryOnColoredBack"
+        android:textColor="?attr/textColorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

@@ -2,20 +2,19 @@ package biz.dealnote.messenger.activity;
 
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.settings.CurrentTheme;
-import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Utils;
 
@@ -44,17 +43,14 @@ public abstract class NoMainActivity extends AppCompatActivity {
             w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             w.setStatusBarColor(CurrentTheme.getColorPrimaryDark(this));
-
-            if (Settings.get().ui().isNavigationbarColored()) {
-                w.setNavigationBarColor(CurrentTheme.getNavigationBarColor(this));
-            }
+            w.setNavigationBarColor(CurrentTheme.getNavigationBarColor(this));
         }
 
         getSupportFragmentManager().addOnBackStackChangedListener(mBackStackListener);
     }
 
     @IdRes
-    protected int getMainContainerViewId(){
+    protected int getMainContainerViewId() {
         return R.id.fragment;
     }
 

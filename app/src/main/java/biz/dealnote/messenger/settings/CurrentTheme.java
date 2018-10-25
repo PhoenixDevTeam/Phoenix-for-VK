@@ -60,8 +60,7 @@ public class CurrentTheme {
     }
 
     public static int getNavigationBarColor(Context context) {
-        boolean isWhiteTheme = PreferenceManager.getDefaultSharedPreferences(context).getString("app_theme", "theme6").equals("theme10");
-        return isWhiteTheme ? Color.BLACK : getColorFromAttrs(R.attr.colorPrimary, context, "#000000");
+        return getColorFromAttrs(R.attr.colorPrimary, context, "#000000");
     }
 
     public static int getColorAccent(Context context) {
@@ -92,16 +91,8 @@ public class CurrentTheme {
         return getColorFromAttrs(R.attr.textColorPrimary, context, "#ffffff");
     }
 
-    public static int getIconColorOnColoredBackgroundCode(Context context) {
-        return getColorFromAttrs(R.attr.icon_color_on_colored_back, context, "#ffffff");
-    }
-
-    public static int getPrimaryTextColorOnColoredBackgroundCode(Context context) {
-        return getColorFromAttrs(R.attr.textColorPrimaryOnColoredBack, context, "#ffffff");
-    }
-
-    public static int getSecondaryTextColorOnColoredBackgroundCode(Context context) {
-        return getColorFromAttrs(R.attr.textColorSecondaryOnColoredBack, context, "#ffffff");
+    public static int getSecondaryTextColorCode(Context context) {
+        return getColorFromAttrs(R.attr.textColorSecondary, context, "#ffffff");
     }
 
     public static int getDialogsUnreadColor(Context context) {
@@ -145,10 +136,6 @@ public class CurrentTheme {
 
     private static String intToHexColor(int color) {
         return String.format("#%06X", (0xFFFFFF & color));
-    }
-
-    public static int getSecondaryTextColorCode(Context context) {
-        return getColorFromAttrs(R.attr.textColorSecondary, context, "#000000");
     }
 
     public static int getDisableTextColorCode(Context context) {

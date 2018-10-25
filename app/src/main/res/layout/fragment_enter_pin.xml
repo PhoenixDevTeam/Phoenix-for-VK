@@ -31,7 +31,7 @@
             android:paddingLeft="56dp"
             android:paddingRight="56dp"
             android:text="@string/use_pin_title"
-            android:textColor="?attr/textColorPrimaryOnColoredBack"
+            android:textColor="?attr/textColorPrimary"
             android:textSize="16sp" />
 
         <LinearLayout

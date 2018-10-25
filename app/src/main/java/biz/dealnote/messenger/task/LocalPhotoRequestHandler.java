@@ -7,8 +7,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 import com.squareup.picasso.RequestHandler;
 
-import java.io.IOException;
-
 import biz.dealnote.messenger.db.Stores;
 
 public class LocalPhotoRequestHandler extends RequestHandler {
@@ -25,7 +23,7 @@ public class LocalPhotoRequestHandler extends RequestHandler {
     }
 
     @Override
-    public RequestHandler.Result load(Request data, int arg1) throws IOException {
+    public RequestHandler.Result load(Request data, int arg1) {
         long imageId = Long.parseLong(data.uri.getLastPathSegment());
 
         Bitmap bm = Stores.getInstance()

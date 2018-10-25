@@ -1,6 +1,18 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Base.App.DayNight" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="App.DayNight" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:navigationBarColor" tools:targetApi="o_mr1">@android:color/white</item>
+        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">#aaaaaa</item>
+
+        <item name="colorPrimary">#FFF</item>
+        <item name="colorPrimaryDark">#FFF</item>
+        <item name="colorAccent">#233446</item>
+
+        <item name="icon_color_active">#233446</item>
+        <item name="icon_color_static">#757575</item>
+
         <item name="android:colorBackground">@android:color/background_light</item>
 
         <item name="windowActionModeOverlay">true</item>
@@ -9,13 +21,7 @@
         <item name="textColorSecondary">#8a000000</item>
         <item name="textColorDisabled">#39000000</item>
 
-        <item name="textColorPrimaryOnColoredBack">#ffffffff</item>
-        <item name="textColorSecondaryOnColoredBack">#b3ffffff</item>
-        <item name="textColorDisabledOnColoredBack">#4Dffffff</item>
-
         <item name="dialogs_unread_color">#20b0b0b0</item>
-        <item name="icon_color_on_colored_back">#fff</item>
-        <item name="icon_color_static">#757575</item>
         <item name="navi_menu_selector">@drawable/list_selector_white</item>
         <item name="message_unread_color">#90234b81</item>
         <item name="list_divider_color">@color/light_divider_color</item>
@@ -30,31 +36,32 @@
         <item name="toolbarElevation">@dimen/toolbar_with_elevation</item>
         <item name="toolbarAppStyle">@style/Toolbar.White</item>
         <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="toolbarDrawerIcon">@drawable/phoenix_drawer</item>
-        <item name="toolbarBackIcon">@drawable/arrow_left</item>
-        <item name="toolbarCloseIcon">@drawable/close</item>
-        <item name="toolbarOKIcon">@drawable/check</item>
-        <item name="toolbarPlusIcon">@drawable/plus</item>
-        <item name="toolbarSearchIcon">@drawable/magnify</item>
-        <item name="toolbarCopyIcon">@drawable/content_copy</item>
-        <item name="toolbarDeleteIcon">@drawable/delete</item>
-        <item name="toolbarUpIcon">@drawable/chevron_up</item>
-        <item name="toolbarGraphicIcon">@drawable/chart_bar</item>
-        <item name="toolbarEditIcon">@drawable/pencil</item>
-        <item name="toolbarForwardIcon">@drawable/forward</item>
-        <item name="toolbarLockIcon">@drawable/lock</item>
-        <item name="toolbarLockPlusIcon">@drawable/ic_crypt_plus_white_vector</item>
-        <item name="toolbarUnlockIcon">@drawable/unlock</item>
-        <item name="toolbarDoubleUpIcon">@drawable/double_up</item>
-        <item name="toolbarDoubleDownIcon">@drawable/double_down</item>
-        <item name="toolbarPinIcon">@drawable/ic_toolbar_pin_white</item>
+
+        <item name="toolbarDrawerIcon">@drawable/phoenix_drawer_grey600</item>
+        <item name="toolbarBackIcon">@drawable/arrow_left_grey600</item>
+        <item name="toolbarSearchIcon">@drawable/magnify_grey600</item>
+        <item name="toolbarCopyIcon">@drawable/content_copy_grey600</item>
+        <item name="toolbarDeleteIcon">@drawable/delete_grey600</item>
+        <item name="toolbarUpIcon">@drawable/chevron_up_grey</item>
+        <item name="toolbarGraphicIcon">@drawable/chart_bar_grey600</item>
+        <item name="toolbarEditIcon">@drawable/pencil_grey600</item>
+        <item name="toolbarForwardIcon">@drawable/forward_grey600</item>
+        <item name="toolbarOKIcon">@drawable/check_grey600</item>
+        <item name="toolbarCloseIcon">@drawable/close_grey600</item>
+        <item name="toolbarPlusIcon">@drawable/ic_plus_gray</item>
+        <item name="toolbarLockIcon">@drawable/lock_grey600</item>
+        <item name="toolbarLockPlusIcon">@drawable/ic_crypt_plus_gray600_vector</item>
+        <item name="toolbarUnlockIcon">@drawable/unlock_grey600</item>
+        <item name="toolbarDoubleUpIcon">@drawable/double_up_grey600</item>
+        <item name="toolbarDoubleDownIcon">@drawable/double_down_grey600</item>
+        <item name="toolbarPinIcon">@drawable/ic_toolbar_pin_gray600</item>
         <item name="tabsTheme">@style/Theme.Tablayout.Dark</item>
         <item name="statusbarNonColoredColor">#000</item>
 
         <item name="chat_background_cookies">@drawable/cookies_white</item>
         <item name="chat_background_lines">@drawable/lines_white</item>
 
-        <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash</item>
+        <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash_inverse</item>
     </style>
 
 

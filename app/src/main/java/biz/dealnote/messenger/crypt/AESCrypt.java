@@ -4,6 +4,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -42,7 +43,7 @@ public final class AESCrypt {
      */
     private static SecretKeySpec generateKey(final String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         final MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
-        byte[] bytes = password.getBytes("UTF-8");
+        byte[] bytes = password.getBytes(StandardCharsets.UTF_8);
         digest.update(bytes, 0, bytes.length);
         byte[] key = digest.digest();
 

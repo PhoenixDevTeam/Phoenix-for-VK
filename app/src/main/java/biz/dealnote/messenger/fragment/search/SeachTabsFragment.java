@@ -97,8 +97,8 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
         View root = inflater.inflate(R.layout.fragment_search_tabs, container, false);
         mViewPager = root.findViewById(R.id.viewpager);
 
-        int tabColorPrimary = CurrentTheme.getPrimaryTextColorOnColoredBackgroundCode(getActivity());
-        int tabColorSecondary = CurrentTheme.getSecondaryTextColorOnColoredBackgroundCode(getActivity());
+        int tabColorPrimary = CurrentTheme.getPrimaryTextColorCode(getActivity());
+        int tabColorSecondary = CurrentTheme.getSecondaryTextColorCode(getActivity());
 
         TabLayout tabLayout = root.findViewById(R.id.tablayout);
         tabLayout.setTabTextColors(tabColorSecondary, tabColorPrimary);

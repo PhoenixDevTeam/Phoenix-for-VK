@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridView;
 
-import java.util.Arrays;
-
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.view.emoji.section.Emojicon;
 import biz.dealnote.messenger.view.emoji.section.People;
@@ -27,7 +25,7 @@ public class EmojiconGridView {
         if (emojicons == null) {
             mData = People.DATA;
         } else {
-            mData = Arrays.asList(emojicons).toArray(new Emojicon[emojicons.length]);
+            mData = emojicons.clone();
         }
 
         EmojiAdapter mAdapter = new EmojiAdapter(rootView.getContext(), mData);

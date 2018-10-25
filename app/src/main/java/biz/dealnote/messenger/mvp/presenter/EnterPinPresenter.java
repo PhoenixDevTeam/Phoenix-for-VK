@@ -7,12 +7,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.domain.IOwnersInteractor;
@@ -155,13 +155,13 @@ public class EnterPinPresenter extends RxSupportPresenter<IEnterPinView> {
         @Override
         public void onAuthenticationError(int errMsgId, CharSequence errString) {
             if(errMsgId != FingerprintManager.FINGERPRINT_ERROR_CANCELED){
-                callPresenter(targer -> targer.safeShowError(targer.getView(), errString.toString()));
+                callPresenter(targer -> safeShowError(targer.getView(), errString.toString()));
             }
         }
 
         @Override
         public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
-            callPresenter(targer -> targer.safeShowError(targer.getView(), helpString.toString()));
+            callPresenter(targer -> safeShowError(targer.getView(), helpString.toString()));
         }
 
         @Override

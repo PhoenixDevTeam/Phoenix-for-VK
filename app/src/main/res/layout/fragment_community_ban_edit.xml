@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="end"
-                    android:textColor="?textColorPrimaryOnColoredBack"
+                    android:textColor="?attr/textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -86,11 +86,11 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="end"
-                    android:textColor="?textColorPrimaryOnColoredBack"
+                    android:textColor="?attr/textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
 
                 <TextView
-                    android:textColorLink="?textColorPrimaryOnColoredBack"
+                    android:textColorLink="?attr/textColorPrimary"
                     tools:text="Заблокирован Русланом Колбасой 20 мая 2017 в 16:13"
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
@@ -98,7 +98,7 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-light"
                     android:gravity="end"
-                    android:textColor="?textColorPrimaryOnColoredBack"
+                    android:textColor="?attr/textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
 
             </LinearLayout>

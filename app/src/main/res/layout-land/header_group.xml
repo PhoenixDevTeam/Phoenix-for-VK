@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:gravity="right"
-                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_big_title" />
 
             <TextView
@@ -52,7 +52,7 @@
                 android:fontFamily="sans-serif-light"
                 android:gravity="right"
                 android:maxLines="6"
-                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
                 android:visibility="visible" />
 
@@ -65,7 +65,7 @@
                 android:fontFamily="sans-serif-light"
                 android:gravity="right"
                 android:maxLines="6"
-                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
                 android:visibility="visible"
                 emojicon:emojiconSize="20sp" />

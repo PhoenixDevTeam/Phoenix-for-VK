@@ -63,7 +63,7 @@ public class ExoGifPlayer implements IGifPlayer {
     }
 
     @Override
-    public void play() throws PlayerPrepareException {
+    public void play() {
         if(supposedToBePlaying) return;
 
         supposedToBePlaying = true;

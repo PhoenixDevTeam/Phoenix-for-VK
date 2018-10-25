@@ -53,8 +53,7 @@ public class SpinnerOption extends BaseOption implements Parcelable {
             if (o == null || getClass() != o.getClass()) return false;
 
             Entry entry = (Entry) o;
-            if (id != entry.id) return false;
-            return true;
+            return id == entry.id;
         }
 
         @Override
@@ -101,8 +100,7 @@ public class SpinnerOption extends BaseOption implements Parcelable {
         if (!super.equals(o)) return false;
 
         SpinnerOption option = (SpinnerOption) o;
-        if (value != null ? !value.equals(option.value) : option.value != null) return false;
-        return true;
+        return value != null ? value.equals(option.value) : option.value == null;
     }
 
     @Override

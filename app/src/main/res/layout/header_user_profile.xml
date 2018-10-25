@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:gravity="right"
-                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_big_title" />
 
 
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:gravity="right"
-                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle" />
 
             <TextView
@@ -81,7 +81,7 @@
                 android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-light"
                 android:gravity="right"
-                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle" />
 
             <biz.dealnote.messenger.view.emoji.EmojiconTextView
@@ -93,7 +93,7 @@
                 android:fontFamily="sans-serif-light"
                 android:gravity="right"
                 android:maxLines="6"
-                android:textColor="?textColorPrimaryOnColoredBack"
+                android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
                 android:visibility="visible"
                 app:emojiconSize="20sp" />

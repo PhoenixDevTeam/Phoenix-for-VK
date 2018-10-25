@@ -20,7 +20,7 @@
         <biz.dealnote.messenger.view.CircleImageButton
             android:padding="12dp"
             app:backgroundColor="?attr/colorAccent"
-            app:iconColor="?attr/icon_color_on_colored_back"
+            app:iconColor="?attr/icon_color_static"
             android:src="@drawable/ic_external"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -29,8 +29,7 @@ public class SimpleTextOption extends BaseOption implements Parcelable {
         if (!super.equals(o)) return false;
 
         SimpleTextOption that = (SimpleTextOption) o;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
-        return true;
+        return value != null ? value.equals(that.value) : that.value == null;
     }
 
     @Override
