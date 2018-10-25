@@ -234,9 +234,6 @@ public interface ISettings {
 
         void storeAvatarStyle(@AvatarStyle int style);
 
-        @StyleRes
-        int getMainTheme();
-
         boolean isDarkModeEnabled(Context context);
 
         int getNightMode();
@@ -246,7 +243,5 @@ public interface ISettings {
         void notifyPlaceResumed(int type);
 
         boolean isSystemEmoji();
-
-        boolean isMonochromeWhite(Context context);
     }
 }

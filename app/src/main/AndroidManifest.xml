@@ -24,7 +24,7 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Base.App.DayNight">
+        android:theme="@style/App.DayNight.Monochrome">
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -113,7 +113,7 @@
             android:configChanges="keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:theme="@style/Base.App.DayNight"
+            android:theme="@style/App.DayNight.Monochrome"
             android:windowSoftInputMode="adjustResize">
 
             <intent-filter>

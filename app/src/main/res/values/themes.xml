@@ -1,89 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Light themes here-->
-
-    <!-- Blue -->
-    <style name="App.DayNight.Blue" parent="Base.App.DayNight">
-        <item name="colorPrimary">#527DAD</item>
-        <item name="colorPrimaryDark">#3B5973</item>
-        <item name="colorAccent">#487197</item>
-
-        <item name="icon_color_active">#487197</item>
-    </style>
-
-    <!-- Light Blue -->
-    <style name="App.DayNight.LightBlue" parent="Base.App.DayNight">
-        <item name="colorPrimary">#1976D2</item>
-        <item name="colorPrimaryDark">#1565C0</item>
-        <item name="colorAccent">#c2185b</item>
-
-        <item name="icon_color_active">#1976D2</item>
-    </style>
-
-    <!-- Grey -->
-    <style name="App.DayNight.Grey" parent="Base.App.DayNight">
-        <item name="colorPrimary">#2B5266</item>
-        <item name="colorPrimaryDark">#254659</item>
-        <item name="colorAccent">#387C9C</item>
-
-        <item name="icon_color_active">#387C9C</item>
-    </style>
-
-    <!-- Teal -->
-    <style name="App.DayNight.Teal" parent="Base.App.DayNight">
-        <item name="colorPrimary">#FF009688</item>
-        <item name="colorPrimaryDark">#00796B</item>
-        <item name="colorAccent">#C65954</item>
-
-        <item name="icon_color_active">#00897B</item>
-    </style>
-
-    <!-- Red -->
-    <style name="App.DayNight.Red" parent="Base.App.DayNight">
-        <item name="colorPrimary">#d50000</item>
-        <item name="colorPrimaryDark">#FFB71C1C</item>
-        <item name="colorAccent">#00695c</item>
-
-        <item name="icon_color_active">#d50000</item>
-    </style>
-
-    <!-- Indigo -->
-    <style name="App.DayNight.Indigo" parent="Base.App.DayNight">
-        <item name="colorPrimary">#3F51B5</item>
-        <item name="colorPrimaryDark">#303F9F</item>
-        <item name="colorAccent">#E91E63</item>
-
-        <item name="icon_color_active">#3F51B5</item>
-    </style>
-
-    <!-- Pink -->
-    <style name="App.DayNight.Pink" parent="Base.App.DayNight">
-        <item name="colorPrimary">#E91E63</item>
-        <item name="colorPrimaryDark">#C2185B</item>
-        <item name="colorAccent">#3F51B5</item>
-
-        <item name="icon_color_active">#E91E63</item>
-    </style>
-
-    <!-- Orange -->
-    <style name="App.DayNight.Orange" parent="Base.App.DayNight">
-        <item name="colorPrimary">#FF5722</item>
-        <item name="colorPrimaryDark">#E64A19</item>
-        <item name="colorAccent">#00BCD4</item>
-
-        <item name="icon_color_active">#FF5722</item>
-    </style>
-
-    <style name="App.DayNight.Purple" parent="Base.App.DayNight">
-        <item name="colorPrimary">#674391</item>
-        <item name="colorPrimaryDark">#57397b</item>
-        <item name="colorAccent">#E91E63</item>
-
-        <item name="icon_color_active">#674391</item>
-    </style>
-
-    <!-- Monochrome-->
     <style name="App.DayNight.Monochrome" parent="Base.App.DayNight">
         <item name="colorPrimary">#FFF</item>
         <item name="colorPrimaryDark">#aaaaaa</item>
@@ -98,7 +15,6 @@
         <item name="textColorDisabledOnColoredBack">#39000000</item>
 
         <item name="toolbarElevation">@dimen/toolbar_no_elevation</item>
-        <item name="toolbarAppStyle">@style/Toolbar.White</item>
         <item name="toolbarDrawerIcon">@drawable/phoenix_drawer_grey600</item>
         <item name="toolbarBackIcon">@drawable/arrow_left_grey600</item>
         <item name="toolbarSearchIcon">@drawable/magnify_grey600</item>
@@ -119,39 +35,7 @@
         <item name="toolbarPinIcon">@drawable/ic_toolbar_pin_gray600</item>
         <item name="tabsTheme">@style/Theme.Tablayout</item>
 
-
         <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash_inverse</item>
     </style>
-
-    <!-- Green -->
-    <style name="App.DayNight.Green" parent="Base.App.DayNight">
-        <item name="colorPrimary">#0F9D58</item>
-        <item name="colorPrimaryDark">#0C7E46</item>
-        <item name="colorAccent">#26be74</item>
-
-        <item name="icon_color_active">#0F9D58</item>
-    </style>
-
-    <!-- Pixel -->
-    <style name="App.DayNight.Pixel" parent="Base.App.DayNight">
-        <item name="colorPrimary">#4285F4</item>
-        <item name="colorPrimaryDark">#2962FF</item>
-        <item name="colorAccent">#1E88E5</item>
-
-        <item name="icon_color_active">#1E88E5</item>
-    </style>
-
-    <style name="App.DayNight.Amoled.Blue" parent="App.DayNight.Blue"/>
-    <style name="App.DayNight.Amoled.LightBlue" parent="App.DayNight.LightBlue"/>
-    <style name="App.DayNight.Amoled.Grey" parent="App.DayNight.Grey"/>
-    <style name="App.DayNight.Amoled.Teal" parent="App.DayNight.Teal"/>
-    <style name="App.DayNight.Amoled.Red" parent="App.DayNight.Red"/>
-    <style name="App.DayNight.Amoled.Indigo" parent="App.DayNight.Indigo"/>
-    <style name="App.DayNight.Amoled.Pink" parent="App.DayNight.Pink"/>
-    <style name="App.DayNight.Amoled.Orange" parent="App.DayNight.Orange"/>
-    <style name="App.DayNight.Amoled.Purple" parent="App.DayNight.Purple"/>
-    <style name="App.DayNight.Amoled.Monochrome" parent="App.DayNight.Monochrome"/>
-    <style name="App.DayNight.Amoled.Green" parent="App.DayNight.Green"/>
-    <style name="App.DayNight.Amoled.Pixel" parent="App.DayNight.Pixel"/>
 
 </resources>

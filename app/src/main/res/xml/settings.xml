@@ -76,13 +76,6 @@
         android:key="group_appearance"
         android:title="@string/appearance_settings">
 
-        <ListPreference
-            android:defaultValue="theme6"
-            android:entries="@array/array_theme_names"
-            android:entryValues="@array/array_theme_values"
-            android:key="app_theme"
-            android:title="@string/choose_theme_title" />
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="amoled_night_mode"
@@ -120,14 +113,6 @@
             android:key="drawer_categories"
             android:summary="@string/drawer_categories_summary"
             android:title="@string/drawer_categories_title" />
-
-        <Preference
-            android:key="light_sidebar_background"
-            android:title="@string/light_background_image" />
-
-        <Preference
-            android:key="dark_sidebar_background"
-            android:title="@string/dark_background_image" />
 
         <Preference
             android:key="reset_sidebar_background"

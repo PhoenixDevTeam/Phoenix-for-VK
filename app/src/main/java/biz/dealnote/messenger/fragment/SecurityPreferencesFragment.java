@@ -3,10 +3,7 @@ package biz.dealnote.messenger.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.SwitchPreference;
 import androidx.annotation.NonNull;
-import androidx.core.preference.PreferenceFragment;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +14,9 @@ import android.widget.Toast;
 
 import java.util.Collection;
 
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreference;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
@@ -29,13 +29,12 @@ import biz.dealnote.messenger.settings.SecuritySettings;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.AssertUtils;
 
-public class SecurityPreferencesFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
+public class SecurityPreferencesFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
     private SwitchPreference mUsePinForSecurityPreference;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.security_settings);
 
         mUsePinForSecurityPreference = (SwitchPreference) findPreference(SecuritySettings.KEY_USE_PIN_FOR_SECURITY);
@@ -109,7 +108,7 @@ public class SecurityPreferencesFragment extends PreferenceFragment implements P
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.preference_list_fragment, container, false);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_preferences, container, false);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         return root;
     }
@@ -130,7 +129,7 @@ public class SecurityPreferencesFragment extends PreferenceFragment implements P
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(getActivity(),true)
+                .setBarsColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
     }

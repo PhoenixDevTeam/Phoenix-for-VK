@@ -120,7 +120,7 @@ public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresent
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setStatusBarColored(false, false)
+                .setBarsColored(false, false)
                 .build()
                 .apply(requireActivity());
     }

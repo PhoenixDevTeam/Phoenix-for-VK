@@ -336,7 +336,7 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(getActivity(), true)
+                .setBarsColored(getActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

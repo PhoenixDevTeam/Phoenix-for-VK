@@ -100,7 +100,7 @@ public class UserDetailsFragment extends BaseMvpFragment<UserDetailsPresenter, I
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(requireActivity(), true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

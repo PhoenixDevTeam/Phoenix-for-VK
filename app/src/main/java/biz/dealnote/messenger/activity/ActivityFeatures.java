@@ -73,13 +73,13 @@ public class ActivityFeatures {
             b.statusbarColorFeature = this;
         }
 
-        public Builder setStatusBarColored(Context context, boolean colored){
+        public Builder setBarsColored(Context context, boolean colored){
             this.statusBarColorOption = colored ? STATUSBAR_COLOR_COLORED : STATUSBAR_COLOR_NON_COLORED;
-            this.statusBarIconInvertedOption = Settings.get().ui().isMonochromeWhite(context);
+            this.statusBarIconInvertedOption = !Settings.get().ui().isDarkModeEnabled(context);
             return builder;
         }
 
-        public Builder setStatusBarColored(boolean colored, boolean invertIcons){
+        public Builder setBarsColored(boolean colored, boolean invertIcons){
             this.statusBarColorOption = colored ? STATUSBAR_COLOR_COLORED : STATUSBAR_COLOR_NON_COLORED;
             this.statusBarIconInvertedOption = invertIcons;
             return builder;

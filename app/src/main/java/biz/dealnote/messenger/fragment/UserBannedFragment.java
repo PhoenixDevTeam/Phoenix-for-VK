@@ -150,7 +150,7 @@ public class UserBannedFragment extends BaseMvpFragment<UserBannedPresenter, IUs
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(getActivity(),true)
+                .setBarsColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

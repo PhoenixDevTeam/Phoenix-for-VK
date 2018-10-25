@@ -128,16 +128,6 @@ public class CurrentTheme {
         }
     }
 
-    public static int getBackgroundRes(Activity context, int attrId) {
-        //int[] textSizeAttr = new int[]{attrId};
-        //int indexOfAttrTextSize = 0;
-        //TypedArray a = context.obtainStyledAttributes(textSizeAttr);
-        //int resId = a.getResourceId(indexOfAttrTextSize, -1);
-        //a.recycle();
-        //return resId;
-        return getResIdFromAttribute(context, attrId);
-    }
-
     public static int getResIdFromAttribute(final Activity activity, final int attr) {
         if (attr == 0) {
             return 0;

@@ -242,7 +242,7 @@ public class CreatePhotoAlbumFragment extends BaseMvpFragment<EditPhotoAlbumPres
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setStatusBarColored(getActivity(),true)
+                .setBarsColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
     }

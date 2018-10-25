@@ -448,7 +448,7 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setStatusBarColored(getActivity(),true)
+                .setBarsColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

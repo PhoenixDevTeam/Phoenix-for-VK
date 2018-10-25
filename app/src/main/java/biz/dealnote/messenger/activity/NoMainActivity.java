@@ -28,10 +28,6 @@ public abstract class NoMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(Settings.get()
-                .ui()
-                .getMainTheme());
-
         setContentView(R.layout.activity_no_main);
 
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {

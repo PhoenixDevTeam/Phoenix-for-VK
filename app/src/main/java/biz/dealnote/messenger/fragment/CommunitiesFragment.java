@@ -154,7 +154,7 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(getActivity(), true)
+                .setBarsColored(getActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

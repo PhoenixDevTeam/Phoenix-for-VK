@@ -18,10 +18,6 @@ public class AppPrefs {
         return isPackageIntalled(context, "com.google.android.youtube");
     }
 
-    public static boolean isAudioPlayAllowed(Context context) {
-        return isPackageIntalled(context, "ru.test.musicenabler");
-    }
-
     private static boolean isPackageIntalled(Context context, String name) {
         PackageManager pm = context.getPackageManager();
         try {
@@ -30,22 +26,6 @@ public class AppPrefs {
         } catch (PackageManager.NameNotFoundException ignored) {
             return false;
         }
-    }
-
-    public static long restorePts(Context context, int accountId) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getLong("pts" + accountId, 0L);
-    }
-
-    public static void setPts(Context context, int acooutnId, long pts) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong("pts" + acooutnId, pts).apply();
-    }
-
-    public static void storeTs(Context context, int accountId, long ts) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong("ts" + accountId, ts).apply();
-    }
-
-    public static long restoreTs(Context context, int accountId) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getLong("ts" + accountId, 0L);
     }
 
     public static boolean isFullApp() {

@@ -54,10 +54,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements SurfaceHol
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(Settings.get()
-                .ui()
-                .getMainTheme());
-
         setContentView(R.layout.activity_video);
 
         if (Utils.hasLollipop()) {

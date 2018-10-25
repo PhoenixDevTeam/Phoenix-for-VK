@@ -126,7 +126,7 @@ public class VideosFragment extends BaseMvpFragment<VideosListPresenter, IVideos
             new ActivityFeatures.Builder()
                     .begin()
                     .setBlockNavigationDrawer(false)
-                    .setStatusBarColored(getActivity(),true)
+                    .setBarsColored(getActivity(),true)
                     .build()
                     .apply(requireActivity());
         }

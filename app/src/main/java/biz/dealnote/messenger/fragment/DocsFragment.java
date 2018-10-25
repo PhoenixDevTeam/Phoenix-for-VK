@@ -386,7 +386,7 @@ public class DocsFragment extends BaseMvpFragment<DocsListPresenter, IDocListVie
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(getActivity(),true)
+                .setBarsColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
     }

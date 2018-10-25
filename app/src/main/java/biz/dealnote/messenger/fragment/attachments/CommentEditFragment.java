@@ -79,7 +79,7 @@ public class CommentEditFragment extends AbsAttachmentsEditFragment<CommentEditP
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setStatusBarColored(getActivity(),true)
+                .setBarsColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
     }

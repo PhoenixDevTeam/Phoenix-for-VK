@@ -20,7 +20,6 @@
         <item name="textColorDisabledOnColoredBack">#39000000</item>
 
         <item name="toolbarElevation">@dimen/toolbar_no_elevation</item>
-        <item name="toolbarAppStyle">@style/Toolbar.White</item>
         <item name="toolbarDrawerIcon">@drawable/phoenix_drawer_grey600</item>
         <item name="toolbarBackIcon">@drawable/arrow_left_grey600</item>
         <item name="toolbarSearchIcon">@drawable/magnify_grey600</item>

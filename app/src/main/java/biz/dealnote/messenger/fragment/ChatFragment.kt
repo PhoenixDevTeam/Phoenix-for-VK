@@ -9,11 +9,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.annotation.AttrRes
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.text.InputType
 import android.util.SparseBooleanArray
 import android.view.*
@@ -750,7 +747,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(activity, true)
+                .setBarsColored(activity, true)
                 .build()
                 .apply(requireActivity())
     }

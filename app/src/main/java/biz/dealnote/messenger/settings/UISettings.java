@@ -46,41 +46,6 @@ class UISettings implements ISettings.IUISettings {
     }
 
     @Override
-    public int getMainTheme() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(app);
-        String theme = preferences.getString("app_theme", "theme6");
-        boolean amoledMode = preferences.getBoolean("amoled_night_mode", false);
-        switch (theme) {
-            case "theme1":
-                return amoledMode ? R.style.App_DayNight_Amoled_Blue : R.style.App_DayNight_Blue;
-            case "theme2":
-                return amoledMode ? R.style.App_DayNight_Amoled_LightBlue : R.style.App_DayNight_LightBlue;
-            case "theme3":
-                return amoledMode ? R.style.App_DayNight_Amoled_Grey : R.style.App_DayNight_Grey;
-            case "theme4":
-                return amoledMode ? R.style.App_DayNight_Amoled_Teal : R.style.App_DayNight_Teal;
-            case "theme5":
-                return amoledMode ? R.style.App_DayNight_Amoled_Red : R.style.App_DayNight_Red;
-            case "theme6":
-                return amoledMode ? R.style.App_DayNight_Amoled_Indigo : R.style.App_DayNight_Indigo;
-            case "theme7":
-                return amoledMode ? R.style.App_DayNight_Amoled_Pink : R.style.App_DayNight_Pink;
-            case "theme8":
-                return amoledMode ? R.style.App_DayNight_Amoled_Orange : R.style.App_DayNight_Orange;
-            case "theme9":
-                return amoledMode ? R.style.App_DayNight_Amoled_Purple : R.style.App_DayNight_Purple;
-            case "theme10":
-                return amoledMode ? R.style.App_DayNight_Amoled_Monochrome : R.style.App_DayNight_Monochrome;
-            case "theme11":
-                return amoledMode ? R.style.App_DayNight_Amoled_Green : R.style.App_DayNight_Green;
-            case "theme12":
-                return amoledMode ? R.style.App_DayNight_Amoled_Pixel : R.style.App_DayNight_Pixel;
-            default:
-                return amoledMode ? R.style.App_DayNight_Amoled_Indigo : R.style.App_DayNight_Indigo;
-        }
-    }
-
-    @Override
     public boolean isDarkModeEnabled(Context context) {
         int nightMode = context.getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
@@ -101,7 +66,6 @@ class UISettings implements ISettings.IUISettings {
     public int getNightMode() {
         String mode = PreferenceManager.getDefaultSharedPreferences(app)
                 .getString("night_switch", String.valueOf(NightMode.DISABLE));
-        //noinspection ResourceType
         return Integer.parseInt(mode);
     }
 
@@ -178,10 +142,5 @@ class UISettings implements ISettings.IUISettings {
     @Override
     public boolean isSystemEmoji() {
         return PreferenceManager.getDefaultSharedPreferences(app).getBoolean("emojis_type", false);
-    }
-
-    @Override
-    public boolean isMonochromeWhite(Context context) {
-        return (getMainTheme() == R.style.App_DayNight_Monochrome || getMainTheme() == R.style.App_DayNight_Amoled_Monochrome) && !isDarkModeEnabled(context);
     }
 }

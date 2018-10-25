@@ -128,7 +128,7 @@ public class CreatePollFragment extends BaseMvpFragment<CreatePollPresenter, ICr
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setStatusBarColored(getActivity(),true)
+                .setBarsColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
     }

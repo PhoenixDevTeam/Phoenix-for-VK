@@ -185,17 +185,13 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
         bindToAudioPlayService();
 
-        setTheme(Settings.get()
-                .ui()
-                .getMainTheme());
-
         setContentView(mLayoutRes);
 
         mAccountId = Settings.get()
                 .accounts()
                 .getCurrent();
 
-        setStatusbarColored(true, Settings.get().ui().isMonochromeWhite(this));
+        setStatusbarColored(true, Settings.get().ui().isDarkModeEnabled(this));
 
         mDrawerLayout = findViewById(R.id.my_drawer_layout);
         mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {

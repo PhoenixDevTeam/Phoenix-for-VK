@@ -119,7 +119,7 @@ public class BrowserFragment extends BaseFragment implements BackPressCallback {
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(getActivity(), true)
+                .setBarsColored(getActivity(), true)
                 .build()
                 .apply(getActivity());
     }

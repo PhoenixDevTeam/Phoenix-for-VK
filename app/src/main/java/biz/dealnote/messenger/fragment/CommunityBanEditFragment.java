@@ -148,7 +148,7 @@ public class CommunityBanEditFragment extends BaseMvpFragment<CommunityBanEditPr
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setStatusBarColored(getActivity(),true)
+                .setBarsColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
     }

@@ -397,7 +397,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(getActivity(), true)
+                .setBarsColored(getActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

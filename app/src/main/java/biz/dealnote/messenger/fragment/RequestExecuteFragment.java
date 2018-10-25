@@ -91,7 +91,7 @@ public class RequestExecuteFragment extends BaseMvpFragment<RequestExecutePresen
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(getActivity(),true)
+                .setBarsColored(getActivity(),true)
                 .build()
                 .apply(getActivity());
     }

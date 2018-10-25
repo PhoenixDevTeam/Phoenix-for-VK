@@ -10,13 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceScreen;
 import androidx.annotation.NonNull;
-import androidx.core.preference.PreferenceFragment;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,13 +34,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.EnterPinActivity;
-import biz.dealnote.messenger.activity.PhotosActivity;
 import biz.dealnote.messenger.activity.ProxyManagerActivity;
 import biz.dealnote.messenger.api.Apis;
 import biz.dealnote.messenger.api.PicassoInstance;
@@ -69,18 +68,16 @@ import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.NightMode;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.util.AppPerms;
 import biz.dealnote.messenger.util.MaskTransformation;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.RoundTransformation;
 import biz.dealnote.messenger.util.Utils;
 
-import static android.preference.Preference.OnPreferenceChangeListener;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 import static biz.dealnote.messenger.util.Utils.safelyClose;
 import static biz.dealnote.messenger.util.Utils.safelyRecycle;
 
-public class PreferencesFragment extends PreferenceFragment {
+public class PreferencesFragment extends PreferenceFragmentCompat {
 
     public static final int APP_GROUP_ID = 72124992;
 
@@ -91,9 +88,7 @@ public class PreferencesFragment extends PreferenceFragment {
     public static final String KEY_DEFAULT_CATEGORY = "default_category";
     public static final String KEY_AVATAR_STYLE = "avatar_style";
     public static final String KEY_NAVIGATION_COLORED = "navigation_colored";
-    private static final String KEY_APP_THEME = "app_theme";
     private static final String KEY_NIGHT_SWITCH = "night_switch";
-    private static final String KEY_AMOLED_NIGHT = "amoled_night_mode";
     private static final String KEY_TALK_ABOUT = "talk_about";
     private static final String KEY_JOIN_APP_GROUP = "join_app_group";
     private static final String KEY_ADD_COMMENT = "add_comment";
@@ -149,8 +144,7 @@ public class PreferencesFragment extends PreferenceFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.settings);
 
         if (!AppPrefs.isFullApp()) {
@@ -170,19 +164,8 @@ public class PreferencesFragment extends PreferenceFragment {
             screen.addPreference(getFullApp);
         }
 
-        OnPreferenceChangeListener recreateListener = (preference, o) -> {
-            requireActivity().recreate();
-            return true;
-        };
-
-        final ListPreference themePreference = (ListPreference) findPreference(KEY_APP_THEME);
         final ListPreference nightPreference = (ListPreference) findPreference(KEY_NIGHT_SWITCH);
 
-        final CheckBoxPreference amoledNightMode = (CheckBoxPreference) findPreference(KEY_AMOLED_NIGHT);
-        final CheckBoxPreference navigationbarColorPreference = (CheckBoxPreference) findPreference(KEY_NAVIGATION_COLORED);
-
-        amoledNightMode.setOnPreferenceChangeListener(recreateListener);
-        themePreference.setOnPreferenceChangeListener(recreateListener);
         nightPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             switch (Integer.parseInt(newValue.toString())) {
                 case NightMode.DISABLE:
@@ -205,8 +188,6 @@ public class PreferencesFragment extends PreferenceFragment {
             Settings.get().main().notifyPrefPreviewSizeChanged();
             return true;
         });
-
-        navigationbarColorPreference.setOnPreferenceChangeListener(recreateListener);
 
         ListPreference defCategory = (ListPreference) findPreference(KEY_DEFAULT_CATEGORY);
         initStartPagePreference(defCategory);
@@ -281,45 +262,6 @@ public class PreferencesFragment extends PreferenceFragment {
             });
         }
 
-        Preference lightSideBarPreference = findPreference("light_sidebar_background");
-        if (lightSideBarPreference != null) {
-            lightSideBarPreference.setOnPreferenceClickListener(preference -> {
-                selectLocalImage(REQUEST_LIGHT_SIDEBAR_BACKGROUND);
-                return true;
-            });
-        }
-
-        Preference darkSideBarPreference = findPreference("dark_sidebar_background");
-        if (darkSideBarPreference != null) {
-            darkSideBarPreference.setOnPreferenceClickListener(preference -> {
-                selectLocalImage(REQUEST_DARK_SIDEBAR_BACKGROUND);
-                return true;
-            });
-        }
-
-        Preference resetDrawerBackground = findPreference("reset_sidebar_background");
-        if (resetDrawerBackground != null) {
-            resetDrawerBackground.setOnPreferenceClickListener(preference -> {
-                File light = getDrawerBackgroundFile(requireActivity(), true);
-                File dark = getDrawerBackgroundFile(requireActivity(), false);
-
-                try {
-                    tryDeleteFile(light);
-                    tryDeleteFile(dark);
-                } catch (IOException e) {
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-                requireActivity().recreate();
-                return true;
-            });
-        }
-
-//        if (AppPrefs.isAudioPlayAllowed(getActivity())) {
-//            Preference lockscreenArt = findPreference(KEY_LOCKSCREEN_ART);
-//            ((PreferenceCategory) findPreference("group_appearance")).removePreference(lockscreenArt);
-//        }
-
         findPreference("privacy_policy")
                 .setOnPreferenceClickListener(preference -> {
                     LinkHelper.openLinkInBrowser(getContext(), Constants.PRIVACY_POLICY_LINK);
@@ -378,7 +320,7 @@ public class PreferencesFragment extends PreferenceFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.preference_list_fragment, container, false);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_preferences, container, false);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         return root;
     }
@@ -387,17 +329,6 @@ public class PreferencesFragment extends PreferenceFragment {
         if (file.exists() && !file.delete()) {
             throw new IOException("Can't delete file " + file);
         }
-    }
-
-    private void selectLocalImage(int requestCode) {
-        if (!AppPerms.hasReadStoragePermision(getActivity())) {
-            AppPerms.requestReadExternalStoragePermission(getActivity());
-            return;
-        }
-
-        Intent intent = new Intent(getActivity(), PhotosActivity.class);
-        intent.putExtra(PhotosActivity.EXTRA_MAX_SELECTION_COUNT, 1);
-        startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -695,7 +626,7 @@ public class PreferencesFragment extends PreferenceFragment {
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setStatusBarColored(getActivity(),true)
+                .setBarsColored(getActivity(),true)
                 .build()
                 .apply(requireActivity());
     }
