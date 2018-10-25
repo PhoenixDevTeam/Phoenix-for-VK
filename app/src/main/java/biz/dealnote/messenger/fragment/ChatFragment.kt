@@ -101,10 +101,10 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         recyclerView = root.findViewById(R.id.fragment_friend_dialog_list)
         recyclerView?.apply {
             layoutManager = createLayoutManager()
-            itemAnimator.changeDuration = 0
-            itemAnimator.addDuration = 0
-            itemAnimator.moveDuration = 0
-            itemAnimator.removeDuration = 0
+            itemAnimator?.changeDuration = 0
+            itemAnimator?.addDuration = 0
+            itemAnimator?.moveDuration = 0
+            itemAnimator?.removeDuration = 0
             addOnScrollListener(PicassoPauseOnScrollListener(Constants.PICASSO_TAG))
         }
 
