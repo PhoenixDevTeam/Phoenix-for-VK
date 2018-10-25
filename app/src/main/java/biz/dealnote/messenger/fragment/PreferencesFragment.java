@@ -115,34 +115,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         return fragment;
     }
 
-    public static File getDrawerBackgroundFile(Context context, boolean light) {
-        return new File(context.getFilesDir(), light ? "drawer_light.jpg" : "drawer_dark.jpg");
-    }
-
-    private void disableOnlyFullAppPrefs() {
-        String fullOnly = " FULL ONLY ";
-        int color = Utils.adjustAlpha(CurrentTheme.getColorAccent(getActivity()), 100);
-
-        for (String name : AppPrefs.ONLY_FULL_APP_PREFS) {
-            Preference preference = findPreference(name);
-            if (preference != null) {
-                preference.setEnabled(false);
-
-                CharSequence summary = TextUtils.isEmpty(preference.getTitle()) ? "" : preference.getTitle();
-                summary = fullOnly + " " + summary;
-
-                Spannable spannable = SpannableStringBuilder.valueOf(summary);
-
-                BackgroundColorSpan span = new BackgroundColorSpan(color);
-                ForegroundColorSpan span1 = new ForegroundColorSpan(Color.WHITE);
-
-                spannable.setSpan(span, 0, fullOnly.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                spannable.setSpan(span1, 0, fullOnly.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                preference.setTitle(spannable);
-            }
-        }
-    }
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.settings);
@@ -219,12 +191,15 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
         Preference notification = findPreference(KEY_NOTIFICATION);
         if (notification != null) {
-            //these options are not needed for Oreo as channels exists
-            if (Utils.hasOreo()) {
-                ((PreferenceCategory) findPreference("group_general")).removePreference(notification);
-            }
             notification.setOnPreferenceClickListener(preference -> {
-                PlaceFactory.getNotificationSettingsPlace().tryOpenWith(requireActivity());
+                if (Utils.hasOreo()) {
+                    Intent intent = new Intent();
+                    intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                    intent.putExtra("android.provider.extra.APP_PACKAGE", getContext().getPackageName());
+                    getContext().startActivity(intent);
+                } else {
+                    PlaceFactory.getNotificationSettingsPlace().tryOpenWith(requireActivity());
+                }
                 return true;
             });
         }
@@ -310,19 +285,46 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         });
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(view.findViewById(R.id.toolbar));
+    }
+
+    public static File getDrawerBackgroundFile(Context context, boolean light) {
+        return new File(context.getFilesDir(), light ? "drawer_light.jpg" : "drawer_dark.jpg");
+    }
+
+    private void disableOnlyFullAppPrefs() {
+        String fullOnly = " FULL ONLY ";
+        int color = Utils.adjustAlpha(CurrentTheme.getColorAccent(getActivity()), 100);
+
+        for (String name : AppPrefs.ONLY_FULL_APP_PREFS) {
+            Preference preference = findPreference(name);
+            if (preference != null) {
+                preference.setEnabled(false);
+
+                CharSequence summary = TextUtils.isEmpty(preference.getTitle()) ? "" : preference.getTitle();
+                summary = fullOnly + " " + summary;
+
+                Spannable spannable = SpannableStringBuilder.valueOf(summary);
+
+                BackgroundColorSpan span = new BackgroundColorSpan(color);
+                ForegroundColorSpan span1 = new ForegroundColorSpan(Color.WHITE);
+
+                spannable.setSpan(span, 0, fullOnly.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(span1, 0, fullOnly.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                preference.setTitle(spannable);
+            }
+        }
+    }
+
     private void onSecurityClick() {
         if (Settings.get().security().isUsePinForSecurity()) {
             startActivityForResult(new Intent(getActivity(), EnterPinActivity.class), REQUEST_PIN_FOR_SECURITY);
         } else {
             PlaceFactory.getSecuritySettingsPlace().tryOpenWith(requireActivity());
         }
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_preferences, container, false);
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
-        return root;
     }
 
     private void tryDeleteFile(@NonNull File file) throws IOException {

@@ -29,7 +29,6 @@
         <item name="toolbarElevation">@dimen/toolbar_with_elevation</item>
         <item name="toolbarAppStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="toolbarStyle">@style/Toolbar.White</item>
         <item name="toolbarDrawerIcon">@drawable/phoenix_drawer</item>
         <item name="toolbarBackIcon">@drawable/arrow_left</item>
         <item name="toolbarCloseIcon">@drawable/close</item>
@@ -53,8 +52,6 @@
         <item name="chat_background_cookies">@drawable/cookies_dark</item>
         <item name="chat_background_lines">@drawable/lines_dark</item>
         <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash</item>
-
-        <item name="preferenceTheme">@style/Theme.PreferenceCompat</item>
     </style>
 
 

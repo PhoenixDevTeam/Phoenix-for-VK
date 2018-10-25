@@ -46,16 +46,15 @@ public class NotificationPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     @Override
-    protected void finalize() throws Throwable {
-        Logger.d(TAG, "finalize");
-        super.finalize();
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(view.findViewById(R.id.toolbar));
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_preferences, container, false);
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
-        return root;
+    protected void finalize() throws Throwable {
+        Logger.d(TAG, "finalize");
+        super.finalize();
     }
 
     private Ringtone current;

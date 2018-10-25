@@ -28,9 +28,8 @@
         <item name="message_bubble_color">@android:color/white</item>
 
         <item name="toolbarElevation">@dimen/toolbar_with_elevation</item>
-        <item name="toolbarAppStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="toolbarAppStyle">@style/Toolbar.White</item>
         <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="toolbarStyle">@style/Toolbar.White</item>
         <item name="toolbarDrawerIcon">@drawable/phoenix_drawer</item>
         <item name="toolbarBackIcon">@drawable/arrow_left</item>
         <item name="toolbarCloseIcon">@drawable/close</item>
@@ -56,8 +55,6 @@
         <item name="chat_background_lines">@drawable/lines_white</item>
 
         <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash</item>
-
-        <item name="preferenceTheme">@style/Theme.PreferenceCompat</item>
     </style>
 
 
@@ -68,10 +65,6 @@
         <item name="oval_avatar_background">@xml/sel_button_round_4_white</item>
         <item name="quick_reply_icon_color">#151515</item>
         <item name="toolbarBackIcon">@drawable/arrow_left_grey600</item>
-    </style>
-
-    <style name="Theme.PreferenceCompat" parent="@style/PreferenceThemeOverlay">
-        <item name="android:layout">@layout/fragment_preferences</item>
     </style>
 
     <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">

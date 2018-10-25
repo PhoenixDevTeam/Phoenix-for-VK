@@ -3,17 +3,15 @@ package biz.dealnote.messenger.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.Collection;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
@@ -64,6 +62,12 @@ public class SecurityPreferencesFragment extends PreferenceFragmentCompat implem
         });
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(view.findViewById(R.id.toolbar));
+    }
+
     private void onClearKeysClick() {
         String[] items = {getString(R.string.for_the_current_account), getString(R.string.for_all_accounts)};
         new AlertDialog.Builder(requireActivity())
@@ -104,13 +108,6 @@ public class SecurityPreferencesFragment extends PreferenceFragmentCompat implem
                 .keys(KeyLocationPolicy.RAM)
                 .deleteAll(accountId)
                 .blockingAwait();
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_preferences, container, false);
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
-        return root;
     }
 
     @Override
