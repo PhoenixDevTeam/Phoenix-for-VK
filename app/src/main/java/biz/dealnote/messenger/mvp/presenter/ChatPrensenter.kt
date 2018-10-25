@@ -1107,7 +1107,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun restoreMessage(messageId: Int) {
-        appendDisposable(messagesRepository.restoreMessage(this.messagesOwnerId, messageId)
+        appendDisposable(messagesRepository.restoreMessage(messagesOwnerId, peerId, messageId)
                 .fromIOToMain()
                 .subscribe({ onMessagesRestoredSuccessfully(messageId) }, { t -> showError(view, t) }))
     }
@@ -1164,7 +1164,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
 
         if (sent.nonEmpty()) {
-            appendDisposable(messagesRepository.deleteMessages(messagesOwnerId, sent)
+            appendDisposable(messagesRepository.deleteMessages(messagesOwnerId, peerId, sent)
                     .fromIOToMain()
                     .subscribe(dummy(), Consumer { t -> showError(view, t) }))
         }

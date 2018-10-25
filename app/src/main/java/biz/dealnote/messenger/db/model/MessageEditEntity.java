@@ -10,7 +10,7 @@ import biz.dealnote.messenger.db.model.entity.MessageEntity;
  * Created by Ruslan Kolbasa on 05.09.2017.
  * phoenix
  */
-public class MessagePatch {
+public class MessageEditEntity {
 
     private boolean encrypted;
 
@@ -36,28 +36,17 @@ public class MessagePatch {
 
     private Map<Integer, String> extras;
 
-    //private String title;
-
-    public MessagePatch(int status, int senderId) {
+    public MessageEditEntity(int status, int senderId) {
         this.status = status;
         this.senderId = senderId;
     }
 
-    /*public MessagePatch setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getTitle() {
-        return title;
-    }*/
-
-    public MessagePatch setRead(boolean read) {
+    public MessageEditEntity setRead(boolean read) {
         this.read = read;
         return this;
     }
 
-    public MessagePatch setBody(String body) {
+    public MessageEditEntity setBody(String body) {
         this.body = body;
         return this;
     }
@@ -66,7 +55,7 @@ public class MessagePatch {
         return body;
     }
 
-    public MessagePatch setExtras(Map<Integer, String> extras) {
+    public MessageEditEntity setExtras(Map<Integer, String> extras) {
         this.extras = extras;
         return this;
     }
@@ -83,7 +72,7 @@ public class MessagePatch {
         return encrypted;
     }
 
-    public MessagePatch setEncrypted(boolean encrypted) {
+    public MessageEditEntity setEncrypted(boolean encrypted) {
         this.encrypted = encrypted;
         return this;
     }
@@ -92,7 +81,7 @@ public class MessagePatch {
         return date;
     }
 
-    public MessagePatch setDate(long date) {
+    public MessageEditEntity setDate(long date) {
         this.date = date;
         return this;
     }
@@ -101,7 +90,7 @@ public class MessagePatch {
         return out;
     }
 
-    public MessagePatch setOut(boolean out) {
+    public MessageEditEntity setOut(boolean out) {
         this.out = out;
         return this;
     }
@@ -110,7 +99,7 @@ public class MessagePatch {
         return deleted;
     }
 
-    public MessagePatch setDeleted(boolean deleted) {
+    public MessageEditEntity setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
     }
@@ -119,7 +108,7 @@ public class MessagePatch {
         return important;
     }
 
-    public MessagePatch setImportant(boolean important) {
+    public MessageEditEntity setImportant(boolean important) {
         this.important = important;
         return this;
     }
@@ -128,7 +117,7 @@ public class MessagePatch {
         return forward;
     }
 
-    public MessagePatch setForward(List<MessageEntity> forward) {
+    public MessageEditEntity setForward(List<MessageEntity> forward) {
         this.forward = forward;
         return this;
     }
@@ -137,7 +126,7 @@ public class MessagePatch {
         return attachments;
     }
 
-    public MessagePatch setAttachments(List<Entity> attachments) {
+    public MessageEditEntity setAttachments(List<Entity> attachments) {
         this.attachments = attachments;
         return this;
     }

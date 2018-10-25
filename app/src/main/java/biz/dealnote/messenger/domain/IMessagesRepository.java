@@ -11,6 +11,8 @@ import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
 import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.Message;
+import biz.dealnote.messenger.model.MessageUpdate;
+import biz.dealnote.messenger.model.PeerDeleting;
 import biz.dealnote.messenger.model.PeerUpdate;
 import biz.dealnote.messenger.model.SaveMessageBuilder;
 import biz.dealnote.messenger.model.SentMsg;
@@ -25,6 +27,10 @@ import io.reactivex.Single;
  */
 public interface IMessagesRepository {
     Flowable<List<PeerUpdate>> observePeerUpdates();
+
+    Flowable<List<MessageUpdate>> observeMessageUpdates();
+
+    Flowable<PeerDeleting> observePeerDeleting();
 
     Completable handleMessagesRead(int accountId, @NonNull List<MessagesRead> reads);
 
@@ -98,9 +104,9 @@ public interface IMessagesRepository {
 
     Completable deleteDialog(int accountId, int peedId, int count, int offset);
 
-    Completable deleteMessages(int accountId, Collection<Integer> ids);
+    Completable deleteMessages(int accountId, int peerId, Collection<Integer> ids);
 
-    Completable restoreMessage(int accountId, int messageId);
+    Completable restoreMessage(int accountId, int peerId, int messageId);
 
     Completable changeChatTitle(int accountId, int chatId, String title);
 

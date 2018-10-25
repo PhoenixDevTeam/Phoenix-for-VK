@@ -6,6 +6,7 @@ import java.util.List;
 import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import biz.dealnote.messenger.db.model.MessageEditEntity;
 import biz.dealnote.messenger.db.model.MessagePatch;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
 import biz.dealnote.messenger.model.DraftMessage;
@@ -31,9 +32,9 @@ public interface IMessagesStorage extends IStorage {
 
     Single<List<MessageEntity>> getByCriteria(@NonNull MessagesCriteria criteria, boolean withAtatchments, boolean withForwardMessages);
 
-    Single<Integer> insert(int accountId, int peerId, @NonNull MessagePatch patch);
+    Single<Integer> insert(int accountId, int peerId, @NonNull MessageEditEntity patch);
 
-    Single<Integer> applyPatch(int accountId, int messageId, @NonNull MessagePatch patch);
+    Single<Integer> applyPatch(int accountId, int messageId, @NonNull MessageEditEntity patch);
 
     @CheckResult
     Maybe<DraftMessage> findDraftMessage(int accountId, int peerId);
@@ -45,6 +46,8 @@ public interface IMessagesStorage extends IStorage {
     //Maybe<Integer> getDraftMessageId(int accoutnId, int peerId);
 
     Single<Integer> getMessageStatus(int accountId, int dbid);
+
+    Completable applyPatches(int accountId, @NonNull Collection<MessagePatch> patches);
 
     @CheckResult
     Completable changeMessageStatus(int accountId, int messageId, @MessageStatus int status, @Nullable Integer vkid);
@@ -83,6 +86,4 @@ public interface IMessagesStorage extends IStorage {
     Observable<MessageUpdate> observeMessageUpdates();
 
     Single<List<Integer>> getMissingMessages(int accountId, Collection<Integer> ids);
-
-    Completable markAsRead(int accountId, int peerId);
 }

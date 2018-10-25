@@ -14,9 +14,28 @@ public class MessageUpdate {
 
     private SentUpdate sentUpdate;
 
-    public MessageUpdate setSentUpdate(SentUpdate sentUpdate) {
+    private ImportantUpdate importantUpdate;
+
+    private DeleteUpdate deleteUpdate;
+
+    public void setDeleteUpdate(DeleteUpdate deleteUpdate) {
+        this.deleteUpdate = deleteUpdate;
+    }
+
+    public void setImportantUpdate(ImportantUpdate importantUpdate) {
+        this.importantUpdate = importantUpdate;
+    }
+
+    public DeleteUpdate getDeleteUpdate() {
+        return deleteUpdate;
+    }
+
+    public ImportantUpdate getImportantUpdate() {
+        return importantUpdate;
+    }
+
+    public void setSentUpdate(SentUpdate sentUpdate) {
         this.sentUpdate = sentUpdate;
-        return this;
     }
 
     public int getAccountId() {
@@ -40,9 +59,33 @@ public class MessageUpdate {
         return statusUpdate;
     }
 
-    public MessageUpdate setStatusUpdate(StatusUpdate statusUpdate) {
+    public void setStatusUpdate(StatusUpdate statusUpdate) {
         this.statusUpdate = statusUpdate;
-        return this;
+    }
+
+    public static class ImportantUpdate {
+        private final boolean important;
+
+        public ImportantUpdate(boolean important) {
+            this.important = important;
+        }
+
+        public boolean isImportant() {
+            return important;
+        }
+    }
+
+    public static class DeleteUpdate {
+
+        private final boolean deleted;
+
+        public DeleteUpdate(boolean deleted) {
+            this.deleted = deleted;
+        }
+
+        public boolean isDeleted() {
+            return deleted;
+        }
     }
 
     public static class StatusUpdate {

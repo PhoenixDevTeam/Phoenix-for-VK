@@ -41,6 +41,7 @@ import biz.dealnote.messenger.db.column.UserColumns;
 import biz.dealnote.messenger.db.interfaces.IDialogsStorage;
 import biz.dealnote.messenger.db.interfaces.IMessagesStorage;
 import biz.dealnote.messenger.db.interfaces.IStorages;
+import biz.dealnote.messenger.db.model.MessageEditEntity;
 import biz.dealnote.messenger.db.model.MessagePatch;
 import biz.dealnote.messenger.db.model.PeerPatch;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
@@ -71,8 +72,10 @@ import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.IOwnersBundle;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.MessageStatus;
+import biz.dealnote.messenger.model.MessageUpdate;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Peer;
+import biz.dealnote.messenger.model.PeerDeleting;
 import biz.dealnote.messenger.model.PeerUpdate;
 import biz.dealnote.messenger.model.SaveMessageBuilder;
 import biz.dealnote.messenger.model.SentMsg;
@@ -123,7 +126,10 @@ public class MessagesRepository implements IMessagesRepository {
     private final INetworker networker;
     private final IMessagesDecryptor decryptor;
     private final IUploadManager uploadManager;
+
     private final PublishProcessor<List<PeerUpdate>> peerUpdatePublisher;
+    private final PublishProcessor<PeerDeleting> peerDeletingPublisher;
+    private final PublishProcessor<List<MessageUpdate>> messageUpdatesPublisher;
 
     public MessagesRepository(INetworker networker, IOwnersInteractor ownersInteractor, IStorages storages, IUploadManager uploadManager) {
         this.ownersInteractor = ownersInteractor;
@@ -132,11 +138,23 @@ public class MessagesRepository implements IMessagesRepository {
         this.decryptor = new MessagesDecryptor(storages);
         this.uploadManager = uploadManager;
         this.peerUpdatePublisher = PublishProcessor.create();
+        this.peerDeletingPublisher = PublishProcessor.create();
+        this.messageUpdatesPublisher = PublishProcessor.create();
+    }
+
+    @Override
+    public Flowable<List<MessageUpdate>> observeMessageUpdates() {
+        return messageUpdatesPublisher.onBackpressureBuffer();
     }
 
     @Override
     public Flowable<List<PeerUpdate>> observePeerUpdates() {
         return peerUpdatePublisher.onBackpressureBuffer();
+    }
+
+    @Override
+    public Flowable<PeerDeleting> observePeerDeleting() {
+        return peerDeletingPublisher.onBackpressureBuffer();
     }
 
     @Override
@@ -594,7 +612,7 @@ public class MessagesRepository implements IMessagesRepository {
 
         return this.getTargetMessageStatus(builder)
                 .flatMap(status -> {
-                    final MessagePatch patch = new MessagePatch(status, accountId);
+                    final MessageEditEntity patch = new MessageEditEntity(status, accountId);
 
                     patch.setEncrypted(builder.isRequireEncryption());
                     patch.setDate(Unixtime.now());
@@ -681,11 +699,17 @@ public class MessagesRepository implements IMessagesRepository {
                     }
 
                     final MessageEntity entity = dbos.get(0);
-
                     return store.changeMessageStatus(accountId, dbid, MessageStatus.SENDING, null)
                             .andThen(internalSend(accountId, entity)
-                                    .flatMap(vkid -> store.changeMessageStatus(accountId, dbid, MessageStatus.SENT, vkid)
-                                            .andThen(Single.just(vkid)))
+                                    .flatMap(vkid -> {
+                                        final PeerPatch patch = new PeerPatch(entity.getPeerId())
+                                                .withLastMessage(vkid)
+                                                .withUnreadCount(0);
+
+                                        return store.changeMessageStatus(accountId, dbid, MessageStatus.SENT, vkid)
+                                                .andThen(applyPeerUpdatesAndPublish(accountId, Collections.singletonList(patch)))
+                                                .andThen(Single.just(vkid));
+                                    })
                                     .onErrorResumeNext(throwable -> store
                                             .changeMessageStatus(accountId, dbid, MessageStatus.ERROR, null)
                                             .andThen(Single.error(throwable))));
@@ -710,8 +734,15 @@ public class MessagesRepository implements IMessagesRepository {
 
                     return store.changeMessageStatus(accountId, dbid, MessageStatus.SENDING, null)
                             .andThen(internalSend(accountId, entity)
-                                    .flatMap(vkid -> store.changeMessageStatus(accountId, dbid, MessageStatus.SENT, vkid)
-                                            .andThen(Single.just(new SentMsg(dbid, vkid, peerId, accountId))))
+                                    .flatMap(vkid -> {
+                                        final PeerPatch patch = new PeerPatch(entity.getPeerId())
+                                                .withLastMessage(vkid)
+                                                .withUnreadCount(0);
+
+                                        return store.changeMessageStatus(accountId, dbid, MessageStatus.SENT, vkid)
+                                                .andThen(applyPeerUpdatesAndPublish(accountId, Collections.singletonList(patch)))
+                                                .andThen(Single.just(new SentMsg(dbid, vkid, peerId, accountId)));
+                                    })
                                     .onErrorResumeNext(throwable -> store
                                             .changeMessageStatus(accountId, dbid, MessageStatus.ERROR, null)
                                             .andThen(Single.error(throwable))));
@@ -858,21 +889,73 @@ public class MessagesRepository implements IMessagesRepository {
     }
 
     @Override
-    public Completable deleteMessages(int accountId, Collection<Integer> ids) {
-        // TODO: 07.10.2017 Remove from Cache?
+    public Completable deleteMessages(int accountId, int peerId, Collection<Integer> ids) {
         return networker.vkDefault(accountId)
                 .messages()
                 .delete(ids, null, null)
-                .ignoreElement();
+                .flatMapCompletable(result -> {
+                    List<MessagePatch> patches = new ArrayList<>(result.size());
+
+                    for(Map.Entry<String, Integer> entry : result.entrySet()){
+                        boolean removed = entry.getValue() == 1;
+                        int removedId = Integer.parseInt(entry.getKey());
+
+                        if(removed){
+                            MessagePatch patch = new MessagePatch(removedId);
+                            patch.setDeletion(new MessagePatch.Deletion(true));
+                            patches.add(patch);
+                        }
+                    }
+
+                    return applyMessagesPatchesAndPublish(accountId, patches)
+                            .andThen(invalidatePeerMessage(accountId, peerId));
+                });
+    }
+
+    private Completable applyMessagesPatchesAndPublish(int accountId, List<MessagePatch> patches){
+        List<MessageUpdate> updates = new ArrayList<>(patches.size());
+        for(MessagePatch patch : patches){
+            MessageUpdate update = new MessageUpdate(accountId, patch.getMessageId());
+            if(patch.getDeletion() != null){
+                update.setDeleteUpdate(new MessageUpdate.DeleteUpdate(patch.getDeletion().getDeleted()));
+            }
+            if(patch.getImportant() != null){
+                update.setImportantUpdate(new MessageUpdate.ImportantUpdate(patch.getImportant().getImportant()));
+            }
+            updates.add(update);
+        }
+
+        return storages.messages().applyPatches(accountId, patches)
+                .doOnComplete(() -> messageUpdatesPublisher.onNext(updates));
+    }
+
+    private Completable invalidatePeerMessage(int accountId, int peerId){
+        return storages.messages()
+                .findLastSentMessageIdForPeer(accountId, peerId)
+                .flatMapCompletable(optionalId -> {
+                    if(optionalId.isEmpty()){
+                        PeerDeleting deleting = new PeerDeleting(accountId, peerId);
+                        return storages.dialogs().removePeerWithId(accountId, peerId)
+                                .doOnComplete(() -> peerDeletingPublisher.onNext(deleting));
+                    } else {
+                        PeerPatch patch = new PeerPatch(peerId).withLastMessage(optionalId.get());
+                        return applyPeerUpdatesAndPublish(accountId, Collections.singletonList(patch));
+                    }
+                });
     }
 
     @Override
-    public Completable restoreMessage(int accountId, int messageId) {
+    public Completable restoreMessage(int accountId, int peerId, int messageId) {
         // TODO: 07.10.2017 Restore into Cache?
         return networker.vkDefault(accountId)
                 .messages()
                 .restore(messageId)
-                .ignoreElement();
+                .flatMapCompletable(ignored -> {
+                    MessagePatch patch = new MessagePatch(messageId);
+                    patch.setDeletion(new MessagePatch.Deletion(false));
+                    return applyMessagesPatchesAndPublish(accountId, Collections.singletonList(patch))
+                            .andThen(invalidatePeerMessage(accountId, peerId));
+                });
     }
 
     @Override
