@@ -6,7 +6,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
+
+import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Map;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -30,48 +36,72 @@ import static biz.dealnote.messenger.util.Utils.stringEmptyIfNull;
  */
 public class NewPostPushMessage {
 
-    //onMessage, from: 237327763482, collapseKey: new_post, extras: Bundle[{google.sent_time=1484043151928, from_id=-114075457, post_id=11, text=Добрый вечер, type=new_post, google.message_id=0:1484043151930717%8c76e97a5216abdf, group_name=Phoenix for VK Closed, _genSrv=518507, sandbox=0, collapse_key=new_post, post_type=group_status}]
-            //01-10 12:12:31.581 28251-8113/biz.dealnote.phoenix D/MyGcmListenerService: key: google.sent_time, value: 1484043151928, class: class java.lang.Long
-//01-10 12:12:31.581 28251-8113/biz.dealnote.phoenix D/MyGcmListenerService: key: from_id, value: -114075457, class: class java.lang.String
-//01-10 12:12:31.581 28251-8113/biz.dealnote.phoenix D/MyGcmListenerService: key: post_id, value: 11, class: class java.lang.String
-//01-10 12:12:31.581 28251-8113/biz.dealnote.phoenix D/MyGcmListenerService: key: text, value: Добрый вечер, class: class java.lang.String
-//01-10 12:12:31.581 28251-8113/biz.dealnote.phoenix D/MyGcmListenerService: key: type, value: new_post, class: class java.lang.String
-//01-10 12:12:31.581 28251-8113/biz.dealnote.phoenix D/MyGcmListenerService: key: google.message_id, value: 0:1484043151930717%8c76e97a5216abdf, class: class java.lang.String
-//01-10 12:12:31.581 28251-8113/biz.dealnote.phoenix D/MyGcmListenerService: key: group_name, value: Phoenix for VK Closed, class: class java.lang.String
-//01-10 12:12:31.581 28251-8113/biz.dealnote.phoenix D/MyGcmListenerService: key: _genSrv, value: 518507, class: class java.lang.String
-//01-10 12:12:31.582 28251-8113/biz.dealnote.phoenix D/MyGcmListenerService: key: sandbox, value: 0, class: class java.lang.String
-//01-10 12:12:31.582 28251-8113/biz.dealnote.phoenix D/MyGcmListenerService: key: collapse_key, value: new_post, class: class java.lang.String
-//01-10 12:12:31.582 28251-8113/biz.dealnote.phoenix D/MyGcmListenerService: key: post_type, value: group_status, class: class java.lang.String
+//key: image_type, value: user, class: class java.lang.String
+//key: from_id, value: 216143660, class: class java.lang.String
+//key: id, value: new_post_216143660_1137, class: class java.lang.String
+//key: url, value: https://vk.com/wall216143660_1137, class: class java.lang.String
+//key: body, value: Мы тестируем FCM. Всем здравствуйте.
+//
+//key: icon, value: followers_24, class: class java.lang.String
+//key: time, value: 1529683043, class: class java.lang.String
+//key: type, value: post, class: class java.lang.String
+//key: badge, value: 1, class: class java.lang.String
+//key: image, value: [{"width":200,"url":"https:\/\/pp.userapi.com\/c844520\/v844520706\/71a39\/nc5YPeh1yEI.jpg","height":200},{"width":100,"url":"https:\/\/pp.userapi.com\/c844520\/v844520706\/71a3a\/pZLtq6sleHo.jpg","height":100},{"width":50,"url":"https:\/\/pp.userapi.com\/c844520\/v844520706\/71a3b\/qoFJrYXVFdc.jpg","height":50}], class: class java.lang.String
+//key: sound, value: 1, class: class java.lang.String
+//key: title, value: Emin Guliev published a post, class: class java.lang.String
+//key: to_id, value: 280186075, class: class java.lang.String
+//key: group_id, value: posts, class: class java.lang.String
+//key: context, value: {"item_id":"1137","owner_id":216143660,"type":"post"}, class: class java.lang.String
+    private int accountId;
+    private long from;
+    private int from_id;
+    private String url;
+    private String body;
+    private long time;
+    private int badge;
+    private String image;
+    private boolean sound;
+    private String title;
+    private int to_id;
+    private String group_id;
+    private int item_id;
+    private int owner_id;
+    private String context_type;
 
-    private final int accountId;
+    class PostContext {
+        @SerializedName("item_id")
+        int item_id;
 
-    private final int fromId;
+        @SerializedName("owner_id")
+        int owner_id;
 
-    private final int postId;
+        @SerializedName("type")
+        String type;
+    }
 
-    private final String text;
-
-    private final String groupName;
-
-    private final String firstName;
-
-    private final String lastName;
-
-    //private String postType;
-
-    public NewPostPushMessage(int accountId, Bundle bundle){
+    public NewPostPushMessage(int accountId, RemoteMessage remote){
         this.accountId = accountId;
-        this.fromId = optInt(bundle, "from_id");
-        this.postId = optInt(bundle, "post_id");
-        this.text = bundle.getString("text");
-        this.groupName = bundle.getString("group_name");
-        this.firstName = bundle.getString("first_name");
-        this.lastName = bundle.getString("last_name");
-        //this.postType = bundle.getString("post_type"); // group_status, status
+        Map<String, String> data = remote.getData();
+        this.from = Long.parseLong(remote.getFrom());
+        this.from_id = Integer.parseInt(data.get("from_id"));
+        this.url = data.get("url");
+        this.body = data.get("body");
+        this.time = Long.parseLong(data.get("time"));
+        this.badge = Integer.parseInt(data.get("badge"));
+        this.image = data.get("image");
+        this.sound = Integer.parseInt(data.get("sound")) == 1;
+        this.title = data.get("title");
+        this.to_id = Integer.parseInt(data.get("to_id"));
+        this.group_id = data.get("group_id");
+
+        PostContext context = new Gson().fromJson(data.get("context"), PostContext.class);
+        this.item_id = context.item_id;
+        this.owner_id = context.owner_id;
+        this.context_type = context.type;
     }
 
     public void notifyIfNeed(Context context){
-        if(fromId == 0){
+        if(from_id == 0){
             Logger.wtf("NewPostPushMessage", "from_id is NULL!!!");
             return;
         }
@@ -82,13 +112,10 @@ public class NewPostPushMessage {
             return;
         }
 
-        OwnerInfo.getRx(context, accountId, fromId)
-                .subscribeOn(NotificationScheduler.INSTANCE)
-                .subscribe(ownerInfo -> notifyImpl(context, ownerInfo), ignored -> {});
+        notifyImpl(context);
     }
 
-    private void notifyImpl(Context context, OwnerInfo info){
-        String ownerName = fromId > 0 ? (stringEmptyIfNull(firstName) + " " + stringEmptyIfNull(lastName)) : groupName;
+    private void notifyImpl(Context context){
         final NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Utils.hasOreo()){
             nManager.createNotificationChannel(AppNotificationChannels.getNewPostChannel(context));
@@ -96,26 +123,25 @@ public class NewPostPushMessage {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, AppNotificationChannels.NEW_POST_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notify_statusbar)
-                .setLargeIcon(info.getAvatar())
-                .setContentTitle(context.getString(R.string.new_post_title))
-                .setContentText(context.getString(R.string.new_post_was_published_in, ownerName))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                .setContentTitle(title)
+                .setContentText(body)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
                 .setAutoCancel(true);
 
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
 
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(Extra.PLACE, PlaceFactory.getPostPreviewPlace(accountId, postId, fromId));
+        intent.putExtra(Extra.PLACE, PlaceFactory.getPostPreviewPlace(accountId, item_id, from_id));
 
         intent.setAction(MainActivity.ACTION_OPEN_PLACE);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        PendingIntent contentIntent = PendingIntent.getActivity(context, fromId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, from_id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setContentIntent(contentIntent);
         Notification notification = builder.build();
 
         configOtherPushNotification(notification);
 
-        nManager.notify(String.valueOf(fromId), NotificationHelper.NOTIFICATION_NEW_POSTS_ID, notification);
+        nManager.notify(String.valueOf(from_id), NotificationHelper.NOTIFICATION_NEW_POSTS_ID, notification);
     }
 }

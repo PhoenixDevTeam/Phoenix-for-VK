@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.domain;
 
-import android.support.annotation.CheckResult;
+import androidx.annotation.CheckResult;
 
 import java.util.List;
 

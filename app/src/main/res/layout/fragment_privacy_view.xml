@@ -6,7 +6,7 @@
     android:paddingBottom="@dimen/content_medium_margin"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleView"
         android:overScrollMode="never"
         android:scrollbars="none"

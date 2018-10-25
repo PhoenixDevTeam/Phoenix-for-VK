@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.util;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Created by admin on 24.09.2016.

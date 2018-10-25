@@ -9,7 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import biz.dealnote.messenger.*
 import biz.dealnote.messenger.crypt.AesKeyPair
 import biz.dealnote.messenger.crypt.KeyExchangeService

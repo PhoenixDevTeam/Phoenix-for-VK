@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.view;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;

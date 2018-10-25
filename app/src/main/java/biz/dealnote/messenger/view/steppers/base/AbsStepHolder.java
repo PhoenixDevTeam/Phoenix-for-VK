@@ -1,7 +1,7 @@
 package biz.dealnote.messenger.view.steppers.base;
 
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

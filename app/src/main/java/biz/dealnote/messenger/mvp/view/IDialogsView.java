@@ -1,7 +1,7 @@
 package biz.dealnote.messenger.mvp.view;
 
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import java.util.List;
 

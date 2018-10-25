@@ -17,8 +17,8 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.media.app.NotificationCompat.MediaStyle;
+import androidx.core.app.NotificationCompat;
+import androidx.media.app.NotificationCompat.MediaStyle;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import biz.dealnote.messenger.Extra;
@@ -105,7 +105,7 @@ public class NotificationHelper {
         //Remove pause action
         mNotificationBuilder.mActions.remove(1);
         mNotificationBuilder.mActions.add(1,
-                new android.support.v4.app.NotificationCompat.Action(
+                new androidx.core.app.NotificationCompat.Action(
                         isPlaying ? R.drawable.pause_notification : R.drawable.play_notification,
                         null,
                         retreivePlaybackActions(1)));

@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.dialog.base;
 
-import android.support.v4.app.DialogFragment;
+import androidx.fragment.app.DialogFragment;
 
 import biz.dealnote.messenger.util.ViewUtils;
 

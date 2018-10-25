@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.media.voice;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by r.kolbasa on 27.11.2017.

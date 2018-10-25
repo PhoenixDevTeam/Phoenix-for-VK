@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.db.model.entity;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.Collections;
 import java.util.Iterator;

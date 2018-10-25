@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_margin="8dp"
             app:cardElevation="2dp"
             app:cardBackgroundColor="?attr/android:colorBackground"
@@ -20,9 +20,9 @@
 
             <include layout="@layout/content_community_settings_main"/>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_margin="8dp"
             app:cardElevation="2dp"
             app:cardBackgroundColor="?attr/android:colorBackground"
@@ -32,9 +32,9 @@
 
             <include layout="@layout/content_community_settings_additional"/>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_margin="8dp"
             app:cardElevation="2dp"
             app:cardBackgroundColor="?attr/android:colorBackground"
@@ -44,7 +44,7 @@
 
             <include layout="@layout/content_community_settings_commentsl"/>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 

@@ -6,7 +6,7 @@
 
     <include layout="@layout/toolbar_with_elevation" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:paddingBottom="16dp"
         android:paddingTop="8dp"
         android:clipToPadding="false"

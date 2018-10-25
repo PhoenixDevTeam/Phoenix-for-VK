@@ -3,7 +3,7 @@ package biz.dealnote.messenger.model;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.Identificable;

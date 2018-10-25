@@ -2,8 +2,8 @@ package biz.dealnote.messenger.service;
 
 import android.content.Context;
 import android.os.Message;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
 import android.widget.Toast;
 
 import java.util.Collection;

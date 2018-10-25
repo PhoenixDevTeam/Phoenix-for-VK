@@ -6,9 +6,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
+import com.google.firebase.messaging.RemoteMessage;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -28,7 +29,7 @@ import io.reactivex.Single;
 
 import static biz.dealnote.messenger.push.NotificationUtils.configOtherPushNotification;
 
-public class GroupInviteGCMMessage {
+public class GroupInviteFCMMessage {
 
     //collapseKey: group_invite, extras: Bundle[{from_id=175895893, from=376771982493, name=Pianoбой,
     // type=group_invite, group_id=1583008, sandbox=0, collapse_key=group_invite}]
@@ -39,12 +40,12 @@ public class GroupInviteGCMMessage {
     //public String type;
     private int group_id;
 
-    public static GroupInviteGCMMessage fromBundle(@NonNull Bundle bundle) {
-        GroupInviteGCMMessage message = new GroupInviteGCMMessage();
-        message.from_id = NotificationUtils.optInt(bundle, "from_id");
+    public static GroupInviteFCMMessage fromRemoteMessage(@NonNull RemoteMessage remote) {
+        GroupInviteFCMMessage message = new GroupInviteFCMMessage();
+        message.from_id = Integer.parseInt(remote.getData().get("from_id"));
         //message.name = bundle.getString("name");
-        message.group_id = NotificationUtils.optInt(bundle, "group_id");
-        //message.from = FriendGCMMessage.optLong(bundle, "from");
+        message.group_id = Integer.parseInt(remote.getData().get("group_id"));
+        //message.from = FriendFCMMessage.optLong(bundle, "from");
         //message.type = bundle.getString("type");
         return message;
     }

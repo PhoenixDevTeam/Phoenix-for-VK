@@ -6,9 +6,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
+import com.google.firebase.messaging.RemoteMessage;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -25,7 +26,7 @@ import biz.dealnote.messenger.util.Utils;
 
 import static biz.dealnote.messenger.push.NotificationUtils.configOtherPushNotification;
 
-public class FriendGCMMessage {
+public class FriendFCMMessage {
 
     //collapseKey: friend, extras: Bundle[{first_name=Андрей, uid=320891480, from=376771982493,
     // type=friend, badge=1, common_count=0, sandbox=0, collapse_key=friend, last_name=Боталов}]
@@ -38,11 +39,11 @@ public class FriendGCMMessage {
     //private int badge;
     //private int common_count;
 
-    public static FriendGCMMessage fromBundle(@NonNull Bundle bundle) {
-        FriendGCMMessage message = new FriendGCMMessage();
+    public static FriendFCMMessage fromRemoteMessage(@NonNull RemoteMessage remote) {
+        FriendFCMMessage message = new FriendFCMMessage();
         //message.first_name = bundle.getString("first_name");
         //message.last_name = bundle.getString("last_name");
-        message.uid = NotificationUtils.optInt(bundle, "uid");
+        message.uid = Integer.parseInt(remote.getData().get("uid"));
         //message.from = optLong(bundle, "from");
         //message.type = bundle.getString("type");
         //message.badge = optInt(bundle, "badge");

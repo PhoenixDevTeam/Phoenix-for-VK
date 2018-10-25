@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.view.steppers.impl;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;

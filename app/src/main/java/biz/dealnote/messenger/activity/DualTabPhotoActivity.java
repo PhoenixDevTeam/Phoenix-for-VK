@@ -3,8 +3,8 @@ package biz.dealnote.messenger.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;

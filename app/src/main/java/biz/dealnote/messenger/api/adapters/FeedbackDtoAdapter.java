@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.api.adapters;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

@@ -2,7 +2,7 @@ package biz.dealnote.messenger.media.voice;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.io.IOException;
 

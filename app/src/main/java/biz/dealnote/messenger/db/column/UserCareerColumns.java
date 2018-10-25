@@ -2,7 +2,7 @@ package biz.dealnote.messenger.db.column;
 
 import android.content.ContentValues;
 import android.provider.BaseColumns;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import biz.dealnote.messenger.api.model.VKApiCareer;
 

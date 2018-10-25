@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.api.interfaces;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.InputStream;
 

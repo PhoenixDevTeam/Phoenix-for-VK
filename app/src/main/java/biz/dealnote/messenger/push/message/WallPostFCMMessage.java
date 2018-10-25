@@ -6,9 +6,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
+import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.Map;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -29,9 +32,9 @@ import biz.dealnote.messenger.util.Utils;
 
 import static biz.dealnote.messenger.push.NotificationUtils.configOtherPushNotification;
 
-public class WallPostGCMMessage {
+public class WallPostFCMMessage {
 
-    private static final String TAG = WallPostGCMMessage.class.getSimpleName();
+    private static final String TAG = WallPostFCMMessage.class.getSimpleName();
 
     //from_id=175895893, first_name=Руслан, from=376771982493, text=Тест push-уведомлений, type=wall_post, place=wall25651989_2509, collapse_key=wall_post, last_name=Колбаса
 
@@ -43,9 +46,10 @@ public class WallPostGCMMessage {
     //public String type;
     private String place;
 
-    public static WallPostGCMMessage fromBundle(@NonNull Bundle bundle) {
-        WallPostGCMMessage message = new WallPostGCMMessage();
-        message.from_id = NotificationUtils.optInt(bundle, "from_id");
+    public static WallPostFCMMessage fromRemoteMessage(@NonNull RemoteMessage remote) {
+        WallPostFCMMessage message = new WallPostFCMMessage();
+        Map<String, String> data = remote.getData();
+        message.from_id = Integer.parseInt(remote.getData().get("from_id"));
         //message.first_name = bundle.getString("first_name");
         //message.last_name = bundle.getString("last_name");
 
@@ -53,9 +57,9 @@ public class WallPostGCMMessage {
         //    message.from = Long.parseLong(bundle.getString("from"));
         //}
 
-        message.text = bundle.getString("text");
+        message.text = data.get("text");
         //message.type = bundle.getString("type");
-        message.place = bundle.getString("place");
+        message.place = data.get("place");
         return message;
     }
 

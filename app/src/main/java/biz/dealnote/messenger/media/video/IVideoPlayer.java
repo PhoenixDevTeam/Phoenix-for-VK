@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.media.video;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.SurfaceHolder;
 
 import biz.dealnote.messenger.model.VideoSize;

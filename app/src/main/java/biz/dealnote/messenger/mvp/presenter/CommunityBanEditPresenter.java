@@ -1,7 +1,7 @@
 package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.text.DateFormat;
 import java.util.ArrayList;

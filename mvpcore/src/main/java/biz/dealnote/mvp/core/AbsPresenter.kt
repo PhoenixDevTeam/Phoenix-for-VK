@@ -1,7 +1,7 @@
 package biz.dealnote.mvp.core
 
 import android.os.Bundle
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 import biz.dealnote.mvp.reflect.AnnotatedHandlerFinder
 import java.lang.ref.WeakReference
 import java.lang.reflect.InvocationTargetException

@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.model;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by admin on 08.05.2017.

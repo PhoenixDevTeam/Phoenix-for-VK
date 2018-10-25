@@ -2,8 +2,8 @@ package biz.dealnote.mvp.compat
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.LoaderManager
-import android.support.v4.content.Loader
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.Loader
 import biz.dealnote.mvp.core.IMvpView
 import biz.dealnote.mvp.core.IPresenter
 import biz.dealnote.mvp.core.IPresenterFactory
@@ -33,7 +33,7 @@ class ViewHostDelegate<P : IPresenter<V>, V : IMvpView> {
     fun onCreate(context: Context,
                  view: V,
                  factoryProvider: IFactoryProvider<P, V>,
-                 loaderManager: LoaderManager,
+                 loaderManager: androidx.loader.app.LoaderManager,
                  savedInstanceState: Bundle?) {
         this.viewReference = WeakReference(view)
 
@@ -42,16 +42,16 @@ class ViewHostDelegate<P : IPresenter<V>, V : IMvpView> {
         }
 
         val app = context.applicationContext
-        val loader = loaderManager.initLoader(LOADER_ID, lastKnownPresenterState, object : LoaderManager.LoaderCallbacks<P> {
-            override fun onCreateLoader(id: Int, args: Bundle?): Loader<P> {
+        val loader = loaderManager.initLoader(LOADER_ID, lastKnownPresenterState, object : androidx.loader.app.LoaderManager.LoaderCallbacks<P> {
+            override fun onCreateLoader(id: Int, args: Bundle?): androidx.loader.content.Loader<P> {
                 return SimplePresenterLoader(app, factoryProvider.getPresenterFactory(args))
             }
 
-            override fun onLoadFinished(loader: Loader<P>, data: P) {
+            override fun onLoadFinished(loader: androidx.loader.content.Loader<P>, data: P) {
 
             }
 
-            override fun onLoaderReset(loader: Loader<P>) {
+            override fun onLoaderReset(loader: androidx.loader.content.Loader<P>) {
                 presenter = null
             }
         })

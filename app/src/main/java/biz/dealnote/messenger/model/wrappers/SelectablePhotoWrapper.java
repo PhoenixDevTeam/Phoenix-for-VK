@@ -2,7 +2,7 @@ package biz.dealnote.messenger.model.wrappers;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import biz.dealnote.messenger.model.ISelectable;
 import biz.dealnote.messenger.model.Photo;

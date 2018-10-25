@@ -18,7 +18,7 @@ android {
         versionCode 41008
         versionName '4.1.0'
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     lintOptions {
@@ -114,47 +114,48 @@ allprojects {
         }
 
         maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots"
-        }
-
-        maven {
             url 'https://maven.google.com'
         }
     }
 }
 
-ext.supportLibraryVersion = '28.0.0'
+ext {
+    retrofitLibraryVersion = '2.4.0'
+    okhttpLibraryVersion = '3.10.0'
+}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
-    implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
-    implementation "com.android.support:design:$supportLibraryVersion"
-    implementation "com.android.support:support-core-ui:$supportLibraryVersion"
-    implementation "com.android.support:support-vector-drawable:$supportLibraryVersion"
-    implementation "com.android.support:support-media-compat:$supportLibraryVersion"
-    implementation "com.android.support:customtabs:$supportLibraryVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "androidx.core:core:1.0.0"
+    implementation "com.google.android.material:material:1.0.0"
+    implementation "androidx.appcompat:appcompat:1.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
+    implementation "androidx.viewpager:viewpager:1.0.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation "androidx.drawerlayout:drawerlayout:1.0.0"
+    implementation "androidx.vectordrawable:vectordrawable:1.0.0"
+    implementation "androidx.media:media:1.0.0"
+    implementation "androidx.browser:browser:1.0.0"
+    implementation "androidx.preference:preference:1.0.0"
+    implementation "androidx.exifinterface:exifinterface:1.0.0"
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
-    implementation project(':mvpcore')
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-    implementation "com.google.firebase:firebase-database:16.0.4"
+    implementation project(path: ':mvpcore', configuration: 'default')
+    implementation "com.squareup.retrofit2:retrofit:$retrofitLibraryVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitLibraryVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitLibraryVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpLibraryVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLibraryVersion"
     implementation "com.google.firebase:firebase-core:16.0.4"
-    implementation 'com.google.firebase:firebase-messaging:17.3.4'
-    implementation 'com.google.android.exoplayer:exoplayer:2.8.0'
-    implementation "com.android.support:exifinterface:$supportLibraryVersion"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "com.google.firebase:firebase-crash:16.2.1"
+    implementation "com.google.firebase:firebase-database:16.0.4"
+    implementation "com.google.firebase:firebase-messaging:17.3.4"
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.8.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
-repositories {
-    mavenCentral()
-}

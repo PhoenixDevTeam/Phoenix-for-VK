@@ -1,8 +1,8 @@
 package biz.dealnote.messenger.model;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import biz.dealnote.messenger.adapter.horizontal.Entry;
 

@@ -1,7 +1,7 @@
 package biz.dealnote.messenger.upload;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import biz.dealnote.messenger.api.PercentagePublisher;
 import biz.dealnote.messenger.api.model.server.UploadServer;

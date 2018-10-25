@@ -6,10 +6,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
+
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ import biz.dealnote.messenger.util.Utils;
 import static biz.dealnote.messenger.push.NotificationUtils.configOtherPushNotification;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 
-public class BirtdayGcmMessage {
+public class BirthdayFCMMessage {
 
     //Bundle[{type=birthday, uids=20924995, _genSrv=605120, sandbox=0, collapse_key=birthday}]
 
@@ -106,10 +107,10 @@ public class BirtdayGcmMessage {
         manager.notify(String.valueOf(ownerId), NotificationHelper.NOTIFICATION_BIRTHDAY, notification);
     }
 
-    public static BirtdayGcmMessage fromBundle(@NonNull Bundle bundle) {
-        BirtdayGcmMessage message = new BirtdayGcmMessage();
+    public static BirthdayFCMMessage fromRemoteMessage(@NonNull RemoteMessage remote) {
+        BirthdayFCMMessage message = new BirthdayFCMMessage();
 
-        String uidsString = bundle.getString("uids");
+        String uidsString = remote.getData().get("uids");
         String[] uidsStringArray = TextUtils.isEmpty(uidsString) ? null : uidsString.split(",");
 
         if (uidsStringArray != null) {

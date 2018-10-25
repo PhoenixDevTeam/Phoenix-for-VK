@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.media.gif;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by admin on 13.08.2017.

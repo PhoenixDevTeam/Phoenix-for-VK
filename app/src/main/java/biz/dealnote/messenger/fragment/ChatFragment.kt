@@ -8,12 +8,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.annotation.AttrRes
-import android.support.design.widget.BottomSheetDialog
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.AttrRes
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.text.InputType
 import android.util.SparseBooleanArray
 import android.view.*
@@ -65,7 +65,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     private var headerView: View? = null
     private var loadMoreFooterHelper: LoadMoreFooterHelper? = null
 
-    private var recyclerView: RecyclerView? = null
+    private var recyclerView: androidx.recyclerview.widget.RecyclerView? = null
     private var adapter: MessagesAdapter? = null
 
     private var inputViewController: InputViewController? = null
@@ -218,8 +218,8 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         inflater.inflate(R.menu.menu_chat, menu)
     }
 
-    private fun createLayoutManager(): RecyclerView.LayoutManager {
-        return LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, true)
+    private fun createLayoutManager(): androidx.recyclerview.widget.RecyclerView.LayoutManager {
+        return androidx.recyclerview.widget.LinearLayoutManager(activity, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, true)
     }
 
     override fun displayMessages(messages: List<Message>, lastReadId: LastReadId) {
@@ -502,12 +502,12 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         }
 
         val reference = WeakReference(fragment)
-        val recyclerView: RecyclerView = rootView.findViewById(R.id.recyclerView)
+        val recyclerView: androidx.recyclerview.widget.RecyclerView = rootView.findViewById(R.id.recyclerView)
         val emptyView: View = rootView.findViewById(R.id.emptyRootView)
         val adapter = AttachmentsBottomSheetAdapter(rootView.context, attachments, this)
 
         init {
-            recyclerView.layoutManager = LinearLayoutManager(rootView.context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(rootView.context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = adapter
 
             rootView.findViewById<View>(R.id.buttonHide).setOnClickListener(this)
@@ -575,7 +575,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
         val reference = WeakReference(this)
         editAttachmentsHolder = EditAttachmentsHolder(view, this, attachments)
-        editAttachmentsDialog = BottomSheetDialog(requireActivity())
+        editAttachmentsDialog = com.google.android.material.bottomsheet.BottomSheetDialog(requireActivity())
                 .apply {
                     setContentView(view)
                     setOnDismissListener { reference.get()?.editAttachmentsHolder = null }

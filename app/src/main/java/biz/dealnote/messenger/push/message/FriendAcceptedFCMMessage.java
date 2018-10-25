@@ -6,9 +6,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
+import com.google.firebase.messaging.RemoteMessage;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -25,7 +26,7 @@ import biz.dealnote.messenger.util.Utils;
 
 import static biz.dealnote.messenger.push.NotificationUtils.configOtherPushNotification;
 
-public class FriendAcceptedGCMMessage {
+public class FriendAcceptedFCMMessage {
 
     // collapseKey: friend_accepted, extras: Bundle[{first_name=Андрей, uid=320891480, from=376771982493,
     // type=friend_accepted, sandbox=0, collapse_key=friend_accepted, last_name=Боталов}]
@@ -36,12 +37,12 @@ public class FriendAcceptedGCMMessage {
     //private long from;
     //private String type;
 
-    public static FriendAcceptedGCMMessage fromBundle(@NonNull Bundle bundle) {
-        FriendAcceptedGCMMessage message = new FriendAcceptedGCMMessage();
+    public static FriendAcceptedFCMMessage fromRemoteMessage(@NonNull RemoteMessage remote) {
+        FriendAcceptedFCMMessage message = new FriendAcceptedFCMMessage();
         //message.first_name = bundle.getString("first_name");
         //message.last_name = bundle.getString("last_name");
-        message.uid = NotificationUtils.optInt(bundle, "uid");
-        //message.from = FriendGCMMessage.optLong(bundle, "from");
+        message.uid = Integer.parseInt(remote.getData().get("uid"));
+        //message.from = FriendFCMMessage.optLong(bundle, "from");
         //message.type = bundle.getString("type");
         return message;
     }

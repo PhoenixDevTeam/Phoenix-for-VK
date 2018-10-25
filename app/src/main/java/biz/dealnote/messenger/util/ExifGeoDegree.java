@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.util;
 
-import android.support.media.ExifInterface;
+import androidx.exifinterface.media.ExifInterface;
 
 public class ExifGeoDegree {
 

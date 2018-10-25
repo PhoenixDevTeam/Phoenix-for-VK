@@ -2,7 +2,7 @@ package biz.dealnote.messenger.media.gif;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.SurfaceHolder;
 
 import java.util.ArrayList;

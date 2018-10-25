@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.mvp.view.base;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import biz.dealnote.messenger.view.steppers.base.AbsStepsHost;
 import biz.dealnote.mvp.core.IMvpView;

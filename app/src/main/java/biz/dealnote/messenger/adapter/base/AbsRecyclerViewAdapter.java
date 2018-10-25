@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.adapter.base;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import biz.dealnote.messenger.adapter.listener.OwnerClickListener;

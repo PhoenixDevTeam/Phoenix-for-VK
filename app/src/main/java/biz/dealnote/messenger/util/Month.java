@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.util;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import java.util.Calendar;
 

@@ -13,7 +13,7 @@ package biz.dealnote.messenger.player.ui;
 
 import android.content.Context;
 import android.os.SystemClock;
-import android.support.v7.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;

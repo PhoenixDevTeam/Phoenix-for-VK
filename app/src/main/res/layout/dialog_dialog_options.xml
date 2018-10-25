@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:padding="8dp">
 
-    <android.support.v7.widget.SwitchCompat
+    <androidx.appcompat.widget.SwitchCompat
         android:textColor="?android:attr/textColorPrimary"
         android:id="@+id/enable"
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:textSize="@dimen/font_size_title"
         android:checked="false"
         android:padding="8dp"/>
-    <android.support.v7.widget.SwitchCompat
+    <androidx.appcompat.widget.SwitchCompat
         android:textColor="?android:attr/textColorPrimary"
         android:id="@+id/priority"
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
         android:padding="8dp"/>
 
 
-    <android.support.v7.widget.SwitchCompat
+    <androidx.appcompat.widget.SwitchCompat
         android:textColor="?android:attr/textColorPrimary"
         android:id="@+id/sound"
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
         android:checked="false"
         android:padding="8dp"/>
 
-    <android.support.v7.widget.SwitchCompat
+    <androidx.appcompat.widget.SwitchCompat
         android:textColor="?android:attr/textColorPrimary"
         android:id="@+id/vibro"
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
         android:checked="false"
         android:padding="8dp"/>
 
-    <android.support.v7.widget.SwitchCompat
+    <androidx.appcompat.widget.SwitchCompat
         android:textColor="?android:attr/textColorPrimary"
         android:id="@+id/led"
         android:layout_width="match_parent"

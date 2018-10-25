@@ -1,8 +1,8 @@
 package biz.dealnote.messenger;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.service.KeepLongpollService;

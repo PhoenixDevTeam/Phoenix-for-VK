@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.media.gif;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import biz.dealnote.messenger.model.ProxyConfig;
 import biz.dealnote.messenger.settings.IProxySettings;

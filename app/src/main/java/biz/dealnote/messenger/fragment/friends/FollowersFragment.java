@@ -1,7 +1,7 @@
 package biz.dealnote.messenger.fragment.friends;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.fragment.AbsOwnersListFragment;

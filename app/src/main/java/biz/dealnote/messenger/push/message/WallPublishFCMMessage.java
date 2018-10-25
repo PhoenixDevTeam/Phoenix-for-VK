@@ -6,9 +6,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
+import com.google.firebase.messaging.RemoteMessage;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -29,9 +30,9 @@ import biz.dealnote.messenger.util.Utils;
 
 import static biz.dealnote.messenger.push.NotificationUtils.configOtherPushNotification;
 
-public class WallPublishGCMMessage {
+public class WallPublishFCMMessage {
 
-    private static final String TAG = WallPublishGCMMessage.class.getSimpleName();
+    private static final String TAG = WallPublishFCMMessage.class.getSimpleName();
 
     // collapseKey: wall_publish, extras: Bundle[{from=376771982493, name=Phoenix for VK,
     // text=Тестирование уведомлений, type=wall_publish, place=wall-72124992_4914,
@@ -44,14 +45,14 @@ public class WallPublishGCMMessage {
     private String place;
     private int group_id;
 
-    public static WallPublishGCMMessage fromBundle(@NonNull Bundle bundle) {
-        WallPublishGCMMessage message = new WallPublishGCMMessage();
+    public static WallPublishFCMMessage fromRemoteMessage(@NonNull RemoteMessage remote) {
+        WallPublishFCMMessage message = new WallPublishFCMMessage();
         //message.name = bundle.getString("name");
         //message.from = optLong(bundle, "from");
-        message.group_id = NotificationUtils.optInt(bundle, "group_id");
-        message.text = bundle.getString("text");
+        message.group_id = Integer.parseInt(remote.getData().get("group_id"));
+        message.text = remote.getData().get("text");
         //message.type = bundle.getString("type");
-        message.place = bundle.getString("place");
+        message.place = remote.getData().get("place");
         return message;
     }
 

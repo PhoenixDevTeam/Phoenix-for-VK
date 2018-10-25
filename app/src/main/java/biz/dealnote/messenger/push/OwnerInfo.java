@@ -2,7 +2,7 @@ package biz.dealnote.messenger.push;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.domain.IOwnersInteractor;

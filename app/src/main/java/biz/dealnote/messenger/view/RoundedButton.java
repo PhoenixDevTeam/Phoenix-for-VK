@@ -11,7 +11,7 @@ import android.util.TypedValue;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.util.Utils;
 
-public class RoundedButton extends android.support.v7.widget.AppCompatTextView {
+public class RoundedButton extends androidx.appcompat.widget.AppCompatTextView {
 
     private boolean active;
 

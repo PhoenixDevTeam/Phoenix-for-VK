@@ -1,7 +1,7 @@
 package biz.dealnote.messenger.activity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.CreatePinFragment;

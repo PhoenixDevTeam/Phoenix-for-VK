@@ -1,7 +1,7 @@
 package biz.dealnote.messenger.mvp.view;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;

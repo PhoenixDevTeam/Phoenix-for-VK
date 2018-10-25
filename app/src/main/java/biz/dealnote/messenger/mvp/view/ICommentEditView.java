@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.mvp.view;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import biz.dealnote.messenger.model.Comment;
 

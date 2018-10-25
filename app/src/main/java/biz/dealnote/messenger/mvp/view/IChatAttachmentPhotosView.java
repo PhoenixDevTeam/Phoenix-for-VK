@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.mvp.view;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.TmpSource;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.v4.preference;
+package androidx.core.preference;
 
 import android.app.Activity;
 import android.content.Context;

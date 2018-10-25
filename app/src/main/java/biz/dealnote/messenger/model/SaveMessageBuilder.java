@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.model;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.util.ArrayList;

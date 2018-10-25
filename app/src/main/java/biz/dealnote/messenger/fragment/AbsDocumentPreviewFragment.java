@@ -1,8 +1,8 @@
 package biz.dealnote.messenger.fragment;
 
 import android.Manifest;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.Collections;
 

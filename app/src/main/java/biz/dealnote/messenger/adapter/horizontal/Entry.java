@@ -1,7 +1,7 @@
 package biz.dealnote.messenger.adapter.horizontal;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface Entry {
 

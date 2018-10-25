@@ -2,7 +2,7 @@ package biz.dealnote.messenger.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by admin on 14.06.2017.

@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.media.voice;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import biz.dealnote.messenger.model.VoiceMessage;
 import biz.dealnote.messenger.util.Optional;

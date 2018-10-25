@@ -2,7 +2,7 @@ package biz.dealnote.messenger.db;
 
 import android.content.ContentProviderOperation;
 import android.content.ContentValues;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;

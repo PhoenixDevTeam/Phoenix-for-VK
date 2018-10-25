@@ -3,8 +3,8 @@ package biz.dealnote.messenger.dialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;

@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.listener;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import biz.dealnote.messenger.api.PicassoInstance;
 
