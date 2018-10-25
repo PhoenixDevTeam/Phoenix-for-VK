@@ -214,7 +214,36 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 .toMainThread()
                 .subscribe(Consumer { onUploadProgressUpdate(it) }, ignore()))
 
+        appendDisposable(messagesRepository.observePeerUpdates()
+                .toMainThread()
+                .subscribe(Consumer { onPeerUpdate(it) }, ignore()))
+
         updateSubtitle()
+    }
+
+    private fun onPeerUpdate(updates: List<PeerUpdate>) {
+        var requireListUpdate = false
+
+        for (update in updates) {
+            if (update.accountId != messagesOwnerId || update.peerId != peerId) continue
+
+            update.readIn?.run {
+                conversation?.inRead = messageId
+                conversation?.unreadCount = unreadCount
+                lastReadId.incoming = messageId
+                requireListUpdate = true
+            }
+
+            update.readOut?.run {
+                conversation?.outRead = messageId
+                lastReadId.outgoing = messageId
+                requireListUpdate = true
+            }
+        }
+
+        if (requireListUpdate) {
+            view?.notifyDataChanged()
+        }
     }
 
     private fun fetchConversationThenCachedThenActual() {
@@ -343,13 +372,29 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 RealtimeAction.USER_IS_OFFLINE -> onUserIsOffline(action as UserOffline)
                 RealtimeAction.MESSAGES_FLAGS_RESET -> onMessageFlagReset(action as MessageFlagsReset)
                 RealtimeAction.MESSAGES_FLAGS_SET -> onMessageFlagSet(action as MessageFlagsSet)
-                RealtimeAction.MESSAGES_READ -> {
-                    val read = action as MessagesRead
-                    onLongpollMessagesRead(messagesOwnerId, read.peerId, read.isOut, read.toMessageId)
-                }
+                //RealtimeAction.MESSAGES_READ -> {
+                //    val read = action as MessagesRead
+                //    onLongpollMessagesRead(messagesOwnerId, read.peerId, read.isOut, read.toMessageId)
+                //}
             }
         }
     }
+
+    /*private fun onLongpollMessagesRead(accountId: Int, peerId: Int, out: Boolean, localId: Int) {
+        if (messagesOwnerId != accountId || peerId != peerId) return
+
+        conversation?.run {
+            if (out) {
+                outRead = localId
+                lastReadId.outgoing = localId
+            } else {
+                inRead = localId
+                lastReadId.incoming = localId
+            }
+        }
+
+        view?.notifyDataChanged()
+    }*/
 
     private fun onUserIsOffline(userOffline: UserOffline) {
         if (isChatWithUser(userOffline.userId)) {
@@ -843,22 +888,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
 
         addMessageToList(message)
-        view?.notifyDataChanged()
-    }
-
-    private fun onLongpollMessagesRead(accountId: Int, peerId: Int, out: Boolean, localId: Int) {
-        if (messagesOwnerId != accountId || peerId != peerId) return
-
-        conversation?.run {
-            if (out) {
-                outRead = localId
-                lastReadId.outgoing = localId
-            } else {
-                inRead = localId
-                lastReadId.incoming = localId
-            }
-        }
-
         view?.notifyDataChanged()
     }
 

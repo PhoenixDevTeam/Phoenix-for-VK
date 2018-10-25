@@ -4,7 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.gcm.GcmListenerService;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.push.CollapseKey;
@@ -26,12 +27,39 @@ import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.PersistentLogger;
+import biz.dealnote.messenger.util.RxUtils;
 
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 
-public class MyGcmListenerService extends GcmListenerService {
+public class MyGcmListenerService extends FirebaseMessagingService {
 
     private static final String TAG = "MyGcmListenerService";
+
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        Injection.providePushRegistrationResolver()
+                .resolvePushRegistration()
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(RxUtils.dummy(), RxUtils.ignore());
+    }
+
+    @Override
+    public void onMessageReceived(RemoteMessage message) {
+        super.onMessageReceived(message);
+
+        String pushType = message.getData().get("type");
+
+        try {
+            Logger.d(TAG, "pushType: " + pushType + ", data: " + String.valueOf(message.getData()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(message.getData() != null){
+
+        }
+    }
 
     /**
      * Called when message is received.
@@ -40,7 +68,6 @@ public class MyGcmListenerService extends GcmListenerService {
      * @param extras Data bundle containing message data as key/value pairs.
      *               For Set of keys use data.keySet().
      */
-    @Override
     public void onMessageReceived(String from, Bundle extras) {
         Context context = getApplicationContext();
         String collapseKey = extras.getString("collapse_key");

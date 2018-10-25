@@ -1,10 +1,14 @@
 package biz.dealnote.messenger.push;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +23,10 @@ import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Completable;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.schedulers.Schedulers;
 
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 
@@ -31,13 +38,11 @@ public class PushRegistrationResolver implements IPushRegistrationResolver {
 
     private static final String TAG = PushRegistrationResolver.class.getSimpleName();
 
-    private final IGcmTokenProvider gcmTokenProvider;
     private final IDevideIdProvider devideIdProvider;
     private final ISettings settings;
     private final INetworker networker;
 
-    public PushRegistrationResolver(IGcmTokenProvider gcmTokenProvider, IDevideIdProvider devideIdProvider, ISettings settings, INetworker networker) {
-        this.gcmTokenProvider = gcmTokenProvider;
+    public PushRegistrationResolver(IDevideIdProvider devideIdProvider, ISettings settings, INetworker networker) {
         this.devideIdProvider = devideIdProvider;
         this.settings = settings;
         this.networker = networker;
@@ -61,6 +66,7 @@ public class PushRegistrationResolver implements IPushRegistrationResolver {
     @Override
     public Completable resolvePushRegistration() {
         return getInfo()
+                .observeOn(Schedulers.io())
                 .flatMapCompletable(data -> {
                     final List<VkPushRegistration> available = settings.pushSettings().getRegistrations();
 
@@ -223,29 +229,32 @@ public class PushRegistrationResolver implements IPushRegistrationResolver {
         OK, REMOVE, UNREGISTER_AND_REMOVE
     }
 
-    private Single<Data> getInfo() {
-        return Single.create(emitter -> {
-            try {
-                String deviceId = devideIdProvider.getDeviceId();
-                String gcmToken = gcmTokenProvider.getToken();
-                emitter.onSuccess(new Data(gcmToken, deviceId));
-            } catch (Exception e){
-                emitter.onError(e);
-            }
+    private static Single<String> getFcmToken() {
+        return Single.create(e -> {
+            final WeakReference<SingleEmitter<String>> weak = new WeakReference<>(e);
+            e.setCancellable(weak::clear);
+
+            OnCompleteListener<InstanceIdResult> listener = task -> {
+                final SingleEmitter<String> emitter = weak.get();
+
+                if (emitter == null || emitter.isDisposed()) return;
+
+                if (task.isSuccessful()) {
+                    InstanceIdResult result = task.getResult();
+                    emitter.onSuccess(result.getToken());
+                } else {
+                    emitter.onError(task.getException());
+                }
+            };
+
+            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(listener);
         });
     }
 
-    @SuppressWarnings("unused")
-    private VkPushRegistration createCurrent() throws IOException {
-        int accountId = settings.accounts().getCurrent();
-
-        if (accountId == ISettings.IAccountsSettings.INVALID_ID) {
-            return null;
-        }
-
-        String deviceId = devideIdProvider.getDeviceId();
-        String gcmToken = gcmTokenProvider.getToken();
-        String vkToken = settings.accounts().getAccessToken(accountId);
-        return new VkPushRegistration(accountId, deviceId, vkToken, gcmToken);
+    private Single<Data> getInfo() {
+        return getFcmToken().flatMap(s -> {
+            Data data = new Data(s, devideIdProvider.getDeviceId());
+            return Single.just(data);
+        });
     }
 }

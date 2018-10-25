@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
         mCompositeDisposable.add(resolver.resolvePushRegistration()
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
-                .subscribe(() -> {/*ignore*/}, Throwable::printStackTrace));
+                .subscribe(RxUtils.dummy(), RxUtils.ignore()));
 
         //RequestHelper.checkPushRegistration(this);
     }

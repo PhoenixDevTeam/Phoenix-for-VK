@@ -10,7 +10,7 @@ android {
     }
 
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "biz.dealnote.messenger"
@@ -138,7 +138,6 @@ dependencies {
     implementation "com.android.support:support-media-compat:$supportLibraryVersion"
     implementation "com.android.support:customtabs:$supportLibraryVersion"
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation "com.google.android.gms:play-services-gcm:$firebaseLibraryVersion"
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
@@ -150,7 +149,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-    implementation "com.google.firebase:firebase-database:$firebaseLibraryVersion"
+
+    implementation "com.google.firebase:firebase-core:16.0.4"
+    implementation 'com.google.firebase:firebase-database:16.0.3'
+    implementation "com.google.firebase:firebase-messaging:17.3.4"
+
     implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
     implementation "com.android.support:exifinterface:$supportLibraryVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
