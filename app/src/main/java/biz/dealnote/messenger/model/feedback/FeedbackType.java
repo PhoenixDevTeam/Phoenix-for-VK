@@ -1,9 +1,9 @@
 package biz.dealnote.messenger.model.feedback;
 
-import androidx.annotation.IntDef;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.IntDef;
 
 /**
  * Created by admin on 08.10.2016.

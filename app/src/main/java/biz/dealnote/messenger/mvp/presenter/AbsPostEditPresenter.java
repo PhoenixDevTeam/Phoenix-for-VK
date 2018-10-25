@@ -1,9 +1,9 @@
 package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import biz.dealnote.messenger.mvp.view.IBasePostEditView;
 import biz.dealnote.messenger.util.BooleanValue;
 

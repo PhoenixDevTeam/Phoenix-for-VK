@@ -1,9 +1,10 @@
 package biz.dealnote.messenger.view;
 
 import android.content.Context;
-import androidx.drawerlayout.widget.DrawerLayout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class ErrorIgnoreDrawerLayout extends DrawerLayout {
 

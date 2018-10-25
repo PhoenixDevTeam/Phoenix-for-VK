@@ -2,7 +2,6 @@ package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import java.util.EventListener;
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
 import biz.dealnote.messenger.model.LogEvent;

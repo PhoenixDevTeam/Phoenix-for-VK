@@ -1,8 +1,8 @@
 package biz.dealnote.messenger.fragment.base;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 
+import androidx.fragment.app.Fragment;
 import biz.dealnote.messenger.util.AssertUtils;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;

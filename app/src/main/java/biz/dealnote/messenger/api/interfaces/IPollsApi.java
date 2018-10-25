@@ -1,9 +1,8 @@
 package biz.dealnote.messenger.api.interfaces;
 
-import androidx.annotation.CheckResult;
-
 import java.util.Collection;
 
+import androidx.annotation.CheckResult;
 import biz.dealnote.messenger.api.model.VKApiPoll;
 import io.reactivex.Single;
 

@@ -2,13 +2,13 @@ package biz.dealnote.messenger.service;
 
 import android.content.Context;
 import android.os.Message;
-import androidx.annotation.MainThread;
-import androidx.annotation.NonNull;
 import android.widget.Toast;
 
 import java.util.Collection;
 import java.util.concurrent.Executors;
 
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.domain.IMessagesRepository;
 import biz.dealnote.messenger.exception.NotFoundException;

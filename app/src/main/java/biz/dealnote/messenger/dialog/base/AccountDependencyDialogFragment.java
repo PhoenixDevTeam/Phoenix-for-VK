@@ -1,10 +1,10 @@
 package biz.dealnote.messenger.dialog.base;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.adapter.AttachmentsViewBinder;

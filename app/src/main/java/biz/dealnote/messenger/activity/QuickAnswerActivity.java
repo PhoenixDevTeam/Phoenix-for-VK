@@ -3,8 +3,6 @@ package biz.dealnote.messenger.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -17,6 +15,8 @@ import com.squareup.picasso.Transformation;
 
 import java.util.concurrent.TimeUnit;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.crypt.KeyLocationPolicy;

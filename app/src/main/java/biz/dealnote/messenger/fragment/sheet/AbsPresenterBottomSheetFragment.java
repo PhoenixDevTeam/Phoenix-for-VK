@@ -1,11 +1,12 @@
 package biz.dealnote.messenger.fragment.sheet;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import android.view.View;
 
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.mvp.compat.ViewHostDelegate;
 import biz.dealnote.mvp.core.IMvpView;
 import biz.dealnote.mvp.core.IPresenter;

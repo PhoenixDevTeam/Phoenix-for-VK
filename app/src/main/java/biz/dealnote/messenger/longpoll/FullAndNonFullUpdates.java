@@ -1,10 +1,9 @@
 package biz.dealnote.messenger.longpoll;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.longpoll.AddMessageUpdate;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Utils;

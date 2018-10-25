@@ -1,12 +1,14 @@
 package biz.dealnote.messenger.view;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 
 public class FABBehavior extends FloatingActionButton.Behavior {
 

@@ -1,11 +1,10 @@
 package biz.dealnote.messenger.domain.mappers;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.db.model.IdPairEntity;
 import biz.dealnote.messenger.db.model.entity.feedback.CopyEntity;
 import biz.dealnote.messenger.db.model.entity.feedback.FeedbackEntity;

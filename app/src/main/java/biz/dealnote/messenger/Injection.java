@@ -22,7 +22,6 @@ import biz.dealnote.messenger.media.gif.IGifPlayerFactory;
 import biz.dealnote.messenger.media.voice.IVoicePlayerFactory;
 import biz.dealnote.messenger.media.voice.VoicePlayerFactory;
 import biz.dealnote.messenger.push.IDevideIdProvider;
-import biz.dealnote.messenger.push.IGcmTokenProvider;
 import biz.dealnote.messenger.push.IPushRegistrationResolver;
 import biz.dealnote.messenger.push.PushRegistrationResolver;
 import biz.dealnote.messenger.service.MessageSender;

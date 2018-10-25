@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 import biz.dealnote.messenger.api.model.VKApiMessage;
+import biz.dealnote.messenger.api.model.VkApiConversation;
 
 /**
  * Created by ruslan.kolbasa on 28.12.2016.
@@ -21,4 +22,6 @@ public class MessageHistoryResponse {
     @SerializedName("unread")
     public int unread;
 
+    @SerializedName("conversations")
+    public List<VkApiConversation> conversations;
 }

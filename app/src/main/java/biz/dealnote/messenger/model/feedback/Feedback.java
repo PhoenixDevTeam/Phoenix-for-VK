@@ -2,8 +2,8 @@ package biz.dealnote.messenger.model.feedback;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.CallSuper;
 
+import androidx.annotation.CallSuper;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.Comment;
 

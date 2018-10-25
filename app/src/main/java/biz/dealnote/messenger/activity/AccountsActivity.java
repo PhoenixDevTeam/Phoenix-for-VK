@@ -2,12 +2,12 @@ package biz.dealnote.messenger.activity;
 
 import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.AccountsFragment;
 import biz.dealnote.messenger.settings.CurrentTheme;

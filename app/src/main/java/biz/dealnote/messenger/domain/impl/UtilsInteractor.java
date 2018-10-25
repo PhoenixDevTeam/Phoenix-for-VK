@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.domain.impl;
 
 import android.annotation.SuppressLint;
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VkApiFriendList;
 import biz.dealnote.messenger.db.interfaces.IStorages;

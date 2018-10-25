@@ -1,12 +1,11 @@
 package biz.dealnote.messenger.db.interfaces;
 
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.db.model.MessagePatch;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
 import biz.dealnote.messenger.model.DraftMessage;
@@ -28,10 +27,7 @@ public interface IMessagesStorage extends IStorage {
 
     Completable insertPeerDbos(int accountId, int peerId, @NonNull List<MessageEntity> dbos, boolean clearHistory);
 
-    Single<int[]> insertDbos(int accountId, @NonNull List<MessageEntity> dbos);
-
-    @Deprecated
-    Single<Integer> calculateUnreadCount(int accountId, int peerId);
+    Single<int[]> insert(int accountId, @NonNull List<MessageEntity> dbos);
 
     Single<List<MessageEntity>> getByCriteria(@NonNull MessagesCriteria criteria, boolean withAtatchments, boolean withForwardMessages);
 

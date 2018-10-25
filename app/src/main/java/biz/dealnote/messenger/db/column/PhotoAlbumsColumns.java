@@ -2,10 +2,10 @@ package biz.dealnote.messenger.db.column;
 
 import android.content.ContentValues;
 import android.provider.BaseColumns;
-import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.VKApiPhotoAlbum;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.util.Objects;

@@ -1,9 +1,8 @@
 package biz.dealnote.messenger.api.interfaces;
 
-import androidx.annotation.NonNull;
-
 import java.io.InputStream;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.PercentagePublisher;
 import biz.dealnote.messenger.api.model.upload.UploadDocDto;
 import biz.dealnote.messenger.api.model.upload.UploadOwnerPhotoDto;

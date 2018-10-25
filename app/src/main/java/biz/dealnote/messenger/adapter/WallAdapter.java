@@ -1,9 +1,6 @@
 package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +12,9 @@ import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;

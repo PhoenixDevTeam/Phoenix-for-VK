@@ -2,7 +2,6 @@ package biz.dealnote.messenger.adapter.feedback;
 
 import android.app.Activity;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
@@ -15,6 +14,7 @@ import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.AttachmentsHolder;

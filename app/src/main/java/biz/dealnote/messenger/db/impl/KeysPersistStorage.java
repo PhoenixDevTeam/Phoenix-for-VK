@@ -3,11 +3,11 @@ package biz.dealnote.messenger.db.impl;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.crypt.AesKeyPair;
 import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.column.KeyColumns;

@@ -2,6 +2,7 @@ package biz.dealnote.messenger.model.selection;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import androidx.annotation.CallSuper;
 
 /**

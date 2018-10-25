@@ -6,8 +6,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.gson.reflect.TypeToken;
@@ -21,8 +19,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.db.AttachToType;
-import biz.dealnote.messenger.db.DBHelper;
 import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.RecordNotFoundException;
 import biz.dealnote.messenger.db.column.MessageColumns;
@@ -152,7 +151,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
     }
 
     @Override
-    public Single<int[]> insertDbos(int accountId, @NonNull List<MessageEntity> dbos) {
+    public Single<int[]> insert(int accountId, @NonNull List<MessageEntity> dbos) {
         return Single.create(emitter -> {
             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
@@ -209,29 +208,6 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
             }
 
             emitter.onSuccess(Optional.wrap(id));
-        });
-    }
-
-    @Override
-    public Single<Integer> calculateUnreadCount(int accountId, int peerId) {
-        return Single.fromCallable(() -> {
-            int result = 0;
-            Cursor cursor = DBHelper.getInstance(getContext(), accountId)
-                    .getReadableDatabase()
-                    .rawQuery("SELECT COUNT(" + MessageColumns._ID + ") FROM " + MessageColumns.TABLENAME +
-                                    " WHERE " + MessageColumns.PEER_ID + " = ?" +
-                                    //" AND " + MessageColumns.READ_STATE + " = ?" +
-                                    " AND " + MessageColumns.OUT + " = ?" +
-                                    " AND " + MessageColumns.ATTACH_TO + " = ?" +
-                                    " AND " + MessageColumns.DELETED + " = ?",
-                            new String[]{String.valueOf(peerId), "0", /*"0",*/ "0", "0"});
-
-            if (cursor.moveToNext()) {
-                result = cursor.getInt(0);
-            }
-
-            cursor.close();
-            return result;
         });
     }
 

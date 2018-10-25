@@ -2,9 +2,6 @@ package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +11,9 @@ import android.widget.TextView;
 import java.util.EventListener;
 import java.util.List;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.holder.IdentificableHolder;
 import biz.dealnote.messenger.adapter.holder.SharedHolders;

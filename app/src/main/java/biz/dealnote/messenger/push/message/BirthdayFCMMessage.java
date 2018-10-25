@@ -6,8 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.google.firebase.messaging.RemoteMessage;
@@ -15,6 +13,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;

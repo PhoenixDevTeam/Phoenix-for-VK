@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import androidx.annotation.NonNull;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.settings.CurrentTheme;

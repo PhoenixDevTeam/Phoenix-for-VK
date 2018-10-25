@@ -5,8 +5,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
@@ -19,6 +17,8 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;

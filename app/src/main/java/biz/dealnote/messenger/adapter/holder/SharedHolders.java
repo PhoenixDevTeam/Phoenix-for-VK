@@ -1,7 +1,5 @@
 package biz.dealnote.messenger.adapter.holder;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.SparseArray;
 
 import java.lang.ref.WeakReference;
@@ -9,6 +7,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.util.Objects;
 
 /**

@@ -1,11 +1,10 @@
 package biz.dealnote.messenger.api.impl;
 
-import androidx.annotation.NonNull;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.IServiceProvider;
 import biz.dealnote.messenger.api.TokenType;
 import biz.dealnote.messenger.api.interfaces.IPhotosApi;

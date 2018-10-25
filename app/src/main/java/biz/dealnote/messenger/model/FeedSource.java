@@ -3,9 +3,9 @@ package biz.dealnote.messenger.model;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-
 import biz.dealnote.messenger.adapter.horizontal.Entry;
 
 public class FeedSource implements Entry, Parcelable {

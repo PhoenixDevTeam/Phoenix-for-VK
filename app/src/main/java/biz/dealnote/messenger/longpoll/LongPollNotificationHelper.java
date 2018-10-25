@@ -1,10 +1,10 @@
 package biz.dealnote.messenger.longpoll;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;

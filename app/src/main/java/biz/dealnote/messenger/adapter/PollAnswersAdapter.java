@@ -2,8 +2,6 @@ package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -11,6 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
 import biz.dealnote.messenger.model.Poll;

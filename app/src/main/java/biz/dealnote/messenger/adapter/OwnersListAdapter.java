@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.adapter;
 
 import android.app.Activity;
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.model.Owner;

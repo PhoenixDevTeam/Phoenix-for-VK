@@ -5,12 +5,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import androidx.annotation.DrawableRes;
 
 import com.squareup.picasso.Transformation;
 
 import java.io.IOException;
 
+import androidx.annotation.DrawableRes;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.ISettings;

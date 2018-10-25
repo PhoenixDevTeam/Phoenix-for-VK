@@ -7,9 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.RemoteInput;
-
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;

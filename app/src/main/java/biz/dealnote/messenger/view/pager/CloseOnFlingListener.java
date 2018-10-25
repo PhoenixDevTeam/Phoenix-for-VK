@@ -1,11 +1,11 @@
 package biz.dealnote.messenger.view.pager;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.MotionEvent;
 
 import com.github.chrisbanes.photoview.OnSingleFlingListener;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.view.FlingRelativeLayout;
 
 import static biz.dealnote.messenger.util.Utils.dpToPx;

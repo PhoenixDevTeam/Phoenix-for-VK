@@ -2,13 +2,13 @@ package biz.dealnote.messenger.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.annotation.LayoutRes;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import androidx.annotation.LayoutRes;
 import biz.dealnote.messenger.R;
 
 /**

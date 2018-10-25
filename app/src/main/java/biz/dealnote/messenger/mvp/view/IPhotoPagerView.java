@@ -1,9 +1,8 @@
 package biz.dealnote.messenger.mvp.view;
 
-import androidx.annotation.NonNull;
-
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.model.Commented;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;

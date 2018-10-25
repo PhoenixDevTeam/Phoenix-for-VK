@@ -1,9 +1,8 @@
 package biz.dealnote.messenger.domain;
 
-import androidx.annotation.CheckResult;
-
 import java.util.List;
 
+import androidx.annotation.CheckResult;
 import biz.dealnote.messenger.db.model.PostUpdate;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.EditingPostType;

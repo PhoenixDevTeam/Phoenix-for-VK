@@ -1,9 +1,8 @@
 package biz.dealnote.messenger.api.interfaces;
 
-import androidx.annotation.CheckResult;
-
 import java.util.Collection;
 
+import androidx.annotation.CheckResult;
 import biz.dealnote.messenger.api.model.IAttachmentToken;
 import biz.dealnote.messenger.api.model.IdPair;
 import biz.dealnote.messenger.api.model.response.DefaultCommentsResponse;

@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import biz.dealnote.messenger.R;
 
 /**

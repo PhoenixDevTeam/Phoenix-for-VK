@@ -2,8 +2,6 @@ package biz.dealnote.messenger.mvp.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +9,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.db.Stores;
@@ -24,6 +24,7 @@ import biz.dealnote.messenger.longpoll.LongpollInstance;
 import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.Peer;
+import biz.dealnote.messenger.model.PeerUpdate;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IDialogsView;
@@ -70,7 +71,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
 
         this.dialogs = new ArrayList<>();
 
-        if(nonNull(savedInstanceState)){
+        if (nonNull(savedInstanceState)) {
             this.dialogsOwnerId = savedInstanceState.getInt(SAVE_DIALOGS_OWNER_ID);
         } else {
             this.dialogsOwnerId = dialogsOwnerId;
@@ -81,10 +82,10 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
 
         final IDialogsStorage store = Stores.getInstance().dialogs();
 
-        appendDisposable(store
-                .observeDialogUpdates()
+        appendDisposable(messagesInteractor
+                .observePeerUpdates()
                 .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(this::onDialogUpdate));
+                .subscribe(this::onPeerUpdate, ignore()));
 
         appendDisposable(store
                 .observeDialogsDeleting()
@@ -208,7 +209,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         }
     }
 
-    private void onDialogRemovedSuccessfully(int accountId, int peeId){
+    private void onDialogRemovedSuccessfully(int accountId, int peeId) {
         getView().showSnackbar(R.string.deleted, true);
         onDialogDeleted(accountId, peeId);
     }
@@ -265,44 +266,68 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         resolveRefreshingView();
     }
 
-    private void onDialogUpdate(IDialogsStorage.IDialogUpdate update) {
+    private void onPeerUpdate(List<PeerUpdate> updates) {
+        for (PeerUpdate update : updates) {
+            if (update.getAccountId() == dialogsOwnerId) {
+                onDialogUpdate(update);
+            }
+        }
+    }
+
+    private void onDialogUpdate(PeerUpdate update) {
         if (this.dialogsOwnerId != update.getAccountId()) {
             return;
         }
 
         final int accountId = update.getAccountId();
         final int peerId = update.getPeerId();
-        final int unreadCount = update.getUnreadCount();
 
-        appendDisposable(messagesInteractor
-                .findCachedMessages(accountId, Collections.singletonList(update.getLastMessageId()))
-                .map(messages -> messages.size() == 1 ? Optional.wrap(messages.get(0)) : Optional.<Message>empty())
-                .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(optional -> {
-                    if (optional.isEmpty()) {
-                        onDialogDeleted(accountId, peerId);
-                    } else {
-                        onActualMessagePeerMessageReceived(accountId, peerId, unreadCount, optional.get());
-                    }
-                }, RxUtils.ignore()));
+        if (update.getLastMessage() != null) {
+            List<Integer> id = Collections.singletonList(update.getLastMessage().getMessageId());
+            appendDisposable(messagesInteractor.findCachedMessages(accountId, id)
+                    .compose(RxUtils.applySingleIOToMainSchedulers())
+                    .subscribe(messages -> {
+                        if (messages.isEmpty()) {
+                            onDialogDeleted(accountId, peerId);
+                        } else {
+                            onActualMessagePeerMessageReceived(accountId, peerId, update, Optional.wrap(messages.get(0)));
+                        }
+                    }, ignore()));
+        } else {
+            onActualMessagePeerMessageReceived(accountId, peerId, update, Optional.empty());
+        }
     }
 
-    private void onActualMessagePeerMessageReceived(int accountId, int peerId, int unreadCount, Message message) {
-        if (accountId != this.dialogsOwnerId) {
+    private void onActualMessagePeerMessageReceived(int accountId, int peerId, PeerUpdate update, Optional<Message> messageOptional) {
+        if (accountId != dialogsOwnerId) {
             return;
         }
 
-        int index = indexOf(this.dialogs, peerId);
+        int index = indexOf(dialogs, peerId);
 
         if (index != -1) {
-            Dialog dialog = this.dialogs.get(index);
+            Dialog dialog = dialogs.get(index);
 
-            dialog.setMessage(message)
-                    .setUnreadCount(unreadCount)
-                    .setLastMessageId(message.getId());
+            if (update.getReadIn() != null) {
+                dialog.setInRead(update.getReadIn().getMessageId());
+            }
 
-            if (dialog.isChat()) {
-                dialog.setInterlocutor(message.getSender());
+            if (update.getReadOut() != null) {
+                dialog.setOutRead(update.getReadOut().getMessageId());
+            }
+
+            if (update.getUnread() != null) {
+                dialog.setUnreadCount(update.getUnread().getCount());
+            }
+
+            if (messageOptional.nonEmpty()) {
+                Message message = messageOptional.get();
+                dialog.setLastMessageId(message.getId());
+                dialog.setMessage(message);
+
+                if (dialog.isChat()) {
+                    dialog.setInterlocutor(message.getSender());
+                }
             }
 
             Collections.sort(this.dialogs, COMPARATOR);
@@ -344,8 +369,8 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         checkLongpoll();
     }
 
-    private void checkLongpoll(){
-        if(isGuiResumed() && getAccountId() != ISettings.IAccountsSettings.INVALID_ID){
+    private void checkLongpoll() {
+        if (isGuiResumed() && getAccountId() != ISettings.IAccountsSettings.INVALID_ID) {
             longpollManager.keepAlive(dialogsOwnerId);
         }
     }
@@ -464,7 +489,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         super.afterAccountChange(oldAid, newAid);
 
         // если на экране диалоги группы, то ничего не трогаем
-        if(this.dialogsOwnerId < 0 && this.dialogsOwnerId != ISettings.IAccountsSettings.INVALID_ID){
+        if (this.dialogsOwnerId < 0 && this.dialogsOwnerId != ISettings.IAccountsSettings.INVALID_ID) {
             return;
         }
 

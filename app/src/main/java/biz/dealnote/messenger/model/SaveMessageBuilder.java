@@ -1,11 +1,10 @@
 package biz.dealnote.messenger.model;
 
-import androidx.annotation.NonNull;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.crypt.KeyLocationPolicy;
 
 /**

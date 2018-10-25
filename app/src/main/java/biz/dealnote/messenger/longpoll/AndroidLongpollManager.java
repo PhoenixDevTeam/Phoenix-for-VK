@@ -3,7 +3,6 @@ package biz.dealnote.messenger.longpoll;
 import android.content.Context;
 import android.os.Looper;
 import android.os.Message;
-import androidx.annotation.NonNull;
 import android.util.SparseArray;
 
 import java.lang.ref.WeakReference;
@@ -11,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;

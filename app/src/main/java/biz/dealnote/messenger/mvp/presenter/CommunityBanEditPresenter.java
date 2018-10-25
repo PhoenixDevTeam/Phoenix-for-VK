@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -9,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.domain.IGroupSettingsInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;

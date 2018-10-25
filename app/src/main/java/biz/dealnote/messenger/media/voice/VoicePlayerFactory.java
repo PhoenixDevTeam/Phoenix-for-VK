@@ -1,8 +1,8 @@
 package biz.dealnote.messenger.media.voice;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.model.ProxyConfig;
 import biz.dealnote.messenger.settings.IProxySettings;
 import biz.dealnote.messenger.settings.ISettings;

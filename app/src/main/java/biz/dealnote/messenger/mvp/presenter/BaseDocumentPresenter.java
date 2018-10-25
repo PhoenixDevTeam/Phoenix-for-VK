@@ -1,9 +1,9 @@
 package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.domain.IDocsInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;

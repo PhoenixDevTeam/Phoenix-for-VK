@@ -2,7 +2,6 @@ package biz.dealnote.messenger.adapter.vkdatabase;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.model.City;
 

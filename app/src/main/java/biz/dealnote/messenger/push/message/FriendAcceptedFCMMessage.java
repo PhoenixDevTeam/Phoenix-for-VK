@@ -6,11 +6,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.RemoteMessage;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
@@ -19,7 +19,6 @@ import biz.dealnote.messenger.longpoll.NotificationHelper;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.push.NotificationScheduler;
-import biz.dealnote.messenger.push.NotificationUtils;
 import biz.dealnote.messenger.push.OwnerInfo;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Utils;

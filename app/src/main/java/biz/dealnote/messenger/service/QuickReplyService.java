@@ -4,9 +4,9 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.RemoteInput;
-
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.domain.IMessagesRepository;
 import biz.dealnote.messenger.domain.Repository;

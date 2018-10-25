@@ -1,8 +1,8 @@
 package biz.dealnote.messenger.activity;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.fragment.AddProxyFragment;
 import biz.dealnote.messenger.fragment.ProxyManagerFrgament;
 import biz.dealnote.messenger.place.Place;

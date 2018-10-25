@@ -1,8 +1,9 @@
 package biz.dealnote.messenger.view.pager;
 
+import android.view.View;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
-import android.view.View;
 
 /**
  * Created by ruslan.kolbasa on 19.10.2016.

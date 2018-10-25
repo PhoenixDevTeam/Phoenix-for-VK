@@ -32,7 +32,6 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Process;
 import android.os.SystemClock;
-import androidx.annotation.NonNull;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -46,6 +45,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.domain.IAudioInteractor;

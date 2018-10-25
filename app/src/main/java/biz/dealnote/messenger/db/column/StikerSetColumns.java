@@ -2,9 +2,9 @@ package biz.dealnote.messenger.db.column;
 
 import android.content.ContentValues;
 import android.provider.BaseColumns;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.VKApiStickerSet;
 import biz.dealnote.messenger.util.AssertUtils;
 

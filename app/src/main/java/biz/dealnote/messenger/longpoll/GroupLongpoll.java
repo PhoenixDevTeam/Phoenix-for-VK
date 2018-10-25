@@ -1,9 +1,8 @@
 package biz.dealnote.messenger.longpoll;
 
-import androidx.annotation.NonNull;
-
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.longpoll.VkApiGroupLongpollUpdates;

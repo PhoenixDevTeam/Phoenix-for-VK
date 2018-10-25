@@ -5,8 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
@@ -14,21 +12,18 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Map;
 
+import androidx.core.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
 import biz.dealnote.messenger.longpoll.AppNotificationChannels;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.push.NotificationScheduler;
-import biz.dealnote.messenger.push.OwnerInfo;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Utils;
 
 import static biz.dealnote.messenger.push.NotificationUtils.configOtherPushNotification;
-import static biz.dealnote.messenger.push.NotificationUtils.optInt;
-import static biz.dealnote.messenger.util.Utils.stringEmptyIfNull;
 
 /**
  * Created by ruslan.kolbasa on 10.01.2017.

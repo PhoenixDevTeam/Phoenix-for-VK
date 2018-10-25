@@ -2,8 +2,8 @@ package biz.dealnote.messenger.db.impl;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import androidx.annotation.NonNull;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.crypt.KeyLocationPolicy;
 import biz.dealnote.messenger.db.interfaces.IAttachmentsStorage;
 import biz.dealnote.messenger.db.interfaces.ICommentsStorage;

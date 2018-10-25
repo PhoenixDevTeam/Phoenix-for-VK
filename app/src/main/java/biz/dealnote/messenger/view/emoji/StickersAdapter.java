@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.view.emoji;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,6 +11,7 @@ import com.squareup.picasso.NetworkPolicy;
 
 import java.lang.ref.WeakReference;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.api.model.VKApiStickerSet;

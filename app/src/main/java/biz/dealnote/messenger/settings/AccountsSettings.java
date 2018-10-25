@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.push.IPushRegistrationResolver;
 import biz.dealnote.messenger.util.RxUtils;

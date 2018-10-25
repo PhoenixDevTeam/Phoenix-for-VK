@@ -2,8 +2,6 @@ package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,6 +15,8 @@ import com.squareup.picasso.Transformation;
 import java.util.EventListener;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.link.internal.OwnerLinkSpanFactory;

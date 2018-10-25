@@ -1,11 +1,10 @@
 package biz.dealnote.messenger.api;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.model.ProxyConfig;
 import biz.dealnote.messenger.util.ValidationUtil;
 import okhttp3.Authenticator;

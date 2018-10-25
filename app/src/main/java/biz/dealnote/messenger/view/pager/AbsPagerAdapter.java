@@ -1,10 +1,11 @@
 package biz.dealnote.messenger.view.pager;
 
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
 
 /**
  * Created by ruslan.kolbasa on 19.10.2016.

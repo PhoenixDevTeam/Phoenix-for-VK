@@ -253,7 +253,7 @@ class RealtimeMessagesProcessor implements IRealtimeMessagesProcessor {
                 // собственно, вставка
                 .flatMap(result -> this.messagesInteractor
                         .insertMessages(result.getAccountId(), result.collectDtos())
-                        .andThen(refreshChangedDialogs(result))
+                        //.andThen(refreshChangedDialogs(result))
                         .andThen(Single.just(result)))
                 .flatMap(result -> {
                     // собственно, получение из локальной базы
@@ -265,7 +265,7 @@ class RealtimeMessagesProcessor implements IRealtimeMessagesProcessor {
                 });
     }
 
-    private Completable refreshChangedDialogs(TmpResult result) {
+    /*private Completable refreshChangedDialogs(TmpResult result) {
         Set<Integer> peers = new HashSet<>();
 
         for (TmpResult.Msg msg : result.getData()) {
@@ -281,7 +281,7 @@ class RealtimeMessagesProcessor implements IRealtimeMessagesProcessor {
         }
 
         return completable;
-    }
+    }*/
 
     private long lastEnryProcessTime;
 

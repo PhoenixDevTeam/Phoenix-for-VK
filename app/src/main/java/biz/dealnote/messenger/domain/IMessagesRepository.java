@@ -1,11 +1,9 @@
 package biz.dealnote.messenger.domain;
 
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.longpoll.model.MessagesRead;
 import biz.dealnote.messenger.model.AbsModel;
@@ -74,12 +72,6 @@ public interface IMessagesRepository {
     Single<List<Dialog>> getDialogs(int accountId, int count, Integer startMessageId);
 
     Single<List<Message>> findCachedMessages(int accountId, List<Integer> ids);
-
-    @CheckResult
-    Completable fixDialogs(int accountId, int peerId);
-
-    @CheckResult
-    Completable fixDialogs(int accountId, int peerId, int unreadCount);
 
     Single<Message> put(SaveMessageBuilder builder);
 

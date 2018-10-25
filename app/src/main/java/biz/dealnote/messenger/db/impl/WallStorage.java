@@ -5,14 +5,14 @@ import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.db.AttachToType;
 import biz.dealnote.messenger.db.MessengerContentProvider;

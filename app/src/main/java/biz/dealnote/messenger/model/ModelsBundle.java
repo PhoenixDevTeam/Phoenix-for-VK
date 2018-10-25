@@ -2,12 +2,13 @@ package biz.dealnote.messenger.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by admin on 20.04.2017.

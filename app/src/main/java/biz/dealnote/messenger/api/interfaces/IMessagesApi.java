@@ -1,11 +1,10 @@
 package biz.dealnote.messenger.api.interfaces;
 
-import androidx.annotation.CheckResult;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.CheckResult;
 import biz.dealnote.messenger.api.model.ChatUserDto;
 import biz.dealnote.messenger.api.model.IAttachmentToken;
 import biz.dealnote.messenger.api.model.Items;
@@ -94,7 +93,7 @@ public interface IMessagesApi {
     Single<List<VKApiMessage>> getById(Collection<Integer> ids);
 
     @CheckResult
-    Single<MessageHistoryResponse> getHistory(Integer offset, Integer count, int peerId, Integer startMessageId, Boolean rev);
+    Single<MessageHistoryResponse> getHistory(Integer offset, Integer count, int peerId, Integer startMessageId, Boolean rev, Boolean extended);
 
     @CheckResult
     Single<VkApiLongpollServer> getLongpollServer(boolean needPts, int lpVersion);

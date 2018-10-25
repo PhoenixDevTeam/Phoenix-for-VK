@@ -1,12 +1,12 @@
 package biz.dealnote.messenger.mvp.presenter.photo;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.db.serialize.Serializers;
 import biz.dealnote.messenger.model.Photo;

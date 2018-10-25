@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.PorterDuff;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -21,6 +20,7 @@ import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;

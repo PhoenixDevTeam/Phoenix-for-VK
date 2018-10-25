@@ -1,10 +1,10 @@
 package biz.dealnote.messenger.settings;
 
-import androidx.annotation.IntDef;
-import androidx.appcompat.app.AppCompatDelegate;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.IntDef;
+import androidx.appcompat.app.AppCompatDelegate;
 
 /**
  * Created by admin on 08.10.2016.

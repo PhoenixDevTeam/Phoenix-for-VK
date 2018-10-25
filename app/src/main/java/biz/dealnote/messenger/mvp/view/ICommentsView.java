@@ -1,9 +1,8 @@
 package biz.dealnote.messenger.mvp.view;
 
-import androidx.annotation.StringRes;
-
 import java.util.List;
 
+import androidx.annotation.StringRes;
 import biz.dealnote.messenger.model.Comment;
 import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.Owner;

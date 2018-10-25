@@ -229,8 +229,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
             update.readIn?.run {
                 conversation?.inRead = messageId
-                conversation?.unreadCount = unreadCount
                 lastReadId.incoming = messageId
+            }
+
+            update.unread?.run {
+                conversation?.unreadCount = count
                 requireListUpdate = true
             }
 

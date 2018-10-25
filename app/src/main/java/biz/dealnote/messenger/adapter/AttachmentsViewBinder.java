@@ -2,9 +2,6 @@ package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.SparseArray;
@@ -23,6 +20,9 @@ import java.util.EventListener;
 import java.util.List;
 import java.util.Set;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.holder.IdentificableHolder;

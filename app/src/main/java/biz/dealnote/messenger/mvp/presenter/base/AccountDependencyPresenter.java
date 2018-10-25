@@ -1,10 +1,10 @@
 package biz.dealnote.messenger.mvp.presenter.base;
 
 import android.os.Bundle;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;
 import biz.dealnote.messenger.settings.Settings;

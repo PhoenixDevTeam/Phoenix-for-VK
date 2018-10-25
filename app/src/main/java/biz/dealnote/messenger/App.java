@@ -1,9 +1,9 @@
 package biz.dealnote.messenger;
 
 import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
-
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.service.KeepLongpollService;
 import biz.dealnote.messenger.settings.Settings;

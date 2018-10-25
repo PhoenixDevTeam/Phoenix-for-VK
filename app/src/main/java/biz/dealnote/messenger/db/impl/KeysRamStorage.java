@@ -1,12 +1,12 @@
 package biz.dealnote.messenger.db.impl;
 
-import androidx.annotation.NonNull;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.crypt.AesKeyPair;
 import biz.dealnote.messenger.db.interfaces.IKeysStorage;
 import biz.dealnote.messenger.db.interfaces.IStorages;

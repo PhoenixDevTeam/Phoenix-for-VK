@@ -1,10 +1,9 @@
 package biz.dealnote.messenger.db.interfaces;
 
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-
 import java.util.List;
 
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.db.model.entity.PhotoAlbumEntity;
 import biz.dealnote.messenger.model.criteria.PhotoAlbumsCriteria;
 import biz.dealnote.messenger.util.Optional;

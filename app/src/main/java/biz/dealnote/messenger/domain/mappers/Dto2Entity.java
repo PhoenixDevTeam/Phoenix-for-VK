@@ -613,7 +613,8 @@ public class Dto2Entity {
         SimpleDialogEntity entity = new SimpleDialogEntity(dto.peer.id)
                 .setInRead(dto.inRead)
                 .setOutRead(dto.outRead)
-                .setUnreadCount(dto.unreadCount);
+                .setUnreadCount(dto.unreadCount)
+                .setLastMessageId(dto.lastMessageId);
 
         if(nonNull(dto.settings)){
             entity.setTitle(dto.settings.title);

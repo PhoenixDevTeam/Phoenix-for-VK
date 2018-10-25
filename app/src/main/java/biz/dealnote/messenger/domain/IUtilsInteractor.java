@@ -1,9 +1,8 @@
 package biz.dealnote.messenger.domain;
 
-import androidx.annotation.NonNull;
-
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Privacy;
 import biz.dealnote.messenger.model.SimplePrivacy;
