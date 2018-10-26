@@ -453,7 +453,6 @@ public class AttachmentsViewBinder {
         PicassoInstance.with()
                 .load(sticker.getPhoto256())
                 .into(imageView);
-
     }
 
     private void displayDocs(List<DocLink> docs, ViewGroup root) {

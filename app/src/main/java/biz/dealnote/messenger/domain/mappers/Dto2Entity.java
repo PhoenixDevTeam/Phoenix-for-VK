@@ -803,7 +803,7 @@ public class Dto2Entity {
     }
 
     public static StickerEntity buildStickerEntity(VKApiSticker sticker) {
-        return new StickerEntity(sticker.id)
+        return new StickerEntity(sticker.sticker_id)
                 .setHeight(sticker.height)
                 .setWidth(sticker.width);
     }

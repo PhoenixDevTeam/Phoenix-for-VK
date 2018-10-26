@@ -571,7 +571,7 @@ public class Dto2Model {
     }
 
     public static Sticker transform(@NonNull VKApiSticker dto) {
-        return new Sticker(dto.id)
+        return new Sticker(dto.sticker_id)
                 .setWidth(dto.width)
                 .setHeight(dto.height)
                 .setPhoto64(dto.photo_64)
