@@ -1,10 +1,10 @@
 package biz.dealnote.messenger.adapter.horizontal;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
 import biz.dealnote.messenger.view.RoundedButton;

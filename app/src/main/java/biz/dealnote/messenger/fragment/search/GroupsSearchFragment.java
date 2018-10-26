@@ -1,12 +1,12 @@
 package biz.dealnote.messenger.fragment.search;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.adapter.PeopleAdapter;
 import biz.dealnote.messenger.fragment.search.criteria.GroupSearchCriteria;

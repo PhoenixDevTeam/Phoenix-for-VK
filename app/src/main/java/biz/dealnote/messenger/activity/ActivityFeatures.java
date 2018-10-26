@@ -2,9 +2,9 @@ package biz.dealnote.messenger.activity;
 
 import android.app.Activity;
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
-
 import biz.dealnote.messenger.listener.AppStyleable;
 import biz.dealnote.messenger.settings.Settings;
 

@@ -2,10 +2,10 @@ package biz.dealnote.messenger.mvp.presenter.base;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-
 import biz.dealnote.messenger.App;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.Stores;

@@ -1,9 +1,8 @@
 package biz.dealnote.messenger.api.interfaces;
 
-import androidx.annotation.CheckResult;
-
 import java.util.List;
 
+import androidx.annotation.CheckResult;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VkApiFriendList;

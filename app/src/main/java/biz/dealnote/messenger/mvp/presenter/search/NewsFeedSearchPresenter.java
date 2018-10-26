@@ -1,11 +1,11 @@
 package biz.dealnote.messenger.mvp.presenter.search;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.db.model.PostUpdate;

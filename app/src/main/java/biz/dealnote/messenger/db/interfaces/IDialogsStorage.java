@@ -1,11 +1,11 @@
 package biz.dealnote.messenger.db.interfaces;
 
-import androidx.annotation.NonNull;
-
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.VKApiChat;
+import biz.dealnote.messenger.db.PeerStateEntity;
 import biz.dealnote.messenger.db.model.PeerPatch;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.SimpleDialogEntity;
@@ -26,6 +26,8 @@ public interface IDialogsStorage extends IStorage {
     int getUnreadDialogsCount(int accountId);
 
     Observable<Pair<Integer, Integer>> observeUnreadDialogsCount();
+
+    Single<List<PeerStateEntity>> findPeerStates(int accountId, Collection<Integer> ids);
 
     void setUnreadDialogsCount(int accountId, int unreadCount);
 
@@ -51,7 +53,7 @@ public interface IDialogsStorage extends IStorage {
      */
     Single<Collection<Integer>> getMissingGroupChats(int accountId, Collection<Integer> ids);
 
-    Observable<IDialogUpdate> observeDialogUpdates();
+    //Observable<IDialogUpdate> observeDialogUpdates();
 
     Completable insertChats(int accountId, List<VKApiChat> chats);
 

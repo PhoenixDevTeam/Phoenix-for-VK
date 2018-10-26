@@ -351,7 +351,8 @@ public interface IMessageService {
                                                             @Field("count") Integer count,
                                                             @Field("peer_id") int peerId,
                                                             @Field("start_message_id") Integer startMessageId,
-                                                            @Field("rev") Integer rev);
+                                                            @Field("rev") Integer rev,
+                                                            @Field("extended") Integer extended);
 
     //https://vk.com/dev/messages.searchDialogs
     @FormUrlEncoded

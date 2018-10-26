@@ -29,7 +29,7 @@ public class VKApiSticker implements VKApiAttachment {
     /**
      * Sticker ID, positive number
      */
-    public int id;
+    public int sticker_id;
 
     /**
      * Width (in pixels) of the original photo.

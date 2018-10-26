@@ -1,13 +1,12 @@
 package biz.dealnote.messenger.util;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.CommentsDto;
 import biz.dealnote.messenger.api.model.VKApiAttachment;
 import biz.dealnote.messenger.api.model.VKApiComment;

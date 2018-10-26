@@ -2,7 +2,6 @@ package biz.dealnote.messenger.adapter.feedback;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +11,7 @@ import java.util.Calendar;
 import java.util.EventListener;
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.AttachmentsViewBinder;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;

@@ -1,9 +1,10 @@
 package biz.dealnote.messenger.mvp.view;
 
 import android.net.Uri;
-import androidx.annotation.NonNull;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by admin on 20.01.2017.

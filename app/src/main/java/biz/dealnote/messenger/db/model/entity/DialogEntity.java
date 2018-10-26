@@ -99,7 +99,8 @@ public class DialogEntity extends Entity {
                 .setOutRead(outRead)
                 .setInRead(inRead)
                 .setUnreadCount(unreadCount)
-                .setPinned(pinned);
+                .setPinned(pinned)
+                .setLastMessageId(lastMessageId);
     }
 
     public String getPhoto100() {

@@ -1,11 +1,10 @@
 package biz.dealnote.messenger.mvp.view;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-
-import java.util.List;
-
 import biz.dealnote.messenger.model.FriendsCounters;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.PostFilter;

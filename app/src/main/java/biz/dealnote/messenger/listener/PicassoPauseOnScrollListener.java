@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.listener;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import biz.dealnote.messenger.api.PicassoInstance;
 
 public class PicassoPauseOnScrollListener extends RecyclerView.OnScrollListener {

@@ -2,11 +2,11 @@ package biz.dealnote.messenger.db;
 
 import android.content.ContentProviderOperation;
 import android.content.ContentValues;
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.api.model.longpoll.MessageFlagsResetUpdate;
 import biz.dealnote.messenger.api.model.longpoll.MessageFlagsSetUpdate;

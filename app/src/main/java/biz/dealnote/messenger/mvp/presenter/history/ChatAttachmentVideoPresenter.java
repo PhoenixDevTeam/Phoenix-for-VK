@@ -1,11 +1,11 @@
 package biz.dealnote.messenger.mvp.presenter.history;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.Apis;
 import biz.dealnote.messenger.api.model.VKApiVideo;

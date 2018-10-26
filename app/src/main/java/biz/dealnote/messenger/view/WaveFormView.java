@@ -6,13 +6,13 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import androidx.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.util.Property;
 import android.view.View;
 
 import java.lang.ref.WeakReference;
 
+import androidx.annotation.ColorInt;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.util.Exestime;
 

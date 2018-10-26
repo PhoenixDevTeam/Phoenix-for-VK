@@ -1,9 +1,9 @@
 package biz.dealnote.messenger.model;
 
-import androidx.annotation.IntDef;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.IntDef;
 
 @IntDef({MessageFlag.UNREAD, MessageFlag.OUTBOX, MessageFlag.REPLIED, MessageFlag.IMPORTANT,
         MessageFlag.DIALOG, MessageFlag.FRIENDS, MessageFlag.SPAM, MessageFlag.DELETED,

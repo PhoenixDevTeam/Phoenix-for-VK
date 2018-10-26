@@ -2,7 +2,6 @@ package biz.dealnote.messenger.fragment.search;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import biz.dealnote.messenger.fragment.search.criteria.BaseSearchCriteria;
 import biz.dealnote.messenger.fragment.search.criteria.DialogsSearchCriteria;
 import biz.dealnote.messenger.fragment.search.criteria.DocumentSearchCriteria;

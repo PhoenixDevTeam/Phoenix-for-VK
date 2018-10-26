@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.adapter;
 
 import android.graphics.PorterDuff;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.model.FileItem;
 import biz.dealnote.messenger.settings.CurrentTheme;

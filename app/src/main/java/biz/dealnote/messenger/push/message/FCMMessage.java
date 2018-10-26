@@ -6,13 +6,10 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import biz.dealnote.messenger.api.util.VKStringUtils;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
-import biz.dealnote.messenger.model.Message;
-import biz.dealnote.messenger.push.NotificationUtils;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Logger;

@@ -5,8 +5,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
@@ -19,6 +17,8 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
@@ -29,8 +29,6 @@ import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.domain.IWalls;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
-import biz.dealnote.messenger.model.MessageStatus;
-import biz.dealnote.messenger.service.SendService;
 import biz.dealnote.messenger.upload.impl.DocumentUploadable;
 import biz.dealnote.messenger.upload.impl.OwnerPhotoUploadable;
 import biz.dealnote.messenger.upload.impl.Photo2AlbumUploadable;
@@ -49,7 +47,6 @@ import io.reactivex.schedulers.Schedulers;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
-import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
@@ -64,7 +61,6 @@ public class UploadManagerImpl implements IUploadManager {
     private final IStorages storages;
     private final IAttachmentsRepository attachmentsRepository;
     private final IWalls walls;
-    private final SendService sendService;
     private final List<Upload> queue = new ArrayList<>();
     private final Scheduler scheduler;
 
@@ -81,13 +77,12 @@ public class UploadManagerImpl implements IUploadManager {
     private CompositeDisposable otherDisposables = new CompositeDisposable();
 
     public UploadManagerImpl(Context context, INetworker networker, IStorages storages, IAttachmentsRepository attachmentsRepository,
-                             IWalls walls, SendService sendService) {
+                             IWalls walls) {
         this.context = context.getApplicationContext();
         this.networker = networker;
         this.storages = storages;
         this.attachmentsRepository = attachmentsRepository;
         this.walls = walls;
-        this.sendService = sendService;
         this.scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
         this.timer = Flowable.interval(PROGRESS_LOOKUP_DELAY, PROGRESS_LOOKUP_DELAY, TimeUnit.MILLISECONDS);
     }
@@ -273,38 +268,17 @@ public class UploadManagerImpl implements IUploadManager {
                 current = null;
             }
 
-            final int accountId = upload.getAccountId();
-            final UploadDestination destination = upload.getDestination();
-            if (destination.getMethod() == Method.PHOTO_TO_MESSAGE && getByDestination(accountId, destination).isEmpty()) {
-                sendMessageIfWaitForUpload(accountId, destination.getId());
-            }
+            //final int accountId = upload.getAccountId();
+            //final UploadDestination destination = upload.getDestination();
+            //if (destination.getMethod() == Method.PHOTO_TO_MESSAGE && getByDestination(accountId, destination).isEmpty()) {
+            //    sendMessageIfWaitForUpload(accountId, destination.getId());
+            //}
 
             serverMap.put(createServerKey(upload), result.getServer());
 
             completeProcessor.onNext(Pair.Companion.create(upload, result));
             startIfNotStartedInternal();
         }
-    }
-
-    private void sendMessageIfWaitForUpload(int accountId, int messageId) {
-        // если загружали в личное сообщение, то отправляем это сообщение (в случае, если оно с статусе "Ожидание загрузки")
-        otherDisposables.add(storages.messages()
-                .getMessageStatus(accountId, messageId)
-                .flatMap(status -> {
-                    if (status == MessageStatus.WAITING_FOR_UPLOAD) {
-                        return storages.messages()
-                                .changeMessageStatus(accountId, messageId, MessageStatus.QUEUE, null)
-                                .andThen(Single.just(true));
-                    }
-
-                    return Single.just(false);
-                })
-                .subscribeOn(scheduler)
-                .subscribe(needStart -> {
-                    if (needStart) {
-                        sendService.runSendingQueue();
-                    }
-                }, ignore()));
     }
 
     private void onUploadFail(Upload upload, Throwable t) {

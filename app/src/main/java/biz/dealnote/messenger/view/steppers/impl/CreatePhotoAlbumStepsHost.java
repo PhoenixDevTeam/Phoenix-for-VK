@@ -2,9 +2,9 @@ package biz.dealnote.messenger.view.steppers.impl;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.model.Privacy;
 import biz.dealnote.messenger.view.steppers.base.AbsStepsHost;

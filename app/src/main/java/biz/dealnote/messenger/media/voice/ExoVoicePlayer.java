@@ -2,7 +2,6 @@ package biz.dealnote.messenger.media.voice;
 
 import android.content.Context;
 import android.net.Uri;
-import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -24,6 +23,7 @@ import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.api.ProxyUtil;
 import biz.dealnote.messenger.media.exo.CustomHttpDataSourceFactory;
 import biz.dealnote.messenger.media.exo.ExoEventAdapter;

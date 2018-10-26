@@ -1,11 +1,10 @@
 package biz.dealnote.messenger.api.interfaces;
 
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.AccessIdPair;
 import biz.dealnote.messenger.api.model.IAttachmentToken;
 import biz.dealnote.messenger.api.model.Items;

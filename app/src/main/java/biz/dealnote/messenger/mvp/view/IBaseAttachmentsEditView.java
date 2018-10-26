@@ -1,10 +1,10 @@
 package biz.dealnote.messenger.mvp.view;
 
 import android.net.Uri;
-import androidx.annotation.NonNull;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;

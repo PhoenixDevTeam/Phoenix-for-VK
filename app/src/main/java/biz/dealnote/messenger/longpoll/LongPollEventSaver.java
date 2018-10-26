@@ -4,7 +4,6 @@ import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.os.RemoteException;
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.longpoll.BadgeCountChangeUpdate;
 import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;
 import biz.dealnote.messenger.api.model.longpoll.MessageFlagsResetUpdate;
@@ -91,11 +91,11 @@ public class LongPollEventSaver {
 
                     Collection<Integer> changedEntries = getChangedPeerIds(updates);
 
-                    if (nonEmpty(changedEntries)) {
+                    /*if (nonEmpty(changedEntries)) {
                         for (Integer peerId : changedEntries) {
                             messagesInteractor.fixDialogs(accountId, peerId).blockingAwait();
                         }
-                    }
+                    }*/
 
                     if (nonEmpty(updates.getBadgeCountChangeUpdates())) {
                         for (BadgeCountChangeUpdate u : updates.getBadgeCountChangeUpdates()) {

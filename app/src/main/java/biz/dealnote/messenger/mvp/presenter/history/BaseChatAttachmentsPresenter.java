@@ -1,12 +1,12 @@
 package biz.dealnote.messenger.mvp.presenter.history;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
 import biz.dealnote.messenger.mvp.view.IBaseChatAttachmentsView;
 import biz.dealnote.messenger.util.DisposableHolder;

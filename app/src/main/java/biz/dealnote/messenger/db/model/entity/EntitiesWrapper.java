@@ -1,10 +1,10 @@
 package biz.dealnote.messenger.db.model.entity;
 
-import androidx.annotation.NonNull;
-
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 public final class EntitiesWrapper implements Iterable<Entity> {
 

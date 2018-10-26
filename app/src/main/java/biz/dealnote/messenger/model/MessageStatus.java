@@ -1,9 +1,9 @@
 package biz.dealnote.messenger.model;
 
-import androidx.annotation.IntDef;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.IntDef;
 
 @IntDef({MessageStatus.SENT, MessageStatus.SENDING, MessageStatus.QUEUE, MessageStatus.ERROR,
         MessageStatus.EDITING, MessageStatus.WAITING_FOR_UPLOAD})

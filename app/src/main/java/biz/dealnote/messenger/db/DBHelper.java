@@ -5,12 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.crypt.AesKeyPair;
 import biz.dealnote.messenger.crypt.ver.Version;
 import biz.dealnote.messenger.db.column.AttachmentsColumns;
@@ -52,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 163;
+    private static final int DATABASE_VERSION = 164;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -628,6 +628,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "  [" + PeersColumns.IN_READ + "] INTEGER, " +
                 "  [" + PeersColumns.OUT_READ + "] INTEGER, " +
                 "  [" + PeersColumns.PINNED + "] TEXT, " +
+                "  [" + PeersColumns.LAST_MESSAGE_ID + "] INTEGER, " +
                 "  [" + PeersColumns.PHOTO_50 + "] TEXT, " +
                 "  [" + PeersColumns.PHOTO_100 + "] TEXT, " +
                 "  [" + PeersColumns.PHOTO_200 + "] TEXT);";

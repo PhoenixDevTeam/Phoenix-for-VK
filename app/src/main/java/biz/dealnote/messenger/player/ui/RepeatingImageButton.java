@@ -13,7 +13,6 @@ package biz.dealnote.messenger.player.ui;
 
 import android.content.Context;
 import android.os.SystemClock;
-import androidx.appcompat.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -21,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
+import androidx.appcompat.widget.AppCompatImageButton;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.player.util.MusicUtils;
 import biz.dealnote.messenger.settings.CurrentTheme;

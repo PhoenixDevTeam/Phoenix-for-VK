@@ -1,11 +1,11 @@
 package biz.dealnote.messenger.fragment;
 
 import android.Manifest;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 
 import java.util.Collections;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
 import biz.dealnote.messenger.fragment.base.BaseMvpFragment;

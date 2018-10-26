@@ -12,21 +12,29 @@ public class MessageUpdate {
 
     private StatusUpdate statusUpdate;
 
-    private SentUpdate sentUpdate;
+    private ImportantUpdate importantUpdate;
 
-    public MessageUpdate setSentUpdate(SentUpdate sentUpdate) {
-        this.sentUpdate = sentUpdate;
-        return this;
+    private DeleteUpdate deleteUpdate;
+
+    public void setDeleteUpdate(DeleteUpdate deleteUpdate) {
+        this.deleteUpdate = deleteUpdate;
+    }
+
+    public void setImportantUpdate(ImportantUpdate importantUpdate) {
+        this.importantUpdate = importantUpdate;
+    }
+
+    public DeleteUpdate getDeleteUpdate() {
+        return deleteUpdate;
+    }
+
+    public ImportantUpdate getImportantUpdate() {
+        return importantUpdate;
     }
 
     public int getAccountId() {
         return accountId;
     }
-
-    public SentUpdate getSentUpdate() {
-        return sentUpdate;
-    }
-
     public MessageUpdate(int accountId, int messageId) {
         this.accountId = accountId;
         this.messageId = messageId;
@@ -40,9 +48,33 @@ public class MessageUpdate {
         return statusUpdate;
     }
 
-    public MessageUpdate setStatusUpdate(StatusUpdate statusUpdate) {
+    public void setStatusUpdate(StatusUpdate statusUpdate) {
         this.statusUpdate = statusUpdate;
-        return this;
+    }
+
+    public static class ImportantUpdate {
+        private final boolean important;
+
+        public ImportantUpdate(boolean important) {
+            this.important = important;
+        }
+
+        public boolean isImportant() {
+            return important;
+        }
+    }
+
+    public static class DeleteUpdate {
+
+        private final boolean deleted;
+
+        public DeleteUpdate(boolean deleted) {
+            this.deleted = deleted;
+        }
+
+        public boolean isDeleted() {
+            return deleted;
+        }
     }
 
     public static class StatusUpdate {
@@ -50,26 +82,20 @@ public class MessageUpdate {
         @MessageStatus
         private final int status;
 
-        public StatusUpdate(@MessageStatus int status) {
+        private final Integer vkid;
+
+        public StatusUpdate(@MessageStatus int status, Integer vkid) {
             this.status = status;
+            this.vkid = vkid;
+        }
+
+        public Integer getVkid() {
+            return vkid;
         }
 
         @MessageStatus
         public int getStatus() {
             return status;
-        }
-    }
-
-    public static class SentUpdate {
-
-        private final int vkid;
-
-        public SentUpdate(int vkid) {
-            this.vkid = vkid;
-        }
-
-        public int getVkid() {
-            return vkid;
         }
     }
 }

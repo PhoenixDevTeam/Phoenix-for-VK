@@ -1,12 +1,11 @@
 package biz.dealnote.messenger.domain.mappers;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.FaveLinkDto;
 import biz.dealnote.messenger.api.model.PhotoSizeDto;
 import biz.dealnote.messenger.api.model.VKApiAttachment;
@@ -572,7 +571,7 @@ public class Dto2Model {
     }
 
     public static Sticker transform(@NonNull VKApiSticker dto) {
-        return new Sticker(dto.id)
+        return new Sticker(dto.sticker_id)
                 .setWidth(dto.width)
                 .setHeight(dto.height)
                 .setPhoto64(dto.photo_64)

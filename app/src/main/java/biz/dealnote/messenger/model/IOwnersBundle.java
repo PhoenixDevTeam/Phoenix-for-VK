@@ -1,9 +1,9 @@
 package biz.dealnote.messenger.model;
 
+import java.util.Collection;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import java.util.Collection;
 
 /**
  * Created by admin on 04.12.2016.

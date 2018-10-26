@@ -1,11 +1,9 @@
 package biz.dealnote.messenger.domain;
 
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.longpoll.model.MessagesRead;
 import biz.dealnote.messenger.model.AbsModel;
@@ -13,6 +11,8 @@ import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
 import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.Message;
+import biz.dealnote.messenger.model.MessageUpdate;
+import biz.dealnote.messenger.model.PeerDeleting;
 import biz.dealnote.messenger.model.PeerUpdate;
 import biz.dealnote.messenger.model.SaveMessageBuilder;
 import biz.dealnote.messenger.model.SentMsg;
@@ -28,6 +28,10 @@ import io.reactivex.Single;
 public interface IMessagesRepository {
     Flowable<List<PeerUpdate>> observePeerUpdates();
 
+    Flowable<List<MessageUpdate>> observeMessageUpdates();
+
+    Flowable<PeerDeleting> observePeerDeleting();
+
     Completable handleMessagesRead(int accountId, @NonNull List<MessagesRead> reads);
 
     Single<Conversation> getConversationSingle(int accountId, int peerId, @NonNull Mode mode);
@@ -35,6 +39,8 @@ public interface IMessagesRepository {
     Flowable<Conversation> getConversation(int accountId, int peerId, @NonNull Mode mode);
 
     Single<Message> edit(int accountId, @NonNull Message message, String body, @NonNull List<AbsModel> attachments, boolean keepForwardMessages);
+
+    void runSendingQueue();
 
     /**
      * Получить все закэшированные сообщения в локальной БД
@@ -75,17 +81,13 @@ public interface IMessagesRepository {
 
     Single<List<Message>> findCachedMessages(int accountId, List<Integer> ids);
 
-    @CheckResult
-    Completable fixDialogs(int accountId, int peerId);
-
-    @CheckResult
-    Completable fixDialogs(int accountId, int peerId, int unreadCount);
-
     Single<Message> put(SaveMessageBuilder builder);
 
     Single<Integer> send(int accountId, int dbid);
 
     Single<SentMsg> sendUnsentMessage(Collection<Integer> accountIds);
+
+    Completable enqueueAgain(int accountId, int messageId);
 
     /**
      * Поиск диалогов
@@ -106,9 +108,9 @@ public interface IMessagesRepository {
 
     Completable deleteDialog(int accountId, int peedId, int count, int offset);
 
-    Completable deleteMessages(int accountId, Collection<Integer> ids);
+    Completable deleteMessages(int accountId, int peerId, Collection<Integer> ids);
 
-    Completable restoreMessage(int accountId, int messageId);
+    Completable restoreMessage(int accountId, int peerId, int messageId);
 
     Completable changeChatTitle(int accountId, int chatId, String title);
 

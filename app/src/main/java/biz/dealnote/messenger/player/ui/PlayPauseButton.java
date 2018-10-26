@@ -13,11 +13,11 @@ package biz.dealnote.messenger.player.ui;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
-import androidx.appcompat.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import androidx.appcompat.widget.AppCompatImageButton;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.player.util.MusicUtils;
 import biz.dealnote.messenger.settings.CurrentTheme;

@@ -6,8 +6,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.gson.reflect.TypeToken;
@@ -21,13 +19,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.db.AttachToType;
-import biz.dealnote.messenger.db.DBHelper;
 import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.RecordNotFoundException;
 import biz.dealnote.messenger.db.column.MessageColumns;
 import biz.dealnote.messenger.db.interfaces.Cancelable;
 import biz.dealnote.messenger.db.interfaces.IMessagesStorage;
+import biz.dealnote.messenger.db.model.MessageEditEntity;
 import biz.dealnote.messenger.db.model.MessagePatch;
 import biz.dealnote.messenger.db.model.entity.Entity;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
@@ -35,16 +35,13 @@ import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.model.ChatAction;
 import biz.dealnote.messenger.model.DraftMessage;
 import biz.dealnote.messenger.model.MessageStatus;
-import biz.dealnote.messenger.model.MessageUpdate;
 import biz.dealnote.messenger.model.criteria.MessagesCriteria;
 import biz.dealnote.messenger.util.Exestime;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Pair;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.subjects.PublishSubject;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
@@ -152,7 +149,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
     }
 
     @Override
-    public Single<int[]> insertDbos(int accountId, @NonNull List<MessageEntity> dbos) {
+    public Single<int[]> insert(int accountId, @NonNull List<MessageEntity> dbos) {
         return Single.create(emitter -> {
             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
@@ -209,29 +206,6 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
             }
 
             emitter.onSuccess(Optional.wrap(id));
-        });
-    }
-
-    @Override
-    public Single<Integer> calculateUnreadCount(int accountId, int peerId) {
-        return Single.fromCallable(() -> {
-            int result = 0;
-            Cursor cursor = DBHelper.getInstance(getContext(), accountId)
-                    .getReadableDatabase()
-                    .rawQuery("SELECT COUNT(" + MessageColumns._ID + ") FROM " + MessageColumns.TABLENAME +
-                                    " WHERE " + MessageColumns.PEER_ID + " = ?" +
-                                    //" AND " + MessageColumns.READ_STATE + " = ?" +
-                                    " AND " + MessageColumns.OUT + " = ?" +
-                                    " AND " + MessageColumns.ATTACH_TO + " = ?" +
-                                    " AND " + MessageColumns.DELETED + " = ?",
-                            new String[]{String.valueOf(peerId), "0", /*"0",*/ "0", "0"});
-
-            if (cursor.moveToNext()) {
-                result = cursor.getInt(0);
-            }
-
-            cursor.close();
-            return result;
         });
     }
 
@@ -298,7 +272,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
     }
 
     @Override
-    public Single<Integer> insert(int accountId, int peerId, @NonNull MessagePatch patch) {
+    public Single<Integer> insert(int accountId, int peerId, @NonNull MessageEditEntity patch) {
         return Single.create(emitter -> {
             final ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
@@ -348,7 +322,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
     }
 
     @Override
-    public Single<Integer> applyPatch(int accountId, int messageId, @NonNull MessagePatch patch) {
+    public Single<Integer> applyPatch(int accountId, int messageId, @NonNull MessageEditEntity patch) {
         return getStores().attachments()
                 .getCount(accountId, AttachToType.MESSAGE, messageId)
                 .flatMap(count -> Single
@@ -531,6 +505,35 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
     }
 
     @Override
+    public Completable applyPatches(int accountId, @NonNull Collection<MessagePatch> patches) {
+        return Completable.create(emitter -> {
+            Uri uri = MessengerContentProvider.getMessageContentUriFor(accountId);
+
+            ArrayList<ContentProviderOperation> operations = new ArrayList<>(patches.size());
+            for(MessagePatch patch : patches){
+                ContentValues cv = new ContentValues();
+                if(patch.getDeletion() != null){
+                    cv.put(MessageColumns.DELETED, patch.getDeletion().getDeleted());
+                }
+
+                if(patch.getImportant() != null){
+                    cv.put(MessageColumns.IMPORTANT, patch.getImportant().getImportant());
+                }
+
+                if(cv.size() == 0) continue;
+
+                operations.add(ContentProviderOperation.newUpdate(uri)
+                        .withValues(cv)
+                        .withSelection(MessageColumns._ID + " = ?", new String[]{String.valueOf(patch.getMessageId())})
+                        .build());
+            }
+
+            getContentResolver().applyBatch(MessengerContentProvider.AUTHORITY, operations);
+            emitter.onComplete();
+        });
+    }
+
+    @Override
     public Single<Integer> getMessageStatus(int accountId, int dbid) {
         return Single.fromCallable(() -> {
             Cursor cursor = getContentResolver().query(MessengerContentProvider.getMessageContentUriFor(accountId),
@@ -575,8 +578,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
     }
 
     @Override
-    public Completable changeMessageStatus(int accountId, int messageId, @MessageStatus int status,
-                                           @Nullable Integer vkid) {
+    public Completable changeMessageStatus(int accountId, int messageId, @MessageStatus int status, @Nullable Integer vkid) {
         return Completable.create(e -> {
             ContentValues contentValues = new ContentValues();
             contentValues.put(MessageColumns.STATUS, status);
@@ -589,14 +591,6 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
                     MessageColumns._ID + " = ?", new String[]{String.valueOf(messageId)});
 
             if (count > 0) {
-                MessageUpdate update = new MessageUpdate(accountId, messageId);
-                update.setStatusUpdate(new MessageUpdate.StatusUpdate(status));
-                if (nonNull(vkid)) {
-                    update.setSentUpdate(new MessageUpdate.SentUpdate(vkid));
-                }
-
-                messageUpdatePublishSubject.onNext(update);
-
                 e.onComplete();
             } else {
                 e.onError(new NotFoundException());
@@ -619,13 +613,6 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
         });
     }
 
-    private PublishSubject<MessageUpdate> messageUpdatePublishSubject = PublishSubject.create();
-
-    @Override
-    public Observable<MessageUpdate> observeMessageUpdates() {
-        return messageUpdatePublishSubject;
-    }
-
     @Override
     public Single<List<Integer>> getMissingMessages(int accountId, Collection<Integer> ids) {
         return Single.create(e -> {
@@ -646,23 +633,6 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
             }
 
             e.onSuccess(new ArrayList<>(copy));
-        });
-    }
-
-    @Deprecated
-    private int markAsRead(Uri uri, String where, String[] args) {
-        ContentValues cv = new ContentValues();
-        //cv.put(MessageColumns.READ_STATE, true);
-        return getContentResolver().update(uri, cv, where, args);
-    }
-
-    @Override
-    public Completable markAsRead(int accountId, int peerId) {
-        return Completable.fromAction(() -> {
-            final Uri uri = MessengerContentProvider.getMessageContentUriFor(accountId);
-            final String where = MessageColumns.PEER_ID + " = ? AND " + MessageColumns.OUT + " = ?";
-            final String[] args = {String.valueOf(peerId), "0"};
-            markAsRead(uri, where, args);
         });
     }
 

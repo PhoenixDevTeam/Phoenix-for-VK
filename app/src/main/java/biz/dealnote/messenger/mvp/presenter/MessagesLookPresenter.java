@@ -1,13 +1,13 @@
 package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.domain.IMessagesRepository;
 import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.LoadMoreState;
@@ -137,7 +137,7 @@ public class MessagesLookPresenter extends AbsMessageListPresenter<IMessagesLook
                 .blockingGet();
 
         if (nonEmpty(ids)) {
-            appendDisposable(messagesInteractor.deleteMessages(accountId, ids)
+            appendDisposable(messagesInteractor.deleteMessages(accountId, mPeerId, ids)
                     .compose(RxUtils.applyCompletableIOToMainSchedulers())
                     .subscribe(() -> onMessagesDeleteSuccessfully(ids), t -> showError(getView(), getCauseIfRuntime(t))));
         }
@@ -185,7 +185,7 @@ public class MessagesLookPresenter extends AbsMessageListPresenter<IMessagesLook
         final int accountId = super.getAccountId();
         final int id = message.getId();
 
-        appendDisposable(messagesInteractor.restoreMessage(accountId, id)
+        appendDisposable(messagesInteractor.restoreMessage(accountId, mPeerId, id)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
                 .subscribe(() -> onMessageRestoredSuccessfully(id), t -> showError(getView(), getCauseIfRuntime(t))));
     }

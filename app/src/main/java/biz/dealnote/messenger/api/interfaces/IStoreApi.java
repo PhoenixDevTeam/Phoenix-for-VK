@@ -1,7 +1,5 @@
 package biz.dealnote.messenger.api.interfaces;
 
-import androidx.annotation.CheckResult;
-
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiStickerSet;
 import io.reactivex.Single;
@@ -11,8 +9,5 @@ import io.reactivex.Single;
  * phoenix
  */
 public interface IStoreApi {
-    @CheckResult
-    Single<Items<VKApiStickerSet>> getStickers();
-    @CheckResult
     Single<Items<VKApiStickerSet.Product>> getProducts(Boolean extended, String filters, String type);
 }

@@ -1,10 +1,9 @@
 package biz.dealnote.messenger.domain.impl;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.db.AttachToType;
 import biz.dealnote.messenger.db.interfaces.IAttachmentsStorage;
 import biz.dealnote.messenger.db.model.entity.Entity;

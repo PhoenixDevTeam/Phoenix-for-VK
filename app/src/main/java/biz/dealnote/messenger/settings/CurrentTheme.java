@@ -7,11 +7,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
-import androidx.core.content.ContextCompat;
 import android.util.TypedValue;
 
 import com.squareup.picasso.Transformation;
 
+import androidx.core.content.ContextCompat;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.util.MaskTransformation;
 import biz.dealnote.messenger.util.RoundTransformation;

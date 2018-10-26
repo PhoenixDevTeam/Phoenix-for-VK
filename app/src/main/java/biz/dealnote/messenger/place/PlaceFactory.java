@@ -1,12 +1,12 @@
 package biz.dealnote.messenger.place;
 
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.activity.VideoPlayerActivity;
 import biz.dealnote.messenger.dialog.ResolveDomainDialog;

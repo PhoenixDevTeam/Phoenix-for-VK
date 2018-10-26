@@ -3,13 +3,13 @@ package biz.dealnote.messenger.mvp.presenter.photo;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.App;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;

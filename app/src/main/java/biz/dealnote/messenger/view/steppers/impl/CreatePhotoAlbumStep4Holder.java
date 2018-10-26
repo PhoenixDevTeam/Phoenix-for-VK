@@ -1,11 +1,11 @@
 package biz.dealnote.messenger.view.steppers.impl;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.view.steppers.base.AbsStepHolder;
 import biz.dealnote.messenger.view.steppers.base.BaseHolderListener;

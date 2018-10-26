@@ -4,6 +4,7 @@ import android.content.ContentProviderResult;
 import android.content.UriMatcher;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import androidx.annotation.Nullable;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;

@@ -8,15 +8,16 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.annotation.AttrRes
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import android.text.InputType
 import android.util.SparseBooleanArray
 import android.view.*
 import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
+import androidx.annotation.AttrRes
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import biz.dealnote.messenger.*
 import biz.dealnote.messenger.activity.*
 import biz.dealnote.messenger.adapter.AttachmentsBottomSheetAdapter
@@ -132,7 +133,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     override fun displayEditingMessage(message: Message?) {
         editMessageGroup?.visibility = if (message == null) View.GONE else View.VISIBLE
         message?.run {
-            editMessageText?.text = if(body.isNullOrEmpty()) getString(R.string.attachments) else body
+            editMessageText?.text = if (body.isNullOrEmpty()) getString(R.string.attachments) else body
         }
     }
 

@@ -23,7 +23,6 @@ import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Completable;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.schedulers.Schedulers;

@@ -1,8 +1,8 @@
 package biz.dealnote.messenger.fragment.base;
 
-import androidx.annotation.StringRes;
 import android.widget.Toast;
 
+import androidx.annotation.StringRes;
 import biz.dealnote.messenger.mvp.view.IErrorView;
 import biz.dealnote.messenger.mvp.view.IToastView;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;

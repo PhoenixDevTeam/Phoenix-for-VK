@@ -2,11 +2,11 @@ package biz.dealnote.messenger.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.util.Objects;
 

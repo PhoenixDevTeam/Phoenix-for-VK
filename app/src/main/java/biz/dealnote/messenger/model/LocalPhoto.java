@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
 public class LocalPhoto implements Parcelable, Comparable<LocalPhoto>, ISelectable {

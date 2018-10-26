@@ -1,10 +1,9 @@
 package biz.dealnote.messenger.mvp.view;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.model.DocFilter;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;

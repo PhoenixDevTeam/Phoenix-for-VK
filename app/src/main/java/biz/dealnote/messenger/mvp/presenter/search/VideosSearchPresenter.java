@@ -1,10 +1,10 @@
 package biz.dealnote.messenger.mvp.presenter.search;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.domain.IVideosInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.search.criteria.VideoSearchCriteria;

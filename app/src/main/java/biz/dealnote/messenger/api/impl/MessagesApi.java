@@ -246,10 +246,10 @@ class MessagesApi extends AbsApi implements IMessagesApi {
     }*/
 
     @Override
-    public Single<MessageHistoryResponse> getHistory(Integer offset, Integer count, int peerId, Integer startMessageId, Boolean rev) {
+    public Single<MessageHistoryResponse> getHistory(Integer offset, Integer count, int peerId, Integer startMessageId, Boolean rev, Boolean extended) {
         return serviceRx(TokenType.USER, TokenType.COMMUNITY)
                 .flatMap(service -> service
-                        .getHistory(offset, count, peerId, startMessageId, rev != null && rev ? 1 : 0)
+                        .getHistory(offset, count, peerId, startMessageId, integerFromBoolean(rev), integerFromBoolean(extended))
                         .map(extractResponseWithErrorHandling())
                         /*.map(history -> {
                             fixMessageList(history.messages);

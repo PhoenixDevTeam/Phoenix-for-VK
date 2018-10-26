@@ -20,6 +20,17 @@ public class SimpleDialogEntity {
 
     private MessageEntity pinned;
 
+    private int lastMessageId;
+
+    public SimpleDialogEntity setLastMessageId(int lastMessageId) {
+        this.lastMessageId = lastMessageId;
+        return this;
+    }
+
+    public int getLastMessageId() {
+        return lastMessageId;
+    }
+
     public SimpleDialogEntity setPinned(MessageEntity pinned) {
         this.pinned = pinned;
         return this;

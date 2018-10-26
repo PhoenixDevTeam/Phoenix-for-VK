@@ -1,10 +1,9 @@
 package biz.dealnote.messenger.domain;
 
-import androidx.annotation.NonNull;
-
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.fragment.search.criteria.PeopleSearchCriteria;
 import biz.dealnote.messenger.model.Community;

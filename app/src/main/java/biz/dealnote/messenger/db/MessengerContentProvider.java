@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.db.column.AttachmentsColumns;
 import biz.dealnote.messenger.db.column.CommentsAttachmentsColumns;
@@ -462,6 +462,7 @@ public class MessengerContentProvider extends ContentProvider {
         sPeersProjectionMap.put(PeersColumns.PHOTO_100, PeersColumns.FULL_PHOTO_100);
         sPeersProjectionMap.put(PeersColumns.PHOTO_200, PeersColumns.FULL_PHOTO_200);
         sPeersProjectionMap.put(PeersColumns.PINNED, PeersColumns.FULL_PINNED);
+        sPeersProjectionMap.put(PeersColumns.LAST_MESSAGE_ID, PeersColumns.FULL_LAST_MESSAGE_ID);
 
         sDocsProjectionMap = new HashMap<>();
         sDocsProjectionMap.put(DocColumns._ID, DocColumns.FULL_ID);

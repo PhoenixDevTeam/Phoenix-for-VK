@@ -1,9 +1,8 @@
 package biz.dealnote.messenger.mvp.view;
 
-import androidx.annotation.Nullable;
-
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.model.EditingPostType;
 import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.Owner;

@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.mvp.view;
 
 import androidx.annotation.NonNull;
-
 import biz.dealnote.mvp.core.IMvpView;
 
 /**

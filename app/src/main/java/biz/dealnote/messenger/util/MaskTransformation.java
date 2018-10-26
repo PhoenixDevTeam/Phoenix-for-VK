@@ -7,9 +7,10 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
-import androidx.core.content.ContextCompat;
 
 import com.squareup.picasso.Transformation;
+
+import androidx.core.content.ContextCompat;
 
 public class MaskTransformation implements Transformation {
 

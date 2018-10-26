@@ -1,9 +1,8 @@
 package biz.dealnote.messenger.util;
 
-import androidx.annotation.Nullable;
-
 import java.io.Closeable;
 
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Injection;
 import io.reactivex.Completable;

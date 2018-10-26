@@ -1,10 +1,9 @@
 package biz.dealnote.messenger.db.interfaces;
 
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-
 import java.util.List;
 
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 import biz.dealnote.messenger.db.model.entity.VideoEntity;
 import biz.dealnote.messenger.model.VideoCriteria;
 import io.reactivex.Completable;

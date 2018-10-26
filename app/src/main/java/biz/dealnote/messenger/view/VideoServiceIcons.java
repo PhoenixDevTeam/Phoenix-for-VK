@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.view;
 
 import androidx.annotation.DrawableRes;
-
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.model.VideoPlatform;
 

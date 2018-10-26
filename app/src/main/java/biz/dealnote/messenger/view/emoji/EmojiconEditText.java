@@ -18,9 +18,9 @@ package biz.dealnote.messenger.view.emoji;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.appcompat.widget.AppCompatEditText;
 import android.util.AttributeSet;
 
+import androidx.appcompat.widget.AppCompatEditText;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.settings.Settings;
 

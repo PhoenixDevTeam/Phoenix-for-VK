@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.media.voice;
 
 import androidx.annotation.NonNull;
-
 import biz.dealnote.messenger.model.VoiceMessage;
 
 /**
