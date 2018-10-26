@@ -2,13 +2,10 @@ package biz.dealnote.messenger.db.column;
 
 import android.content.ContentValues;
 import android.provider.BaseColumns;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.VKApiStickerSet;
 import biz.dealnote.messenger.util.AssertUtils;
-
-import static biz.dealnote.messenger.util.Objects.nonNull;
 
 public class StikerSetColumns implements BaseColumns {
 
@@ -65,12 +62,12 @@ public class StikerSetColumns implements BaseColumns {
             //cv.put(BASE_URL, product.base_url);
 
             //if(nonNull(product.stickers)){
-                VKApiStickerSet.Stickers stickers = product.stickers;
+                //VKApiStickerSet.Stickers stickers = product.stickers;
                 //cv.put(STICKERS_BASE_URL, stickers.base_url);
 
-                if(nonNull(stickers.sticker_ids)){
-                    cv.put(STICKERS_IDS, TextUtils.join(",", stickers.sticker_ids));
-                }
+                //if(nonNull(stickers.sticker_ids)){
+                //    cv.put(STICKERS_IDS, TextUtils.join(",", stickers.sticker_ids));
+                //}
             //}
         //}
 

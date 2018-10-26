@@ -19,13 +19,6 @@ class StoreApi extends AbsApi implements IStoreApi {
     }
 
     @Override
-    public Single<Items<VKApiStickerSet>> getStickers() {
-        return provideService(IStoreService.class, TokenType.USER)
-                .flatMap(service -> service.getStockItems("stickers")
-                        .map(extractResponseWithErrorHandling()));
-    }
-
-    @Override
     public Single<Items<VKApiStickerSet.Product>> getProducts(Boolean extended, String filters, String type) {
         return provideService(IStoreService.class, TokenType.USER)
                 .flatMap(service -> service

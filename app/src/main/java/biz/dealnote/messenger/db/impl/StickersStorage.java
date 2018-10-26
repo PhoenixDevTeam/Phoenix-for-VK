@@ -43,18 +43,14 @@ class StickersStorage extends AbsStorage implements IStickersStorage {
         super(base);
     }
 
-    private ContentValues createCv(VKApiStickerSet.Product dto){
+    private ContentValues createCv(VKApiStickerSet.Product dto) {
         AssertUtils.requireNonNull(dto);
         AssertUtils.requireNonNull(dto.stickers);
-        AssertUtils.requireNonNull(dto.stickers.sticker_ids);
 
         ContentValues cv = new ContentValues();
-        cv.put(PHOTO_35, "https://vk.com/images/store/stickers/"+dto.id+"/cover_35b.png");
-        cv.put(PHOTO_70, "https://vk.com/images/store/stickers/"+dto.id+"/cover_70b.png");
-        cv.put(PHOTO_140, "https://vk.com/images/store/stickers/"+dto.id+"/cover_140b.png");
-        //cv.put(PHOTO_35, dto.photo_35);
-        //cv.put(PHOTO_70, dto.photo_70);
-        //cv.put(PHOTO_140, dto.photo_140);
+        cv.put(PHOTO_35, "https://vk.com/images/store/stickers/" + dto.id + "/cover_35b.png");
+        cv.put(PHOTO_70, "https://vk.com/images/store/stickers/" + dto.id + "/cover_70b.png");
+        cv.put(PHOTO_140, "https://vk.com/images/store/stickers/" + dto.id + "/cover_140b.png");
 
         cv.put(_ID, dto.id);
         cv.put(TITLE, dto.title);
@@ -62,11 +58,75 @@ class StickersStorage extends AbsStorage implements IStickersStorage {
         cv.put(PROMOTED, dto.promoted);
         cv.put(ACTIVE, dto.active);
 
-        VKApiStickerSet.Stickers stickers = dto.stickers;
-
-        cv.put(STICKERS_IDS, join(",", stickers.sticker_ids));
+        cv.put(STICKERS_IDS, join(dto.stickers, ",", s -> String.valueOf(s.sticker_id)));
         return cv;
     }
+
+    //{
+    //	"response": {
+    //		"count": 19,
+    //		"items": [{
+    //			"id": 279,
+    //			"type": "stickers",
+    //			"purchased": 1,
+    //			"active": 1,
+    //			"promoted": 1,
+    //			"purchase_date": 0,
+    //			"title": "Emoji-стикеры",
+    //			"stickers": [{
+    //				"sticker_id": 9008,
+    //				"is_allowed": true,
+    //				"images": [{
+    //					"url": "https:\/\/vk.com\/sticker\/1-9008-64-1",
+    //					"width": 64,
+    //					"height": 64
+    //				},
+    //				{
+    //					"url": "https:\/\/vk.com\/sticker\/1-9008-128-1",
+    //					"width": 128,
+    //					"height": 128
+    //				},
+    //				{
+    //					"url": "https:\/\/vk.com\/sticker\/1-9008-256-1",
+    //					"width": 256,
+    //					"height": 256
+    //				},
+    //				{
+    //					"url": "https:\/\/vk.com\/sticker\/1-9008-352-1",
+    //					"width": 352,
+    //					"height": 352
+    //				},
+    //				{
+    //					"url": "https:\/\/vk.com\/sticker\/1-9008-512-1",
+    //					"width": 512,
+    //					"height": 512
+    //				}],
+    //				"images_with_background": [{
+    //					"url": "https:\/\/vk.com\/sticker\/1-9008-64b-1",
+    //					"width": 64,
+    //					"height": 64
+    //				},
+    //				{
+    //					"url": "https:\/\/vk.com\/sticker\/1-9008-128b-1",
+    //					"width": 128,
+    //					"height": 128
+    //				},
+    //				{
+    //					"url": "https:\/\/vk.com\/sticker\/1-9008-256b-1",
+    //					"width": 256,
+    //					"height": 256
+    //				},
+    //				{
+    //					"url": "https:\/\/vk.com\/sticker\/1-9008-352b-1",
+    //					"width": 352,
+    //					"height": 352
+    //				},
+    //				{
+    //					"url": "https:\/\/vk.com\/sticker\/1-9008-512b-1",
+    //					"width": 512,
+    //					"height": 512
+    //				}]
+    //			}
 
     @Override
     public Completable store(int accountId, List<VKApiStickerSet.Product> sets) {
@@ -81,7 +141,7 @@ class StickersStorage extends AbsStorage implements IStickersStorage {
                     .build());
 
             for (VKApiStickerSet.Product product : sets) {
-                if(isNull(product.stickers) || isNull(product.stickers.sticker_ids)){
+                if (isNull(product.stickers)) {
                     continue;
                 }
 
@@ -109,9 +169,9 @@ class StickersStorage extends AbsStorage implements IStickersStorage {
             Cursor cursor = getContentResolver().query(uri, null, where, args, null);
 
             ArrayList<StickerSet> stickers = new ArrayList<>(safeCountOf(cursor));
-            if(nonNull(cursor)){
-                while (cursor.moveToNext()){
-                    if(e.isDisposed()){
+            if (nonNull(cursor)) {
+                while (cursor.moveToNext()) {
+                    if (e.isDisposed()) {
                         break;
                     }
 
@@ -126,15 +186,15 @@ class StickersStorage extends AbsStorage implements IStickersStorage {
         });
     }
 
-    private static StickerSet map(Cursor cursor){
+    private static StickerSet map(Cursor cursor) {
         String ids = cursor.getString(cursor.getColumnIndex(StikerSetColumns.STICKERS_IDS));
 
         StickerSet set = new StickerSet()
                 .setPhoto70(cursor.getString(cursor.getColumnIndex(StikerSetColumns.PHOTO_70)));
 
-        if(nonNull(ids)){
+        if (nonNull(ids)) {
             String[] tokens = ids.split(",");
-            for(String token : tokens){
+            for (String token : tokens) {
                 set.addId(Integer.parseInt(token));
             }
         }

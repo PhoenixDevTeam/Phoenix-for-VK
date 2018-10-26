@@ -13,11 +13,6 @@ import retrofit2.http.POST;
  * phoenix
  */
 public interface IStoreService {
-
-    @FormUrlEncoded
-    @POST("store.getStockItems")
-    Single<BaseResponse<Items<VKApiStickerSet>>> getStockItems(@Field("type") String type);
-
     @FormUrlEncoded
     @POST("store.getProducts") //extended=1&filters=active&type=stickers&v=5.64" Thanks for Kate Mobile
     Single<BaseResponse<Items<VKApiStickerSet.Product>>> getProducts(@Field("extended") Integer extended,
