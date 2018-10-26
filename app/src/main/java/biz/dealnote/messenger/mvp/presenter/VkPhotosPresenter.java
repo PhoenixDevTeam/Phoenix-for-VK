@@ -10,9 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.IPhotosInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.LocalPhoto;
 import biz.dealnote.messenger.model.Owner;
@@ -55,7 +56,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
     private final int albumId;
 
     private final IPhotosInteractor interactor;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
     private final IUploadManager uploadManager;
 
     private final List<SelectablePhotoWrapper> photos;
@@ -79,7 +80,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         this.action = action;
 
         this.interactor = InteractorFactory.createPhotosInteractor();
-        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
+        this.ownersRepository = Repository.INSTANCE.getOwners();
         this.uploadManager = Injection.provideUploadManager();
 
         this.destination = UploadDestination.forPhotoAlbum(albumId, ownerId);
@@ -134,7 +135,7 @@ public class VkPhotosPresenter extends AccountDependencyPresenter<IVkPhotosView>
         final int accountId = super.getAccountId();
 
         if (!isMy() && isNull(owner)) {
-            appendDisposable(ownersInteractor.getBaseOwnerInfo(accountId, ownerId, IOwnersInteractor.MODE_NET)
+            appendDisposable(ownersRepository.getBaseOwnerInfo(accountId, ownerId, IOwnersRepository.MODE_NET)
                     .compose(RxUtils.applySingleIOToMainSchedulers())
                     .subscribe(this::onActualOwnerInfoReceived, RxUtils.ignore()));
         }

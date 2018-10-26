@@ -30,7 +30,7 @@ import biz.dealnote.messenger.db.model.entity.CommentEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.domain.ICommentsInteractor;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.domain.mappers.Entity2Dto;
@@ -73,12 +73,12 @@ public class CommentsInteractor implements ICommentsInteractor {
 
     private final IStorages cache;
 
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
-    public CommentsInteractor(INetworker networker, IStorages cache) {
+    public CommentsInteractor(INetworker networker, IStorages cache, IOwnersRepository ownersRepository) {
         this.networker = networker;
         this.cache = cache;
-        this.ownersInteractor = new OwnersInteractor(networker, cache.owners());
+        this.ownersRepository = ownersRepository;
     }
 
     @Override
@@ -96,8 +96,8 @@ public class CommentsInteractor implements ICommentsInteractor {
                 Entity2Model.fillCommentOwnerIds(ownids, c);
             }
 
-            return ownersInteractor
-                    .findBaseOwnersDataAsBundle(accountId, ownids.getAll(), IOwnersInteractor.MODE_ANY)
+            return ownersRepository
+                    .findBaseOwnersDataAsBundle(accountId, ownids.getAll(), IOwnersRepository.MODE_ANY)
                     .map(owners -> {
                         List<Comment> comments = new ArrayList<>(dbos.size());
                         for (CommentEntity dbo : dbos) {
@@ -124,8 +124,8 @@ public class CommentsInteractor implements ICommentsInteractor {
             ownids.append(dto);
         }
 
-        return ownersInteractor
-                .findBaseOwnersDataAsBundle(accountId, ownids.getAll(), IOwnersInteractor.MODE_ANY, Dto2Model.transformOwners(users, groups))
+        return ownersRepository
+                .findBaseOwnersDataAsBundle(accountId, ownids.getAll(), IOwnersRepository.MODE_ANY, Dto2Model.transformOwners(users, groups))
                 .map(bundle -> {
                     List<Comment> data = new ArrayList<>(comments.size());
                     for (VKApiComment dto : comments) {
@@ -357,7 +357,7 @@ public class CommentsInteractor implements ICommentsInteractor {
 
     @Override
     public Single<List<Owner>> getAvailableAuthors(int accountId) {
-        return ownersInteractor.getBaseOwnerInfo(accountId, accountId, IOwnersInteractor.MODE_ANY)
+        return ownersRepository.getBaseOwnerInfo(accountId, accountId, IOwnersRepository.MODE_ANY)
                 .flatMap(owner -> networker.vkDefault(accountId)
                         .groups()
                         .get(accountId, true, "admin,editor", GroupColumns.API_FIELDS, null, 1000)

@@ -20,6 +20,7 @@ import biz.dealnote.messenger.api.model.VKApiSticker;
 import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.api.model.VKApiWikiPage;
 import biz.dealnote.messenger.api.model.VkApiAttachments;
+import biz.dealnote.messenger.api.model.VkApiAudioMessage;
 import biz.dealnote.messenger.api.model.VkApiDoc;
 import biz.dealnote.messenger.util.Objects;
 
@@ -80,6 +81,8 @@ public class AttachmentsDtoAdapter extends AbsAdapter implements JsonDeserialize
         //    return context.deserialize(o, VKApiPhotoAlbum.class); // not supported yet
         } else if (VkApiAttachments.TYPE_STICKER.equals(type)) {
             return context.deserialize(o, VKApiSticker.class);
+        } else if(VKApiAttachment.TYPE_AUDIO_MESSAGE.equals(type)){
+            return context.deserialize(o, VkApiAudioMessage.class);
         }
 
         return null;

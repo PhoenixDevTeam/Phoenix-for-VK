@@ -19,8 +19,7 @@ import biz.dealnote.messenger.api.model.longpoll.AddMessageUpdate;
 import biz.dealnote.messenger.crypt.KeyExchangeService;
 import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.domain.IMessagesRepository;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.longpoll.FullAndNonFullUpdates;
@@ -63,7 +62,7 @@ class RealtimeMessagesProcessor implements IRealtimeMessagesProcessor {
 
     private final SparseArray<Pair<Integer, Integer>> notificationsInterceptors;
     private volatile Entry current;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
     private final IMessagesRepository messagesInteractor;
 
     RealtimeMessagesProcessor() {
@@ -73,7 +72,7 @@ class RealtimeMessagesProcessor implements IRealtimeMessagesProcessor {
         this.publishSubject = PublishSubject.create();
         this.queue = new LinkedList<>();
         this.notificationsInterceptors = new SparseArray<>(3);
-        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
+        this.ownersRepository = Repository.INSTANCE.getOwners();
         this.messagesInteractor = Repository.INSTANCE.getMessages();
     }
 
@@ -385,7 +384,7 @@ class RealtimeMessagesProcessor implements IRealtimeMessagesProcessor {
                         return Completable.complete();
                     }
 
-                    return ownersInteractor.cacheActualOwnersData(accountId, integers);
+                    return ownersRepository.cacheActualOwnersData(accountId, integers);
                 });
     }
 

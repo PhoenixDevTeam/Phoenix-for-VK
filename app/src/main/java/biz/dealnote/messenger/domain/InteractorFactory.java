@@ -14,7 +14,6 @@ import biz.dealnote.messenger.domain.impl.FeedbackInteractor;
 import biz.dealnote.messenger.domain.impl.GroupSettingsInteractor;
 import biz.dealnote.messenger.domain.impl.LikesInteractor;
 import biz.dealnote.messenger.domain.impl.NewsfeedInteractor;
-import biz.dealnote.messenger.domain.impl.OwnersInteractor;
 import biz.dealnote.messenger.domain.impl.PhotosInteractor;
 import biz.dealnote.messenger.domain.impl.PollInteractor;
 import biz.dealnote.messenger.domain.impl.RelationshipInteractor;
@@ -31,7 +30,7 @@ import biz.dealnote.messenger.settings.Settings;
 public class InteractorFactory {
 
     public static INewsfeedInteractor createNewsfeedInteractor(){
-        return new NewsfeedInteractor(Injection.provideNetworkInterfaces(), createOwnerInteractor());
+        return new NewsfeedInteractor(Injection.provideNetworkInterfaces(), Repository.INSTANCE.getOwners());
     }
 
     public static IStickersInteractor createStickersInteractor(){
@@ -51,7 +50,7 @@ public class InteractorFactory {
     }
 
     public static IFeedbackInteractor createFeedbackInteractor(){
-        return new FeedbackInteractor(Injection.provideStores(), Injection.provideNetworkInterfaces());
+        return new FeedbackInteractor(Injection.provideStores(), Injection.provideNetworkInterfaces(), Repository.INSTANCE.getOwners());
     }
 
     public static IDatabaseInteractor createDatabaseInteractor(){
@@ -63,11 +62,11 @@ public class InteractorFactory {
     }
 
     public static IBoardInteractor createBoardInteractor(){
-        return new BoardInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
+        return new BoardInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores(), Repository.INSTANCE.getOwners());
     }
 
     public static IUtilsInteractor createUtilsInteractor(){
-        return new UtilsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
+        return new UtilsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores(), Repository.INSTANCE.getOwners());
     }
 
     public static IRelationshipInteractor createRelationshipInteractor(){
@@ -75,11 +74,11 @@ public class InteractorFactory {
     }
 
     public static IFeedInteractor createFeedInteractor(){
-        return new FeedInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores(), Settings.get().other());
+        return new FeedInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores(), Settings.get().other(), Repository.INSTANCE.getOwners());
     }
 
     public static IGroupSettingsInteractor createGroupSettingsInteractor(){
-        return new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().owners());
+        return new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().owners(), Repository.INSTANCE.getOwners());
     }
 
     public static IDialogsInteractor createDialogsInteractor(){
@@ -92,10 +91,10 @@ public class InteractorFactory {
 
     public static IAccountsInteractor createAccountInteractor(){
         return new AccountsInteractor(
-                Injection.provideStores(),
                 Injection.provideNetworkInterfaces(),
                 Injection.provideSettings().accounts(),
-                Injection.provideBlacklistRepository()
+                Injection.provideBlacklistRepository(),
+                Repository.INSTANCE.getOwners()
         );
     }
 
@@ -103,12 +102,8 @@ public class InteractorFactory {
         return new PhotosInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
     }
 
-    public static IOwnersInteractor createOwnerInteractor() {
-        return new OwnersInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().owners());
-    }
-
     public static IFaveInteractor createFaveInteractor(){
-        return new FaveInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
+        return new FaveInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores(), Repository.INSTANCE.getOwners());
     }
 
     public static IAudioInteractor createAudioInteractor() {

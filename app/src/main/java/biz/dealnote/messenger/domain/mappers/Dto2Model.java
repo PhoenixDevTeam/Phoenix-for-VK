@@ -27,6 +27,7 @@ import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.api.model.VKApiWikiPage;
 import biz.dealnote.messenger.api.model.VkApiAttachments;
+import biz.dealnote.messenger.api.model.VkApiAudioMessage;
 import biz.dealnote.messenger.api.model.VkApiCover;
 import biz.dealnote.messenger.api.model.VkApiDialog;
 import biz.dealnote.messenger.api.model.VkApiDoc;
@@ -588,11 +589,17 @@ public class Dto2Model {
                 .setPhoto100(dto.photo_100);
     }
 
-    public static Document transform(@NonNull VkApiDoc dto) {
-        boolean isVoiceMessage = nonNull(dto.preview) && nonNull(dto.preview.audioMsg);
+    public static VoiceMessage transform(VkApiAudioMessage dto){
+        return new VoiceMessage(dto.id, dto.owner_id)
+                .setDuration(dto.duration)
+                .setWaveform(dto.waveform)
+                .setLinkOgg(dto.linkOgg)
+                .setLinkMp3(dto.linkMp3)
+                .setAccessKey(dto.access_key);
+    }
 
-        Document document = isVoiceMessage ? new VoiceMessage(dto.id, dto.ownerId)
-                : new Document(dto.id, dto.ownerId);
+    public static Document transform(@NonNull VkApiDoc dto) {
+        Document document = new Document(dto.id, dto.ownerId);
 
         document.setTitle(dto.title)
                 .setSize(dto.size)
@@ -601,14 +608,6 @@ public class Dto2Model {
                 .setAccessKey(dto.accessKey)
                 .setDate(dto.date)
                 .setType(dto.type);
-
-        if (document instanceof VoiceMessage) {
-            ((VoiceMessage) document)
-                    .setDuration(dto.preview.audioMsg.duration)
-                    .setWaveform(dto.preview.audioMsg.waveform)
-                    .setLinkOgg(dto.preview.audioMsg.linkOgg)
-                    .setLinkMp3(dto.preview.audioMsg.linkMp3);
-        }
 
         if (nonNull(dto.preview)) {
             if (nonNull(dto.preview.photo) && nonNull(dto.preview.photo.sizes)) {
@@ -747,12 +746,10 @@ public class Dto2Model {
                     attachments.preparePhotos().add(transform((VKApiPhoto) attachment));
                     break;
                 case VKApiAttachment.TYPE_DOC:
-                    Document document = transform((VkApiDoc) attachment);
-                    if (document instanceof VoiceMessage) {
-                        attachments.prepareVoiceMessages().add((VoiceMessage) document);
-                    } else {
-                        attachments.prepareDocs().add(document);
-                    }
+                    attachments.prepareDocs().add(transform((VkApiDoc) attachment));
+                    break;
+                case VKApiAttachment.TYPE_AUDIO_MESSAGE:
+                    attachments.prepareVoiceMessages().add(transform((VkApiAudioMessage) attachment));
                     break;
                 case VKApiAttachment.TYPE_VIDEO:
                     attachments.prepareVideos().add(transform((VKApiVideo) attachment));

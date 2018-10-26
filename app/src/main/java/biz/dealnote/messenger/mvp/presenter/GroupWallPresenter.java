@@ -13,8 +13,9 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.Apis;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.domain.ICommunitiesInteractor;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.CommunityDetails;
 import biz.dealnote.messenger.model.Peer;
@@ -45,22 +46,22 @@ public class GroupWallPresenter extends AbsWallPresenter<IGroupWallView> {
 
     private CommunityDetails details;
 
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
     private final ICommunitiesInteractor communitiesInteractor;
 
     public GroupWallPresenter(int accountId, int ownerId, @Nullable Community owner, @Nullable Bundle savedInstanceState) {
         super(accountId, ownerId, savedInstanceState);
-        this.community = owner;
-        this.details = new CommunityDetails();
+        community = owner;
+        details = new CommunityDetails();
 
-        if (isNull(this.community)) {
-            this.community = new Community(Math.abs(ownerId));
+        if (isNull(community)) {
+            community = new Community(Math.abs(ownerId));
         }
 
-        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
-        this.communitiesInteractor = InteractorFactory.createCommunitiesInteractor();
-        this.settings = Injection.provideSettings().accounts();
+        ownersRepository = Repository.INSTANCE.getOwners();
+        communitiesInteractor = InteractorFactory.createCommunitiesInteractor();
+        settings = Injection.provideSettings().accounts();
 
         filters = new ArrayList<>();
         filters.addAll(createPostFilters());
@@ -89,7 +90,7 @@ public class GroupWallPresenter extends AbsWallPresenter<IGroupWallView> {
 
     private void refreshInfo() {
         final int accountId = super.getAccountId();
-        appendDisposable(ownersInteractor.getFullCommunityInfo(accountId, Math.abs(ownerId), IOwnersInteractor.MODE_CACHE)
+        appendDisposable(ownersRepository.getFullCommunityInfo(accountId, Math.abs(ownerId), IOwnersRepository.MODE_CACHE)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(pair -> {
                     onFullInfoReceived(pair.getFirst(), pair.getSecond());
@@ -99,7 +100,7 @@ public class GroupWallPresenter extends AbsWallPresenter<IGroupWallView> {
 
     private void requestActualFullInfo() {
         final int accountId = super.getAccountId();
-        appendDisposable(ownersInteractor.getFullCommunityInfo(accountId, Math.abs(ownerId), IOwnersInteractor.MODE_NET)
+        appendDisposable(ownersRepository.getFullCommunityInfo(accountId, Math.abs(ownerId), IOwnersRepository.MODE_NET)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(pair -> onFullInfoReceived(pair.getFirst(), pair.getSecond()), this::onDetailsGetError));
     }

@@ -19,7 +19,7 @@ import biz.dealnote.messenger.db.model.entity.feedback.PostFeedbackEntity;
 import biz.dealnote.messenger.db.model.entity.feedback.ReplyCommentEntity;
 import biz.dealnote.messenger.db.model.entity.feedback.UsersEntity;
 import biz.dealnote.messenger.domain.IFeedbackInteractor;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.domain.mappers.Entity2Model;
@@ -44,12 +44,12 @@ public class FeedbackInteractor implements IFeedbackInteractor {
 
     private final IStorages cache;
     private final INetworker networker;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
-    public FeedbackInteractor(IStorages cache, INetworker networker) {
+    public FeedbackInteractor(IStorages cache, INetworker networker, IOwnersRepository ownersRepository) {
         this.cache = cache;
         this.networker = networker;
-        this.ownersInteractor = new OwnersInteractor(networker, cache.owners());
+        this.ownersRepository = ownersRepository;
     }
 
     @Override
@@ -80,8 +80,8 @@ public class FeedbackInteractor implements IFeedbackInteractor {
 
                     return cache.notifications()
                             .insert(accountId, dbos, ownerEntities, isEmpty(startFrom))
-                            .flatMap(ints -> ownersInteractor
-                                    .findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersInteractor.MODE_ANY, owners)
+                            .flatMap(ints -> ownersRepository
+                                    .findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersRepository.MODE_ANY, owners)
                                     .map(ownersBundle -> {
                                         final List<Feedback> feedbacks = new ArrayList<>(dbos.size());
 
@@ -112,7 +112,7 @@ public class FeedbackInteractor implements IFeedbackInteractor {
                         populateOwnerIds(ownIds, dbo);
                     }
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(criteria.getAccountId(), ownIds.getAll(), IOwnersInteractor.MODE_ANY)
+                    return ownersRepository.findBaseOwnersDataAsBundle(criteria.getAccountId(), ownIds.getAll(), IOwnersRepository.MODE_ANY)
                             .map(owners -> {
                                 List<Feedback> feedbacks = new ArrayList<>(dbos.size());
                                 for (FeedbackEntity dbo : dbos) {

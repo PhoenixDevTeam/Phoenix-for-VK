@@ -6,6 +6,7 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import biz.dealnote.messenger.db.model.entity.AudioEntity;
+import biz.dealnote.messenger.db.model.entity.AudioMessageEntity;
 import biz.dealnote.messenger.db.model.entity.DocumentEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
 import biz.dealnote.messenger.db.model.entity.LinkEntity;
@@ -81,7 +82,7 @@ public class Model2Entity {
         mapAndAdd(attachments.getStickers(), Model2Entity::buildStickerEntity, entities);
         mapAndAdd(attachments.getPhotos(), Model2Entity::buildPhotoEntity, entities);
         mapAndAdd(attachments.getDocs(), Model2Entity::buildDocumentDbo, entities);
-        mapAndAdd(attachments.getVoiceMessages(), Model2Entity::buildDocumentDbo, entities);
+        mapAndAdd(attachments.getVoiceMessages(), Model2Entity::buildAudioMessageEntity, entities);
         mapAndAdd(attachments.getVideos(), Model2Entity::buildVideoDbo, entities);
         mapAndAdd(attachments.getPosts(), Model2Entity::buildPostDbo, entities);
         mapAndAdd(attachments.getLinks(), Model2Entity::buildLinkDbo, entities);
@@ -245,6 +246,15 @@ public class Model2Entity {
         return new PrivacyEntity(privacy.getType(), entryDbos);
     }
 
+    public static AudioMessageEntity buildAudioMessageEntity(VoiceMessage message){
+        return new AudioMessageEntity(message.getId(), message.getOwnerId())
+                .setWaveform(message.getWaveform())
+                .setLinkOgg(message.getLinkOgg())
+                .setLinkMp3(message.getLinkMp3())
+                .setDuration(message.getDuration())
+                .setAccessKey(message.getAccessKey());
+    }
+
     public static DocumentEntity buildDocumentDbo(Document document){
         DocumentEntity dbo = new DocumentEntity(document.getId(), document.getOwnerId())
                 .setTitle(document.getTitle())
@@ -254,11 +264,6 @@ public class Model2Entity {
                 .setDate(document.getDate())
                 .setType(document.getType())
                 .setAccessKey(document.getAccessKey());
-
-        if(document instanceof VoiceMessage){
-            VoiceMessage message = (VoiceMessage) document;
-            dbo.setAudio(new DocumentEntity.AudioMessageDbo(message.getDuration(), message.getWaveform(), message.getLinkOgg(), message.getLinkMp3()));
-        }
 
         if(nonNull(document.getGraffiti())){
             Document.Graffiti graffiti = document.getGraffiti();

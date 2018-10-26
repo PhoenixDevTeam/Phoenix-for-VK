@@ -15,8 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.mvp.presenter.base.RxSupportPresenter;
 import biz.dealnote.messenger.mvp.view.IEnterPinView;
@@ -37,25 +37,23 @@ import static biz.dealnote.messenger.util.Utils.isEmpty;
  */
 public class EnterPinPresenter extends RxSupportPresenter<IEnterPinView> {
 
-    private static final String TAG = EnterPinPresenter.class.getSimpleName();
-
     private static final String SAVE_VALUE = "save_value";
     private static final int LAST_CIRCLE_VISIBILITY_DELAY = 200;
     private static final int NO_VALUE = -1;
 
     private int[] mValues;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
     private final ISettings.ISecuritySettings securitySettings;
 
     public EnterPinPresenter(@Nullable Bundle savedState) {
         super(savedState);
-        this.securitySettings = Settings.get().security();
-        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
+        securitySettings = Settings.get().security();
+        ownersRepository = Repository.INSTANCE.getOwners();
 
         if (savedState != null) {
-            this.mValues = savedState.getIntArray(SAVE_VALUE);
+            mValues = savedState.getIntArray(SAVE_VALUE);
         } else {
-            this.mValues = new int[Constants.PIN_DIGITS_COUNT];
+            mValues = new int[Constants.PIN_DIGITS_COUNT];
             resetPin();
         }
 
@@ -76,7 +74,7 @@ public class EnterPinPresenter extends RxSupportPresenter<IEnterPinView> {
                 .getCurrent();
 
         if (accountId != ISettings.IAccountsSettings.INVALID_ID) {
-            appendDisposable(ownersInteractor.getBaseOwnerInfo(accountId, accountId, IOwnersInteractor.MODE_ANY)
+            appendDisposable(ownersRepository.getBaseOwnerInfo(accountId, accountId, IOwnersRepository.MODE_ANY)
                     .compose(RxUtils.applySingleIOToMainSchedulers())
                     .subscribe(this::onOwnerInfoReceived, t -> {/*ignore*/}));
         }

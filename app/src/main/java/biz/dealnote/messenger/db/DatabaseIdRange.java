@@ -1,17 +1,9 @@
 package biz.dealnote.messenger.db;
 
-import android.content.ContentProviderResult;
-import android.content.UriMatcher;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.Nullable;
-
-import static biz.dealnote.messenger.util.Objects.nonNull;
-
 public class DatabaseIdRange implements Parcelable {
-
-    public static final DatabaseIdRange INVALID = new DatabaseIdRange(-1, -1);
 
     private final int first;
     private final int last;
@@ -49,57 +41,6 @@ public class DatabaseIdRange implements Parcelable {
     public static DatabaseIdRange create(int first, int last){
         return new DatabaseIdRange(first, last);
     }
-
-    @Nullable
-    public static DatabaseIdRange createFromContentProviderResults(ContentProviderResult[] results){
-        Integer f = null;
-        Integer l = null;
-
-        for(ContentProviderResult result : results){
-            if(result.uri != null && !result.uri.toString().isEmpty()){
-                int dbid = Integer.parseInt(result.uri.getPathSegments().get(1));
-                if(f == null || dbid < f){
-                    f = dbid;
-                }
-
-                if(l == null || dbid > l){
-                    l = dbid;
-                }
-            }
-        }
-
-        return nonNull(f) && nonNull(l) ? new DatabaseIdRange(f, l) : null;
-    }
-
-    private static final int MATCH_CODE = 10;
-
-    @Nullable
-    public static DatabaseIdRange createFromContentProviderResults(ContentProviderResult[] results, String path){
-        UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        sUriMatcher.addURI(MessengerContentProvider.AUTHORITY, path, MATCH_CODE);
-
-        Integer f = null;
-        Integer l = null;
-        for(ContentProviderResult result : results){
-            if(result.uri != null && !result.uri.toString().isEmpty()){
-                if(sUriMatcher.match(result.uri) != MATCH_CODE){
-                    continue;
-                }
-
-                int dbid = Integer.parseInt(result.uri.getPathSegments().get(1));
-                if(f == null || dbid < f){
-                    f = dbid;
-                }
-
-                if(l == null || dbid > l){
-                    l = dbid;
-                }
-            }
-        }
-
-        return nonNull(f) && nonNull(l) ? new DatabaseIdRange(f, l) : null;
-    }
-
 
     @Override
     public String toString() {

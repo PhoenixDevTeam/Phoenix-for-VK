@@ -228,7 +228,10 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
 
         cacheLoadingDisposable.add(messagesInteractor.getCachedDialogs(dialogsOwnerId)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onCachedDataReceived, ignored -> onCachedDataReceived(Collections.emptyList())));
+                .subscribe(this::onCachedDataReceived, ignored -> {
+                    ignored.printStackTrace();
+                    onCachedDataReceived(Collections.emptyList());
+                }));
     }
 
     private void onCachedDataReceived(List<Dialog> data) {

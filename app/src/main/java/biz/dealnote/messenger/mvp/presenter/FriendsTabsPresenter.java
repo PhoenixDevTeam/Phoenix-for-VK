@@ -4,9 +4,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.IRelationshipInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.FriendsCounters;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
@@ -27,7 +28,7 @@ public class FriendsTabsPresenter extends AccountDependencyPresenter<IFriendsTab
     private FriendsCounters counters;
 
     private final IRelationshipInteractor relationshipInteractor;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
     private Owner owner;
 
@@ -35,7 +36,7 @@ public class FriendsTabsPresenter extends AccountDependencyPresenter<IFriendsTab
         super(accountId, savedInstanceState);
         this.userId = userId;
         this.relationshipInteractor = InteractorFactory.createRelationshipInteractor();
-        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
+        this.ownersRepository = Repository.INSTANCE.getOwners();
 
         if (Objects.nonNull(savedInstanceState)) {
             this.counters = savedInstanceState.getParcelable(SAVE_COUNTERS);
@@ -55,7 +56,7 @@ public class FriendsTabsPresenter extends AccountDependencyPresenter<IFriendsTab
 
     private void requestOwnerInfo() {
         final int accountId = super.getAccountId();
-        appendDisposable(ownersInteractor.getBaseOwnerInfo(accountId, userId, IOwnersInteractor.MODE_ANY)
+        appendDisposable(ownersRepository.getBaseOwnerInfo(accountId, userId, IOwnersRepository.MODE_ANY)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onOwnerInfoReceived, t -> {/*ignore*/}));
     }

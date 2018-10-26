@@ -5,8 +5,8 @@ import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.User;
@@ -48,9 +48,9 @@ public class OwnerInfo {
 
     public static Single<OwnerInfo> getRx(@NonNull Context context, int accountId, int ownerId) {
         final Context app = context.getApplicationContext();
-        IOwnersInteractor interactor = InteractorFactory.createOwnerInteractor();
+        IOwnersRepository interactor = Repository.INSTANCE.getOwners();
 
-        return interactor.getBaseOwnerInfo(accountId, ownerId, IOwnersInteractor.MODE_ANY)
+        return interactor.getBaseOwnerInfo(accountId, ownerId, IOwnersRepository.MODE_ANY)
                 .flatMap(owner -> Single.fromCallable(() -> NotificationUtils.loadRoundedImage(app, owner.get100photoOrSmaller(), R.drawable.ic_avatar_unknown))
                         .map(Optional::wrap)
                         .onErrorReturnItem(Optional.empty())

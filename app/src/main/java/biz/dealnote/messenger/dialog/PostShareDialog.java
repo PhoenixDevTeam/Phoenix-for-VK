@@ -16,8 +16,8 @@ import androidx.fragment.app.Fragment;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.MenuAdapter;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.Text;
@@ -120,7 +120,7 @@ public class PostShareDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final IOwnersInteractor interactor = InteractorFactory.createOwnerInteractor();
+        final IOwnersRepository interactor = Repository.INSTANCE.getOwners();
 
         final List<Item> items = new ArrayList<>();
 

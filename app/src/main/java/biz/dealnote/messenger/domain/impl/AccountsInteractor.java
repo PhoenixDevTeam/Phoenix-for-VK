@@ -8,11 +8,9 @@ import java.util.concurrent.TimeUnit;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.db.column.UserColumns;
-import biz.dealnote.messenger.db.interfaces.IStorages;
-import biz.dealnote.messenger.db.model.UserPatch;
 import biz.dealnote.messenger.domain.IAccountsInteractor;
 import biz.dealnote.messenger.domain.IBlacklistRepository;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Account;
 import biz.dealnote.messenger.model.BannedPart;
@@ -31,18 +29,16 @@ import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
  */
 public class AccountsInteractor implements IAccountsInteractor {
 
-    private final IStorages repositories;
     private final INetworker networker;
     private final ISettings.IAccountsSettings settings;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
     private final IBlacklistRepository blacklistRepository;
 
-    public AccountsInteractor(IStorages repositories, INetworker networker, ISettings.IAccountsSettings settings, IBlacklistRepository blacklistRepository) {
-        this.repositories = repositories;
+    public AccountsInteractor(INetworker networker, ISettings.IAccountsSettings settings, IBlacklistRepository blacklistRepository, IOwnersRepository ownersRepository) {
         this.networker = networker;
         this.settings = settings;
         this.blacklistRepository = blacklistRepository;
-        this.ownersInteractor = new OwnersInteractor(networker, repositories.owners());
+        this.ownersRepository = ownersRepository;
     }
 
     @Override
@@ -87,11 +83,7 @@ public class AccountsInteractor implements IAccountsInteractor {
         return networker.vkDefault(accountId)
                 .status()
                 .set(status, null)
-                .flatMapCompletable(ignored -> {
-                    final UserPatch patch = new UserPatch().setStatusUpdate(new UserPatch.StatusUpdate(status));
-                    return repositories.owners()
-                            .updateUser(accountId, accountId, patch);
-                });
+                .flatMapCompletable(ignored -> ownersRepository.handleStatusChange(accountId, accountId, status));
     }
 
     @Override
@@ -106,7 +98,7 @@ public class AccountsInteractor implements IAccountsInteractor {
                     break;
                 }
 
-                Owner owner = ownersInteractor.getBaseOwnerInfo(id, id, IOwnersInteractor.MODE_ANY)
+                Owner owner = ownersRepository.getBaseOwnerInfo(id, id, IOwnersRepository.MODE_ANY)
                         .onErrorReturn(ignored -> id > 0 ? new User(id) : new Community(-id))
                         .blockingGet();
 

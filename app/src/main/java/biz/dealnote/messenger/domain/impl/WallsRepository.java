@@ -16,8 +16,8 @@ import biz.dealnote.messenger.db.model.PostPatch;
 import biz.dealnote.messenger.db.model.PostUpdate;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.PostEntity;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.IOwnersRepository;
+import biz.dealnote.messenger.domain.IWallsRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.domain.mappers.Entity2Model;
@@ -47,13 +47,13 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
  * Created by admin on 20.03.2017.
  * phoenix
  */
-public class WallsImpl implements IWalls {
+public class WallsRepository implements IWallsRepository {
 
     private final INetworker networker;
 
     private final IStorages storages;
 
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
     private final PublishSubject<PostUpdate> minorUpdatesPublisher = PublishSubject.create();
 
@@ -61,10 +61,10 @@ public class WallsImpl implements IWalls {
 
     private final PublishSubject<biz.dealnote.messenger.model.IdPair> postInvalidatePublisher = PublishSubject.create();
 
-    public WallsImpl(INetworker networker, IStorages storages) {
+    public WallsRepository(INetworker networker, IStorages storages, IOwnersRepository ownersRepository) {
         this.networker = networker;
         this.storages = storages;
-        this.ownersInteractor = new OwnersInteractor(networker, storages.owners());
+        this.ownersRepository = ownersRepository;
     }
 
     @Override
@@ -185,8 +185,8 @@ public class WallsImpl implements IWalls {
                     }
 
                     final OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
-                    return ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY, owners)
+                    return ownersRepository
+                            .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY, owners)
                             .flatMap(bundle -> {
                                 List<Post> posts = Dto2Model.transformPosts(dtos, bundle);
 
@@ -208,8 +208,8 @@ public class WallsImpl implements IWalls {
                     final VKOwnIds ids = new VKOwnIds();
                     Entity2Model.fillOwnerIds(ids, dbos);
 
-                    return ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY)
+                    return ownersRepository
+                            .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY)
                             .map(owners -> {
                                 List<Post> posts = new ArrayList<>(dbos.size());
                                 for (PostEntity dbo : dbos) {
@@ -226,8 +226,8 @@ public class WallsImpl implements IWalls {
                     final VKOwnIds ids = new VKOwnIds();
                     Entity2Model.fillPostOwnerIds(ids, dbo);
 
-                    return ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY)
+                    return ownersRepository
+                            .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY)
                             .map(owners -> {
                                 return Entity2Model.buildPostFromDbo(dbo, owners);
                             });
@@ -286,7 +286,7 @@ public class WallsImpl implements IWalls {
                     VKApiPost dto = dtos.get(0);
 
                     VKOwnIds ids = new VKOwnIds().append(dto);
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY, owners)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY, owners)
                             .map(bundle -> Dto2Model.transform(dto, bundle));
                 });
     }
@@ -426,7 +426,7 @@ public class WallsImpl implements IWalls {
                         ids.append(dto);
                     }
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY, owners)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY, owners)
                             .map(ownersBundle -> Pair.Companion.create(Dto2Model.transformPosts(dtos, ownersBundle), response.count));
                 });
     }

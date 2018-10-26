@@ -12,7 +12,7 @@ import biz.dealnote.messenger.api.model.VKApiTopic;
 import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.api.model.response.NewsfeedCommentsResponse;
 import biz.dealnote.messenger.domain.INewsfeedInteractor;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.model.Comment;
 import biz.dealnote.messenger.model.Commented;
@@ -41,11 +41,11 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
 public class NewsfeedInteractor implements INewsfeedInteractor {
 
     private final INetworker networker;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
-    public NewsfeedInteractor(INetworker networker, IOwnersInteractor ownersInteractor) {
+    public NewsfeedInteractor(INetworker networker, IOwnersRepository ownersRepository) {
         this.networker = networker;
-        this.ownersInteractor = ownersInteractor;
+        this.ownersRepository = ownersRepository;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class NewsfeedInteractor implements INewsfeedInteractor {
                         }
                     }
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersInteractor.MODE_ANY, owners)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersRepository.MODE_ANY, owners)
                             .map(bundle -> {
                                 List<NewsfeedComment> comments = new ArrayList<>(dtos.size());
                                 for (NewsfeedCommentsResponse.Dto dto : dtos) {

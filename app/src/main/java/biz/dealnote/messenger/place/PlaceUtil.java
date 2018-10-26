@@ -15,8 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.EditingPostType;
 import biz.dealnote.messenger.model.Post;
@@ -42,8 +42,8 @@ public class PlaceUtil {
         ids.add(accountId);
         ids.add(ownerId);
 
-        Disposable disposable = InteractorFactory.createOwnerInteractor()
-                .findBaseOwnersDataAsBundle(accountId, ids, IOwnersInteractor.MODE_NET)
+        Disposable disposable = Repository.INSTANCE.getOwners()
+                .findBaseOwnersDataAsBundle(accountId, ids, IOwnersRepository.MODE_NET)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(owners -> {
                     WallEditorAttrs attrs = new WallEditorAttrs(owners.getById(ownerId), owners.getById(accountId));
@@ -90,8 +90,8 @@ public class PlaceUtil {
         ids.add(accountId);
         ids.add(ownerId);
 
-        Disposable disposable = InteractorFactory.createOwnerInteractor()
-                .findBaseOwnersDataAsBundle(accountId, ids, IOwnersInteractor.MODE_NET)
+        Disposable disposable = Repository.INSTANCE.getOwners()
+                .findBaseOwnersDataAsBundle(accountId, ids, IOwnersRepository.MODE_NET)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(owners -> {
                     WallEditorAttrs attrs = new WallEditorAttrs(owners.getById(ownerId), owners.getById(accountId));

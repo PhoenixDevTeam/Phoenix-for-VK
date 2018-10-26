@@ -235,7 +235,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
 
             Uri uri = MessengerContentProvider.getPeersContentUriFor(accountId);
 
-            String where = join(",", ids);
+            String where = PeersColumns._ID + " IN (" + join(",", ids) + ")";
             Cursor cursor = getContentResolver().query(uri, projection, where, null, null);
 
             List<PeerStateEntity> entities = new ArrayList<>(safeCountOf(cursor));

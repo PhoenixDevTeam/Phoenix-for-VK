@@ -37,6 +37,12 @@ import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VkApiConversation;
 import biz.dealnote.messenger.api.model.VkApiDialog;
 import biz.dealnote.messenger.api.model.VkApiDoc;
+import biz.dealnote.messenger.api.model.longpoll.BadgeCountChangeUpdate;
+import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;
+import biz.dealnote.messenger.api.model.longpoll.MessageFlagsResetUpdate;
+import biz.dealnote.messenger.api.model.longpoll.MessageFlagsSetUpdate;
+import biz.dealnote.messenger.api.model.longpoll.OutputMessagesSetReadUpdate;
+import biz.dealnote.messenger.api.model.longpoll.WriteTextInDialogUpdate;
 import biz.dealnote.messenger.api.model.response.SearchDialogsResponse;
 import biz.dealnote.messenger.crypt.AesKeyPair;
 import biz.dealnote.messenger.crypt.CryptHelper;
@@ -58,7 +64,7 @@ import biz.dealnote.messenger.db.model.entity.SimpleDialogEntity;
 import biz.dealnote.messenger.db.model.entity.StickerEntity;
 import biz.dealnote.messenger.domain.IMessagesDecryptor;
 import biz.dealnote.messenger.domain.IMessagesRepository;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.Mode;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
@@ -70,7 +76,6 @@ import biz.dealnote.messenger.domain.mappers.Model2Entity;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.exception.UploadNotResolvedException;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
-import biz.dealnote.messenger.longpoll.model.MessagesRead;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
@@ -87,6 +92,7 @@ import biz.dealnote.messenger.model.PeerUpdate;
 import biz.dealnote.messenger.model.SaveMessageBuilder;
 import biz.dealnote.messenger.model.SentMsg;
 import biz.dealnote.messenger.model.User;
+import biz.dealnote.messenger.model.WriteText;
 import biz.dealnote.messenger.model.criteria.DialogsCriteria;
 import biz.dealnote.messenger.model.criteria.MessagesCriteria;
 import biz.dealnote.messenger.service.ErrorLocalizer;
@@ -114,6 +120,7 @@ import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.RxUtils.safelyCloseAction;
+import static biz.dealnote.messenger.util.Utils.hasFlag;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
@@ -140,7 +147,7 @@ public class MessagesRepository implements IMessagesRepository {
     private final Context app;
 
     private final ISettings.IAccountsSettings accountsSettings;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
     private final IStorages storages;
     private final INetworker networker;
     private final IMessagesDecryptor decryptor;
@@ -149,15 +156,16 @@ public class MessagesRepository implements IMessagesRepository {
     private final PublishProcessor<List<PeerUpdate>> peerUpdatePublisher = PublishProcessor.create();
     private final PublishProcessor<PeerDeleting> peerDeletingPublisher = PublishProcessor.create();
     private final PublishProcessor<List<MessageUpdate>> messageUpdatesPublisher = PublishProcessor.create();
+    private final PublishProcessor<List<WriteText>> writeTextPublisher = PublishProcessor.create();
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final Scheduler senderScheduler = Schedulers.from(Executors.newFixedThreadPool(1));
 
     public MessagesRepository(Context context, ISettings.IAccountsSettings accountsSettings, INetworker networker,
-                              IOwnersInteractor ownersInteractor, IStorages storages, IUploadManager uploadManager) {
+                              IOwnersRepository ownersRepository, IStorages storages, IUploadManager uploadManager) {
         this.app = context.getApplicationContext();
         this.accountsSettings = accountsSettings;
-        this.ownersInteractor = ownersInteractor;
+        this.ownersRepository = ownersRepository;
         this.networker = networker;
         this.storages = storages;
         this.decryptor = new MessagesDecryptor(storages);
@@ -170,6 +178,11 @@ public class MessagesRepository implements IMessagesRepository {
         compositeDisposable.add(accountsSettings.observeRegistered()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(ignored -> onAccountsChanged(), ignore()));
+    }
+
+    @Override
+    public Flowable<List<WriteText>> observeTextWrite() {
+        return writeTextPublisher.onBackpressureBuffer();
     }
 
     private void onAccountsChanged() {
@@ -281,26 +294,89 @@ public class MessagesRepository implements IMessagesRepository {
                 }, ignore()));
     }
 
-    /*private void sendMessageIfWaitForUpload(int accountId, int messageId) {
-        // если загружали в личное сообщение, то отправляем это сообщение (в случае, если оно с статусе "Ожидание загрузки")
-        otherDisposables.add(storages.messages()
-                .getMessageStatus(accountId, messageId)
-                .flatMap(status -> {
-                    if (status == MessageStatus.WAITING_FOR_UPLOAD) {
-                        return storages.messages()
-                                .changeMessageStatus(accountId, messageId, MessageStatus.QUEUE, null)
-                                .andThen(Single.just(true));
-                    }
+    @Override
+    public Completable handleFlagsUpdates(int accountId, @Nullable List<MessageFlagsSetUpdate> setUpdates, @Nullable List<MessageFlagsResetUpdate> resetUpdates) {
+        final List<MessagePatch> patches = new ArrayList<>();
 
-                    return Single.just(false);
-                })
-                .subscribeOn(scheduler)
-                .subscribe(needStart -> {
-                    if (needStart) {
-                        sendService.runSendingQueue();
-                    }
-                }, ignore()));
-    }*/
+        if (nonEmpty(setUpdates)) {
+            for (MessageFlagsSetUpdate update : setUpdates) {
+                if (!hasFlag(update.mask, VKApiMessage.FLAG_DELETED) && !hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT))
+                    continue;
+
+                MessagePatch patch = new MessagePatch(update.message_id);
+
+                if (hasFlag(update.mask, VKApiMessage.FLAG_DELETED)) {
+                    patch.setDeletion(new MessagePatch.Deletion(true));
+                }
+
+                if (hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT)) {
+                    patch.setImportant(new MessagePatch.Important(true));
+                }
+
+                patches.add(patch);
+            }
+        }
+
+        if (nonEmpty(resetUpdates)) {
+            for (MessageFlagsResetUpdate update : resetUpdates) {
+                if (!hasFlag(update.mask, VKApiMessage.FLAG_DELETED) && !hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT))
+                    continue;
+
+                MessagePatch patch = new MessagePatch(update.message_id);
+
+                if (hasFlag(update.mask, VKApiMessage.FLAG_DELETED)) {
+                    patch.setDeletion(new MessagePatch.Deletion(false));
+                }
+
+                if (hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT)) {
+                    patch.setImportant(new MessagePatch.Important(false));
+                }
+
+                patches.add(patch);
+            }
+        }
+
+        return applyMessagesPatchesAndPublish(accountId, patches);
+    }
+
+    @Override
+    public Completable handleWriteUpdates(int accountId, @NonNull List<WriteTextInDialogUpdate> updates) {
+        return Completable.fromAction(() -> {
+            List<WriteText> list = new ArrayList<>();
+            for(WriteTextInDialogUpdate update : updates){
+                list.add(new WriteText(accountId, update.user_id, update.user_id));
+            }
+            writeTextPublisher.onNext(list);
+        });
+    }
+
+    @Override
+    public Completable handleUnreadBadgeUpdates(int accountId, @NonNull List<BadgeCountChangeUpdate> updates) {
+        return Completable.fromAction(() -> {
+            for(BadgeCountChangeUpdate update: updates){
+                storages.dialogs().setUnreadDialogsCount(accountId, update.count);
+            }
+        });
+    }
+
+    @Override
+    public Completable handleReadUpdates(int accountId, @Nullable List<OutputMessagesSetReadUpdate> outgoing, @Nullable List<InputMessagesSetReadUpdate> incoming) {
+        List<PeerPatch> patches = new ArrayList<>();
+
+        if (nonEmpty(outgoing)) {
+            for (OutputMessagesSetReadUpdate update : outgoing) {
+                patches.add(new PeerPatch(update.peer_id).withOutRead(update.local_id));
+            }
+        }
+
+        if (nonEmpty(incoming)) {
+            for (InputMessagesSetReadUpdate update : incoming) {
+                patches.add(new PeerPatch(update.peer_id).withInRead(update.local_id).withUnreadCount(update.unread_count));
+            }
+        }
+
+        return applyPeerUpdatesAndPublish(accountId, patches);
+    }
 
     @Override
     public Flowable<List<MessageUpdate>> observeMessageUpdates() {
@@ -315,25 +391,6 @@ public class MessagesRepository implements IMessagesRepository {
     @Override
     public Flowable<PeerDeleting> observePeerDeleting() {
         return peerDeletingPublisher.onBackpressureBuffer();
-    }
-
-    @Override
-    public Completable handleMessagesRead(int accountId, @NonNull List<MessagesRead> reads) {
-        List<PeerPatch> patches = new ArrayList<>(reads.size());
-
-        for (MessagesRead read : reads) {
-            PeerPatch patch = new PeerPatch(read.getPeerId());
-
-            if (read.isOut()) {
-                patch.withOutRead(read.getToMessageId());
-            } else {
-                patch.withInRead(read.getToMessageId()).withUnreadCount(read.getUnreadCount());
-            }
-
-            patches.add(patch);
-        }
-
-        return applyPeerUpdatesAndPublish(accountId, patches);
     }
 
     private static Conversation entity2Model(int accountId, SimpleDialogEntity entity, IOwnersBundle owners) {
@@ -396,7 +453,7 @@ public class MessagesRepository implements IMessagesRepository {
                     List<Owner> existsOwners = Dto2Model.transformOwners(response.profiles, response.groups);
                     OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
 
-                    return ownersInteractor.insertOwners(accountId, ownerEntities)
+                    return ownersRepository.insertOwners(accountId, ownerEntities)
                             .andThen(storages.dialogs().saveSimple(accountId, entity))
                             .andThen(Single.just(entity))
                             .compose(simpleEntity2Conversation(accountId, existsOwners));
@@ -442,7 +499,7 @@ public class MessagesRepository implements IMessagesRepository {
                         Entity2Model.fillOwnerIds(owners, Collections.singletonList(entity.getPinned()));
                     }
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, owners.getAll(), IOwnersInteractor.MODE_ANY, existingOwners)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, owners.getAll(), IOwnersRepository.MODE_ANY, existingOwners)
                             .map(bundle -> entity2Model(accountId, entity, bundle));
                 });
     }
@@ -487,8 +544,8 @@ public class MessagesRepository implements IMessagesRepository {
                         }
                     }
 
-                    return ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersInteractor.MODE_ANY)
+                    return ownersRepository
+                            .findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersRepository.MODE_ANY)
                             .flatMap(owners -> {
                                 final List<Message> messages = new ArrayList<>(0);
                                 final List<Dialog> dialogs = new ArrayList<>(dbos.size());
@@ -533,8 +590,8 @@ public class MessagesRepository implements IMessagesRepository {
                     VKOwnIds ownIds = new VKOwnIds();
                     Entity2Model.fillOwnerIds(ownIds, dbos);
 
-                    return this.ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersInteractor.MODE_ANY)
+                    return this.ownersRepository
+                            .findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersRepository.MODE_ANY)
                             .map(owners -> {
                                 final List<Message> messages = new ArrayList<>(dbos.size());
 
@@ -662,8 +719,8 @@ public class MessagesRepository implements IMessagesRepository {
                     ownerIds.append(dtos);
 
                     return completable
-                            .andThen(ownersInteractor
-                                    .findBaseOwnersDataAsBundle(accountId, ownerIds.getAll(), IOwnersInteractor.MODE_ANY)
+                            .andThen(ownersRepository
+                                    .findBaseOwnersDataAsBundle(accountId, ownerIds.getAll(), IOwnersRepository.MODE_ANY)
                                     .flatMap(owners -> {
                                         if (isNull(startMessageId) && cacheData) {
                                             // Это важно !!!
@@ -720,8 +777,8 @@ public class MessagesRepository implements IMessagesRepository {
                     List<Owner> existsOwners = Dto2Model.transformOwners(response.profiles, response.groups);
                     OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
 
-                    return ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ownerIds, IOwnersInteractor.MODE_ANY, existsOwners)
+                    return ownersRepository
+                            .findBaseOwnersDataAsBundle(accountId, ownerIds, IOwnersRepository.MODE_ANY, existsOwners)
                             .flatMap(owners -> {
                                 final List<DialogEntity> entities = new ArrayList<>(apiDialogs.size());
                                 final List<Dialog> dialogs = new ArrayList<>(apiDialogs.size());
@@ -741,7 +798,7 @@ public class MessagesRepository implements IMessagesRepository {
 
                                 final Completable insertCompletable = dialogsStore
                                         .insertDialogs(accountId, entities, clear)
-                                        .andThen(ownersInteractor.insertOwners(accountId, ownerEntities))
+                                        .andThen(ownersRepository.insertOwners(accountId, ownerEntities))
                                         .doOnComplete(() -> dialogsStore.setUnreadDialogsCount(accountId, response.unreadCount));
 
                                 if (nonEmpty(encryptedMessages)) {
@@ -954,8 +1011,8 @@ public class MessagesRepository implements IMessagesRepository {
                 .flatMap(dtos -> {
                     VKOwnIds ids = new VKOwnIds().append(dtos);
 
-                    return ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY)
+                    return ownersRepository
+                            .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY)
                             .map(bundle -> {
                                 List<Message> data = new ArrayList<>(dtos.size());
                                 for (VKApiMessage dto : dtos) {
@@ -994,7 +1051,7 @@ public class MessagesRepository implements IMessagesRepository {
 
                     final boolean isAdmin = accountId == chatDto.admin_id;
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY, owners)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY, owners)
                             .map(ownersBundle -> {
                                 List<AppChatUser> models = new ArrayList<>(dtos.size());
 
@@ -1026,7 +1083,7 @@ public class MessagesRepository implements IMessagesRepository {
     public Single<List<AppChatUser>> addChatUsers(int accountId, int chatId, List<User> users) {
         IMessagesApi api = networker.vkDefault(accountId).messages();
 
-        return ownersInteractor.getBaseOwnerInfo(accountId, accountId, IOwnersInteractor.MODE_ANY)
+        return ownersRepository.getBaseOwnerInfo(accountId, accountId, IOwnersRepository.MODE_ANY)
                 .flatMap(iam -> {
                     Completable completable = Completable.complete();
 

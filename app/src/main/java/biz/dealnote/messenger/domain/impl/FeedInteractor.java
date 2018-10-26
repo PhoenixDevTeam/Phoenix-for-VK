@@ -13,7 +13,7 @@ import biz.dealnote.messenger.db.model.entity.FeedListEntity;
 import biz.dealnote.messenger.db.model.entity.NewsEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.domain.IFeedInteractor;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.domain.mappers.Entity2Model;
@@ -40,14 +40,14 @@ public class FeedInteractor implements IFeedInteractor {
 
     private final INetworker networker;
     private final IStorages stores;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
     private final ISettings.IOtherSettings otherSettings;
 
-    public FeedInteractor(INetworker networker, IStorages stores, ISettings.IOtherSettings otherSettings) {
+    public FeedInteractor(INetworker networker, IStorages stores, ISettings.IOtherSettings otherSettings, IOwnersRepository ownersRepository) {
         this.networker = networker;
         this.stores = stores;
         this.otherSettings = otherSettings;
-        this.ownersInteractor = new OwnersInteractor(networker, stores.owners());
+        this.ownersRepository = ownersRepository;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class FeedInteractor implements IFeedInteractor {
                                 otherSettings.storeFeedNextFrom(accountId, nextFrom);
                                 otherSettings.setFeedSourceIds(accountId, sourceIds);
 
-                                return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersInteractor.MODE_ANY, owners)
+                                return ownersRepository.findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersRepository.MODE_ANY, owners)
                                         .map(owners1 -> {
                                             List<News> news = new ArrayList<>(feed.size());
 
@@ -113,7 +113,7 @@ public class FeedInteractor implements IFeedInteractor {
                         ownIds.append(post);
                     }
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersInteractor.MODE_ANY, owners)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersRepository.MODE_ANY, owners)
                             .map(ownersBundle -> {
                                 List<Post> posts = Dto2Model.transformPosts(dtos, ownersBundle);
                                 return Pair.Companion.create(posts, response.nextFrom);
@@ -176,7 +176,7 @@ public class FeedInteractor implements IFeedInteractor {
                         Entity2Model.fillOwnerIds(ownIds, dbo);
                     }
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersInteractor.MODE_ANY)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersRepository.MODE_ANY)
                             .map(owners -> {
                                 List<News> news = new ArrayList<>(dbos.size());
                                 for(NewsEntity dbo : dbos){

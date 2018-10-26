@@ -31,6 +31,7 @@ import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.api.model.VKApiVideoAlbum;
 import biz.dealnote.messenger.api.model.VKApiWikiPage;
 import biz.dealnote.messenger.api.model.VkApiAttachments;
+import biz.dealnote.messenger.api.model.VkApiAudioMessage;
 import biz.dealnote.messenger.api.model.VkApiConversation;
 import biz.dealnote.messenger.api.model.VkApiDialog;
 import biz.dealnote.messenger.api.model.VkApiDoc;
@@ -51,6 +52,7 @@ import biz.dealnote.messenger.crypt.CryptHelper;
 import biz.dealnote.messenger.crypt.MessageType;
 import biz.dealnote.messenger.db.model.IdPairEntity;
 import biz.dealnote.messenger.db.model.entity.AudioEntity;
+import biz.dealnote.messenger.db.model.entity.AudioMessageEntity;
 import biz.dealnote.messenger.db.model.entity.CareerEntity;
 import biz.dealnote.messenger.db.model.entity.CityEntity;
 import biz.dealnote.messenger.db.model.entity.CommentEntity;
@@ -722,6 +724,10 @@ public class Dto2Entity {
             return buildAudioEntity((VKApiAudio) dto);
         }
 
+        if(dto instanceof VkApiAudioMessage){
+            return map((VkApiAudioMessage) dto);
+        }
+
         throw new UnsupportedOperationException("Unsupported attachment, class: " + dto.getClass());
     }
 
@@ -829,6 +835,15 @@ public class Dto2Entity {
                 .setPhoto(nonNull(link.photo) ? buildPhotoEntity(link.photo) : null);
     }
 
+    public static AudioMessageEntity map(VkApiAudioMessage dto){
+        return new AudioMessageEntity(dto.id, dto.owner_id)
+                .setAccessKey(dto.access_key)
+                .setDuration(dto.duration)
+                .setLinkMp3(dto.linkMp3)
+                .setLinkOgg(dto.linkOgg)
+                .setWaveform(dto.waveform);
+    }
+
     public static DocumentEntity buildDocumentEntity(VkApiDoc dto) {
         DocumentEntity dbo = new DocumentEntity(dto.id, dto.ownerId)
                 .setTitle(dto.title)
@@ -847,11 +862,6 @@ public class Dto2Entity {
             if (nonNull(dto.preview.video)) {
                 VkApiDoc.Video video = dto.preview.video;
                 dbo.setVideo(new DocumentEntity.VideoPreviewDbo(video.src, video.width, video.height, video.fileSize));
-            }
-
-            if (nonNull(dto.preview.audioMsg)) {
-                VkApiDoc.AudioMsg audio = dto.preview.audioMsg;
-                dbo.setAudio(new DocumentEntity.AudioMessageDbo(audio.duration, audio.waveform, audio.linkOgg, audio.linkMp3));
             }
 
             if (nonNull(dto.preview.graffiti)) {

@@ -4,8 +4,14 @@ import java.util.Collection;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.api.model.VKApiMessage;
-import biz.dealnote.messenger.longpoll.model.MessagesRead;
+import biz.dealnote.messenger.api.model.longpoll.BadgeCountChangeUpdate;
+import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;
+import biz.dealnote.messenger.api.model.longpoll.MessageFlagsResetUpdate;
+import biz.dealnote.messenger.api.model.longpoll.MessageFlagsSetUpdate;
+import biz.dealnote.messenger.api.model.longpoll.OutputMessagesSetReadUpdate;
+import biz.dealnote.messenger.api.model.longpoll.WriteTextInDialogUpdate;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
@@ -17,6 +23,7 @@ import biz.dealnote.messenger.model.PeerUpdate;
 import biz.dealnote.messenger.model.SaveMessageBuilder;
 import biz.dealnote.messenger.model.SentMsg;
 import biz.dealnote.messenger.model.User;
+import biz.dealnote.messenger.model.WriteText;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -26,13 +33,21 @@ import io.reactivex.Single;
  * phoenix
  */
 public interface IMessagesRepository {
+    Completable handleFlagsUpdates(int accountId, @Nullable List<MessageFlagsSetUpdate> setUpdates, @Nullable List<MessageFlagsResetUpdate> resetUpdates);
+
+    Completable handleReadUpdates(int accountId, @Nullable List<OutputMessagesSetReadUpdate> setUpdates, @Nullable List<InputMessagesSetReadUpdate> resetUpdates);
+
+    Completable handleUnreadBadgeUpdates(int accountId, @NonNull List<BadgeCountChangeUpdate> updates);
+
+    Completable handleWriteUpdates(int accountId, @NonNull List<WriteTextInDialogUpdate> updates);
+
     Flowable<List<PeerUpdate>> observePeerUpdates();
 
     Flowable<List<MessageUpdate>> observeMessageUpdates();
 
-    Flowable<PeerDeleting> observePeerDeleting();
+    Flowable<List<WriteText>> observeTextWrite();
 
-    Completable handleMessagesRead(int accountId, @NonNull List<MessagesRead> reads);
+    Flowable<PeerDeleting> observePeerDeleting();
 
     Single<Conversation> getConversationSingle(int accountId, int peerId, @NonNull Mode mode);
 

@@ -10,8 +10,9 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.db.model.PostUpdate;
 import biz.dealnote.messenger.domain.IFeedInteractor;
-import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.IWallsRepository;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.fragment.search.criteria.NewsFeedCriteria;
 import biz.dealnote.messenger.fragment.search.nextfrom.StringNextFrom;
 import biz.dealnote.messenger.model.Commented;
@@ -30,12 +31,12 @@ public class NewsFeedSearchPresenter extends AbsSearchPresenter<INewsFeedSearchV
 
     private final IFeedInteractor feedInteractor;
 
-    private final IWalls walls;
+    private final IWallsRepository walls;
 
     public NewsFeedSearchPresenter(int accountId, @Nullable NewsFeedCriteria criteria, @Nullable Bundle savedInstanceState) {
         super(accountId, criteria, savedInstanceState);
         this.feedInteractor = InteractorFactory.createFeedInteractor();
-        this.walls = Injection.provideWalls();
+        this.walls = Repository.INSTANCE.getWalls();
 
         appendDisposable(walls.observeMinorChanges()
                 .observeOn(Injection.provideMainThreadScheduler())

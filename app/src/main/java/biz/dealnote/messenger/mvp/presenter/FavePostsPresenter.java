@@ -10,8 +10,9 @@ import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.model.PostUpdate;
 import biz.dealnote.messenger.domain.IFaveInteractor;
-import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.IWallsRepository;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
 import biz.dealnote.messenger.mvp.view.IFavePostsView;
@@ -33,14 +34,14 @@ public class FavePostsPresenter extends PlaceSupportPresenter<IFavePostsView> {
     private final List<Post> posts;
     private final IFaveInteractor faveInteractor;
 
-    private final IWalls wallInteractor;
+    private final IWallsRepository wallInteractor;
 
     public FavePostsPresenter(int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
 
         this.posts = new ArrayList<>();
         this.faveInteractor = InteractorFactory.createFaveInteractor();
-        this.wallInteractor = Injection.provideWalls();
+        this.wallInteractor = Repository.INSTANCE.getWalls();
 
         appendDisposable(wallInteractor.observeMinorChanges()
                 .observeOn(Injection.provideMainThreadScheduler())

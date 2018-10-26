@@ -13,6 +13,7 @@ import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.db.interfaces.IOwnersStorage;
 import biz.dealnote.messenger.db.model.BanAction;
 import biz.dealnote.messenger.domain.IGroupSettingsInteractor;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.domain.impl.GroupSettingsInteractor;
 import biz.dealnote.messenger.fragment.search.nextfrom.IntNextFrom;
 import biz.dealnote.messenger.model.Banned;
@@ -52,7 +53,7 @@ public class CommunityBlacklistPresenter extends AccountDependencyPresenter<ICom
         INetworker networker = Injection.provideNetworkInterfaces();
         IOwnersStorage repository = Injection.provideStores().owners();
 
-        this.groupSettingsInteractor = new GroupSettingsInteractor(networker, repository);
+        this.groupSettingsInteractor = new GroupSettingsInteractor(networker, repository, Repository.INSTANCE.getOwners());
 
         appendDisposable(repository.observeBanActions()
                 .filter(action -> action.getGroupId() == groupId)

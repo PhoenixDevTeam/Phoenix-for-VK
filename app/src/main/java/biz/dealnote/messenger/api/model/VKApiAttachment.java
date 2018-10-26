@@ -84,6 +84,12 @@ public interface VKApiAttachment {
     String TYPE_STICKER = "sticker";
 
     /**
+     * Attachment is a Voice Message
+     * @see {@link VkApiAudioMessage}
+     */
+    String TYPE_AUDIO_MESSAGE = "audio_message";
+
+    /**
      * @return type of this attachment
      */
     String getType();

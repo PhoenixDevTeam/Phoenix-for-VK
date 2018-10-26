@@ -6,9 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.model.PostUpdate;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.IWalls;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersRepository;
+import biz.dealnote.messenger.domain.IWallsRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.Commented;
 import biz.dealnote.messenger.model.CommentedType;
 import biz.dealnote.messenger.model.Community;
@@ -45,16 +45,16 @@ public class WallPostPresenter extends PlaceSupportPresenter<IWallPostView> {
     private Post post;
     private Owner owner;
 
-    private final IWalls wallInteractor;
-    private final IOwnersInteractor ownersInteractor;
+    private final IWallsRepository wallInteractor;
+    private final IOwnersRepository ownersRepository;
 
     public WallPostPresenter(int accountId, int postId, int ownerId, @Nullable Post post,
                              @Nullable Owner owner, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.postId = postId;
         this.ownerId = ownerId;
-        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
-        this.wallInteractor = Injection.provideWalls();
+        this.ownersRepository = Repository.INSTANCE.getOwners();
+        this.wallInteractor = Repository.INSTANCE.getWalls();
 
         if (nonNull(savedInstanceState)) {
             ParcelableOwnerWrapper wrapper = savedInstanceState.getParcelable(SAVE_OWNER);
@@ -120,7 +120,7 @@ public class WallPostPresenter extends PlaceSupportPresenter<IWallPostView> {
     private void loadOwnerInfoIfNeed() {
         if (isNull(owner)) {
             final int accountId = super.getAccountId();
-            appendDisposable(ownersInteractor.getBaseOwnerInfo(accountId, ownerId, IOwnersInteractor.MODE_NET)
+            appendDisposable(ownersRepository.getBaseOwnerInfo(accountId, ownerId, IOwnersRepository.MODE_NET)
                     .compose(RxUtils.applySingleIOToMainSchedulers())
                     .subscribe(this::onOwnerInfoReceived, RxUtils.ignore()));
         }

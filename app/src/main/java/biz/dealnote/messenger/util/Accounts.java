@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.ISettings;
@@ -38,8 +38,8 @@ public class Accounts {
         User user;
 
         try {
-            user = (User) InteractorFactory.createOwnerInteractor()
-                    .getBaseOwnerInfo(aid, aid, IOwnersInteractor.MODE_CACHE)
+            user = (User) Repository.INSTANCE.getOwners()
+                    .getBaseOwnerInfo(aid, aid, IOwnersRepository.MODE_CACHE)
                     .blockingGet();
         } catch (Exception e){
             // NotFountException

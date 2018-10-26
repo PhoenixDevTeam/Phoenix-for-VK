@@ -14,10 +14,11 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.domain.IAccountsInteractor;
 import biz.dealnote.messenger.domain.IFaveInteractor;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.IPhotosInteractor;
 import biz.dealnote.messenger.domain.IRelationshipInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.fragment.friends.FriendsTabsFragment;
 import biz.dealnote.messenger.model.FriendsCounters;
 import biz.dealnote.messenger.model.LocalPhoto;
@@ -48,7 +49,7 @@ import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
 public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
 
     private final List<PostFilter> filters;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
     private final IRelationshipInteractor relationshipInteractor;
     private final IAccountsInteractor accountInteractor;
     private final IPhotosInteractor photosInteractor;
@@ -61,18 +62,18 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
     public UserWallPresenter(int accountId, int ownerId, @Nullable User owner, @Nullable Bundle savedInstanceState) {
         super(accountId, ownerId, savedInstanceState);
 
-        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
-        this.relationshipInteractor = InteractorFactory.createRelationshipInteractor();
-        this.accountInteractor = InteractorFactory.createAccountInteractor();
-        this.photosInteractor = InteractorFactory.createPhotosInteractor();
-        this.faveInteractor = InteractorFactory.createFaveInteractor();
-        this.uploadManager = Injection.provideUploadManager();
+        ownersRepository = Repository.INSTANCE.getOwners();
+        relationshipInteractor = InteractorFactory.createRelationshipInteractor();
+        accountInteractor = InteractorFactory.createAccountInteractor();
+        photosInteractor = InteractorFactory.createPhotosInteractor();
+        faveInteractor = InteractorFactory.createFaveInteractor();
+        uploadManager = Injection.provideUploadManager();
 
-        this.filters = new ArrayList<>();
-        this.filters.addAll(createPostFilters());
+        filters = new ArrayList<>();
+        filters.addAll(createPostFilters());
 
-        this.user = nonNull(owner) ? owner : new User(ownerId);
-        this.details = new UserDetails();
+        user = nonNull(owner) ? owner : new User(ownerId);
+        details = new UserDetails();
 
         syncFiltersWithSelectedMode();
         syncFilterCountersWithDetails();
@@ -122,7 +123,7 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
 
     private void refreshUserDetails() {
         final int accountId = super.getAccountId();
-        appendDisposable(ownersInteractor.getFullUserInfo(accountId, ownerId, IOwnersInteractor.MODE_CACHE)
+        appendDisposable(ownersRepository.getFullUserInfo(accountId, ownerId, IOwnersRepository.MODE_CACHE)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(pair -> {
                     onFullInfoReceived(pair.getFirst(), pair.getSecond());
@@ -132,7 +133,7 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
 
     private void requestActualFullInfo() {
         final int accountId = super.getAccountId();
-        appendDisposable(ownersInteractor.getFullUserInfo(accountId, ownerId, IOwnersInteractor.MODE_NET)
+        appendDisposable(ownersRepository.getFullUserInfo(accountId, ownerId, IOwnersRepository.MODE_NET)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(pair -> onFullInfoReceived(pair.getFirst(), pair.getSecond()), this::onDetailsGetError));
     }

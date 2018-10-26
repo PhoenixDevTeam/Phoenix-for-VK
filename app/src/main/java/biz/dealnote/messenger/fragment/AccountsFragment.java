@@ -36,8 +36,9 @@ import biz.dealnote.messenger.api.Auth;
 import biz.dealnote.messenger.db.DBHelper;
 import biz.dealnote.messenger.dialog.DirectAuthDialog;
 import biz.dealnote.messenger.domain.IAccountsInteractor;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
 import biz.dealnote.messenger.longpoll.LongpollInstance;
 import biz.dealnote.messenger.model.Account;
@@ -56,7 +57,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
     private AccountAdapter mAdapter;
     private ArrayList<Account> mData;
 
-    private IOwnersInteractor mOwnersInteractor;
+    private IOwnersRepository mOwnersInteractor;
     private IAccountsInteractor accountsInteractor;
 
     @Override
@@ -64,8 +65,8 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.mOwnersInteractor = InteractorFactory.createOwnerInteractor();
-        this.accountsInteractor = InteractorFactory.createAccountInteractor();
+        mOwnersInteractor = Repository.INSTANCE.getOwners();
+        accountsInteractor = InteractorFactory.createAccountInteractor();
 
         if (savedInstanceState != null) {
             mData = savedInstanceState.getParcelableArrayList(SAVE_DATA);
@@ -79,7 +80,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
 
         empty = root.findViewById(R.id.empty);
         mRecyclerView = root.findViewById(R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
 
         root.findViewById(R.id.fab).setOnClickListener(this);
         return root;
@@ -223,7 +224,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
 
         merge(new Account(uid, null));
 
-        mCompositeDisposable.add(mOwnersInteractor.getBaseOwnerInfo(uid, uid, IOwnersInteractor.MODE_ANY)
+        mCompositeDisposable.add(mOwnersInteractor.getBaseOwnerInfo(uid, uid, IOwnersRepository.MODE_ANY)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(owner -> merge(new Account(uid, owner)), t -> {/*ignored*/}));
     }

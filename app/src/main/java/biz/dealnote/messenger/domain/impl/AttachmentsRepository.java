@@ -8,7 +8,7 @@ import biz.dealnote.messenger.db.AttachToType;
 import biz.dealnote.messenger.db.interfaces.IAttachmentsStorage;
 import biz.dealnote.messenger.db.model.entity.Entity;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.mappers.Entity2Model;
 import biz.dealnote.messenger.domain.mappers.Model2Entity;
 import biz.dealnote.messenger.model.AbsModel;
@@ -29,11 +29,11 @@ public class AttachmentsRepository implements IAttachmentsRepository {
     private final PublishSubject<IRemoveEvent> removePublishSubject;
 
     private final IAttachmentsStorage store;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
-    public AttachmentsRepository(IAttachmentsStorage store, IOwnersInteractor ownersInteractor) {
+    public AttachmentsRepository(IAttachmentsStorage store, IOwnersRepository ownersRepository) {
         this.store = store;
-        this.ownersInteractor = ownersInteractor;
+        this.ownersRepository = ownersRepository;
         this.addPublishSubject = PublishSubject.create();
         this.removePublishSubject = PublishSubject.create();
     }
@@ -77,8 +77,8 @@ public class AttachmentsRepository implements IAttachmentsRepository {
                         Entity2Model.fillOwnerIds(ids, pair.getSecond());
                     }
 
-                    return ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY)
+                    return ownersRepository
+                            .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY)
                             .map(owners -> {
                                 List<Pair<Integer, AbsModel>> models = new ArrayList<>(pairs.size());
 

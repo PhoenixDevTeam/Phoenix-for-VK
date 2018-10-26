@@ -6,30 +6,13 @@ import android.os.Message;
 import android.util.SparseArray;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executors;
 
 import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.interfaces.INetworker;
-import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;
-import biz.dealnote.messenger.api.model.longpoll.MessageFlagsResetUpdate;
-import biz.dealnote.messenger.api.model.longpoll.MessageFlagsSetUpdate;
-import biz.dealnote.messenger.api.model.longpoll.OutputMessagesSetReadUpdate;
-import biz.dealnote.messenger.api.model.longpoll.UserIsOfflineUpdate;
-import biz.dealnote.messenger.api.model.longpoll.UserIsOnlineUpdate;
 import biz.dealnote.messenger.api.model.longpoll.VkApiGroupLongpollUpdates;
 import biz.dealnote.messenger.api.model.longpoll.VkApiLongpollUpdates;
-import biz.dealnote.messenger.api.model.longpoll.WriteTextInDialogUpdate;
-import biz.dealnote.messenger.longpoll.model.AbsRealtimeAction;
-import biz.dealnote.messenger.longpoll.model.MessageFlagsReset;
-import biz.dealnote.messenger.longpoll.model.MessageFlagsSet;
-import biz.dealnote.messenger.longpoll.model.MessagesRead;
-import biz.dealnote.messenger.longpoll.model.UserOffline;
-import biz.dealnote.messenger.longpoll.model.UserOnline;
-import biz.dealnote.messenger.longpoll.model.WriteText;
-import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.realtime.IRealtimeMessagesProcessor;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.RxUtils;
@@ -48,7 +31,7 @@ public class AndroidLongpollManager implements ILongpollManager, UserLongpoll.Ca
     private final SparseArray<LongpollEntry> map;
     private final INetworker networker;
     private final PublishProcessor<Integer> keepAlivePublisher;
-    private final PublishProcessor<List<AbsRealtimeAction>> actionsPublisher;
+    private final PublishProcessor<VkApiLongpollUpdates> actionsPublisher;
     private final IRealtimeMessagesProcessor messagesProcessor;
     private final Object lock = new Object();
 
@@ -66,7 +49,7 @@ public class AndroidLongpollManager implements ILongpollManager, UserLongpoll.Ca
     }
 
     @Override
-    public Flowable<List<AbsRealtimeAction>> observe() {
+    public Flowable<VkApiLongpollUpdates> observe() {
         return actionsPublisher.onBackpressureBuffer();
     }
 
@@ -106,14 +89,14 @@ public class AndroidLongpollManager implements ILongpollManager, UserLongpoll.Ca
         }
     }
 
-    void notifyDestroy(LongpollEntry entry) {
+    private void notifyDestroy(LongpollEntry entry) {
         Logger.d(TAG, "destroyed, accountId: " + entry.getAccountId());
         synchronized (lock) {
             map.remove(entry.getAccountId());
         }
     }
 
-    void notifyPreDestroy(LongpollEntry entry) {
+    private void notifyPreDestroy(LongpollEntry entry) {
         Logger.d(TAG, "pre-destroy, accountId: " + entry.getAccountId());
         keepAlivePublisher.onNext(entry.getAccountId());
     }
@@ -128,7 +111,8 @@ public class AndroidLongpollManager implements ILongpollManager, UserLongpoll.Ca
             messagesProcessor.process(accountId, updates.getAddMessageUpdates());
         }
 
-        compositeDisposable.add(new LongPollEventSaver().save(app, accountId, updates)
+        compositeDisposable.add(new LongPollEventSaver()
+                .save(accountId, updates)
                 .subscribeOn(MONO_SCHEDULER)
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(() -> onUpdatesSaved(accountId, updates), RxUtils.ignore()));
@@ -136,59 +120,7 @@ public class AndroidLongpollManager implements ILongpollManager, UserLongpoll.Ca
 
     private void onUpdatesSaved(int accountId, VkApiLongpollUpdates updates) {
         LongPollNotificationHelper.fireUpdates(app, accountId, updates);
-
-        List<AbsRealtimeAction> actions = createActions(accountId, updates);
-        if (nonEmpty(actions)) {
-            actionsPublisher.onNext(actions);
-        }
-    }
-
-    private List<AbsRealtimeAction> createActions(int accountId, VkApiLongpollUpdates updates) {
-        ArrayList<AbsRealtimeAction> actions = new ArrayList<>();
-
-        if (nonEmpty(updates.getUserIsOnlineUpdates())) {
-            for (UserIsOnlineUpdate update : updates.getUserIsOnlineUpdates()) {
-                actions.add(new UserOnline(accountId, update.getUserId()));
-            }
-        }
-
-        if (nonEmpty(updates.getUserIsOfflineUpdates())) {
-            for (UserIsOfflineUpdate update : updates.getUserIsOfflineUpdates()) {
-                actions.add(new UserOffline(accountId, update.getUserId(), update.getFlags() != 0));
-            }
-        }
-
-        if (nonEmpty(updates.getWriteTextInDialogUpdates())) {
-            for (WriteTextInDialogUpdate update : updates.getWriteTextInDialogUpdates()) {
-                actions.add(new WriteText(accountId, update.getUserId(), Peer.fromUserId(update.getUserId())));
-            }
-        }
-
-        if (nonEmpty(updates.getMessageFlagsSetUpdates())) {
-            for (MessageFlagsSetUpdate update : updates.getMessageFlagsSetUpdates()) {
-                actions.add(new MessageFlagsSet(accountId, update.getMessageId(), update.getPeerId(), update.getMask()));
-            }
-        }
-
-        if (nonEmpty(updates.getMessageFlagsResetUpdates())) {
-            for (MessageFlagsResetUpdate update : updates.getMessageFlagsResetUpdates()) {
-                actions.add(new MessageFlagsReset(accountId, update.getMessageId(), update.getPeerId(), update.getMask()));
-            }
-        }
-
-        if (nonEmpty(updates.getInputMessagesSetReadUpdates())) {
-            for (InputMessagesSetReadUpdate update : updates.getInputMessagesSetReadUpdates()) {
-                actions.add(new MessagesRead(accountId, update.getPeerId(), update.getLocalId(), false, update.getUnreadCount()));
-            }
-        }
-
-        if (nonEmpty(updates.getOutputMessagesSetReadUpdates())) {
-            for (OutputMessagesSetReadUpdate update : updates.getOutputMessagesSetReadUpdates()) {
-                actions.add(new MessagesRead(accountId, update.getPeerId(), update.getLocalId(), true, update.getUnreadCount()));
-            }
-        }
-
-        return actions;
+        actionsPublisher.onNext(updates);
     }
 
     @Override

@@ -27,7 +27,7 @@ import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.server.UploadServer;
 import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
-import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.IWallsRepository;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
 import biz.dealnote.messenger.upload.impl.DocumentUploadable;
 import biz.dealnote.messenger.upload.impl.OwnerPhotoUploadable;
@@ -60,7 +60,7 @@ public class UploadManagerImpl implements IUploadManager {
     private final INetworker networker;
     private final IStorages storages;
     private final IAttachmentsRepository attachmentsRepository;
-    private final IWalls walls;
+    private final IWallsRepository walls;
     private final List<Upload> queue = new ArrayList<>();
     private final Scheduler scheduler;
 
@@ -77,7 +77,7 @@ public class UploadManagerImpl implements IUploadManager {
     private CompositeDisposable otherDisposables = new CompositeDisposable();
 
     public UploadManagerImpl(Context context, INetworker networker, IStorages storages, IAttachmentsRepository attachmentsRepository,
-                             IWalls walls) {
+                             IWallsRepository walls) {
         this.context = context.getApplicationContext();
         this.networker = networker;
         this.storages = storages;

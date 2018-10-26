@@ -17,7 +17,7 @@ import io.reactivex.Single;
  * Created by admin on 20.03.2017.
  * phoenix
  */
-public interface IWalls {
+public interface IWallsRepository {
 
     @CheckResult
     Completable editPost(int accountId, int ownerId, int postId, Boolean friendsOnly, String message,

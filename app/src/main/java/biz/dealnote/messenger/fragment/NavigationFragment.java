@@ -23,8 +23,8 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.MenuListAdapter;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.db.Stores;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
 import biz.dealnote.messenger.model.Sex;
 import biz.dealnote.messenger.model.SwitchableCategory;
@@ -111,13 +111,14 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private int mAccountId;
 
-    private IOwnersInteractor ownersInteractor;
+    private IOwnersRepository ownersRepository;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ownersInteractor = InteractorFactory.createOwnerInteractor();
+        ownersRepository = Repository.INSTANCE.getOwners();
+
         mAccountId = Settings.get()
                 .accounts()
                 .getCurrent();
@@ -200,7 +201,7 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
 
     private void refreshUserInfo() {
         if (mAccountId != ISettings.IAccountsSettings.INVALID_ID) {
-            mCompositeDisposable.add(ownersInteractor.getBaseOwnerInfo(mAccountId, mAccountId, IOwnersInteractor.MODE_ANY)
+            mCompositeDisposable.add(ownersRepository.getBaseOwnerInfo(mAccountId, mAccountId, IOwnersRepository.MODE_ANY)
                     .compose(RxUtils.applySingleIOToMainSchedulers())
                     .subscribe(owner -> refreshHeader((User) owner), ignore()));
         }
