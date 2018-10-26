@@ -29,7 +29,6 @@ import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.model.SaveMessageBuilder;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.service.MessageSender;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.task.TextingNotifier;
@@ -58,14 +57,14 @@ public class QuickAnswerActivity extends AppCompatActivity {
     private int accountId;
     private int messageId;
 
-    private boolean mMessageIsRead;
-    private IMessagesRepository mMessagesInteractor;
+    private boolean messageIsRead;
+    private IMessagesRepository messagesRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.mMessagesInteractor = Repository.INSTANCE.getMessages();
+        this.messagesRepository = Repository.INSTANCE.getMessages();
 
         boolean focusToField = getIntent().getBooleanExtra(EXTRA_FOCUS_TO_FIELD, true);
 
@@ -117,9 +116,9 @@ public class QuickAnswerActivity extends AppCompatActivity {
         etText.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void afterTextChanged(Editable editable) {
-                if (!mMessageIsRead) {
+                if (!messageIsRead) {
                     setMessageAsRead();
-                    mMessageIsRead = true;
+                    messageIsRead = true;
                 }
 
                 cancelFinishWithDelay();
@@ -162,7 +161,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         mLiveSubscription.dispose();
-        mCompositeDisposable.dispose();
+        compositeDisposable.dispose();
         super.onDestroy();
     }
 
@@ -213,7 +212,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
                 .setRequireEncryption(requireEncryption)
                 .setKeyLocationPolicy(policy);
 
-        mCompositeDisposable.add(mMessagesInteractor.put(builder)
+        compositeDisposable.add(messagesRepository.put(builder)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onMessageSaved, this::onSavingError));
     }
@@ -225,14 +224,14 @@ public class QuickAnswerActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     private void onMessageSaved(Message message) {
         NotificationHelper.tryCancelNotificationForPeer(this, accountId, peerId);
-        MessageSender.getSendService().runSendingQueue();
+        messagesRepository.runSendingQueue();
         finish();
     }
 
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private void setMessageAsRead() {
-        mCompositeDisposable.add(mMessagesInteractor.markAsRead(accountId, peerId, messageId)
+        compositeDisposable.add(messagesRepository.markAsRead(accountId, peerId, messageId)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
                 .subscribe(RxUtils.dummy(), ignore()));
     }

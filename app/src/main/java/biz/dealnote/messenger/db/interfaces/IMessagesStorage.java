@@ -11,13 +11,11 @@ import biz.dealnote.messenger.db.model.MessagePatch;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
 import biz.dealnote.messenger.model.DraftMessage;
 import biz.dealnote.messenger.model.MessageStatus;
-import biz.dealnote.messenger.model.MessageUpdate;
 import biz.dealnote.messenger.model.criteria.MessagesCriteria;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Pair;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 
 /**
@@ -83,7 +81,7 @@ public interface IMessagesStorage extends IStorage {
     @CheckResult
     Single<List<Integer>> getForwardMessageIds(int accountId, int attachTo);
 
-    Observable<MessageUpdate> observeMessageUpdates();
+    //Observable<MessageUpdate> observeMessageUpdates();
 
     Single<List<Integer>> getMissingMessages(int accountId, Collection<Integer> ids);
 }

@@ -12,8 +12,6 @@ public class MessageUpdate {
 
     private StatusUpdate statusUpdate;
 
-    private SentUpdate sentUpdate;
-
     private ImportantUpdate importantUpdate;
 
     private DeleteUpdate deleteUpdate;
@@ -34,18 +32,9 @@ public class MessageUpdate {
         return importantUpdate;
     }
 
-    public void setSentUpdate(SentUpdate sentUpdate) {
-        this.sentUpdate = sentUpdate;
-    }
-
     public int getAccountId() {
         return accountId;
     }
-
-    public SentUpdate getSentUpdate() {
-        return sentUpdate;
-    }
-
     public MessageUpdate(int accountId, int messageId) {
         this.accountId = accountId;
         this.messageId = messageId;
@@ -93,26 +82,20 @@ public class MessageUpdate {
         @MessageStatus
         private final int status;
 
-        public StatusUpdate(@MessageStatus int status) {
+        private final Integer vkid;
+
+        public StatusUpdate(@MessageStatus int status, Integer vkid) {
             this.status = status;
+            this.vkid = vkid;
+        }
+
+        public Integer getVkid() {
+            return vkid;
         }
 
         @MessageStatus
         public int getStatus() {
             return status;
-        }
-    }
-
-    public static class SentUpdate {
-
-        private final int vkid;
-
-        public SentUpdate(int vkid) {
-            this.vkid = vkid;
-        }
-
-        public int getVkid() {
-            return vkid;
         }
     }
 }

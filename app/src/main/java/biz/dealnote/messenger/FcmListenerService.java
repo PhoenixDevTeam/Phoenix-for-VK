@@ -11,7 +11,6 @@ import biz.dealnote.messenger.push.IPushRegistrationResolver;
 import biz.dealnote.messenger.push.PushType;
 import biz.dealnote.messenger.push.message.BirthdayFCMMessage;
 import biz.dealnote.messenger.push.message.CommentFCMMessage;
-import biz.dealnote.messenger.push.message.FCMMessage;
 import biz.dealnote.messenger.push.message.FriendAcceptedFCMMessage;
 import biz.dealnote.messenger.push.message.FriendFCMMessage;
 import biz.dealnote.messenger.push.message.GroupInviteFCMMessage;
@@ -81,7 +80,7 @@ public class FcmListenerService extends FirebaseMessagingService {
         switch (pushType) {
             case PushType.MSG:
                 //fireNewMessage(accountId, FCMMessage.fromRemoteMessage(message));
-                FCMMessage.fromRemoteMessage(message).notify(context, accountId);
+                //FCMMessage.fromRemoteMessage(message).notify(context, accountId);
                 break;
             case PushType.WALL_POST:
                 WallPostFCMMessage.fromRemoteMessage(message).nofify(context, accountId);

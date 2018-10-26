@@ -41,7 +41,7 @@ public class QuickReplyService extends IntentService {
 
         Message message = messagesInteractor.put(builder).blockingGet();
 
-        MessageSender.getSendService().runSendingQueue();
+        Repository.INSTANCE.getMessages().runSendingQueue();
     }
 
     public static Intent intentForAddMessage(Context context, int accountId, int peerId) {

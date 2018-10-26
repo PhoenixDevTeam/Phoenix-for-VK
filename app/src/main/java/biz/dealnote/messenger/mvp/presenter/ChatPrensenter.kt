@@ -31,7 +31,6 @@ import biz.dealnote.messenger.model.*
 import biz.dealnote.messenger.mvp.presenter.base.RxSupportPresenter
 import biz.dealnote.messenger.mvp.view.IChatView
 import biz.dealnote.messenger.realtime.Processors
-import biz.dealnote.messenger.service.MessageSender
 import biz.dealnote.messenger.settings.ISettings
 import biz.dealnote.messenger.settings.Settings
 import biz.dealnote.messenger.task.TextingNotifier
@@ -156,14 +155,12 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 .toMainThread()
                 .subscribe { _ -> onRepositoryAttachmentsRemoved() })
 
-        appendDisposable(Stores.getInstance()
-                .messages()
+        appendDisposable(messagesRepository
                 .observeMessageUpdates()
-                .filter { update -> update.accountId == messagesOwnerId && update.statusUpdate != null }
+                //.flatMap { list -> Flowable.fromIterable(list) }
+                //.filter { update -> update.accountId == messagesOwnerId && update.statusUpdate != null }
                 .toMainThread()
-                .subscribe { update ->
-                    onMessageStatusChange(update.messageId, update.sentUpdate?.vkid, update.statusUpdate.status)
-                })
+                .subscribe (Consumer { onMessagesUpdate(it) }, Consumer { it.printStackTrace() }))
 
         recordingLookup = Lookup(1000)
                 .also {
@@ -649,7 +646,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun startSendService() {
-        MessageSender.getSendService().runSendingQueue()
+        messagesRepository.runSendingQueue()
     }
 
     fun fireAttachButtonClick() {
@@ -828,6 +825,46 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private fun addMessageToList(message: Message) {
         Utils.addElementToList(message, data, MESSAGES_COMPARATOR)
+    }
+
+    private fun onMessagesUpdate(updates: List<MessageUpdate>){
+        Logger.d("onMessagesUpdate", "updates: $updates")
+
+        for(update in updates){
+            val targetIndex = indexOf(update.messageId)
+
+            update.statusUpdate?.run {
+                if (vkid != null) {
+                    // message was sent
+                    val alreadyExist = indexOf(vkid) != -1
+
+                    if (alreadyExist) {
+                        if (targetIndex != -1) {
+                            data.removeAt(targetIndex)
+                        }
+                    } else {
+                        if (targetIndex != -1) {
+                            val message = data[targetIndex]
+                            message.status = status
+                            message.id = vkid
+
+                            data.removeAt(targetIndex)
+                            addMessageToList(message)
+                        }
+                    }
+                } else {
+                    //message not sent
+                    if (targetIndex != -1) {
+                        val message = data[targetIndex]
+                        message.status = status
+                    }
+                }
+            }
+
+
+        }
+
+        view?.notifyDataChanged()
     }
 
     private fun onMessageStatusChange(mdbid: Int, vkid: Int?, @MessageStatus status: Int) {
@@ -1180,9 +1217,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     fun fireSendAgainClick(message: Message) {
-        appendDisposable(Stores.getInstance()
-                .messages()
-                .changeMessageStatus(messagesOwnerId, message.id, MessageStatus.QUEUE, null)
+        appendDisposable(messagesRepository.enqueueAgain(messagesOwnerId, message.id)
                 .fromIOToMain()
                 .subscribe({ this.startSendService() }, { Analytics.logUnexpectedError(it) }))
     }

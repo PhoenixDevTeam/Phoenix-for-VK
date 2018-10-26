@@ -40,6 +40,8 @@ public interface IMessagesRepository {
 
     Single<Message> edit(int accountId, @NonNull Message message, String body, @NonNull List<AbsModel> attachments, boolean keepForwardMessages);
 
+    void runSendingQueue();
+
     /**
      * Получить все закэшированные сообщения в локальной БД
      * @param accountId идентификатор аккаунта
@@ -84,6 +86,8 @@ public interface IMessagesRepository {
     Single<Integer> send(int accountId, int dbid);
 
     Single<SentMsg> sendUnsentMessage(Collection<Integer> accountIds);
+
+    Completable enqueueAgain(int accountId, int messageId);
 
     /**
      * Поиск диалогов

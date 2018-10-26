@@ -35,16 +35,13 @@ import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.model.ChatAction;
 import biz.dealnote.messenger.model.DraftMessage;
 import biz.dealnote.messenger.model.MessageStatus;
-import biz.dealnote.messenger.model.MessageUpdate;
 import biz.dealnote.messenger.model.criteria.MessagesCriteria;
 import biz.dealnote.messenger.util.Exestime;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Pair;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.subjects.PublishSubject;
 
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
@@ -581,8 +578,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
     }
 
     @Override
-    public Completable changeMessageStatus(int accountId, int messageId, @MessageStatus int status,
-                                           @Nullable Integer vkid) {
+    public Completable changeMessageStatus(int accountId, int messageId, @MessageStatus int status, @Nullable Integer vkid) {
         return Completable.create(e -> {
             ContentValues contentValues = new ContentValues();
             contentValues.put(MessageColumns.STATUS, status);
@@ -595,14 +591,6 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
                     MessageColumns._ID + " = ?", new String[]{String.valueOf(messageId)});
 
             if (count > 0) {
-                MessageUpdate update = new MessageUpdate(accountId, messageId);
-                update.setStatusUpdate(new MessageUpdate.StatusUpdate(status));
-                if (nonNull(vkid)) {
-                    update.setSentUpdate(new MessageUpdate.SentUpdate(vkid));
-                }
-
-                messageUpdatePublishSubject.onNext(update);
-
                 e.onComplete();
             } else {
                 e.onError(new NotFoundException());
@@ -623,13 +611,6 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
 
             e.onSuccess(count > 0);
         });
-    }
-
-    private PublishSubject<MessageUpdate> messageUpdatePublishSubject = PublishSubject.create();
-
-    @Override
-    public Observable<MessageUpdate> observeMessageUpdates() {
-        return messageUpdatePublishSubject;
     }
 
     @Override
