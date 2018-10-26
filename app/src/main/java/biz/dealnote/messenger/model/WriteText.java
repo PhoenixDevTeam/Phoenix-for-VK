@@ -1,4 +1,4 @@
-package biz.dealnote.messenger.longpoll.model;
+package biz.dealnote.messenger.model;
 
 /**
  * Created by ruslan.kolbasa on 22.11.2016.

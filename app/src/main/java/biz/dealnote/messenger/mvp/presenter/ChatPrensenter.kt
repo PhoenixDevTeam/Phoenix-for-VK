@@ -23,7 +23,6 @@ import biz.dealnote.messenger.domain.Repository
 import biz.dealnote.messenger.exception.UploadNotResolvedException
 import biz.dealnote.messenger.longpoll.ILongpollManager
 import biz.dealnote.messenger.longpoll.LongpollInstance
-import biz.dealnote.messenger.longpoll.model.WriteText
 import biz.dealnote.messenger.media.record.AudioRecordException
 import biz.dealnote.messenger.media.record.AudioRecordWrapper
 import biz.dealnote.messenger.media.record.Recorder
