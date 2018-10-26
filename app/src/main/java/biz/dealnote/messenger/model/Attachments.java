@@ -91,12 +91,13 @@ public class Attachments implements Parcelable, Cloneable {
             return;
         }
 
+        if(model instanceof VoiceMessage){
+            prepareVoiceMessages().add((VoiceMessage) model);
+            return;
+        }
+
         if (model instanceof Document) {
-            if (model instanceof VoiceMessage) {
-                prepareVoiceMessages().add((VoiceMessage) model);
-            } else {
-                prepareDocs().add((Document) model);
-            }
+            prepareDocs().add((Document) model);
             return;
         }
 
@@ -127,43 +128,43 @@ public class Attachments implements Parcelable, Cloneable {
 
     public ArrayList<AbsModel> toList() {
         ArrayList<AbsModel> result = new ArrayList<>();
-        if (!safeIsEmpty(audios)) {
+        if (nonEmpty(audios)) {
             result.addAll(audios);
         }
 
-        if (!safeIsEmpty(stickers)) {
+        if (nonEmpty(stickers)) {
             result.addAll(stickers);
         }
 
-        if (!safeIsEmpty(photos)) {
+        if (nonEmpty(photos)) {
             result.addAll(photos);
         }
 
-        if (!safeIsEmpty(docs)) {
+        if (nonEmpty(docs)) {
             result.addAll(docs);
         }
 
-        if (!safeIsEmpty(voiceMessages)) {
+        if (nonEmpty(voiceMessages)) {
             result.addAll(voiceMessages);
         }
 
-        if (!safeIsEmpty(videos)) {
+        if (nonEmpty(videos)) {
             result.addAll(videos);
         }
 
-        if (!safeIsEmpty(posts)) {
+        if (nonEmpty(posts)) {
             result.addAll(posts);
         }
 
-        if (!safeIsEmpty(links)) {
+        if (nonEmpty(links)) {
             result.addAll(links);
         }
 
-        if (!safeIsEmpty(polls)) {
+        if (nonEmpty(polls)) {
             result.addAll(polls);
         }
 
-        if (!safeIsEmpty(pages)) {
+        if (nonEmpty(pages)) {
             result.addAll(pages);
         }
 

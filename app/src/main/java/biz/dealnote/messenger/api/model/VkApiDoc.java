@@ -50,24 +50,6 @@ public class VkApiDoc implements VKApiAttachment {
 
         @SerializedName("graffiti")
         public Graffiti graffiti;
-
-        @SerializedName("audio_msg")
-        public AudioMsg audioMsg;
-    }
-
-    public static class AudioMsg {
-
-        @SerializedName("duration")
-        public int duration;
-
-        @SerializedName("waveform")
-        public byte[] waveform;
-
-        @SerializedName("link_ogg")
-        public String linkOgg;
-
-        @SerializedName("link_mp3")
-        public String linkMp3;
     }
 
     public static class Graffiti {

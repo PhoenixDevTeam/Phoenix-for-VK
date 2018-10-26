@@ -7,6 +7,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import biz.dealnote.messenger.db.model.entity.AudioEntity;
+import biz.dealnote.messenger.db.model.entity.AudioMessageEntity;
 import biz.dealnote.messenger.db.model.entity.CareerEntity;
 import biz.dealnote.messenger.db.model.entity.CityEntity;
 import biz.dealnote.messenger.db.model.entity.CommentEntity;
@@ -451,6 +452,10 @@ public class Entity2Model {
             return buildTopicFromDbo((TopicEntity) entity, owners);
         }
 
+        if(entity instanceof AudioMessageEntity){
+            return map((AudioMessageEntity) entity);
+        }
+
         throw new UnsupportedOperationException("Unsupported DBO class: " + entity.getClass());
     }
 
@@ -488,10 +493,17 @@ public class Entity2Model {
                 .setViewUrl(dbo.getViewUrl());
     }
 
-    public static Document buildDocumentFromDbo(DocumentEntity dbo) {
-        boolean isVoiceMessage = nonNull(dbo.getAudio());
+    public static VoiceMessage map(AudioMessageEntity entity){
+        return new VoiceMessage(entity.getId(), entity.getOwnerId())
+                .setAccessKey(entity.getAccessKey())
+                .setDuration(entity.getDuration())
+                .setLinkMp3(entity.getLinkMp3())
+                .setLinkOgg(entity.getLinkOgg())
+                .setWaveform(entity.getWaveform());
+    }
 
-        Document document = isVoiceMessage ? new VoiceMessage(dbo.getId(), dbo.getOwnerId()) : new Document(dbo.getId(), dbo.getOwnerId());
+    public static Document buildDocumentFromDbo(DocumentEntity dbo) {
+        Document document = new Document(dbo.getId(), dbo.getOwnerId());
 
         document.setTitle(dbo.getTitle())
                 .setSize(dbo.getSize())
@@ -500,14 +512,6 @@ public class Entity2Model {
                 .setAccessKey(dbo.getAccessKey())
                 .setDate(dbo.getDate())
                 .setType(dbo.getType());
-
-        if (document instanceof VoiceMessage) {
-            ((VoiceMessage) document)
-                    .setDuration(dbo.getAudio().getDuration())
-                    .setWaveform(dbo.getAudio().getWaveform())
-                    .setLinkOgg(dbo.getAudio().getLinkOgg())
-                    .setLinkMp3(dbo.getAudio().getLinkMp3());
-        }
 
         if (nonNull(dbo.getPhoto())) {
             document.setPhotoPreview(buildPhotoSizesFromDbo(dbo.getPhoto()));

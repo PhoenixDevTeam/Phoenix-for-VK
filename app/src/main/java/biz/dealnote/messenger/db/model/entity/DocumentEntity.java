@@ -30,42 +30,6 @@ public class DocumentEntity extends Entity {
 
     private VideoPreviewDbo video;
 
-    private AudioMessageDbo audio;
-
-    public static final class AudioMessageDbo {
-
-        private final int duration;
-
-        private final byte[] waveform;
-
-        private final String linkOgg;
-
-        private final String linkMp3;
-
-        public AudioMessageDbo(int duration, byte[] waveform, String linkOgg, String linkMp3) {
-            this.duration = duration;
-            this.waveform = waveform;
-            this.linkOgg = linkOgg;
-            this.linkMp3 = linkMp3;
-        }
-
-        public byte[] getWaveform() {
-            return waveform;
-        }
-
-        public int getDuration() {
-            return duration;
-        }
-
-        public String getLinkMp3() {
-            return linkMp3;
-        }
-
-        public String getLinkOgg() {
-            return linkOgg;
-        }
-    }
-
     public static final class VideoPreviewDbo {
 
         private final String src;
@@ -227,15 +191,6 @@ public class DocumentEntity extends Entity {
 
     public DocumentEntity setVideo(VideoPreviewDbo video) {
         this.video = video;
-        return this;
-    }
-
-    public AudioMessageDbo getAudio() {
-        return audio;
-    }
-
-    public DocumentEntity setAudio(AudioMessageDbo audio) {
-        this.audio = audio;
         return this;
     }
 }

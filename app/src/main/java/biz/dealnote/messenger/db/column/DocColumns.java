@@ -18,7 +18,6 @@ public final class DocColumns implements BaseColumns {
     public static final String PHOTO = "photo";
     public static final String GRAFFITI = "graffiti";
     public static final String VIDEO = "video";
-    public static final String AUDIO = "audio";
 
     public static final String DATE = "date";
     public static final String TYPE = "type";
@@ -35,7 +34,6 @@ public final class DocColumns implements BaseColumns {
     public static final String FULL_PHOTO = TABLENAME + "." + PHOTO;
     public static final String FULL_GRAFFITI = TABLENAME + "." + GRAFFITI;
     public static final String FULL_VIDEO = TABLENAME + "." + VIDEO;
-    public static final String FULL_AUDIO = TABLENAME + "." + AUDIO;
 
     public static final String FULL_DATE = TABLENAME + "." + DATE;
     public static final String FULL_TYPE = TABLENAME + "." + TYPE;

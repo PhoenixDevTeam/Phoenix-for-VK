@@ -104,7 +104,6 @@ class DocsStorage extends AbsStorage implements IDocsStorage {
                 cv.put(DocColumns.PHOTO, nonNull(entity.getPhoto()) ? GSON.toJson(entity.getPhoto()) : null);
                 cv.put(DocColumns.GRAFFITI, nonNull(entity.getGraffiti()) ? GSON.toJson(entity.getGraffiti()) : null);
                 cv.put(DocColumns.VIDEO, nonNull(entity.getVideo()) ? GSON.toJson(entity.getVideo()) : null);
-                cv.put(DocColumns.AUDIO, nonNull(entity.getAudio()) ? GSON.toJson(entity.getAudio()) : null);
 
                 operations.add(ContentProviderOperation.newInsert(uri)
                         .withValues(cv)
@@ -144,7 +143,6 @@ class DocsStorage extends AbsStorage implements IDocsStorage {
         String photoJson = cursor.getString(cursor.getColumnIndex(DocColumns.PHOTO));
         String graffitiJson = cursor.getString(cursor.getColumnIndex(DocColumns.GRAFFITI));
         String videoJson = cursor.getString(cursor.getColumnIndex(DocColumns.VIDEO));
-        String audioJson = cursor.getString(cursor.getColumnIndex(DocColumns.AUDIO));
 
         if(nonEmpty(photoJson)){
             document.setPhoto(GSON.fromJson(photoJson, PhotoSizeEntity.class));
@@ -156,10 +154,6 @@ class DocsStorage extends AbsStorage implements IDocsStorage {
 
         if(nonEmpty(videoJson)){
             document.setVideo(GSON.fromJson(videoJson, DocumentEntity.VideoPreviewDbo.class));
-        }
-
-        if(nonEmpty(audioJson)){
-            document.setAudio(GSON.fromJson(audioJson, DocumentEntity.AudioMessageDbo.class));
         }
 
         return document;

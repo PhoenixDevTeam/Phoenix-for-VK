@@ -1,6 +1,7 @@
 package biz.dealnote.messenger.db.model;
 
 import biz.dealnote.messenger.db.model.entity.AudioEntity;
+import biz.dealnote.messenger.db.model.entity.AudioMessageEntity;
 import biz.dealnote.messenger.db.model.entity.DocumentEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
 import biz.dealnote.messenger.db.model.entity.LinkEntity;
@@ -30,6 +31,7 @@ public final class AttachmentsTypes {
     public static final int PAGE = 1024;
     public static final int STICKER = 4096;
     public static final int TOPIC = 8192;
+    public static final int AUDIO_MESSAGE = 16384;
 
     public static int typeForInstance(Entity entity) {
         if (entity instanceof PhotoEntity) {
@@ -52,6 +54,8 @@ public final class AttachmentsTypes {
             return PAGE;
         } else if(entity instanceof TopicEntity){
             return TOPIC;
+        } else if(entity instanceof AudioMessageEntity){
+            return AUDIO_MESSAGE;
         }
 
         throw new UnsupportedOperationException("Unsupported type: " + entity.getClass());
@@ -79,6 +83,8 @@ public final class AttachmentsTypes {
                 return PageEntity.class;
             case TOPIC:
                 return TopicEntity.class;
+            case AUDIO_MESSAGE:
+                return AudioMessageEntity.class;
             default:
                 throw new UnsupportedOperationException("Unsupported type: " + type);
         }

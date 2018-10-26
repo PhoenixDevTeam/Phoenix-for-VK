@@ -476,7 +476,6 @@ public class MessengerContentProvider extends ContentProvider {
         sDocsProjectionMap.put(DocColumns.PHOTO, DocColumns.FULL_PHOTO);
         sDocsProjectionMap.put(DocColumns.GRAFFITI, DocColumns.FULL_GRAFFITI);
         sDocsProjectionMap.put(DocColumns.VIDEO, DocColumns.FULL_VIDEO);
-        sDocsProjectionMap.put(DocColumns.AUDIO, DocColumns.FULL_AUDIO);
 
         sDocsProjectionMap.put(DocColumns.DATE, DocColumns.FULL_DATE);
         sDocsProjectionMap.put(DocColumns.TYPE, DocColumns.FULL_TYPE);
