@@ -1,213 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    tools:ignore="UnusedAttribute"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="?android:colorBackground"
+    app:cardCornerRadius="16dp"
+    app:contentPadding="0dp"
+    app:strokeColor="?cardStrokeColor"
+    app:strokeWidth="1dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="?attr/android:colorBackground"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="2dp"
-        app:contentPadding="0dp">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
+            style='style="?android:attr/borderlessButtonStyle"'
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp">
 
-            <RelativeLayout
-                style='style="?android:attr/borderlessButtonStyle"'
+            <ImageView
+                android:id="@+id/item_post_avatar"
+                android:layout_width="@dimen/avatar_size_small"
+                android:layout_height="@dimen/avatar_size_small"
+                android:layout_centerVertical="true" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/post_views_counter_root"
+                android:layout_toRightOf="@+id/item_post_avatar"
+                android:orientation="vertical"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp">
+                android:paddingRight="16dp">
 
-                <ImageView
-                    android:id="@+id/item_post_avatar"
-                    android:layout_width="@dimen/avatar_size_small"
-                    android:layout_height="@dimen/avatar_size_small"
-                    android:layout_centerVertical="true" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/post_views_counter_root"
-                    android:layout_toRightOf="@+id/item_post_avatar"
-                    android:orientation="vertical"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
-
-                    <TextView
-                        android:id="@+id/item_post_owner_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:text="Rustam Fattakhetdinov"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="@dimen/font_size_subtitle"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/item_post_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Today 19:26"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="@dimen/font_size_additional" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/post_views_counter_root"
+                <TextView
+                    android:id="@+id/item_post_owner_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:maxLines="1"
+                    android:text="Rustam Fattakhetdinov"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/post_views_counter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="@dimen/font_size_additional"
-                        tools:text="1533" />
+                <TextView
+                    android:id="@+id/item_post_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Today 19:26"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="@dimen/font_size_additional" />
 
-                    <biz.dealnote.messenger.view.ColorFilterImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:src="@drawable/ic_eye_white_vector"
-                        app:filter_color="?android:textColorSecondary" />
+            </LinearLayout>
 
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <include
-                android:id="@+id/top_divider"
-                layout="@layout/line_divider" />
-
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/post_views_counter_root"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp">
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <RelativeLayout
-                    android:id="@+id/item_text_container"
+                <TextView
+                    android:id="@+id/post_views_counter"
+                    tools:text="1533"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="8dp"
-                    android:paddingBottom="6dp">
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="@dimen/font_size_additional" />
 
-                    <biz.dealnote.messenger.view.emoji.EmojiconTextView
-                        android:id="@+id/item_post_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:autoLink="web"
-                        android:gravity="left"
-                        android:linksClickable="false"
-                        android:text="Message"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="@dimen/font_size_subtitle"
-                        app:displayHashTags="true"
-                        app:emojiconSize="20sp"
-                        app:hashTagColor="?attr/colorAccent" />
-
-                    <TextView
-                        android:id="@+id/item_post_show_more"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/item_post_text"
-                        android:fontFamily="sans-serif-condensed"
-                        android:text="@string/show_more"
-                        android:textAllCaps="true"
-                        android:textColor="?colorAccent"
-                        android:textSize="@dimen/font_size_subtitle" />
-
-                </RelativeLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/item_post_attachments"
-                    android:layout_width="match_parent"
+                <biz.dealnote.messenger.view.ColorFilterImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/item_text_container"
-                    android:orientation="vertical">
+                    android:layout_marginLeft="4dp"
+                    android:src="@drawable/ic_eye_white_vector"
+                    app:filter_color="?android:textColorSecondary" />
 
-                    <include
-                        layout="@layout/post_attachment_links"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+            </LinearLayout>
 
-            </RelativeLayout>
+        </RelativeLayout>
 
-            <include
-                android:id="@+id/bottom_divider"
-                layout="@layout/line_divider" />
+        <include
+            android:id="@+id/top_divider"
+            layout="@layout/line_divider" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
 
             <RelativeLayout
-                android:id="@+id/buttons_bar"
+                android:id="@+id/item_text_container"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="8dp"
+                android:paddingBottom="6dp">
 
-                <biz.dealnote.messenger.view.CircleCounterButton
-                    android:id="@+id/like_button"
+                <biz.dealnote.messenger.view.emoji.EmojiconTextView
+                    android:id="@+id/item_post_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:active_background_color="?attr/icon_color_active"
-                    app:always_counter="false"
-                    app:button_icon="@drawable/heart_outline"
-                    app:noactive_icon_color="?attr/icon_color_static" />
+                    android:layout_alignParentLeft="true"
+                    android:autoLink="web"
+                    android:gravity="left"
+                    android:linksClickable="false"
+                    android:text="Message"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle"
+                    app:displayHashTags="true"
+                    app:emojiconSize="20sp"
+                    app:hashTagColor="?attr/colorAccent" />
 
-                <biz.dealnote.messenger.view.CircleCounterButton
-                    android:id="@+id/comments_button"
+                <TextView
+                    android:id="@+id/item_post_show_more"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/like_button"
-                    android:layout_toStartOf="@+id/like_button"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:active_background_color="?attr/icon_color_active"
-                    app:always_counter="false"
-                    app:button_icon="@drawable/comment_outline"
-                    app:noactive_icon_color="?attr/icon_color_static" />
-
-                <biz.dealnote.messenger.view.CircleCounterButton
-                    android:id="@+id/share_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:active_background_color="?attr/icon_color_active"
-                    app:button_icon="@drawable/share_variant"
-                    app:noactive_icon_color="?attr/icon_color_static" />
+                    android:layout_below="@+id/item_post_text"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/show_more"
+                    android:textAllCaps="true"
+                    android:textColor="?colorAccent"
+                    android:textSize="@dimen/font_size_subtitle" />
 
             </RelativeLayout>
 
-        </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:id="@+id/item_post_attachments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_text_container"
+                android:orientation="vertical">
 
-</FrameLayout>
+                <include
+                    layout="@layout/post_attachment_links"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/bottom_divider"
+            layout="@layout/line_divider" />
+
+        <RelativeLayout
+            android:id="@+id/buttons_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <biz.dealnote.messenger.view.CircleCounterButton
+                android:id="@+id/like_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:active_background_color="?attr/icon_color_active"
+                app:always_counter="false"
+                app:button_icon="@drawable/heart_outline"
+                app:noactive_icon_color="?attr/icon_color_static" />
+
+            <biz.dealnote.messenger.view.CircleCounterButton
+                android:id="@+id/comments_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/like_button"
+                android:layout_toLeftOf="@+id/like_button"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:active_background_color="?attr/icon_color_active"
+                app:always_counter="false"
+                app:button_icon="@drawable/comment_outline"
+                app:noactive_icon_color="?attr/icon_color_static" />
+
+            <biz.dealnote.messenger.view.CircleCounterButton
+                android:id="@+id/share_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:active_background_color="?attr/icon_color_active"
+                app:button_icon="@drawable/share_variant"
+                app:noactive_icon_color="?attr/icon_color_static" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
 

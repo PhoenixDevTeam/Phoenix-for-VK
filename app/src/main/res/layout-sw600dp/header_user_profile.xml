@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_title"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="@font/open_sans_light"
                 android:gravity="right"/>
 
 
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:textColor="?attr/textColorPrimary"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="@font/open_sans_light"
                 android:textSize="@dimen/font_size_subtitle" />
 
             <TextView
@@ -84,7 +84,7 @@
                 android:gravity="right"
                 android:layout_marginTop="8dp"
                 android:textColor="?attr/textColorPrimary"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="@font/open_sans_light"
                 android:textSize="@dimen/font_size_subtitle" />
 
             <biz.dealnote.messenger.view.emoji.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
@@ -95,7 +95,7 @@
                 android:ellipsize="end"
                 android:gravity="right"
                 android:maxLines="6"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="@font/open_sans_light"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
                 android:visibility="visible"
@@ -136,7 +136,7 @@
                         android:id="@+id/fragment_user_profile_bfriends"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/open_sans_light"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_big_title" />
 
@@ -145,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-2dp"
                         android:text="@string/counter_friends"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/open_sans_light"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_subtitle" />
 
@@ -165,7 +165,7 @@
                         android:id="@+id/fragment_user_profile_bfollowers"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/open_sans_light"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_big_title" />
 
@@ -174,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-2dp"
                         android:text="@string/counter_followers"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/open_sans_light"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_subtitle" />
 
@@ -194,7 +194,7 @@
                         android:id="@+id/fragment_user_profile_bgroups"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/open_sans_light"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_big_title" />
 
@@ -202,7 +202,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-2dp"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/open_sans_light"
                         android:text="@string/counter_groups"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_subtitle" />
@@ -223,7 +223,7 @@
                         android:id="@+id/fragment_user_profile_bphotos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/open_sans_light"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_big_title" />
 
@@ -231,7 +231,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-2dp"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/open_sans_light"
                         android:text="@string/counter_photos"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_subtitle" />
@@ -252,7 +252,7 @@
                         android:id="@+id/fragment_user_profile_baudios"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/open_sans_light"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_big_title" />
 
@@ -261,7 +261,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-2dp"
                         android:text="@string/counter_audios"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/open_sans_light"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_subtitle"
                         android:textIsSelectable="false" />
@@ -282,7 +282,7 @@
                         android:id="@+id/fragment_user_profile_bvideos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/open_sans_light"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_big_title" />
 
@@ -291,7 +291,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-2dp"
                         android:text="@string/counter_videos"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/open_sans_light"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_subtitle" />
 
@@ -316,7 +316,7 @@
                     <Button
                         android:textAllCaps="true"
                         android:id="@+id/subscribe_btn"
-                        style="@style/Widget.AppCompat.Button.Borderless"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="?icon_color_active"
@@ -332,7 +332,7 @@
 
                     <Button
                         android:id="@+id/info_btn"
-                        style="@style/Widget.AppCompat.Button.Borderless"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/more_info"

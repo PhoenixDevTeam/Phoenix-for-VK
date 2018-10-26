@@ -1,127 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="?android:colorBackground"
+    app:cardCornerRadius="16dp"
+    app:contentPadding="0dp"
+    app:strokeColor="?cardStrokeColor"
+    app:strokeWidth="1dp"
+    tools:ignore="UnusedAttribute">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="@dimen/newsfeed_comments_card_side_margin"
-        android:layout_marginRight="@dimen/newsfeed_comments_card_side_margin"
-        android:layout_marginTop="4dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="?attr/android:colorBackground"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="2dp"
-        app:contentPadding="0dp">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
+            style='style="?android:attr/borderlessButtonStyle"'
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp">
 
-            <RelativeLayout
-                style='style="?android:attr/borderlessButtonStyle"'
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/comments_counter_root"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp">
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:id="@+id/comments_counter_root"
+                <TextView
+                    android:id="@+id/comments_counter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="@dimen/font_size_additional"
+                    tools:text="1533" />
 
-                    <TextView
-                        android:id="@+id/comments_counter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="@dimen/font_size_additional"
-                        tools:text="1533" />
-
-                    <biz.dealnote.messenger.view.ColorFilterImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginStart="4dp"
-                        android:src="@drawable/ic_newsfeed_comment_topic_comment_counter"
-                        app:filter_color="?android:textColorSecondary" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/owner_avatar"
-                    android:layout_width="@dimen/avatar_size_small"
-                    android:layout_height="@dimen/avatar_size_small"
-                    android:background="@drawable/circle_white" />
-
-                <ImageView
-                    android:layout_alignEnd="@+id/owner_avatar"
-                    android:layout_alignRight="@+id/owner_avatar"
-                    android:layout_alignBottom="@+id/owner_avatar"
-                    android:id="@+id/creator_avatar"
-                    android:layout_width="@dimen/avatar_size_min"
-                    android:layout_height="@dimen/avatar_size_min"
-                    android:background="@drawable/circle_white" />
-
-                <LinearLayout
+                <biz.dealnote.messenger.view.ColorFilterImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/owner_avatar"
-                    android:layout_toLeftOf="@+id/comments_counter_root"
-                    android:layout_toRightOf="@+id/owner_avatar"
-                    android:layout_toStartOf="@+id/comments_counter_root"
-                    android:orientation="vertical">
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:src="@drawable/ic_newsfeed_comment_topic_comment_counter"
+                    app:filter_color="?android:textColorSecondary" />
 
-                    <TextView
-                        android:id="@+id/owner_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="@dimen/font_size_subtitle"
-                        android:textStyle="bold"
-                        tools:text="Owner name" />
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="@dimen/font_size_additional"
-                        tools:text="Today 19:26" />
+            <ImageView
+                android:id="@+id/owner_avatar"
+                android:layout_width="@dimen/avatar_size_small"
+                android:layout_height="@dimen/avatar_size_small"
+                android:background="@drawable/circle_white" />
 
-                </LinearLayout>
+            <ImageView
+                android:id="@+id/creator_avatar"
+                android:layout_width="@dimen/avatar_size_min"
+                android:layout_height="@dimen/avatar_size_min"
+                android:layout_alignEnd="@+id/owner_avatar"
+                android:layout_alignRight="@+id/owner_avatar"
+                android:layout_alignBottom="@+id/owner_avatar"
+                android:background="@drawable/circle_white" />
 
-            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_toStartOf="@+id/comments_counter_root"
+                android:layout_toLeftOf="@+id/comments_counter_root"
+                android:layout_toEndOf="@+id/owner_avatar"
+                android:layout_toRightOf="@+id/owner_avatar"
+                android:orientation="vertical">
 
-            <include
-                android:id="@+id/bottom_divider"
-                layout="@layout/line_divider" />
+                <TextView
+                    android:id="@+id/owner_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textStyle="bold"
+                    tools:text="Owner name" />
 
-            <include
-                android:id="@+id/comment_root"
-                layout="@layout/content_newsfeed_comment" />
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="@dimen/font_size_additional"
+                    tools:text="Today 19:26" />
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+        </RelativeLayout>
 
-</FrameLayout>
+        <include
+            android:id="@+id/bottom_divider"
+            layout="@layout/line_divider" />
+
+        <include
+            android:id="@+id/comment_root"
+            layout="@layout/content_newsfeed_comment" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

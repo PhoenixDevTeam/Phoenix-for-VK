@@ -40,7 +40,7 @@
                 android:id="@+id/header_group_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="@font/open_sans_light"
                 android:gravity="right"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="24dp" />
@@ -49,7 +49,7 @@
                 android:id="@+id/header_group_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="@font/open_sans_light"
                 android:gravity="right"
                 android:maxLines="6"
                 android:textColor="?attr/textColorPrimary"
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="@font/open_sans_light"
                 android:gravity="right"
                 android:maxLines="6"
                 android:textColor="?attr/textColorPrimary"
@@ -106,7 +106,7 @@
                     android:id="@+id/header_group_bmembers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
@@ -114,7 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_followers"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
@@ -135,7 +135,7 @@
                     android:id="@+id/header_group_btopics"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
@@ -143,7 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_topics"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
@@ -164,7 +164,7 @@
                     android:id="@+id/header_group_bdocuments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
@@ -172,7 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_documents"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
@@ -193,7 +193,7 @@
                     android:id="@+id/header_group_bphotos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
@@ -201,7 +201,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_photos"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
@@ -222,7 +222,7 @@
                     android:id="@+id/header_group_baudios"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
@@ -230,7 +230,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_audios"
                     android:textColor="?android:textColorPrimary"
                     android:textIsSelectable="false"
@@ -252,7 +252,7 @@
                     android:id="@+id/header_group_bvideos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
@@ -260,7 +260,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_videos"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
@@ -276,7 +276,7 @@
 
             <Button
                 android:id="@+id/header_group_primary_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
@@ -287,7 +287,7 @@
 
             <Button
                 android:id="@+id/header_group_secondary_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"

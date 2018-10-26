@@ -54,6 +54,7 @@
     <attr name="chat_background_circular" format="reference" />
     <attr name="message_unread_color" format="color" />
     <attr name="buttonAddPhotoBackground" format="reference" />
+    <attr name="cardStrokeColor" format="color" />
 
     <attr name="oval_avatar_background" format="reference" />
 
@@ -79,9 +80,9 @@
     <attr name="toolbarLockIcon" format="reference" />
     <attr name="toolbarLockPlusIcon" format="reference" />
     <attr name="toolbarUnlockIcon" format="reference" />
-    <attr name="toolbarDoubleUpIcon" format="reference"/>
-    <attr name="toolbarDoubleDownIcon" format="reference"/>
-    <attr name="toolbarPinIcon" format="reference"/>
+    <attr name="toolbarDoubleUpIcon" format="reference" />
+    <attr name="toolbarDoubleDownIcon" format="reference" />
+    <attr name="toolbarPinIcon" format="reference" />
     <attr name="statusbarNonColoredColor" format="color" />
     <attr name="tabsTheme" format="reference" />
 
@@ -162,24 +163,24 @@
     <declare-styleable name="YoutubeButton">
         <attr name="youtube_button_icon" format="reference" />
         <attr name="youtube_button_text" format="string" />
-        <attr name="youtube_button_text_color" format="color"/>
-        <attr name="youtube_button_icon_color" format="color"/>
+        <attr name="youtube_button_text_color" format="color" />
+        <attr name="youtube_button_icon_color" format="color" />
     </declare-styleable>
 
     <declare-styleable name="MySpinnerView">
-        <attr name="spinner_hint" format="string"/>
-        <attr name="spinner_hint_color" format="color"/>
-        <attr name="spinner_text_color" format="color"/>
-        <attr name="spinner_icon_color" format="color"/>
+        <attr name="spinner_hint" format="string" />
+        <attr name="spinner_hint_color" format="color" />
+        <attr name="spinner_text_color" format="color" />
+        <attr name="spinner_icon_color" format="color" />
     </declare-styleable>
 
     <declare-styleable name="AspectRatioImageView">
-        <attr name="aspectRatioW" format="integer"/>
-        <attr name="aspectRatioH" format="integer"/>
-        <attr name="aspectRatioEnabled" format="boolean"/>
+        <attr name="aspectRatioW" format="integer" />
+        <attr name="aspectRatioH" format="integer" />
+        <attr name="aspectRatioEnabled" format="boolean" />
         <attr name="dominantMeasurement">
-            <enum name="width" value="0"/>
-            <enum name="height" value="1"/>
+            <enum name="width" value="0" />
+            <enum name="height" value="1" />
         </attr>
     </declare-styleable>
 </resources>

@@ -1,55 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="?android:colorBackground"
+    app:cardCornerRadius="16dp"
+    app:contentPadding="0dp"
+    app:strokeColor="?cardStrokeColor"
+    app:strokeWidth="1dp"
+    tools:ignore="UnusedAttribute">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="@dimen/newsfeed_comments_card_side_margin"
-        android:layout_marginRight="@dimen/newsfeed_comments_card_side_margin"
-        android:layout_marginTop="4dp"
-        app:cardBackgroundColor="?attr/android:colorBackground"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="2dp"
-        app:contentPadding="0dp">
+        android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/post_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:id="@+id/post_root"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <include layout="@layout/content_post_header" />
-
-                <include
-                    android:id="@+id/top_divider"
-                    layout="@layout/line_divider" />
-
-                <include layout="@layout/content_post" />
-
-            </LinearLayout>
-
+            <include layout="@layout/content_post_header" />
 
             <include
-                android:id="@+id/bottom_divider"
+                android:id="@+id/top_divider"
                 layout="@layout/line_divider" />
 
-            <include
-                android:id="@+id/comment_root"
-                layout="@layout/content_newsfeed_comment" />
+            <include layout="@layout/content_post" />
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
 
-</FrameLayout>
+        <include
+            android:id="@+id/bottom_divider"
+            layout="@layout/line_divider" />
+
+        <include
+            android:id="@+id/comment_root"
+            layout="@layout/content_newsfeed_comment" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

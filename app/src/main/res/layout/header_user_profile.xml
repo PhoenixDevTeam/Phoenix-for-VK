@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/list_divider_color">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/r1"
@@ -59,7 +58,7 @@
                 android:id="@+id/fragment_user_profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="@font/open_sans_light"
                 android:gravity="right"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_big_title" />
@@ -69,7 +68,7 @@
                 android:id="@+id/fragment_user_profile_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="@font/open_sans_light"
                 android:gravity="right"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle" />
@@ -79,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="@font/open_sans_light"
                 android:gravity="right"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle" />
@@ -90,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:ellipsize="end"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="@font/open_sans_light"
                 android:gravity="right"
                 android:maxLines="6"
                 android:textColor="?attr/textColorPrimary"
@@ -134,16 +133,16 @@
                     android:id="@+id/fragment_user_profile_bfriends"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
+                    android:gravity="center"
                     android:text="@string/counter_friends"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_counter" />
@@ -164,7 +163,7 @@
                     android:id="@+id/fragment_user_profile_bfollowers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
@@ -173,7 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_followers"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_counter" />
@@ -194,7 +193,7 @@
                     android:id="@+id/fragment_user_profile_bgroups"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
@@ -203,7 +202,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_groups"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_counter" />
@@ -231,7 +230,7 @@
                     android:id="@+id/fragment_user_profile_bphotos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
@@ -240,7 +239,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_photos"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_counter" />
@@ -261,7 +260,7 @@
                     android:id="@+id/fragment_user_profile_baudios"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
@@ -270,7 +269,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_audios"
                     android:textColor="?android:textColorPrimary"
                     android:textIsSelectable="false"
@@ -292,7 +291,7 @@
                     android:id="@+id/fragment_user_profile_bvideos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
@@ -301,7 +300,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_videos"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_counter" />
@@ -325,9 +324,9 @@
                 android:layout_marginRight="8dp"
                 android:layout_weight="50">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/subscribe_btn"
-                    style="@style/Widget.AppCompat.Button.Borderless"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="16dp"
@@ -347,7 +346,7 @@
 
                 <Button
                     android:id="@+id/info_btn"
-                    style="@style/Widget.AppCompat.Button.Borderless"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="16dp"

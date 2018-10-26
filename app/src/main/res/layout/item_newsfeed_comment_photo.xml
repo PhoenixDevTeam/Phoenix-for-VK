@@ -1,110 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="?android:colorBackground"
+    app:cardCornerRadius="16dp"
+    app:contentPadding="0dp"
+    app:strokeColor="?cardStrokeColor"
+    app:strokeWidth="1dp"
+    tools:ignore="UnusedAttribute">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="@dimen/newsfeed_comments_card_side_margin"
-        android:layout_marginRight="@dimen/newsfeed_comments_card_side_margin"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="?attr/android:colorBackground"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="2dp"
-        app:contentPadding="0dp">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp">
+            <ImageView
+                android:id="@+id/photo_owner_avatar"
+                android:layout_width="@dimen/avatar_size_small"
+                android:layout_height="@dimen/avatar_size_small"
+                android:background="@drawable/circle_white" />
 
-                <ImageView
-                    android:id="@+id/photo_owner_avatar"
-                    android:layout_width="@dimen/avatar_size_small"
-                    android:layout_height="@dimen/avatar_size_small"
-                    android:background="@drawable/circle_white" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/photo_owner_avatar"
-                    android:layout_toRightOf="@+id/photo_owner_avatar"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/photo_owner_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="@dimen/font_size_subtitle"
-                        android:textStyle="bold"
-                        tools:text="Owner name" />
-
-                    <TextView
-                        android:id="@+id/photo_datetime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="@dimen/font_size_additional"
-                        tools:text="Today 19:26" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <biz.dealnote.messenger.view.AspectRatioImageView
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/photo_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                app:aspectRatioW="1"
-                app:aspectRatioH="1"
-                app:aspectRatioEnabled="true"
-                app:dominantMeasurement="width"/>
-
-            <TextView
-                android:id="@+id/photo_title"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:maxLines="1"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:textColor="?android:textColorPrimary"
-                android:textSize="@dimen/font_size_subtitle"
-                android:textStyle="bold"
-                tools:text="Video title" />
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_toEndOf="@+id/photo_owner_avatar"
+                android:layout_toRightOf="@+id/photo_owner_avatar"
+                android:orientation="vertical">
 
-            <include
-                android:id="@+id/bottom_divider"
-                layout="@layout/line_divider" />
+                <TextView
+                    android:id="@+id/photo_owner_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textStyle="bold"
+                    tools:text="Owner name" />
 
-            <include
-                android:id="@+id/comment_root"
-                layout="@layout/content_newsfeed_comment" />
+                <TextView
+                    android:id="@+id/photo_datetime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="@dimen/font_size_additional"
+                    tools:text="Today 19:26" />
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+        </RelativeLayout>
 
-</FrameLayout>
+        <biz.dealnote.messenger.view.AspectRatioImageView
+            android:id="@+id/photo_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
+            app:aspectRatioEnabled="true"
+            app:aspectRatioH="1"
+            app:aspectRatioW="1"
+            app:dominantMeasurement="width" />
+
+        <TextView
+            android:id="@+id/photo_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:maxLines="1"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/font_size_subtitle"
+            android:textStyle="bold"
+            tools:text="Video title" />
+
+        <include
+            android:id="@+id/bottom_divider"
+            layout="@layout/line_divider" />
+
+        <include
+            android:id="@+id/comment_root"
+            layout="@layout/content_newsfeed_comment" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

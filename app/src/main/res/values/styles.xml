@@ -1,24 +1,28 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="App.DayNight" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="App.DayNight" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:navigationBarColor" tools:targetApi="o_mr1">@android:color/white</item>
         <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">#aaaaaa</item>
 
+        <item name="android:fontFamily">@font/open_sans</item>
+
         <item name="colorPrimary">#FFF</item>
         <item name="colorPrimaryDark">#FFF</item>
-        <item name="colorAccent">#233446</item>
+        <item name="colorAccent">#424242</item>
 
         <item name="icon_color_active">#233446</item>
-        <item name="icon_color_static">#757575</item>
+        <item name="icon_color_static">#424242</item>
+
+        <item name="cardStrokeColor">#DADCE0</item>
 
         <item name="android:colorBackground">@android:color/background_light</item>
 
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="textColorPrimary">#de000000</item>
-        <item name="textColorSecondary">#8a000000</item>
+        <item name="textColorPrimary">#212121</item>
+        <item name="textColorSecondary">#424242</item>
         <item name="textColorDisabled">#39000000</item>
 
         <item name="dialogs_unread_color">#20b0b0b0</item>
@@ -42,7 +46,7 @@
         <item name="toolbarSearchIcon">@drawable/magnify_grey600</item>
         <item name="toolbarCopyIcon">@drawable/content_copy_grey600</item>
         <item name="toolbarDeleteIcon">@drawable/delete_grey600</item>
-        <item name="toolbarUpIcon">@drawable/chevron_up_grey</item>
+        <item name="toolbarUpIcon">@drawable/chevron_up_grey600</item>
         <item name="toolbarGraphicIcon">@drawable/chart_bar_grey600</item>
         <item name="toolbarEditIcon">@drawable/pencil_grey600</item>
         <item name="toolbarForwardIcon">@drawable/forward_grey600</item>
@@ -55,7 +59,7 @@
         <item name="toolbarDoubleUpIcon">@drawable/double_up_grey600</item>
         <item name="toolbarDoubleDownIcon">@drawable/double_down_grey600</item>
         <item name="toolbarPinIcon">@drawable/ic_toolbar_pin_gray600</item>
-        <item name="tabsTheme">@style/Theme.Tablayout.Dark</item>
+        <item name="tabsTheme">@style/Theme.Tablayout</item>
         <item name="statusbarNonColoredColor">#000</item>
 
         <item name="chat_background_cookies">@drawable/cookies_white</item>
@@ -91,11 +95,11 @@
     </style>
 
     <style name="Toolbar.White" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:textColorPrimary">#757575</item>
+        <item name="android:textColorPrimary">#424242</item>
     </style>
 
     <style name="Theme.Tablayout" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">#757575</item>
+        <item name="tabIndicatorColor">#424242</item>
         <item name="tabGravity">center</item>
         <item name="tabMode">fixed</item>
         <item name="tabIndicatorHeight">3dp</item>

@@ -1,172 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="?android:colorBackground"
+    app:cardCornerRadius="16dp"
+    app:contentPadding="0dp"
+    app:strokeColor="?cardStrokeColor"
+    app:strokeWidth="1dp"
+    tools:ignore="UnusedAttribute">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="@dimen/newsfeed_comments_card_side_margin"
-        android:layout_marginRight="@dimen/newsfeed_comments_card_side_margin"
-        android:layout_marginTop="4dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="?attr/android:colorBackground"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="2dp"
-        app:contentPadding="0dp">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            style='style="?android:attr/borderlessButtonStyle"'
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp">
 
-            <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                style='style="?android:attr/borderlessButtonStyle"'
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp">
-
-                <LinearLayout
-                    android:id="@+id/video_views_counter_root"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/video_views_counter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="@dimen/font_size_additional"
-                        tools:text="1533" />
-
-                    <biz.dealnote.messenger.view.ColorFilterImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginStart="4dp"
-                        android:src="@drawable/ic_eye_white_vector"
-                        app:filter_color="?android:textColorSecondary" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/video_owner_avatar"
-                    android:layout_width="@dimen/avatar_size_small"
-                    android:layout_height="@dimen/avatar_size_small"
-                    android:background="@drawable/circle_white" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/video_owner_avatar"
-                    android:layout_toLeftOf="@+id/video_views_counter_root"
-                    android:layout_toRightOf="@+id/video_owner_avatar"
-                    android:layout_toStartOf="@+id/video_views_counter_root"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/video_owner_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="@dimen/font_size_subtitle"
-                        android:textStyle="bold"
-                        tools:text="Owner name" />
-
-                    <TextView
-                        android:id="@+id/video_datetime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="@dimen/font_size_additional"
-                        tools:text="Today 19:26" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/video_views_counter_root"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <biz.dealnote.messenger.view.AspectRatioImageView
-                    android:id="@+id/video_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    app:aspectRatioEnabled="true"
-                    app:aspectRatioH="9"
-                    app:aspectRatioW="16"
-                    app:dominantMeasurement="width" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/video_lenght"
+                    android:id="@+id/video_views_counter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/video_image"
-                    android:layout_alignEnd="@+id/video_image"
-                    android:layout_alignRight="@+id/video_image"
-                    android:background="#90000000"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:textColor="@android:color/white"
+                    android:textColor="?android:textColorSecondary"
                     android:textSize="@dimen/font_size_additional"
-                    android:textStyle="bold"
-                    tools:text="3:28" />
+                    tools:text="1533" />
 
-                <ImageView
-                    android:id="@+id/video_service"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="16dp"
-                    android:scaleType="fitStart"
-                    android:src="@drawable/logo_youtube_trans" />
+                <biz.dealnote.messenger.view.ColorFilterImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:src="@drawable/ic_eye_white_vector"
+                    app:filter_color="?android:textColorSecondary" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/video_title"
+            <ImageView
+                android:id="@+id/video_owner_avatar"
+                android:layout_width="@dimen/avatar_size_small"
+                android:layout_height="@dimen/avatar_size_small"
+                android:background="@drawable/circle_white" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:maxLines="1"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:textColor="?android:textColorPrimary"
-                android:textSize="@dimen/font_size_subtitle"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_toStartOf="@+id/video_views_counter_root"
+                android:layout_toLeftOf="@+id/video_views_counter_root"
+                android:layout_toEndOf="@+id/video_owner_avatar"
+                android:layout_toRightOf="@+id/video_owner_avatar"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/video_owner_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:textStyle="bold"
+                    tools:text="Owner name" />
+
+                <TextView
+                    android:id="@+id/video_datetime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="@dimen/font_size_additional"
+                    tools:text="Today 19:26" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <biz.dealnote.messenger.view.AspectRatioImageView
+                android:id="@+id/video_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                app:aspectRatioEnabled="true"
+                app:aspectRatioH="9"
+                app:aspectRatioW="16"
+                app:dominantMeasurement="width" />
+
+            <TextView
+                android:id="@+id/video_lenght"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/video_image"
+                android:layout_alignRight="@+id/video_image"
+                android:layout_alignBottom="@+id/video_image"
+                android:background="#90000000"
+                android:gravity="center"
+                android:padding="4dp"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/font_size_additional"
                 android:textStyle="bold"
-                tools:text="Video title" />
+                tools:text="3:28" />
 
-            <include
-                android:id="@+id/bottom_divider"
-                layout="@layout/line_divider" />
+            <ImageView
+                android:id="@+id/video_service"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_margin="16dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/logo_youtube_trans" />
 
-            <include
-                android:id="@+id/comment_root"
-                layout="@layout/content_newsfeed_comment" />
+        </RelativeLayout>
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/video_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:maxLines="1"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/font_size_subtitle"
+            android:textStyle="bold"
+            tools:text="Video title" />
 
-    </androidx.cardview.widget.CardView>
+        <include
+            android:id="@+id/bottom_divider"
+            layout="@layout/line_divider" />
 
-</FrameLayout>
+        <include
+            android:id="@+id/comment_root"
+            layout="@layout/content_newsfeed_comment" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

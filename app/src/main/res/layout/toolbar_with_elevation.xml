@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimary"
-    android:clipToPadding="true"
-    android:elevation="?toolbarElevation"
-    app:popupTheme="?toolbarPopupStyle"
-    app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
-    app:theme="?toolbarAppStyle"
-    app:titleTextAppearance="@style/Theme.Title.Toolbar" />
+    android:layout_height="48dp"
+    android:layout_margin="12dp"
+    app:cardBackgroundColor="?attr/colorPrimary"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="?toolbarElevation">
+
+    <biz.dealnote.messenger.view.CenteredToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:clipToPadding="true"
+        app:popupTheme="?toolbarPopupStyle"
+        app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
+        app:theme="?toolbarAppStyle"
+        app:titleTextAppearance="@style/Theme.Title.Toolbar" />
+
+</com.google.android.material.card.MaterialCardView>

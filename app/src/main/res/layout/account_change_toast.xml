@@ -25,10 +25,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
             android:maxLines="1"
             android:text="@string/account_switched_to"
             android:textColor="#ececec"
-            android:textSize="@dimen/font_size_additional"/>
+            android:textSize="@dimen/font_size_additional" />
 
         <TextView
             android:id="@+id/subtitle"
