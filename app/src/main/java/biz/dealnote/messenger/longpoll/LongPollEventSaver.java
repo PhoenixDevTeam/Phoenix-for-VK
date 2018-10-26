@@ -8,22 +8,18 @@ import android.os.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.longpoll.BadgeCountChangeUpdate;
-import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;
 import biz.dealnote.messenger.api.model.longpoll.MessageFlagsResetUpdate;
 import biz.dealnote.messenger.api.model.longpoll.MessageFlagsSetUpdate;
-import biz.dealnote.messenger.api.model.longpoll.OutputMessagesSetReadUpdate;
 import biz.dealnote.messenger.api.model.longpoll.VkApiLongpollUpdates;
 import biz.dealnote.messenger.db.LongPollOperation;
 import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.domain.IMessagesRepository;
 import biz.dealnote.messenger.domain.Repository;
-import biz.dealnote.messenger.longpoll.model.MessagesRead;
 import biz.dealnote.messenger.model.MessageFlag;
 import biz.dealnote.messenger.util.Exestime;
 import biz.dealnote.messenger.util.Logger;
@@ -31,7 +27,6 @@ import io.reactivex.Completable;
 
 import static biz.dealnote.messenger.util.Utils.hasSomeFlag;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
-import static biz.dealnote.messenger.util.Utils.safeCountOfMultiple;
 
 public class LongPollEventSaver {
 
@@ -42,21 +37,17 @@ public class LongPollEventSaver {
     }
 
     private Completable saveReadUpdates(int accountId, @NonNull VkApiLongpollUpdates updates) {
-        List<MessagesRead> reads = new ArrayList<>(safeCountOfMultiple(updates.output_messages_set_read_updates, updates.input_messages_set_read_updates));
+        Completable completable = Completable.complete();
 
-        if (nonEmpty(updates.input_messages_set_read_updates)) {
-            for (InputMessagesSetReadUpdate update : updates.input_messages_set_read_updates) {
-                reads.add(new MessagesRead(accountId, update.peer_id, update.local_id, false, update.unread_count));
-            }
+        if(nonEmpty(updates.output_messages_set_read_updates) || nonEmpty(updates.input_messages_set_read_updates)){
+            completable = completable.andThen(messagesInteractor.handleReadUpdates(accountId, updates.output_messages_set_read_updates, updates.input_messages_set_read_updates));
         }
 
-        if (nonEmpty(updates.output_messages_set_read_updates)) {
-            for (OutputMessagesSetReadUpdate update : updates.output_messages_set_read_updates) {
-                reads.add(new MessagesRead(accountId, update.peer_id, update.local_id, true, update.unread_count));
-            }
+        if(nonEmpty(updates.message_flags_reset_updates) || nonEmpty(updates.message_flags_set_updates)){
+            completable = completable.andThen(messagesInteractor.handleFlagsUpdates(accountId, updates.message_flags_set_updates, updates.message_flags_reset_updates));
         }
 
-        return reads.isEmpty() ? Completable.complete() : messagesInteractor.handleMessagesRead(accountId, reads);
+        return completable;
     }
 
     public Completable save(@NonNull Context context, int accountId, @NonNull VkApiLongpollUpdates updates) {
@@ -65,21 +56,9 @@ public class LongPollEventSaver {
                     long start = System.currentTimeMillis();
                     ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
-                    if (nonEmpty(updates.message_flags_reset_updates)) {
-                        operations.addAll(LongPollOperation.forMessagesFlagReset(accountId, updates.message_flags_reset_updates));
-                    }
-
-                    if (nonEmpty(updates.message_flags_set_updates)) {
-                        operations.addAll(LongPollOperation.forMessagesFlagSet(accountId, updates.message_flags_set_updates));
-                    }
-
                     if (nonEmpty(updates.user_is_offline_updates) || nonEmpty(updates.user_is_online_updates)) {
                         operations.addAll(LongPollOperation.forUserActivityUpdates(accountId, updates.user_is_offline_updates, updates.user_is_online_updates));
                     }
-
-                    //if (nonEmpty(updates.input_messages_set_read_updates) || nonEmpty(updates.output_messages_set_read_updates)) {
-                    //    operations.addAll(LongPollOperation.forMessagesReadUpdate(accountId, updates.input_messages_set_read_updates, updates.output_messages_set_read_updates));
-                    //}
 
                     try {
                         if (nonEmpty(operations)) {

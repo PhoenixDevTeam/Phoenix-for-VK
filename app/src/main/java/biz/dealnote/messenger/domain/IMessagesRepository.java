@@ -4,8 +4,12 @@ import java.util.Collection;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.api.model.VKApiMessage;
-import biz.dealnote.messenger.longpoll.model.MessagesRead;
+import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;
+import biz.dealnote.messenger.api.model.longpoll.MessageFlagsResetUpdate;
+import biz.dealnote.messenger.api.model.longpoll.MessageFlagsSetUpdate;
+import biz.dealnote.messenger.api.model.longpoll.OutputMessagesSetReadUpdate;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
@@ -26,13 +30,15 @@ import io.reactivex.Single;
  * phoenix
  */
 public interface IMessagesRepository {
+    Completable handleFlagsUpdates(int accountId, @Nullable List<MessageFlagsSetUpdate> setUpdates, @Nullable List<MessageFlagsResetUpdate> resetUpdates);
+
+    Completable handleReadUpdates(int accountId, @Nullable List<OutputMessagesSetReadUpdate> setUpdates, @Nullable List<InputMessagesSetReadUpdate> resetUpdates);
+
     Flowable<List<PeerUpdate>> observePeerUpdates();
 
     Flowable<List<MessageUpdate>> observeMessageUpdates();
 
     Flowable<PeerDeleting> observePeerDeleting();
-
-    Completable handleMessagesRead(int accountId, @NonNull List<MessagesRead> reads);
 
     Single<Conversation> getConversationSingle(int accountId, int peerId, @NonNull Mode mode);
 

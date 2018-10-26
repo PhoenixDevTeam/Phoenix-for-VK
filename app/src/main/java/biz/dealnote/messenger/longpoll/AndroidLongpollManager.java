@@ -128,7 +128,8 @@ public class AndroidLongpollManager implements ILongpollManager, UserLongpoll.Ca
             messagesProcessor.process(accountId, updates.getAddMessageUpdates());
         }
 
-        compositeDisposable.add(new LongPollEventSaver().save(app, accountId, updates)
+        compositeDisposable.add(new LongPollEventSaver()
+                .save(app, accountId, updates)
                 .subscribeOn(MONO_SCHEDULER)
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(() -> onUpdatesSaved(accountId, updates), RxUtils.ignore()));

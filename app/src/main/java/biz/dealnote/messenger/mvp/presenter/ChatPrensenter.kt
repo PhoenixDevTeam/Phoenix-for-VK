@@ -157,10 +157,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         appendDisposable(messagesRepository
                 .observeMessageUpdates()
-                //.flatMap { list -> Flowable.fromIterable(list) }
-                //.filter { update -> update.accountId == messagesOwnerId && update.statusUpdate != null }
                 .toMainThread()
-                .subscribe (Consumer { onMessagesUpdate(it) }, Consumer { it.printStackTrace() }))
+                .subscribe { onMessagesUpdate(it) })
 
         recordingLookup = Lookup(1000)
                 .also {
@@ -370,31 +368,9 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 RealtimeAction.USER_WRITE_TEXT -> onUserWriteInDialog(action as WriteText)
                 RealtimeAction.USER_IS_ONLINE -> onUserIsOnline(action as UserOnline)
                 RealtimeAction.USER_IS_OFFLINE -> onUserIsOffline(action as UserOffline)
-                RealtimeAction.MESSAGES_FLAGS_RESET -> onMessageFlagReset(action as MessageFlagsReset)
-                RealtimeAction.MESSAGES_FLAGS_SET -> onMessageFlagSet(action as MessageFlagsSet)
-                //RealtimeAction.MESSAGES_READ -> {
-                //    val read = action as MessagesRead
-                //    onLongpollMessagesRead(messagesOwnerId, read.peerId, read.isOut, read.toMessageId)
-                //}
             }
         }
     }
-
-    /*private fun onLongpollMessagesRead(accountId: Int, peerId: Int, out: Boolean, localId: Int) {
-        if (messagesOwnerId != accountId || peerId != peerId) return
-
-        conversation?.run {
-            if (out) {
-                outRead = localId
-                lastReadId.outgoing = localId
-            } else {
-                inRead = localId
-                lastReadId.incoming = localId
-            }
-        }
-
-        view?.notifyDataChanged()
-    }*/
 
     private fun onUserIsOffline(userOffline: UserOffline) {
         if (isChatWithUser(userOffline.userId)) {
@@ -828,8 +804,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun onMessagesUpdate(updates: List<MessageUpdate>){
-        Logger.d("onMessagesUpdate", "updates: $updates")
-
         for(update in updates){
             val targetIndex = indexOf(update.messageId)
 
@@ -859,40 +833,19 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                         message.status = status
                     }
                 }
+
+                // no processing another updates
+                return
             }
 
-
-        }
-
-        view?.notifyDataChanged()
-    }
-
-    private fun onMessageStatusChange(mdbid: Int, vkid: Int?, @MessageStatus status: Int) {
-        val targetIndex = indexOf(mdbid)
-
-        if (vkid != null) {
-            // message was sent
-            val alreadyExist = indexOf(vkid) != -1
-
-            if (alreadyExist) {
-                if (targetIndex != -1) {
-                    data.removeAt(targetIndex)
+            if(targetIndex != -1){
+                update.deleteUpdate?.run {
+                    data[targetIndex].isDeleted = isDeleted
                 }
-            } else {
-                if (targetIndex != -1) {
-                    val message = data[targetIndex]
-                    message.status = status
-                    message.id = vkid
 
-                    data.removeAt(targetIndex)
-                    addMessageToList(message)
+                update.importantUpdate?.run {
+                    data[targetIndex].isImportant = isImportant
                 }
-            }
-        } else {
-            //message not sent
-            if (targetIndex != -1) {
-                val message = data[targetIndex]
-                message.status = status
             }
         }
 
@@ -929,62 +882,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         addMessageToList(message)
         view?.notifyDataChanged()
-    }
-
-    private fun onMessageFlagSet(action: MessageFlagsSet) {
-        if (messagesOwnerId != action.accountId || peerId != action.peerId) {
-            return
-        }
-
-        if (!hasFlag(action.mask, MessageFlag.DELETED) && !hasFlag(action.mask, MessageFlag.IMPORTANT)) {
-            return
-        }
-
-        val message = findById(action.messageId) ?: return
-
-        var changed = false
-        if (hasFlag(action.mask, MessageFlag.DELETED) && !message.isDeleted) {
-            message.isDeleted = true
-            changed = true
-        }
-
-        if (hasFlag(action.mask, MessageFlag.IMPORTANT) && !message.isImportant) {
-            message.isImportant = true
-            changed = true
-        }
-
-        if (changed) {
-            view?.notifyDataChanged()
-        }
-    }
-
-    private fun onMessageFlagReset(reset: MessageFlagsReset) {
-        if (messagesOwnerId != reset.accountId || peerId != reset.peerId) return
-
-        if (!hasFlag(reset.mask, MessageFlag.UNREAD)
-                && !hasFlag(reset.mask, MessageFlag.IMPORTANT)
-                && !hasFlag(reset.mask, MessageFlag.DELETED)) {
-            //чтобы не искать сообщение в списке напрасно
-            return
-        }
-
-        val message = findById(reset.messageId) ?: return
-
-        var changed = false
-
-        if (hasFlag(reset.mask, MessageFlag.IMPORTANT) && message.isImportant) {
-            message.isImportant = false
-            changed = true
-        }
-
-        if (hasFlag(reset.mask, MessageFlag.DELETED) && message.isDeleted) {
-            message.isDeleted = false
-            changed = true
-        }
-
-        if (changed) {
-            view?.notifyDataChanged()
-        }
     }
 
     private fun isChatWithUser(userId: Int): Boolean {

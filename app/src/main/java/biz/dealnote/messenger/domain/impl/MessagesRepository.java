@@ -37,6 +37,10 @@ import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VkApiConversation;
 import biz.dealnote.messenger.api.model.VkApiDialog;
 import biz.dealnote.messenger.api.model.VkApiDoc;
+import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;
+import biz.dealnote.messenger.api.model.longpoll.MessageFlagsResetUpdate;
+import biz.dealnote.messenger.api.model.longpoll.MessageFlagsSetUpdate;
+import biz.dealnote.messenger.api.model.longpoll.OutputMessagesSetReadUpdate;
 import biz.dealnote.messenger.api.model.response.SearchDialogsResponse;
 import biz.dealnote.messenger.crypt.AesKeyPair;
 import biz.dealnote.messenger.crypt.CryptHelper;
@@ -70,7 +74,6 @@ import biz.dealnote.messenger.domain.mappers.Model2Entity;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.exception.UploadNotResolvedException;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
-import biz.dealnote.messenger.longpoll.model.MessagesRead;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
@@ -114,6 +117,7 @@ import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.RxUtils.safelyCloseAction;
+import static biz.dealnote.messenger.util.Utils.hasFlag;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
@@ -281,26 +285,69 @@ public class MessagesRepository implements IMessagesRepository {
                 }, ignore()));
     }
 
-    /*private void sendMessageIfWaitForUpload(int accountId, int messageId) {
-        // если загружали в личное сообщение, то отправляем это сообщение (в случае, если оно с статусе "Ожидание загрузки")
-        otherDisposables.add(storages.messages()
-                .getMessageStatus(accountId, messageId)
-                .flatMap(status -> {
-                    if (status == MessageStatus.WAITING_FOR_UPLOAD) {
-                        return storages.messages()
-                                .changeMessageStatus(accountId, messageId, MessageStatus.QUEUE, null)
-                                .andThen(Single.just(true));
-                    }
+    @Override
+    public Completable handleFlagsUpdates(int accountId, @Nullable List<MessageFlagsSetUpdate> setUpdates, @Nullable List<MessageFlagsResetUpdate> resetUpdates) {
+        final List<MessagePatch> patches = new ArrayList<>();
 
-                    return Single.just(false);
-                })
-                .subscribeOn(scheduler)
-                .subscribe(needStart -> {
-                    if (needStart) {
-                        sendService.runSendingQueue();
-                    }
-                }, ignore()));
-    }*/
+        if (nonEmpty(setUpdates)) {
+            for (MessageFlagsSetUpdate update : setUpdates) {
+                if (!hasFlag(update.mask, VKApiMessage.FLAG_DELETED) && !hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT))
+                    continue;
+
+                MessagePatch patch = new MessagePatch(update.message_id);
+
+                if (hasFlag(update.mask, VKApiMessage.FLAG_DELETED)) {
+                    patch.setDeletion(new MessagePatch.Deletion(true));
+                }
+
+                if (hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT)) {
+                    patch.setImportant(new MessagePatch.Important(true));
+                }
+
+                patches.add(patch);
+            }
+        }
+
+        if (nonEmpty(resetUpdates)) {
+            for (MessageFlagsResetUpdate update : resetUpdates) {
+                if (!hasFlag(update.mask, VKApiMessage.FLAG_DELETED) && !hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT))
+                    continue;
+
+                MessagePatch patch = new MessagePatch(update.message_id);
+
+                if (hasFlag(update.mask, VKApiMessage.FLAG_DELETED)) {
+                    patch.setDeletion(new MessagePatch.Deletion(false));
+                }
+
+                if (hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT)) {
+                    patch.setImportant(new MessagePatch.Important(false));
+                }
+
+                patches.add(patch);
+            }
+        }
+
+        return applyMessagesPatchesAndPublish(accountId, patches);
+    }
+
+    @Override
+    public Completable handleReadUpdates(int accountId, @Nullable List<OutputMessagesSetReadUpdate> outgoing, @Nullable List<InputMessagesSetReadUpdate> incoming) {
+        List<PeerPatch> patches = new ArrayList<>();
+
+        if (nonEmpty(outgoing)) {
+            for (OutputMessagesSetReadUpdate update : outgoing) {
+                patches.add(new PeerPatch(update.peer_id).withOutRead(update.local_id));
+            }
+        }
+
+        if (nonEmpty(incoming)) {
+            for (InputMessagesSetReadUpdate update : incoming) {
+                patches.add(new PeerPatch(update.peer_id).withInRead(update.local_id).withUnreadCount(update.unread_count));
+            }
+        }
+
+        return applyPeerUpdatesAndPublish(accountId, patches);
+    }
 
     @Override
     public Flowable<List<MessageUpdate>> observeMessageUpdates() {
@@ -315,25 +362,6 @@ public class MessagesRepository implements IMessagesRepository {
     @Override
     public Flowable<PeerDeleting> observePeerDeleting() {
         return peerDeletingPublisher.onBackpressureBuffer();
-    }
-
-    @Override
-    public Completable handleMessagesRead(int accountId, @NonNull List<MessagesRead> reads) {
-        List<PeerPatch> patches = new ArrayList<>(reads.size());
-
-        for (MessagesRead read : reads) {
-            PeerPatch patch = new PeerPatch(read.getPeerId());
-
-            if (read.isOut()) {
-                patch.withOutRead(read.getToMessageId());
-            } else {
-                patch.withInRead(read.getToMessageId()).withUnreadCount(read.getUnreadCount());
-            }
-
-            patches.add(patch);
-        }
-
-        return applyPeerUpdatesAndPublish(accountId, patches);
     }
 
     private static Conversation entity2Model(int accountId, SimpleDialogEntity entity, IOwnersBundle owners) {
