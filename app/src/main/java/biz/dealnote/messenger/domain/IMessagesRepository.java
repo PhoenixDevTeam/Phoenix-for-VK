@@ -6,10 +6,13 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import biz.dealnote.messenger.api.model.VKApiMessage;
+import biz.dealnote.messenger.api.model.longpoll.BadgeCountChangeUpdate;
 import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;
 import biz.dealnote.messenger.api.model.longpoll.MessageFlagsResetUpdate;
 import biz.dealnote.messenger.api.model.longpoll.MessageFlagsSetUpdate;
 import biz.dealnote.messenger.api.model.longpoll.OutputMessagesSetReadUpdate;
+import biz.dealnote.messenger.api.model.longpoll.WriteTextInDialogUpdate;
+import biz.dealnote.messenger.longpoll.model.WriteText;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
@@ -34,9 +37,15 @@ public interface IMessagesRepository {
 
     Completable handleReadUpdates(int accountId, @Nullable List<OutputMessagesSetReadUpdate> setUpdates, @Nullable List<InputMessagesSetReadUpdate> resetUpdates);
 
+    Completable handleUnreadBadgeUpdates(int accountId, @NonNull List<BadgeCountChangeUpdate> updates);
+
+    Completable handleWriteUpdates(int accountId, @NonNull List<WriteTextInDialogUpdate> updates);
+
     Flowable<List<PeerUpdate>> observePeerUpdates();
 
     Flowable<List<MessageUpdate>> observeMessageUpdates();
+
+    Flowable<List<WriteText>> observeTextWrite();
 
     Flowable<PeerDeleting> observePeerDeleting();
 

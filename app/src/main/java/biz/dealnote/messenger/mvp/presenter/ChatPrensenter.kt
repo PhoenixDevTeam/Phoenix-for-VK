@@ -23,7 +23,7 @@ import biz.dealnote.messenger.domain.Repository
 import biz.dealnote.messenger.exception.UploadNotResolvedException
 import biz.dealnote.messenger.longpoll.ILongpollManager
 import biz.dealnote.messenger.longpoll.LongpollInstance
-import biz.dealnote.messenger.longpoll.model.*
+import biz.dealnote.messenger.longpoll.model.WriteText
 import biz.dealnote.messenger.media.record.AudioRecordException
 import biz.dealnote.messenger.media.record.AudioRecordWrapper
 import biz.dealnote.messenger.media.record.Recorder
@@ -39,6 +39,7 @@ import biz.dealnote.messenger.util.*
 import biz.dealnote.messenger.util.RxUtils.*
 import biz.dealnote.messenger.util.Utils.*
 import biz.dealnote.mvp.reflect.OnGuiCreated
+import io.reactivex.Flowable
 import io.reactivex.disposables.Disposables
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Predicate
@@ -167,10 +168,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                     }
                 }
 
-        appendDisposable(longpollManager.observe()
-                .toMainThread()
-                .subscribe(Consumer { this.onRealtimeVkActionReceive(it) }, ignore()))
-
         appendDisposable(longpollManager.observeKeepAlive()
                 .toMainThread()
                 .subscribe(Consumer { onLongpollKeepAliveRequest() }, ignore()))
@@ -213,7 +210,38 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 .toMainThread()
                 .subscribe(Consumer { onPeerUpdate(it) }, ignore()))
 
+        appendDisposable(Repository.owners.observeUpdates()
+                .toMainThread()
+                .subscribe{onUserUpdates(it)})
+
+        appendDisposable(messagesRepository.observeTextWrite()
+                .flatMap { list -> Flowable.fromIterable(list) }
+                .toMainThread()
+                .subscribe{onUserWriteInDialog(it)})
+
         updateSubtitle()
+    }
+
+    private fun onUserWriteInDialog(writeText: WriteText) {
+        if (peerId == writeText.peerId && !isGroupChat) {
+            displayUserTextingInToolbar()
+        }
+    }
+
+    private fun onUserUpdates(updates: List<UserUpdate>){
+        for(update in updates){
+            if(update.accountId == accountId && isChatWithUser(update.userId)){
+                update.online?.run {
+                    subtitle = if(isOnline){
+                        getString(R.string.online)
+                    } else{
+                        getString(R.string.last_seen_sex_unknown, AppTextUtils.getDateFromUnixTime(lastSeen))
+                    }
+
+                    resolveToolbarSubtitle()
+                }
+            }
+        }
     }
 
     private fun onPeerUpdate(updates: List<PeerUpdate>) {
@@ -360,37 +388,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private fun onLongpollKeepAliveRequest() {
         checkLongpoll()
-    }
-
-    private fun onRealtimeVkActionReceive(actions: List<AbsRealtimeAction>) {
-        for (action in actions) {
-            when (action.action) {
-                RealtimeAction.USER_WRITE_TEXT -> onUserWriteInDialog(action as WriteText)
-                RealtimeAction.USER_IS_ONLINE -> onUserIsOnline(action as UserOnline)
-                RealtimeAction.USER_IS_OFFLINE -> onUserIsOffline(action as UserOffline)
-            }
-        }
-    }
-
-    private fun onUserIsOffline(userOffline: UserOffline) {
-        if (isChatWithUser(userOffline.userId)) {
-            val lastSeeenUnixtime = if (userOffline.isByTimeout) Unixtime.now() - 15 * 60 else Unixtime.now()
-            subtitle = getString(R.string.last_seen_sex_unknown, AppTextUtils.getDateFromUnixTime(lastSeeenUnixtime))
-            resolveToolbarSubtitle()
-        }
-    }
-
-    private fun onUserIsOnline(userOnline: UserOnline) {
-        if (isChatWithUser(userOnline.userId)) {
-            subtitle = getString(R.string.online)
-            resolveToolbarSubtitle()
-        }
-    }
-
-    private fun onUserWriteInDialog(writeText: WriteText) {
-        if (peerId == writeText.peerId && !isGroupChat) {
-            displayUserTextingInToolbar()
-        }
     }
 
     private fun onRepositoryAttachmentsRemoved() {

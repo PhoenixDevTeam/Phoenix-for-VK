@@ -22,7 +22,7 @@ public final class VkApiLongpollUpdates {
     public long ts;
     public int failed;
 
-    private List<WriteTextInDialogUpdate> write_text_in_dialog_updates;
+    public List<WriteTextInDialogUpdate> write_text_in_dialog_updates;
     public List<AddMessageUpdate> add_message_updates;
     public List<UserIsOnlineUpdate> user_is_online_updates;
     public List<UserIsOfflineUpdate> user_is_offline_updates;
@@ -30,7 +30,7 @@ public final class VkApiLongpollUpdates {
     public List<MessageFlagsSetUpdate> message_flags_set_updates;
     public List<InputMessagesSetReadUpdate> input_messages_set_read_updates;
     public List<OutputMessagesSetReadUpdate> output_messages_set_read_updates;
-    private List<BadgeCountChangeUpdate> badge_count_change_updates;
+    public List<BadgeCountChangeUpdate> badge_count_change_updates;
 
     private static <T extends AbsLongpollEvent> List<T> crateAndAppend(T item) {
         List<T> data = new ArrayList<>(1);
@@ -145,13 +145,8 @@ public final class VkApiLongpollUpdates {
         return output_messages_set_read_updates;
     }
 
-    public List<BadgeCountChangeUpdate> getBadgeCountChangeUpdates() {
-        return badge_count_change_updates;
-    }
-
     @Override
     public String toString() {
         return "Longpolling updates, count: " + getUpdatesCount() + ", failed: " + failed;
     }
 }
-

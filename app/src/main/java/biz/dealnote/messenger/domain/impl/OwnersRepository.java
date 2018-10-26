@@ -9,12 +9,16 @@ import java.util.List;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiUser;
+import biz.dealnote.messenger.api.model.longpoll.UserIsOfflineUpdate;
+import biz.dealnote.messenger.api.model.longpoll.UserIsOnlineUpdate;
 import biz.dealnote.messenger.db.column.GroupColumns;
 import biz.dealnote.messenger.db.column.UserColumns;
 import biz.dealnote.messenger.db.interfaces.IOwnersStorage;
+import biz.dealnote.messenger.db.model.UserPatch;
 import biz.dealnote.messenger.db.model.entity.CareerEntity;
 import biz.dealnote.messenger.db.model.entity.CommunityEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
@@ -34,11 +38,15 @@ import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.SparseArrayOwnersBundle;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.UserDetails;
+import biz.dealnote.messenger.model.UserUpdate;
 import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Pair;
+import biz.dealnote.messenger.util.Unixtime;
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.processors.PublishProcessor;
 
 import static biz.dealnote.messenger.api.model.VKApiCommunity.ACTIVITY;
 import static biz.dealnote.messenger.api.model.VKApiCommunity.BAN_INFO;
@@ -86,6 +94,7 @@ public class OwnersRepository implements IOwnersRepository {
 
     private final INetworker networker;
     private final IOwnersStorage cache;
+    private final PublishProcessor<List<UserUpdate>> userUpdatesPublisher = PublishProcessor.create();
 
     public OwnersRepository(INetworker networker, IOwnersStorage ownersRepository) {
         this.networker = networker;
@@ -96,7 +105,7 @@ public class OwnersRepository implements IOwnersRepository {
         return cache.getUserDetails(accountId, userId)
                 .flatMap(optional -> {
                     if (optional.isEmpty()) {
-                        return Single.just(Optional.<UserDetails>empty());
+                        return Single.just(Optional.empty());
                     }
 
                     UserDetailsEntity entity = optional.get();
@@ -226,6 +235,59 @@ public class OwnersRepository implements IOwnersRepository {
     @Override
     public Completable insertOwners(int accountId, @NonNull OwnerEntities entities) {
         return cache.storeOwnerEntities(accountId, entities);
+    }
+
+    @Override
+    public Completable handleStatusChange(int accountId, int userId, String status) {
+        UserPatch patch = new UserPatch(userId).setStatus(new UserPatch.Status(status));
+        return applyPatchesThenPublish(accountId, Collections.singletonList(patch));
+    }
+
+    @Override
+    public Completable handleOnlineChanges(int accountId, @Nullable List<UserIsOfflineUpdate> offlineUpdates, @Nullable List<UserIsOnlineUpdate> onlineUpdates) {
+        List<UserPatch> patches = new ArrayList<>();
+
+        if(nonEmpty(offlineUpdates)){
+            for(UserIsOfflineUpdate update : offlineUpdates){
+                long lastSeeenUnixtime = update.getFlags() != 0 ? Unixtime.now() - 15 * 60 : Unixtime.now();
+                patches.add(new UserPatch(update.user_id).setOnlineUpdate(new UserPatch.Online(false,lastSeeenUnixtime, 0)));
+            }
+        }
+
+        if(nonEmpty(onlineUpdates)){
+            for(UserIsOnlineUpdate update : onlineUpdates){
+                patches.add(new UserPatch(update.user_id).setOnlineUpdate(new UserPatch.Online(true, Unixtime.now(), update.extra)));
+            }
+        }
+
+        return applyPatchesThenPublish(accountId, patches);
+    }
+
+    private Completable applyPatchesThenPublish(int accountId, List<UserPatch> patches){
+        List<UserUpdate> updates = new ArrayList<>(patches.size());
+
+        for(UserPatch patch : patches){
+            UserUpdate update = new UserUpdate(accountId, patch.getUserId());
+
+            if(patch.getOnline() != null){
+                update.setOnline(new UserUpdate.Online(patch.getOnline().isOnline(),
+                        patch.getOnline().getLastSeen(),
+                        patch.getOnline().getPlatform()));
+            }
+
+            if(patch.getStatus() != null){
+                update.setStatus(new UserUpdate.Status(patch.getStatus().getStatus()));
+            }
+
+            updates.add(update);
+        }
+
+        return cache.applyPathes(accountId, patches).doOnComplete(() -> userUpdatesPublisher.onNext(updates));
+    }
+
+    @Override
+    public Flowable<List<UserUpdate>> observeUpdates() {
+        return userUpdatesPublisher.onBackpressureBuffer();
     }
 
     @Override

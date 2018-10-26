@@ -64,5 +64,5 @@ public interface IOwnersStorage extends IStorage {
 
     Completable storeUserDetails(int accountId, int userId, UserDetailsEntity dbo);
 
-    Completable updateUser(int accountId, int userId, UserPatch patch);
+    Completable applyPathes(int accountId, @NonNull List<UserPatch> patches);
 }

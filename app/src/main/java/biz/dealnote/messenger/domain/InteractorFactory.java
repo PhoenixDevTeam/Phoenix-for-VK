@@ -91,7 +91,6 @@ public class InteractorFactory {
 
     public static IAccountsInteractor createAccountInteractor(){
         return new AccountsInteractor(
-                Injection.provideStores(),
                 Injection.provideNetworkInterfaces(),
                 Injection.provideSettings().accounts(),
                 Injection.provideBlacklistRepository(),

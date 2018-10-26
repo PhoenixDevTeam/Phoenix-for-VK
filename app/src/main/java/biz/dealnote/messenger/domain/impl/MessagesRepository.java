@@ -37,10 +37,12 @@ import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VkApiConversation;
 import biz.dealnote.messenger.api.model.VkApiDialog;
 import biz.dealnote.messenger.api.model.VkApiDoc;
+import biz.dealnote.messenger.api.model.longpoll.BadgeCountChangeUpdate;
 import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;
 import biz.dealnote.messenger.api.model.longpoll.MessageFlagsResetUpdate;
 import biz.dealnote.messenger.api.model.longpoll.MessageFlagsSetUpdate;
 import biz.dealnote.messenger.api.model.longpoll.OutputMessagesSetReadUpdate;
+import biz.dealnote.messenger.api.model.longpoll.WriteTextInDialogUpdate;
 import biz.dealnote.messenger.api.model.response.SearchDialogsResponse;
 import biz.dealnote.messenger.crypt.AesKeyPair;
 import biz.dealnote.messenger.crypt.CryptHelper;
@@ -74,6 +76,7 @@ import biz.dealnote.messenger.domain.mappers.Model2Entity;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.exception.UploadNotResolvedException;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
+import biz.dealnote.messenger.longpoll.model.WriteText;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
@@ -153,6 +156,7 @@ public class MessagesRepository implements IMessagesRepository {
     private final PublishProcessor<List<PeerUpdate>> peerUpdatePublisher = PublishProcessor.create();
     private final PublishProcessor<PeerDeleting> peerDeletingPublisher = PublishProcessor.create();
     private final PublishProcessor<List<MessageUpdate>> messageUpdatesPublisher = PublishProcessor.create();
+    private final PublishProcessor<List<WriteText>> writeTextPublisher = PublishProcessor.create();
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final Scheduler senderScheduler = Schedulers.from(Executors.newFixedThreadPool(1));
@@ -174,6 +178,11 @@ public class MessagesRepository implements IMessagesRepository {
         compositeDisposable.add(accountsSettings.observeRegistered()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(ignored -> onAccountsChanged(), ignore()));
+    }
+
+    @Override
+    public Flowable<List<WriteText>> observeTextWrite() {
+        return writeTextPublisher.onBackpressureBuffer();
     }
 
     private void onAccountsChanged() {
@@ -328,6 +337,26 @@ public class MessagesRepository implements IMessagesRepository {
         }
 
         return applyMessagesPatchesAndPublish(accountId, patches);
+    }
+
+    @Override
+    public Completable handleWriteUpdates(int accountId, @NonNull List<WriteTextInDialogUpdate> updates) {
+        return Completable.fromAction(() -> {
+            List<WriteText> list = new ArrayList<>();
+            for(WriteTextInDialogUpdate update : updates){
+                list.add(new WriteText(accountId, update.user_id, update.user_id));
+            }
+            writeTextPublisher.onNext(list);
+        });
+    }
+
+    @Override
+    public Completable handleUnreadBadgeUpdates(int accountId, @NonNull List<BadgeCountChangeUpdate> updates) {
+        return Completable.fromAction(() -> {
+            for(BadgeCountChangeUpdate update: updates){
+                storages.dialogs().setUnreadDialogsCount(accountId, update.count);
+            }
+        });
     }
 
     @Override

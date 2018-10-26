@@ -183,18 +183,39 @@ class OwnersStorage extends AbsStorage implements IOwnersStorage {
     }
 
     @Override
-    public Completable updateUser(int accountId, int userId, UserPatch patch) {
-        return Completable.fromAction(() -> {
-            ContentValues maincv = new ContentValues();
+    public Completable applyPathes(int accountId, @NonNull List<UserPatch> patches) {
+        if(patches.isEmpty()){
+            return Completable.complete();
+        }
 
-            if(nonNull(patch.getStatusUpdate())){
-                maincv.put(UserColumns.USER_STATUS, patch.getStatusUpdate().getStatus());
+        return Completable.create(emitter -> {
+            Uri uri = MessengerContentProvider.getUserContentUriFor(accountId);
+            ArrayList<ContentProviderOperation> operations = new ArrayList<>(patches.size());
+
+            for(UserPatch patch : patches){
+                ContentValues cv = new ContentValues();
+
+                if(nonNull(patch.getStatus())){
+                    cv.put(UserColumns.USER_STATUS, patch.getStatus().getStatus());
+                }
+
+                if(nonNull(patch.getOnline())){
+                    UserPatch.Online online = patch.getOnline();
+                    cv.put(UserColumns.ONLINE, online.isOnline());
+                    cv.put(UserColumns.LAST_SEEN, online.getLastSeen());
+                    cv.put(UserColumns.PLATFORM, online.getPlatform());
+                }
+
+                if(cv.size() > 0){
+                    operations.add(ContentProviderOperation.newUpdate(uri)
+                            .withValues(cv)
+                            .withSelection(UserColumns._ID + " = ?", new String[]{String.valueOf(patch.getUserId())})
+                            .build());
+                }
             }
 
-            if(maincv.size() > 0){
-                Uri uri = MessengerContentProvider.getUserContentUriFor(accountId);
-                getContentResolver().update(uri, maincv, UserColumns._ID + " = ?", new String[]{String.valueOf(userId)});
-            }
+            getContentResolver().applyBatch(MessengerContentProvider.AUTHORITY, operations);
+            emitter.onComplete();
         });
     }
 

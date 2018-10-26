@@ -1,14 +1,12 @@
 package biz.dealnote.messenger.longpoll;
 
-import java.util.List;
-
-import biz.dealnote.messenger.longpoll.model.AbsRealtimeAction;
+import biz.dealnote.messenger.api.model.longpoll.VkApiLongpollUpdates;
 import io.reactivex.Flowable;
 
 public interface ILongpollManager {
     void forceDestroy(int accountId);
 
-    Flowable<List<AbsRealtimeAction>> observe();
+    Flowable<VkApiLongpollUpdates> observe();
 
     Flowable<Integer> observeKeepAlive();
 

@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import biz.dealnote.messenger.api.model.longpoll.UserIsOfflineUpdate;
+import biz.dealnote.messenger.api.model.longpoll.UserIsOnlineUpdate;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.fragment.search.criteria.PeopleSearchCriteria;
 import biz.dealnote.messenger.model.Community;
@@ -12,8 +15,10 @@ import biz.dealnote.messenger.model.IOwnersBundle;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.UserDetails;
+import biz.dealnote.messenger.model.UserUpdate;
 import biz.dealnote.messenger.util.Pair;
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 /**
@@ -47,4 +52,10 @@ public interface IOwnersRepository {
     Single<List<User>> searchPeoples(int accountId, PeopleSearchCriteria criteria, int count, int offset);
 
     Completable insertOwners(int accountId, @NonNull OwnerEntities entities);
+
+    Completable handleStatusChange(int accountId, int userId, String status);
+
+    Completable handleOnlineChanges(int accountId, @Nullable List<UserIsOfflineUpdate> offlineUpdates, @Nullable List<UserIsOnlineUpdate> onlineUpdates);
+
+    Flowable<List<UserUpdate>> observeUpdates();
 }
