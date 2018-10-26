@@ -98,20 +98,20 @@
         <item name="android:textColorPrimary">#424242</item>
     </style>
 
-    <style name="Theme.Tablayout" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">#424242</item>
+    <style name="Theme.Tablayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabRippleColor">#424242</item>
         <item name="tabGravity">center</item>
         <item name="tabMode">fixed</item>
-        <item name="tabIndicatorHeight">3dp</item>
+        <item name="tabIndicator"></item>
         <item name="android:bufferType">spannable</item>
     </style>
 
 
-    <style name="Theme.Tablayout.Dark" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@android:color/white</item>
+    <style name="Theme.Tablayout.Dark" parent="Widget.MaterialComponents.TabLayout.Colored">
+        <item name="tabRippleColor">@android:color/white</item>
         <item name="tabGravity">center</item>
         <item name="tabMode">fixed</item>
-        <item name="tabIndicatorHeight">3dp</item>
+        <item name="tabIndicator"></item>
         <item name="android:bufferType">spannable</item>
     </style>
 

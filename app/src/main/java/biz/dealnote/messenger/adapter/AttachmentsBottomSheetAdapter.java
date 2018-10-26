@@ -262,7 +262,7 @@ public class AttachmentsBottomSheetAdapter extends RecyclerView.Adapter<Recycler
 
         ImagesButtonHolder(View itemView) {
             super(itemView);
-            this.button = itemView.findViewById(R.id.button);
+            this.button = itemView.findViewById(R.id.chip);
         }
     }
 

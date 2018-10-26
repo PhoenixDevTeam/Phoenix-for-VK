@@ -114,13 +114,6 @@
         <attr name="text_color" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="RoundedButton">
-        <attr name="enabled_text_color" format="color" />
-        <attr name="noenabled_text_color" format="color" />
-        <attr name="enabled_background_color" format="color" />
-        <attr name="noenabled_background_color" format="color" />
-    </declare-styleable>
-
     <declare-styleable name="AlternativeAspectRatioFrameLayout">
         <attr name="altAspectRatioWidth" format="integer" />
         <attr name="altAspectRatioHeight" format="integer" />

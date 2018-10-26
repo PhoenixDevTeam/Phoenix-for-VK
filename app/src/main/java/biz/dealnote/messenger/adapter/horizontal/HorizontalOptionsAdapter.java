@@ -2,12 +2,13 @@ package biz.dealnote.messenger.adapter.horizontal;
 
 import android.view.View;
 
+import com.google.android.material.chip.Chip;
+
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
-import biz.dealnote.messenger.view.RoundedButton;
 
 public class HorizontalOptionsAdapter<T extends Entry> extends RecyclerBindableAdapter<T, HorizontalOptionsAdapter.Holder> {
 
@@ -22,8 +23,8 @@ public class HorizontalOptionsAdapter<T extends Entry> extends RecyclerBindableA
         String title = item.getTitle(holder.itemView.getContext());
         String targetTitle = title.startsWith("#") ? title : "#" + title;
 
-        holder.button.setText(targetTitle);
-        holder.button.setActive(item.isActive());
+        holder.chip.setText(targetTitle);
+        holder.chip.setChecked(true);
 
         holder.itemView.setOnClickListener(v -> listener.onOptionClick(item));
     }
@@ -40,11 +41,11 @@ public class HorizontalOptionsAdapter<T extends Entry> extends RecyclerBindableA
 
     static class Holder extends RecyclerView.ViewHolder {
 
-        RoundedButton button;
+        Chip chip;
 
         Holder(View itemView) {
             super(itemView);
-            button = itemView.findViewById(R.id.button);
+            chip = itemView.findViewById(R.id.chip);
         }
     }
 
