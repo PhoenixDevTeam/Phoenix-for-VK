@@ -18,8 +18,8 @@ import androidx.core.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.longpoll.AppNotificationChannels;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
 import biz.dealnote.messenger.model.Owner;
@@ -59,8 +59,8 @@ public class BirthdayFCMMessage {
             return;
         }
 
-        InteractorFactory.createOwnerInteractor()
-                .findBaseOwnersDataAsList(accountId, uids, IOwnersInteractor.MODE_ANY)
+        Repository.INSTANCE.getOwners()
+                .findBaseOwnersDataAsList(accountId, uids, IOwnersRepository.MODE_ANY)
                 .subscribeOn(NotificationScheduler.INSTANCE)
                 .subscribe(owners -> onOwnersDataReceived(context, accountId, owners), t -> {});
     }

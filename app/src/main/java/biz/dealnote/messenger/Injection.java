@@ -12,11 +12,9 @@ import biz.dealnote.messenger.db.interfaces.ILogsStorage;
 import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.domain.IBlacklistRepository;
-import biz.dealnote.messenger.domain.IWalls;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.domain.impl.AttachmentsRepository;
 import biz.dealnote.messenger.domain.impl.BlacklistRepository;
-import biz.dealnote.messenger.domain.impl.WallsImpl;
 import biz.dealnote.messenger.media.gif.AppGifPlayerFactory;
 import biz.dealnote.messenger.media.gif.IGifPlayerFactory;
 import biz.dealnote.messenger.media.voice.IVoicePlayerFactory;
@@ -82,7 +80,7 @@ public class Injection {
             synchronized (UPLOADMANAGERLOCK){
                 if(uploadManager == null){
                     uploadManager = new UploadManagerImpl(App.getInstance(), provideNetworkInterfaces(),
-                            provideStores(), provideAttachmentsRepository(), provideWalls());
+                            provideStores(), provideAttachmentsRepository(), Repository.INSTANCE.getWalls());
                 }
             }
         }
@@ -107,26 +105,12 @@ public class Injection {
         if(isNull(attachmentsRepository)){
             synchronized (Injection.class){
                 if(isNull(attachmentsRepository)){
-                    attachmentsRepository = new AttachmentsRepository(provideStores().attachments(), InteractorFactory.createOwnerInteractor());
+                    attachmentsRepository = new AttachmentsRepository(provideStores().attachments(), Repository.INSTANCE.getOwners());
                 }
             }
         }
 
         return attachmentsRepository;
-    }
-
-    private static volatile IWalls walls;
-
-    public static IWalls provideWalls(){
-        if(isNull(walls)){
-            synchronized (Injection.class){
-                if(isNull(walls)){
-                    walls = new WallsImpl(provideNetworkInterfaces(), provideStores());
-                }
-            }
-        }
-
-        return walls;
     }
 
     private static INetworker networkerInstance = new Networker(proxySettings);

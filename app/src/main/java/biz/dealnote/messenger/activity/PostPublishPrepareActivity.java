@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.RecyclerMenuAdapter;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.Icon;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Text;
@@ -72,9 +72,9 @@ public class PostPublishPrepareActivity extends AppCompatActivity implements Rec
             streams = ActivityUtils.checkLocalStreams(this);
 
             setLoading(true);
-            IOwnersInteractor interactor = InteractorFactory.createOwnerInteractor();
+            IOwnersRepository interactor = Repository.INSTANCE.getOwners();
             compositeDisposable.add(interactor.getCommunitiesWhereAdmin(accountId, true, true, false)
-                    .zipWith(interactor.getBaseOwnerInfo(accountId, accountId, IOwnersInteractor.MODE_NET), (owners, owner) -> {
+                    .zipWith(interactor.getBaseOwnerInfo(accountId, accountId, IOwnersRepository.MODE_NET), (owners, owner) -> {
                         List<Owner> result = new ArrayList<>();
                         result.add(owner);
                         result.addAll(owners);

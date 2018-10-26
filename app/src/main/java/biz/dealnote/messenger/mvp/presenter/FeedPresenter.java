@@ -11,8 +11,9 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.db.model.PostUpdate;
 import biz.dealnote.messenger.domain.IFeedInteractor;
-import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.IWallsRepository;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.FeedList;
 import biz.dealnote.messenger.model.FeedSource;
 import biz.dealnote.messenger.model.LoadMoreState;
@@ -36,8 +37,6 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  */
 public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
 
-    private static final String TAG = FeedPresenter.class.getSimpleName();
-
     private List<News> mFeed;
     private List<FeedSource> mFeedSources;
 
@@ -46,19 +45,20 @@ public class FeedPresenter extends PlaceSupportPresenter<IFeedView> {
 
     private final IFeedInteractor feedInteractor;
 
-    private final IWalls walls;
+    private final IWallsRepository walls;
 
     public FeedPresenter(int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
 
-        this.walls = Injection.provideWalls();
-        appendDisposable(this.walls.observeMinorChanges()
+        walls = Repository.INSTANCE.getWalls();
+
+        appendDisposable(walls.observeMinorChanges()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onPostUpdateEvent));
 
-        this.feedInteractor = InteractorFactory.createFeedInteractor();
-        this.mFeed = new ArrayList<>();
-        this.mFeedSources = new ArrayList<>(createDefaultFeedSources());
+        feedInteractor = InteractorFactory.createFeedInteractor();
+        mFeed = new ArrayList<>();
+        mFeedSources = new ArrayList<>(createDefaultFeedSources());
 
         refreshFeedSourcesSelection();
 

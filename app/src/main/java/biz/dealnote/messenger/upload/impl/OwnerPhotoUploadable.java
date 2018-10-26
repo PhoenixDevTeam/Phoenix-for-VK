@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import biz.dealnote.messenger.api.PercentagePublisher;
 import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.server.UploadServer;
-import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.IWallsRepository;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.upload.IUploadable;
@@ -24,9 +24,9 @@ public class OwnerPhotoUploadable implements IUploadable<Post> {
 
     private final Context context;
     private final INetworker networker;
-    private final IWalls walls;
+    private final IWallsRepository walls;
 
-    public OwnerPhotoUploadable(Context context, INetworker networker, IWalls walls) {
+    public OwnerPhotoUploadable(Context context, INetworker networker, IWallsRepository walls) {
         this.context = context;
         this.networker = networker;
         this.walls = walls;

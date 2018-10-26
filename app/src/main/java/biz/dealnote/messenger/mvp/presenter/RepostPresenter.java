@@ -4,9 +4,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.IWallsRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.mvp.view.IRepostView;
@@ -23,11 +23,11 @@ public class RepostPresenter extends AbsAttachmentsEditPresenter<IRepostView> {
     private final Integer targetGroupId;
     private boolean publishingNow;
 
-    private final IWalls walls;
+    private final IWallsRepository walls;
 
     public RepostPresenter(int accountId, Post post, Integer targetGroupId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-        this.walls = Injection.provideWalls();
+        this.walls = Repository.INSTANCE.getWalls();
         this.post = post;
         this.targetGroupId = targetGroupId;
 

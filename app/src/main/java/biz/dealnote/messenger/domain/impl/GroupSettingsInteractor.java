@@ -14,7 +14,7 @@ import biz.dealnote.messenger.api.model.VkApiBanned;
 import biz.dealnote.messenger.db.interfaces.IOwnersStorage;
 import biz.dealnote.messenger.db.model.BanAction;
 import biz.dealnote.messenger.domain.IGroupSettingsInteractor;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.fragment.search.nextfrom.IntNextFrom;
@@ -46,12 +46,12 @@ public class GroupSettingsInteractor implements IGroupSettingsInteractor {
 
     private final IOwnersStorage repository;
 
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
-    public GroupSettingsInteractor(INetworker networker, IOwnersStorage repository) {
+    public GroupSettingsInteractor(INetworker networker, IOwnersStorage repository, IOwnersRepository ownersRepository) {
         this.networker = networker;
         this.repository = repository;
-        this.ownersInteractor = new OwnersInteractor(networker, repository);
+        this.ownersRepository = ownersRepository;
     }
 
     @Override
@@ -114,7 +114,7 @@ public class GroupSettingsInteractor implements IGroupSettingsInteractor {
                         ids.append(u.banInfo.adminId);
                     }
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY)
                             .map(bundle -> {
                                 List<Banned> infos = new ArrayList<>(items.size());
 

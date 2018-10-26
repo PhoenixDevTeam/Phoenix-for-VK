@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.domain.IGroupSettingsInteractor;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.domain.impl.GroupSettingsInteractor;
 import biz.dealnote.messenger.model.Manager;
 import biz.dealnote.messenger.model.User;
@@ -33,7 +34,7 @@ public class CommunityManagersPresenter extends AccountDependencyPresenter<IComm
 
     public CommunityManagersPresenter(int accountId, int groupId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-        this.interactor = new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().owners());
+        this.interactor = new GroupSettingsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores().owners(), Repository.INSTANCE.getOwners());
         this.groupId = groupId;
         this.data = new ArrayList<>();
 

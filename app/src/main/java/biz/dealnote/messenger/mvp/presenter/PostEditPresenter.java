@@ -12,7 +12,8 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiPost;
-import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.IWallsRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
 import biz.dealnote.messenger.model.Community;
@@ -58,7 +59,7 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
     private final UploadDestination uploadDestination;
     private final Predicate<Upload> uploadPredicate;
 
-    private final IWalls wallInteractor;
+    private final IWallsRepository wallInteractor;
 
     private final WallEditorAttrs attrs;
 
@@ -67,7 +68,7 @@ public class PostEditPresenter extends AbsPostEditPresenter<IPostEditView> {
 
     public PostEditPresenter(int accountId, @NonNull Post post, @NonNull WallEditorAttrs attrs, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-        this.wallInteractor = Injection.provideWalls();
+        this.wallInteractor = Repository.INSTANCE.getWalls();
         this.attrs = attrs;
 
         if (isNull(savedInstanceState)) {

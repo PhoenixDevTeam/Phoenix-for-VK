@@ -5,8 +5,8 @@ import android.os.Bundle;
 import java.util.List;
 
 import androidx.annotation.Nullable;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.fragment.search.criteria.PeopleSearchCriteria;
 import biz.dealnote.messenger.fragment.search.nextfrom.IntNextFrom;
 import biz.dealnote.messenger.model.User;
@@ -20,11 +20,11 @@ import io.reactivex.Single;
  */
 public class PeopleSearchPresenter extends AbsSearchPresenter<IPeopleSearchView, PeopleSearchCriteria, User, IntNextFrom> {
 
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
     public PeopleSearchPresenter(int accountId, @Nullable PeopleSearchCriteria criteria, @Nullable Bundle savedInstanceState) {
         super(accountId, criteria, savedInstanceState);
-        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
+        ownersRepository = Repository.INSTANCE.getOwners();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class PeopleSearchPresenter extends AbsSearchPresenter<IPeopleSearchView,
         final int offset = startFrom.getOffset();
         final int nextOffset = offset + 50;
 
-        return ownersInteractor.searchPeoples(accountId, criteria, 50, offset)
+        return ownersRepository.searchPeoples(accountId, criteria, 50, offset)
                 .map(users -> Pair.Companion.create(users, new IntNextFrom(nextOffset)));
     }
 

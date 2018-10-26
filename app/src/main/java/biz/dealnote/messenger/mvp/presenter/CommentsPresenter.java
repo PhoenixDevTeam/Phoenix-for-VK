@@ -16,8 +16,8 @@ import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.db.AttachToType;
 import biz.dealnote.messenger.domain.IAttachmentsRepository;
 import biz.dealnote.messenger.domain.ICommentsInteractor;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
-import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.IOwnersRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.domain.impl.CommentsInteractor;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.model.Comment;
@@ -68,7 +68,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
 
     private Integer focusToComment;
 
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
     private final ICommentsInteractor interactor;
 
@@ -85,8 +85,8 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
     public CommentsPresenter(int accountId, Commented commented, Integer focusToComment, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.authorId = accountId;
-        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
-        this.interactor = new CommentsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
+        this.ownersRepository = Repository.INSTANCE.getOwners();
+        this.interactor = new CommentsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores(), Repository.INSTANCE.getOwners());
         this.commented = commented;
         this.focusToComment = focusToComment;
         this.directionDesc = Settings.get().other().isCommentsDesc();
@@ -127,7 +127,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
     private void loadAuthorData() {
         final int accountId = super.getAccountId();
 
-        appendDisposable(ownersInteractor.getBaseOwnerInfo(accountId, authorId, IOwnersInteractor.MODE_ANY)
+        appendDisposable(ownersRepository.getBaseOwnerInfo(accountId, authorId, IOwnersRepository.MODE_ANY)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onAuthorDataReceived, this::onAuthorDataGetError));
     }
@@ -897,7 +897,7 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
             Set<Integer> ids = new HashSet<>();
             ids.add(accountId);
             ids.add(commented.getSourceOwnerId());
-            single = ownersInteractor.findBaseOwnersDataAsList(accountId, ids, IOwnersInteractor.MODE_ANY);
+            single = ownersRepository.findBaseOwnersDataAsList(accountId, ids, IOwnersRepository.MODE_ANY);
         }
 
         appendDisposable(single

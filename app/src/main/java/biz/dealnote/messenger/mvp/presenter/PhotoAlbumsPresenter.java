@@ -10,10 +10,11 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.IPhotosInteractor;
 import biz.dealnote.messenger.domain.IUtilsInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.fragment.VKPhotoAlbumsFragment;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.Owner;
@@ -43,13 +44,13 @@ public class PhotoAlbumsPresenter extends AccountDependencyPresenter<IPhotoAlbum
     private ArrayList<PhotoAlbum> mData;
 
     private final IPhotosInteractor photosInteractor;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
     private final IUtilsInteractor utilsInteractor;
 
     public PhotoAlbumsPresenter(int accountId, int ownerId, @Nullable AdditionalParams params, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
 
-        this.ownersInteractor = InteractorFactory.createOwnerInteractor();
+        this.ownersRepository = Repository.INSTANCE.getOwners();
         this.photosInteractor = InteractorFactory.createPhotosInteractor();
         this.utilsInteractor = InteractorFactory.createUtilsInteractor();
 
@@ -100,7 +101,7 @@ public class PhotoAlbumsPresenter extends AccountDependencyPresenter<IPhotoAlbum
         }
 
         final int accountId = super.getAccountId();
-        appendDisposable(ownersInteractor.getBaseOwnerInfo(accountId, mOwnerId, IOwnersInteractor.MODE_ANY)
+        appendDisposable(ownersRepository.getBaseOwnerInfo(accountId, mOwnerId, IOwnersRepository.MODE_ANY)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onOwnerInfoReceived, this::onOwnerGetError));
     }

@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.domain.ICommentsInteractor;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.domain.impl.CommentsInteractor;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AttachmenEntry;
@@ -50,7 +51,7 @@ public class CommentEditPresenter extends AbsAttachmentsEditPresenter<ICommentEd
 
     public CommentEditPresenter(Comment comment, int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-        this.commentsInteractor = new CommentsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores());
+        this.commentsInteractor = new CommentsInteractor(Injection.provideNetworkInterfaces(), Injection.provideStores(), Repository.INSTANCE.getOwners());
         this.orig = comment;
         this.destination = new UploadDestination(comment.getId(), comment.getCommented().getSourceOwnerId(), Method.PHOTO_TO_COMMENT);
 

@@ -8,7 +8,8 @@ import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.model.PostUpdate;
 import biz.dealnote.messenger.domain.ILikesInteractor;
-import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.IWallsRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.fragment.search.criteria.WallSearchCriteria;
 import biz.dealnote.messenger.fragment.search.nextfrom.IntNextFrom;
 import biz.dealnote.messenger.model.Post;
@@ -28,11 +29,11 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
  */
 public class WallSearchPresenter extends AbsSearchPresenter<IWallSearchView, WallSearchCriteria, Post, IntNextFrom> {
 
-    private final IWalls walls;
+    private final IWallsRepository walls;
 
     public WallSearchPresenter(int accountId, @Nullable WallSearchCriteria criteria, @Nullable Bundle savedInstanceState) {
         super(accountId, criteria, savedInstanceState);
-        this.walls = Injection.provideWalls();
+        this.walls = Repository.INSTANCE.getWalls();
 
         appendDisposable(walls.observeMinorChanges()
                 .observeOn(Injection.provideMainThreadScheduler())

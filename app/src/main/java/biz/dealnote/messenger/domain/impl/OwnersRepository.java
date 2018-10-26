@@ -20,7 +20,7 @@ import biz.dealnote.messenger.db.model.entity.CommunityEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.UserDetailsEntity;
 import biz.dealnote.messenger.db.model.entity.UserEntity;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.domain.mappers.Entity2Model;
@@ -76,7 +76,7 @@ import static java.util.Collections.singletonList;
  * Created by ruslan.kolbasa on 01.02.2017.
  * phoenix
  */
-public class OwnersInteractor implements IOwnersInteractor {
+public class OwnersRepository implements IOwnersRepository {
 
     private static final String FIELDS_GROUPS_ALL = stringJoin(",", IS_FAVORITE,
             MAIN_ALBUM_ID, CAN_UPLOAD_DOC, CAN_CTARE_TOPIC, CAN_UPLOAD_VIDEO, BAN_INFO,
@@ -87,7 +87,7 @@ public class OwnersInteractor implements IOwnersInteractor {
     private final INetworker networker;
     private final IOwnersStorage cache;
 
-    public OwnersInteractor(INetworker networker, IOwnersStorage ownersRepository) {
+    public OwnersRepository(INetworker networker, IOwnersStorage ownersRepository) {
         this.networker = networker;
         this.cache = ownersRepository;
     }

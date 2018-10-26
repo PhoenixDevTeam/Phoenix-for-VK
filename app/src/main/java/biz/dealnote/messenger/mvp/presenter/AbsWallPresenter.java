@@ -13,7 +13,8 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.db.model.PostUpdate;
-import biz.dealnote.messenger.domain.IWalls;
+import biz.dealnote.messenger.domain.IWallsRepository;
+import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.model.EditingPostType;
 import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.Post;
@@ -48,7 +49,7 @@ public abstract class AbsWallPresenter<V extends IWallView> extends PlaceSupport
 
     protected final List<Post> wall;
 
-    private final IWalls walls;
+    private final IWallsRepository walls;
 
     private int wallFilter;
     protected boolean endOfContent;
@@ -58,7 +59,7 @@ public abstract class AbsWallPresenter<V extends IWallView> extends PlaceSupport
         this.ownerId = ownerId;
         this.wall = new ArrayList<>();
         this.wallFilter = WallCriteria.MODE_ALL;
-        this.walls = Injection.provideWalls();
+        this.walls = Repository.INSTANCE.getWalls();
 
         loadWallCachedData();
         requestWall(0);

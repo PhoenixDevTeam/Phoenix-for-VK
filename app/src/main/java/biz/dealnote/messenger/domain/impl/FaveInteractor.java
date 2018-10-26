@@ -18,7 +18,7 @@ import biz.dealnote.messenger.db.model.entity.PostEntity;
 import biz.dealnote.messenger.db.model.entity.UserEntity;
 import biz.dealnote.messenger.db.model.entity.VideoEntity;
 import biz.dealnote.messenger.domain.IFaveInteractor;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.domain.mappers.Entity2Model;
@@ -49,12 +49,12 @@ public class FaveInteractor implements IFaveInteractor {
 
     private final INetworker networker;
     private final IStorages cache;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
-    public FaveInteractor(INetworker networker, IStorages cache) {
+    public FaveInteractor(INetworker networker, IStorages cache, IOwnersRepository ownersRepository) {
         this.networker = networker;
         this.cache = cache;
-        this.ownersInteractor = new OwnersInteractor(networker, cache.owners());
+        this.ownersRepository = ownersRepository;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class FaveInteractor implements IFaveInteractor {
                         }
                     }
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY, owners)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY, owners)
                             .map(bundle -> Dto2Model.transformPosts(dtos, bundle))
                             .flatMap(posts -> cache.fave()
                                     .storePosts(accountId, dbos, ownerEntities, offset == 0)
@@ -98,7 +98,7 @@ public class FaveInteractor implements IFaveInteractor {
                         Entity2Model.fillPostOwnerIds(ids, dbo);
                     }
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY)
                             .map(owners -> {
                                 List<Post> posts = new ArrayList<>();
                                 for(PostEntity dbo : postDbos){

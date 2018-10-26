@@ -16,7 +16,7 @@ import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.VkApiFriendList;
 import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.db.model.entity.FriendListEntity;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.IUtilsInteractor;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.domain.mappers.Entity2Model;
@@ -43,12 +43,12 @@ public class UtilsInteractor implements IUtilsInteractor {
 
     private final INetworker networker;
     private final IStorages stores;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
-    public UtilsInteractor(INetworker networker, IStorages stores) {
+    public UtilsInteractor(INetworker networker, IStorages stores, IOwnersRepository ownersRepository) {
         this.networker = networker;
         this.stores = stores;
-        this.ownersInteractor = new OwnersInteractor(networker, stores.owners());
+        this.ownersRepository = ownersRepository;
     }
 
     @SuppressLint("UseSparseArrays")
@@ -78,7 +78,7 @@ public class UtilsInteractor implements IUtilsInteractor {
                         }
                     }
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, uids, IOwnersInteractor.MODE_ANY)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, uids, IOwnersRepository.MODE_ANY)
                             .flatMap(owners -> findFriendListsByIds(accountId, accountId, listsIds)
                                     .map(lists -> {
                                         Map<Integer, Privacy> privacies = new HashMap<>(Utils.safeCountOf(orig));
@@ -128,13 +128,13 @@ public class UtilsInteractor implements IUtilsInteractor {
                             .flatMap(response -> {
                                 if("user".equals(response.type)){
                                     int userId = Integer.parseInt(response.object_id);
-                                    return ownersInteractor.getBaseOwnerInfo(accountId, userId, IOwnersInteractor.MODE_ANY)
+                                    return ownersRepository.getBaseOwnerInfo(accountId, userId, IOwnersRepository.MODE_ANY)
                                             .map(Optional::wrap);
                                 }
 
                                 if("group".equals(response.type)){
                                     int ownerId = -Math.abs(Integer.parseInt(response.object_id));
-                                    return ownersInteractor.getBaseOwnerInfo(accountId, ownerId, IOwnersInteractor.MODE_ANY)
+                                    return ownersRepository.getBaseOwnerInfo(accountId, ownerId, IOwnersRepository.MODE_ANY)
                                             .map(Optional::wrap);
                                 }
 

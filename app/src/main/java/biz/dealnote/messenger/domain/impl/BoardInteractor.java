@@ -10,7 +10,7 @@ import biz.dealnote.messenger.db.interfaces.IStorages;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.TopicEntity;
 import biz.dealnote.messenger.domain.IBoardInteractor;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.domain.mappers.Entity2Model;
@@ -29,12 +29,12 @@ public class BoardInteractor implements IBoardInteractor {
 
     private final INetworker networker;
     private final IStorages stores;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
 
-    public BoardInteractor(INetworker networker, IStorages stores) {
+    public BoardInteractor(INetworker networker, IStorages stores, IOwnersRepository ownersRepository) {
         this.networker = networker;
         this.stores = stores;
-        this.ownersInteractor = new OwnersInteractor(networker, stores.owners());
+        this.ownersRepository = ownersRepository;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class BoardInteractor implements IBoardInteractor {
                         ids.append(dbo.getUpdatedBy());
                     }
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY)
                             .map(owners -> {
                                 List<Topic> topics = new ArrayList<>(dbos.size());
                                 for (TopicEntity dbo : dbos) {
@@ -90,7 +90,7 @@ public class BoardInteractor implements IBoardInteractor {
 
                     return stores.topics()
                             .store(accountId, ownerId, dbos, ownerEntities, response.canAddTopics == 1, response.defaultOrder, offset == 0)
-                            .andThen(ownersInteractor.findBaseOwnersDataAsBundle(accountId, ownerIds.getAll(), IOwnersInteractor.MODE_ANY, owners)
+                            .andThen(ownersRepository.findBaseOwnersDataAsBundle(accountId, ownerIds.getAll(), IOwnersRepository.MODE_ANY, owners)
                                     .map(ownersBundle -> {
                                         List<Topic> topics = new ArrayList<>(dbos.size());
                                         for(TopicEntity dbo : dbos){

@@ -62,7 +62,7 @@ import biz.dealnote.messenger.db.model.entity.SimpleDialogEntity;
 import biz.dealnote.messenger.db.model.entity.StickerEntity;
 import biz.dealnote.messenger.domain.IMessagesDecryptor;
 import biz.dealnote.messenger.domain.IMessagesRepository;
-import biz.dealnote.messenger.domain.IOwnersInteractor;
+import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.Mode;
 import biz.dealnote.messenger.domain.mappers.Dto2Entity;
 import biz.dealnote.messenger.domain.mappers.Dto2Model;
@@ -144,7 +144,7 @@ public class MessagesRepository implements IMessagesRepository {
     private final Context app;
 
     private final ISettings.IAccountsSettings accountsSettings;
-    private final IOwnersInteractor ownersInteractor;
+    private final IOwnersRepository ownersRepository;
     private final IStorages storages;
     private final INetworker networker;
     private final IMessagesDecryptor decryptor;
@@ -158,10 +158,10 @@ public class MessagesRepository implements IMessagesRepository {
     private final Scheduler senderScheduler = Schedulers.from(Executors.newFixedThreadPool(1));
 
     public MessagesRepository(Context context, ISettings.IAccountsSettings accountsSettings, INetworker networker,
-                              IOwnersInteractor ownersInteractor, IStorages storages, IUploadManager uploadManager) {
+                              IOwnersRepository ownersRepository, IStorages storages, IUploadManager uploadManager) {
         this.app = context.getApplicationContext();
         this.accountsSettings = accountsSettings;
-        this.ownersInteractor = ownersInteractor;
+        this.ownersRepository = ownersRepository;
         this.networker = networker;
         this.storages = storages;
         this.decryptor = new MessagesDecryptor(storages);
@@ -424,7 +424,7 @@ public class MessagesRepository implements IMessagesRepository {
                     List<Owner> existsOwners = Dto2Model.transformOwners(response.profiles, response.groups);
                     OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
 
-                    return ownersInteractor.insertOwners(accountId, ownerEntities)
+                    return ownersRepository.insertOwners(accountId, ownerEntities)
                             .andThen(storages.dialogs().saveSimple(accountId, entity))
                             .andThen(Single.just(entity))
                             .compose(simpleEntity2Conversation(accountId, existsOwners));
@@ -470,7 +470,7 @@ public class MessagesRepository implements IMessagesRepository {
                         Entity2Model.fillOwnerIds(owners, Collections.singletonList(entity.getPinned()));
                     }
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, owners.getAll(), IOwnersInteractor.MODE_ANY, existingOwners)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, owners.getAll(), IOwnersRepository.MODE_ANY, existingOwners)
                             .map(bundle -> entity2Model(accountId, entity, bundle));
                 });
     }
@@ -515,8 +515,8 @@ public class MessagesRepository implements IMessagesRepository {
                         }
                     }
 
-                    return ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersInteractor.MODE_ANY)
+                    return ownersRepository
+                            .findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersRepository.MODE_ANY)
                             .flatMap(owners -> {
                                 final List<Message> messages = new ArrayList<>(0);
                                 final List<Dialog> dialogs = new ArrayList<>(dbos.size());
@@ -561,8 +561,8 @@ public class MessagesRepository implements IMessagesRepository {
                     VKOwnIds ownIds = new VKOwnIds();
                     Entity2Model.fillOwnerIds(ownIds, dbos);
 
-                    return this.ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersInteractor.MODE_ANY)
+                    return this.ownersRepository
+                            .findBaseOwnersDataAsBundle(accountId, ownIds.getAll(), IOwnersRepository.MODE_ANY)
                             .map(owners -> {
                                 final List<Message> messages = new ArrayList<>(dbos.size());
 
@@ -690,8 +690,8 @@ public class MessagesRepository implements IMessagesRepository {
                     ownerIds.append(dtos);
 
                     return completable
-                            .andThen(ownersInteractor
-                                    .findBaseOwnersDataAsBundle(accountId, ownerIds.getAll(), IOwnersInteractor.MODE_ANY)
+                            .andThen(ownersRepository
+                                    .findBaseOwnersDataAsBundle(accountId, ownerIds.getAll(), IOwnersRepository.MODE_ANY)
                                     .flatMap(owners -> {
                                         if (isNull(startMessageId) && cacheData) {
                                             // Это важно !!!
@@ -748,8 +748,8 @@ public class MessagesRepository implements IMessagesRepository {
                     List<Owner> existsOwners = Dto2Model.transformOwners(response.profiles, response.groups);
                     OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
 
-                    return ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ownerIds, IOwnersInteractor.MODE_ANY, existsOwners)
+                    return ownersRepository
+                            .findBaseOwnersDataAsBundle(accountId, ownerIds, IOwnersRepository.MODE_ANY, existsOwners)
                             .flatMap(owners -> {
                                 final List<DialogEntity> entities = new ArrayList<>(apiDialogs.size());
                                 final List<Dialog> dialogs = new ArrayList<>(apiDialogs.size());
@@ -769,7 +769,7 @@ public class MessagesRepository implements IMessagesRepository {
 
                                 final Completable insertCompletable = dialogsStore
                                         .insertDialogs(accountId, entities, clear)
-                                        .andThen(ownersInteractor.insertOwners(accountId, ownerEntities))
+                                        .andThen(ownersRepository.insertOwners(accountId, ownerEntities))
                                         .doOnComplete(() -> dialogsStore.setUnreadDialogsCount(accountId, response.unreadCount));
 
                                 if (nonEmpty(encryptedMessages)) {
@@ -982,8 +982,8 @@ public class MessagesRepository implements IMessagesRepository {
                 .flatMap(dtos -> {
                     VKOwnIds ids = new VKOwnIds().append(dtos);
 
-                    return ownersInteractor
-                            .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY)
+                    return ownersRepository
+                            .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY)
                             .map(bundle -> {
                                 List<Message> data = new ArrayList<>(dtos.size());
                                 for (VKApiMessage dto : dtos) {
@@ -1022,7 +1022,7 @@ public class MessagesRepository implements IMessagesRepository {
 
                     final boolean isAdmin = accountId == chatDto.admin_id;
 
-                    return ownersInteractor.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersInteractor.MODE_ANY, owners)
+                    return ownersRepository.findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY, owners)
                             .map(ownersBundle -> {
                                 List<AppChatUser> models = new ArrayList<>(dtos.size());
 
@@ -1054,7 +1054,7 @@ public class MessagesRepository implements IMessagesRepository {
     public Single<List<AppChatUser>> addChatUsers(int accountId, int chatId, List<User> users) {
         IMessagesApi api = networker.vkDefault(accountId).messages();
 
-        return ownersInteractor.getBaseOwnerInfo(accountId, accountId, IOwnersInteractor.MODE_ANY)
+        return ownersRepository.getBaseOwnerInfo(accountId, accountId, IOwnersRepository.MODE_ANY)
                 .flatMap(iam -> {
                     Completable completable = Completable.complete();
 
