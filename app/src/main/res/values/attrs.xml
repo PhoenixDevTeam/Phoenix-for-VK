@@ -43,7 +43,6 @@
 
     <attr name="message_bubble_color" format="color" />
     <attr name="dialogs_unread_color" format="color" />
-    <attr name="list_divider_color" format="color" />
     <attr name="icon_color_active" format="color" />
     <attr name="icon_color_static" format="color" />
 
@@ -54,7 +53,7 @@
     <attr name="chat_background_circular" format="reference" />
     <attr name="message_unread_color" format="color" />
     <attr name="buttonAddPhotoBackground" format="reference" />
-    <attr name="cardStrokeColor" format="color" />
+    <attr name="dividerColor" format="color" />
 
     <attr name="oval_avatar_background" format="reference" />
 

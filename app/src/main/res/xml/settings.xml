@@ -76,17 +76,6 @@
         android:key="group_appearance"
         android:title="@string/appearance_settings">
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="amoled_night_mode"
-            android:summary="@string/night_mode_black_pref_summary"
-            android:title="@string/night_mode_black_pref_title" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="navigation_colored"
-            android:title="@string/color_navigation_bar" />
-
         <ListPreference
             android:defaultValue="1"
             android:entries="@array/array_chat_background_names"

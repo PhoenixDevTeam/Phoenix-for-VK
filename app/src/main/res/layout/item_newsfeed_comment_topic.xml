@@ -12,7 +12,7 @@
     app:cardBackgroundColor="?android:colorBackground"
     app:cardCornerRadius="8dp"
     app:contentPadding="0dp"
-    app:strokeColor="?cardStrokeColor"
+    app:strokeColor="?attr/dividerColor"
     app:strokeWidth="1dp"
     tools:ignore="UnusedAttribute">
 

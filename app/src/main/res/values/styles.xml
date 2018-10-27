@@ -15,7 +15,7 @@
         <item name="icon_color_active">#233446</item>
         <item name="icon_color_static">#424242</item>
 
-        <item name="cardStrokeColor">#DADCE0</item>
+        <item name="dividerColor">#313131</item>
 
         <item name="android:colorBackground">@android:color/background_light</item>
 
@@ -28,7 +28,6 @@
         <item name="dialogs_unread_color">#20b0b0b0</item>
         <item name="navi_menu_selector">@drawable/list_selector_white</item>
         <item name="message_unread_color">#90234b81</item>
-        <item name="list_divider_color">@color/light_divider_color</item>
 
         <item name="messages_background_color">#ECECEC</item>
         <item name="oval_avatar_background">@xml/sel_button_round_4_white</item>

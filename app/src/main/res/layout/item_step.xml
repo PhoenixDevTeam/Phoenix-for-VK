@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/content_root"
             android:layout_alignParentTop="true"
-            android:background="?attr/list_divider_color"
+            android:background="?attr/dividerColor"
             android:minHeight="50dp" />
 
         <LinearLayout

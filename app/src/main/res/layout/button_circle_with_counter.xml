@@ -23,7 +23,6 @@
         android:layout_marginStart="6dp"
         android:layout_toEndOf="@+id/icon"
         android:layout_toRightOf="@+id/icon"
-        android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/font_size_subtitle"

@@ -3,7 +3,7 @@
     <style name="App.DayNight" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:navigationBarColor" tools:targetApi="o_mr1">#1F2226</item>
-        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">#aaaaaa</item>
+        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">#282828</item>
 
         <item name="android:fontFamily">@font/open_sans</item>
 
@@ -14,6 +14,8 @@
         <item name="icon_color_active">#78909c</item>
         <item name="icon_color_static">@android:color/white</item>
 
+        <item name="dividerColor">#313131</item>
+
         <item name="windowActionModeOverlay">true</item>
         <item name="android:colorBackground">#1F2226</item>
 
@@ -23,8 +25,6 @@
         <item name="textColorPrimary">#ffffffff</item>
         <item name="textColorSecondary">#b3ffffff</item>
         <item name="textColorDisabled">#4Dffffff</item>
-
-        <item name="list_divider_color">@color/light_dark_divider_color</item>
 
         <item name="messages_background_color">#151515</item>
         <item name="oval_avatar_background">@xml/sel_button_round_4</item>
