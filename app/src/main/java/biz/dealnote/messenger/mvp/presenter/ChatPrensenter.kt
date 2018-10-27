@@ -1353,13 +1353,10 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
     }
 
-    fun reInitWithNewPeer(newAccountId: Int, newMessagesOwnerId: Int, newPeerId: Int, title: String) {
+    fun reInitWithNewPeer(newAccountId: Int, newMessagesOwnerId: Int, newPeer: Peer) {
         saveDraftMessageBody()
 
-        val oldMessageOwnerId = this.messagesOwnerId
-        val oldPeerId = peerId
-
-        this.peer = Peer(newPeerId).setTitle(title)
+        this.peer = newPeer
 
         if (isGuiResumed) {
             Processors.realtimeMessages().registerNotificationsInterceptor(id, Pair.create(messagesOwnerId, peerId))
@@ -1376,8 +1373,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         super.getData().clear()
         view?.notifyDataChanged()
 
-        loadAllCachedData()
-        requestAtStart()
         updateSubtitle()
 
         resolveToolbarTitle()
@@ -1397,6 +1392,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             draftMessageText = outConfig.initialText
         }
 
+        fetchConversationThenCachedThenActual()
         tryToRestoreDraftMessage(!needToRestoreDraftMessageBody)
     }
 
