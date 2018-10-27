@@ -12,7 +12,5 @@
 
     <bool name="is_tablet">true</bool>
 
-    <dimen name="newsfeed_comments_card_side_margin">16dp</dimen>
-
     <integer name="attachments_editor_column_count">4</integer>
 </resources>

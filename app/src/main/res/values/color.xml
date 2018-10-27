@@ -6,8 +6,4 @@
 
     <!--Фон листа с главным меню-->
 
-    <color name="light_divider_color">#eeeeee</color>
-    <color name="light_dark_divider_color">#282828</color>
-    <color name="black_divider_color">#212121</color>
-
 </resources>

@@ -1,8 +1,6 @@
 package biz.dealnote.messenger.activity;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -19,21 +17,12 @@ public class AccountsActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_no_main);
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            View kitkatStatusBarView = findViewById(R.id.fake_statusbar);
-            if (kitkatStatusBarView != null) {
-                kitkatStatusBarView.getLayoutParams().height = Utils.getStatusBarHeight(this);
-            }
-        }
 
-        if (Utils.hasLollipop()) {
-            Window w = getWindow();
-            w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            w.setStatusBarColor(CurrentTheme.getColorPrimaryDark(this));
-        }
+        Window w = getWindow();
+        w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        w.setStatusBarColor(CurrentTheme.getColorPrimaryDark(this));
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

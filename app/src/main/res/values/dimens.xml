@@ -2,7 +2,6 @@
 
     <dimen name="default_statusbar_height">25dp</dimen>
 
-    <dimen name="toolbar_no_elevation">0dp</dimen>
     <dimen name="toolbar_with_elevation">2dp</dimen>
 
     <dimen name="navi_drawer_font_size">15sp</dimen>
@@ -59,8 +58,6 @@
 
     <dimen name="online_dot_size">16dp</dimen>
     <dimen name="online_dot_size_big">24dp</dimen>
-
-    <dimen name="newsfeed_comments_card_side_margin">0dp</dimen>
 
     <integer name="attachments_editor_column_count">3</integer>
 

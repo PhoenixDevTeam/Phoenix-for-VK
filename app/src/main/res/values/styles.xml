@@ -35,7 +35,7 @@
         <item name="message_unread_color">#90234b81</item>
 
         <item name="messages_background_color">#ECECEC</item>
-        <item name="oval_avatar_background">@xml/sel_button_round_4_white</item>
+        <item name="oval_avatar_background">@drawable/sel_button_round_4_white</item>
 
         <item name="message_bubble_color">@android:color/white</item>
 
@@ -73,7 +73,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="message_bubble_color">#ECECEC</item>
-        <item name="oval_avatar_background">@xml/sel_button_round_4_white</item>
+        <item name="oval_avatar_background">@drawable/sel_button_round_4_white</item>
         <item name="quick_reply_icon_color">#151515</item>
         <item name="toolbarBackIcon">@drawable/arrow_left_grey600</item>
     </style>

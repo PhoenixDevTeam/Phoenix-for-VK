@@ -7,7 +7,5 @@
     <dimen name="navi_drawer_icon_size">20dp</dimen>
     <integer name="privacy_entry_column_count">5</integer>
 
-    <dimen name="newsfeed_comments_card_side_margin">8dp</dimen>
-
     <integer name="attachments_editor_column_count">6</integer>
 </resources>

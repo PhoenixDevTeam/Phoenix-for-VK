@@ -7,11 +7,9 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -731,20 +729,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     public void setStatusbarColored(boolean colored, boolean invertIcons) {
         int statusbarNonColored = CurrentTheme.getStatusBarNonColored(this);
 
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-            View fakeStatusBarView = findViewById(R.id.fake_statusbar);
-            if (fakeStatusBarView != null) {
-                int colorPrimaryDark = CurrentTheme.getColorPrimaryDark(this);
-                fakeStatusBarView.setBackgroundColor(colored ? colorPrimaryDark : statusbarNonColored);
-                ViewGroup.LayoutParams layoutParams = fakeStatusBarView.getLayoutParams();
-                layoutParams.height = Utils.getStatusBarHeight(this);
-                fakeStatusBarView.setLayoutParams(layoutParams);
-            }
-        }
-
         if (Utils.hasLollipop()) {
             Window w = getWindow();
             w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -752,7 +736,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             w.setStatusBarColor(colored ? Color.TRANSPARENT : statusbarNonColored);
             int navigationColor = colored ? CurrentTheme.getNavigationBarColor(this) : Color.BLACK;
             w.setNavigationBarColor(navigationColor);
-
         }
 
         if (Utils.hasMarshmallow()) {

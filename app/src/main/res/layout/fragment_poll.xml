@@ -7,22 +7,22 @@
 
     <include
         layout="@layout/toolbar"
-        android:id="@+id/toolbar" />
+        android:id="@+id/toolbar_container" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
-        android:layout_above="@+id/chip"
-        android:layout_below="@+id/toolbar" />
+        android:layout_above="@+id/progress_button"
+        android:layout_below="@+id/toolbar_container" />
 
     <biz.dealnote.messenger.view.ProgressButton
         app:button_color="?attr/colorAccent"
         app:button_text="@string/remove_vote"
         android:foreground="?attr/selectableItemBackground"
         android:layout_alignParentBottom="true"
-        android:id="@+id/chip"
+        android:id="@+id/progress_button"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
 

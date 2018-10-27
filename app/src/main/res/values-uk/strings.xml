@@ -21,7 +21,6 @@
     <string name="general_settings">Загальні</string>
     <string name="other_settings">Iнші</string>
     <string name="about_settings">Про програму</string>
-    <string name="choose_theme_title">Тема</string>
     <string name="share_text">Поділитися програмою з друзями</string>
     <string name="rate_text">Оцінити програму в Google Play</string>
     <!-- Quick Reply-->
@@ -639,8 +638,6 @@
     <string name="wall_publish_notification">Опублікований запропонований Вами запис</string>
     <string name="set_default">Встановити за замовчуванням</string>
     <string name="sidebar_settings">Бокове меню</string>
-    <string name="dark_background_image">Зображення для темної теми</string>
-    <string name="light_background_image">Зображення для світлої теми</string>
     <string name="formatted_date_today">Сьогодні в %1$s</string>
     <string name="formatted_date_tomorrow">Завтра в %1$s</string>
     <string name="formatted_date_yesterday">Вчора в %1$s</string>
@@ -703,7 +700,6 @@
     <string name="updated_profile_photo_at">оновив фотографію на сторінці: %1$s</string>
     <string name="updated_status_at">оновив статус: %1$s</string>
     <string name="messages">Повідомлення</string>
-    <string name="color_navigation_bar">Кольоровий навігаційний блок</string>
     <string name="error_with_message">Помилка: %1$s</string>
     <string name="gif_player">Gif-плеєр</string>
     <string name="recording_time">Запис… %1$s</string>
@@ -787,8 +783,6 @@
         \n
         \n4. ВІДМОВА ВІД ВІДПОВІДАЛЬНОСТІ
         \n4.1. Розробники програми Phoenix не несуть відповідальності за втрату даних користувача в випадком втрати їм ключів шифрування або неправильного використання даної опції.</string>
-    <string name="new_post_title">Нова публікація</string>
-    <string name="new_post_was_published_in">"%1$s опублікував новий запис"</string>
     <string name="for_topic">В обговоренні</string>
     <string name="new_posts_of_users_and_communities">Нові записи користувачів і спільнот</string>
     <string name="reached_maximum_count_of_attachments">Досягнуто максимальну кількість вкладень</string>
@@ -796,12 +790,6 @@
     <string name="votes_count">"%1$d голосів"</string>
 
     <string name="like_title">Мені подобається</string>
-    <string name="push_user_liked_your_photo">%1$s подобається Ваше фото</string>
-    <string name="push_user_liked_your_comment_on_the_photo">%1$s подобається Ваш коментар до фото</string>
-    <string name="push_user_liked_your_video">%1$s подобається Ваш відеозапис</string>
-    <string name="push_user_liked_your_comment_on_the_video">%1$s подобається Ваш коментар до відеозапису</string>
-    <string name="push_user_liked_your_post">%1$s подобається Ваш запис на стіні</string>
-    <string name="push_user_liked_your_comment_on_the_post">%1$s подобається Ваш коментар до запису</string>
     <string name="likes">Відмітки \"Мені подобається\"</string>
     <string name="go_to_post">Перейти до запису</string>
     <string name="success">Успіх</string>
@@ -1023,8 +1011,6 @@
     <string name="pause">пауза</string>
     <string name="previous">попередній</string>
     <string name="next">наступний</string>
-    <string name="night_mode_black_pref_title">Нічний режим AMOLED</string>
-    <string name="night_mode_black_pref_summary">Використовувати чорний фон в нічних темах</string>
     <string name="vibration_length">Тривалість вібрації</string>
     <string name="family">Родина</string>
     <string name="activity_until_now">поточний час</string>

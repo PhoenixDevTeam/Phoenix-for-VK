@@ -49,7 +49,7 @@ public class FavePhotosFragment extends BaseMvpFragment<FavePhotosPresenter, IFa
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_photos, container, false);
-        root.findViewById(R.id.toolbar).setVisibility(View.GONE);
+        root.findViewById(R.id.toolbar_container).setVisibility(View.GONE);
         RecyclerView recyclerView = root.findViewById(android.R.id.list);
         mEmpty = root.findViewById(R.id.empty);
 
@@ -127,7 +127,7 @@ public class FavePhotosFragment extends BaseMvpFragment<FavePhotosPresenter, IFa
     @Override
     public void goToGallery(int accountId, ArrayList<Photo> photos, int position) {
         PlaceFactory.getFavePhotosGallery(accountId, photos, position)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override

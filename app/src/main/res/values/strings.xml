@@ -20,21 +20,6 @@
 
     <string name="settings">Settings</string>
 
-    <string-array name="array_theme_names" translatable="false">
-        <item>Blue</item>
-        <item>Light Blue</item>
-        <item>Blue Grey</item>
-        <item>Teal</item>
-        <item>Red</item>
-        <item>Indigo</item>
-        <item>Pink</item>
-        <item>Deep Orange</item>
-        <item>Purple</item>
-        <item>Monochrome</item>
-        <item>Green</item>
-        <item>Pixel-Styled</item>
-    </string-array>
-
     <string-array name="preview_preview_size" translatable="false">
         <item>S: 75px</item>
         <item>M: 130px</item>
@@ -65,21 +50,6 @@
         <item>•••• ••</item>
         <item>••••• •</item>
         <item>•••••• </item>
-    </string-array>
-
-    <string-array name="array_theme_values" translatable="false">
-        <item>theme1</item>
-        <item>theme2</item>
-        <item>theme3</item>
-        <item>theme4</item>
-        <item>theme5</item>
-        <item>theme6</item>
-        <item>theme7</item>
-        <item>theme8</item>
-        <item>theme9</item>
-        <item>theme10</item>
-        <item>theme11</item>
-        <item>theme12</item>
     </string-array>
 
     <string-array name="night_mode_names">
@@ -127,7 +97,6 @@
     <string name="general_settings">General</string>
     <string name="other_settings">Other</string>
     <string name="about_settings">About</string>
-    <string name="choose_theme_title">Themes</string>
     <string name="share_text">Share app with friends</string>
     <string name="rate_text">Rate this app in Google Play</string>
     <string name="go_to_dialog">To conversation</string>
@@ -769,8 +738,6 @@
     <string name="other_notifications_types">Other notifications types</string>
     <string name="other_notifications_settings">Other notifications settings</string>
     <string name="sidebar_settings">Sidebar settings</string>
-    <string name="light_background_image">Light background image</string>
-    <string name="dark_background_image">Dark background image</string>
     <string name="set_default">Set default</string>
 
     <string name="commented">commented:</string>
@@ -837,7 +804,6 @@
     <string name="updated_status_at">updated status at %1$s</string>
     <string name="from_camera">From camera</string>
     <string name="messages">Messages</string>
-    <string name="color_navigation_bar">Color navigation bar</string>
     <string name="recording_time">Recording… %1$s</string>
     <string name="unable_to_play_file">Unable to play file</string>
     <string name="gif_player">Gif Player</string>
@@ -937,16 +903,8 @@
     <string name="for_topic">for topic</string>
     <string name="votes_count">%1$d votes</string>
     <string name="select">Select</string>
-    <string name="new_post_title">New Post</string>
-    <string name="new_post_was_published_in">%1$s has published a new post</string>
     <string name="new_posts_of_users_and_communities">New posts of users and communities</string>
     <string name="like_title">Like</string>
-    <string name="push_user_liked_your_photo">%1$s liked your photo</string>
-    <string name="push_user_liked_your_comment_on_the_photo">%1$s liked your comment on the photo</string>
-    <string name="push_user_liked_your_video">%1$s liked your video</string>
-    <string name="push_user_liked_your_comment_on_the_video">%1$s liked your comment on the video</string>
-    <string name="push_user_liked_your_post">%1$s liked your post</string>
-    <string name="push_user_liked_your_comment_on_the_post">%1$s liked your comment on the post</string>
     <string name="likes">Likes</string>
     <string name="success">Success</string>
     <string name="wait_until_file_upload_is_complete">Wait until the file upload is complete</string>
@@ -1172,8 +1130,6 @@
     <string name="previous">previous</string>
     <string name="next">next</string>
 
-    <string name="night_mode_black_pref_title">AMOLED night mode</string>
-    <string name="night_mode_black_pref_summary">Use black background at night mode</string>
     <string name="vibration_length">Vibration length</string>
     <string name="skype" translatable="false">Skype</string>
     <string name="activity_until_now">now</string>

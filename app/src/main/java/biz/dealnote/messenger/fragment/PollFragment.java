@@ -78,7 +78,7 @@ public class PollFragment extends BaseMvpFragment<PollPresenter, IPollView>
         mQuestion = header.findViewById(R.id.title);
         mVotesCount = header.findViewById(R.id.votes_count);
 
-        mButton = root.findViewById(R.id.chip);
+        mButton = root.findViewById(R.id.progress_button);
         mButton.setOnClickListener(view -> getPresenter().fireButtonClick());
 
         recyclerView.setAdapter(mAnswersAdapter);

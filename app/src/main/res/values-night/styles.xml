@@ -23,7 +23,7 @@
         <item name="textColorDisabled">#4Dffffff</item>
 
         <item name="messages_background_color">#151515</item>
-        <item name="oval_avatar_background">@xml/sel_button_round_4</item>
+        <item name="oval_avatar_background">@drawable/sel_button_round_4</item>
         <item name="message_unread_color">#f564b5f6</item>
 
         <item name="message_bubble_color">#30373F</item>
@@ -59,7 +59,7 @@
         <item name="android:background">#1F2226</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="oval_avatar_background">@xml/sel_button_round_4</item>
+        <item name="oval_avatar_background">@drawable/sel_button_round_4</item>
         <item name="message_bubble_color">#151515</item>
         <item name="quick_reply_icon_color">#FFF</item>
         <item name="toolbarBackIcon">@drawable/arrow_left</item>

@@ -21,7 +21,6 @@
     <string name="general_settings">Общие</string>
     <string name="other_settings">Другие</string>
     <string name="about_settings">О приложении</string>
-    <string name="choose_theme_title">Тема</string>
     <string name="share_text">Поделиться приложением с друзьями</string>
     <string name="rate_text">Оценить приложение в Google Play</string>
     <!-- Quick Reply-->
@@ -638,10 +637,8 @@
     <string name="other_notifications_types">Типы уведомлений</string>
     <string name="reply_notification">Ответы в комментариях</string>
     <string name="wall_publish_notification">Опубликована предложенная Вами запись</string>
-    <string name="dark_background_image">Изображение для темной темы</string>
     <string name="set_default">Установить по умолчанию</string>
     <string name="sidebar_settings">Боковое меню</string>
-    <string name="light_background_image">Изображение для светлой темы</string>
     <string name="formatted_date_today">Сегодня в %1$s</string>
     <string name="formatted_date_tomorrow">Завтра в %1$s</string>
     <string name="formatted_date_yesterday">Вчера в %1$s</string>
@@ -703,7 +700,6 @@
     <string name="updated_profile_photo_at">обновил фотографию на странице: %1$s</string>
     <string name="updated_status_at">обновил статус: %1$s</string>
     <string name="messages">Сообщения</string>
-    <string name="color_navigation_bar">Цветной навигационный блок</string>
     <string name="error_with_message">Ошибка: %1$s</string>
     <string name="gif_player">Gif-плеер</string>
     <string name="recording_time">Запись… %1$s</string>
@@ -788,8 +784,6 @@
     <string name="store_in_ram_summary">Ключи шифрования будут помещены в оперативную память. ВАЖНО. После закрытия приложения Вы навсегда потеряете эти ключи и не сможете расшифровать входящие и исходящие сообщения.</string>
     <string name="store_on_disk">Сохранить на диск (рекомендуется)</string>
     <string name="store_on_disk_summary">Ключи шифрования будут сохранены в постоянной памяти устройства.</string>
-    <string name="new_post_title">Новая запись</string>
-    <string name="new_post_was_published_in">%1$s опубликовал новую запись</string>
     <string name="for_topic">В обсуждении</string>
     <string name="new_posts_of_users_and_communities">Новые записи пользователей и сообществ</string>
     <string name="reached_maximum_count_of_attachments">Достигнуто максимальное количество вложений</string>
@@ -797,12 +791,6 @@
     <string name="votes_count">%1$d голосов</string>
 
     <string name="like_title">Мне нравится</string>
-    <string name="push_user_liked_your_photo">%1$s нравится Ваше фото</string>
-    <string name="push_user_liked_your_comment_on_the_photo">%1$s нравится Ваш комментарий к фото</string>
-    <string name="push_user_liked_your_video">%1$s нравится Ваша видеозапись</string>
-    <string name="push_user_liked_your_comment_on_the_video">%1$s нравится Ваш комментарий к видеозаписи</string>
-    <string name="push_user_liked_your_post">%1$s нравится Ваша запись на стене</string>
-    <string name="push_user_liked_your_comment_on_the_post">%1$s нравится Ваш комментарий к записи</string>
     <string name="likes">Отметки \"Мне нравится\"</string>
     <string name="chat_background">Фон чата</string>
     <string name="go_to_post">Перейти к записи</string>
@@ -1025,8 +1013,6 @@
     <string name="pause">пауза</string>
     <string name="previous">предыдущий</string>
     <string name="next">следующий</string>
-    <string name="night_mode_black_pref_title">Ночной режим AMOLED</string>
-    <string name="night_mode_black_pref_summary">Использовать чёрный фон в ночных темах</string>
     <string name="vibration_length">Длительность вибрации</string>
     <string name="family">Семья</string>
     <string name="activity_until_now">текущее время</string>

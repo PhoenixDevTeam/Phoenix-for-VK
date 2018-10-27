@@ -45,7 +45,7 @@ public class HorizontalOptionsAdapter<T extends Entry> extends RecyclerBindableA
 
         Holder(View itemView) {
             super(itemView);
-            chip = itemView.findViewById(R.id.chip);
+            chip = itemView.findViewById(R.id.progress_button);
         }
     }
 
