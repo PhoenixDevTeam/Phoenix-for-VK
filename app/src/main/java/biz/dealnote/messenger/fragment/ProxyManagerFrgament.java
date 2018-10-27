@@ -52,7 +52,7 @@ public class ProxyManagerFrgament extends BaseMvpFragment<ProxyManagerPresenter,
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.frgament_proxy_manager, container, false);
+        View root = inflater.inflate(R.layout.fragment_proxy_manager, container, false);
 
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 

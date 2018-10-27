@@ -99,7 +99,7 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
         View root = inflater.inflate(R.layout.fragment_attachments_manager_new, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
-        int spancount = getResources().getInteger(R.integer.attchemtns_editor_column_count);
+        int spancount = getResources().getInteger(R.integer.attachments_editor_column_count);
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager manager = new GridLayoutManager(getActivity(), spancount);

@@ -5,12 +5,12 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="8dp"
+    android:layout_marginStart="@dimen/card_margin"
+    android:layout_marginEnd="@dimen/card_margin"
+    android:layout_marginBottom="@dimen/card_margin"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="?android:colorBackground"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="@dimen/card_corner_radius"
     app:contentPadding="0dp"
     app:strokeColor="?attr/dividerColor"
     app:strokeWidth="1dp"
@@ -35,10 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -50,13 +48,12 @@
                     android:textSize="@dimen/font_size_additional"
                     tools:text="1533" />
 
-                <biz.dealnote.messenger.view.ColorFilterImageView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginLeft="4dp"
                     android:src="@drawable/ic_newsfeed_comment_topic_comment_counter"
-                    app:filter_color="?android:textColorSecondary" />
+                    android:tint="?android:textColorSecondary" />
 
             </LinearLayout>
 
@@ -70,8 +67,7 @@
                 android:id="@+id/creator_avatar"
                 android:layout_width="@dimen/avatar_size_min"
                 android:layout_height="@dimen/avatar_size_min"
-                android:layout_alignEnd="@+id/owner_avatar"
-                android:layout_alignRight="@+id/owner_avatar"
+                android:layout_alignEnd="@id/owner_avatar"
                 android:layout_alignBottom="@+id/owner_avatar"
                 android:background="@drawable/circle_white" />
 
@@ -80,11 +76,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_toStartOf="@+id/comments_counter_root"
-                android:layout_toLeftOf="@+id/comments_counter_root"
                 android:layout_toEndOf="@+id/owner_avatar"
-                android:layout_toRightOf="@+id/owner_avatar"
                 android:orientation="vertical">
 
                 <TextView

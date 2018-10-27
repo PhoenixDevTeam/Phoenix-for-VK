@@ -12,13 +12,6 @@
 
     <dimen name="max_single_image_height_in_messages">400dp</dimen>
 
-    <!-- Preference fragment padding, bottom -->
-    <dimen name="preference_fragment_padding_bottom">0dp</dimen>
-    <!-- Preference fragment padding, sides -->
-    <dimen name="preference_fragment_padding_side">16dp</dimen>
-
-    <integer name="preference_fragment_scrollbarStyle">0x02000000</integer> <!-- outsideOverlay -->
-
     <integer name="videos_column_count">2</integer>
     <integer name="photos_column_count">3</integer>
     <integer name="local_gallery_column_count">3</integer>
@@ -35,21 +28,11 @@
     <dimen name="message_author_avatar_size">38dp</dimen>
     <dimen name="message_bubble_corner_radius">4dp</dimen>
 
-
-    <!-- Height of the shadow asset under the photo -->
-    <!-- Height of the text label in the carousel -->
-
     <!-- Audio player -->
     <dimen name="audio_player_controls_end_button_width">50.0dip</dimen>
     <dimen name="audio_player_controls_end_button_height">50.0dip</dimen>
     <dimen name="audio_player_controls_main_button_width">58.0dip</dimen>
     <dimen name="audio_player_controls_main_button_height">58.0dip</dimen>
-
-    <!-- Shadow height -->
-
-    <!-- Colorstrip -->
-
-    <!-- Drag and drop -->
 
     <!-- Color scheme dialog -->
     <dimen name="content_large_margin">16dp</dimen>
@@ -79,5 +62,8 @@
 
     <dimen name="newsfeed_comments_card_side_margin">0dp</dimen>
 
-    <integer name="attchemtns_editor_column_count">3</integer>
+    <integer name="attachments_editor_column_count">3</integer>
+
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="card_margin">8dp</dimen>
 </resources>

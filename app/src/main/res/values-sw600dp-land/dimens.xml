@@ -9,5 +9,5 @@
 
     <dimen name="newsfeed_comments_card_side_margin">8dp</dimen>
 
-    <integer name="attchemtns_editor_column_count">6</integer>
+    <integer name="attachments_editor_column_count">6</integer>
 </resources>

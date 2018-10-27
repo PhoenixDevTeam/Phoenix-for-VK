@@ -1,73 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingBottom="8dp">
 
     <LinearLayout
-        android:background="?android:windowBackground"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:windowBackground"
+        android:orientation="vertical"
         android:paddingBottom="4dp">
 
         <LinearLayout
             android:id="@+id/timer_root"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
-                android:padding="4dp"
                 android:id="@+id/post_schedule_info_root"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="4dp">
 
                 <TextView
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toStartOf="@+id/button_disable_postpone"
-                    android:layout_toLeftOf="@+id/button_disable_postpone"
-                    android:textSize="14sp"
-                    android:padding="8dp"
                     android:id="@+id/post_schedule_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/will_be_post_at"
-                    android:textColor="?textColorSecondary" />
-
-                <biz.dealnote.messenger.view.ColorFilterImageView
-                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_toStartOf="@+id/button_disable_postpone"
+                    android:layout_toLeftOf="@+id/button_disable_postpone"
                     android:padding="8dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    app:filter_color="?attr/icon_color_active"
-                    android:src="@drawable/close"
+                    android:text="@string/will_be_post_at"
+                    android:textColor="?textColorSecondary"
+                    android:textSize="14sp" />
+
+                <ImageView
                     android:id="@+id/button_disable_postpone"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="8dp"
+                    android:src="@drawable/close"
+                    android:tint="?attr/icon_color_active" />
 
             </RelativeLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_postpone"
-                android:layout_margin="4dp"
-                android:textColor="?attr/icon_color_active"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:text="@string/button_postpone"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="@string/button_postpone" />
 
             <View
-                android:background="?messages_background_color"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp"
+                android:background="?messages_background_color" />
 
         </LinearLayout>
 
@@ -95,19 +93,19 @@
     </LinearLayout>
 
     <biz.dealnote.messenger.view.SawView
-        app:sawBackground="?android:windowBackground"
-        app:sawToothPrefWidht="8dp"
         android:layout_width="match_parent"
-        android:layout_height="8dp" />
+        android:layout_height="8dp"
+        app:sawBackground="?android:windowBackground"
+        app:sawToothPrefWidht="8dp" />
 
-    <include layout="@layout/attachments_buttons_bar"/>
+    <include layout="@layout/attachments_buttons_bar" />
 
     <TextView
         android:id="@+id/empty_text"
-        android:gravity="center"
-        android:text="@string/message_attachment_empty_text"
-        android:padding="32dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="32dp"
+        android:text="@string/message_attachment_empty_text" />
 
 </LinearLayout>

@@ -7,11 +7,13 @@
     android:clipToPadding="false"
     android:fitsSystemWindows="true">
 
-    <include layout="@layout/toolbar" />
+    <include
+        android:id="@+id/toolbar_container"
+        layout="@layout/toolbar" />
 
     <FrameLayout
         android:layout_above="@+id/linearLayout"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/toolbar_container"
         android:background="?android:colorBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

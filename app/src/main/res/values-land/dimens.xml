@@ -6,5 +6,5 @@
 
     <dimen name="keyboard_height">150dp</dimen>
 
-    <integer name="attchemtns_editor_column_count">5</integer>
+    <integer name="attachments_editor_column_count">5</integer>
 </resources>
