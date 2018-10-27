@@ -1,9 +1,8 @@
 package biz.dealnote.mvp.compat
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
-
+import androidx.loader.app.LoaderManager
 import biz.dealnote.mvp.core.IMvpView
 import biz.dealnote.mvp.core.IPresenter
 import biz.dealnote.mvp.core.PresenterAction
@@ -24,7 +23,7 @@ abstract class AbsMvpFragment<P : IPresenter<V>, V : IMvpView> : androidx.fragme
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        delegate.onCreate(requireActivity(), getViewHost(), this, loaderManager, savedInstanceState)
+        delegate.onCreate(requireActivity(), getViewHost(), this, LoaderManager.getInstance(this), savedInstanceState)
     }
 
     // Override in case of fragment not implementing IPresenter<View> interface

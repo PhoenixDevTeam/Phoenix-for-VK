@@ -2,8 +2,6 @@ package biz.dealnote.mvp.compat
 
 import android.content.Context
 import android.os.Bundle
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.Loader
 import biz.dealnote.mvp.core.IMvpView
 import biz.dealnote.mvp.core.IPresenter
 import biz.dealnote.mvp.core.IPresenterFactory
@@ -112,7 +110,7 @@ class ViewHostDelegate<P : IPresenter<V>, V : IMvpView> {
     fun onSaveInstanceState(outState: Bundle) {
         presenter?.run {
             lastKnownPresenterState = Bundle()
-            saveState(outState)
+            saveState(lastKnownPresenterState!!)
         }
 
         outState.putBundle(SAVE_PRESENTER_STATE, lastKnownPresenterState)
