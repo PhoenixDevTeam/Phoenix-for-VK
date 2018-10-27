@@ -6,15 +6,15 @@
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:paddingBottom="2dp"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
     android:paddingTop="2dp">
 
     <ImageView
         android:id="@+id/item_message_avatar"
         android:layout_width="@dimen/avatar_size_small"
         android:layout_height="@dimen/avatar_size_small"
-        android:layout_marginLeft="4dp" />
+        android:layout_marginStart="4dp" />
 
     <biz.dealnote.messenger.view.OnlineView
         android:id="@+id/item_message_important"
@@ -31,8 +31,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_toRightOf="@+id/item_message_avatar"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/item_message_avatar"
         android:orientation="vertical">
 
         <ImageView

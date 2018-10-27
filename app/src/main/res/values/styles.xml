@@ -41,24 +41,24 @@
         <item name="toolbarAppStyle">@style/Toolbar.White</item>
         <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Light</item>
 
-        <item name="toolbarDrawerIcon">@drawable/phoenix_drawer_grey600</item>
+        <item name="toolbarDrawerIcon">@drawable/phoenix_drawer_grey</item>
         <item name="toolbarBackIcon">@drawable/arrow_left_grey600</item>
-        <item name="toolbarSearchIcon">@drawable/magnify_grey600</item>
-        <item name="toolbarCopyIcon">@drawable/content_copy_grey600</item>
-        <item name="toolbarDeleteIcon">@drawable/delete_grey600</item>
-        <item name="toolbarUpIcon">@drawable/chevron_up_grey600</item>
-        <item name="toolbarGraphicIcon">@drawable/chart_bar_grey600</item>
-        <item name="toolbarEditIcon">@drawable/pencil_grey600</item>
-        <item name="toolbarForwardIcon">@drawable/forward_grey600</item>
+        <item name="toolbarSearchIcon">@drawable/magnify_grey</item>
+        <item name="toolbarCopyIcon">@drawable/content_copy_grey</item>
+        <item name="toolbarDeleteIcon">@drawable/delete_grey</item>
+        <item name="toolbarUpIcon">@drawable/chevron_up_grey</item>
+        <item name="toolbarGraphicIcon">@drawable/chart_bar_grey</item>
+        <item name="toolbarEditIcon">@drawable/pencil_grey</item>
+        <item name="toolbarForwardIcon">@drawable/forward_grey</item>
         <item name="toolbarOKIcon">@drawable/check_grey600</item>
-        <item name="toolbarCloseIcon">@drawable/close_grey600</item>
+        <item name="toolbarCloseIcon">@drawable/close_grey</item>
         <item name="toolbarPlusIcon">@drawable/ic_plus_gray</item>
-        <item name="toolbarLockIcon">@drawable/lock_grey600</item>
+        <item name="toolbarLockIcon">@drawable/lock_grey</item>
         <item name="toolbarLockPlusIcon">@drawable/ic_crypt_plus_gray600_vector</item>
-        <item name="toolbarUnlockIcon">@drawable/unlock_grey600</item>
+        <item name="toolbarUnlockIcon">@drawable/unlock_grey</item>
         <item name="toolbarDoubleUpIcon">@drawable/double_up_grey600</item>
         <item name="toolbarDoubleDownIcon">@drawable/double_down_grey600</item>
-        <item name="toolbarPinIcon">@drawable/ic_toolbar_pin_gray600</item>
+        <item name="toolbarPinIcon">@drawable/ic_toolbar_pin_gray</item>
         <item name="tabsTheme">@style/Theme.Tablayout</item>
         <item name="statusbarNonColoredColor">#000</item>
 
@@ -100,19 +100,13 @@
 
     <style name="Theme.Tablayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabRippleColor">#424242</item>
-        <item name="tabGravity">center</item>
-        <item name="tabMode">fixed</item>
-        <item name="tabIndicator"></item>
-        <item name="android:bufferType">spannable</item>
+        <item name="android:background">?colorPrimary</item>
     </style>
 
 
-    <style name="Theme.Tablayout.Dark" parent="Widget.MaterialComponents.TabLayout.Colored">
+    <style name="Theme.Tablayout.Dark" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabRippleColor">@android:color/white</item>
-        <item name="tabGravity">center</item>
-        <item name="tabMode">fixed</item>
-        <item name="tabIndicator"></item>
-        <item name="android:bufferType">spannable</item>
+        <item name="android:background">?colorPrimary</item>
     </style>
 
 </resources>

@@ -299,7 +299,7 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
         HorizontalOptionsAdapter<PostFilter> mFiltersAdapter;
 
         GroupHeaderHolder(@NonNull View root) {
-            vgCover = root.findViewById(R.id.r1);
+            vgCover = root.findViewById(R.id.profile_data_container);
             ivAvatar = root.findViewById(R.id.header_group_avatar);
             tvName = root.findViewById(R.id.header_group_name);
             tvStatus = root.findViewById(R.id.header_group_status);

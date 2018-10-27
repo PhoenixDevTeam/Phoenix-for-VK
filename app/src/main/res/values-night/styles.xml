@@ -14,7 +14,6 @@
         <item name="icon_color_active">#78909c</item>
         <item name="icon_color_static">@android:color/white</item>
 
-
         <item name="windowActionModeOverlay">true</item>
         <item name="android:colorBackground">#1F2226</item>
 
@@ -35,7 +34,7 @@
 
         <item name="message_bubble_color">#30373F</item>
 
-        <item name="toolbarElevation">@dimen/toolbar_no_elevation</item>
+        <item name="toolbarElevation">@dimen/toolbar_with_elevation</item>
         <item name="toolbarAppStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="toolbarDrawerIcon">@drawable/phoenix_drawer</item>

@@ -8,8 +8,8 @@
         android:id="@+id/comment_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
@@ -25,7 +25,7 @@
                 android:id="@+id/item_feedback_header_title"
                 android:layout_width="wrap_content"
                 android:layout_height="42dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:gravity="center_vertical"
                 android:text="Today"
                 android:textColor="?icon_color_active"
@@ -62,7 +62,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_alignTop="@+id/relativeLayout"
-                        android:layout_marginLeft="4dp">
+                        android:layout_marginStart="4dp">
 
                         <ImageView
                             android:id="@+id/item_friend_avatar"
@@ -88,12 +88,12 @@
                         android:id="@+id/relativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
                         android:layout_toLeftOf="@+id/item_feedback_user_attachment"
-                        android:layout_toRightOf="@id/item_friend_avatar_container"
+                        android:layout_toEndOf="@id/item_friend_avatar_container"
                         android:layout_toStartOf="@+id/item_feedback_user_attachment"
                         android:orientation="vertical"
-                        android:paddingRight="8dp">
+                        android:paddingEnd="8dp">
 
                         <TextView
                             android:id="@+id/item_friend_name"
@@ -126,7 +126,7 @@
                         android:id="@+id/item_feedback_user_attachment"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:scaleType="centerCrop" />
                 </RelativeLayout>
             </LinearLayout>

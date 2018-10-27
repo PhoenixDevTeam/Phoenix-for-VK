@@ -14,8 +14,8 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="4dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="8dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="8dp"
         android:paddingTop="4dp">
 
         <ImageView
@@ -27,7 +27,7 @@
             android:id="@+id/counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             tools:text="14"
             android:textColor="?attr/textColorPrimary" />
 

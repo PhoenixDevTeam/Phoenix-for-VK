@@ -3,7 +3,7 @@
     <dimen name="default_statusbar_height">25dp</dimen>
 
     <dimen name="toolbar_no_elevation">0dp</dimen>
-    <dimen name="toolbar_with_elevation">5dp</dimen>
+    <dimen name="toolbar_with_elevation">2dp</dimen>
 
     <dimen name="navi_drawer_font_size">15sp</dimen>
     <dimen name="navi_drawer_icon_size">24dp</dimen>

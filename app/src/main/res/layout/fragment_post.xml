@@ -6,8 +6,7 @@
     android:background="?android:colorBackground"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/toolbar_with_elevation"/>
+    <include layout="@layout/toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -36,8 +35,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:autoLink="web"
                         android:paddingTop="8dp"
                         android:text="Message"
@@ -62,23 +61,23 @@
                         android:id="@+id/item_post_signer_root"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
                         android:gravity="center_vertical"
                         android:paddingBottom="8dp"
-                        android:paddingRight="16dp"
+                        android:paddingEnd="16dp"
                         android:paddingTop="8dp">
 
                         <ImageView
                             android:id="@+id/item_post_signer_icon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/human_child" />
+                            android:src="@drawable/person" />
 
                         <TextView
                             android:id="@+id/item_post_signer_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
                             android:text="Emin Guliev"
                             android:textColor="?colorAccent"
                             android:textSize="14sp" />
@@ -110,30 +109,30 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginEnd="8dp"
                         custom:always_counter="true"
                         custom:active_background_color="?attr/icon_color_active"
                         custom:noactive_icon_color="?attr/icon_color_static"
-                        custom:button_icon="@drawable/heart_outline"/>
+                        custom:button_icon="@drawable/heart" />
 
                     <biz.dealnote.messenger.view.CircleCounterButton
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:id="@+id/comments_button"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/like_button"
+                        android:layout_toStartOf="@+id/like_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         custom:always_counter="true"
                         custom:active="false"
                         custom:active_background_color="?attr/icon_color_active"
                         custom:noactive_icon_color="?attr/icon_color_static"
-                        custom:button_icon="@drawable/comment_outline" />
+                        custom:button_icon="@drawable/comment" />
 
                     <biz.dealnote.messenger.view.CircleCounterButton
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
                         android:id="@+id/share_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="?attr/android:colorBackground"
+        app:cardBackgroundColor="?android:colorBackground"
         app:cardCornerRadius="2dp"
         app:cardElevation="2dp"
         app:contentPadding="0dp">
@@ -41,7 +41,7 @@
                     android:id="@+id/button_delete"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     app:active_background_color="?attr/icon_color_active"
                     app:always_counter="false"

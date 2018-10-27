@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_with_elevation" />
+    <include layout="@layout/toolbar" />
 
     <FrameLayout
         android:layout_width="match_parent"

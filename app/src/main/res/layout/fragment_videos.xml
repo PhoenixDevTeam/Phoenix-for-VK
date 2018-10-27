@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <include
-        layout="@layout/toolbar_with_elevation"
+        layout="@layout/toolbar"
         android:visibility="gone"/>
 
     <RelativeLayout

@@ -430,7 +430,7 @@ public class WallPostFragment extends PlaceSupportMvpFragment<WallPostPresenter,
         if(nonNull(mLikeButton)){
             mLikeButton.setActive(userLikes);
             mLikeButton.setCount(count);
-            mLikeButton.setIcon(userLikes ? R.drawable.heart : R.drawable.heart_outline);
+            mLikeButton.setIcon(userLikes ? R.drawable.heart_filled : R.drawable.heart);
         }
     }
 

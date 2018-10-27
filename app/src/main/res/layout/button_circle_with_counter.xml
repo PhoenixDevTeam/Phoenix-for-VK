@@ -13,7 +13,7 @@
         android:background="@drawable/circle_back_white"
         android:padding="10dp"
         android:scaleType="centerCrop"
-        tools:src="@drawable/heart" />
+        tools:src="@drawable/heart_filled" />
 
     <TextView
         android:id="@+id/counter"

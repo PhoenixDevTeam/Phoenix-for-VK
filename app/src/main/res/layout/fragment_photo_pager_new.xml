@@ -38,7 +38,7 @@
             app:active_background_color="?attr/icon_color_active"
             app:active_icon_color="#fff"
             app:always_counter="true"
-            app:button_icon="@drawable/heart_outline"
+            app:button_icon="@drawable/heart"
             app:noactive_background_color="#45dcdcdc"
             app:noactive_icon_color="#fff"
             app:text_color="#fff" />
@@ -63,7 +63,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             app:active_background_color="?attr/icon_color_active"
             app:active_icon_color="#ffffff"
-            app:button_icon="@drawable/comment_outline"
+            app:button_icon="@drawable/comment"
             app:noactive_background_color="#45dcdcdc"
             app:noactive_icon_color="#fff"
             app:text_color="#fff"/>
@@ -76,8 +76,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/register_button_selector"
         android:minWidth="100dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:text="@string/restore"
         android:textAllCaps="true"
         android:textColor="#ffffff"

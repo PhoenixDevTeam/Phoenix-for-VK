@@ -7,7 +7,7 @@
     android:background="?android:colorBackground"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_with_elevation" />
+    <include layout="@layout/toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -36,14 +36,14 @@
                         android:id="@+id/fragment_video_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
                         android:layout_marginTop="12dp"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="16sp"
                         tools:text="Video" />
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
@@ -91,15 +91,15 @@
 
                         </RelativeLayout>
 
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
 
                     <biz.dealnote.messenger.view.emoji.EmojiconTextView
                         android:autoLink="web"
                         android:id="@+id/fragment_video_subtitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
                         android:textColor="?android:textColorSecondary"
                         android:textSize="14sp"
                         tools:text="Subvideo" />
@@ -136,7 +136,7 @@
                     app:active="false"
                     app:active_background_color="?attr/icon_color_active"
                     app:always_counter="false"
-                    app:button_icon="@drawable/comment_outline"
+                    app:button_icon="@drawable/comment"
                     app:noactive_icon_color="?attr/icon_color_static" />
 
                 <biz.dealnote.messenger.view.CircleCounterButton
@@ -147,7 +147,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     app:active_background_color="?attr/icon_color_active"
                     app:always_counter="false"
-                    app:button_icon="@drawable/heart_outline"
+                    app:button_icon="@drawable/heart"
                     app:noactive_icon_color="?attr/icon_color_static" />
 
             </LinearLayout>

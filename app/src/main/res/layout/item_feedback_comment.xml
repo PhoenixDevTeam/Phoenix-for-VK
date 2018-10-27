@@ -16,7 +16,7 @@
             android:id="@+id/item_feedback_header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:padding="12dp"
             android:gravity="center_vertical"
             android:text="Today"
@@ -36,8 +36,8 @@
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical"
         android:paddingBottom="10dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:paddingTop="10dp">
 
         <RelativeLayout
@@ -77,7 +77,7 @@
                 android:id="@+id/item_feedback_comment_attachment"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:scaleType="centerCrop" />
 
             <LinearLayout
@@ -86,19 +86,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingBottom="2dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="8dp"
+                android:layout_toStartOf="@id/item_feedback_comment_attachment"
+                android:layout_toEndOf="@id/item_comment_owner_avatar_container"
                 android:weightSum="1"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@id/item_comment_owner_avatar_container"
-                android:layout_toLeftOf="@id/item_feedback_comment_attachment">
+                android:paddingStart="16dp"
+                android:paddingEnd="8dp">
 
                 <TextView
                     android:id="@+id/item_comment_owner_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:paddingRight="8dp"
+                    android:paddingEnd="8dp"
                     android:text="Name"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle"
@@ -109,8 +109,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="web"
-                    android:gravity="left"
-                    android:paddingRight="8dp"
+                    android:gravity="start"
+                    android:paddingEnd="8dp"
                     android:text="Message"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle"
@@ -135,9 +135,9 @@
                     android:id="@+id/item_comment_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:maxLines="3"
-                    android:paddingRight="8dp"
+                    android:paddingEnd="8dp"
                     android:text="time"
                     android:textColor="?android:textColorSecondary"
                     android:textSize="@dimen/font_size_additional" />
@@ -150,8 +150,8 @@
             android:id="@+id/comment_reply_feedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/background_gray_round"
             android:padding="8dp">
@@ -163,7 +163,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="false"
                 android:layout_alignTop="@+id/item_comment_reply_top_container"
-                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
                 android:layout_marginTop="2dp" />
 
             <biz.dealnote.messenger.view.OnlineView
@@ -180,10 +180,10 @@
                 android:id="@+id/item_comment_reply_top_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@+id/item_comment_reply_owner_avatar"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/item_comment_reply_owner_avatar"
                 android:orientation="vertical"
-                android:paddingLeft="8dp"
+                android:paddingStart="8dp"
                 android:weightSum="1">
 
                 <TextView
@@ -202,7 +202,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="web"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:text="Message"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle"
@@ -226,7 +226,7 @@
                     android:id="@+id/item_comment_reply_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:maxLines="1"
                     android:text="time"
                     android:textColor="?android:textColorSecondary"

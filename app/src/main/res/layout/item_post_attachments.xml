@@ -40,8 +40,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignBottom="@+id/item_attachment_image"
-                    android:layout_alignLeft="@+id/item_attachment_image"
-                    android:layout_alignRight="@+id/item_attachment_image"
+                    android:layout_alignStart="@+id/item_attachment_image"
+                    android:layout_alignEnd="@+id/item_attachment_image"
                     android:layout_alignTop="@+id/item_attachment_image"
                     android:background="#9b000000" />
 

@@ -86,7 +86,7 @@ public class BirthdayFCMMessage {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, AppNotificationChannels.BIRTHDAYS_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_statusbar_birthday)
+                .setSmallIcon(R.drawable.cake)
                 .setLargeIcon(bitmap)
                 .setContentTitle(context.getString(R.string.birthday))
                 .setContentText(owner.getFullName())

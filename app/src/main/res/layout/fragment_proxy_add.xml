@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_with_elevation"/>
+    <include layout="@layout/toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:cardBackgroundColor="?attr/android:colorBackground"
+            app:cardBackgroundColor="?android:colorBackground"
             app:cardCornerRadius="0dp"
             app:cardElevation="2dp"
             app:contentPadding="0dp">
@@ -174,8 +174,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="end"
                     android:orientation="horizontal"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp">
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp">
 
                     <Button
                         android:id="@+id/button_save"

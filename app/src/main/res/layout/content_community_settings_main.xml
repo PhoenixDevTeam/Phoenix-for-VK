@@ -83,8 +83,8 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/backgroud_rectangle_border"
         android:orientation="horizontal"

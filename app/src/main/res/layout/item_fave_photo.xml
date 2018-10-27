@@ -35,16 +35,16 @@
             android:layout_alignParentBottom="false"
             android:layout_alignRight="@+id/imageView"
             android:background="?attr/colorPrimaryDark"
-            android:paddingLeft="4dp"
-            android:paddingRight="8dp">
+            android:paddingStart="4dp"
+            android:paddingEnd="8dp">
 
             <TextView
                 android:id="@+id/vk_photo_item_like_counter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="2dp"
-                android:layout_toRightOf="@+id/vk_photo_item_like"
+                android:layout_marginStart="2dp"
+                android:layout_toEndOf="@+id/vk_photo_item_like"
                 android:text="4000"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/font_size_additional"
@@ -54,7 +54,7 @@
                 android:id="@+id/vk_photo_item_comment_counter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:text="1.5K"
                 android:textColor="@android:color/white"
@@ -67,18 +67,18 @@
                 android:layout_height="18dp"
                 android:layout_alignWithParentIfMissing="false"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="2dp"
-                android:layout_toLeftOf="@+id/vk_photo_item_comment_counter"
-                android:src="@drawable/comment_outline"
+                android:layout_marginEnd="2dp"
+                android:layout_toStartOf="@+id/vk_photo_item_comment_counter"
+                android:src="@drawable/comment"
                 android:tint="?attr/icon_color_static" />
 
             <ImageView
                 android:id="@+id/vk_photo_item_like"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/heart"
+                android:src="@drawable/heart_filled"
                 android:tint="?attr/icon_color_static" />
 
         </RelativeLayout>

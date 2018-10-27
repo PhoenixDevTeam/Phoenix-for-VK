@@ -10,7 +10,7 @@
     android:layout_marginBottom="8dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="?android:colorBackground"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="8dp"
     app:contentPadding="0dp"
     app:strokeColor="?cardStrokeColor"
     app:strokeWidth="1dp"
@@ -24,9 +24,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
             android:paddingTop="8dp"
-            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
             android:paddingBottom="8dp">
 
             <ImageView
@@ -85,8 +85,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:maxLines="1"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_subtitle"
             android:textStyle="bold"

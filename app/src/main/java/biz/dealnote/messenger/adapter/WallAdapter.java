@@ -172,7 +172,7 @@ public class WallAdapter extends RecyclerBindableAdapter<Post, RecyclerView.View
         }
         holder.tvTime.setText(postSubtitle);
 
-        holder.likeButton.setIcon(post.isUserLikes() ? R.drawable.heart : R.drawable.heart_outline);
+        holder.likeButton.setIcon(post.isUserLikes() ? R.drawable.heart_filled : R.drawable.heart);
         holder.likeButton.setActive(post.isUserLikes());
         holder.likeButton.setCount(post.getLikesCount());
 

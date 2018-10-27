@@ -156,7 +156,7 @@ public class LikeFCMMessage {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, AppNotificationChannels.LIKES_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_statusbar_like)
+                .setSmallIcon(R.drawable.heart)
                 .setContentTitle(context.getString(R.string.like_title))
                 .setContentText(title)
                 .setNumber(badge)

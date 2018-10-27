@@ -6,7 +6,7 @@
     android:background="?android:colorBackground"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_with_elevation" />
+    <include layout="@layout/toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -43,8 +43,8 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center">

@@ -6,12 +6,12 @@
     android:layout_height="wrap_content"
     android:paddingTop="12dp"
     android:paddingBottom="12dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
     android:gravity="center">
 
     <ImageView
-        tools:src="@drawable/heart"
+        tools:src="@drawable/heart_filled"
         android:id="@+id/youtube_button_icon"
         android:layout_width="24dp"
         android:layout_height="24dp" />

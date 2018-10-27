@@ -126,8 +126,8 @@
         <RelativeLayout
             android:id="@+id/editMessageGroup"
             android:background="?message_bubble_color"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:layout_width="match_parent"
@@ -145,8 +145,8 @@
 
             <LinearLayout
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
                 android:layout_toEndOf="@+id/iconEdit"
                 android:layout_toRightOf="@+id/iconEdit"
                 android:layout_toStartOf="@+id/buttonCancelEditing"

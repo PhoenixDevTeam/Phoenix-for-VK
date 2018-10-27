@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="32dp"
-    android:paddingRight="32dp">
+    android:paddingStart="32dp"
+    android:paddingEnd="32dp">
 
     <LinearLayout
         android:id="@+id/header_root"
@@ -19,7 +19,7 @@
             android:id="@+id/header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:gravity="center_vertical"
             android:padding="12dp"
             android:text="Today"
@@ -42,8 +42,8 @@
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:paddingBottom="12dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:paddingTop="10dp">
 
             <RelativeLayout
@@ -74,9 +74,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/avatar_root"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="6dp"
-                android:layout_toLeftOf="@+id/item_chat_date"
+                android:layout_marginStart="60dp"
+                android:layout_marginEnd="6dp"
+                android:layout_toStartOf="@+id/item_chat_date"
                 android:gravity="center_vertical"
                 android:minHeight="42dp"
                 android:orientation="vertical">
@@ -93,7 +93,7 @@
                     android:id="@+id/dialog_message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginEnd="6dp"
                     android:gravity="start"
                     android:maxLines="3"
                     android:text="Message"
@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/name_message_container"
                 android:layout_alignParentBottom="false"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:text="11:20"
                 android:textColor="#999999"
                 android:textSize="10sp"
@@ -118,7 +118,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignTop="@+id/name_message_container"
                 android:orientation="horizontal">
 

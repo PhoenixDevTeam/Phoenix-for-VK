@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:youtube_button_icon="@drawable/music_circle"
+        app:youtube_button_icon="@drawable/music"
         app:youtube_button_icon_color="?attr/icon_color_static"
         app:youtube_button_text="@string/music"
         app:youtube_button_text_color="?attr/icon_color_static" />

@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?attr/list_divider_color">
+    android:orientation="vertical">
 
-    <include layout="@layout/toolbar_with_elevation" />
+    <include layout="@layout/toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:cardBackgroundColor="?attr/android:colorBackground"
+                app:cardBackgroundColor="?android:colorBackground"
                 app:cardCornerRadius="2dp"
                 app:cardElevation="2dp">
 
@@ -31,8 +30,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingBottom="8dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:paddingTop="16dp">
 
                     <TextView
@@ -91,8 +90,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginTop="8dp"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
                         android:text="@string/button_execute" />
 
                 </LinearLayout>
@@ -103,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:cardBackgroundColor="?attr/android:colorBackground"
+                app:cardBackgroundColor="?android:colorBackground"
                 app:cardCornerRadius="2dp"
                 app:cardElevation="2dp">
 

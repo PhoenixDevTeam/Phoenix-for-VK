@@ -36,7 +36,7 @@ public class YoutubeButton extends LinearLayout {
 
         try {
             @DrawableRes
-            int iconres = a.getResourceId(R.styleable.YoutubeButton_youtube_button_icon, R.drawable.heart);
+            int iconres = a.getResourceId(R.styleable.YoutubeButton_youtube_button_icon, R.drawable.heart_filled);
 
             int iconcolor = a.getColor(R.styleable.YoutubeButton_youtube_button_icon_color, Color.GRAY);
             String text = a.getString(R.styleable.YoutubeButton_youtube_button_text);

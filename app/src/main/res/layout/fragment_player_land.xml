@@ -6,7 +6,7 @@
     android:background="?android:attr/windowBackground"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_with_elevation" />
+    <include layout="@layout/toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                             android:id="@+id/audio_player_current_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
                             android:gravity="center"
                             android:textColor="?android:attr/textColorSecondary"
                             android:textSize="14dp" />
@@ -82,8 +82,8 @@
                             android:id="@+id/audio_player_total_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="16dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="16dp"
                             android:gravity="center"
                             android:textColor="?android:attr/textColorSecondary"
                             android:textSize="14dp" />
@@ -132,7 +132,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="24dp"
+                        android:layout_marginEnd="24dp"
                         android:layout_weight="1"
                         android:padding="4dp">
 
@@ -171,7 +171,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="24dp"
+                        android:layout_marginStart="24dp"
                         android:layout_weight="1"
                         android:padding="4dp">
 

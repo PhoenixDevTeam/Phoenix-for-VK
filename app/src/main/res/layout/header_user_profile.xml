@@ -4,10 +4,9 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/r1"
+        android:id="@+id/profile_data_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimary"
@@ -17,9 +16,9 @@
             android:id="@+id/fragment_user_profile_avatar_container"
             android:layout_width="@dimen/avatar_size_big"
             android:layout_height="@dimen/avatar_size_big"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp">
 
             <ImageView
@@ -34,10 +33,9 @@
                 android:layout_width="@dimen/online_dot_size_big"
                 android:layout_height="@dimen/online_dot_size_big"
                 android:layout_alignBottom="@+id/avatar"
-                android:layout_alignLeft="@+id/avatar"
                 android:layout_alignStart="@+id/avatar"
                 android:layout_marginBottom="4dp"
-                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:padding="4dp"
                 app:circle_color="?icon_color_active" />
 
@@ -47,19 +45,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/fragment_user_profile_avatar_container"
-            android:layout_toRightOf="@+id/fragment_user_profile_avatar_container"
-            android:gravity="right"
+            android:layout_toEndOf="@+id/fragment_user_profile_avatar_container"
+            android:gravity="end"
             android:orientation="vertical"
             android:paddingBottom="12dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="16dp">
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp">
 
             <TextView
                 android:id="@+id/fragment_user_profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_light"
-                android:gravity="right"
+                android:gravity="end"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_big_title" />
 
@@ -69,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_light"
-                android:gravity="right"
+                android:gravity="end"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle" />
 
@@ -79,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/open_sans_light"
-                android:gravity="right"
+                android:gravity="end"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle" />
 
@@ -90,7 +88,7 @@
                 android:layout_marginTop="2dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/open_sans_light"
-                android:gravity="right"
+                android:gravity="end"
                 android:maxLines="6"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
@@ -102,17 +100,11 @@
     </RelativeLayout>
 
     <TableLayout
-        android:id="@+id/relativeLayout4"
+        android:id="@+id/profile_counter_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/r1"
-        android:layout_marginBottom="2dp"
-        android:background="?android:colorBackground"
-        android:elevation="2dp"
-        android:paddingBottom="4dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="16dp">
+        android:layout_below="@+id/profile_data_container"
+        android:padding="12dp">
 
         <TableRow
             android:layout_width="match_parent"
@@ -125,7 +117,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="33"
-                android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -150,7 +141,6 @@
             </LinearLayout>
 
             <LinearLayout
-
                 android:id="@+id/header_user_profile_followers_container"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
@@ -180,7 +170,6 @@
             </LinearLayout>
 
             <LinearLayout
-
                 android:id="@+id/header_user_profile_groups_container"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
@@ -311,8 +300,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
@@ -321,7 +310,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="50">
 
                 <com.google.android.material.button.MaterialButton
@@ -329,8 +318,8 @@
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:text="Add to friends"
                     android:textAllCaps="true"
                     android:textColor="?icon_color_active"
@@ -341,7 +330,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="50">
 
                 <Button
@@ -349,8 +338,8 @@
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:text="@string/more_info"
                     android:textAllCaps="true"
                     android:textColor="?icon_color_active"
@@ -365,19 +354,19 @@
         android:id="@+id/post_filter_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/relativeLayout4"
+        android:layout_below="@id/profile_counter_container"
         android:scrollbars="none" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/header_user_profile_fab_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/r1"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="4dp"
+        android:layout_below="@+id/profile_data_container"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="4dp"
         android:layout_marginTop="-38dp"
-        android:src="@drawable/email_small"
+        android:src="@drawable/email"
         app:fabSize="mini"
         app:useCompatPadding="true" />
 

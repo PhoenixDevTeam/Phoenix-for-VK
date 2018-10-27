@@ -30,8 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignBottom="@+id/imageView"
-            android:layout_alignLeft="@+id/imageView"
-            android:layout_alignRight="@+id/imageView"
+            android:layout_alignStart="@+id/imageView"
+            android:layout_alignEnd="@+id/imageView"
             android:layout_alignTop="@+id/imageView"
             android:background="#60000000"
             android:gravity="center">

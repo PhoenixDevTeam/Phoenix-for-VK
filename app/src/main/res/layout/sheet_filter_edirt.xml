@@ -5,7 +5,7 @@
     android:background="?android:colorBackground"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_no_elevation"/>
+    <include layout="@layout/toolbar" />
 
     <FrameLayout
         android:layout_width="match_parent"

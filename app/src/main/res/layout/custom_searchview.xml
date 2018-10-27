@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
         android:layout_margin="8dp"
-        card_view:cardBackgroundColor="?attr/android:colorBackground"
+        card_view:cardBackgroundColor="?android:colorBackground"
         card_view:cardCornerRadius="2dp"
         card_view:cardElevation="1dp"
         card_view:contentPadding="4dp">
@@ -33,9 +33,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:layout_toLeftOf="@+id/right_buttons"
-                android:layout_toRightOf="@+id/button_back"
+                android:layout_marginStart="8dp"
+                android:layout_toStartOf="@+id/right_buttons"
+                android:layout_toEndOf="@+id/button_back"
                 android:background="@null"
                 android:hint="@string/text_hint"
                 android:imeOptions="actionSearch"
@@ -51,7 +51,7 @@
                 android:id="@+id/right_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:orientation="horizontal">
 
                 <ImageView

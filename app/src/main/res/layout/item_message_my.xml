@@ -6,19 +6,19 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
-    android:gravity="right"
+    android:gravity="end"
     android:paddingBottom="2dp"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
     android:paddingTop="2dp">
 
     <ImageView
         android:id="@+id/item_message_avatar"
         android:layout_width="@dimen/avatar_size_small"
         android:layout_height="@dimen/avatar_size_small"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="2dp" />
+        android:layout_marginEnd="2dp" />
 
     <biz.dealnote.messenger.view.OnlineView
         android:id="@+id/item_message_important"
@@ -36,14 +36,14 @@
         android:id="@+id/item_message_bubble"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="4dp"
-        android:layout_toLeftOf="@+id/item_message_avatar"
-        android:gravity="right"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_toStartOf="@+id/item_message_avatar"
+        android:gravity="end"
         android:orientation="vertical"
         android:paddingBottom="8dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="16dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="16dp"
         android:paddingTop="8dp"
         app:angle="@dimen/message_bubble_corner_radius"
         app:arrowHeight="12dp"
@@ -80,7 +80,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right|center_vertical"
+            android:gravity="end|center_vertical"
             android:orientation="horizontal">
 
             <TextView
@@ -95,8 +95,8 @@
                 android:id="@+id/item_message_encrypted"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="-2dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="-2dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_message_crypt_vector"
                 android:tint="?textColorSecondary" />

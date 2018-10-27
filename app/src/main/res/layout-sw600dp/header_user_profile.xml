@@ -2,11 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/list_divider_color"
     android:paddingBottom="8dp">
 
     <RelativeLayout
-        android:id="@+id/r1"
+        android:id="@+id/profile_data_container"
         android:layout_width="match_parent"
         android:background="?attr/colorPrimary"
         android:layout_height="wrap_content"
@@ -18,10 +17,10 @@
         <RelativeLayout
             android:layout_width="@dimen/avatar_size_big"
             android:layout_height="@dimen/avatar_size_big"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
             android:id="@+id/fragment_user_profile_avatar_container">
 
@@ -40,7 +39,7 @@
                 android:layout_alignLeft="@+id/avatar"
                 android:layout_alignStart="@+id/avatar"
                 android:layout_marginBottom="4dp"
-                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 app:circle_color="?icon_color_active"
                 android:padding="4dp"/>
 
@@ -50,12 +49,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="right"
-            android:layout_toRightOf="@+id/fragment_user_profile_avatar_container"
-            android:paddingRight="16dp"
+            android:layout_toEndOf="@+id/fragment_user_profile_avatar_container"
+            android:gravity="end"
+            android:paddingStart="16dp"
             android:layout_alignTop="@+id/fragment_user_profile_avatar_container"
             android:paddingBottom="30dp"
-            android:paddingLeft="16dp">
+            android:paddingEnd="16dp">
 
 
             <TextView
@@ -65,14 +64,14 @@
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_title"
                 android:fontFamily="@font/open_sans_light"
-                android:gravity="right"/>
+                android:gravity="end" />
 
 
             <TextView
                 android:id="@+id/fragment_user_profile_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
+                android:gravity="end"
                 android:textColor="?attr/textColorPrimary"
                 android:fontFamily="@font/open_sans_light"
                 android:textSize="@dimen/font_size_subtitle" />
@@ -81,7 +80,7 @@
                 android:id="@+id/fragment_user_profile_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
+                android:gravity="end"
                 android:layout_marginTop="8dp"
                 android:textColor="?attr/textColorPrimary"
                 android:fontFamily="@font/open_sans_light"
@@ -93,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:ellipsize="end"
-                android:gravity="right"
+                android:gravity="end"
                 android:maxLines="6"
                 android:fontFamily="@font/open_sans_light"
                 android:textColor="?attr/textColorPrimary"
@@ -106,13 +105,13 @@
     </RelativeLayout>
 
         <TableLayout
-            android:id="@+id/relativeLayout4"
+            android:id="@+id/profile_counter_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/r1"
+            android:layout_below="@+id/profile_data_container"
             android:background="?android:colorBackground"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:paddingTop="16dp"
             android:paddingBottom="4dp"
             android:elevation="2dp"
@@ -303,15 +302,15 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp">
+                android:layout_marginEnd="8dp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:layout_marginRight="8dp">
+                    android:layout_marginEnd="8dp">
 
                     <Button
                         android:textAllCaps="true"
@@ -328,7 +327,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:layout_marginLeft="8dp">
+                    android:layout_marginStart="8dp">
 
                     <Button
                         android:id="@+id/info_btn"
@@ -349,7 +348,7 @@
         android:id="@+id/post_filter_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/relativeLayout4"
+        android:layout_below="@id/profile_counter_container"
         android:scrollbars="none"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -357,11 +356,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/r1"
-        android:layout_marginRight="4dp"
+        android:layout_below="@+id/profile_data_container"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="4dp"
         android:layout_marginTop="-38dp"
-        android:src="@drawable/email_small"
+        android:src="@drawable/email"
         app:fabSize="mini"
         app:useCompatPadding="true"/>
 

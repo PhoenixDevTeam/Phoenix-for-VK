@@ -156,8 +156,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/audio_player_controls"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="4dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
@@ -189,14 +189,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/title_container"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="8dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp">
 
         <TextView
             android:id="@+id/audio_player_current_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:gravity="center"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="14sp" />

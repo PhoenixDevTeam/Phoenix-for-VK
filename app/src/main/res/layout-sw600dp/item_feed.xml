@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="?attr/android:colorBackground"
+        app:cardBackgroundColor="?android:colorBackground"
         app:cardCornerRadius="2dp"
         app:cardElevation="2dp"
         app:contentPadding="0dp">
@@ -25,19 +25,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:paddingTop="8dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/post_views_counter_root"
-                    android:layout_toRightOf="@+id/item_post_avatar"
+                    android:layout_toStartOf="@+id/post_views_counter_root"
+                    android:layout_toEndOf="@+id/item_post_avatar"
                     android:orientation="vertical"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
 
                     <TextView
                         android:id="@+id/item_post_owner_name"
@@ -68,7 +68,7 @@
                     android:id="@+id/post_views_counter_root"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
@@ -84,7 +84,7 @@
                     <biz.dealnote.messenger.view.ColorFilterImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
                         android:src="@drawable/ic_eye_white_vector"
                         app:filter_color="?android:textColorSecondary" />
 
@@ -105,8 +105,8 @@
                     android:id="@+id/item_text_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
                     android:paddingBottom="6dp">
 
 
@@ -114,8 +114,8 @@
                         android:id="@+id/item_post_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:gravity="left"
+                        android:layout_alignParentStart="true"
+                        android:gravity="start"
                         android:linksClickable="false"
                         android:text="Message"
                         android:textColor="?android:textColorPrimary"
@@ -128,7 +128,7 @@
                         android:id="@+id/item_post_show_more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:layout_below="@+id/item_post_text"
                         android:fontFamily="sans-serif-condensed"
                         android:text="@string/show_more"
@@ -167,29 +167,29 @@
                     android:id="@+id/like_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="8dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     app:active_background_color="?attr/icon_color_active"
-                    app:button_icon="@drawable/heart_outline"
+                    app:button_icon="@drawable/heart"
                     app:noactive_icon_color="?attr/icon_color_static" />
 
                 <biz.dealnote.messenger.view.CircleCounterButton
                     android:id="@+id/comments_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/like_button"
+                    android:layout_toStartOf="@+id/like_button"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     app:active_background_color="?attr/icon_color_active"
                     app:always_counter="false"
-                    app:button_icon="@drawable/comment_outline"
+                    app:button_icon="@drawable/comment"
                     app:noactive_icon_color="?attr/icon_color_static" />
 
                 <biz.dealnote.messenger.view.CircleCounterButton
                     android:id="@+id/share_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     app:active_background_color="?attr/icon_color_active"
                     app:button_icon="@drawable/share_variant"

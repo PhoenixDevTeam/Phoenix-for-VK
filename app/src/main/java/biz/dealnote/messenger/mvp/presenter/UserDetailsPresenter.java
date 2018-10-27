@@ -58,7 +58,7 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
             String formatted = AppTextUtils.getDateWithZeros(details.getBdate());
             items.add(new AdvancedItem(1, new Text(R.string.birthday))
                     .setSubtitle(new Text(formatted))
-                    .setIcon(Icon.fromResources(R.drawable.ic_birthday))
+                    .setIcon(Icon.fromResources(R.drawable.cake))
                     .setSection(mainSection));
         }
 
@@ -86,14 +86,14 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
         if (nonEmpty(details.getPhone())) {
             items.add(new AdvancedItem(5, new Text(R.string.mobile_phone_number))
                     .setSubtitle(new Text(details.getPhone()))
-                    .setIcon(R.drawable.ic_phone)
+                    .setIcon(R.drawable.cellphone)
                     .setSection(mainSection));
         }
 
         if (nonEmpty(details.getHomePhone())) {
             items.add(new AdvancedItem(6, new Text(R.string.home_phone_number))
                     .setSubtitle(new Text(details.getHomePhone()))
-                    .setIcon(R.drawable.ic_phone)
+                    .setIcon(R.drawable.cellphone)
                     .setSection(mainSection));
         }
 
@@ -147,15 +147,15 @@ public class UserDetailsPresenter extends AccountDependencyPresenter<IUserDetail
         }
 
         Section pesonal = new Section(new Text(R.string.personal_information));
-        addPersonalInfo(items, R.drawable.ic_star, 24, pesonal, R.string.interests, details.getInterests());
-        addPersonalInfo(items, R.drawable.ic_star, 26, pesonal, R.string.activities, details.getActivities());
-        addPersonalInfo(items, R.drawable.ic_favorite_music, 25, pesonal, R.string.favorite_music, details.getMusic());
-        addPersonalInfo(items, R.drawable.ic_favorite_movie, 27, pesonal, R.string.favorite_movies, details.getMovies());
+        addPersonalInfo(items, R.drawable.star, 24, pesonal, R.string.interests, details.getInterests());
+        addPersonalInfo(items, R.drawable.star, 26, pesonal, R.string.activities, details.getActivities());
+        addPersonalInfo(items, R.drawable.music, 25, pesonal, R.string.favorite_music, details.getMusic());
+        addPersonalInfo(items, R.drawable.movie, 27, pesonal, R.string.favorite_movies, details.getMovies());
         addPersonalInfo(items, R.drawable.ic_favorite_tv, 28, pesonal, R.string.favorite_tv_shows, details.getTv());
         addPersonalInfo(items, R.drawable.ic_favorite_quotes, 29, pesonal, R.string.favorite_quotes, details.getQuotes());
         addPersonalInfo(items, R.drawable.ic_favorite_game, 30, pesonal, R.string.favorite_games, details.getGames());
         addPersonalInfo(items, R.drawable.ic_about_me, 31, pesonal, R.string.about_me, details.getAbout());
-        addPersonalInfo(items, R.drawable.ic_favorite_book, 32, pesonal, R.string.favorite_books, details.getBooks());
+        addPersonalInfo(items, R.drawable.book, 32, pesonal, R.string.favorite_books, details.getBooks());
 
         Section beliefs = new Section(new Text(R.string.beliefs));
 

@@ -16,8 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dip"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dip"
             android:paddingTop="4dp"
             android:textColor="@android:color/white"
             android:textSize="@dimen/font_size_subtitle"
@@ -27,10 +27,10 @@
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_gravity="center_horizontal"
-            android:paddingLeft="4dip"
-            android:paddingRight="4dp"
+            android:paddingStart="4dip"
+            android:paddingEnd="4dp"
             android:paddingTop="4dp"
             android:textColor="@android:color/white"
             android:textSize="@dimen/font_size_subtitle"
@@ -41,8 +41,8 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:layout_toLeftOf="@+id/time"
-            android:layout_toRightOf="@+id/time_current" />
+            android:layout_toStartOf="@+id/time"
+            android:layout_toEndOf="@+id/time_current" />
 
     </RelativeLayout>
 
@@ -113,7 +113,7 @@
             style="?borderlessButtonStyle"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_margin="2dp"
             android:padding="16dp"

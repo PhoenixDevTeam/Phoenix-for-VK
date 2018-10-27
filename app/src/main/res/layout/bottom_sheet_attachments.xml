@@ -63,9 +63,9 @@
         android:background="?colorPrimaryDark"
         android:gravity="center|end"
         android:orientation="horizontal"
-        android:paddingLeft="8dp"
+        android:paddingStart="8dp"
         android:paddingTop="4dp"
-        android:paddingRight="8dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="4dp">
 
         <ImageView

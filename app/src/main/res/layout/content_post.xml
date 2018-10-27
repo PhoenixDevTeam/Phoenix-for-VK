@@ -77,7 +77,7 @@
             android:id="@+id/item_post_signer_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/human_child"/>
+            android:src="@drawable/person" />
 
         <TextView
             android:id="@+id/item_post_signer_name"

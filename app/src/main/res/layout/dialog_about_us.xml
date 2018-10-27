@@ -29,15 +29,6 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?attr/list_divider_color"
-        android:id="@+id/divider"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginRight="80dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

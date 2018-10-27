@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:paddingBottom="@dimen/content_large_margin"
-    android:paddingLeft="@dimen/content_medium_margin"
-    android:paddingRight="@dimen/content_medium_margin"
+    android:paddingStart="@dimen/content_medium_margin"
+    android:paddingEnd="@dimen/content_medium_margin"
     android:paddingTop="@dimen/content_large_margin">
 
     <ImageView

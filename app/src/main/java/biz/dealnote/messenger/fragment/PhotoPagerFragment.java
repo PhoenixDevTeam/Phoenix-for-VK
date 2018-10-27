@@ -336,7 +336,7 @@ public class PhotoPagerFragment extends BaseMvpFragment<PhotoPagerPresenter, IPh
         if (nonNull(mButtonLike)) {
             mButtonLike.setActive(like);
             mButtonLike.setCount(likes);
-            mButtonLike.setIcon(like ? R.drawable.heart : R.drawable.heart_outline);
+            mButtonLike.setIcon(like ? R.drawable.heart_filled : R.drawable.heart);
         }
     }
 

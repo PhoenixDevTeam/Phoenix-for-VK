@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_with_elevation"
+    <include
+        layout="@layout/toolbar"
         android:id="@+id/toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView

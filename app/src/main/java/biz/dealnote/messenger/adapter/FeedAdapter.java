@@ -180,7 +180,7 @@ public class FeedAdapter extends RecyclerBindableAdapter<News, FeedAdapter.PostH
     }
 
     private void fillCounters(PostHolder holder, final News news) {
-        int targetLikeRes = news.isUserLike() ? R.drawable.heart : R.drawable.heart_outline;
+        int targetLikeRes = news.isUserLike() ? R.drawable.heart_filled : R.drawable.heart;
         holder.likeButton.setIcon(targetLikeRes);
 
         holder.likeButton.setActive(news.isUserLike());

@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <Button
-        style="@style/Widget.AppCompat.Button.Borderless"
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:id="@+id/footer_load_more_run"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

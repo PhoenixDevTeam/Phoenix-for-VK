@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_centerVertical="true"
         android:id="@+id/avatar_root"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_width="@dimen/avatar_size_usual"
         android:layout_height="@dimen/avatar_size_usual">
 
@@ -24,10 +24,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_toLeftOf="@+id/item_people_online"
-        android:layout_toRightOf="@id/avatar_root"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toStartOf="@+id/item_people_online"
+        android:layout_toEndOf="@id/avatar_root"
         android:orientation="vertical">
 
         <TextView
@@ -54,8 +54,8 @@
         android:id="@+id/item_people_online"
         android:layout_width="@dimen/online_dot_size"
         android:layout_height="@dimen/online_dot_size"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="16dp" />
+        android:layout_marginEnd="16dp" />
 
 </RelativeLayout>

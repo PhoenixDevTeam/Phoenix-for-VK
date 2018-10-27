@@ -11,10 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@+id/link_image"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@+id/link_image"
         android:orientation="vertical"
-        android:paddingRight="16dp">
+        android:paddingEnd="16dp">
 
         <TextView
             android:id="@+id/link_title"
@@ -41,7 +41,7 @@
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:scaleType="centerCrop" />
 
 </RelativeLayout>

@@ -1,8 +1,9 @@
-<!-- drawable/attachment.xml -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:height="24dp"
     android:width="24dp"
+    android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <path android:fillColor="#FFF" android:pathData="M7.5,18A5.5,5.5 0 0,1 2,12.5A5.5,5.5 0 0,1 7.5,7H18A4,4 0 0,1 22,11A4,4 0 0,1 18,15H9.5A2.5,2.5 0 0,1 7,12.5A2.5,2.5 0 0,1 9.5,10H17V11.5H9.5A1,1 0 0,0 8.5,12.5A1,1 0 0,0 9.5,13.5H18A2.5,2.5 0 0,0 20.5,11A2.5,2.5 0 0,0 18,8.5H7.5A4,4 0 0,0 3.5,12.5A4,4 0 0,0 7.5,16.5H17V18H7.5Z" />
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M18.5,16H7c-2.21,0 -4,-1.79 -4,-4s1.79,-4 4,-4h12.5c1.38,0 2.5,1.12 2.5,2.5S20.88,13 19.5,13H9c-0.55,0 -1,-0.45 -1,-1s0.45,-1 1,-1h9.5V9.5H9c-1.38,0 -2.5,1.12 -2.5,2.5s1.12,2.5 2.5,2.5h10.5c2.21,0 4,-1.79 4,-4s-1.79,-4 -4,-4H7c-3.04,0 -5.5,2.46 -5.5,5.5s2.46,5.5 5.5,5.5h11.5V16z" />
 </vector>

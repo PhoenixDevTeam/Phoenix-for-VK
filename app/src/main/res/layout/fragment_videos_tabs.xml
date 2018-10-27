@@ -10,8 +10,7 @@
         android:layout_height="wrap_content"
         android:elevation="?toolbarElevation">
 
-        <include
-            layout="@layout/toolbar_no_elevation"/>
+        <include layout="@layout/toolbar" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/fragment_videos_tabs"

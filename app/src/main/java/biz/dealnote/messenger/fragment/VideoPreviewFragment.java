@@ -251,7 +251,7 @@ public class VideoPreviewFragment extends BaseMvpFragment<VideoPreviewPresenter,
     @Override
     public void displayLikes(int count, boolean userLikes) {
         if (nonNull(likeButton)) {
-            likeButton.setIcon(userLikes ? R.drawable.heart : R.drawable.heart_outline);
+            likeButton.setIcon(userLikes ? R.drawable.heart_filled : R.drawable.heart);
             likeButton.setCount(count);
             likeButton.setActive(userLikes);
         }

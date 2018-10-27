@@ -78,16 +78,16 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
     public static final int PAGE_SEARCH = 13;
     public static final int PAGE_NEWSFEED_COMMENTS = 14;
 
-    public static final SectionDrawerItem SECTION_ITEM_FRIENDS = new IconDrawerItem(PAGE_FRIENDS, R.drawable.human_child, R.string.friends);
+    public static final SectionDrawerItem SECTION_ITEM_FRIENDS = new IconDrawerItem(PAGE_FRIENDS, R.drawable.person, R.string.friends);
     public static final SectionDrawerItem SECTION_ITEM_DIALOGS = new IconDrawerItem(PAGE_DIALOGS, R.drawable.email, R.string.dialogs);
     public static final SectionDrawerItem SECTION_ITEM_FEED = new IconDrawerItem(PAGE_FEED, R.drawable.rss, R.string.feed);
     public static final SectionDrawerItem SECTION_ITEM_FEEDBACK = new IconDrawerItem(PAGE_NOTIFICATION, R.drawable.heart, R.string.drawer_feedback);
-    public static final SectionDrawerItem SECTION_ITEM_NEWSFEED_COMMENTS = new IconDrawerItem(PAGE_NEWSFEED_COMMENTS, R.drawable.ic_drawer_newsfeed_comment, R.string.drawer_newsfeed_comments);
+    public static final SectionDrawerItem SECTION_ITEM_NEWSFEED_COMMENTS = new IconDrawerItem(PAGE_NEWSFEED_COMMENTS, R.drawable.comment, R.string.drawer_newsfeed_comments);
     public static final SectionDrawerItem SECTION_ITEM_GROUPS = new IconDrawerItem(PAGE_GROUPS, R.drawable.google_circles, R.string.groups);
     public static final SectionDrawerItem SECTION_ITEM_PHOTOS = new IconDrawerItem(PAGE_PHOTOS, R.drawable.camera, R.string.photos);
     public static final SectionDrawerItem SECTION_ITEM_VIDEOS = new IconDrawerItem(PAGE_VIDEOS, R.drawable.video, R.string.videos);
     public static final SectionDrawerItem SECTION_ITEM_BOOKMARKS = new IconDrawerItem(PAGE_BOOKMARKS, R.drawable.star, R.string.bookmarks);
-    public static final SectionDrawerItem SECTION_ITEM_AUDIOS = new IconDrawerItem(PAGE_MUSIC, R.drawable.music_circle, R.string.music);
+    public static final SectionDrawerItem SECTION_ITEM_AUDIOS = new IconDrawerItem(PAGE_MUSIC, R.drawable.music, R.string.music);
     public static final SectionDrawerItem SECTION_ITEM_DOCS = new IconDrawerItem(PAGE_DOCUMENTS, R.drawable.file, R.string.attachment_documents);
     public static final SectionDrawerItem SECTION_ITEM_SEARCH = new IconDrawerItem(PAGE_SEARCH, R.drawable.magnify, R.string.search);
 

@@ -747,7 +747,7 @@ public class FeedbackViewBinder {
 
         showFirstUserAvatarOnImageView(owners, holder.uAvatar);
         holder.uTime.setText(getDateFromUnixTime(notification.getDate()));
-        holder.uChangable.setIcon(R.drawable.heart);
+        holder.uChangable.setIcon(R.drawable.heart_filled);
 
         String attachmentImg = post.findFirstImageCopiesInclude();
         holder.ivAttachment.setVisibility(TextUtils.isEmpty(attachmentImg) ? View.GONE : View.VISIBLE);
@@ -780,7 +780,7 @@ public class FeedbackViewBinder {
         holder.uName.setText(spannable, TextView.BufferType.SPANNABLE);
         holder.uTime.setText(getDateFromUnixTime(notification.getDate()));
         holder.uInfo.setVisibility(View.GONE);
-        holder.uChangable.setIcon(R.drawable.heart);
+        holder.uChangable.setIcon(R.drawable.heart_filled);
         holder.ivAttachment.setVisibility(View.VISIBLE);
 
         showFirstUserAvatarOnImageView(notification.getOwners(), holder.uAvatar);
@@ -920,7 +920,7 @@ public class FeedbackViewBinder {
         holder.uName.setText(spannable, TextView.BufferType.SPANNABLE);
         holder.uInfo.setVisibility(View.GONE);
         holder.uTime.setText(getDateFromUnixTime(notification.getDate()));
-        holder.uChangable.setIcon(R.drawable.heart);
+        holder.uChangable.setIcon(R.drawable.heart_filled);
 
         setupAttachmentViewWithPhoto((Photo) notification.getLiked(), holder.ivAttachment);
         showFirstUserAvatarOnImageView(owners, holder.uAvatar);
@@ -986,7 +986,7 @@ public class FeedbackViewBinder {
         holder.uInfo.setVisibility(View.VISIBLE);
         holder.uInfo.setText(commentSpan, TextView.BufferType.SPANNABLE);
         holder.uTime.setText(getDateFromUnixTime(notification.getDate()));
-        holder.uChangable.setIcon(R.drawable.heart);
+        holder.uChangable.setIcon(R.drawable.heart_filled);
 
         setupAttachmentViewWithPhoto((Photo) notification.getCommented(), holder.ivAttachment);
         showFirstUserAvatarOnImageView(users, holder.uAvatar);
@@ -1036,7 +1036,7 @@ public class FeedbackViewBinder {
         holder.uInfo.setVisibility(View.VISIBLE);
         holder.uInfo.setText(spannable1, TextView.BufferType.SPANNABLE);
         holder.uTime.setText(getDateFromUnixTime(notification.getDate()));
-        holder.uChangable.setIcon(R.drawable.heart);
+        holder.uChangable.setIcon(R.drawable.heart_filled);
 
         showFirstUserAvatarOnImageView(users, holder.uAvatar);
         setupAttachmentViewWithVideo((Video) notification.getCommented(), holder.ivAttachment);
@@ -1089,7 +1089,7 @@ public class FeedbackViewBinder {
         holder.uInfo.setVisibility(View.VISIBLE);
         holder.uInfo.setText(spannable1, TextView.BufferType.SPANNABLE);
         holder.uTime.setText(getDateFromUnixTime(notification.getDate()));
-        holder.uChangable.setIcon(R.drawable.heart);
+        holder.uChangable.setIcon(R.drawable.heart_filled);
 
         showFirstUserAvatarOnImageView(users, holder.uAvatar);
         solveOwnerOpenByAvatar(holder.uAvatar, user.getId());
@@ -1153,7 +1153,7 @@ public class FeedbackViewBinder {
         holder.uInfo.setVisibility(View.VISIBLE);
         holder.uInfo.setText(info, TextView.BufferType.SPANNABLE);
         holder.uTime.setText(getDateFromUnixTime(notification.getDate()));
-        holder.uChangable.setIcon(R.drawable.heart);
+        holder.uChangable.setIcon(R.drawable.heart_filled);
         holder.ivAttachment.setVisibility(View.GONE);
 
         showFirstUserAvatarOnImageView(users, holder.uAvatar);

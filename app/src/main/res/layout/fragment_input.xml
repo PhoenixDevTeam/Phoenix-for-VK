@@ -11,8 +11,8 @@
             android:id="@+id/fragment_input_container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp">
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp">
 
             <RelativeLayout
                 android:id="@+id/buttonSendLayout"

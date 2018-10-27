@@ -1,14 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/list_divider_color">
+    android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/r1"
+        android:id="@+id/profile_data_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimary"
@@ -18,10 +16,10 @@
             android:id="@+id/header_group_avatar"
             android:layout_width="@dimen/avatar_size_big"
             android:layout_height="@dimen/avatar_size_big"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/sel_button_round_5_white"
             android:padding="1.5dp" />
@@ -30,19 +28,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/header_group_avatar"
-            android:layout_toRightOf="@+id/header_group_avatar"
-            android:gravity="right"
+            android:layout_toEndOf="@+id/header_group_avatar"
+            android:gravity="end"
             android:orientation="vertical"
             android:paddingBottom="12dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="16dp">
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp">
 
             <TextView
                 android:id="@+id/header_group_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_light"
-                android:gravity="right"
+                android:gravity="end"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_big_title" />
 
@@ -51,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_light"
-                android:gravity="right"
+                android:gravity="end"
                 android:maxLines="6"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
@@ -64,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/open_sans_light"
-                android:gravity="right"
+                android:gravity="end"
                 android:maxLines="6"
                 android:textColor="?attr/textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
@@ -77,16 +75,16 @@
 
 
     <TableLayout
-        android:id="@+id/relativeLayout4"
+        android:id="@+id/profile_counter_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/r1"
+        android:layout_below="@id/profile_data_container"
         android:layout_marginBottom="2dp"
         android:background="?android:colorBackground"
         android:elevation="2dp"
         android:paddingBottom="4dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         android:paddingTop="16dp">
 
         <TableRow
@@ -290,8 +288,8 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:textAllCaps="true"
                 android:textColor="?icon_color_active"
                 android:textSize="@dimen/font_size_additional" />
@@ -301,8 +299,8 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:textAllCaps="true"
                 android:textColor="?icon_color_active"
                 android:textSize="@dimen/font_size_additional"
@@ -315,19 +313,19 @@
         android:id="@+id/post_filter_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeLayout4"
+        android:layout_below="@+id/profile_counter_container"
         android:scrollbars="none" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/header_group_fab_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/r1"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="4dp"
+        android:layout_below="@+id/profile_data_container"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="4dp"
         android:layout_marginTop="-38dp"
-        android:src="@drawable/email_small"
+        android:src="@drawable/email"
         app:fabSize="mini"
         app:useCompatPadding="true" />
 
