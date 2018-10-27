@@ -454,7 +454,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         if (fragment instanceof ChatFragment) {
             Logger.d(TAG, "Chat fragment is present. Try to re-init");
             ChatFragment chatFragment = (ChatFragment) fragment;
-            chatFragment.reInit(accountId, messagesOwnerId, peer.getId(), peer.getTitle());
+            chatFragment.reInit(accountId, messagesOwnerId, peer);
             onChatResume(accountId, peer.getId(), peer.getTitle(), peer.getAvaUrl());
         } else {
             Logger.d(TAG, "Create new chat fragment");

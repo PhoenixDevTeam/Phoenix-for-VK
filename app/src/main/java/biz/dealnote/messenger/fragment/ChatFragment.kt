@@ -17,7 +17,7 @@ import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import biz.dealnote.messenger.*
 import biz.dealnote.messenger.activity.*
 import biz.dealnote.messenger.adapter.AttachmentsBottomSheetAdapter
@@ -58,7 +58,10 @@ import java.util.*
  * Created by ruslan.kolbasa on 05.10.2016.
  * phoenix
  */
-class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChatView, InputViewController.OnInputActionCallback, BackPressCallback, MessagesAdapter.OnMessageActionListener, InputViewController.RecordActionsCallback, AttachmentsViewBinder.VoiceActionListener, StickersGridView.OnStickerClickedListener, EmojiconTextView.OnHashTagClickListener {
+class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChatView, InputViewController.OnInputActionCallback,
+        BackPressCallback, MessagesAdapter.OnMessageActionListener, InputViewController.RecordActionsCallback,
+        AttachmentsViewBinder.VoiceActionListener, StickersGridView.OnStickerClickedListener,
+        EmojiconTextView.OnHashTagClickListener {
 
     private var headerView: View? = null
     private var loadMoreFooterHelper: LoadMoreFooterHelper? = null
@@ -217,7 +220,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     private fun createLayoutManager(): androidx.recyclerview.widget.RecyclerView.LayoutManager {
-        return androidx.recyclerview.widget.LinearLayoutManager(activity, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, true)
+        return androidx.recyclerview.widget.LinearLayoutManager(activity, RecyclerView.VERTICAL, true)
     }
 
     override fun displayMessages(messages: List<Message>, lastReadId: LastReadId) {
@@ -852,8 +855,8 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         return presenter?.onBackPressed() == true
     }
 
-    fun reInit(newAccountId: Int, newMessagesOwnerId: Int, newPeerId: Int, title: String) {
-        presenter?.reInitWithNewPeer(newAccountId, newMessagesOwnerId, newPeerId, title)
+    fun reInit(newAccountId: Int, newMessagesOwnerId: Int, newPeer: Peer) {
+        presenter?.reInitWithNewPeer(newAccountId, newMessagesOwnerId, newPeer)
     }
 
     private fun isActionModeVisible(): Boolean {
