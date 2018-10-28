@@ -16,9 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:clipToPadding="true"
-        app:popupTheme="?toolbarPopupStyle"
-        app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
-        app:theme="?toolbarAppStyle"
-        app:titleTextAppearance="@style/Theme.Title.Toolbar" />
+        app:theme="@style/Theme.Toolbar" />
 
 </com.google.android.material.card.MaterialCardView>

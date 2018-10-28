@@ -3,6 +3,7 @@ package biz.dealnote.messenger.settings;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -20,10 +21,10 @@ public class CurrentTheme {
 
     private static final String KEY_CHAT_BACKGROUND = "chat_background";
 
-    public static Drawable getChatBackground(Activity activity){
+    public static Drawable getChatBackground(Activity activity) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
         String page = preferences.getString(KEY_CHAT_BACKGROUND, "1");
-        switch (page){
+        switch (page) {
             case "1":
                 return CurrentTheme.getDrawableFromAttribute(activity, R.attr.chat_background_cookies);
             case "2":
@@ -88,11 +89,11 @@ public class CurrentTheme {
     }
 
     public static int getPrimaryTextColorCode(Context context) {
-        return getColorFromAttrs(R.attr.textColorPrimary, context, "#ffffff");
+        return getColorFromSystemAttrs(android.R.attr.textColorPrimary, context);
     }
 
     public static int getSecondaryTextColorCode(Context context) {
-        return getColorFromAttrs(R.attr.textColorSecondary, context, "#ffffff");
+        return getColorFromSystemAttrs(android.R.attr.textColorSecondary, context);
     }
 
     public static int getDialogsUnreadColor(Context context) {
@@ -119,6 +120,15 @@ public class CurrentTheme {
         }
     }
 
+    public static int getColorFromSystemAttrs(int resId, Context context) {
+        TypedValue a = new TypedValue();
+        context.getTheme().resolveAttribute(resId, a, true);
+        TypedArray arr = context.obtainStyledAttributes(a.data, new int[]{resId});
+        int result = arr.getColor(0, -1);
+        arr.recycle();
+        return result;
+    }
+
     public static int getResIdFromAttribute(final Activity activity, final int attr) {
         if (attr == 0) {
             return 0;
@@ -136,9 +146,5 @@ public class CurrentTheme {
 
     private static String intToHexColor(int color) {
         return String.format("#%06X", (0xFFFFFF & color));
-    }
-
-    public static int getDisableTextColorCode(Context context) {
-        return getColorFromAttrs(R.attr.textColorDisabled, context, "#000000");
     }
 }

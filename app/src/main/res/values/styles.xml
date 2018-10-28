@@ -26,9 +26,8 @@
 
         <item name="android:colorBackground">@android:color/background_light</item>
 
-        <item name="textColorPrimary">#212121</item>
-        <item name="textColorSecondary">#424242</item>
-        <item name="textColorDisabled">#39000000</item>
+        <!--<item name="android:textColorPrimary">#212121</item>-->
+        <!--<item name="android:textColorSecondary">#424242</item>-->
 
         <item name="dialogs_unread_color">#20b0b0b0</item>
         <item name="navi_menu_selector">@drawable/list_selector_white</item>
@@ -38,9 +37,6 @@
         <item name="oval_avatar_background">@drawable/sel_button_round_4_white</item>
 
         <item name="message_bubble_color">@android:color/white</item>
-
-        <item name="toolbarAppStyle">@style/Toolbar.White</item>
-        <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Light</item>
 
         <item name="toolbarDrawerIcon">@drawable/phoenix_drawer_grey</item>
         <item name="toolbarBackIcon">@drawable/arrow_left_grey600</item>
@@ -60,7 +56,6 @@
         <item name="toolbarDoubleUpIcon">@drawable/double_up_grey600</item>
         <item name="toolbarDoubleDownIcon">@drawable/double_down_grey600</item>
         <item name="toolbarPinIcon">@drawable/ic_toolbar_pin_gray</item>
-        <item name="tabsTheme">@style/Theme.Tablayout</item>
 
         <item name="chat_background_cookies">@drawable/cookies_white</item>
         <item name="chat_background_lines">@drawable/lines_white</item>
@@ -85,27 +80,14 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-
-    <style name="Theme.Title.Toolbar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textSize">20dp</item>
-    </style>
-
-    <style name="Theme.Subtitle.Toolbar" parent="TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
-        <item name="android:textSize">12dp</item>
-    </style>
-
-    <style name="Toolbar.White" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:textColorPrimary">#424242</item>
+    <style name="Theme.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:gravity">center</item>
+        <item name="android:tint">?colorAccent</item>
     </style>
 
     <style name="Theme.Tablayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabRippleColor">#424242</item>
-        <item name="android:background">?colorPrimary</item>
-    </style>
-
-
-    <style name="Theme.Tablayout.Dark" parent="Widget.MaterialComponents.TabLayout">
-        <item name="tabRippleColor">@android:color/white</item>
+        <item name="tabTextColor">?android:textColorPrimary</item>
         <item name="android:background">?colorPrimary</item>
     </style>
 

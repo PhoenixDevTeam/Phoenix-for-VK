@@ -16,7 +16,7 @@
 
         <com.google.android.material.tabs.TabLayout
             app:layout_scrollFlags="scroll|enterAlways"
-            style="?tabsTheme"
+            style="@style/Theme.Tablayout"
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

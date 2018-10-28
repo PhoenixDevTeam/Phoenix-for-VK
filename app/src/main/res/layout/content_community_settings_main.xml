@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:textColor="?attr/textColorPrimary"
+        android:textColor="?android:textColorPrimary"
         android:textSize="24sp"
         android:text="@string/community_options_main_info_title"
         android:layout_width="wrap_content"
@@ -14,7 +14,7 @@
 
     <TextView
         android:labelFor="@+id/name"
-        android:textColor="?attr/textColorSecondary"
+        android:textColor="?android:textColorSecondary"
         android:layout_marginTop="16dp"
         android:text="@string/community_options_name_title"
         android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
 
     <TextView
         android:labelFor="@+id/description"
-        android:textColor="?attr/textColorSecondary"
+        android:textColor="?android:textColorSecondary"
         android:layout_marginTop="16dp"
         android:text="@string/community_options_description_title"
         android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:textColor="?attr/textColorSecondary"
+            android:textColor="?android:textColorSecondary"
             android:text="@string/community_options_type_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -76,7 +76,7 @@
 
     <TextView
         android:labelFor="@+id/link"
-        android:textColor="?attr/textColorSecondary"
+        android:textColor="?android:textColorSecondary"
         android:layout_marginTop="16dp"
         android:text="@string/community_options_link_title"
         android:layout_width="wrap_content"
@@ -92,7 +92,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:textColor="?attr/textColorSecondary"
+            android:textColor="?android:textColorSecondary"
             android:textSize="14sp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"

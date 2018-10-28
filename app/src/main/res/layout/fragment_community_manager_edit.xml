@@ -17,10 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="?toolbarPopupStyle"
-            app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
-            app:theme="?toolbarAppStyle"
-            app:titleTextAppearance="@style/Theme.Title.Toolbar" />
+            app:theme="@style/Theme.Toolbar" />
 
         <RelativeLayout
             android:padding="16dp"
@@ -76,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="end"
-                    android:textColor="?attr/textColorPrimary"
+                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -86,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="end"
-                    android:textColor="?attr/textColorPrimary"
+                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
 
             </LinearLayout>
@@ -116,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/community_choose_access_level_title"
-                    android:textColor="?attr/textColorSecondary" />
+                    android:textColor="?android:textColorSecondary" />
 
                 <RadioGroup
                     android:id="@+id/radio_group_roles"
@@ -137,7 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/community_moderator_desc"
-                        android:textColor="?attr/textColorSecondary" />
+                        android:textColor="?android:textColorSecondary" />
 
                     <RadioButton
                         android:id="@+id/button_editor"
@@ -151,7 +148,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/community_editor_desc"
-                        android:textColor="?attr/textColorSecondary" />
+                        android:textColor="?android:textColorSecondary" />
 
                     <RadioButton
                         android:id="@+id/button_admin"
@@ -165,7 +162,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/community_administrator_desc"
-                        android:textColor="?attr/textColorSecondary" />
+                        android:textColor="?android:textColorSecondary" />
 
                 </RadioGroup>
 
@@ -189,7 +186,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/community_creator_desc"
-                        android:textColor="?attr/textColorSecondary" />
+                        android:textColor="?android:textColorSecondary" />
 
                 </RadioGroup>
 
@@ -223,7 +220,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/community_manager_position"
-                        android:textColor="?attr/textColorSecondary" />
+                        android:textColor="?android:textColorSecondary" />
 
                     <EditText
                         android:id="@+id/community_manager_positon"
@@ -241,7 +238,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/community_manager_email"
-                        android:textColor="?attr/textColorSecondary" />
+                        android:textColor="?android:textColorSecondary" />
 
                     <EditText
                         android:id="@+id/community_manager_email"
@@ -259,7 +256,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/community_manager_phone"
-                        android:textColor="?attr/textColorSecondary" />
+                        android:textColor="?android:textColorSecondary" />
 
                     <EditText
                         android:id="@+id/community_manager_phone"

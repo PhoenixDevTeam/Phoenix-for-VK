@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/title"
-        android:textColor="?attr/textColorPrimary"
+        android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/font_size_title"
         android:text="City title"
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/area"
-        android:textColor="?attr/textColorSecondary"
+        android:textColor="?android:textColorSecondary"
         android:textSize="@dimen/font_size_additional"
         android:text="Area"
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
 
     <TextView
         android:id="@+id/region"
-        android:textColor="?attr/textColorSecondary"
+        android:textColor="?android:textColorSecondary"
         android:textSize="@dimen/font_size_additional"
         android:text="Region"
         android:layout_width="match_parent"

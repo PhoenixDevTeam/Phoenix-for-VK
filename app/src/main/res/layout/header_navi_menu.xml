@@ -63,7 +63,6 @@
                 android:id="@+id/header_navi_menu_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:text="User name"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/font_size_title" />
@@ -72,8 +71,6 @@
                 android:id="@+id/header_navi_menu_usernick"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:fontFamily="sans-serif"
                 android:text="\@nick"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/font_size_subtitle" />

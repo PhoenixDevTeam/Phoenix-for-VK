@@ -8,7 +8,7 @@
 
     <TextView
         android:text="@string/who_is_allowed_to_comment_photos"
-        android:textColor="?attr/textColorPrimary"
+        android:textColor="?android:textColorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -20,7 +20,7 @@
 
     <TextView
         android:text="@string/who_is_not_allowed_to_comment_this_album"
-        android:textColor="?attr/textColorPrimary"
+        android:textColor="?android:textColorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

@@ -61,7 +61,7 @@
                 android:id="@+id/fragment_user_profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/textColorPrimary"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_title"
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end" />
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:textColor="?attr/textColorPrimary"
+                android:textColor="?android:textColorPrimary"
                 android:fontFamily="@font/open_sans_light"
                 android:textSize="@dimen/font_size_subtitle" />
 
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:layout_marginTop="8dp"
-                android:textColor="?attr/textColorPrimary"
+                android:textColor="?android:textColorPrimary"
                 android:fontFamily="@font/open_sans_light"
                 android:textSize="@dimen/font_size_subtitle" />
 
@@ -95,7 +95,7 @@
                 android:gravity="end"
                 android:maxLines="6"
                 android:fontFamily="@font/open_sans_light"
-                android:textColor="?attr/textColorPrimary"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
                 android:visibility="visible"
                 emojicon:emojiconSize="20sp"/>

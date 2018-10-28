@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:popupTheme="?toolbarPopupStyle"
-    app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
-    app:theme="?toolbarAppStyle"
-    app:titleTextAppearance="@style/Theme.Title.Toolbar"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent" />
+    android:background="@android:color/transparent"
+    app:theme="@style/Theme.Toolbar" />

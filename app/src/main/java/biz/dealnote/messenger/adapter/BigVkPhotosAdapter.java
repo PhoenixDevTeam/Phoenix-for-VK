@@ -123,12 +123,10 @@ public class BigVkPhotosAdapter extends DifferentDataAdapter {
         Photo photo = photoWrapper.getPhoto();
 
         holder.tvLike.setText(AppTextUtils.getCounterWithK(photo.getLikesCount()));
-        holder.tvLike.setTextColor(CurrentTheme.getPrimaryTextColorCode(mContext));
         holder.tvLike.setVisibility(photo.getLikesCount() > 0 ? View.VISIBLE : View.GONE);
         holder.ivLike.setVisibility(photo.getLikesCount() > 0 ? View.VISIBLE : View.GONE);
 
         holder.tvComment.setText(AppTextUtils.getCounterWithK(photo.getCommentsCount()));
-        holder.tvComment.setTextColor(CurrentTheme.getPrimaryTextColorCode(mContext));
         holder.tvComment.setVisibility(photo.getCommentsCount() > 0 ? View.VISIBLE : View.GONE);
         holder.ivComment.setVisibility(photo.getCommentsCount() > 0 ? View.VISIBLE : View.GONE);
 

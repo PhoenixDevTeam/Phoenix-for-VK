@@ -32,7 +32,7 @@
                 android:textSize="@dimen/pincode_button_subtitle_text_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/textColorSecondary" />
+                android:textColor="?android:textColorSecondary" />
 
         </LinearLayout>
 

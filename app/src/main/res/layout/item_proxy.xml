@@ -44,11 +44,11 @@
                             android:layout_height="wrap_content"
                             android:labelFor="@+id/address"
                             android:text="@string/proxy_address_helper_text"
-                            android:textColor="?attr/textColorSecondary" />
+                            android:textColor="?android:textColorSecondary" />
 
                         <TextView
                             tools:text="10.0.0.1"
-                            android:textColor="?textColorPrimary"
+                            android:textColor="?android:textColorPrimary"
                             android:id="@+id/address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -69,11 +69,11 @@
                             android:layout_height="wrap_content"
                             android:labelFor="@+id/port"
                             android:text="@string/proxy_port_helper_text"
-                            android:textColor="?attr/textColorSecondary" />
+                            android:textColor="?android:textColorSecondary" />
 
                         <TextView
                             tools:text="3128"
-                            android:textColor="?textColorPrimary"
+                            android:textColor="?android:textColorPrimary"
                             android:id="@+id/port"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -102,10 +102,10 @@
                             android:layout_height="wrap_content"
                             android:labelFor="@+id/username"
                             android:text="@string/proxy_username_helper_text"
-                            android:textColor="?attr/textColorSecondary" />
+                            android:textColor="?android:textColorSecondary" />
 
                         <TextView
-                            android:textColor="?textColorPrimary"
+                            android:textColor="?android:textColorPrimary"
                             tools:text="dealnotedev"
                             android:id="@+id/username"
                             android:layout_width="match_parent"
@@ -127,10 +127,10 @@
                             android:layout_height="wrap_content"
                             android:labelFor="@+id/password"
                             android:text="@string/proxy_password_helper_text"
-                            android:textColor="?attr/textColorSecondary" />
+                            android:textColor="?android:textColorSecondary" />
 
                         <TextView
-                            android:textColor="?textColorPrimary"
+                            android:textColor="?android:textColorPrimary"
                             tools:text="******"
                             android:id="@+id/password"
                             android:layout_width="match_parent"

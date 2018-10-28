@@ -38,7 +38,7 @@
                     android:layout_toLeftOf="@+id/button_disable_postpone"
                     android:padding="8dp"
                     android:text="@string/will_be_post_at"
-                    android:textColor="?textColorSecondary"
+                    android:textColor="?android:textColorSecondary"
                     android:textSize="14sp" />
 
                 <ImageView
@@ -79,8 +79,8 @@
             android:inputType="textCapSentences|textMultiLine|textLongMessage"
             android:minHeight="140dp"
             android:padding="16dp"
-            android:textColor="?textColorPrimary"
-            android:textColorHint="?textColorSecondary"
+            android:textColor="?android:textColorPrimary"
+            android:textColorHint="?android:textColorSecondary"
             android:textSize="16sp"
             app:emojiconSize="20sp" />
 

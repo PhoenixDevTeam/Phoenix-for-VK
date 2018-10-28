@@ -17,10 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="?toolbarPopupStyle"
-            app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
-            app:theme="?toolbarAppStyle"
-            app:titleTextAppearance="@style/Theme.Title.Toolbar" />
+            app:theme="@style/Theme.Toolbar" />
 
         <RelativeLayout
             android:padding="16dp"
@@ -76,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="end"
-                    android:textColor="?attr/textColorPrimary"
+                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -86,11 +83,11 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="end"
-                    android:textColor="?attr/textColorPrimary"
+                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
 
                 <TextView
-                    android:textColorLink="?attr/textColorPrimary"
+                    android:textColor="?android:textColorPrimary"
                     tools:text="Заблокирован Русланом Колбасой 20 мая 2017 в 16:13"
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
@@ -98,7 +95,7 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-light"
                     android:gravity="end"
-                    android:textColor="?attr/textColorPrimary"
+                    android:textColorLink="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
 
             </LinearLayout>
@@ -123,39 +120,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/community_ban_block_for_title"
-                android:textColor="?attr/textColorSecondary" />
+                android:textColor="?android:textColorSecondary" />
 
             <biz.dealnote.messenger.view.MySpinnerView
                 android:id="@+id/spinner_block_for"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:spinner_hint_color="?attr/textColorSecondary"
+                app:spinner_hint_color="?android:textColorSecondary"
                 app:spinner_icon_color="?attr/colorAccent"
-                app:spinner_text_color="?attr/textColorPrimary" />
+                app:spinner_text_color="?android:textColorPrimary" />
 
             <TextView
                 android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/community_ban_reason_title"
-                android:textColor="?attr/textColorSecondary" />
+                android:textColor="?android:textColorSecondary" />
 
             <biz.dealnote.messenger.view.MySpinnerView
                 android:id="@+id/spinner_reason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:spinner_hint_color="?attr/textColorSecondary"
+                app:spinner_hint_color="?android:textColorSecondary"
                 app:spinner_icon_color="?attr/colorAccent"
-                app:spinner_text_color="?attr/textColorPrimary" />
+                app:spinner_text_color="?android:textColorPrimary" />
 
             <TextView
                 android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/community_ban_comment_title"
-                android:textColor="?attr/textColorSecondary" />
+                android:textColor="?android:textColorSecondary" />
 
             <EditText
                 android:id="@+id/community_ban_comment"

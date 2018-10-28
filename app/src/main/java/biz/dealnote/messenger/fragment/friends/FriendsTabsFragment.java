@@ -108,7 +108,7 @@ public class FriendsTabsFragment extends BaseMvpFragment<FriendsTabsPresenter, I
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(), true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

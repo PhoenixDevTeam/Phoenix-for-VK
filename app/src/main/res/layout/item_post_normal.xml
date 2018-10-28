@@ -36,7 +36,7 @@
                 android:paddingBottom="8dp"
                 android:text="@string/post_is_pinned"
                 android:textAllCaps="true"
-                android:textColor="?attr/textColorSecondary"
+                android:textColor="?android:textColorSecondary"
                 android:textSize="@dimen/font_size_additional" />
 
             <include layout="@layout/line_divider" />

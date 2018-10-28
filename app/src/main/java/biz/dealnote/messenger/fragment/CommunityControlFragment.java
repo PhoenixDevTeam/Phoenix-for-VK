@@ -25,7 +25,6 @@ import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.GroupSettings;
-import biz.dealnote.messenger.settings.CurrentTheme;
 
 /**
  * Created by admin on 13.06.2017.
@@ -75,11 +74,6 @@ public class CommunityControlFragment extends Fragment {
         pager.setAdapter(new Adapter(tabs, getChildFragmentManager()));
 
         TabLayout tabLayout = root.findViewById(R.id.tablayout);
-
-        int tabColorPrimary = CurrentTheme.getPrimaryTextColorCode(getActivity());
-        int tabColorSecondary = CurrentTheme.getSecondaryTextColorCode(getActivity());
-
-        tabLayout.setTabTextColors(tabColorSecondary, tabColorPrimary);
         tabLayout.setupWithViewPager(pager);
         return root;
     }

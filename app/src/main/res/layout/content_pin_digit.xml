@@ -12,12 +12,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/circle_vector"
-        android:tint="?attr/textColorPrimary" />
+        android:tint="?android:textColorPrimary" />
 
     <View
         android:layout_width="42dp"
         android:layout_height="2dp"
         android:layout_marginTop="12dp"
-        android:background="?attr/textColorPrimary" />
+        android:background="?android:textColorPrimary" />
 
 </LinearLayout>

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/community_options_additional_info_title"
-        android:textColor="?attr/textColorPrimary"
+        android:textColor="?android:textColorPrimary"
         android:textSize="24sp" />
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/community_options_category_title"
-            android:textColor="?attr/textColorSecondary" />
+            android:textColor="?android:textColorSecondary" />
 
         <biz.dealnote.messenger.view.MySpinnerView
             android:id="@+id/spinner_category"
@@ -32,9 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:spinner_hint="@string/select_category_hint"
-            app:spinner_hint_color="?attr/textColorSecondary"
+            app:spinner_hint_color="?android:textColorSecondary"
             app:spinner_icon_color="?attr/colorAccent"
-            app:spinner_text_color="?attr/textColorPrimary" />
+            app:spinner_text_color="?android:textColorPrimary" />
 
     </LinearLayout>
 
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/community_options_community_subject_title"
-            android:textColor="?attr/textColorSecondary" />
+            android:textColor="?android:textColorSecondary" />
 
         <biz.dealnote.messenger.view.MySpinnerView
             android:id="@+id/subject_0"
@@ -56,9 +56,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:spinner_hint="@string/select_category_hint"
-            app:spinner_hint_color="?attr/textColorSecondary"
+            app:spinner_hint_color="?android:textColorSecondary"
             app:spinner_icon_color="?attr/colorAccent"
-            app:spinner_text_color="?attr/textColorPrimary" />
+            app:spinner_text_color="?android:textColorPrimary" />
 
         <biz.dealnote.messenger.view.MySpinnerView
             android:id="@+id/subject_1"
@@ -66,9 +66,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:spinner_hint="@string/select_category_hint"
-            app:spinner_hint_color="?attr/textColorSecondary"
+            app:spinner_hint_color="?android:textColorSecondary"
             app:spinner_icon_color="?attr/colorAccent"
-            app:spinner_text_color="?attr/textColorPrimary" />
+            app:spinner_text_color="?android:textColorPrimary" />
 
     </LinearLayout>
 
@@ -78,7 +78,7 @@
         android:layout_marginTop="16dp"
         android:labelFor="@+id/link"
         android:text="@string/community_options_age_restrictions_title"
-        android:textColor="?attr/textColorSecondary" />
+        android:textColor="?android:textColorSecondary" />
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -109,7 +109,7 @@
         android:layout_marginTop="16dp"
         android:labelFor="@+id/website"
         android:text="@string/community_options_website_title"
-        android:textColor="?attr/textColorSecondary" />
+        android:textColor="?android:textColorSecondary" />
 
     <EditText
         android:id="@+id/website"
@@ -134,7 +134,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@+id/link"
             android:text="@string/community_options_date_created_title"
-            android:textColor="?attr/textColorSecondary" />
+            android:textColor="?android:textColorSecondary" />
 
         <TextView
             android:id="@+id/day"

@@ -6,7 +6,4 @@
     android:layout_height="?attr/actionBarSize"
     android:background="@drawable/toolbar_semitransparent"
     android:clipToPadding="true"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-    app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
-    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    app:titleTextAppearance="@style/Theme.Title.Toolbar" />
+    app:theme="@style/Widget.MaterialComponents.Toolbar" />

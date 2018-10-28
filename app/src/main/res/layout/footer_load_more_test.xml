@@ -13,7 +13,7 @@
         android:gravity="center"
         android:text="@string/load_more"
         android:textAllCaps="true"
-        android:textColor="?attr/colorPrimary" />
+        android:textColor="?colorAccent" />
 
     <ProgressBar
         android:id="@+id/footer_load_more_progress"

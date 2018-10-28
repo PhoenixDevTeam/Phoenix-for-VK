@@ -12,7 +12,7 @@
         <include layout="@layout/toolbar" />
 
         <com.google.android.material.tabs.TabLayout
-            style="?attr/tabsTheme"
+            style="@style/Theme.Tablayout"
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

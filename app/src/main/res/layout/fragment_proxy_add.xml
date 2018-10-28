@@ -49,7 +49,7 @@
                                 android:layout_height="wrap_content"
                                 android:labelFor="@+id/address"
                                 android:text="@string/proxy_address_helper_text"
-                                android:textColor="?attr/textColorSecondary" />
+                                android:textColor="?android:textColorSecondary" />
 
                             <EditText
                                 android:hint="@string/phoxy_address_hint"
@@ -76,7 +76,7 @@
                                 android:layout_height="wrap_content"
                                 android:labelFor="@+id/port"
                                 android:text="@string/proxy_port_helper_text"
-                                android:textColor="?attr/textColorSecondary" />
+                                android:textColor="?android:textColorSecondary" />
 
                             <EditText
                                 android:hint="@string/phoxy_port_hint"
@@ -118,7 +118,7 @@
                                 android:layout_height="wrap_content"
                                 android:labelFor="@+id/username"
                                 android:text="@string/proxy_username_helper_text"
-                                android:textColor="?attr/textColorSecondary" />
+                                android:textColor="?android:textColorSecondary" />
 
                             <EditText
                                 android:hint="@string/phoxy_username_hint"
@@ -145,7 +145,7 @@
                                 android:layout_height="wrap_content"
                                 android:labelFor="@+id/password"
                                 android:text="@string/proxy_password_helper_text"
-                                android:textColor="?attr/textColorSecondary" />
+                                android:textColor="?android:textColorSecondary" />
 
                             <EditText
                                 android:hint="@string/phoxy_pass_hint"

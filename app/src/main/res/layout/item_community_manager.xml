@@ -46,14 +46,14 @@
             android:textSize="18sp"
             tools:text="Ruslan Kolbasa"
             android:id="@+id/name"
-            android:textColor="?attr/textColorPrimary"
+            android:textColor="?android:textColorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
             tools:text="Moderator"
             android:id="@+id/role"
-            android:textColor="?attr/textColorSecondary"
+            android:textColor="?android:textColorSecondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

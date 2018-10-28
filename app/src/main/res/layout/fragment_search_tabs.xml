@@ -16,15 +16,15 @@
             android:id="@+id/searchview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"/>
+            app:layout_scrollFlags="scroll|enterAlways" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tablayout"
-            style="?tabsTheme"
+            style="@style/Theme.Tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:tabMode="scrollable"/>
+            app:tabMode="scrollable" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -33,6 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?android:colorBackground"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

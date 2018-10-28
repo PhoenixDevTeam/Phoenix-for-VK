@@ -57,12 +57,6 @@
 
     <attr name="oval_avatar_background" format="reference" />
 
-    <attr name="textColorPrimary" format="color" />
-    <attr name="textColorSecondary" format="color" />
-    <attr name="textColorDisabled" format="color" />
-
-    <attr name="toolbarAppStyle" format="reference" />
-    <attr name="toolbarPopupStyle" format="reference" />
     <attr name="toolbarDrawerIcon" format="reference" />
     <attr name="toolbarBackIcon" format="reference" />
     <attr name="toolbarCloseIcon" format="reference" />
@@ -83,7 +77,6 @@
     <attr name="toolbarDoubleDownIcon" format="reference" />
     <attr name="toolbarPinIcon" format="reference" />
     <attr name="statusbarNonColoredColor" format="color" />
-    <attr name="tabsTheme" format="reference" />
 
     <!-- QuickReply-->
     <attr name="quick_reply_primary_color" format="color" />

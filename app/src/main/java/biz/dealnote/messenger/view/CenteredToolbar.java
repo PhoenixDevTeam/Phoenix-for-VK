@@ -52,7 +52,7 @@ public class CenteredToolbar extends Toolbar {
 
     @Override
     public void setSubtitle(CharSequence subtitle) {
-        //tvSubtitle.setVisibility(VISIBLE);
+        tvSubtitle.setVisibility(VISIBLE);
         tvSubtitle.setText(subtitle);
     }
 

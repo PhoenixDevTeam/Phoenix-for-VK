@@ -14,7 +14,7 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tablayout"
-            style="?tabsTheme"
+            style="@style/Theme.Tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

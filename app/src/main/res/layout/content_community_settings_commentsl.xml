@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:textColor="?attr/textColorPrimary"
+        android:textColor="?android:textColorPrimary"
         android:textSize="24sp"
         android:text="@string/community_options_comments_title"
         android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:textColor="?attr/textColorSecondary"
+            android:textColor="?android:textColorSecondary"
             android:text="@string/community_options_feedback_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -35,7 +35,7 @@
     </LinearLayout>
 
     <TextView
-        android:textColor="?attr/textColorSecondary"
+        android:textColor="?android:textColorSecondary"
         android:text="@string/community_options_comments_filter_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

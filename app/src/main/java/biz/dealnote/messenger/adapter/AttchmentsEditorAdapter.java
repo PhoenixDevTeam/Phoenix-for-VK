@@ -27,7 +27,6 @@ import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.Video;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.view.CircleRoadProgress;
 
@@ -42,14 +41,12 @@ public class AttchmentsEditorAdapter extends RecyclerBindableAdapter<AttachmenEn
 
     private Context context;
     private Callback callback;
-    private int nonErrorTextColor;
     private final SharedHolders<ViewHolder> sharedHolders;
 
     public AttchmentsEditorAdapter(Context context, List<AttachmenEntry> items, Callback callback) {
         super(items);
         this.context = context;
         this.callback = callback;
-        this.nonErrorTextColor = CurrentTheme.getPrimaryTextColorCode(context);
         this.sharedHolders = new SharedHolders<>(false);
     }
 
@@ -146,6 +143,7 @@ public class AttchmentsEditorAdapter extends RecyclerBindableAdapter<AttachmenEn
         holder.pbProgress.setVisibility(upload.getStatus() == Upload.STATUS_UPLOADING ? View.VISIBLE : View.GONE);
         holder.vTint.setVisibility(View.VISIBLE);
 
+        int nonErrorTextColor = holder.tvTitle.getTextColors().getDefaultColor();
         switch (upload.getStatus()) {
             case Upload.STATUS_ERROR:
                 holder.tvTitle.setText(R.string.error);

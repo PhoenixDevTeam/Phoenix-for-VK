@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.holder.IdentificableHolder;
 import biz.dealnote.messenger.adapter.holder.SharedHolders;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.view.CircleRoadProgress;
 
@@ -34,14 +33,10 @@ public class DocsUploadAdapter extends RecyclerView.Adapter<DocsUploadAdapter.Ho
 
     private final ActionListener actionListener;
 
-    @ColorInt
-    private final int nonErrorTextColor;
-
     public DocsUploadAdapter(Context context, List<Upload> data, ActionListener actionListener) {
         this.data = data;
         this.actionListener = actionListener;
         this.sharedHolders = new SharedHolders<>(false);
-        this.nonErrorTextColor = CurrentTheme.getPrimaryTextColorCode(context);
     }
 
     @Override
@@ -67,7 +62,7 @@ public class DocsUploadAdapter extends RecyclerView.Adapter<DocsUploadAdapter.Ho
         }
 
         @ColorInt
-        int titleColor = nonErrorTextColor;
+        int titleColor = holder.status.getTextColors().getDefaultColor();
 
         switch (upload.getStatus()) {
             case Upload.STATUS_UPLOADING:

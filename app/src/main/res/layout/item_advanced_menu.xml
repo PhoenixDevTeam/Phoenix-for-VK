@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -19,14 +18,13 @@
 
         <ImageView
             android:layout_marginEnd="12dp"
-            android:layout_marginRight="12dp"
             android:src="@drawable/video"
             android:id="@+id/header_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:textColor="?attr/textColorPrimary"
+            android:textColor="?android:textColorPrimary"
             android:textSize="18sp"
             tools:text="Example"
             android:id="@+id/header_text"
@@ -52,10 +50,9 @@
             android:layout_width="16dp"
             android:layout_height="16dp" />
 
-        <biz.dealnote.messenger.view.ColorFilterImageView
-            app:filter_color="?attr/icon_color_active"
+        <ImageView
+            android:tint="?attr/icon_color_active"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:src="@drawable/video"
             android:id="@+id/item_icon"
             android:layout_width="24dp"
@@ -67,7 +64,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:textColor="?attr/textColorSecondary"
+                android:textColor="?android:textColorSecondary"
                 android:textSize="14sp"
                 tools:text="Example"
                 android:id="@+id/item_title"
@@ -76,7 +73,7 @@
 
             <TextView
                 android:autoLink="all"
-                android:textColor="?attr/textColorPrimary"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="14sp"
                 tools:text="Example"
                 android:id="@+id/item_subtitle"

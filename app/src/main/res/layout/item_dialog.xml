@@ -90,7 +90,7 @@
                 android:gravity="start"
                 android:maxLines="3"
                 android:text="Message"
-                android:textColor="?textColorSecondary"
+                android:textColor="?android:textColorSecondary"
                 android:textSize="@dimen/font_size_subtitle"
                 app:emojiconSize="20sp" />
 

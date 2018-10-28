@@ -38,7 +38,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/request_params_title"
-                        android:textColor="?attr/textColorPrimary"
+                        android:textColor="?android:textColorPrimary"
                         android:textSize="24sp" />
 
                     <TextView
@@ -47,7 +47,7 @@
                         android:layout_marginTop="16dp"
                         android:labelFor="@+id/method"
                         android:text="@string/request_method_title"
-                        android:textColor="?attr/textColorSecondary" />
+                        android:textColor="?android:textColorSecondary" />
 
                     <EditText
                         android:id="@+id/method"
@@ -67,7 +67,7 @@
                         android:layout_marginTop="16dp"
                         android:labelFor="@+id/body"
                         android:text="@string/request_body_title"
-                        android:textColor="?attr/textColorSecondary" />
+                        android:textColor="?android:textColorSecondary" />
 
                     <EditText
                         android:id="@+id/body"
@@ -125,7 +125,7 @@
                             android:layout_toLeftOf="@+id/buttons"
                             android:layout_toStartOf="@+id/buttons"
                             android:text="@string/request_response_title"
-                            android:textColor="?attr/textColorPrimary"
+                            android:textColor="?android:textColorPrimary"
                             android:textSize="24sp" />
 
                         <LinearLayout

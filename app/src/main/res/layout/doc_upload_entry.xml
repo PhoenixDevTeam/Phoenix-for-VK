@@ -64,7 +64,7 @@
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="?textColorPrimary"
+                    android:textColor="?android:textColorPrimary"
                     android:textSize="14sp"
                     tools:text="Doc title" />
 
@@ -73,7 +73,7 @@
                     android:id="@+id/status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="?textColorSecondary"
+                    android:textColor="?android:textColorSecondary"
                     android:textSize="12sp"
                     tools:text="Upload status" />
 

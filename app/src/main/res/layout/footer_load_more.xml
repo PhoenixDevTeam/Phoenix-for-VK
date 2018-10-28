@@ -16,7 +16,7 @@
         android:paddingEnd="16dp"
         android:text="@string/load_more"
         android:textAllCaps="true"
-        android:textColor="#009688"
+        android:textColor="?colorAccent"
         android:textSize="@dimen/font_size_subtitle" />
 
     <ProgressBar

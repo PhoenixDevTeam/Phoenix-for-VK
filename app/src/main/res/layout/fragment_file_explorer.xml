@@ -18,7 +18,7 @@
         android:layout_centerInParent="true"
         android:padding="16dp"
         android:text="@string/directory_is_empty"
-        android:textColor="?attr/textColorPrimary" />
+        android:textColor="?android:textColorPrimary" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout3"

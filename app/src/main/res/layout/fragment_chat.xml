@@ -22,21 +22,18 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 android:clipToPadding="true"
-                app:popupTheme="?toolbarPopupStyle"
-                app:subtitleTextAppearance="@style/Theme.Subtitle.Toolbar"
-                app:theme="?toolbarAppStyle"
-                app:titleTextAppearance="@style/Theme.Title.Toolbar" />
+                app:theme="@style/Theme.Toolbar" />
 
         </RelativeLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:layout_below="@+id/appbar"
         android:id="@+id/pinned_root_view"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appbar"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -69,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
-                    android:textColor="?attr/textColorPrimary"
+                    android:textColor="?android:textColorPrimary"
                     android:textSize="14sp"
                     tools:text="Artem Kolbasa" />
 
@@ -78,14 +75,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
-                    tools:text="Hi! How are you?"
-                    android:textColor="?attr/textColorSecondary"
-                    android:textSize="12sp" />
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="12sp"
+                    tools:text="Hi! How are you?" />
 
             </LinearLayout>
 
             <biz.dealnote.messenger.view.ColorFilterImageView
-                app:filter_color="?attr/icon_color_static"
                 android:id="@+id/buttonUnpin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -94,14 +90,15 @@
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
-                android:src="?attr/toolbarCloseIcon" />
+                android:src="?attr/toolbarCloseIcon"
+                app:filter_color="?attr/icon_color_static" />
 
         </RelativeLayout>
 
         <View
-            android:background="?attr/dividerColor"
             android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp"
+            android:background="?attr/dividerColor" />
 
     </LinearLayout>
 
@@ -125,70 +122,70 @@
 
         <RelativeLayout
             android:id="@+id/editMessageGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="?message_bubble_color"
             android:paddingStart="4dp"
-            android:paddingEnd="4dp"
             android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingEnd="4dp"
+            android:paddingBottom="8dp">
 
             <biz.dealnote.messenger.view.ColorFilterImageView
-                android:layout_centerVertical="true"
                 android:id="@+id/iconEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:filter_color="?attr/icon_color_static"
                 android:padding="8dp"
                 android:src="@drawable/pencil"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                app:filter_color="?attr/icon_color_static" />
 
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_toEndOf="@+id/iconEdit"
-                android:layout_toRightOf="@+id/iconEdit"
                 android:layout_toStartOf="@+id/buttonCancelEditing"
                 android:layout_toLeftOf="@+id/buttonCancelEditing"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_toEndOf="@+id/iconEdit"
+                android:layout_toRightOf="@+id/iconEdit"
+                android:orientation="vertical">
 
                 <TextView
-                    android:text="@string/edit_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
-                    android:textColor="?attr/textColorPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:text="@string/edit_message"
+                    android:textColor="?android:textColorPrimary" />
 
                 <TextView
-                    android:maxLines="1"
                     android:id="@+id/editMessageText"
-                    tools:text="Hi! How are you?"
-                    android:textColor="?attr/textColorSecondary"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="?android:textColorSecondary"
+                    tools:text="Hi! How are you?" />
 
             </LinearLayout>
 
             <biz.dealnote.messenger.view.ColorFilterImageView
                 android:id="@+id/buttonCancelEditing"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                app:filter_color="?attr/icon_color_static"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
                 android:src="@drawable/close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                app:filter_color="?attr/icon_color_static" />
 
         </RelativeLayout>
 
         <View
-            android:background="?attr/dividerColor"
             android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp"
+            android:background="?attr/dividerColor" />
 
         <include
             layout="@layout/fragment_input"

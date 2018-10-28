@@ -31,7 +31,7 @@ public class MenuListAdapter extends RecyclerBindableAdapter<AbsDrawerItem, Recy
 
     public MenuListAdapter(@NonNull Context context, @NonNull List<AbsDrawerItem> pageItems, @NonNull ActionListener actionListener) {
         super(pageItems);
-        this.unselectedTextColor = CurrentTheme.getColorFromAttrs(R.attr.textColorPrimary, context, "#000000");
+        this.unselectedTextColor = CurrentTheme.getPrimaryTextColorCode(context);
         this.activeColor = CurrentTheme.getIconColorActive(context);
         this.unselectedIconColor = CurrentTheme.getIconColorStatic(context);
         this.transformation = CurrentTheme.createTransformationForAvatar(context);

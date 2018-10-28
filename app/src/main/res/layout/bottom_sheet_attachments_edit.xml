@@ -45,7 +45,7 @@
                 android:gravity="center"
                 android:maxWidth="200dp"
                 android:text="@string/message_attachment_empty_text"
-                android:textColor="?attr/textColorPrimary"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -100,7 +100,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
             android:src="@drawable/ic_arrow_down_vector"
-            android:tint="?attr/textColorPrimary" />
+            android:tint="?android:textColorPrimary" />
 
         <Button
             android:id="@+id/buttonSave"
@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/save"
-            android:textColor="?attr/textColorPrimary" />
+            android:textColor="?android:textColorPrimary" />
     </LinearLayout>
 
 </LinearLayout>

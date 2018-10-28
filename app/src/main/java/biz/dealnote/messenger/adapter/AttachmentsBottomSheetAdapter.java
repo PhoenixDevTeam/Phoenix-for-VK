@@ -26,7 +26,6 @@ import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.model.Post;
 import biz.dealnote.messenger.model.Video;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.view.CircleRoadProgress;
 
@@ -46,16 +45,12 @@ public class AttachmentsBottomSheetAdapter extends RecyclerView.Adapter<Recycler
     private final List<AttachmenEntry> data;
     private final ActionListener actionListener;
     private SharedHolders<EntryHolder> holders;
-
-    @ColorInt
-    private int nonErrorTextColor;
     private int nextHolderId;
 
     public AttachmentsBottomSheetAdapter(Context context, List<AttachmenEntry> data, ActionListener actionListener) {
         this.data = data;
         this.actionListener = actionListener;
         this.holders = new SharedHolders<>(false);
-        this.nonErrorTextColor = CurrentTheme.getPrimaryTextColorCode(context);
     }
 
     @NonNull
@@ -175,7 +170,7 @@ public class AttachmentsBottomSheetAdapter extends RecyclerView.Adapter<Recycler
         }
 
         @ColorInt
-        int titleColor = nonErrorTextColor;
+        int titleColor = holder.title.getTextColors().getDefaultColor();
 
         switch (upload.getStatus()) {
             case Upload.STATUS_UPLOADING:

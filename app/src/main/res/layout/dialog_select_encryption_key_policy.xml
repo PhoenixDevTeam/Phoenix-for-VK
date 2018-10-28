@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:padding="@dimen/content_medium_margin"
             android:text="@string/store_on_disk"
-            android:textColor="?attr/textColorPrimary"
+            android:textColor="?android:textColorPrimary"
             android:textSize="16sp" />
 
         <TextView
@@ -25,7 +25,7 @@
             android:layout_marginLeft="42dp"
             android:layout_marginStart="42dp"
             android:text="@string/store_on_disk_summary"
-            android:textColor="?attr/textColorSecondary" />
+            android:textColor="?android:textColorSecondary" />
 
         <RadioButton
             android:id="@+id/button_in_ram"
@@ -33,7 +33,7 @@
             android:layout_height="match_parent"
             android:padding="@dimen/content_medium_margin"
             android:text="@string/store_in_ram"
-            android:textColor="?attr/textColorPrimary"
+            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_title" />
 
         <TextView
@@ -42,7 +42,7 @@
             android:layout_marginLeft="42dp"
             android:layout_marginStart="42dp"
             android:text="@string/store_in_ram_summary"
-            android:textColor="?attr/textColorSecondary" />
+            android:textColor="?android:textColorSecondary" />
 
     </RadioGroup>
 

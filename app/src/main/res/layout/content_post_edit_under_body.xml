@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="@string/for_friends_only"
-        android:textColor="?textColorSecondary" />
+        android:textColor="?android:textColorSecondary" />
 
     <CheckBox
         android:id="@+id/check_from_group"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="@string/post_from_group"
-        android:textColor="?textColorSecondary" />
+        android:textColor="?android:textColorSecondary" />
 
     <CheckBox
         android:id="@+id/check_show_author"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="@string/add_signature"
-        android:textColor="?textColorSecondary" />
+        android:textColor="?android:textColorSecondary" />
 
     <LinearLayout
         android:id="@+id/signer_root"
@@ -43,7 +43,7 @@
             android:layout_height="24dp" />
 
         <TextView
-            android:textColor="?textColorSecondary"
+            android:textColor="?android:textColorSecondary"
             android:textStyle="italic"
             android:id="@+id/signer_name"
             android:layout_width="wrap_content"

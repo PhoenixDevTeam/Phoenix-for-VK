@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/content_large_margin"
             android:text="@string/encryption_terms_of_use"
-            android:textColor="?attr/textColorPrimary"
+            android:textColor="?android:textColorPrimary"
             android:textIsSelectable="true" />
 
     </ScrollView>

@@ -85,7 +85,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:src="@drawable/play"
-                                    app:filter_color="?attr/textColorPrimary" />
+                                    app:filter_color="?android:textColorPrimary" />
 
                             </FrameLayout>
 
