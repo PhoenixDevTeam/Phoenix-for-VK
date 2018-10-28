@@ -67,9 +67,15 @@ public class MessageUpdate {
     public static class DeleteUpdate {
 
         private final boolean deleted;
+        private final boolean deletedForAll;
 
-        public DeleteUpdate(boolean deleted) {
+        public DeleteUpdate(boolean deleted, boolean deletedForAll) {
             this.deleted = deleted;
+            this.deletedForAll = deletedForAll;
+        }
+
+        public boolean isDeletedForAll() {
+            return deletedForAll;
         }
 
         public boolean isDeleted() {

@@ -133,6 +133,7 @@ public class VKApiMessage {
     public static final int FLAG_FIXED = 256; //сообщение проверено пользователем на спам
     public static final int FLAG_MEDIA = 512; //сообщение содержит медиаконтент
     public static final int FLAG_GROUP_CHAT = 8192;    //беседа
+    public static final int FLAG_DELETED_FOR_ALL = 131072; //флаг для сообщений, удаленных для получателей
 
     public boolean isGroupChat() {
         return peer_id > CHAT_PEER;

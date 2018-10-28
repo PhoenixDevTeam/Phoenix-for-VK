@@ -59,6 +59,7 @@ public class Model2Entity {
                 .setEncrypted(message.getCryptStatus() != CryptStatus.NO_ENCRYPTION)
                 .setImportant(message.isImportant())
                 .setDeleted(message.isDeleted())
+                .setDeletedForAll(message.isDeletedForAll())
                 .setForwardCount(message.getForwardMessagesCount())
                 .setHasAttachmens(message.isHasAttachments())
                 .setStatus(message.getStatus())

@@ -425,6 +425,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
                 .setHasAttachmens(cursor.getInt(cursor.getColumnIndex(MessageColumns.HAS_ATTACHMENTS)) == 1)
                 .setForwardCount(cursor.getInt(cursor.getColumnIndex(MessageColumns.FORWARD_COUNT)))
                 .setDeleted(cursor.getInt(cursor.getColumnIndex(MessageColumns.DELETED)) == 1)
+                .setDeletedForAll(cursor.getInt(cursor.getColumnIndex(MessageColumns.DELETED_FOR_ALL)) == 1)
                 //.setTitle(cursor.getString(cursor.getColumnIndex(MessageColumns.TITLE)))
                 .setOriginalId(cursor.getInt(cursor.getColumnIndex(MessageColumns.ORIGINAL_ID)))
                 .setImportant(cursor.getInt(cursor.getColumnIndex(MessageColumns.IMPORTANT)) == 1)
@@ -512,8 +513,10 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
             ArrayList<ContentProviderOperation> operations = new ArrayList<>(patches.size());
             for(MessagePatch patch : patches){
                 ContentValues cv = new ContentValues();
+
                 if(patch.getDeletion() != null){
                     cv.put(MessageColumns.DELETED, patch.getDeletion().getDeleted());
+                    cv.put(MessageColumns.DELETED_FOR_ALL, patch.getDeletion().getDeletedForAll());
                 }
 
                 if(patch.getImportant() != null){

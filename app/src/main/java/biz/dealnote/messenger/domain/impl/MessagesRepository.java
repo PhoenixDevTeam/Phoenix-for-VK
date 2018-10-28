@@ -306,7 +306,11 @@ public class MessagesRepository implements IMessagesRepository {
                 MessagePatch patch = new MessagePatch(update.message_id);
 
                 if (hasFlag(update.mask, VKApiMessage.FLAG_DELETED)) {
-                    patch.setDeletion(new MessagePatch.Deletion(true));
+                    patch.setDeletion(new MessagePatch.Deletion(true, false));
+                }
+
+                if(hasFlag(update.mask, VKApiMessage.FLAG_DELETED_FOR_ALL)){
+                    patch.setDeletion(new MessagePatch.Deletion(true, true));
                 }
 
                 if (hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT)) {
@@ -325,7 +329,7 @@ public class MessagesRepository implements IMessagesRepository {
                 MessagePatch patch = new MessagePatch(update.message_id);
 
                 if (hasFlag(update.mask, VKApiMessage.FLAG_DELETED)) {
-                    patch.setDeletion(new MessagePatch.Deletion(false));
+                    patch.setDeletion(new MessagePatch.Deletion(false, false));
                 }
 
                 if (hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT)) {
@@ -1117,7 +1121,7 @@ public class MessagesRepository implements IMessagesRepository {
     }
 
     @Override
-    public Completable deleteMessages(int accountId, int peerId, Collection<Integer> ids) {
+    public Completable deleteMessages(int accountId, int peerId, @NonNull Collection<Integer> ids, @NonNull Collection<Integer> forAll) {
         return networker.vkDefault(accountId)
                 .messages()
                 .delete(ids, null, null)
@@ -1130,7 +1134,7 @@ public class MessagesRepository implements IMessagesRepository {
 
                         if (removed) {
                             MessagePatch patch = new MessagePatch(removedId);
-                            patch.setDeletion(new MessagePatch.Deletion(true));
+                            patch.setDeletion(new MessagePatch.Deletion(true, false));
                             patches.add(patch);
                         }
                     }
@@ -1145,7 +1149,7 @@ public class MessagesRepository implements IMessagesRepository {
         for (MessagePatch patch : patches) {
             MessageUpdate update = new MessageUpdate(accountId, patch.getMessageId());
             if (patch.getDeletion() != null) {
-                update.setDeleteUpdate(new MessageUpdate.DeleteUpdate(patch.getDeletion().getDeleted()));
+                update.setDeleteUpdate(new MessageUpdate.DeleteUpdate(patch.getDeletion().getDeleted(), patch.getDeletion().getDeletedForAll()));
             }
             if (patch.getImportant() != null) {
                 update.setImportantUpdate(new MessageUpdate.ImportantUpdate(patch.getImportant().getImportant()));
@@ -1180,7 +1184,7 @@ public class MessagesRepository implements IMessagesRepository {
                 .restore(messageId)
                 .flatMapCompletable(ignored -> {
                     MessagePatch patch = new MessagePatch(messageId);
-                    patch.setDeletion(new MessagePatch.Deletion(false));
+                    patch.setDeletion(new MessagePatch.Deletion(false, false));
                     return applyMessagesPatchesAndPublish(accountId, Collections.singletonList(patch))
                             .andThen(invalidatePeerMessage(accountId, peerId));
                 });

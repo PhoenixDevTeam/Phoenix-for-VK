@@ -291,6 +291,7 @@ public class Dto2Model {
                 .setHasAttachments(nonNull(message.attachments) && message.attachments.nonEmpty())
                 .setForwardMessagesCount(safeCountOf(message.fwd_messages))
                 .setDeleted(message.deleted)
+                .setDeletedForAll(false) // cant be deleted from api?
                 .setOriginalId(message.id)
                 .setCryptStatus(encrypted ? CryptStatus.ENCRYPTED : CryptStatus.NO_ENCRYPTION)
                 .setImportant(message.important)
@@ -304,8 +305,7 @@ public class Dto2Model {
                 .setSender(owners.getById(message.from_id));
 
         if (message.action_mid != 0) {
-            User actionUser = (User) owners.getById(message.action_mid);
-            appMessage.setActionUser(actionUser);
+            appMessage.setActionUser(owners.getById(message.action_mid));
         }
 
         if (nonNull(message.attachments) && !message.attachments.isEmpty()) {

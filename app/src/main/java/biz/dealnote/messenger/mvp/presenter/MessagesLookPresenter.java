@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -137,7 +138,7 @@ public class MessagesLookPresenter extends AbsMessageListPresenter<IMessagesLook
                 .blockingGet();
 
         if (nonEmpty(ids)) {
-            appendDisposable(messagesInteractor.deleteMessages(accountId, mPeerId, ids)
+            appendDisposable(messagesInteractor.deleteMessages(accountId, mPeerId, ids, Collections.emptyList())
                     .compose(RxUtils.applyCompletableIOToMainSchedulers())
                     .subscribe(() -> onMessagesDeleteSuccessfully(ids), t -> showError(getView(), getCauseIfRuntime(t))));
         }
