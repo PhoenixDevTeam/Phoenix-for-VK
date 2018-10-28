@@ -30,6 +30,7 @@ import biz.dealnote.messenger.adapter.ChatMembersListAdapter;
 import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.fragment.friends.FriendsTabsFragment;
 import biz.dealnote.messenger.model.AppChatUser;
+import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.SelectProfileCriteria;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.ChatMembersPresenter;
@@ -117,7 +118,7 @@ public class ChatUsersFragment extends BaseMvpFragment<ChatMembersPresenter, ICh
     public void onRemoveClick(final AppChatUser user) {
         new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.confirmation)
-                .setMessage(getString(R.string.remove_chat_user_commit, user.getUser().getFullName()))
+                .setMessage(getString(R.string.remove_chat_user_commit, user.getMember().getFullName()))
                 .setPositiveButton(R.string.button_ok, (dialog, which) -> getPresenter().fireUserDeteleConfirmed(user))
                 .setNegativeButton(R.string.button_cancel, null)
                 .show();
@@ -152,7 +153,7 @@ public class ChatUsersFragment extends BaseMvpFragment<ChatMembersPresenter, ICh
     }
 
     @Override
-    public void openUserWall(int accountId, User user) {
+    public void openUserWall(int accountId, Owner user) {
         PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(requireActivity());
     }
 

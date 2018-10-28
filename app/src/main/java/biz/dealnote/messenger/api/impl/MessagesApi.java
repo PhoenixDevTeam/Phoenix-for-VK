@@ -53,10 +53,10 @@ class MessagesApi extends AbsApi implements IMessagesApi {
     }
 
     @Override
-    public Single<Boolean> removeChatUser(int chatId, int userId) {
+    public Single<Boolean> removeChatMember(int chatId, int memberId) {
         return serviceRx(TokenType.USER)
                 .flatMap(service -> service
-                        .removeChatUser(chatId, userId)
+                        .removeChatUser(chatId, memberId)
                         .map(extractResponseWithErrorHandling())
                         .map(response -> response == 1));
     }

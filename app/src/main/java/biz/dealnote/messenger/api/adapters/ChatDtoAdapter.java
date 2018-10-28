@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import biz.dealnote.messenger.api.model.ChatUserDto;
 import biz.dealnote.messenger.api.model.VKApiChat;
+import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiUser;
 
 /**
@@ -33,14 +34,14 @@ public class ChatDtoAdapter extends AbsAdapter implements JsonDeserializer<VKApi
         dto.photo_200 = optString(root, "photo_200");
         dto.admin_id = optInt(root, "admin_id");
 
-        if(root.has("users")){
+        if (root.has("users")) {
             JsonArray users = root.getAsJsonArray("users");
             dto.users = new ArrayList<>(users.size());
 
-            for(int i = 0; i < users.size(); i++){
+            for (int i = 0; i < users.size(); i++) {
                 JsonElement userElement = users.get(i);
 
-                if(userElement.isJsonPrimitive()){
+                if (userElement.isJsonPrimitive()) {
                     VKApiUser user = new VKApiUser();
                     user.id = userElement.getAsInt();
 
@@ -50,12 +51,19 @@ public class ChatDtoAdapter extends AbsAdapter implements JsonDeserializer<VKApi
                 } else {
                     JsonObject jsonObject = (JsonObject) userElement;
 
-                    VKApiUser user = context.deserialize(userElement, VKApiUser.class);
-
+                    String type = optString(jsonObject, "type");
                     ChatUserDto chatUserDto = new ChatUserDto();
-                    chatUserDto.user = user;
+                    chatUserDto.type = type;
                     chatUserDto.invited_by = optInt(jsonObject, "invited_by", 0);
-                    chatUserDto.type = optString(jsonObject, "type");
+
+                    if ("profile".equals(type)) {
+                        chatUserDto.user = context.deserialize(userElement, VKApiUser.class);
+                    } else if ("group".equals(type)) {
+                        chatUserDto.user = context.deserialize(userElement, VKApiCommunity.class);
+                    } else {
+                        //not supported
+                        continue;
+                    }
 
                     dto.users.add(chatUserDto);
                 }

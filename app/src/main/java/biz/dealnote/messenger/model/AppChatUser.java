@@ -7,9 +7,9 @@ import biz.dealnote.messenger.api.model.Identificable;
 
 public final class AppChatUser implements Parcelable, Identificable {
 
-    private User invited;
+    private Owner inviter;
 
-    private final User user;
+    private final Owner member;
 
     private final int invitedBy;
 
@@ -17,15 +17,15 @@ public final class AppChatUser implements Parcelable, Identificable {
 
     private boolean canRemove;
 
-    public AppChatUser(User user, int invitedBy, String type) {
-        this.user = user;
+    public AppChatUser(Owner member, int invitedBy, String type) {
+        this.member = member;
         this.invitedBy = invitedBy;
         this.type = type;
     }
 
-    protected AppChatUser(Parcel in) {
-        invited = in.readParcelable(User.class.getClassLoader());
-        user = in.readParcelable(User.class.getClassLoader());
+    private AppChatUser(Parcel in) {
+        inviter = in.<ParcelableOwnerWrapper>readParcelable(ParcelableOwnerWrapper.class.getClassLoader()).get();
+        member = in.<ParcelableOwnerWrapper>readParcelable(ParcelableOwnerWrapper.class.getClassLoader()).get();
         invitedBy = in.readInt();
         type = in.readString();
         canRemove = in.readByte() != 0;
@@ -33,8 +33,8 @@ public final class AppChatUser implements Parcelable, Identificable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(invited, flags);
-        dest.writeParcelable(user, flags);
+        dest.writeParcelable(new ParcelableOwnerWrapper(inviter), flags);
+        dest.writeParcelable(new ParcelableOwnerWrapper(member), flags);
         dest.writeInt(invitedBy);
         dest.writeString(type);
         dest.writeByte((byte) (canRemove ? 1 : 0));
@@ -57,8 +57,8 @@ public final class AppChatUser implements Parcelable, Identificable {
         }
     };
 
-    public AppChatUser setInvited(User invited) {
-        this.invited = invited;
+    public AppChatUser setInviter(Owner inviter) {
+        this.inviter = inviter;
         return this;
     }
 
@@ -71,8 +71,8 @@ public final class AppChatUser implements Parcelable, Identificable {
         return this;
     }
 
-    public User getInvited() {
-        return invited;
+    public Owner getInviter() {
+        return inviter;
     }
 
     public int getInvitedBy() {
@@ -83,12 +83,12 @@ public final class AppChatUser implements Parcelable, Identificable {
         return type;
     }
 
-    public User getUser() {
-        return user;
+    public Owner getMember() {
+        return member;
     }
 
     @Override
     public int getId() {
-        return user.getId();
+        return member.getOwnerId();
     }
 }

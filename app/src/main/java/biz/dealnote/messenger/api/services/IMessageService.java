@@ -50,13 +50,13 @@ public interface IMessageService {
      * allows the user to remove another user from the chat.
      *
      * @param chatId Chat ID
-     * @param userId ID of the user to be removed from the chat
+     * @param memberId ID of the member to be removed from the chat
      * @return 1
      */
     @FormUrlEncoded
     @POST("messages.removeChatUser")
     Single<BaseResponse<Integer>> removeChatUser(@Field("chat_id") int chatId,
-                                                 @Field("user_id") int userId);
+                                                 @Field("member_id") int memberId);
 
     /**
      * Adds a new user to a chat.

@@ -117,7 +117,7 @@ public interface IMessagesRepository {
 
     Single<List<AppChatUser>> getChatUsers(int accountId, int chatId);
 
-    Completable removeChatUser(int accountId, int chatId, int userId);
+    Completable removeChatMember(int accountId, int chatId, int userId);
 
     Single<List<AppChatUser>> addChatUsers(int accountId, int chatId, List<User> users);
 

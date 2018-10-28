@@ -1051,7 +1051,7 @@ public class MessagesRepository implements IMessagesRepository {
 
                     for (ChatUserDto dto : dtos) {
                         ids.append(dto.invited_by);
-                        owners.add(Dto2Model.transformUser(dto.user));
+                        owners.add(Dto2Model.transformOwner(dto.user));
                     }
 
                     final boolean isAdmin = accountId == chatDto.admin_id;
@@ -1061,11 +1061,11 @@ public class MessagesRepository implements IMessagesRepository {
                                 List<AppChatUser> models = new ArrayList<>(dtos.size());
 
                                 for (ChatUserDto dto : dtos) {
-                                    AppChatUser user = new AppChatUser(Dto2Model.transformUser(dto.user), dto.invited_by, dto.type);
+                                    AppChatUser user = new AppChatUser(Dto2Model.transformOwner(dto.user), dto.invited_by, dto.type);
                                     user.setCanRemove(isAdmin || user.getInvitedBy() == accountId);
 
                                     if (user.getInvitedBy() != 0) {
-                                        user.setInvited((User) ownersBundle.getById(user.getInvitedBy()));
+                                        user.setInviter(ownersBundle.getById(user.getInvitedBy()));
                                     }
 
                                     models.add(user);
@@ -1077,10 +1077,10 @@ public class MessagesRepository implements IMessagesRepository {
     }
 
     @Override
-    public Completable removeChatUser(int accountId, int chatId, int userId) {
+    public Completable removeChatMember(int accountId, int chatId, int memberId) {
         return networker.vkDefault(accountId)
                 .messages()
-                .removeChatUser(chatId, userId)
+                .removeChatMember(chatId, memberId)
                 .ignoreElement();
     }
 
@@ -1099,7 +1099,7 @@ public class MessagesRepository implements IMessagesRepository {
 
                         AppChatUser chatUser = new AppChatUser(user, accountId, "profile")
                                 .setCanRemove(true)
-                                .setInvited((User) iam);
+                                .setInviter(iam);
 
                         data.add(chatUser);
                     }
