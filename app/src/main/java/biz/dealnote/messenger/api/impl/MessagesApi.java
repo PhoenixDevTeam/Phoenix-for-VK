@@ -217,6 +217,22 @@ class MessagesApi extends AbsApi implements IMessagesApi {
     }
 
     @Override
+    public Completable unpin(int peerId) {
+        return serviceRx(TokenType.USER, TokenType.COMMUNITY)
+                .flatMapCompletable(service -> service.unpin(peerId)
+                        .map(extractResponseWithErrorHandling())
+                        .ignoreElement());
+    }
+
+    @Override
+    public Completable pin(int peerId, int messageId) {
+        return serviceRx(TokenType.USER, TokenType.COMMUNITY)
+                .flatMapCompletable(service -> service.pin(peerId, messageId)
+                        .map(extractResponseWithErrorHandling())
+                        .ignoreElement());
+    }
+
+    @Override
     public Single<List<VKApiMessage>> getById(Collection<Integer> identifiers) {
         String ids = join(identifiers, ",");
 

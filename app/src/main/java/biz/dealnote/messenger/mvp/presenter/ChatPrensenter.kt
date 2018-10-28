@@ -211,12 +211,12 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         appendDisposable(Repository.owners.observeUpdates()
                 .toMainThread()
-                .subscribe{onUserUpdates(it)})
+                .subscribe { onUserUpdates(it) })
 
         appendDisposable(messagesRepository.observeTextWrite()
                 .flatMap { list -> Flowable.fromIterable(list) }
                 .toMainThread()
-                .subscribe{onUserWriteInDialog(it)})
+                .subscribe { onUserWriteInDialog(it) })
 
         updateSubtitle()
     }
@@ -227,13 +227,13 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
     }
 
-    private fun onUserUpdates(updates: List<UserUpdate>){
-        for(update in updates){
-            if(update.accountId == accountId && isChatWithUser(update.userId)){
+    private fun onUserUpdates(updates: List<UserUpdate>) {
+        for (update in updates) {
+            if (update.accountId == accountId && isChatWithUser(update.userId)) {
                 update.online?.run {
-                    subtitle = if(isOnline){
+                    subtitle = if (isOnline) {
                         getString(R.string.online)
-                    } else{
+                    } else {
                         getString(R.string.last_seen_sex_unknown, AppTextUtils.getDateFromUnixTime(lastSeen))
                     }
 
@@ -263,6 +263,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 conversation?.outRead = messageId
                 lastReadId.outgoing = messageId
                 requireListUpdate = true
+            }
+
+            update.pin?.run {
+                conversation?.pinned = pinned
+                resolvePinnedMessageView()
             }
         }
 
@@ -523,7 +528,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         edited?.run {
             val wasEmpty = body.isNullOrBlank()
             body = s
-            if(wasEmpty != body.isNullOrBlank()){
+            if (wasEmpty != body.isNullOrBlank()) {
                 resolvePrimaryButton()
             }
             return
@@ -745,7 +750,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     @OnGuiCreated
     private fun resolvePrimaryButton() {
-        if(isRecordingNow){
+        if (isRecordingNow) {
             view?.setupPrimaryButtonAsRecording()
         } else {
             edited?.run {
@@ -807,8 +812,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         Utils.addElementToList(message, data, MESSAGES_COMPARATOR)
     }
 
-    private fun onMessagesUpdate(updates: List<MessageUpdate>){
-        for(update in updates){
+    private fun onMessagesUpdate(updates: List<MessageUpdate>) {
+        for (update in updates) {
             val targetIndex = indexOf(update.messageId)
 
             update.statusUpdate?.run {
@@ -838,7 +843,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                     }
                 }
             } ?: run {
-                if(targetIndex != -1){
+                if (targetIndex != -1) {
                     update.deleteUpdate?.run {
                         data[targetIndex].isDeleted = isDeleted
                     }
@@ -917,7 +922,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
     }
 
-    private fun canEdit(message: Message): Boolean{
+    private fun canEdit(message: Message): Boolean {
         return message.isOut && Unixtime.now() - message.date < 24 * 60 * 60
     }
 
@@ -933,7 +938,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     override fun resolveActionMode() {
         val selectionCount = countOfSelection(data)
         if (selectionCount > 0) {
-            if(selectionCount == 1){
+            if (selectionCount == 1) {
                 val message = data.find {
                     it.isSelected
                 }!!
@@ -1586,8 +1591,23 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
     }
 
-    fun fireActionModePinClick() {
+    fun fireUnpinClick() {
+        doPin(null)
+    }
 
+    private fun doPin(message: Message?) {
+        appendDisposable(messagesRepository.pin(accountId, peerId, message)
+                .fromIOToMain()
+                .subscribe(dummy(), Consumer { onPinFail(it) }))
+    }
+
+    fun fireActionModePinClick() {
+        val message = data.find { it.isSelected }
+        doPin(message)
+    }
+
+    private fun onPinFail(throwable: Throwable) {
+        showError(view, throwable)
     }
 
     fun onEditAddVideoClick() {

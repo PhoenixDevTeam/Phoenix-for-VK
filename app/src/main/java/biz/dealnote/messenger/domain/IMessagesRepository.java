@@ -132,4 +132,6 @@ public interface IMessagesRepository {
     Single<Integer> createGroupChat(int accountId, Collection<Integer> users, String title);
 
     Completable markAsRead(int accountId, int peerId, int toId);
+
+    Completable pin(int accountId, int peerId, @Nullable Message message);
 }

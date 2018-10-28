@@ -1213,6 +1213,30 @@ public class MessagesRepository implements IMessagesRepository {
                 .flatMapCompletable(ignored -> applyPeerUpdatesAndPublish(accountId, Collections.singletonList(patch)));
     }
 
+    @Override
+    public Completable pin(int accountId, int peerId, @Nullable Message message) {
+        PeerUpdate update = new PeerUpdate(accountId, peerId);
+        update.setPin(new PeerUpdate.Pin(message));
+
+        Completable apiCompletable;
+        if(message == null){
+            apiCompletable = networker.vkDefault(accountId)
+                    .messages()
+                    .unpin(peerId);
+        } else {
+            apiCompletable = networker.vkDefault(accountId)
+                    .messages()
+                    .pin(peerId, message.getId());
+        }
+
+        final PeerPatch patch = new PeerPatch(peerId)
+                .withPin(message == null ? null : Model2Entity.buildMessageEntity(message));
+
+        return apiCompletable
+                .andThen(storages.dialogs().applyPatches(accountId, Collections.singletonList(patch)))
+                .doOnComplete(() -> peerUpdatePublisher.onNext(Collections.singletonList(update)));
+    }
+
     private Single<Integer> internalSend(int accountId, MessageEntity dbo) {
         if (isEmpty(dbo.getExtras()) && isEmpty(dbo.getAttachments()) && dbo.getForwardCount() == 0) {
             return networker.vkDefault(accountId)

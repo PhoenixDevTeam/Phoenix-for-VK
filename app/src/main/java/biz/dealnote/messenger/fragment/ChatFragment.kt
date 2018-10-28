@@ -128,6 +128,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         pinnedTitle = pinnedView?.findViewById(R.id.pinned_title)
         pinnedSubtitle = pinnedView?.findViewById(R.id.pinned_subtitle)
         buttonUnpin = pinnedView?.findViewById(R.id.buttonUnpin)
+        buttonUnpin?.setOnClickListener { presenter?.fireUnpinClick() }
 
         editMessageGroup = root.findViewById(R.id.editMessageGroup)
         editMessageText = editMessageGroup?.findViewById(R.id.editMessageText)
