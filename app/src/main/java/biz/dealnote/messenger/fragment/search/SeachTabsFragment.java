@@ -98,11 +98,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
         View root = inflater.inflate(R.layout.fragment_search_tabs, container, false);
         mViewPager = root.findViewById(R.id.viewpager);
 
-        int tabColorPrimary = CurrentTheme.getPrimaryTextColorCode(getActivity());
-        int tabColorSecondary = CurrentTheme.getSecondaryTextColorCode(getActivity());
-
         TabLayout tabLayout = root.findViewById(R.id.tablayout);
-        tabLayout.setTabTextColors(tabColorSecondary, tabColorPrimary);
 
         mSearchView = root.findViewById(R.id.searchview);
         mSearchView.setOnQueryTextListener(this);
@@ -150,9 +146,9 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
         }
     };
 
-    private void syncChildFragment(){
+    private void syncChildFragment() {
         Fragment fragment = mAdapter.findFragmentByPosition(mCurrentTab);
-        if(nonNull(fragment)){
+        if (nonNull(fragment)) {
             syncChildFragment(fragment);
         }
     }
@@ -162,7 +158,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
 
         Logger.d(TAG, "syncChildFragment, current: " + mCurrentTab + ", fp: " + fragmentPosition + ", f: " + fragment.getClass());
 
-        if(fragmentPosition != mCurrentTab){
+        if (fragmentPosition != mCurrentTab) {
             return;
         }
 
@@ -237,11 +233,11 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
 
     @Override
     public void onBackButtonClick() {
-        if (getActivity().getSupportFragmentManager().getBackStackEntryCount() == 1
+        if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() == 1
                 && getActivity() instanceof AppStyleable) {
-            ((AppStyleable) getActivity()).openDrawer(true, GravityCompat.START);
+            ((AppStyleable) requireActivity()).openDrawer(true, GravityCompat.START);
         } else {
-            getActivity().onBackPressed();
+            requireActivity().onBackPressed();
         }
     }
 
@@ -264,6 +260,49 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
             String q = data.getStringExtra(Extra.Q);
             mSearchView.setQuery(q);
             mSearchView.setSelection(Utils.safeLenghtOf(q));
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Settings.get().ui().notifyPlaceResumed(Place.SEARCH);
+
+        new ActivityFeatures.Builder()
+                .begin()
+                .setBlockNavigationDrawer(false)
+                .setBarsColored(getActivity(), true)
+                .build()
+                .apply(requireActivity());
+
+        if (getActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_SEARCH);
+        }
+    }
+
+    private void resolveLeftButton() {
+        int count = requireActivity().getSupportFragmentManager().getBackStackEntryCount();
+        if (mSearchView != null) {
+            mSearchView.setLeftIcon(count == 1 && getActivity() instanceof AppStyleable ?
+                    CurrentTheme.getResIdFromAttribute(getActivity(), R.attr.toolbarDrawerIcon) :
+                    CurrentTheme.getResIdFromAttribute(getActivity(), R.attr.toolbarBackIcon));
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        requireActivity().getSupportFragmentManager().removeOnBackStackChangedListener(backStackChangedListener);
+        super.onDetach();
+    }
+
+    private FragmentManager.OnBackStackChangedListener backStackChangedListener = this::resolveLeftButton;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof AppCompatActivity) {
+            ((AppCompatActivity) context).getSupportFragmentManager()
+                    .addOnBackStackChangedListener(backStackChangedListener);
         }
     }
 
@@ -349,58 +388,12 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
                 case TAB_NEWS:
                 case TAB_VIDEOS:
                 case TAB_MESSAGES:
-                    return CurrentTheme.getColorFromAttrs(getActivity(),
+                    return CurrentTheme.getColorFromAttrs(requireActivity(),
                             R.attr.messages_background_color, Color.WHITE);
                 default:
-                    return CurrentTheme.getColorFromAttrs(getActivity(),
+                    return CurrentTheme.getColorFromAttrs(requireActivity(),
                             android.R.attr.colorBackground, Color.WHITE);
             }
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Settings.get().ui().notifyPlaceResumed(Place.SEARCH);
-
-        new ActivityFeatures.Builder()
-                .begin()
-                .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
-                .build()
-                .apply(getActivity());
-
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_SEARCH);
-        }
-    }
-
-    private void resolveLeftButton() {
-        int count = getActivity().getSupportFragmentManager().getBackStackEntryCount();
-        if (mSearchView != null) {
-            mSearchView.setLeftIcon(count == 1 && getActivity() instanceof AppStyleable ?
-                    CurrentTheme.getResIdFromAttribute(getActivity(), R.attr.toolbarDrawerIcon) :
-                    CurrentTheme.getResIdFromAttribute(getActivity(), R.attr.toolbarBackIcon));
-        }
-    }
-
-    private FragmentManager.OnBackStackChangedListener backStackChangedListener = this::resolveLeftButton;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof AppCompatActivity) {
-            ((AppCompatActivity) context).getSupportFragmentManager()
-                    .addOnBackStackChangedListener(backStackChangedListener);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        if (getActivity() != null) {
-            getActivity().getSupportFragmentManager().removeOnBackStackChangedListener(backStackChangedListener);
-        }
-
-        super.onDetach();
     }
 }

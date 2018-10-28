@@ -27,7 +27,6 @@ import biz.dealnote.messenger.model.selection.LocalPhotosSelectableSource;
 import biz.dealnote.messenger.model.selection.Sources;
 import biz.dealnote.messenger.model.selection.Types;
 import biz.dealnote.messenger.model.selection.VkPhotosSelectableSource;
-import biz.dealnote.messenger.settings.CurrentTheme;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
@@ -53,7 +52,7 @@ public class DualTabPhotosFragment extends BaseFragment implements BackPressCall
         super.onCreate(savedInstanceState);
         this.mSources = requireArguments().getParcelable(Extra.SOURCES);
 
-        if(nonNull(savedInstanceState)){
+        if (nonNull(savedInstanceState)) {
             this.mCurrentTab = savedInstanceState.getInt("mCurrentTab");
         }
     }
@@ -74,13 +73,9 @@ public class DualTabPhotosFragment extends BaseFragment implements BackPressCall
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         TabLayout tabLayout = root.findViewById(R.id.tablayout);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        int tabColorPrimary = CurrentTheme.getPrimaryTextColorCode(getActivity());
-        int tabColorSecondary = CurrentTheme.getSecondaryTextColorCode(getActivity());
-        tabLayout.setTabTextColors(tabColorSecondary, tabColorPrimary);
 
         ViewPager viewPager = root.findViewById(R.id.view_pager);
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 mCurrentTab = position;
@@ -106,7 +101,7 @@ public class DualTabPhotosFragment extends BaseFragment implements BackPressCall
 
     @Override
     public boolean onBackPressed() {
-        if(nonNull(mPagerAdapter)){
+        if (nonNull(mPagerAdapter)) {
             Fragment fragment = mPagerAdapter.findFragmentByPosition(mCurrentTab);
 
             return !(fragment instanceof BackPressCallback) || ((BackPressCallback) fragment).onBackPressed();
@@ -143,7 +138,7 @@ public class DualTabPhotosFragment extends BaseFragment implements BackPressCall
                 return fragment;
             }
 
-            if(source instanceof FileManagerSelectableSource){
+            if (source instanceof FileManagerSelectableSource) {
                 Bundle args = new Bundle();
                 args.putInt(Extra.ACTION, FileManagerFragment.SELECT_FILE);
                 args.putBoolean(FileManagerFragment.EXTRA_SHOW_CANNOT_READ, true);

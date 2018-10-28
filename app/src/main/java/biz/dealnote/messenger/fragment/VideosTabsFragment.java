@@ -31,7 +31,6 @@ import biz.dealnote.messenger.fragment.search.criteria.VideoSearchCriteria;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
 
 public class VideosTabsFragment extends BaseFragment {
@@ -80,10 +79,6 @@ public class VideosTabsFragment extends BaseFragment {
         setupViewPager(viewPager);
 
         TabLayout tabLayout = view.findViewById(R.id.fragment_videos_tabs);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        int tabColorPrimary = CurrentTheme.getPrimaryTextColorCode(getActivity());
-        int tabColorSecondary = CurrentTheme.getSecondaryTextColorCode(getActivity());
-        tabLayout.setTabTextColors(tabColorSecondary, tabColorPrimary);
         tabLayout.setupWithViewPager(viewPager);
     }
 

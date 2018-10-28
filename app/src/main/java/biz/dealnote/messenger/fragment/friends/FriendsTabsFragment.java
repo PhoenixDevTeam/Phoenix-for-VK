@@ -30,7 +30,6 @@ import biz.dealnote.messenger.model.FriendsCounters;
 import biz.dealnote.messenger.mvp.presenter.FriendsTabsPresenter;
 import biz.dealnote.messenger.mvp.view.IFriendsTabsView;
 import biz.dealnote.messenger.place.Place;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
@@ -79,21 +78,15 @@ public class FriendsTabsFragment extends BaseMvpFragment<FriendsTabsPresenter, I
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         View root = inflater.inflate(R.layout.fragment_friends_tabs, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         viewPager = root.findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(1);
 
         tabLayout = root.findViewById(R.id.tablayout);
-        int tabColorPrimary = CurrentTheme.getPrimaryTextColorCode(getActivity());
-        int tabColorSecondary = CurrentTheme.getSecondaryTextColorCode(getActivity());
-
-        tabLayout.setTabTextColors(tabColorSecondary, tabColorPrimary);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         return root;
     }
 
@@ -117,7 +110,7 @@ public class FriendsTabsFragment extends BaseMvpFragment<FriendsTabsPresenter, I
                 .setBlockNavigationDrawer(false)
                 .setBarsColored(getActivity(), true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -142,7 +135,7 @@ public class FriendsTabsFragment extends BaseMvpFragment<FriendsTabsPresenter, I
 
     @Override
     public void configTabs(int accountId, int userId, boolean showMutualTab) {
-        adapter = new Adapter(getActivity(), getChildFragmentManager(), accountId, userId, showMutualTab);
+        adapter = new Adapter(requireActivity(), getChildFragmentManager(), accountId, userId, showMutualTab);
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);

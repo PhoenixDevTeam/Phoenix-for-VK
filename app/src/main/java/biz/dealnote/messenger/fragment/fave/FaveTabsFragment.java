@@ -27,7 +27,6 @@ import biz.dealnote.messenger.fragment.base.BaseFragment;
 import biz.dealnote.messenger.link.types.FaveLink;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.place.Place;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
 
 public class FaveTabsFragment extends BaseFragment {
@@ -82,12 +81,6 @@ public class FaveTabsFragment extends BaseFragment {
         setupViewPager(viewPager);
 
         TabLayout tabLayout = view.findViewById(R.id.tablayout);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-
-        int tabColorPrimary = CurrentTheme.getPrimaryTextColorCode(getActivity());
-        int tabColorSecondary = CurrentTheme.getSecondaryTextColorCode(getActivity());
-        tabLayout.setTabTextColors(tabColorSecondary, tabColorPrimary);
         tabLayout.setupWithViewPager(viewPager);
 
         if(getArguments().containsKey(Extra.TAB)){
