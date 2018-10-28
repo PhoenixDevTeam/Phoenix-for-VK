@@ -1,6 +1,8 @@
 package biz.dealnote.messenger.model
 
-class EditedMessage(val message: Message){
+import biz.dealnote.messenger.upload.Upload
+
+class EditedMessage(val message: Message) {
 
     var body: String? = message.body
     val attachments: MutableList<AttachmenEntry>
@@ -10,7 +12,7 @@ class EditedMessage(val message: Message){
 
         attachments = ArrayList()
 
-        for(model in orig){
+        for (model in orig) {
             attachments.add(AttachmenEntry(true, model))
         }
 
@@ -18,4 +20,19 @@ class EditedMessage(val message: Message){
             attachments.add(AttachmenEntry(true, FwdMessages(this)))
         }
     }
+
+    val canSave: Boolean
+        get() {
+            if(body.isNullOrBlank()){
+                for(entry in attachments){
+                    if(entry.attachment is Upload) continue
+
+                    return true
+                }
+
+                return false
+            } else{
+                return true
+            }
+        }
 }

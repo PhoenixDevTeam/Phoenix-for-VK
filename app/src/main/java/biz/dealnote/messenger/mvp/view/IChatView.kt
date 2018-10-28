@@ -15,13 +15,15 @@ interface IChatView : IBasicMessageListView, IErrorView {
     fun setupLoadUpHeaderState(@LoadMoreState state: Int)
     fun displayDraftMessageAttachmentsCount(count: Int)
     fun displayDraftMessageText(text: String?)
-    fun setupSendButton(canSendNormalMessage: Boolean, canSendVoiceMessage: Boolean)
     fun displayToolbarTitle(text: String?)
     fun displayToolbarSubtitle(text: String?)
-    fun setRecordModeActive(active: Boolean)
     fun requestRecordPermissions()
     fun displayRecordingDuration(time: Long)
     fun doCloseAfterSend()
+
+    fun setupPrimaryButtonAsEditing(canSave: Boolean)
+    fun setupPrimaryButtonAsRecording()
+    fun setupPrimaryButtonAsRegular(canSend: Boolean, canStartRecoring: Boolean)
 
     fun displayPinnedMessage(pinned: Message?)
 

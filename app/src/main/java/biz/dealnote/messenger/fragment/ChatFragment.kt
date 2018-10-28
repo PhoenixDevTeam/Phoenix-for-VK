@@ -115,7 +115,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             presenter?.fireLoadUpButtonClick()
         }
 
-        inputViewController = InputViewController(requireActivity(), root, true, this)
+        inputViewController = InputViewController(requireActivity(), root, this)
                 .also {
                     it.setSendOnEnter(Settings.get().main().isSendByEnter)
                     it.setRecordActionsCallback(this)
@@ -301,10 +301,6 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         inputViewController?.setTextQuietly(text)
     }
 
-    override fun setupSendButton(canSendNormalMessage: Boolean, canSendVoiceMessage: Boolean) {
-        inputViewController?.setup(canSendNormalMessage, canSendVoiceMessage)
-    }
-
     override fun displayToolbarTitle(text: String?) {
         ActivityUtils.supportToolbarFor(this)?.title = text
     }
@@ -313,8 +309,16 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         ActivityUtils.supportToolbarFor(this)?.subtitle = text
     }
 
-    override fun setRecordModeActive(active: Boolean) {
-        inputViewController?.swithModeTo(if (active) InputViewController.Mode.VOICE_RECORD else InputViewController.Mode.NORMAL)
+    override fun setupPrimaryButtonAsEditing(canSave: Boolean) {
+        inputViewController?.swithModeToEditing(canSave)
+    }
+
+    override fun setupPrimaryButtonAsRecording() {
+        inputViewController?.swithModeToRecording()
+    }
+
+    override fun setupPrimaryButtonAsRegular(canSend: Boolean, canStartRecoring: Boolean) {
+        inputViewController?.swithModeToNormal(canSend, canStartRecoring)
     }
 
     override fun requestRecordPermissions() {
@@ -566,6 +570,10 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
     private fun hideEditAttachmentsDialog() {
         editAttachmentsDialog?.dismiss()
+    }
+
+    override fun onSaveClick() {
+        presenter?.fireEditMessageSaveClick()
     }
 
     private var editAttachmentsHolder: EditAttachmentsHolder? = null

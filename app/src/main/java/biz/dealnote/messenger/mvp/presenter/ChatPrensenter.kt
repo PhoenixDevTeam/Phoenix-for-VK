@@ -339,6 +339,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 attachments.add(AttachmenEntry(true, photo))
                 view?.notifyEditAttachmentsAdded(sizeBefore, 1)
                 resolveAttachmentsCounter()
+                resolvePrimaryButton()
             }
         }
     }
@@ -392,13 +393,13 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     private fun onRepositoryAttachmentsRemoved() {
         draftMessageDbAttachmentsCount--
         resolveAttachmentsCounter()
-        resolveSendButtonState()
+        resolvePrimaryButton()
     }
 
     private fun onRepositoryAttachmentsAdded(count: Int) {
         draftMessageDbAttachmentsCount += count
         resolveAttachmentsCounter()
-        resolveSendButtonState()
+        resolvePrimaryButton()
     }
 
     private fun loadAllCachedData() {
@@ -516,7 +517,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     fun fireDraftMessageTextEdited(s: String) {
         edited?.run {
-            this.body = s
+            val wasEmpty = body.isNullOrBlank()
+            body = s
+            if(wasEmpty != body.isNullOrBlank()){
+                resolvePrimaryButton()
+            }
             return
         }
 
@@ -525,7 +530,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         val newState = canSendNormalMessage()
 
         if (oldState != newState) {
-            setupSendButtonState(newState, true)
+            resolvePrimaryButton()
         }
 
         readAllUnreadMessagesIfExists()
@@ -582,7 +587,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         resolveAttachmentsCounter()
         resolveDraftMessageText()
-        resolveSendButtonState()
+        resolvePrimaryButton()
 
         sendMessage(builder)
 
@@ -655,15 +660,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     @OnGuiCreated
-    private fun resolveSendButtonState() {
-        setupSendButtonState(canSendNormalMessage(), true)
-    }
-
-    private fun setupSendButtonState(canSendNormalMessage: Boolean, voiceSupport: Boolean) {
-        view?.setupSendButton(canSendNormalMessage, voiceSupport)
-    }
-
-    @OnGuiCreated
     private fun resolveAttachmentsCounter() {
         edited?.run {
             view?.displayDraftMessageAttachmentsCount(calculateAttachmentsCount(this))
@@ -693,7 +689,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun onRecordingStateChanged() {
-        resolveRecordModeViews()
+        resolvePrimaryButton()
         syncRecordingLookupState()
     }
 
@@ -744,8 +740,16 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     @OnGuiCreated
-    private fun resolveRecordModeViews() {
-        view?.setRecordModeActive(isRecordingNow)
+    private fun resolvePrimaryButton() {
+        if(isRecordingNow){
+            view?.setupPrimaryButtonAsRecording()
+        } else {
+            edited?.run {
+                view?.setupPrimaryButtonAsEditing(canSave)
+            } ?: run {
+                view?.setupPrimaryButtonAsRegular(canSendNormalMessage(), true)
+            }
+        }
     }
 
     @OnGuiCreated
@@ -979,7 +983,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
 
         resolveAttachmentsCounter()
-        resolveSendButtonState()
+        resolvePrimaryButton()
         resolveDraftMessageText()
     }
 
@@ -1046,7 +1050,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         outConfig.models = accompanyingModels
 
         resolveAttachmentsCounter()
-        resolveSendButtonState()
+        resolvePrimaryButton()
     }
 
     override fun onActionModeDeleteClick() {
@@ -1231,7 +1235,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         outConfig.models.append(FwdMessages(messages))
 
         resolveAttachmentsCounter()
-        resolveSendButtonState()
+        resolvePrimaryButton()
     }
 
     fun fireForwardToAnotherClick(messages: ArrayList<Message>) {
@@ -1424,6 +1428,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         resolveDraftMessageText()
         resolveAttachmentsCounter()
         resolveEditedMessageViews()
+        resolvePrimaryButton()
     }
 
     private fun cancelMessageEditing(): Boolean {
@@ -1434,6 +1439,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             resolveDraftMessageText()
             resolveAttachmentsCounter()
             resolveEditedMessageViews()
+            resolvePrimaryButton()
 
             uploadManager.cancelAll(accountId, destination)
             return true
@@ -1481,6 +1487,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         resolveAttachmentsCounter()
         resolveDraftMessageText()
         resolveEditedMessageViews()
+        resolvePrimaryButton()
 
         val index = data.indexOfFirst {
             it.id == message.id
@@ -1504,6 +1511,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 attachments.removeAt(index)
                 view?.notifyEditAttachmentRemoved(index)
                 resolveAttachmentsCounter()
+                resolvePrimaryButton()
             }
         }
     }
@@ -1542,6 +1550,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 attachments.addAll(additional)
                 view?.notifyEditAttachmentsAdded(sizeBefore, additional.size)
                 resolveAttachmentsCounter()
+                resolvePrimaryButton()
             }
         }
     }
