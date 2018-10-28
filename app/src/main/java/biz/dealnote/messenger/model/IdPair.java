@@ -46,11 +46,19 @@ public class IdPair implements Parcelable {
     }
 
     @Override
-    public String toString() {
-        return "IdPair{" +
-                "id=" + id +
-                ", ownerId=" + ownerId +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IdPair idPair = (IdPair) o;
+        if (id != idPair.id) return false;
+        return ownerId == idPair.ownerId;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + ownerId;
+        return result;
     }
 
     public int getOwnerId() {
