@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.api.model.VkApiPrivacy;
 import biz.dealnote.messenger.model.FriendList;
 import biz.dealnote.messenger.model.Privacy;
 import biz.dealnote.messenger.model.User;
@@ -131,11 +130,13 @@ public class PrivacyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         switch (mPrivacy.getType()) {
             default:
                 return R.string.privacy_to_all_users;
-            case VkApiPrivacy.Type.FRIENDS:
+            case Privacy.Type.FRIENDS:
                 return R.string.privacy_to_friends_only;
-            case VkApiPrivacy.Type.FRIENDS_OF_FRIENDS:
+            case Privacy.Type.FRIENDS_OF_FRIENDS:
+            case Privacy.Type.FRIENDS_OF_FRIENDS_ONLY:
                 return R.string.privacy_to_friends_and_friends_of_friends;
-            case VkApiPrivacy.Type.ONLY_ME:
+            case Privacy.Type.ONLY_ME:
+            case Privacy.Type.NOBODY:
                 return R.string.privacy_to_only_me;
         }
     }

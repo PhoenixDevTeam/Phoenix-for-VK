@@ -974,7 +974,7 @@ public class Dto2Entity {
             }
         }
 
-        return new PrivacyEntity(dto.type, entries.toArray(new PrivacyEntity.Entry[entries.size()]));
+        return new PrivacyEntity(dto.category, entries.toArray(new PrivacyEntity.Entry[entries.size()]));
     }
 
     public static PhotoEntity buildPhotoEntity(VKApiPhoto dto) {

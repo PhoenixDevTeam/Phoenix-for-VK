@@ -6,11 +6,11 @@ package biz.dealnote.messenger.db.model.entity;
  */
 public class PrivacyEntity {
 
-    private final int type;
+    private final String type;
 
     private final Entry[] entries;
 
-    public PrivacyEntity(int type, Entry[] entries) {
+    public PrivacyEntity(String type, Entry[] entries) {
         this.type = type;
         this.entries = entries;
     }
@@ -42,7 +42,7 @@ public class PrivacyEntity {
         }
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 

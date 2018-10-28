@@ -13,21 +13,16 @@ import biz.dealnote.messenger.api.model.VkApiPrivacy;
  */
 public class SimplePrivacy implements Parcelable {
 
-    public static final int TYPE_ALL = 1;
-    public static final int TYPE_FRIENDS = 2;
-    public static final int TYPE_FRIENDS_OF_FRIENDS = 3;
-    public static final int TYPE_ONLY_ME = 4;
-
-    private final int type;
+    private final String type;
     private final ArrayList<Entry> entries;
 
-    public SimplePrivacy(int type, ArrayList<Entry> entries) {
+    public SimplePrivacy(String type, ArrayList<Entry> entries) {
         this.type = type;
         this.entries = entries;
     }
 
     protected SimplePrivacy(Parcel in) {
-        type = in.readInt();
+        type = in.readString();
         entries = in.createTypedArrayList(Entry.CREATOR);
     }
 
@@ -43,7 +38,7 @@ public class SimplePrivacy implements Parcelable {
         }
     };
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
@@ -58,7 +53,7 @@ public class SimplePrivacy implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(type);
+        parcel.writeString(type);
         parcel.writeTypedList(entries);
     }
 
