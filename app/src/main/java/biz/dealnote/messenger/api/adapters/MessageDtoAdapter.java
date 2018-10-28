@@ -50,9 +50,8 @@ public class MessageDtoAdapter extends AbsAdapter implements JsonDeserializer<VK
 
         dto.deleted = optIntAsBoolean(root, "deleted");
         dto.important = optBoolean(root, "important");
-
         dto.random_id = optString(root, "random_id");
-        dto.payload = optString(root, "payload");
+        dto.update_time = optLong(root, "update_time");
         dto.conversation_message_id = optInt(root, "conversation_message_id");
 
         JsonObject actionJson = root.getAsJsonObject("action");

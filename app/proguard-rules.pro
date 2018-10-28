@@ -64,10 +64,10 @@
 }
 
 # -keep class !io.reactivex.**,!com.google.android.exoplayer2.** { *; }
--keep class !io.reactivex.**, !com.google.firebase.**, !android.support.**, !com.google.android.exoplayer2.**, !kotlin.** { *; }
+# -keep class !io.reactivex.**, !com.google.firebase.**, !android.support.**, !com.google.android.exoplayer2.**, !kotlin.** { *; }
 
 # for Option menu with SearchView
--keep class android.support.v7.widget.SearchView { *; }
+# -keep class android.support.v7.widget.SearchView { *; }
 
 # Retrofit, OkHttp, Gson
 -dontwarn okhttp3.**

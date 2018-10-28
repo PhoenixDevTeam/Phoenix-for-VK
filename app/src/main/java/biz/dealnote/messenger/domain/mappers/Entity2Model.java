@@ -360,10 +360,8 @@ public class Entity2Model {
         Message message = new Message(dbo.getId())
                 .setAccountId(accountId)
                 .setBody(dbo.getBody())
-                //.setTitle(dbo.getTitle())
                 .setPeerId(dbo.getPeerId())
                 .setSenderId(dbo.getFromId())
-                //.setRead(dbo.isRead())
                 .setOut(dbo.isOut())
                 .setStatus(dbo.getStatus())
                 .setDate(dbo.getDate())
@@ -382,7 +380,8 @@ public class Entity2Model {
                 .setPhoto100(dbo.getPhoto100())
                 .setPhoto200(dbo.getPhoto200())
                 .setSender(owners.getById(dbo.getFromId()))
-                .setRandomId(dbo.getRandomId());
+                .setRandomId(dbo.getRandomId())
+                .setUpdateTime(dbo.getUpdateTime());
 
         if (dbo.getActionMemberId() != 0) {
             message.setActionUser(owners.getById(dbo.getActionMemberId()));

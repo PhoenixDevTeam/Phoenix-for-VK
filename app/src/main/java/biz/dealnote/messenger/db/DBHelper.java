@@ -52,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 168;
+    private static final int DATABASE_VERSION = 169;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -502,9 +502,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " [" + MessageColumns.PEER_ID + "] INTEGER, " +
                 " [" + MessageColumns.FROM_ID + "] INTEGER, " +
                 " [" + MessageColumns.DATE + "] BIGINT, " +
-                //" [" + MessageColumns.READ_STATE + "] BOOLEAN, " +
                 " [" + MessageColumns.OUT + "] BOOLEAN, " +
-                //" [" + MessageColumns.TITLE + "] TEXT, " +
                 " [" + MessageColumns.BODY + "] TEXT, " +
                 " [" + MessageColumns.ENCRYPTED + "] BOOLEAN, " +
                 " [" + MessageColumns.DELETED + "] BOOLEAN, " +
@@ -514,6 +512,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " [" + MessageColumns.HAS_ATTACHMENTS + "] BOOLEAN, " +
                 " [" + MessageColumns.ATTACH_TO + "] INTEGER REFERENCES " + MessageColumns.TABLENAME + "([" + MessageColumns._ID + "]) ON DELETE CASCADE ON UPDATE CASCADE, " +
                 " [" + MessageColumns.STATUS + "] INTEGER, " +
+                " [" + MessageColumns.UPDATE_TIME + "] INTEGER, " +
                 " [" + MessageColumns.ACTION + "] INTEGER, " +
                 " [" + MessageColumns.ACTION_MID + "] INTEGER, " +
                 " [" + MessageColumns.ACTION_EMAIL + "] TEXT, " +

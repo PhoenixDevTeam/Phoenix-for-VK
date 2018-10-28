@@ -23,6 +23,7 @@ public final class MessageColumns implements BaseColumns {
     public static final String STATUS = "status";
     public static final String ATTACH_TO = "attach_to";
     public static final String ORIGINAL_ID = "original_id";
+    public static final String UPDATE_TIME = "update_time";
 
     //chat_columns
     public static final String ACTION = "action";
@@ -52,6 +53,7 @@ public final class MessageColumns implements BaseColumns {
     public static final String FULL_STATUS = TABLENAME + "." + STATUS;
     public static final String FULL_ATTACH_TO = TABLENAME + "." + ATTACH_TO;
     public static final String FULL_ORIGINAL_ID = TABLENAME + "." + ORIGINAL_ID;
+    public static final String FULL_UPDATE_TIME = TABLENAME + "." + UPDATE_TIME;
 
     public static final String FULL_ACTION = TABLENAME + "." + ACTION;
     public static final String FULL_ACTION_MID = TABLENAME + "." + ACTION_MID;
