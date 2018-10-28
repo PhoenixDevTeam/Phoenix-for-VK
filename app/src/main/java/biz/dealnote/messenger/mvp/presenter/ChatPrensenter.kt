@@ -120,8 +120,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 draftMessageText = config.initialText
             }
         } else {
-            peer = savedInstanceState.getParcelable(SAVE_PEER)
-            outConfig = savedInstanceState.getParcelable(SAVE_CONFIG)
+            peer = savedInstanceState.getParcelable(SAVE_PEER)!!
+            outConfig = savedInstanceState.getParcelable(SAVE_CONFIG)!!
             currentPhotoCameraUri = savedInstanceState.getParcelable(SAVE_CAMERA_FILE_URI)
             restoreFromInstanceState(savedInstanceState)
         }
@@ -833,18 +833,15 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                         message.status = status
                     }
                 }
+            } ?: run {
+                if(targetIndex != -1){
+                    update.deleteUpdate?.run {
+                        data[targetIndex].isDeleted = isDeleted
+                    }
 
-                // no processing another updates
-                return
-            }
-
-            if(targetIndex != -1){
-                update.deleteUpdate?.run {
-                    data[targetIndex].isDeleted = isDeleted
-                }
-
-                update.importantUpdate?.run {
-                    data[targetIndex].isImportant = isImportant
+                    update.importantUpdate?.run {
+                        data[targetIndex].isImportant = isImportant
+                    }
                 }
             }
         }
@@ -913,6 +910,28 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                         subtitle = s
                         resolveToolbarSubtitle()
                     }, { Analytics.logUnexpectedError(it) }, { this.resolveToolbarSubtitle() }))
+        }
+    }
+
+    private fun canEdit(message: Message): Boolean{
+        return message.isOut && Unixtime.now() - message.date < 24 * 60 * 60
+    }
+
+    @OnGuiCreated
+    override fun resolveActionMode() {
+        val selectionCount = countOfSelection(data)
+        if (selectionCount > 0) {
+            if(selectionCount == 1){
+                val message = data.find {
+                    it.isSelected
+                }!!
+
+                view?.showActionMode(selectionCount.toString(), canEdit(message), isGroupChat)
+            } else {
+                view?.showActionMode(selectionCount.toString(), false, false)
+            }
+        } else {
+            view?.finishActionMode()
         }
     }
 
