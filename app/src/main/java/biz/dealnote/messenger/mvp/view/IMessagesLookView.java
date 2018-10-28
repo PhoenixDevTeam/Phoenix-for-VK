@@ -16,4 +16,6 @@ public interface IMessagesLookView extends IBasicMessageListView, IErrorView {
     void setupHeaders(@LoadMoreState int upHeaderState, @LoadMoreState int downHeaderState);
 
     void forwardMessages(int accountId, @NonNull ArrayList<Message> messages);
+
+    void showDeleteForAllDialog(ArrayList<Integer> ids);
 }

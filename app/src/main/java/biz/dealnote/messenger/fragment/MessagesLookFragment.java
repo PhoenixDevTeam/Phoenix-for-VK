@@ -14,6 +14,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -75,8 +76,7 @@ public class MessagesLookFragment extends PlaceSupportMvpFragment<MessagesLookPr
         View root = inflater.inflate(R.layout.fragment_messages_lookup, container, false);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.VERTICAL, true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, true);
 
         mRecyclerView = root.findViewById(R.id.recycleView);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -100,6 +100,17 @@ public class MessagesLookFragment extends PlaceSupportMvpFragment<MessagesLookPr
 
         mRecyclerView.addOnScrollListener(mEndlessRecyclerOnScrollListener);
         return root;
+    }
+
+    @Override
+    public void showDeleteForAllDialog(ArrayList<Integer> ids) {
+        new AlertDialog.Builder(requireActivity())
+                .setTitle(R.string.messages_delete_for_all_question_title)
+                .setMessage(R.string.messages_delete_for_all_question_message)
+                .setNeutralButton(R.string.button_cancel, null)
+                .setPositiveButton(R.string.button_for_all, (dialog, which) -> getPresenter().fireDeleteForAllClick(ids))
+                .setNegativeButton(R.string.button_for_me, (dialog, which) -> getPresenter().fireDeleteForMeClick(ids))
+                .show();
     }
 
     private EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;

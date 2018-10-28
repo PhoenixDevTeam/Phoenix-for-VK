@@ -127,7 +127,7 @@ class MessagesApi extends AbsApi implements IMessagesApi {
     public Single<Map<String, Integer>> delete(Collection<Integer> messageIds, Boolean deleteForAll, Boolean spam) {
         return serviceRx(TokenType.USER, TokenType.COMMUNITY)
                 .flatMap(service -> service
-                        .delete(join(messageIds, ","), integerFromBoolean(deleteForAll), integerFromBoolean(spam)) //{"response":{"1173002":1,"1173001":1}}
+                        .delete(join(messageIds, ","), integerFromBoolean(deleteForAll), integerFromBoolean(spam))
                         .map(extractResponseWithErrorHandling()));
     }
 
@@ -240,37 +240,15 @@ class MessagesApi extends AbsApi implements IMessagesApi {
                 .flatMap(service -> service
                         .getById(ids, null)
                         .map(extractResponseWithErrorHandling())
-                        .map(response -> {
-                            List<VKApiMessage> messages = response.getItems();
-                            //fixMessageList(messages);
-                            return messages;
-                        }));
+                        .map(Items::getItems));
     }
-
-    /*private void fixMessage(VKApiMessage message) { // пофикшено вроде в 5.80
-        if (message.from_id == 0) {
-            if (message.out) {
-                message.from_id = getAccountId();
-            }
-        }
-    }*/
-
-    /*private void fixMessageList(Collection<VKApiMessage> dtos) {
-        for (VKApiMessage message : dtos) {
-            fixMessage(message);
-        }
-    }*/
 
     @Override
     public Single<MessageHistoryResponse> getHistory(Integer offset, Integer count, int peerId, Integer startMessageId, Boolean rev, Boolean extended) {
         return serviceRx(TokenType.USER, TokenType.COMMUNITY)
                 .flatMap(service -> service
                         .getHistory(offset, count, peerId, startMessageId, integerFromBoolean(rev), integerFromBoolean(extended))
-                        .map(extractResponseWithErrorHandling())
-                        /*.map(history -> {
-                            fixMessageList(history.messages);
-                            return history;
-                        })*/);
+                        .map(extractResponseWithErrorHandling()));
     }
 
     @Override

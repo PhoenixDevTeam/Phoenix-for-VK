@@ -4,7 +4,6 @@ import android.net.Uri
 import biz.dealnote.messenger.crypt.KeyLocationPolicy
 import biz.dealnote.messenger.model.*
 import biz.dealnote.messenger.upload.UploadDestination
-import java.util.*
 
 /**
  * Created by ruslan.kolbasa on 05.10.2016.
@@ -64,4 +63,5 @@ interface IChatView : IBasicMessageListView, IErrorView {
     fun startVideoSelection(accountId: Int, ownerId: Int)
     fun startDocSelection(accountId: Int, ownerId: Int)
     fun startCamera(fileUri: Uri)
+    fun showDeleteForAllDialog(ids: ArrayList<Int>)
 }

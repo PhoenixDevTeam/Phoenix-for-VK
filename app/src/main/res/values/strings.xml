@@ -1204,5 +1204,9 @@
     <string name="attach">Attach</string>
     <string name="emoji">Emoij</string>
     <string name="edit_message">Edit message</string>
+    <string name="messages_delete_for_all_question_title">Delete message</string>
+    <string name="messages_delete_for_all_question_message">Are you sure you want to delete the messages?</string>
+    <string name="button_for_all">For all</string>
+    <string name="button_for_me">For me</string>
 
 </resources>
