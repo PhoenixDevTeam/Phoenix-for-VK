@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:minHeight="72dp">
@@ -9,56 +11,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="72dp"
-        android:layout_toLeftOf="@+id/active"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_toStartOf="@+id/active"
-        android:orientation="vertical"
-        android:paddingRight="16dp">
+        android:layout_toLeftOf="@+id/active"
+        android:layout_toEndOf="@+id/avatar"
+        android:layout_toRightOf="@+id/avatar"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/first_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name"
             android:textColor="?attr/textColorPrimary"
-            android:textSize="@dimen/font_size_title" />
+            android:textSize="@dimen/font_size_title"
+            tools:text="Name" />
 
         <TextView
             android:id="@+id/last_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Time"
             android:textColor="?attr/textColorSecondary"
-            android:textSize="@dimen/font_size_subtitle" />
+            android:textSize="@dimen/font_size_subtitle"
+            tools:text="Time" />
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp">
-
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="@dimen/avatar_size_usual"
-            android:layout_height="@dimen/avatar_size_usual"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true" />
-
-    </RelativeLayout>
-
-
     <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/avatar_size_usual"
+        android:layout_height="@dimen/avatar_size_usual"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp" />
+
+    <biz.dealnote.messenger.view.ColorFilterImageView
         android:id="@+id/active"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:padding="2dp"
-        android:src="@drawable/check" />
+        android:src="@drawable/check"
+        app:filter_color="?attr/icon_color_active" />
 
 </RelativeLayout>
-
-
