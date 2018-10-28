@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
 
     <include
-        android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
