@@ -235,6 +235,7 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
     }
 
     private void bindDeletedHolder(final DeletedMessageHolder holder, final Message message) {
+        holder.buttonRestore.setVisibility(message.isDeletedForAll() ? View.GONE : View.VISIBLE);
         holder.buttonRestore.setOnClickListener(v -> {
             if (onMessageActionListener != null) {
                 onMessageActionListener.onRestoreClick(message, holder.getAdapterPosition());

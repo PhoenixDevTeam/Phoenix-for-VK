@@ -370,6 +370,7 @@ public class Entity2Model {
                 .setHasAttachments(dbo.isHasAttachmens())
                 .setForwardMessagesCount(dbo.getForwardCount())
                 .setDeleted(dbo.isDeleted())
+                .setDeletedForAll(dbo.isDeletedForAll())
                 .setOriginalId(dbo.getOriginalId())
                 .setCryptStatus(dbo.isEncrypted() ? CryptStatus.ENCRYPTED : CryptStatus.NO_ENCRYPTION)
                 .setImportant(dbo.isImportant())
@@ -384,8 +385,7 @@ public class Entity2Model {
                 .setRandomId(dbo.getRandomId());
 
         if (dbo.getActionMemberId() != 0) {
-            User actionUser = (User) owners.getById(dbo.getActionMemberId());
-            message.setActionUser(actionUser);
+            message.setActionUser(owners.getById(dbo.getActionMemberId()));
         }
 
         if (nonEmpty(dbo.getAttachments())) {

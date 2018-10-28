@@ -300,13 +300,16 @@ public class MessagesRepository implements IMessagesRepository {
 
         if (nonEmpty(setUpdates)) {
             for (MessageFlagsSetUpdate update : setUpdates) {
-                if (!hasFlag(update.mask, VKApiMessage.FLAG_DELETED) && !hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT))
+                if (!hasFlag(update.mask, VKApiMessage.FLAG_DELETED)
+                        && !hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT)
+                        && !hasFlag(update.mask, VKApiMessage.FLAG_DELETED_FOR_ALL))
                     continue;
 
-                MessagePatch patch = new MessagePatch(update.message_id);
+                MessagePatch patch = new MessagePatch(update.message_id, update.peer_id);
 
                 if (hasFlag(update.mask, VKApiMessage.FLAG_DELETED)) {
-                    patch.setDeletion(new MessagePatch.Deletion(true));
+                    boolean forAll = hasFlag(update.mask, VKApiMessage.FLAG_DELETED_FOR_ALL);
+                    patch.setDeletion(new MessagePatch.Deletion(true, forAll));
                 }
 
                 if (hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT)) {
@@ -322,10 +325,9 @@ public class MessagesRepository implements IMessagesRepository {
                 if (!hasFlag(update.mask, VKApiMessage.FLAG_DELETED) && !hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT))
                     continue;
 
-                MessagePatch patch = new MessagePatch(update.message_id);
-
+                MessagePatch patch = new MessagePatch(update.message_id, update.peer_id);
                 if (hasFlag(update.mask, VKApiMessage.FLAG_DELETED)) {
-                    patch.setDeletion(new MessagePatch.Deletion(false));
+                    patch.setDeletion(new MessagePatch.Deletion(false, false));
                 }
 
                 if (hasFlag(update.mask, VKApiMessage.FLAG_IMPORTANT)) {
@@ -1047,7 +1049,7 @@ public class MessagesRepository implements IMessagesRepository {
 
                     for (ChatUserDto dto : dtos) {
                         ids.append(dto.invited_by);
-                        owners.add(Dto2Model.transformUser(dto.user));
+                        owners.add(Dto2Model.transformOwner(dto.user));
                     }
 
                     final boolean isAdmin = accountId == chatDto.admin_id;
@@ -1057,11 +1059,11 @@ public class MessagesRepository implements IMessagesRepository {
                                 List<AppChatUser> models = new ArrayList<>(dtos.size());
 
                                 for (ChatUserDto dto : dtos) {
-                                    AppChatUser user = new AppChatUser(Dto2Model.transformUser(dto.user), dto.invited_by, dto.type);
+                                    AppChatUser user = new AppChatUser(Dto2Model.transformOwner(dto.user), dto.invited_by, dto.type);
                                     user.setCanRemove(isAdmin || user.getInvitedBy() == accountId);
 
                                     if (user.getInvitedBy() != 0) {
-                                        user.setInvited((User) ownersBundle.getById(user.getInvitedBy()));
+                                        user.setInviter(ownersBundle.getById(user.getInvitedBy()));
                                     }
 
                                     models.add(user);
@@ -1073,10 +1075,10 @@ public class MessagesRepository implements IMessagesRepository {
     }
 
     @Override
-    public Completable removeChatUser(int accountId, int chatId, int userId) {
+    public Completable removeChatMember(int accountId, int chatId, int memberId) {
         return networker.vkDefault(accountId)
                 .messages()
-                .removeChatUser(chatId, userId)
+                .removeChatMember(chatId, memberId)
                 .ignoreElement();
     }
 
@@ -1095,7 +1097,7 @@ public class MessagesRepository implements IMessagesRepository {
 
                         AppChatUser chatUser = new AppChatUser(user, accountId, "profile")
                                 .setCanRemove(true)
-                                .setInvited((User) iam);
+                                .setInviter(iam);
 
                         data.add(chatUser);
                     }
@@ -1117,7 +1119,7 @@ public class MessagesRepository implements IMessagesRepository {
     }
 
     @Override
-    public Completable deleteMessages(int accountId, int peerId, Collection<Integer> ids) {
+    public Completable deleteMessages(int accountId, int peerId, @NonNull Collection<Integer> ids, @NonNull Collection<Integer> forAll) {
         return networker.vkDefault(accountId)
                 .messages()
                 .delete(ids, null, null)
@@ -1129,35 +1131,84 @@ public class MessagesRepository implements IMessagesRepository {
                         int removedId = Integer.parseInt(entry.getKey());
 
                         if (removed) {
-                            MessagePatch patch = new MessagePatch(removedId);
-                            patch.setDeletion(new MessagePatch.Deletion(true));
+                            MessagePatch patch = new MessagePatch(removedId, peerId);
+                            patch.setDeletion(new MessagePatch.Deletion(true, false));
                             patches.add(patch);
                         }
                     }
 
-                    return applyMessagesPatchesAndPublish(accountId, patches)
-                            .andThen(invalidatePeerMessage(accountId, peerId));
+                    return applyMessagesPatchesAndPublish(accountId, patches);
                 });
+    }
+
+    private static MessageUpdate patch2Update(int accountId, MessagePatch patch){
+        MessageUpdate update = new MessageUpdate(accountId, patch.getMessageId());
+        if (patch.getDeletion() != null) {
+            update.setDeleteUpdate(new MessageUpdate.DeleteUpdate(patch.getDeletion().getDeleted(), patch.getDeletion().getDeletedForAll()));
+        }
+        if (patch.getImportant() != null) {
+            update.setImportantUpdate(new MessageUpdate.ImportantUpdate(patch.getImportant().getImportant()));
+        }
+        return update;
     }
 
     private Completable applyMessagesPatchesAndPublish(int accountId, List<MessagePatch> patches) {
         List<MessageUpdate> updates = new ArrayList<>(patches.size());
+        Set<PeerId> requireInvalidate = new HashSet<>(0);
+
         for (MessagePatch patch : patches) {
-            MessageUpdate update = new MessageUpdate(accountId, patch.getMessageId());
-            if (patch.getDeletion() != null) {
-                update.setDeleteUpdate(new MessageUpdate.DeleteUpdate(patch.getDeletion().getDeleted()));
+            updates.add(patch2Update(accountId, patch));
+
+            if(patch.getDeletion() != null){
+                requireInvalidate.add(new PeerId(accountId, patch.getPeerId()));
             }
-            if (patch.getImportant() != null) {
-                update.setImportantUpdate(new MessageUpdate.ImportantUpdate(patch.getImportant().getImportant()));
-            }
-            updates.add(update);
         }
 
-        return storages.messages().applyPatches(accountId, patches)
+        Completable afterApply = Completable.complete();
+
+        List<Completable> invalidatePeers = new LinkedList<>();
+        for(PeerId pair : requireInvalidate){
+            invalidatePeers.add(invalidatePeerLastMessage(pair.accountId, pair.peerId));
+        }
+
+        if(invalidatePeers.size() > 0){
+            afterApply = Completable.merge(invalidatePeers);
+        }
+
+        return storages.messages()
+                .applyPatches(accountId, patches)
+                .andThen(afterApply)
                 .doOnComplete(() -> messageUpdatesPublisher.onNext(updates));
     }
 
-    private Completable invalidatePeerMessage(int accountId, int peerId) {
+    private static final class PeerId {
+
+        final int accountId;
+        final int peerId;
+
+        PeerId(int accountId, int peerId) {
+            this.accountId = accountId;
+            this.peerId = peerId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            PeerId peerId1 = (PeerId) o;
+            if (accountId != peerId1.accountId) return false;
+            return peerId == peerId1.peerId;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = accountId;
+            result = 31 * result + peerId;
+            return result;
+        }
+    }
+
+    private Completable invalidatePeerLastMessage(int accountId, int peerId) {
         return storages.messages()
                 .findLastSentMessageIdForPeer(accountId, peerId)
                 .flatMapCompletable(optionalId -> {
@@ -1179,10 +1230,9 @@ public class MessagesRepository implements IMessagesRepository {
                 .messages()
                 .restore(messageId)
                 .flatMapCompletable(ignored -> {
-                    MessagePatch patch = new MessagePatch(messageId);
-                    patch.setDeletion(new MessagePatch.Deletion(false));
-                    return applyMessagesPatchesAndPublish(accountId, Collections.singletonList(patch))
-                            .andThen(invalidatePeerMessage(accountId, peerId));
+                    MessagePatch patch = new MessagePatch(messageId, peerId);
+                    patch.setDeletion(new MessagePatch.Deletion(false, false));
+                    return applyMessagesPatchesAndPublish(accountId, Collections.singletonList(patch));
                 });
     }
 

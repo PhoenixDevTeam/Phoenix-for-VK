@@ -31,7 +31,7 @@ public interface IMessagesApi {
     Completable edit(int peerId, int messageId, String message, List<IAttachmentToken> attachments, boolean keepFwd, Boolean keepSnippets);
 
     @CheckResult
-    Single<Boolean> removeChatUser(int chatId, int userId);
+    Single<Boolean> removeChatMember(int chatId, int memberId);
 
     @CheckResult
     Single<Boolean> addChatUser(int chatId, int userId);

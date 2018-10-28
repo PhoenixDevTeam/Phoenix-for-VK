@@ -520,6 +520,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             it.id == id
         }?.run {
             isDeleted = false
+            isDeletedForAll = false
             view?.notifyDataChanged()
         }
     }
@@ -846,6 +847,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 if (targetIndex != -1) {
                     update.deleteUpdate?.run {
                         data[targetIndex].isDeleted = isDeleted
+                        data[targetIndex].isDeletedForAll = isDeletedForAll
                     }
 
                     update.importantUpdate?.run {
@@ -1127,14 +1129,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                     iterator.remove()
                     hasChanged = true
                 }
-                MessageStatus.EDITING -> {
-                    // do nothink
-                }
             }
         }
 
         if (sent.nonEmpty()) {
-            appendDisposable(messagesRepository.deleteMessages(messagesOwnerId, peerId, sent)
+            appendDisposable(messagesRepository.deleteMessages(messagesOwnerId, peerId, sent, sent)
                     .fromIOToMain()
                     .subscribe(dummy(), Consumer { t -> showError(view, t) }))
         }
@@ -1179,7 +1178,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         val chatId = Peer.toChatId(peerId)
         val accountId = super.getAccountId()
 
-        appendDisposable(messagesRepository.removeChatUser(accountId, chatId, accountId)
+        appendDisposable(messagesRepository.removeChatMember(accountId, chatId, accountId)
                 .fromIOToMain()
                 .subscribe(dummy(), Consumer { t -> showError(view, t) }))
     }

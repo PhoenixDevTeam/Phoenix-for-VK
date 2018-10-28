@@ -117,13 +117,13 @@ public interface IMessagesRepository {
 
     Single<List<AppChatUser>> getChatUsers(int accountId, int chatId);
 
-    Completable removeChatUser(int accountId, int chatId, int userId);
+    Completable removeChatMember(int accountId, int chatId, int userId);
 
     Single<List<AppChatUser>> addChatUsers(int accountId, int chatId, List<User> users);
 
     Completable deleteDialog(int accountId, int peedId, int count, int offset);
 
-    Completable deleteMessages(int accountId, int peerId, Collection<Integer> ids);
+    Completable deleteMessages(int accountId, int peerId, @NonNull Collection<Integer> ids, @NonNull Collection<Integer> forAll);
 
     Completable restoreMessage(int accountId, int peerId, int messageId);
 

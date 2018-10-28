@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.model.AppChatUser;
+import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.Objects;
@@ -44,9 +45,9 @@ public class ChatMembersListAdapter extends RecyclerView.Adapter<ChatMembersList
         final Context context = holder.itemView.getContext();
 
         final AppChatUser item = data.get(position);
-        final User user = item.getUser();
+        final Owner user = item.getMember();
 
-        holder.vOnline.setVisibility(user.isOnline() ? View.VISIBLE : View.GONE);
+        holder.vOnline.setVisibility(user instanceof User && ((User) user).isOnline() ? View.VISIBLE : View.GONE);
         String userAvatarUrl = user.getMaxSquareAvatar();
 
         if(isEmpty(userAvatarUrl)){
@@ -62,12 +63,12 @@ public class ChatMembersListAdapter extends RecyclerView.Adapter<ChatMembersList
         }
 
         holder.tvName.setText(user.getFullName());
-        boolean isCreator = user.getId() == item.getInvitedBy();
+        boolean isCreator = user.getOwnerId() == item.getInvitedBy();
 
         if(isCreator){
             holder.tvSubline.setText(R.string.creator_of_conversation);
         } else {
-            holder.tvSubline.setText(context.getString(R.string.invited_by, item.getInvited().getFullName()));
+            holder.tvSubline.setText(context.getString(R.string.invited_by, item.getInviter().getFullName()));
         }
 
         holder.itemView.setOnClickListener(view -> {

@@ -894,6 +894,7 @@ public class Dto2Entity {
                 .setEncrypted(encrypted)
                 .setImportant(dto.important)
                 .setDeleted(dto.deleted)
+                .setDeletedForAll(false) // cant be deleted for all?
                 .setForwardCount(Utils.safeCountOf(dto.fwd_messages))
                 .setHasAttachmens(nonNull(dto.attachments) && !dto.attachments.isEmpty())
                 .setStatus(MessageStatus.SENT) // only sent can be

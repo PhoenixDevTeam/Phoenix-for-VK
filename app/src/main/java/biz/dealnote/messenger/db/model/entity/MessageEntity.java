@@ -21,11 +21,7 @@ public class MessageEntity extends Entity {
 
     private long date;
 
-    //private boolean read;
-
     private boolean out;
-
-    //private String title;
 
     private String body;
 
@@ -34,6 +30,8 @@ public class MessageEntity extends Entity {
     private boolean important;
 
     private boolean deleted;
+
+    private boolean deletedForAll;
 
     private int forwardCount;
 
@@ -67,6 +65,15 @@ public class MessageEntity extends Entity {
 
     private List<MessageEntity> forwardMessages;
 
+    public MessageEntity setDeletedForAll(boolean deletedForAll) {
+        this.deletedForAll = deletedForAll;
+        return this;
+    }
+
+    public boolean isDeletedForAll() {
+        return deletedForAll;
+    }
+
     public MessageEntity(int id, int peerId, int fromId) {
         this.id = id;
         this.peerId = peerId;
@@ -99,15 +106,6 @@ public class MessageEntity extends Entity {
         return date;
     }
 
-    /*public boolean isRead() {
-        return read;
-    }
-
-    public MessageEntity setRead(boolean read) {
-        this.read = read;
-        return this;
-    }*/
-
     public boolean isOut() {
         return out;
     }
@@ -116,15 +114,6 @@ public class MessageEntity extends Entity {
         this.out = out;
         return this;
     }
-
-    /*public String getTitle() {
-        return title;
-    }
-
-    public MessageEntity setTitle(String title) {
-        this.title = title;
-        return this;
-    }*/
 
     public String getBody() {
         return body;

@@ -153,8 +153,7 @@ public class VKOwnIds {
 
     public VKOwnIds append(VKApiMessage message) {
         append(message.from_id);
-        append(message.action_mid); // тут 100% пользователь, нюанс в том, что он может быть < 0, если email
-        //append(message.admin_id);
+        append(message.action_mid);
 
         if (!message.isGroupChat()) {
             append(message.peer_id);

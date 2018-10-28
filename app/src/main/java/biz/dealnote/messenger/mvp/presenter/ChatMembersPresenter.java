@@ -99,9 +99,9 @@ public class ChatMembersPresenter extends AccountDependencyPresenter<IChatMember
 
     public void fireUserDeteleConfirmed(AppChatUser user) {
         final int accountId = super.getAccountId();
-        final int userId = user.getUser().getId();
+        final int userId = user.getMember().getOwnerId();
 
-        appendDisposable(messagesInteractor.removeChatUser(accountId, chatId, userId)
+        appendDisposable(messagesInteractor.removeChatMember(accountId, chatId, userId)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
                 .subscribe(() -> onUserRemoved(userId), t -> showError(getView(), getCauseIfRuntime(t))));
     }
@@ -136,6 +136,6 @@ public class ChatMembersPresenter extends AccountDependencyPresenter<IChatMember
     }
 
     public void fireUserClick(AppChatUser user) {
-        getView().openUserWall(getAccountId(), user.getUser());
+        getView().openUserWall(getAccountId(), user.getMember());
     }
 }

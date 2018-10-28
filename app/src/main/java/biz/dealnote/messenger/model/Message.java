@@ -16,7 +16,7 @@ import biz.dealnote.messenger.util.ParcelUtils;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;
 
-public class Message extends AbsModel implements Parcelable, Identificable, ISelectable, Cloneable {
+public class Message extends AbsModel implements Parcelable, Identificable, ISelectable {
 
     public static Creator<Message> CREATOR = new Creator<Message>() {
         public Message createFromParcel(Parcel source) {
@@ -34,8 +34,6 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
 
     private String body;
 
-    //private String title;
-
     private int peerId;
 
     private int senderId;
@@ -50,6 +48,8 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
     private boolean selected;
 
     private boolean deleted;
+
+    private boolean deletedForAll;
 
     private int originalId;
 
@@ -76,7 +76,7 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
 
     private String photo200;
 
-    private User actionUser;
+    private Owner actionUser;
 
     private int randomId;
 
@@ -92,21 +92,6 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
     private int forwardMessagesCount;
 
     private boolean hasAttachments;
-
-    @Override
-    protected Message clone() throws CloneNotSupportedException {
-        Message clone = (Message) super.clone();
-        clone.attachments = attachments == null ? null : attachments.clone();
-        return clone;
-    }
-
-    public Message safelyClone(){
-        try {
-            return clone();
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalStateException(e);
-        }
-    }
 
     public Message(int id) {
         this.id = id;
@@ -135,6 +120,7 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         this.date = in.readLong();
         this.selected = in.readInt() == 1;
         this.deleted = in.readInt() == 1;
+        this.deletedForAll = in.readInt() == 1;
         this.attachments = in.readParcelable(Attachments.class.getClassLoader());
         this.fwd = in.createTypedArrayList(Message.CREATOR);
         this.originalId = in.readInt();
@@ -149,7 +135,7 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         this.photo50 = in.readString();
         this.photo100 = in.readString();
         this.photo200 = in.readString();
-        this.actionUser = in.readParcelable(User.class.getClassLoader());
+        this.actionUser = in.<ParcelableOwnerWrapper>readParcelable(ParcelableOwnerWrapper.class.getClassLoader()).get();
         this.sender = in.readParcelable(senderId > 0 ?
                 User.class.getClassLoader() : Community.class.getClassLoader());
         this.randomId = in.readInt();
@@ -233,7 +219,7 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         return this;
     }
 
-    public Message setActionUser(User actionUser) {
+    public Message setActionUser(Owner actionUser) {
         this.actionUser = actionUser;
         return this;
     }
@@ -505,6 +491,15 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         return 0;
     }
 
+    public boolean isDeletedForAll() {
+        return deletedForAll;
+    }
+
+    public Message setDeletedForAll(boolean deletedForAll) {
+        this.deletedForAll = deletedForAll;
+        return this;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
@@ -522,6 +517,7 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         dest.writeLong(date);
         dest.writeInt(selected ? 1 : 0);
         dest.writeInt(deleted ? 1 : 0);
+        dest.writeInt(deletedForAll ? 1 : 0);
         dest.writeParcelable(attachments, flags);
         dest.writeTypedList(fwd);
         dest.writeInt(originalId);
@@ -532,7 +528,7 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         dest.writeString(photo50);
         dest.writeString(photo100);
         dest.writeString(photo200);
-        dest.writeParcelable(actionUser, flags);
+        dest.writeParcelable(new ParcelableOwnerWrapper(actionUser), flags);
         dest.writeParcelable(sender, flags);
         dest.writeInt(randomId);
         ParcelUtils.writeIntStringMap(dest, extras);
