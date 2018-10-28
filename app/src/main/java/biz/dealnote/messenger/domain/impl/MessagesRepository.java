@@ -345,7 +345,7 @@ public class MessagesRepository implements IMessagesRepository {
     public Completable handleWriteUpdates(int accountId, @NonNull List<WriteTextInDialogUpdate> updates) {
         return Completable.fromAction(() -> {
             List<WriteText> list = new ArrayList<>();
-            for(WriteTextInDialogUpdate update : updates){
+            for (WriteTextInDialogUpdate update : updates) {
                 list.add(new WriteText(accountId, update.user_id, update.user_id));
             }
             writeTextPublisher.onNext(list);
@@ -355,7 +355,7 @@ public class MessagesRepository implements IMessagesRepository {
     @Override
     public Completable handleUnreadBadgeUpdates(int accountId, @NonNull List<BadgeCountChangeUpdate> updates) {
         return Completable.fromAction(() -> {
-            for(BadgeCountChangeUpdate update: updates){
+            for (BadgeCountChangeUpdate update : updates) {
                 storages.dialogs().setUnreadDialogsCount(accountId, update.count);
             }
         });
@@ -1140,7 +1140,7 @@ public class MessagesRepository implements IMessagesRepository {
                 });
     }
 
-    private static MessageUpdate patch2Update(int accountId, MessagePatch patch){
+    private static MessageUpdate patch2Update(int accountId, MessagePatch patch) {
         MessageUpdate update = new MessageUpdate(accountId, patch.getMessageId());
         if (patch.getDeletion() != null) {
             update.setDeleteUpdate(new MessageUpdate.DeleteUpdate(patch.getDeletion().getDeleted(), patch.getDeletion().getDeletedForAll()));
@@ -1158,7 +1158,7 @@ public class MessagesRepository implements IMessagesRepository {
         for (MessagePatch patch : patches) {
             updates.add(patch2Update(accountId, patch));
 
-            if(patch.getDeletion() != null){
+            if (patch.getDeletion() != null) {
                 requireInvalidate.add(new PeerId(accountId, patch.getPeerId()));
             }
         }
@@ -1166,11 +1166,11 @@ public class MessagesRepository implements IMessagesRepository {
         Completable afterApply = Completable.complete();
 
         List<Completable> invalidatePeers = new LinkedList<>();
-        for(PeerId pair : requireInvalidate){
+        for (PeerId pair : requireInvalidate) {
             invalidatePeers.add(invalidatePeerLastMessage(pair.accountId, pair.peerId));
         }
 
-        if(invalidatePeers.size() > 0){
+        if (invalidatePeers.size() > 0) {
             afterApply = Completable.merge(invalidatePeers);
         }
 
@@ -1252,7 +1252,7 @@ public class MessagesRepository implements IMessagesRepository {
 
     @Override
     public Completable markAsRead(int accountId, int peerId, int toId) {
-       PeerPatch patch = new PeerPatch(peerId).withInRead(toId).withUnreadCount(0);
+        PeerPatch patch = new PeerPatch(peerId).withInRead(toId).withUnreadCount(0);
         return networker.vkDefault(accountId)
                 .messages()
                 .markAsRead(peerId, toId)
@@ -1265,7 +1265,7 @@ public class MessagesRepository implements IMessagesRepository {
         update.setPin(new PeerUpdate.Pin(message));
 
         Completable apiCompletable;
-        if(message == null){
+        if (message == null) {
             apiCompletable = networker.vkDefault(accountId)
                     .messages()
                     .unpin(peerId);

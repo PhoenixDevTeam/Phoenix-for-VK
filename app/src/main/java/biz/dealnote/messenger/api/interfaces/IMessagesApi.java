@@ -13,6 +13,7 @@ import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.api.model.VkApiConversation;
 import biz.dealnote.messenger.api.model.VkApiLongpollServer;
 import biz.dealnote.messenger.api.model.response.AttachmentsHistoryResponse;
+import biz.dealnote.messenger.api.model.response.ConversationDeleteResult;
 import biz.dealnote.messenger.api.model.response.DialogsResponse;
 import biz.dealnote.messenger.api.model.response.ItemsProfilesGroupsResponse;
 import biz.dealnote.messenger.api.model.response.LongpollHistoryResponse;
@@ -49,7 +50,7 @@ public interface IMessagesApi {
     Single<Integer> createChat(Collection<Integer> userIds, String title);
 
     @CheckResult
-    Single<Boolean> deleteDialog(int peerId, Integer offset, Integer count);
+    Single<ConversationDeleteResult> deleteDialog(int peerId, Integer offset, Integer count);
 
     @CheckResult
     Single<Boolean> restore(int messageId);
