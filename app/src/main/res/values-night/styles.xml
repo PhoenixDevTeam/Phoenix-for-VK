@@ -56,6 +56,7 @@
         <item name="toolbarUnlockIcon">@drawable/unlock</item>
         <item name="toolbarDoubleUpIcon">@drawable/double_up</item>
         <item name="toolbarDoubleDownIcon">@drawable/double_down</item>
+        <item name="toolbarPinIcon">@drawable/pin</item>
 
         <item name="chat_background_cookies">@drawable/cookies_dark</item>
         <item name="chat_background_lines">@drawable/lines_dark</item>
