@@ -48,18 +48,14 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
  */
 class DialogsStorage extends AbsStorage implements IDialogsStorage {
 
-    private PublishSubject<IDialogUpdate> updatePublishSubject;
-    private PublishSubject<IDeletedDialog> dialogsDeletingPublisher;
     private PublishSubject<Pair<Integer, Integer>> unreadDialogsCounter;
 
     private SharedPreferences preferences;
 
     DialogsStorage(@NonNull AppStorages base) {
         super(base);
-        this.updatePublishSubject = PublishSubject.create();
-        this.dialogsDeletingPublisher = PublishSubject.create();
-        this.preferences = base.getSharedPreferences("dialogs_prefs", Context.MODE_PRIVATE);
-        this.unreadDialogsCounter = PublishSubject.create();
+        preferences = base.getSharedPreferences("dialogs_prefs", Context.MODE_PRIVATE);
+        unreadDialogsCounter = PublishSubject.create();
     }
 
     private static String unreadKeyFor(int accountId) {
@@ -113,26 +109,6 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
             Uri uri = MessengerContentProvider.getDialogsContentUriFor(accountId);
             getContentResolver().delete(uri, DialogsColumns._ID + " = ?", new String[]{String.valueOf(peerId)});
             emitter.onComplete();
-
-            dialogsDeletingPublisher.onNext(new DialogEventImpl(accountId, peerId));
-        });
-    }
-
-    @Override
-    public Completable updatePeerWithId(int accountId, int peerId, int lastMessageId, int unreadCount) {
-        return Completable.create(emitter -> {
-            Uri uri = MessengerContentProvider.getDialogsContentUriFor(accountId);
-
-            ContentValues cv = new ContentValues();
-            cv.put(DialogsColumns.LAST_MESSAGE_ID, lastMessageId);
-            cv.put(DialogsColumns.UNREAD, unreadCount);
-
-            String where = DialogsColumns._ID + " = ?";
-            String[] args = {String.valueOf(peerId)};
-            getContext().getContentResolver().update(uri, cv, where, args);
-            emitter.onComplete();
-
-            updatePublishSubject.onNext(new DialogUpdateImpl(accountId, peerId, lastMessageId, unreadCount));
         });
     }
 
@@ -337,11 +313,6 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
         });
     }
 
-    //@Override
-    //public Observable<IDialogUpdate> observeDialogUpdates() {
-    //    return updatePublishSubject;
-    //}
-
     @Override
     public Completable insertChats(int accountId, List<VKApiChat> chats) {
         return Completable.fromAction(() -> {
@@ -356,11 +327,6 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
 
             getContentResolver().applyBatch(MessengerContentProvider.AUTHORITY, operations);
         });
-    }
-
-    @Override
-    public Observable<IDeletedDialog> observeDialogsDeleting() {
-        return dialogsDeletingPublisher;
     }
 
     @Override
@@ -393,6 +359,10 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                 if (nonNull(patch.getLastMessage())) {
                     dialogscv.put(DialogsColumns.LAST_MESSAGE_ID, patch.getLastMessage().getId());
                     peerscv.put(PeersColumns.LAST_MESSAGE_ID, patch.getLastMessage().getId());
+                }
+
+                if(nonNull(patch.getPin())){
+                    peerscv.put(PeersColumns.PINNED, serializeJson(patch.getPin().getPinned()));
                 }
 
                 String[] args = {String.valueOf(patch.getId())};
@@ -481,61 +451,5 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                 .setUnreadCount(cursor.getInt(cursor.getColumnIndex(DialogsColumns.UNREAD)))
                 .setLastMessageId(cursor.getInt(cursor.getColumnIndex(DialogsColumns.LAST_MESSAGE_ID)))
                 .setAcl(cursor.getInt(cursor.getColumnIndex(DialogsColumns.ACL)));
-    }
-
-    private static class DialogUpdateImpl implements IDialogUpdate {
-
-        final int accountId;
-        final int peerId;
-        final int lastMessageId;
-        final int unreadCount;
-
-        private DialogUpdateImpl(int accountId, int peerId, int lastMessageId, int unreadCount) {
-            this.accountId = accountId;
-            this.peerId = peerId;
-            this.lastMessageId = lastMessageId;
-            this.unreadCount = unreadCount;
-        }
-
-        @Override
-        public int getAccountId() {
-            return accountId;
-        }
-
-        @Override
-        public int getPeerId() {
-            return peerId;
-        }
-
-        @Override
-        public int getLastMessageId() {
-            return lastMessageId;
-        }
-
-        @Override
-        public int getUnreadCount() {
-            return unreadCount;
-        }
-    }
-
-    private static class DialogEventImpl implements IDeletedDialog {
-
-        final int accountId;
-        final int peerId;
-
-        private DialogEventImpl(int accountId, int peerId) {
-            this.accountId = accountId;
-            this.peerId = peerId;
-        }
-
-        @Override
-        public int getAccountId() {
-            return accountId;
-        }
-
-        @Override
-        public int getPeerId() {
-            return peerId;
-        }
     }
 }

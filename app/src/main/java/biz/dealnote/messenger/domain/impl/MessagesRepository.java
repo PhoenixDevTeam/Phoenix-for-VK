@@ -1108,14 +1108,13 @@ public class MessagesRepository implements IMessagesRepository {
 
     @Override
     public Completable deleteDialog(int accountId, int peedId, int count, int offset) {
-        // TODO: 07.10.2017 Fix this
         return networker.vkDefault(accountId)
                 .messages()
                 .deleteDialog(peedId, offset, count)
                 .flatMapCompletable(ignored -> storages.dialogs()
                         .removePeerWithId(accountId, peedId)
-                        .andThen(storages.messages()
-                                .insertPeerDbos(accountId, peedId, Collections.emptyList(), true)));
+                        .andThen(storages.messages().insertPeerDbos(accountId, peedId, Collections.emptyList(), true)))
+                .doOnComplete(() -> peerDeletingPublisher.onNext(new PeerDeleting(accountId, peedId)));
     }
 
     @Override
@@ -1225,7 +1224,6 @@ public class MessagesRepository implements IMessagesRepository {
 
     @Override
     public Completable restoreMessage(int accountId, int peerId, int messageId) {
-        // TODO: 07.10.2017 Restore into Cache?
         return networker.vkDefault(accountId)
                 .messages()
                 .restore(messageId)
@@ -1254,9 +1252,7 @@ public class MessagesRepository implements IMessagesRepository {
 
     @Override
     public Completable markAsRead(int accountId, int peerId, int toId) {
-        // TODO: 07.10.2017 Dialogs table update?
-
-        PeerPatch patch = new PeerPatch(peerId).withInRead(toId).withUnreadCount(0);
+       PeerPatch patch = new PeerPatch(peerId).withInRead(toId).withUnreadCount(0);
         return networker.vkDefault(accountId)
                 .messages()
                 .markAsRead(peerId, toId)

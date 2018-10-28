@@ -147,7 +147,7 @@ public interface IMessageService {
      * @return 1
      */
     @FormUrlEncoded
-    @POST("messages.deleteDialog")
+    @POST("messages.deleteConversation")
     Single<BaseResponse<Integer>> deleteDialog(@Field("peer_id") int peerId,
                                                @Field("offset") Integer offset,
                                                @Field("count") Integer count);

@@ -39,8 +39,6 @@ public interface IDialogsStorage extends IStorage {
 
     Completable removePeerWithId(int accountId, int peerId);
 
-    Completable updatePeerWithId(int accountId, int peerId, int lastMessageId, int unreadCount);
-
     Completable insertDialogs(int accountId, List<DialogEntity> dbos, boolean clearBefore);
 
     Completable changeTitle(int accountId, int peedId, String title);
@@ -53,25 +51,9 @@ public interface IDialogsStorage extends IStorage {
      */
     Single<Collection<Integer>> getMissingGroupChats(int accountId, Collection<Integer> ids);
 
-    //Observable<IDialogUpdate> observeDialogUpdates();
-
     Completable insertChats(int accountId, List<VKApiChat> chats);
 
-    Observable<IDeletedDialog> observeDialogsDeleting();
-
     Completable applyPatches(int accountId, @NonNull List<PeerPatch> patches);
-
-    interface IDialogUpdate {
-        int getAccountId();
-        int getPeerId();
-        int getLastMessageId();
-        int getUnreadCount();
-    }
-
-    interface IDeletedDialog {
-        int getAccountId();
-        int getPeerId();
-    }
 
     Single<Optional<Chat>> findChatById(int accountId, int peerId);
 }
