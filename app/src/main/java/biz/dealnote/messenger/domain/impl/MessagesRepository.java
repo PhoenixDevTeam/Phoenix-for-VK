@@ -403,7 +403,8 @@ public class MessagesRepository implements IMessagesRepository {
                 .setUnreadCount(entity.getUnreadCount())
                 .setTitle(entity.getTitle())
                 .setInterlocutor(Peer.isGroup(entity.getPeerId()) || Peer.isUser(entity.getPeerId()) ? owners.getById(entity.getPeerId()) : null)
-                .setPinned(isNull(entity.getPinned()) ? null : Entity2Model.message(accountId, entity.getPinned(), owners));
+                .setPinned(isNull(entity.getPinned()) ? null : Entity2Model.message(accountId, entity.getPinned(), owners))
+                .setAcl(entity.getAcl());
     }
 
     @Override

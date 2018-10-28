@@ -30,6 +30,26 @@ public class Conversation {
 
     private Message pinned;
 
+    private int acl;
+
+    public Conversation setAcl(int acl) {
+        this.acl = acl;
+        return this;
+    }
+
+    public int getAcl() {
+        return acl;
+    }
+
+    public static final class AclFlags {
+        public static final int CAN_INVITE = 1;
+        public static final int CAN_CHANGE_INFO = 2;
+        public static final int CAN_CHANGE_PIN = 4;
+        public static final int CAN_PROMOTE_USERS = 8;
+        public static final int CAN_SEE_INVITE_LINK = 16;
+        public static final int CAN_CHANGE_INVITE_LINK = 32;
+    }
+
     public Conversation(int id) {
         this.id = id;
     }

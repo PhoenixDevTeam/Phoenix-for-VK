@@ -76,6 +76,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     private var pinnedAvatar: ImageView? = null
     private var pinnedTitle: TextView? = null
     private var pinnedSubtitle: TextView? = null
+    private var buttonUnpin: View? = null
 
     private val optionMenuSettings = SparseBooleanArray()
 
@@ -126,6 +127,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         pinnedAvatar = pinnedView?.findViewById(R.id.pinned_avatar)
         pinnedTitle = pinnedView?.findViewById(R.id.pinned_title)
         pinnedSubtitle = pinnedView?.findViewById(R.id.pinned_subtitle)
+        buttonUnpin = pinnedView?.findViewById(R.id.buttonUnpin)
 
         editMessageGroup = root.findViewById(R.id.editMessageGroup)
         editMessageText = editMessageGroup?.findViewById(R.id.editMessageText)
@@ -136,7 +138,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     override fun displayEditingMessage(message: Message?) {
         editMessageGroup?.visibility = if (message == null) View.GONE else View.VISIBLE
         message?.run {
-            editMessageText?.text = if(body.isNullOrEmpty()) getString(R.string.attachments) else body
+            editMessageText?.text = if (body.isNullOrEmpty()) getString(R.string.attachments) else body
         }
     }
 
@@ -338,7 +340,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         }
     }
 
-    override fun displayPinnedMessage(pinned: Message?) {
+    override fun displayPinnedMessage(pinned: Message?, canChange: Boolean) {
         pinnedView?.run {
             visibility = if (pinned == null) View.GONE else View.VISIBLE
 
@@ -346,8 +348,9 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
                 ViewUtils.displayAvatar(pinnedAvatar!!, CurrentTheme.createTransformationForAvatar(requireContext()),
                         sender.get100photoOrSmaller(), null)
 
-                pinnedTitle?.text = this.sender.fullName
-                pinnedSubtitle?.text = this.body
+                pinnedTitle?.text = sender.fullName
+                pinnedSubtitle?.text = body
+                buttonUnpin?.visibility = if (canChange) View.VISIBLE else View.GONE
             }
         }
     }

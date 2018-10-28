@@ -22,6 +22,17 @@ public class SimpleDialogEntity {
 
     private int lastMessageId;
 
+    private int acl;
+
+    public SimpleDialogEntity setAcl(int acl) {
+        this.acl = acl;
+        return this;
+    }
+
+    public int getAcl() {
+        return acl;
+    }
+
     public SimpleDialogEntity setLastMessageId(int lastMessageId) {
         this.lastMessageId = lastMessageId;
         return this;

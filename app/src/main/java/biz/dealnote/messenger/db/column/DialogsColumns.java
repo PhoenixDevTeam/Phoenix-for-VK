@@ -20,6 +20,7 @@ public final class DialogsColumns implements BaseColumns {
     public static final String PHOTO_100 = "photo_100";
     public static final String PHOTO_200 = "photo_200";
     public static final String LAST_MESSAGE_ID = "last_message_id";
+    public static final String ACL = "acl";
 
     public static ContentValues getCV(VKApiChat chat){
         ContentValues cv = new ContentValues();
@@ -40,6 +41,7 @@ public final class DialogsColumns implements BaseColumns {
     public static final String FULL_PHOTO_100 = TABLENAME + "." + PHOTO_100;
     public static final String FULL_PHOTO_200 = TABLENAME + "." + PHOTO_200;
     public static final String FULL_LAST_MESSAGE_ID = TABLENAME + "." + LAST_MESSAGE_ID;
+    public static final String FULL_ACL = TABLENAME + "." + ACL;
 
     public static final String FOREIGN_MESSAGE_FROM_ID = "message_from_id";
     public static final String FOREIGN_MESSAGE_BODY = "message_body";

@@ -99,6 +99,7 @@ import biz.dealnote.messenger.model.MessageStatus;
 import biz.dealnote.messenger.model.feedback.FeedbackType;
 import biz.dealnote.messenger.util.Utils;
 
+import static biz.dealnote.messenger.domain.mappers.MapUtil.calculateConversationAcl;
 import static biz.dealnote.messenger.domain.mappers.MapUtil.mapAll;
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
@@ -616,7 +617,8 @@ public class Dto2Entity {
                 .setInRead(dto.inRead)
                 .setOutRead(dto.outRead)
                 .setUnreadCount(dto.unreadCount)
-                .setLastMessageId(dto.lastMessageId);
+                .setLastMessageId(dto.lastMessageId)
+                .setAcl(calculateConversationAcl(dto));
 
         if(nonNull(dto.settings)){
             entity.setTitle(dto.settings.title);
@@ -643,7 +645,8 @@ public class Dto2Entity {
                 .setMessage(messageEntity)
                 .setInRead(dto.conversation.inRead)
                 .setOutRead(dto.conversation.outRead)
-                .setUnreadCount(dto.conversation.unreadCount);
+                .setUnreadCount(dto.conversation.unreadCount)
+                .setAcl(calculateConversationAcl(dto.conversation));
 
         if(nonNull(dto.conversation.settings)){
             entity.setTitle(dto.conversation.settings.title);

@@ -58,8 +58,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_toStartOf="@+id/button_unpin"
-                android:layout_toLeftOf="@+id/button_unpin"
+                android:layout_toStartOf="@+id/buttonUnpin"
+                android:layout_toLeftOf="@+id/buttonUnpin"
                 android:layout_toEndOf="@+id/pinned_avatar"
                 android:layout_toRightOf="@+id/pinned_avatar"
                 android:orientation="vertical">
@@ -86,7 +86,7 @@
 
             <biz.dealnote.messenger.view.ColorFilterImageView
                 app:filter_color="?attr/icon_color_static"
-                android:id="@+id/button_unpin"
+                android:id="@+id/buttonUnpin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

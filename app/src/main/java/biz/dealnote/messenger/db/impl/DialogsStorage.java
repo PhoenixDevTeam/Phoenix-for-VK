@@ -190,6 +190,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
         cv.put(DialogsColumns.PHOTO_100, entity.getPhoto100());
         cv.put(DialogsColumns.PHOTO_200, entity.getPhoto200());
         cv.put(DialogsColumns.LAST_MESSAGE_ID, messageDbo.getId());
+        cv.put(DialogsColumns.ACL, entity.getAcl());
         return cv;
     }
 
@@ -204,6 +205,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
         cv.put(PeersColumns.PHOTO_100, entity.getPhoto100());
         cv.put(PeersColumns.PHOTO_200, entity.getPhoto200());
         cv.put(PeersColumns.PINNED, serializeJson(entity.getPinned()));
+        cv.put(PeersColumns.ACL, entity.getAcl());
         return cv;
     }
 
@@ -220,7 +222,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
 
     @Override
     public Single<List<PeerStateEntity>> findPeerStates(int accountId, Collection<Integer> ids) {
-        if(ids.isEmpty()){
+        if (ids.isEmpty()) {
             return Single.just(Collections.emptyList());
         }
 
@@ -239,8 +241,8 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
             Cursor cursor = getContentResolver().query(uri, projection, where, null, null);
 
             List<PeerStateEntity> entities = new ArrayList<>(safeCountOf(cursor));
-            if(cursor != null){
-                while (cursor.moveToNext()){
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
                     PeerStateEntity entity = new PeerStateEntity(cursor.getInt(cursor.getColumnIndex(PeersColumns._ID)))
                             .setInRead(cursor.getInt(cursor.getColumnIndex(PeersColumns.IN_READ)))
                             .setOutRead(cursor.getInt(cursor.getColumnIndex(PeersColumns.OUT_READ)))
@@ -267,7 +269,8 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                     PeersColumns.PHOTO_100,
                     PeersColumns.PHOTO_200,
                     PeersColumns.PINNED,
-                    PeersColumns.LAST_MESSAGE_ID
+                    PeersColumns.LAST_MESSAGE_ID,
+                    PeersColumns.ACL
             };
 
             Uri uri = MessengerContentProvider.getPeersContentUriFor(accountId);
@@ -286,7 +289,8 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                             .setInRead(cursor.getInt(cursor.getColumnIndex(PeersColumns.IN_READ)))
                             .setOutRead(cursor.getInt(cursor.getColumnIndex(PeersColumns.OUT_READ)))
                             .setPinned(deserializeJson(cursor, PeersColumns.PINNED, MessageEntity.class))
-                            .setLastMessageId(cursor.getInt(cursor.getColumnIndex(PeersColumns.LAST_MESSAGE_ID)));
+                            .setLastMessageId(cursor.getInt(cursor.getColumnIndex(PeersColumns.LAST_MESSAGE_ID)))
+                            .setAcl(cursor.getInt(cursor.getColumnIndex(PeersColumns.ACL)));
                 }
 
                 cursor.close();
@@ -386,7 +390,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                     peerscv.put(PeersColumns.OUT_READ, patch.getOutRead().getId());
                 }
 
-                if(nonNull(patch.getLastMessage())){
+                if (nonNull(patch.getLastMessage())) {
                     dialogscv.put(DialogsColumns.LAST_MESSAGE_ID, patch.getLastMessage().getId());
                     peerscv.put(PeersColumns.LAST_MESSAGE_ID, patch.getLastMessage().getId());
                 }
@@ -461,8 +465,6 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                 .setBody(cursor.getString(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_BODY)))
                 .setDate(cursor.getLong(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_DATE)))
                 .setOut(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_OUT)) == 1)
-                //.setTitle(cursor.getString(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_TITLE)))
-                //.setRead(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_READ_STATE)) == 1)
                 .setHasAttachmens(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_HAS_ATTACHMENTS)) == 1)
                 .setForwardCount(cursor.getInt(cursor.getColumnIndex(DialogsColumns.FOREIGN_MESSAGE_FWD_COUNT)))
                 .setAction(action)
@@ -477,7 +479,8 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                 .setPhoto100(cursor.getString(cursor.getColumnIndex(DialogsColumns.PHOTO_100)))
                 .setPhoto200(cursor.getString(cursor.getColumnIndex(DialogsColumns.PHOTO_200)))
                 .setUnreadCount(cursor.getInt(cursor.getColumnIndex(DialogsColumns.UNREAD)))
-                .setLastMessageId(cursor.getInt(cursor.getColumnIndex(DialogsColumns.LAST_MESSAGE_ID)));
+                .setLastMessageId(cursor.getInt(cursor.getColumnIndex(DialogsColumns.LAST_MESSAGE_ID)))
+                .setAcl(cursor.getInt(cursor.getColumnIndex(DialogsColumns.ACL)));
     }
 
     private static class DialogUpdateImpl implements IDialogUpdate {

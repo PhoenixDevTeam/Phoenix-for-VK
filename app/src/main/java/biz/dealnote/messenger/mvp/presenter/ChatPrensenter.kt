@@ -378,7 +378,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     @OnGuiCreated
     private fun resolvePinnedMessageView() {
-        view?.displayPinnedMessage(conversation?.pinned)
+        conversation?.run {
+            view?.displayPinnedMessage(pinned, hasFlag(acl, Conversation.AclFlags.CAN_CHANGE_PIN))
+        } ?: run {
+            view?.displayPinnedMessage(null, false)
+        }
     }
 
     @OnGuiCreated
@@ -917,6 +921,14 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         return message.isOut && Unixtime.now() - message.date < 24 * 60 * 60
     }
 
+    private fun canChangePin(): Boolean {
+        return conversation?.run {
+            hasFlag(acl, Conversation.AclFlags.CAN_CHANGE_PIN)
+        } ?: run {
+            false
+        }
+    }
+
     @OnGuiCreated
     override fun resolveActionMode() {
         val selectionCount = countOfSelection(data)
@@ -926,7 +938,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                     it.isSelected
                 }!!
 
-                view?.showActionMode(selectionCount.toString(), canEdit(message), isGroupChat)
+                view?.showActionMode(selectionCount.toString(), canEdit(message), canChangePin())
             } else {
                 view?.showActionMode(selectionCount.toString(), false, false)
             }

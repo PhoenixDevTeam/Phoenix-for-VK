@@ -501,15 +501,16 @@ public class Utils {
         return count;
     }
 
-    /**
-     * Проверка, содержит ли маска флаг
-     *
-     * @param mask маска
-     * @param flag флаг
-     * @return если содержит - true
-     */
     public static boolean hasFlag(int mask, int flag) {
         return (mask & flag) != 0;
+    }
+
+    public static int addFlagIf(int mask, int flag, boolean ifTrue){
+        if(ifTrue){
+            return mask + flag;
+        }
+
+        return mask;
     }
 
     /**
