@@ -52,9 +52,7 @@ public class Model2Entity {
     public static MessageEntity buildMessageEntity(Message message) {
         return new MessageEntity(message.getId(), message.getPeerId(), message.getSenderId())
                 .setDate(message.getDate())
-                //.setRead(message.isRead())
                 .setOut(message.isOut())
-                //.setTitle(message.getTitle())
                 .setBody(message.getBody())
                 .setEncrypted(message.getCryptStatus() != CryptStatus.NO_ENCRYPTION)
                 .setImportant(message.isImportant())
@@ -74,7 +72,8 @@ public class Model2Entity {
                 .setRandomId(message.getRandomId())
                 .setExtras(message.getExtras())
                 .setAttachments(nonNull(message.getAttachments()) ? buildEntityAttachments(message.getAttachments()) : null)
-                .setForwardMessages(mapAll(message.getFwd(), Model2Entity::buildMessageEntity, false));
+                .setForwardMessages(mapAll(message.getFwd(), Model2Entity::buildMessageEntity, false))
+                .setUpdateTime(message.getUpdateTime());
     }
 
     public static List<Entity> buildEntityAttachments(Attachments attachments) {

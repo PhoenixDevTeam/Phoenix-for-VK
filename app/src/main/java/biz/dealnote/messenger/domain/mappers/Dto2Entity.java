@@ -887,9 +887,7 @@ public class Dto2Entity {
 
         MessageEntity entity = new MessageEntity(dto.id, dto.peer_id, dto.from_id)
                 .setDate(dto.date)
-                //.setRead(dto.read_state)
                 .setOut(dto.out)
-                //.setTitle(dto.title)
                 .setBody(dto.body)
                 .setEncrypted(encrypted)
                 .setImportant(dto.important)
@@ -906,7 +904,8 @@ public class Dto2Entity {
                 .setPhoto50(dto.action_photo_50)
                 .setPhoto100(dto.action_photo_100)
                 .setPhoto200(dto.action_photo_200)
-                .setRandomId(randomId);
+                .setRandomId(randomId)
+                .setUpdateTime(dto.update_time);
 
         if (entity.isHasAttachmens()) {
             entity.setAttachments(buildAttachmentsEntities(dto.attachments));

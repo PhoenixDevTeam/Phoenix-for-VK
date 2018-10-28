@@ -93,6 +93,8 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
 
     private boolean hasAttachments;
 
+    private long updateTime;
+
     public Message(int id) {
         this.id = id;
     }
@@ -143,6 +145,7 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
 
         this.forwardMessagesCount = in.readInt();
         this.hasAttachments = in.readInt() == 1;
+        this.updateTime = in.readLong();
     }
 
     @ChatAction
@@ -534,6 +537,16 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
         ParcelUtils.writeIntStringMap(dest, extras);
         dest.writeInt(forwardMessagesCount);
         dest.writeInt(hasAttachments ? 1 : 0);
+        dest.writeLong(updateTime);
+    }
+
+    public Message setUpdateTime(long updateTime) {
+        this.updateTime = updateTime;
+        return this;
+    }
+
+    public long getUpdateTime() {
+        return updateTime;
     }
 
     public int getAccountId() {

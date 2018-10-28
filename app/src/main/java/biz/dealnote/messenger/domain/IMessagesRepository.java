@@ -123,7 +123,7 @@ public interface IMessagesRepository {
 
     Completable deleteDialog(int accountId, int peedId, int count, int offset);
 
-    Completable deleteMessages(int accountId, int peerId, @NonNull Collection<Integer> ids, @NonNull Collection<Integer> forAll);
+    Completable deleteMessages(int accountId, int peerId, @NonNull Collection<Integer> ids, boolean forAll);
 
     Completable restoreMessage(int accountId, int peerId, int messageId);
 

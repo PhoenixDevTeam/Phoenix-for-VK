@@ -398,6 +398,7 @@ public class MessengerContentProvider extends ContentProvider {
         sMessagesProjectionMap.put(MessageColumns.STATUS, MessageColumns.FULL_STATUS);
         sMessagesProjectionMap.put(MessageColumns.ATTACH_TO, MessageColumns.FULL_ATTACH_TO);
         sMessagesProjectionMap.put(MessageColumns.ORIGINAL_ID, MessageColumns.FULL_ORIGINAL_ID);
+        sMessagesProjectionMap.put(MessageColumns.UPDATE_TIME, MessageColumns.FULL_UPDATE_TIME);
         sMessagesProjectionMap.put(MessageColumns.ACTION, MessageColumns.FULL_ACTION);
         sMessagesProjectionMap.put(MessageColumns.ACTION_MID, MessageColumns.FULL_ACTION_MID);
         sMessagesProjectionMap.put(MessageColumns.ACTION_EMAIL, MessageColumns.FULL_ACTION_EMAIL);

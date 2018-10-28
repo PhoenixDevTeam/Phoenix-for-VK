@@ -1119,10 +1119,10 @@ public class MessagesRepository implements IMessagesRepository {
     }
 
     @Override
-    public Completable deleteMessages(int accountId, int peerId, @NonNull Collection<Integer> ids, @NonNull Collection<Integer> forAll) {
+    public Completable deleteMessages(int accountId, int peerId, @NonNull Collection<Integer> ids, boolean forAll) {
         return networker.vkDefault(accountId)
                 .messages()
-                .delete(ids, null, null)
+                .delete(ids, forAll, null)
                 .flatMapCompletable(result -> {
                     List<MessagePatch> patches = new ArrayList<>(result.size());
 
@@ -1132,7 +1132,7 @@ public class MessagesRepository implements IMessagesRepository {
 
                         if (removed) {
                             MessagePatch patch = new MessagePatch(removedId, peerId);
-                            patch.setDeletion(new MessagePatch.Deletion(true, false));
+                            patch.setDeletion(new MessagePatch.Deletion(true, forAll));
                             patches.add(patch);
                         }
                     }

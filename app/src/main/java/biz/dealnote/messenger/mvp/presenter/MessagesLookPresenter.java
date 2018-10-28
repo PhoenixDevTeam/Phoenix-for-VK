@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -77,6 +76,20 @@ public class MessagesLookPresenter extends AbsMessageListPresenter<IMessagesLook
         showError(getView(), getCauseIfRuntime(t));
     }
 
+    public void fireDeleteForAllClick(ArrayList<Integer> ids) {
+        deleteSentImpl(ids, true);
+    }
+
+    public void fireDeleteForMeClick(ArrayList<Integer> ids) {
+        deleteSentImpl(ids, false);
+    }
+
+    private void deleteSentImpl(Collection<Integer> ids, boolean forAll){
+        appendDisposable(messagesInteractor.deleteMessages(getAccountId(), mPeerId, ids, forAll)
+                .compose(RxUtils.applyCompletableIOToMainSchedulers())
+                .subscribe(RxUtils.dummy(), t -> showError(getView(), t)));
+    }
+
     private void onDataReceived(List<Message> messages) {
         switch (loadingState) {
             case Side.INIT:
@@ -138,7 +151,7 @@ public class MessagesLookPresenter extends AbsMessageListPresenter<IMessagesLook
                 .blockingGet();
 
         if (nonEmpty(ids)) {
-            appendDisposable(messagesInteractor.deleteMessages(accountId, mPeerId, ids, Collections.emptyList())
+            appendDisposable(messagesInteractor.deleteMessages(accountId, mPeerId, ids, false)
                     .compose(RxUtils.applyCompletableIOToMainSchedulers())
                     .subscribe(() -> onMessagesDeleteSuccessfully(ids), t -> showError(getView(), getCauseIfRuntime(t))));
         }

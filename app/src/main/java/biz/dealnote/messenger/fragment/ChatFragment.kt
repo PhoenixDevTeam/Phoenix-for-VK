@@ -491,6 +491,16 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         }
     }
 
+    override fun showDeleteForAllDialog(ids: ArrayList<Int>) {
+        AlertDialog.Builder(requireActivity()).apply {
+            setTitle(R.string.messages_delete_for_all_question_title)
+            setMessage(R.string.messages_delete_for_all_question_message)
+            setNeutralButton(R.string.button_cancel, null)
+            setPositiveButton(R.string.button_for_all) { _, _ -> presenter?.fireDeleteForAllClick(ids) }
+            setNegativeButton(R.string.button_for_me) { _, _ -> presenter?.fireDeleteForMeClick(ids) }
+        }.show()
+    }
+
     private class EditAttachmentsHolder(rootView: View, fragment: ChatFragment, attachments: MutableList<AttachmenEntry>) : AttachmentsBottomSheetAdapter.ActionListener, View.OnClickListener {
         override fun onClick(v: View) {
             when (v.id) {

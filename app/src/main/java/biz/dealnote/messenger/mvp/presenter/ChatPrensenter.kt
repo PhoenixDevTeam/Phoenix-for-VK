@@ -1105,6 +1105,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
      */
     private fun deleteSelectedMessages() {
         val sent = ArrayList<Int>(0)
+        val canDeleteForAll = ArrayList<Int>(0);
 
         var hasChanged = false
         val iterator = data.iterator()
@@ -1117,7 +1118,13 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             }
 
             when (message.status) {
-                MessageStatus.SENT -> sent.add(message.id)
+                MessageStatus.SENT -> {
+                    if(canDeleteForAll(message)){
+                        canDeleteForAll.add(message.id)
+                    } else {
+                        sent.add(message.id)
+                    }
+                }
                 MessageStatus.QUEUE, MessageStatus.ERROR, MessageStatus.SENDING -> {
                     deleteMessageFromDbAsync(message)
                     iterator.remove()
@@ -1133,14 +1140,26 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
 
         if (sent.nonEmpty()) {
-            appendDisposable(messagesRepository.deleteMessages(messagesOwnerId, peerId, sent, sent)
-                    .fromIOToMain()
-                    .subscribe(dummy(), Consumer { t -> showError(view, t) }))
+            deleteSentImpl(sent, false)
         }
 
         if (hasChanged) {
             view?.notifyDataChanged()
         }
+
+        if(canDeleteForAll.isNotEmpty()){
+            view?.showDeleteForAllDialog(canDeleteForAll)
+        }
+    }
+
+    private fun deleteSentImpl(ids: Collection<Int>, forAll: Boolean){
+        appendDisposable(messagesRepository.deleteMessages(messagesOwnerId, peerId, ids, forAll)
+                .fromIOToMain()
+                .subscribe(dummy(), Consumer { t -> showError(view, t) }))
+    }
+
+    private fun canDeleteForAll(message: Message): Boolean {
+        return message.isOut && Unixtime.now() - message.date < 24 * 60 * 60;
     }
 
     private fun cancelWaitingForUploadMessage(messageId: Int) {
@@ -1638,6 +1657,14 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         val makedPhoto = LocalPhoto().setFullImageUri(uri)
         fireEditLocalPhotosSelected(listOf(makedPhoto), size)
+    }
+
+    fun fireDeleteForAllClick(ids: ArrayList<Int>) {
+        deleteSentImpl(ids, true)
+    }
+
+    fun fireDeleteForMeClick(ids: ArrayList<Int>) {
+        deleteSentImpl(ids, false)
     }
 
     private class ToolbarSubtitleHandler internal constructor(prensenter: ChatPrensenter) : Handler(Looper.getMainLooper()) {

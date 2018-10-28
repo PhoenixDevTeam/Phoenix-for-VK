@@ -31,13 +31,13 @@ import biz.dealnote.messenger.model.LastReadId;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.MessageStatus;
 import biz.dealnote.messenger.settings.CurrentTheme;
-import biz.dealnote.messenger.util.AppTextUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.messenger.view.BubbleLinearLayout;
 import biz.dealnote.messenger.view.OnlineView;
 import biz.dealnote.messenger.view.emoji.EmojiconTextView;
 
+import static biz.dealnote.messenger.util.AppTextUtils.getDateFromUnixTime;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
 public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerView.ViewHolder> {
@@ -114,7 +114,7 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
                 .into(holder.sticker);
     }
 
-    private void bindStatusText(TextView textView, int status, long time) {
+    private void bindStatusText(TextView textView, int status, long time, long updateTime) {
         switch (status) {
             case MessageStatus.SENDING:
                 textView.setText(context.getString(R.string.sending));
@@ -133,7 +133,13 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
                 textView.setTextColor(ContextCompat.getColor(context, R.color.default_message_status));
                 break;
             default:
-                textView.setText(AppTextUtils.getDateFromUnixTime(time));
+                String text = getDateFromUnixTime(time);
+
+                if(updateTime != 0){
+                    text = text + " " + context.getString(R.string.message_edited_at, getDateFromUnixTime(updateTime));
+                }
+
+                textView.setText(text);
                 textView.setTextColor(CurrentTheme.getSecondaryTextColorCode(context));
                 break;
         }
@@ -156,7 +162,7 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
     private void bindBaseMessageHolder(BaseMessageHolder holder, Message message) {
         holder.important.setVisibility(message.isImportant() ? View.VISIBLE : View.GONE);
 
-        bindStatusText(holder.status, message.getStatus(), message.getDate());
+        bindStatusText(holder.status, message.getStatus(), message.getDate(), message.getUpdateTime());
 
         boolean read = message.isOut() ? lastReadId.getOutgoing() >= message.getId() : lastReadId.getIncoming() >= message.getId();
 

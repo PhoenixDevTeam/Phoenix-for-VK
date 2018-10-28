@@ -65,6 +65,17 @@ public class MessageEntity extends Entity {
 
     private List<MessageEntity> forwardMessages;
 
+    private long updateTime;
+
+    public MessageEntity setUpdateTime(long updateTime) {
+        this.updateTime = updateTime;
+        return this;
+    }
+
+    public long getUpdateTime() {
+        return updateTime;
+    }
+
     public MessageEntity setDeletedForAll(boolean deletedForAll) {
         this.deletedForAll = deletedForAll;
         return this;

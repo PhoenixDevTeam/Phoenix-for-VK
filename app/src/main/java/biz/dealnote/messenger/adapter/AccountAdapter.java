@@ -95,7 +95,6 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.Holder> 
             lastName = itemView.findViewById(R.id.last_name);
             avatar = itemView.findViewById(R.id.avatar);
             active = itemView.findViewById(R.id.active);
-            active.setColorFilter(CurrentTheme.getColorPrimary(context));
         }
     }
 

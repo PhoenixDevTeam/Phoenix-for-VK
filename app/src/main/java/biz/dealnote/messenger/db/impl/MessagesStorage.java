@@ -96,6 +96,7 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
         cv.put(MessageColumns.PHOTO_200, dbo.getPhoto200());
         cv.put(MessageColumns.RANDOM_ID, dbo.getRandomId());
         cv.put(MessageColumns.EXTRAS, isNull(dbo.getExtras()) ? null : GSON.toJson(dbo.getExtras()));
+        cv.put(MessageColumns.UPDATE_TIME, dbo.getUpdateTime());
 
         Uri uri = MessengerContentProvider.getMessageContentUriFor(accountId);
 
@@ -436,7 +437,8 @@ class MessagesStorage extends AbsStorage implements IMessagesStorage {
                 .setPhoto50(cursor.getString(cursor.getColumnIndex(MessageColumns.PHOTO_50)))
                 .setPhoto100(cursor.getString(cursor.getColumnIndex(MessageColumns.PHOTO_100)))
                 .setPhoto200(cursor.getString(cursor.getColumnIndex(MessageColumns.PHOTO_200)))
-                .setRandomId(cursor.getInt(cursor.getColumnIndex(MessageColumns.RANDOM_ID)));
+                .setRandomId(cursor.getInt(cursor.getColumnIndex(MessageColumns.RANDOM_ID)))
+                .setUpdateTime(cursor.getLong(cursor.getColumnIndex(MessageColumns.UPDATE_TIME)));
     }
 
     @Override
