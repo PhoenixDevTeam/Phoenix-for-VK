@@ -403,7 +403,8 @@ public class MessagesRepository implements IMessagesRepository {
                 .setUnreadCount(entity.getUnreadCount())
                 .setTitle(entity.getTitle())
                 .setInterlocutor(Peer.isGroup(entity.getPeerId()) || Peer.isUser(entity.getPeerId()) ? owners.getById(entity.getPeerId()) : null)
-                .setPinned(isNull(entity.getPinned()) ? null : Entity2Model.message(accountId, entity.getPinned(), owners));
+                .setPinned(isNull(entity.getPinned()) ? null : Entity2Model.message(accountId, entity.getPinned(), owners))
+                .setAcl(entity.getAcl());
     }
 
     @Override
@@ -1210,6 +1211,30 @@ public class MessagesRepository implements IMessagesRepository {
                 .messages()
                 .markAsRead(peerId, toId)
                 .flatMapCompletable(ignored -> applyPeerUpdatesAndPublish(accountId, Collections.singletonList(patch)));
+    }
+
+    @Override
+    public Completable pin(int accountId, int peerId, @Nullable Message message) {
+        PeerUpdate update = new PeerUpdate(accountId, peerId);
+        update.setPin(new PeerUpdate.Pin(message));
+
+        Completable apiCompletable;
+        if(message == null){
+            apiCompletable = networker.vkDefault(accountId)
+                    .messages()
+                    .unpin(peerId);
+        } else {
+            apiCompletable = networker.vkDefault(accountId)
+                    .messages()
+                    .pin(peerId, message.getId());
+        }
+
+        final PeerPatch patch = new PeerPatch(peerId)
+                .withPin(message == null ? null : Model2Entity.buildMessageEntity(message));
+
+        return apiCompletable
+                .andThen(storages.dialogs().applyPatches(accountId, Collections.singletonList(patch)))
+                .doOnComplete(() -> peerUpdatePublisher.onNext(Collections.singletonList(update)));
     }
 
     private Single<Integer> internalSend(int accountId, MessageEntity dbo) {

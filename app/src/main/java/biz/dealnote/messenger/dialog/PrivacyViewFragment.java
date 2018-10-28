@@ -16,7 +16,6 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.SelectProfilesActivity;
 import biz.dealnote.messenger.adapter.PrivacyAdapter;
-import biz.dealnote.messenger.api.model.VkApiPrivacy;
 import biz.dealnote.messenger.dialog.base.AccountDependencyDialogFragment;
 import biz.dealnote.messenger.model.FriendList;
 import biz.dealnote.messenger.model.Privacy;
@@ -100,16 +99,16 @@ public class PrivacyViewFragment extends AccountDependencyDialogFragment impleme
                 .setItems(items, (dialog, which) -> {
                     switch (which){
                         case 0:
-                            mPrivacy.setType(VkApiPrivacy.Type.ALL);
+                            mPrivacy.setType(Privacy.Type.ALL);
                             break;
                         case 1:
-                            mPrivacy.setType(VkApiPrivacy.Type.FRIENDS);
+                            mPrivacy.setType(Privacy.Type.FRIENDS);
                             break;
                         case 2:
-                            mPrivacy.setType(VkApiPrivacy.Type.FRIENDS_OF_FRIENDS);
+                            mPrivacy.setType(Privacy.Type.FRIENDS_OF_FRIENDS);
                             break;
                         case 3:
-                            mPrivacy.setType(VkApiPrivacy.Type.ONLY_ME);
+                            mPrivacy.setType(Privacy.Type.ONLY_ME);
                             break;
                     }
 

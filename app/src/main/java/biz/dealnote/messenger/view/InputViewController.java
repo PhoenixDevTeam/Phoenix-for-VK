@@ -19,7 +19,6 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.AppTextUtils;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.view.emoji.EmojiconsPopup;
 import biz.dealnote.messenger.view.emoji.StickersGridView;
 
@@ -39,8 +38,8 @@ public class InputViewController {
 
     private boolean emojiOnScreen;
     private boolean emojiNeed;
-    private boolean mVoiceMessageSupport;
-    private boolean mCanSendNormalMessage;
+    //private boolean mVoiceMessageSupport;
+    //private boolean mCanSendNormalMessage;
     private boolean sendOnEnter;
 
     private TextView tvAttCount;
@@ -57,14 +56,7 @@ public class InputViewController {
     private int mCurrentMode = Mode.NORMAL;
     private TextView mRecordingDuration;
 
-    @Override
-    protected void finalize() throws Throwable {
-        Logger.d(TAG, "finalize");
-        super.finalize();
-    }
-
-    public InputViewController(@NonNull final Activity activity, @NonNull View rootView, boolean voiceMessageSupport, @NonNull OnInputActionCallback callback) {
-        this.mVoiceMessageSupport = voiceMessageSupport;
+    public InputViewController(@NonNull final Activity activity, @NonNull View rootView, @NonNull OnInputActionCallback callback) {
         this.callback = callback;
         this.mActivity = activity.getApplicationContext();
 
@@ -128,21 +120,23 @@ public class InputViewController {
 
         mRecordResumePause = rootView.findViewById(R.id.pause_voice_message);
         mRecordResumePause.setOnClickListener(v -> onResumePauseButtonClick());
+
+        resolveModeViews();
     }
 
-    public void destroyView(){
+    public void destroyView() {
         emojiPopup.destroy();
         emojiPopup = null;
     }
 
-    private void onResumePauseButtonClick(){
-        if(mRecordActionsCallback != null){
+    private void onResumePauseButtonClick() {
+        if (mRecordActionsCallback != null) {
             mRecordActionsCallback.onResumePauseClick();
         }
     }
 
-    private void cancelVoiceMessageRecording(){
-        if(mRecordActionsCallback != null){
+    private void cancelVoiceMessageRecording() {
+        if (mRecordActionsCallback != null) {
             mRecordActionsCallback.onRecordCancel();
         }
     }
@@ -226,7 +220,7 @@ public class InputViewController {
     }
 
     public boolean onBackPressed() {
-        if(mCurrentMode == Mode.VOICE_RECORD){
+        if (mCurrentMode == Mode.VOICE_RECORD) {
             cancelVoiceMessageRecording();
             return false;
         }
@@ -245,36 +239,37 @@ public class InputViewController {
         }
     }
 
-    public void swithModeTo(int mode) {
-        mCurrentMode = mode;
-        resolveModeViews();
+    private void swithModeTo(int mode) {
+        if(mCurrentMode != mode){
+            mCurrentMode = mode;
+            resolveModeViews();
+        }
     }
 
     private void onSendButtonClick() {
-        switch (mCurrentMode){
+        switch (mCurrentMode) {
             case Mode.NORMAL:
-                if(mCanSendNormalMessage){
+                if (canNormalSend) {
                     callback.onSendClicked(getTrimmedText());
-                } else if(mVoiceMessageSupport){
-                    if(mRecordActionsCallback != null){
+                } else if (canStartRecording) {
+                    if (mRecordActionsCallback != null) {
                         mRecordActionsCallback.onSwithToRecordMode();
                     }
-                } else {
-                    // TODO: 05.10.2016 Show toast ?
                 }
                 break;
 
             case Mode.VOICE_RECORD:
-                if(mRecordActionsCallback != null){
+                if (mRecordActionsCallback != null) {
                     mRecordActionsCallback.onRecordSendClick();
                 }
+                break;
+            case Mode.EDITING:
+                callback.onSaveClick();
                 break;
         }
     }
 
     private void resolveModeViews() {
-        resolveSendButton();
-
         switch (mCurrentMode) {
             case Mode.NORMAL:
                 vgVoiceInput.setVisibility(View.GONE);
@@ -288,29 +283,52 @@ public class InputViewController {
     }
 
     private void resolveSendButton() {
-        mButtonSend.getDrawable().setColorFilter(mCanSendNormalMessage || mVoiceMessageSupport ? Color.WHITE : BUTTON_COLOR_NOACTIVE, PorterDuff.Mode.MULTIPLY);
-        mButtonSendBackground.getDrawable().setColorFilter(mCanSendNormalMessage || mVoiceMessageSupport ? mIconColorActive : Color.parseColor("#D4D4D4"), PorterDuff.Mode.MULTIPLY);
-
-        switch (mCurrentMode){
+        switch (mCurrentMode) {
             case Mode.VOICE_RECORD:
                 mButtonSend.setImageResource(R.drawable.check);
+                setupPrimaryButton(true);
                 break;
             case Mode.NORMAL:
-                mButtonSend.setImageResource(!mCanSendNormalMessage && mVoiceMessageSupport ? R.drawable.voice : R.drawable.send);
+                mButtonSend.setImageResource(!canNormalSend && canStartRecording ? R.drawable.voice : R.drawable.send);
+                setupPrimaryButton(canNormalSend || canStartRecording);
+                break;
+            case Mode.EDITING:
+                mButtonSend.setImageResource(R.drawable.check);
+                setupPrimaryButton(canEditingSave);
                 break;
         }
     }
 
-    public void setup(boolean canSendNormalMessage, boolean voiceMessageSupport){
-        this.mCanSendNormalMessage = canSendNormalMessage;
-        this.mVoiceMessageSupport = voiceMessageSupport;
+    private void setupPrimaryButton(boolean active){
+        mButtonSend.getDrawable().setColorFilter(active ? Color.WHITE : BUTTON_COLOR_NOACTIVE, PorterDuff.Mode.MULTIPLY);
+        mButtonSendBackground.getDrawable().setColorFilter(active ? mIconColorActive : Color.parseColor("#D4D4D4"), PorterDuff.Mode.MULTIPLY);
+    }
+
+    public void setupRecordPauseButton(boolean visible, boolean isRecording) {
+        mRecordResumePause.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+        mRecordResumePause.setImageResource(visible ? (isRecording ? R.drawable.pause : R.drawable.play) : R.drawable.pause_disabled);
+    }
+
+    private boolean canEditingSave;
+    private boolean canNormalSend;
+    private boolean canStartRecording;
+
+    public void swithModeToEditing(boolean canSave) {
+        swithModeTo(Mode.EDITING);
+        this.canEditingSave = canSave;
         resolveSendButton();
     }
 
-    public void setupRecordPauseButton(boolean visible, boolean isRecording){
-        mRecordResumePause.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
-        mRecordResumePause.setImageResource(visible ? (isRecording ? R.drawable.pause : R.drawable.play) : R.drawable.pause_disabled);
-        //mRecordResumePause.setEnabled(visible);
+    public void swithModeToNormal(boolean canSend, boolean canStartRecoring) {
+        swithModeTo(Mode.NORMAL);
+        this.canNormalSend = canSend;
+        this.canStartRecording = canStartRecoring;
+        resolveSendButton();
+    }
+
+    public void swithModeToRecording() {
+        swithModeTo(Mode.VOICE_RECORD);
+        resolveSendButton();
     }
 
     public interface OnInputActionCallback {
@@ -319,6 +337,8 @@ public class InputViewController {
         void onSendClicked(String body);
 
         void onAttachClick();
+
+        void onSaveClick();
     }
 
     private RecordActionsCallback mRecordActionsCallback;
@@ -340,9 +360,10 @@ public class InputViewController {
     public static final class Mode {
         public static final int NORMAL = 1;
         public static final int VOICE_RECORD = 2;
+        public static final int EDITING = 3;
     }
 
-    public void setRecordingDuration(long time){
+    public void setRecordingDuration(long time) {
         String str = AppTextUtils.getDurationString((int) (time / 1000));
         mRecordingDuration.setText(mActivity.getString(R.string.recording_time, str));
     }

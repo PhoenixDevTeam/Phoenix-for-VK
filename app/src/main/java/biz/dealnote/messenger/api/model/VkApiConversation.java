@@ -105,6 +105,29 @@ public class VkApiConversation {
 
         @SerializedName("state")
         public String state;
+
+        @SerializedName("acl")
+        public Acl acl;
+    }
+
+    public static final class Acl {
+        @SerializedName("can_invite")
+        public boolean can_invite;
+
+        @SerializedName("can_change_info")
+        public boolean can_change_info;
+
+        @SerializedName("can_change_pin")
+        public boolean can_change_pin;
+
+        @SerializedName("can_promote_users")
+        public boolean can_promote_users;
+
+        @SerializedName("can_see_invite_link")
+        public boolean can_see_invite_link;
+
+        @SerializedName("can_change_invite_link")
+        public boolean can_change_invite_link;
     }
 
     public static final class Photo {

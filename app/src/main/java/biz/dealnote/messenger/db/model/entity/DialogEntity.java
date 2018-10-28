@@ -28,6 +28,17 @@ public class DialogEntity extends Entity {
 
     private int lastMessageId;
 
+    private int acl;
+
+    public DialogEntity setAcl(int acl) {
+        this.acl = acl;
+        return this;
+    }
+
+    public int getAcl() {
+        return acl;
+    }
+
     public DialogEntity(int peerId) {
         this.peerId = peerId;
     }
@@ -100,7 +111,8 @@ public class DialogEntity extends Entity {
                 .setInRead(inRead)
                 .setUnreadCount(unreadCount)
                 .setPinned(pinned)
-                .setLastMessageId(lastMessageId);
+                .setLastMessageId(lastMessageId)
+                .setAcl(acl);
     }
 
     public String getPhoto100() {

@@ -36,6 +36,15 @@ public interface IMessageService {
                                               @Field("keep_forward_messages") Integer keepForwardMessages,
                                               @Field("keep_snippets") Integer keepSnippets);
 
+    @FormUrlEncoded
+    @POST("messages.pin")
+    Single<BaseResponse<VKApiMessage>> pin(@Field("peer_id") int peerId,
+                                       @Field("message_id") int messageId);
+
+    @FormUrlEncoded
+    @POST("messages.unpin")
+    Single<BaseResponse<Integer>> unpin(@Field("peer_id") int peerId);
+
     /**
      * Allows the current user to leave a chat or, if the current user started the chat,
      * allows the user to remove another user from the chat.

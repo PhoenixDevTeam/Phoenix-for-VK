@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import biz.dealnote.messenger.App;
+import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.mvp.view.IErrorView;
@@ -104,6 +105,10 @@ public abstract class RxSupportPresenter<V extends IMvpView> extends AbsPresente
         }
 
         throwable = Utils.getCauseIfRuntime(throwable);
+
+        if(BuildConfig.DEBUG){
+            throwable.printStackTrace();
+        }
 
         view.showError(ErrorLocalizer.localizeThrowable(getApplicationContext(), throwable));
     }

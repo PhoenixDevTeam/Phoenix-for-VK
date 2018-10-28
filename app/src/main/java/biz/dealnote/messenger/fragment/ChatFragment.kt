@@ -76,6 +76,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     private var pinnedAvatar: ImageView? = null
     private var pinnedTitle: TextView? = null
     private var pinnedSubtitle: TextView? = null
+    private var buttonUnpin: View? = null
 
     private val optionMenuSettings = SparseBooleanArray()
 
@@ -115,7 +116,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             presenter?.fireLoadUpButtonClick()
         }
 
-        inputViewController = InputViewController(requireActivity(), root, true, this)
+        inputViewController = InputViewController(requireActivity(), root, this)
                 .also {
                     it.setSendOnEnter(Settings.get().main().isSendByEnter)
                     it.setRecordActionsCallback(this)
@@ -126,6 +127,8 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         pinnedAvatar = pinnedView?.findViewById(R.id.pinned_avatar)
         pinnedTitle = pinnedView?.findViewById(R.id.pinned_title)
         pinnedSubtitle = pinnedView?.findViewById(R.id.pinned_subtitle)
+        buttonUnpin = pinnedView?.findViewById(R.id.buttonUnpin)
+        buttonUnpin?.setOnClickListener { presenter?.fireUnpinClick() }
 
         editMessageGroup = root.findViewById(R.id.editMessageGroup)
         editMessageText = editMessageGroup?.findViewById(R.id.editMessageText)
@@ -301,10 +304,6 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         inputViewController?.setTextQuietly(text)
     }
 
-    override fun setupSendButton(canSendNormalMessage: Boolean, canSendVoiceMessage: Boolean) {
-        inputViewController?.setup(canSendNormalMessage, canSendVoiceMessage)
-    }
-
     override fun displayToolbarTitle(text: String?) {
         ActivityUtils.supportToolbarFor(this)?.title = text
     }
@@ -313,8 +312,16 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         ActivityUtils.supportToolbarFor(this)?.subtitle = text
     }
 
-    override fun setRecordModeActive(active: Boolean) {
-        inputViewController?.swithModeTo(if (active) InputViewController.Mode.VOICE_RECORD else InputViewController.Mode.NORMAL)
+    override fun setupPrimaryButtonAsEditing(canSave: Boolean) {
+        inputViewController?.swithModeToEditing(canSave)
+    }
+
+    override fun setupPrimaryButtonAsRecording() {
+        inputViewController?.swithModeToRecording()
+    }
+
+    override fun setupPrimaryButtonAsRegular(canSend: Boolean, canStartRecoring: Boolean) {
+        inputViewController?.swithModeToNormal(canSend, canStartRecoring)
     }
 
     override fun requestRecordPermissions() {
@@ -334,7 +341,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         }
     }
 
-    override fun displayPinnedMessage(pinned: Message?) {
+    override fun displayPinnedMessage(pinned: Message?, canChange: Boolean) {
         pinnedView?.run {
             visibility = if (pinned == null) View.GONE else View.VISIBLE
 
@@ -342,8 +349,9 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
                 ViewUtils.displayAvatar(pinnedAvatar!!, CurrentTheme.createTransformationForAvatar(requireContext()),
                         sender.get100photoOrSmaller(), null)
 
-                pinnedTitle?.text = this.sender.fullName
-                pinnedSubtitle?.text = this.body
+                pinnedTitle?.text = sender.fullName
+                pinnedSubtitle?.text = body
+                buttonUnpin?.visibility = if (canChange) View.VISIBLE else View.GONE
             }
         }
     }
@@ -566,6 +574,10 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
     private fun hideEditAttachmentsDialog() {
         editAttachmentsDialog?.dismiss()
+    }
+
+    override fun onSaveClick() {
+        presenter?.fireEditMessageSaveClick()
     }
 
     private var editAttachmentsHolder: EditAttachmentsHolder? = null

@@ -1,5 +1,7 @@
 package biz.dealnote.messenger.db.model;
 
+import biz.dealnote.messenger.db.model.entity.MessageEntity;
+
 public final class PeerPatch {
 
     private ReadTo inRead;
@@ -9,6 +11,8 @@ public final class PeerPatch {
     private Unread unread;
 
     private LastMessage lastMessage;
+
+    private Pin pin;
 
     private final int id;
 
@@ -33,6 +37,15 @@ public final class PeerPatch {
 
     public PeerPatch withLastMessage(int id){
         this.lastMessage = new LastMessage(id);
+        return this;
+    }
+
+    public Pin getPin() {
+        return pin;
+    }
+
+    public PeerPatch withPin(MessageEntity pinned){
+        this.pin = new Pin(pinned);
         return this;
     }
 
@@ -66,6 +79,19 @@ public final class PeerPatch {
 
         public int getCount() {
             return count;
+        }
+    }
+
+    public static final class Pin {
+
+        private final MessageEntity pinned;
+
+        Pin(MessageEntity pinned) {
+            this.pinned = pinned;
+        }
+
+        public MessageEntity getPinned() {
+            return pinned;
         }
     }
 

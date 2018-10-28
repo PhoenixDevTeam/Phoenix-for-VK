@@ -99,4 +99,8 @@ public interface IMessagesApi {
     Single<VkApiLongpollServer> getLongpollServer(boolean needPts, int lpVersion);
 
     Single<List<SearchDialogsResponse.AbsChattable>> searchDialogs(String query, Integer limit, String fileds);
+
+    Completable pin(int peerId, int messageId);
+
+    Completable unpin(int peerId);
 }

@@ -440,6 +440,7 @@ public class MessengerContentProvider extends ContentProvider {
         sDialogsProjectionMap.put(DialogsColumns.PHOTO_50, DialogsColumns.FULL_PHOTO_50);
         sDialogsProjectionMap.put(DialogsColumns.PHOTO_100, DialogsColumns.FULL_PHOTO_100);
         sDialogsProjectionMap.put(DialogsColumns.PHOTO_200, DialogsColumns.FULL_PHOTO_200);
+        sDialogsProjectionMap.put(DialogsColumns.ACL, DialogsColumns.FULL_ACL);
         sDialogsProjectionMap.put(DialogsColumns.LAST_MESSAGE_ID, DialogsColumns.FULL_LAST_MESSAGE_ID);
 
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_FROM_ID, MessageColumns.FULL_FROM_ID + " AS " + DialogsColumns.FOREIGN_MESSAGE_FROM_ID);
@@ -463,6 +464,7 @@ public class MessengerContentProvider extends ContentProvider {
         sPeersProjectionMap.put(PeersColumns.PHOTO_200, PeersColumns.FULL_PHOTO_200);
         sPeersProjectionMap.put(PeersColumns.PINNED, PeersColumns.FULL_PINNED);
         sPeersProjectionMap.put(PeersColumns.LAST_MESSAGE_ID, PeersColumns.FULL_LAST_MESSAGE_ID);
+        sPeersProjectionMap.put(PeersColumns.ACL, PeersColumns.FULL_ACL);
 
         sDocsProjectionMap = new HashMap<>();
         sDocsProjectionMap.put(DocColumns._ID, DocColumns.FULL_ID);

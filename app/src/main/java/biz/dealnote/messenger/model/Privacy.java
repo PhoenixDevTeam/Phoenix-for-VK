@@ -10,20 +10,19 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.api.model.VkApiPrivacy;
 
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 import static biz.dealnote.messenger.util.Utils.join;
 
 public class Privacy implements Parcelable, Cloneable {
 
-    private int type;
+    private String type;
     private ArrayList<User> allowedUsers;
     private ArrayList<User> disallowedUsers;
     private ArrayList<FriendList> allowedLists;
     private ArrayList<FriendList> disallowedLists;
 
-    public Privacy(int type) {
+    public Privacy(String type) {
         this.type = type;
         this.allowedUsers = new ArrayList<>();
         this.disallowedUsers = new ArrayList<>();
@@ -32,11 +31,20 @@ public class Privacy implements Parcelable, Cloneable {
     }
 
     public Privacy() {
-        this(VkApiPrivacy.Type.ALL);
+        this(Type.ALL);
+    }
+
+    public static final class Type {
+        public static final String ALL = "all";
+        public static final String FRIENDS = "friends";
+        public static final String FRIENDS_OF_FRIENDS = "friends_of_friends";
+        public static final String FRIENDS_OF_FRIENDS_ONLY = "friends_of_friends_only";
+        public static final String NOBODY = "nobody";
+        public static final String ONLY_ME = "only_me";
     }
 
     protected Privacy(Parcel in) {
-        this.type = in.readInt();
+        this.type = in.readString();
         this.allowedUsers = in.createTypedArrayList(User.CREATOR);
         this.disallowedUsers = in.createTypedArrayList(User.CREATOR);
         this.allowedLists = in.createTypedArrayList(FriendList.CREATOR);
@@ -62,18 +70,18 @@ public class Privacy implements Parcelable, Cloneable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(type);
+        dest.writeString(type);
         dest.writeTypedList(allowedUsers);
         dest.writeTypedList(disallowedUsers);
         dest.writeTypedList(allowedLists);
         dest.writeTypedList(disallowedLists);
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public Privacy setType(int type) {
+    public Privacy setType(String type) {
         this.type = type;
         return this;
     }
@@ -148,13 +156,15 @@ public class Privacy implements Parcelable, Cloneable {
             default:
                 sufix = context.getString(R.string.privacy_to_all_users);
                 break;
-            case VkApiPrivacy.Type.FRIENDS:
+            case Type.FRIENDS:
                 sufix = context.getString(R.string.privacy_to_friends_only);
                 break;
-            case VkApiPrivacy.Type.FRIENDS_OF_FRIENDS:
+            case Type.FRIENDS_OF_FRIENDS:
+            case Type.FRIENDS_OF_FRIENDS_ONLY:
                 sufix = context.getString(R.string.privacy_to_friends_and_friends_of_friends);
                 break;
-            case VkApiPrivacy.Type.ONLY_ME:
+            case Type.ONLY_ME:
+            case Type.NOBODY:
                 sufix = context.getString(R.string.privacy_to_only_me);
                 break;
         }

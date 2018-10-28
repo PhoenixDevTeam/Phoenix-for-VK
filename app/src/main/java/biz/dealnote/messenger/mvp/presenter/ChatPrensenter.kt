@@ -120,8 +120,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 draftMessageText = config.initialText
             }
         } else {
-            peer = savedInstanceState.getParcelable(SAVE_PEER)
-            outConfig = savedInstanceState.getParcelable(SAVE_CONFIG)
+            peer = savedInstanceState.getParcelable(SAVE_PEER)!!
+            outConfig = savedInstanceState.getParcelable(SAVE_CONFIG)!!
             currentPhotoCameraUri = savedInstanceState.getParcelable(SAVE_CAMERA_FILE_URI)
             restoreFromInstanceState(savedInstanceState)
         }
@@ -211,12 +211,12 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         appendDisposable(Repository.owners.observeUpdates()
                 .toMainThread()
-                .subscribe{onUserUpdates(it)})
+                .subscribe { onUserUpdates(it) })
 
         appendDisposable(messagesRepository.observeTextWrite()
                 .flatMap { list -> Flowable.fromIterable(list) }
                 .toMainThread()
-                .subscribe{onUserWriteInDialog(it)})
+                .subscribe { onUserWriteInDialog(it) })
 
         updateSubtitle()
     }
@@ -227,13 +227,13 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
     }
 
-    private fun onUserUpdates(updates: List<UserUpdate>){
-        for(update in updates){
-            if(update.accountId == accountId && isChatWithUser(update.userId)){
+    private fun onUserUpdates(updates: List<UserUpdate>) {
+        for (update in updates) {
+            if (update.accountId == accountId && isChatWithUser(update.userId)) {
                 update.online?.run {
-                    subtitle = if(isOnline){
+                    subtitle = if (isOnline) {
                         getString(R.string.online)
-                    } else{
+                    } else {
                         getString(R.string.last_seen_sex_unknown, AppTextUtils.getDateFromUnixTime(lastSeen))
                     }
 
@@ -263,6 +263,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 conversation?.outRead = messageId
                 lastReadId.outgoing = messageId
                 requireListUpdate = true
+            }
+
+            update.pin?.run {
+                conversation?.pinned = pinned
+                resolvePinnedMessageView()
             }
         }
 
@@ -339,6 +344,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 attachments.add(AttachmenEntry(true, photo))
                 view?.notifyEditAttachmentsAdded(sizeBefore, 1)
                 resolveAttachmentsCounter()
+                resolvePrimaryButton()
             }
         }
     }
@@ -377,7 +383,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     @OnGuiCreated
     private fun resolvePinnedMessageView() {
-        view?.displayPinnedMessage(conversation?.pinned)
+        conversation?.run {
+            view?.displayPinnedMessage(pinned, hasFlag(acl, Conversation.AclFlags.CAN_CHANGE_PIN))
+        } ?: run {
+            view?.displayPinnedMessage(null, false)
+        }
     }
 
     @OnGuiCreated
@@ -392,13 +402,13 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     private fun onRepositoryAttachmentsRemoved() {
         draftMessageDbAttachmentsCount--
         resolveAttachmentsCounter()
-        resolveSendButtonState()
+        resolvePrimaryButton()
     }
 
     private fun onRepositoryAttachmentsAdded(count: Int) {
         draftMessageDbAttachmentsCount += count
         resolveAttachmentsCounter()
-        resolveSendButtonState()
+        resolvePrimaryButton()
     }
 
     private fun loadAllCachedData() {
@@ -516,7 +526,11 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     fun fireDraftMessageTextEdited(s: String) {
         edited?.run {
-            this.body = s
+            val wasEmpty = body.isNullOrBlank()
+            body = s
+            if (wasEmpty != body.isNullOrBlank()) {
+                resolvePrimaryButton()
+            }
             return
         }
 
@@ -525,7 +539,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         val newState = canSendNormalMessage()
 
         if (oldState != newState) {
-            setupSendButtonState(newState, true)
+            resolvePrimaryButton()
         }
 
         readAllUnreadMessagesIfExists()
@@ -582,7 +596,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
         resolveAttachmentsCounter()
         resolveDraftMessageText()
-        resolveSendButtonState()
+        resolvePrimaryButton()
 
         sendMessage(builder)
 
@@ -655,15 +669,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     @OnGuiCreated
-    private fun resolveSendButtonState() {
-        setupSendButtonState(canSendNormalMessage(), true)
-    }
-
-    private fun setupSendButtonState(canSendNormalMessage: Boolean, voiceSupport: Boolean) {
-        view?.setupSendButton(canSendNormalMessage, voiceSupport)
-    }
-
-    @OnGuiCreated
     private fun resolveAttachmentsCounter() {
         edited?.run {
             view?.displayDraftMessageAttachmentsCount(calculateAttachmentsCount(this))
@@ -693,7 +698,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun onRecordingStateChanged() {
-        resolveRecordModeViews()
+        resolvePrimaryButton()
         syncRecordingLookupState()
     }
 
@@ -744,8 +749,16 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     @OnGuiCreated
-    private fun resolveRecordModeViews() {
-        view?.setRecordModeActive(isRecordingNow)
+    private fun resolvePrimaryButton() {
+        if (isRecordingNow) {
+            view?.setupPrimaryButtonAsRecording()
+        } else {
+            edited?.run {
+                view?.setupPrimaryButtonAsEditing(canSave)
+            } ?: run {
+                view?.setupPrimaryButtonAsRegular(canSendNormalMessage(), true)
+            }
+        }
     }
 
     @OnGuiCreated
@@ -799,8 +812,8 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         Utils.addElementToList(message, data, MESSAGES_COMPARATOR)
     }
 
-    private fun onMessagesUpdate(updates: List<MessageUpdate>){
-        for(update in updates){
+    private fun onMessagesUpdate(updates: List<MessageUpdate>) {
+        for (update in updates) {
             val targetIndex = indexOf(update.messageId)
 
             update.statusUpdate?.run {
@@ -829,18 +842,15 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                         message.status = status
                     }
                 }
+            } ?: run {
+                if (targetIndex != -1) {
+                    update.deleteUpdate?.run {
+                        data[targetIndex].isDeleted = isDeleted
+                    }
 
-                // no processing another updates
-                return
-            }
-
-            if(targetIndex != -1){
-                update.deleteUpdate?.run {
-                    data[targetIndex].isDeleted = isDeleted
-                }
-
-                update.importantUpdate?.run {
-                    data[targetIndex].isImportant = isImportant
+                    update.importantUpdate?.run {
+                        data[targetIndex].isImportant = isImportant
+                    }
                 }
             }
         }
@@ -912,6 +922,36 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
     }
 
+    private fun canEdit(message: Message): Boolean {
+        return message.isOut && Unixtime.now() - message.date < 24 * 60 * 60
+    }
+
+    private fun canChangePin(): Boolean {
+        return conversation?.run {
+            hasFlag(acl, Conversation.AclFlags.CAN_CHANGE_PIN)
+        } ?: run {
+            false
+        }
+    }
+
+    @OnGuiCreated
+    override fun resolveActionMode() {
+        val selectionCount = countOfSelection(data)
+        if (selectionCount > 0) {
+            if (selectionCount == 1) {
+                val message = data.find {
+                    it.isSelected
+                }!!
+
+                view?.showActionMode(selectionCount.toString(), canEdit(message), canChangePin())
+            } else {
+                view?.showActionMode(selectionCount.toString(), false, false)
+            }
+        } else {
+            view?.finishActionMode()
+        }
+    }
+
     @OnGuiCreated
     private fun resolveToolbarSubtitle() {
         view?.displayToolbarSubtitle(subtitle)
@@ -979,7 +1019,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
 
         resolveAttachmentsCounter()
-        resolveSendButtonState()
+        resolvePrimaryButton()
         resolveDraftMessageText()
     }
 
@@ -1046,7 +1086,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         outConfig.models = accompanyingModels
 
         resolveAttachmentsCounter()
-        resolveSendButtonState()
+        resolvePrimaryButton()
     }
 
     override fun onActionModeDeleteClick() {
@@ -1231,7 +1271,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         outConfig.models.append(FwdMessages(messages))
 
         resolveAttachmentsCounter()
-        resolveSendButtonState()
+        resolvePrimaryButton()
     }
 
     fun fireForwardToAnotherClick(messages: ArrayList<Message>) {
@@ -1424,6 +1464,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         resolveDraftMessageText()
         resolveAttachmentsCounter()
         resolveEditedMessageViews()
+        resolvePrimaryButton()
     }
 
     private fun cancelMessageEditing(): Boolean {
@@ -1434,6 +1475,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             resolveDraftMessageText()
             resolveAttachmentsCounter()
             resolveEditedMessageViews()
+            resolvePrimaryButton()
 
             uploadManager.cancelAll(accountId, destination)
             return true
@@ -1481,6 +1523,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         resolveAttachmentsCounter()
         resolveDraftMessageText()
         resolveEditedMessageViews()
+        resolvePrimaryButton()
 
         val index = data.indexOfFirst {
             it.id == message.id
@@ -1504,6 +1547,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 attachments.removeAt(index)
                 view?.notifyEditAttachmentRemoved(index)
                 resolveAttachmentsCounter()
+                resolvePrimaryButton()
             }
         }
     }
@@ -1542,12 +1586,28 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 attachments.addAll(additional)
                 view?.notifyEditAttachmentsAdded(sizeBefore, additional.size)
                 resolveAttachmentsCounter()
+                resolvePrimaryButton()
             }
         }
     }
 
-    fun fireActionModePinClick() {
+    fun fireUnpinClick() {
+        doPin(null)
+    }
 
+    private fun doPin(message: Message?) {
+        appendDisposable(messagesRepository.pin(accountId, peerId, message)
+                .fromIOToMain()
+                .subscribe(dummy(), Consumer { onPinFail(it) }))
+    }
+
+    fun fireActionModePinClick() {
+        val message = data.find { it.isSelected }
+        doPin(message)
+    }
+
+    private fun onPinFail(throwable: Throwable) {
+        showError(view, throwable)
     }
 
     fun onEditAddVideoClick() {

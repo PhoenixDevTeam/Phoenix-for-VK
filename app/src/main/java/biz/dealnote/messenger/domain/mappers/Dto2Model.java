@@ -405,7 +405,7 @@ public class Dto2Model {
             }
         }
 
-        return new SimplePrivacy(orig.type, entries);
+        return new SimplePrivacy(orig.category, entries);
     }
 
     public static Privacy transform(@NonNull SimplePrivacy simplePrivacy, @NonNull IOwnersBundle owners, @NonNull Map<Integer, FriendList> friendListMap) {
@@ -421,7 +421,7 @@ public class Dto2Model {
                         privacy.disallowFor(friendListMap.get(entry.getId()));
                     }
                     break;
-                case VkApiPrivacy.Entry.TYPE_USER:
+                case VkApiPrivacy.Entry.TYPE_OWNER:
                     if (entry.isAllowed()) {
                         privacy.allowFor((User) owners.getById(entry.getId()));
                     } else {
