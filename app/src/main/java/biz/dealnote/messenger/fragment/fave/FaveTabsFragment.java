@@ -121,7 +121,7 @@ public class FaveTabsFragment extends BaseFragment {
                 .setBlockNavigationDrawer(false)
                 .setBarsColored(getActivity(),true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     static class Adapter extends FragmentPagerAdapter {

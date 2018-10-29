@@ -94,6 +94,7 @@
 
     <style name="Theme.Tablayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabRippleColor">#424242</item>
+        <item name="tabMode">scrollable</item>
         <item name="tabTextColor">?android:textColorPrimary</item>
         <item name="android:background">?colorPrimary</item>
     </style>

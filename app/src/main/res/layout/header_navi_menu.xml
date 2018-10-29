@@ -1,83 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="8dp">
+    android:layout_marginTop="35dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="16dp">
 
     <ImageView
-        android:id="@+id/header_navi_menu_background"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/container"
-        android:layout_alignStart="@+id/container"
-        android:layout_alignEnd="@+id/container"
-        android:layout_alignTop="@+id/container"
-        android:scaleType="centerCrop" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/container"
-        android:layout_alignStart="@+id/container"
-        android:layout_alignEnd="@+id/container"
-        android:layout_alignTop="@+id/container"
-        android:background="#40000000" />
+        android:id="@+id/header_navi_menu_avatar"
+        android:layout_width="@dimen/avatar_size_usual"
+        android:layout_height="@dimen/avatar_size_usual" />
 
     <LinearLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:elevation="2dp"
+        android:layout_marginStart="16dp"
+        android:fitsSystemWindows="true"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/header_navi_menu_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="40dp"
-            android:clipToPadding="false"
-            android:elevation="2dp"
-            android:fitsSystemWindows="true">
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/font_size_title"
+            tools:text="User name" />
 
-            <ImageView
-                android:id="@+id/header_navi_menu_avatar"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_centerInParent="true"
-                android:padding="1.5dp" />
-
-        </RelativeLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/header_navi_menu_usernick"
             android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:layout_marginBottom="3dp"
-            android:layout_marginStart="16dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/header_navi_menu_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User name"
-                android:textColor="#ffffff"
-                android:textSize="@dimen/font_size_title" />
-
-            <TextView
-                android:id="@+id/header_navi_menu_usernick"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="\@nick"
-                android:textColor="#ffffff"
-                android:textSize="@dimen/font_size_subtitle" />
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="@dimen/font_size_subtitle"
+            tools:text="\@nick" />
 
     </LinearLayout>
 
-
-</RelativeLayout>
+</LinearLayout>
