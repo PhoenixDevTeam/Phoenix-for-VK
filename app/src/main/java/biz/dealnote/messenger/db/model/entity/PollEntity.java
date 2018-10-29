@@ -18,20 +18,108 @@ public class PollEntity extends Entity {
 
     private int voteCount;
 
-    private int myAnswerId;
+    private int[] myAnswerIds;
 
     private boolean anonymous;
 
-    private List<AnswerDbo> answers;
+    private List<Answer> answers;
 
     private boolean board;
+
+    public boolean closed;
+
+    public int authorId;
+
+    public boolean canVote;
+
+    public boolean canEdit;
+
+    public boolean canReport;
+
+    public boolean canShare;
+
+    public long endDate;
+
+    public boolean multiple;
+
+    public PollEntity setMultiple(boolean multiple) {
+        this.multiple = multiple;
+        return this;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
+    }
 
     public PollEntity(int id, int ownerId) {
         this.id = id;
         this.ownerId = ownerId;
     }
 
-    public static final class AnswerDbo {
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public PollEntity setClosed(boolean closed) {
+        this.closed = closed;
+        return this;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public PollEntity setAuthorId(int authorId) {
+        this.authorId = authorId;
+        return this;
+    }
+
+    public boolean isCanVote() {
+        return canVote;
+    }
+
+    public PollEntity setCanVote(boolean canVote) {
+        this.canVote = canVote;
+        return this;
+    }
+
+    public boolean isCanEdit() {
+        return canEdit;
+    }
+
+    public PollEntity setCanEdit(boolean canEdit) {
+        this.canEdit = canEdit;
+        return this;
+    }
+
+    public boolean isCanReport() {
+        return canReport;
+    }
+
+    public PollEntity setCanReport(boolean canReport) {
+        this.canReport = canReport;
+        return this;
+    }
+
+    public boolean isCanShare() {
+        return canShare;
+    }
+
+    public PollEntity setCanShare(boolean canShare) {
+        this.canShare = canShare;
+        return this;
+    }
+
+    public long getEndDate() {
+        return endDate;
+    }
+
+    public PollEntity setEndDate(long endDate) {
+        this.endDate = endDate;
+        return this;
+    }
+
+    public static final class Answer {
 
         private final int id;
 
@@ -41,7 +129,7 @@ public class PollEntity extends Entity {
 
         private final double rate;
 
-        public AnswerDbo(int id, String text, int voteCount, double rate) {
+        public Answer(int id, String text, int voteCount, double rate) {
             this.id = id;
             this.text = text;
             this.voteCount = voteCount;
@@ -100,12 +188,12 @@ public class PollEntity extends Entity {
         return this;
     }
 
-    public int getMyAnswerId() {
-        return myAnswerId;
+    public int[] getMyAnswerIds() {
+        return myAnswerIds;
     }
 
-    public PollEntity setMyAnswerId(int myAnswerId) {
-        this.myAnswerId = myAnswerId;
+    public PollEntity setMyAnswerIds(int[] myAnswerIds) {
+        this.myAnswerIds = myAnswerIds;
         return this;
     }
 
@@ -118,11 +206,11 @@ public class PollEntity extends Entity {
         return this;
     }
 
-    public List<AnswerDbo> getAnswers() {
+    public List<Answer> getAnswers() {
         return answers;
     }
 
-    public PollEntity setAnswers(List<AnswerDbo> answers) {
+    public PollEntity setAnswers(List<Answer> answers) {
         this.answers = answers;
         return this;
     }

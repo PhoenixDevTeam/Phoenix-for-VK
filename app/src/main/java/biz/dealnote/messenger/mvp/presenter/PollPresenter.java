@@ -2,6 +2,9 @@ package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import biz.dealnote.messenger.R;
@@ -11,7 +14,6 @@ import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IPollView;
 import biz.dealnote.messenger.util.RxUtils;
-import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.mvp.reflect.OnGuiCreated;
 
 /**
@@ -21,13 +23,14 @@ import biz.dealnote.mvp.reflect.OnGuiCreated;
 public class PollPresenter extends AccountDependencyPresenter<IPollView> {
 
     private Poll mPoll;
-    private int mTempCheckedId;
+    private Set<Integer> mTempCheckedId;
 
     private final IPollInteractor pollInteractor;
 
     public PollPresenter(int accountId, @NonNull Poll poll, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.mPoll = poll;
+        this.mTempCheckedId = arrayToSet(poll.getMyAnswerIds());
         this.pollInteractor = InteractorFactory.createPollInteractor();
 
         refreshPollData();
@@ -52,18 +55,23 @@ public class PollPresenter extends AccountDependencyPresenter<IPollView> {
     }
 
     private void onLoadingError(Throwable t) {
-        showError(getView(), Utils.getCauseIfRuntime(t));
+        showError(getView(), t);
         setLoadingNow(false);
     }
 
-    private void onPollInfoUpdated(Poll poll) {
-        setLoadingNow(false);
-
-        mPoll = poll;
-
-        if (mPoll.getMyAnswerId() != 0) {
-            mTempCheckedId = 0;
+    private static Set<Integer> arrayToSet(int[] ids){
+        Set<Integer> set = new HashSet<>(ids.length);
+        for(int id : ids){
+            set.add(id);
         }
+        return set;
+    }
+
+    private void onPollInfoUpdated(Poll poll) {
+        mPoll = poll;
+        mTempCheckedId = arrayToSet(poll.getMyAnswerIds());
+
+        setLoadingNow(false);
 
         resolveQuestionView();
         resolveVotesCountView();
@@ -75,14 +83,14 @@ public class PollPresenter extends AccountDependencyPresenter<IPollView> {
     private void resolveButtonView() {
         if (isGuiReady()) {
             getView().displayLoading(loadingNow);
-            getView().setupButton(mPoll.getMyAnswerId() != 0);
+            getView().setupButton(isVoted());
         }
     }
 
     @OnGuiCreated
     private void resolveVotesListView() {
         if (isGuiReady()) {
-            getView().displayVotesList(mPoll.getAnswers(), mPoll.getMyAnswerId() == 0, mTempCheckedId);
+            getView().displayVotesList(mPoll.getAnswers(), !isVoted(), mPoll.isMultiple(), mTempCheckedId);
         }
     }
 
@@ -114,46 +122,47 @@ public class PollPresenter extends AccountDependencyPresenter<IPollView> {
         }
     }
 
-    public void fireVoteChecked(int newid) {
+    public void fireVoteChecked(Set<Integer> newid) {
         mTempCheckedId = newid;
-    }
-
-    private void remove() {
-        if (loadingNow) return;
-
-        final int accountId = super.getAccountId();
-        final int answerId = this.mPoll.getMyAnswerId();
-
-        setLoadingNow(true);
-        appendDisposable(pollInteractor.removeVote(accountId, this.mPoll, answerId)
-                .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onPollInfoUpdated, this::onLoadingError));
     }
 
     private void vote() {
         if (loadingNow) return;
 
         final int accountId = super.getAccountId();
-        final int voteId = this.mTempCheckedId;
+        final Set<Integer> voteIds = new HashSet<>(mTempCheckedId);
 
         setLoadingNow(true);
-        appendDisposable(pollInteractor.addVote(accountId, this.mPoll, voteId)
+        appendDisposable(pollInteractor.addVote(accountId, mPoll, voteIds)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onPollInfoUpdated, this::onLoadingError));
+    }
+
+    private boolean isVoted(){
+        return mPoll.getMyAnswerIds() != null && mPoll.getMyAnswerIds().length > 0;
     }
 
     public void fireButtonClick() {
         if (loadingNow) return;
 
-        if (mPoll.getMyAnswerId() == 0) {
-            if (mTempCheckedId == 0) {
-                getView().showError(R.string.select);
-                return;
-            }
-
-            vote();
+        if(isVoted()){
+            removeVote();
         } else {
-            remove();
+            if (mTempCheckedId.isEmpty()) {
+                getView().showError(R.string.select);
+            } else {
+                vote();
+            }
         }
+    }
+
+    private void removeVote() {
+        final int accountId = super.getAccountId();
+        final int answerId = mPoll.getMyAnswerIds()[0];
+
+        setLoadingNow(true);
+        appendDisposable(pollInteractor.removeVote(accountId, mPoll, answerId)
+                .compose(RxUtils.applySingleIOToMainSchedulers())
+                .subscribe(this::onPollInfoUpdated, this::onLoadingError));
     }
 }

@@ -17,6 +17,7 @@ public interface IPollsService {
     @POST("polls.create")
     Single<BaseResponse<VKApiPoll>> create(@Field("question") String question,
                                            @Field("is_anonymous") Integer isAnonymous,
+                                           @Field("is_multiple") Integer isMultiple,
                                            @Field("owner_id") Integer ownerId,
                                            @Field("add_answers") String addAnswers);
 
@@ -33,7 +34,7 @@ public interface IPollsService {
     @POST("polls.addVote")
     Single<BaseResponse<Integer>> addVote(@Field("owner_id") Integer ownerId,
                                           @Field("poll_id") int pollId,
-                                          @Field("answer_id") int answerId,
+                                          @Field("answer_ids") String answerIds,
                                           @Field("is_board") Integer isBoard);
 
     @FormUrlEncoded

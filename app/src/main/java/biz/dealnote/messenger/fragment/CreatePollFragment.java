@@ -53,6 +53,7 @@ public class CreatePollFragment extends BaseMvpFragment<CreatePollPresenter, ICr
 
     private EditText mQuestion;
     private CheckBox mAnonymous;
+    private CheckBox mMultiply;
     private ViewGroup mOptionsViewGroup;
 
     @Override
@@ -70,25 +71,26 @@ public class CreatePollFragment extends BaseMvpFragment<CreatePollPresenter, ICr
 
         mQuestion = root.findViewById(R.id.dialog_poll_create_question);
         mAnonymous = root.findViewById(R.id.dialog_poll_create_anonymous);
+        mMultiply = root.findViewById(R.id.dialog_poll_create_multiply);
         mOptionsViewGroup = root.findViewById(R.id.dialog_poll_create_options);
 
         for (int i = 0; i < mOptionsViewGroup.getChildCount(); i++) {
             EditText editText = (EditText) mOptionsViewGroup.getChildAt(i);
-            final int finalI = i;
+            final int position = i;
 
             editText.addTextChangedListener(new TextWatcherAdapter() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    getPresenter().fireOptionEdited(finalI, s);
+                    getPresenter().fireOptionEdited(position, s);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if (TextUtils.isEmpty(s) || finalI == mOptionsViewGroup.getChildCount() - 1) {
+                    if (TextUtils.isEmpty(s) || position == mOptionsViewGroup.getChildCount() - 1) {
                         return;
                     }
 
-                    EditText next = (EditText) mOptionsViewGroup.getChildAt(finalI + 1);
+                    EditText next = (EditText) mOptionsViewGroup.getChildAt(position + 1);
                     if (next.getVisibility() == View.GONE) {
                         next.setVisibility(View.VISIBLE);
                     }
@@ -103,7 +105,8 @@ public class CreatePollFragment extends BaseMvpFragment<CreatePollPresenter, ICr
             }
         });
 
-        mAnonymous.setOnCheckedChangeListener((compoundButton, b) -> getPresenter().fireAnonyamousChecked(b));
+        mAnonymous.setOnCheckedChangeListener((ignored, isChecked) -> getPresenter().fireAnonyamousChecked(isChecked));
+        mMultiply.setOnCheckedChangeListener((ignored, isChecked) -> getPresenter().fireMultiplyChecked(isChecked));
         return root;
     }
 
@@ -144,6 +147,13 @@ public class CreatePollFragment extends BaseMvpFragment<CreatePollPresenter, ICr
     public void setAnonymous(boolean anomymous) {
         if (nonNull(mAnonymous)) {
             mAnonymous.setChecked(anomymous);
+        }
+    }
+
+    @Override
+    public void setMultiply(boolean multiply) {
+        if (nonNull(mMultiply)) {
+            mMultiply.setChecked(multiply);
         }
     }
 

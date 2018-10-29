@@ -19,7 +19,7 @@
 
     <biz.dealnote.messenger.view.ProgressButton
         app:button_color="?attr/colorAccent"
-        app:button_text="@string/remove_vote"
+        app:button_text="@string/add_vote"
         android:foreground="?attr/selectableItemBackground"
         android:layout_alignParentBottom="true"
         android:id="@+id/progress_button"

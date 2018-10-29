@@ -21,7 +21,7 @@ public class Poll extends AbsModel implements Parcelable {
 
     private int voteCount;
 
-    private int myAnswerId;
+    private int[] myAnswerIds;
 
     private boolean anonymous;
 
@@ -29,10 +29,21 @@ public class Poll extends AbsModel implements Parcelable {
 
     private boolean board;
 
-    public Poll(int id, int ownerId) {
-        this.id = id;
-        this.ownerId = ownerId;
-    }
+    private boolean closed;
+
+    private int authorId;
+
+    private boolean canVote;
+
+    private boolean canEdit;
+
+    private boolean canReport;
+
+    private boolean canShare;
+
+    private long endDate;
+
+    private boolean multiple;
 
     protected Poll(Parcel in) {
         super(in);
@@ -41,10 +52,18 @@ public class Poll extends AbsModel implements Parcelable {
         creationTime = in.readLong();
         question = in.readString();
         voteCount = in.readInt();
-        myAnswerId = in.readInt();
+        myAnswerIds = in.createIntArray();
         anonymous = in.readByte() != 0;
         answers = in.createTypedArrayList(Answer.CREATOR);
         board = in.readByte() != 0;
+        closed = in.readByte() != 0;
+        authorId = in.readInt();
+        canVote = in.readByte() != 0;
+        canEdit = in.readByte() != 0;
+        canReport = in.readByte() != 0;
+        canShare = in.readByte() != 0;
+        endDate = in.readLong();
+        multiple = in.readByte() != 0;
     }
 
     @Override
@@ -55,10 +74,18 @@ public class Poll extends AbsModel implements Parcelable {
         dest.writeLong(creationTime);
         dest.writeString(question);
         dest.writeInt(voteCount);
-        dest.writeInt(myAnswerId);
+        dest.writeIntArray(myAnswerIds);
         dest.writeByte((byte) (anonymous ? 1 : 0));
         dest.writeTypedList(answers);
         dest.writeByte((byte) (board ? 1 : 0));
+        dest.writeByte((byte) (closed ? 1 : 0));
+        dest.writeInt(authorId);
+        dest.writeByte((byte) (canVote ? 1 : 0));
+        dest.writeByte((byte) (canEdit ? 1 : 0));
+        dest.writeByte((byte) (canReport ? 1 : 0));
+        dest.writeByte((byte) (canShare ? 1 : 0));
+        dest.writeLong(endDate);
+        dest.writeByte((byte) (multiple ? 1 : 0));
     }
 
     public static final Creator<Poll> CREATOR = new Creator<Poll>() {
@@ -72,6 +99,83 @@ public class Poll extends AbsModel implements Parcelable {
             return new Poll[size];
         }
     };
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public Poll setClosed(boolean closed) {
+        this.closed = closed;
+        return this;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public Poll setAuthorId(int authorId) {
+        this.authorId = authorId;
+        return this;
+    }
+
+    public boolean isCanVote() {
+        return canVote;
+    }
+
+    public Poll setCanVote(boolean canVote) {
+        this.canVote = canVote;
+        return this;
+    }
+
+    public boolean isCanEdit() {
+        return canEdit;
+    }
+
+    public Poll setCanEdit(boolean canEdit) {
+        this.canEdit = canEdit;
+        return this;
+    }
+
+    public boolean isCanReport() {
+        return canReport;
+    }
+
+    public Poll setCanReport(boolean canReport) {
+        this.canReport = canReport;
+        return this;
+    }
+
+    public boolean isCanShare() {
+        return canShare;
+    }
+
+    public Poll setCanShare(boolean canShare) {
+        this.canShare = canShare;
+        return this;
+    }
+
+    public long getEndDate() {
+        return endDate;
+    }
+
+    public Poll setEndDate(long endDate) {
+        this.endDate = endDate;
+        return this;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public Poll setMultiple(boolean multiple) {
+        this.multiple = multiple;
+        return this;
+    }
+
+    public Poll(int id, int ownerId) {
+        this.id = id;
+        this.ownerId = ownerId;
+    }
 
     public int getId() {
         return id;
@@ -108,12 +212,12 @@ public class Poll extends AbsModel implements Parcelable {
         return this;
     }
 
-    public int getMyAnswerId() {
-        return myAnswerId;
+    public int[] getMyAnswerIds() {
+        return myAnswerIds;
     }
 
-    public Poll setMyAnswerId(int myAnswerId) {
-        this.myAnswerId = myAnswerId;
+    public Poll setMyAnswerIds(int[] myAnswerIds) {
+        this.myAnswerIds = myAnswerIds;
         return this;
     }
 

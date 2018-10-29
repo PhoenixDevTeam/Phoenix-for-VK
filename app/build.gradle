@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'io.fabric'
 
 android {
     packagingOptions {
@@ -153,6 +154,7 @@ dependencies {
     implementation "com.google.firebase:firebase-crash:16.2.1"
     implementation "com.google.firebase:firebase-database:16.0.4"
     implementation "com.google.firebase:firebase-messaging:17.3.4"
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.8.4'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

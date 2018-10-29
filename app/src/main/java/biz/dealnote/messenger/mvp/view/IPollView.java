@@ -1,8 +1,8 @@
 package biz.dealnote.messenger.mvp.view;
 
 import java.util.List;
+import java.util.Set;
 
-import androidx.annotation.NonNull;
 import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;
 import biz.dealnote.mvp.core.IMvpView;
@@ -12,7 +12,6 @@ import biz.dealnote.mvp.core.IMvpView;
  * phoenix
  */
 public interface IPollView extends IAccountDependencyView, IMvpView, IErrorView {
-
     void displayQuestion(String title);
 
     void displayType(boolean anonymous);
@@ -21,11 +20,9 @@ public interface IPollView extends IAccountDependencyView, IMvpView, IErrorView 
 
     void displayVoteCount(int count);
 
-    void displayVotesList(List<Poll.Answer> answers, boolean canCheck, Integer myVoteId);
+    void displayVotesList(List<Poll.Answer> answers, boolean canCheck, boolean multiply, Set<Integer> checked);
 
     void displayLoading(boolean loading);
 
     void setupButton(boolean voted);
-
-    void sendDataToParent(@NonNull Poll poll);
 }

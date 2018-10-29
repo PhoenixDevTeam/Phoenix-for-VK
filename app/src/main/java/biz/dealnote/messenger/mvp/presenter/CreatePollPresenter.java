@@ -30,6 +30,7 @@ public class CreatePollPresenter extends AccountDependencyPresenter<ICreatePollV
     private String[] mOptions;
     private int mOwnerId;
     private boolean mAnonymous;
+    private boolean mMultiply;
 
     private final IPollInteractor pollInteractor;
 
@@ -48,6 +49,7 @@ public class CreatePollPresenter extends AccountDependencyPresenter<ICreatePollV
         super.onGuiCreated(viewHost);
         viewHost.displayQuestion(mQuestion);
         viewHost.setAnonymous(mAnonymous);
+        viewHost.setMultiply(mMultiply);
         viewHost.displayOptions(mOptions);
     }
 
@@ -79,7 +81,7 @@ public class CreatePollPresenter extends AccountDependencyPresenter<ICreatePollV
         setCreationNow(true);
         final int accountId = super.getAccountId();
 
-        appendDisposable(pollInteractor.createPoll(accountId, mQuestion, mAnonymous, mOwnerId, nonEmptyOptions)
+        appendDisposable(pollInteractor.createPoll(accountId, mQuestion, mAnonymous, mMultiply, mOwnerId, nonEmptyOptions)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onPollCreated, this::onPollCreateError));
     }
@@ -97,10 +99,11 @@ public class CreatePollPresenter extends AccountDependencyPresenter<ICreatePollV
     @OnGuiCreated
     private void resolveProgressDialog() {
         if (isGuiReady()) {
-            if (creationNow)
+            if (creationNow) {
                 getView().displayProgressDialog(R.string.please_wait, R.string.publication, false);
-        } else {
-            getView().dismissProgressDialog();
+            } else {
+                getView().dismissProgressDialog();
+            }
         }
     }
 
@@ -118,5 +121,9 @@ public class CreatePollPresenter extends AccountDependencyPresenter<ICreatePollV
 
     public void fireDoneClick() {
         create();
+    }
+
+    public void fireMultiplyChecked(boolean isChecked) {
+        mMultiply = isChecked;
     }
 }

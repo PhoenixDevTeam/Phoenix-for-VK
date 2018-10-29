@@ -1,7 +1,5 @@
 package biz.dealnote.messenger.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +11,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +31,6 @@ import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.view.ProgressButton;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
 /**
@@ -118,11 +116,9 @@ public class PollFragment extends BaseMvpFragment<PollPresenter, IPollView>
     }
 
     @Override
-    public void displayVotesList(List<Poll.Answer> answers, boolean canCheck, Integer myVoteId) {
+    public void displayVotesList(List<Poll.Answer> answers, boolean canCheck, boolean multiply, Set<Integer> checked) {
         if(nonNull(mAnswersAdapter)){
-            mAnswersAdapter.setCheckable(canCheck);
-            mAnswersAdapter.setChecked(isNull(myVoteId) ? 0 : myVoteId);
-            mAnswersAdapter.setItems(answers);
+            mAnswersAdapter.setData(answers, canCheck, multiply, checked);
         }
     }
 
@@ -141,15 +137,6 @@ public class PollFragment extends BaseMvpFragment<PollPresenter, IPollView>
     }
 
     @Override
-    public void sendDataToParent(@NonNull Poll poll) {
-        if (getTargetFragment() != null) {
-            Intent intent = new Intent();
-            intent.putExtra(Extra.POLL, poll);
-            getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-        }
-    }
-
-    @Override
     public IPresenterFactory<PollPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> {
             int aid = requireArguments().getInt(Extra.ACCOUNT_ID);
@@ -160,7 +147,7 @@ public class PollFragment extends BaseMvpFragment<PollPresenter, IPollView>
     }
 
     @Override
-    public void onAnswerChanged(int newid) {
-        getPresenter().fireVoteChecked(newid);
+    public void onAnswerChanged(Set<Integer> checked) {
+        getPresenter().fireVoteChecked(checked);
     }
 }
