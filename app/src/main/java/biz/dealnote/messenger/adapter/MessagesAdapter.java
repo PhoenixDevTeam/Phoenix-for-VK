@@ -14,7 +14,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Transformation;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -23,13 +26,13 @@ import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.api.model.VKApiStickerSet;
 import biz.dealnote.messenger.link.internal.LinkActionAdapter;
 import biz.dealnote.messenger.link.internal.OwnerLinkSpanFactory;
 import biz.dealnote.messenger.model.CryptStatus;
 import biz.dealnote.messenger.model.LastReadId;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.MessageStatus;
+import biz.dealnote.messenger.model.Sticker;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.ViewUtils;
@@ -41,6 +44,8 @@ import static biz.dealnote.messenger.util.AppTextUtils.getDateFromUnixTime;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
 public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerView.ViewHolder> {
+
+    private final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
 
     private static final int TYPE_MY_MESSAGE = 1;
     private static final int TYPE_FRIEND_MESSAGE = 2;
@@ -106,11 +111,12 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
 
     private void bindStickerHolder(StickerMessageHolder holder, final Message message) {
         bindBaseMessageHolder(holder, message);
-        int stickerId = message.getAttachments().getStickers().get(0).getId();
 
-        String url = VKApiStickerSet.buildImgUrl256(stickerId);
+        Sticker sticker = message.getAttachments().getStickers().get(0);
+        Sticker.Image image = sticker.getImage(256, true);
+
         PicassoInstance.with()
-                .load(url)
+                .load(image.getUrl())
                 .into(holder.sticker);
     }
 
@@ -136,7 +142,8 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
                 String text = getDateFromUnixTime(time);
 
                 if(updateTime != 0){
-                    text = text + " " + context.getString(R.string.message_edited_at, getDateFromUnixTime(updateTime));
+                    DATE.setTime(updateTime * 1000);
+                    text = text + " " + context.getString(R.string.message_edited_at, df.format(DATE));
                 }
 
                 textView.setText(text);
@@ -144,6 +151,8 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
                 break;
         }
     }
+
+    private static final Date DATE = new Date();
 
     private OwnerLinkSpanFactory.ActionListener ownerLinkAdapter = new LinkActionAdapter(){
         @Override

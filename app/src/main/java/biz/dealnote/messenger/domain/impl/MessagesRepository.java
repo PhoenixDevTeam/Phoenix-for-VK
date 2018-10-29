@@ -678,6 +678,10 @@ public class MessagesRepository implements IMessagesRepository {
                 update.setUnread(new PeerUpdate.Unread(p.getUnread().getCount()));
             }
 
+            if(p.getTitle() != null){
+                update.setTitle(new PeerUpdate.Title(p.getTitle().getTitle()));
+            }
+
             updates.add(update);
         }
 
@@ -1235,12 +1239,12 @@ public class MessagesRepository implements IMessagesRepository {
     }
 
     @Override
-    public Completable changeChatTitle(int accountId, int chatId, String title) {
+    public Completable editChat(int accountId, int chatId, String title) {
+        PeerPatch patch = new PeerPatch(Peer.fromChatId(chatId)).withTitle(title);
         return networker.vkDefault(accountId)
                 .messages()
                 .editChat(chatId, title)
-                .flatMapCompletable(ignored -> storages.dialogs()
-                        .changeTitle(accountId, Peer.fromChatId(chatId), title));
+                .flatMapCompletable(ignored -> applyPeerUpdatesAndPublish(accountId, Collections.singletonList(patch)));
     }
 
     @Override

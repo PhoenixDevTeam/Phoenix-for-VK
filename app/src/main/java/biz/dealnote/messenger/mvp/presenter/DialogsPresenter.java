@@ -304,6 +304,10 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
                 }
             }
 
+            if(update.getTitle() != null){
+                dialog.setTitle(update.getTitle().getTitle());
+            }
+
             Collections.sort(dialogs, COMPARATOR);
         }
 

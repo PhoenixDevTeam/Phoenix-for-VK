@@ -159,8 +159,4 @@ public class AppTextUtils {
 
         return TextUtils.join(POINT, tmp);
     }
-
-    public static boolean safeTrimmedIsEmpty(CharSequence text) {
-        return text == null || TextUtils.getTrimmedLength(text) == 0;
-    }
 }

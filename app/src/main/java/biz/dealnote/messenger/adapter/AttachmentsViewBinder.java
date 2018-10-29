@@ -120,43 +120,6 @@ public class AttachmentsViewBinder {
         }
     }
 
-    /*private void displayNewFriends(ArrayList<String> friends, ViewGroup container){
-        if (Objects.isNull(friends) || Objects.isNull(container)) return;
-        boolean empty = safeIsEmpty(friends);
-        Logger.d("DISPLAYING FRIENDS", friends.size() + "");
-
-        container.setVisibility(empty ? View.GONE : View.VISIBLE);
-        if (empty) {
-            return;
-        }
-
-        int i = friends.size() - container.getChildCount();
-        for (int j = 0; j < i; j++) {
-            container.addView(LayoutInflater.from(mContext).inflate(R.layout.item_feed_new_friend, container, false));
-        }
-
-        for (int g = 0; g < container.getChildCount(); g++) {
-            ViewGroup root = (ViewGroup) container.getChildAt(g);
-
-            if (g < friends.size()) {
-                ImageView avatar = (ImageView) root.findViewById(R.id.item_feed_new_friend_avatar);
-                TextView name = (TextView) root.findViewById(R.id.item_feed_new_friend_name);
-
-                VKApiOwner user = OwnersHelper.loadOwnerNameAndPhoto(mContext, Accounts.getCurrentUid(mContext), Integer.parseInt(friends.get(g)));
-
-                PicassoInstance.with()
-                        .load(user.get100photoOrSmaller())
-                        .transform(new RoundTransformation())
-                        .into(avatar);
-                name.setText(user.getFullName());
-                root.setVisibility(View.VISIBLE);
-            } else {
-                root.setVisibility(View.GONE);
-            }
-        }
-
-    }*/
-
     private void displayVoiceMessages(final ArrayList<VoiceMessage> voices, ViewGroup container) {
         if(Objects.isNull(container)) return;
 
@@ -421,7 +384,7 @@ public class AttachmentsViewBinder {
 
     private void displayStickers(List<Sticker> stickers, ViewGroup stickersContainer) {
         stickersContainer.setVisibility(safeIsEmpty(stickers) ? View.GONE : View.VISIBLE);
-        if (safeIsEmpty(stickers)) {
+        if (isEmpty(stickers)) {
             return;
         }
 
@@ -433,17 +396,20 @@ public class AttachmentsViewBinder {
         ImageView imageView = (ImageView) stickersContainer.getChildAt(0);
         Sticker sticker = stickers.get(0);
 
-        boolean horisontal = sticker.getHeight() < sticker.getWidth();
-        double proporsion = (double) sticker.getWidth() / (double) sticker.getHeight();
+        int prefferedStickerSize = (int) dpToPx(PREFFERED_STICKER_SIZE, mContext);
+        Sticker.Image image = sticker.getImage(256, true);
 
-        float finalWidth;
-        float finalHeihgt;
+        boolean horisontal = image.getHeight() < image.getWidth();
+        double proporsion = (double) image.getWidth() / (double) image.getHeight();
+
+        final float finalWidth;
+        final float finalHeihgt;
 
         if (horisontal) {
-            finalWidth = dpToPx(PREFFERED_STICKER_SIZE, mContext);
+            finalWidth = prefferedStickerSize;
             finalHeihgt = (float) (finalWidth / proporsion);
         } else {
-            finalHeihgt = dpToPx(PREFFERED_STICKER_SIZE, mContext);
+            finalHeihgt = prefferedStickerSize;
             finalWidth = (float) (finalHeihgt * proporsion);
         }
 
@@ -451,7 +417,7 @@ public class AttachmentsViewBinder {
         imageView.getLayoutParams().width = (int) finalWidth;
 
         PicassoInstance.with()
-                .load(sticker.getPhoto256())
+                .load(image.getUrl())
                 .into(imageView);
     }
 

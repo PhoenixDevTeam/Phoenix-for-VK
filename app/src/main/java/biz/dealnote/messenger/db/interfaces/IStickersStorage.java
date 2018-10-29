@@ -2,8 +2,7 @@ package biz.dealnote.messenger.db.interfaces;
 
 import java.util.List;
 
-import biz.dealnote.messenger.api.model.VKApiStickerSet;
-import biz.dealnote.messenger.model.StickerSet;
+import biz.dealnote.messenger.db.model.entity.StickerSetEntity;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
@@ -13,7 +12,7 @@ import io.reactivex.Single;
  */
 public interface IStickersStorage extends IStorage {
 
-    Completable store(int accountId, List<VKApiStickerSet.Product> sets);
+    Completable store(int accountId, List<StickerSetEntity> sets);
 
-    Single<List<StickerSet>> getPurchasedAndActive(int accountId);
+    Single<List<StickerSetEntity>> getPurchasedAndActive(int accountId);
 }

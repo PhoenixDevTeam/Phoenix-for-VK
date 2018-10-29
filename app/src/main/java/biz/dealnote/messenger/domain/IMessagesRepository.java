@@ -127,7 +127,7 @@ public interface IMessagesRepository {
 
     Completable restoreMessage(int accountId, int peerId, int messageId);
 
-    Completable changeChatTitle(int accountId, int chatId, String title);
+    Completable editChat(int accountId, int chatId, String title);
 
     Single<Integer> createGroupChat(int accountId, Collection<Integer> users, String title);
 

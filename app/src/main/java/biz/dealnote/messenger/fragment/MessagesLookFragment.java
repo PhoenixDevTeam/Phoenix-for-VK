@@ -105,7 +105,7 @@ public class MessagesLookFragment extends PlaceSupportMvpFragment<MessagesLookPr
     @Override
     public void showDeleteForAllDialog(ArrayList<Integer> ids) {
         new AlertDialog.Builder(requireActivity())
-                .setTitle(R.string.messages_delete_for_all_question_title)
+                .setTitle(R.string.confirmation)
                 .setMessage(R.string.messages_delete_for_all_question_message)
                 .setNeutralButton(R.string.button_cancel, null)
                 .setPositiveButton(R.string.button_for_all, (dialog, which) -> getPresenter().fireDeleteForAllClick(ids))

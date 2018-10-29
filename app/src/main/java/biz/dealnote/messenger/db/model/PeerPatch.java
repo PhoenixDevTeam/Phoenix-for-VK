@@ -14,6 +14,8 @@ public final class PeerPatch {
 
     private Pin pin;
 
+    private Title title;
+
     private final int id;
 
     public PeerPatch(int id) {
@@ -49,6 +51,15 @@ public final class PeerPatch {
         return this;
     }
 
+    public PeerPatch withTitle(String title){
+        this.title = new Title(title);
+        return this;
+    }
+
+    public Title getTitle() {
+        return title;
+    }
+
     public LastMessage getLastMessage() {
         return lastMessage;
     }
@@ -67,6 +78,19 @@ public final class PeerPatch {
 
     public ReadTo getOutRead() {
         return outRead;
+    }
+
+    public static final class Title {
+
+        private final String title;
+
+        Title(String title) {
+            this.title = title;
+        }
+
+        public String getTitle() {
+            return title;
+        }
     }
 
     public static final class Unread {

@@ -45,7 +45,6 @@ import biz.dealnote.messenger.db.column.PhotosColumns;
 import biz.dealnote.messenger.db.column.PostAttachmentsColumns;
 import biz.dealnote.messenger.db.column.PostsColumns;
 import biz.dealnote.messenger.db.column.RelationshipColumns;
-import biz.dealnote.messenger.db.column.StikerSetColumns;
 import biz.dealnote.messenger.db.column.TopicsColumns;
 import biz.dealnote.messenger.db.column.UserColumns;
 import biz.dealnote.messenger.db.column.UsersDetColumns;
@@ -77,7 +76,6 @@ public class MessengerContentProvider extends ContentProvider {
     private static Map<String, String> sTopicsProjectionMap;
     private static Map<String, String> sNoticationsProjectionMap;
     private static Map<String, String> sUserDetProjectionMap;
-    private static Map<String, String> sStickerSetProjectionMap;
     private static Map<String, String> sFavePhotosProjectionMap;
     private static Map<String, String> sFaveVideosProjectionMap;
     private static Map<String, String> sFaveUsersProjectionMap;
@@ -124,7 +122,6 @@ public class MessengerContentProvider extends ContentProvider {
     static final int URI_NOTIFICATIONS = 44;
     static final int URI_USER_DET = 46;
     static final int URI_USER_DET_ID = 47;
-    static final int URI_STICKER_SET = 53;
     static final int URI_FAVE_PHOTOS = 55;
     static final int URI_FAVE_VIDEOS = 56;
     static final int URI_FAVE_USERS = 57;
@@ -158,7 +155,6 @@ public class MessengerContentProvider extends ContentProvider {
     static final String TOPICS_PATH = "topics";
     static final String NOTIFICATIONS_PATH = "notifications";
     static final String USER_DET_PATH = "user_det";
-    static final String STICKER_SET_PATH = "sticker_set";
     static final String FAVE_PHOTOS_PATH = "fave_photos";
     static final String FAVE_VIDEOS_PATH = "fave_videos";
     static final String FAVE_USERS_PATH = "fave_users";
@@ -208,7 +204,6 @@ public class MessengerContentProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, NOTIFICATIONS_PATH, URI_NOTIFICATIONS);
         sUriMatcher.addURI(AUTHORITY, USER_DET_PATH, URI_USER_DET);
         sUriMatcher.addURI(AUTHORITY, USER_DET_PATH + "/#", URI_USER_DET_ID);
-        sUriMatcher.addURI(AUTHORITY, STICKER_SET_PATH, URI_STICKER_SET);
         sUriMatcher.addURI(AUTHORITY, FAVE_PHOTOS_PATH, URI_FAVE_PHOTOS);
         sUriMatcher.addURI(AUTHORITY, FAVE_VIDEOS_PATH, URI_FAVE_VIDEOS);
         sUriMatcher.addURI(AUTHORITY, FAVE_USERS_PATH, URI_FAVE_USERS);
@@ -297,9 +292,6 @@ public class MessengerContentProvider extends ContentProvider {
     private static final Uri USER_DET_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + USER_DET_PATH);
     static final String USER_DET_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + USER_DET_PATH;
     static final String USER_DET_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + AUTHORITY + "." + USER_DET_PATH;
-
-    private static final Uri STICKER_SET_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + STICKER_SET_PATH);
-    static final String STICKER_SET_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + STICKER_SET_PATH;
 
     private static final Uri FAVE_PHOTOS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FAVE_PHOTOS_PATH);
     static final String FAVE_PHOTOS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + FAVE_PHOTOS_PATH;
@@ -724,17 +716,6 @@ public class MessengerContentProvider extends ContentProvider {
         sUserDetProjectionMap.put(UsersDetColumns._ID, UsersDetColumns.FULL_ID);
         sUserDetProjectionMap.put(UsersDetColumns.DATA, UsersDetColumns.FULL_DATA);
 
-        sStickerSetProjectionMap = new HashMap<>();
-        sStickerSetProjectionMap.put(StikerSetColumns._ID, StikerSetColumns.FULL_ID);
-        sStickerSetProjectionMap.put(StikerSetColumns.TITLE, StikerSetColumns.FULL_TITLE);
-        sStickerSetProjectionMap.put(StikerSetColumns.PHOTO_35, StikerSetColumns.FULL_PHOTO_35);
-        sStickerSetProjectionMap.put(StikerSetColumns.PHOTO_70, StikerSetColumns.FULL_PHOTO_70);
-        sStickerSetProjectionMap.put(StikerSetColumns.PHOTO_140, StikerSetColumns.FULL_PHOTO_140);
-        sStickerSetProjectionMap.put(StikerSetColumns.PURCHASED, StikerSetColumns.FULL_PURCHASED);
-        sStickerSetProjectionMap.put(StikerSetColumns.PROMOTED, StikerSetColumns.FULL_PROMOTED);
-        sStickerSetProjectionMap.put(StikerSetColumns.ACTIVE, StikerSetColumns.FULL_ACTIVE);
-        sStickerSetProjectionMap.put(StikerSetColumns.STICKERS_IDS, StikerSetColumns.FULL_STICKERS_IDS);
-
         sFavePhotosProjectionMap = new HashMap<>();
         sFavePhotosProjectionMap.put(FavePhotosColumns._ID, FavePhotosColumns.FULL_ID);
         sFavePhotosProjectionMap.put(FavePhotosColumns.PHOTO_ID, FavePhotosColumns.FULL_PHOTO_ID);
@@ -803,10 +784,6 @@ public class MessengerContentProvider extends ContentProvider {
 
     public static Uri getGroupsDetContentUriFor(int aid){
         return appendAccountId(GROUPS_DET_CONTENT_URI, aid);
-    }
-
-    public static Uri getStickerSetContentUriFor(int aid){
-        return appendAccountId(STICKER_SET_CONTENT_URI, aid);
     }
 
     public static Uri getFavePostsContentUriFor(int aid){
@@ -1108,10 +1085,6 @@ public class MessengerContentProvider extends ContentProvider {
             case URI_USER_DET:
                 rowId = db.insert(UsersDetColumns.TABLENAME, null, values);
                 resultUri = ContentUris.withAppendedId(USER_DET_CONTENT_URI, rowId);
-                break;
-            case URI_STICKER_SET:
-                rowId = db.insert(StikerSetColumns.TABLENAME, null, values);
-                resultUri = ContentUris.withAppendedId(STICKER_SET_CONTENT_URI, rowId);
                 break;
             case URI_FAVE_PHOTOS:
                 rowId = db.insert(FavePhotosColumns.TABLENAME, null, values);
@@ -1437,12 +1410,6 @@ public class MessengerContentProvider extends ContentProvider {
                 _QB.appendWhere(UsersDetColumns.FULL_ID + " = " + uri.getPathSegments().get(1));
                 _TableType = URI_USER_DET;
                 break;
-
-            case URI_STICKER_SET:
-                _QB.setTables(StikerSetColumns.TABLENAME);
-                _QB.setProjectionMap(sStickerSetProjectionMap);
-                _TableType = URI_STICKER_SET;
-                break;
             case URI_FAVE_PHOTOS:
                 _QB.setTables(FavePhotosColumns.TABLENAME);
                 _QB.setProjectionMap(sFavePhotosProjectionMap);
@@ -1587,9 +1554,6 @@ public class MessengerContentProvider extends ContentProvider {
                 case URI_USER_DET:
                     _OrderBy = UsersDetColumns.FULL_ID + " ASC";
                     break;
-                case URI_STICKER_SET:
-                    _OrderBy = StikerSetColumns.FULL_ID + " ASC";
-                    break;
                 case URI_FAVE_PHOTOS:
                     _OrderBy = FavePhotosColumns.FULL_ID + " ASC";
                     break;
@@ -1716,8 +1680,6 @@ public class MessengerContentProvider extends ContentProvider {
                 return USER_DET_CONTENT_TYPE;
             case URI_USER_DET_ID:
                 return USER_DET_CONTENT_ITEM_TYPE;
-            case URI_STICKER_SET:
-                return STICKER_SET_CONTENT_TYPE;
             case URI_FAVE_PHOTOS:
                 return FAVE_PHOTOS_CONTENT_TYPE;
             case URI_FAVE_VIDEOS:
@@ -1849,10 +1811,6 @@ public class MessengerContentProvider extends ContentProvider {
                     selection = selection + " AND " + UsersDetColumns._ID + " = " + userDetId;
                 }
                 tbName = UsersDetColumns.TABLENAME;
-                break;
-
-            case URI_STICKER_SET:
-                tbName = StikerSetColumns.TABLENAME;
                 break;
             case URI_FAVE_PHOTOS:
                 tbName = FavePhotosColumns.TABLENAME;
@@ -2035,9 +1993,6 @@ public class MessengerContentProvider extends ContentProvider {
                     selection = selection + " AND " + UsersDetColumns._ID + " = " + userDetId;
                 }
                 tbName = UsersDetColumns.TABLENAME;
-                break;
-            case URI_STICKER_SET:
-                tbName = StikerSetColumns.TABLENAME;
                 break;
             case URI_FAVE_PHOTOS:
                 tbName = FavePhotosColumns.TABLENAME;

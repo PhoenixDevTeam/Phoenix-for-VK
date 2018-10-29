@@ -1026,4 +1026,18 @@
     <string name="files_uploading_notification_title">Завантаження файлів</string>
     <string name="service_pinned_message">%1$s закріпив повідомлення</string>
     <string name="service_unpinned_message">%1$s відкріпив повідомлення</string>
+    <string name="service_invite_user_by_link">%1$s приєднався за посиланням</string>
+    <string name="photo_preview_size_title">Розмір попер. перегляду фото</string>
+    <string name="channel_keep_longpoll">Longpoll</string>
+    <string name="press_to_stop_service">Натисніть, щоб зупинити!</string>
+    <string name="keep_longpoll_notification_title">Повідомлення Phoenix</string>
+    <string name="settings_keep_longpoll_title">Утримувати Longpoll</string>
+    <string name="settings_keep_longpoll_summary">Підтримувати зв\'язок зі службою повідомлень. УВАГА! Це може привести до збільшення споживання батареї!</string>
+    <string name="close">Закрити</string>
+    <string name="attach">Прикріпити</string>
+    <string name="edit_message">Редагувати повідомлення</string>
+    <string name="messages_delete_for_all_question_message">Ви впевнені, що хочете видалити повідомлення?</string>
+    <string name="button_for_all">Для всіх</string>
+    <string name="button_for_me">Для мене</string>
+    <string name="message_edited_at">(ред. %1$s)</string>
 </resources>

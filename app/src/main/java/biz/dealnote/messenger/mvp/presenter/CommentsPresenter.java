@@ -32,6 +32,7 @@ import biz.dealnote.messenger.model.LoadMoreState;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.Poll;
+import biz.dealnote.messenger.model.Sticker;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
 import biz.dealnote.messenger.mvp.view.ICommentsView;
@@ -772,10 +773,10 @@ public class CommentsPresenter extends PlaceSupportPresenter<ICommentsView> {
         deleteRestoreInternal(commentId, false);
     }
 
-    public void fireStickerClick(int stickerId) {
+    public void fireStickerClick(Sticker sticker) {
         CommentIntent intent = new CommentIntent(authorId)
                 .setReplyToComment(isNull(replyTo) ? null : replyTo.getId())
-                .setStickerId(stickerId);
+                .setStickerId(sticker.getId());
 
         sendQuickComment(intent);
     }

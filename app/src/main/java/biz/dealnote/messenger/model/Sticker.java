@@ -3,6 +3,10 @@ package biz.dealnote.messenger.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
+import biz.dealnote.messenger.api.model.VKApiStickerSet;
+
 /**
  * Created by admin on 04.12.2016.
  * phoenix
@@ -11,39 +15,112 @@ public class Sticker extends AbsModel implements Parcelable {
 
     private final int id;
 
-    private int width;
+    private List<Image> images;
 
-    private int height;
+    private List<Image> imagesWithBackground;
 
-    private String photo64;
+    public static final class Image implements Parcelable {
 
-    private String photo128;
+        private final String url;
+        private final int width;
+        private final int height;
 
-    private String photo256;
+        public Image(String url, int width, int height) {
+            this.url = url;
+            this.width = width;
+            this.height = height;
+        }
+
+        Image(Parcel in) {
+            url = in.readString();
+            width = in.readInt();
+            height = in.readInt();
+        }
+
+        public static final Creator<Image> CREATOR = new Creator<Image>() {
+            @Override
+            public Image createFromParcel(Parcel in) {
+                return new Image(in);
+            }
+
+            @Override
+            public Image[] newArray(int size) {
+                return new Image[size];
+            }
+        };
+
+        public String getUrl() {
+            return url;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(url);
+            dest.writeInt(width);
+            dest.writeInt(height);
+        }
+
+        private int calcAverageSize(){
+            return (width + height) / 2;
+        }
+    }
 
     public Sticker(int id) {
         this.id = id;
     }
 
+    public Image getImage(int prefSize, boolean withBackground){
+        return withBackground ? getImage(prefSize, imagesWithBackground) : getImage(prefSize, images);
+    }
+
+    private Image getImage(int prefSize, List<Image> images){
+        Image result = null;
+
+        for(Image image : images){
+            if(result == null){
+                result = image;
+                continue;
+            }
+
+            if(Math.abs(image.calcAverageSize() - prefSize) < Math.abs(result.calcAverageSize() - prefSize)){
+                result = image;
+            }
+        }
+
+        if(result == null){
+            // default
+            return new Image(VKApiStickerSet.buildImgUrl256(id), 256, 256);
+        }
+
+        return result;
+    }
+
     protected Sticker(Parcel in) {
         super(in);
         id = in.readInt();
-        width = in.readInt();
-        height = in.readInt();
-        photo64 = in.readString();
-        photo128 = in.readString();
-        photo256 = in.readString();
+        images = in.createTypedArrayList(Image.CREATOR);
+        imagesWithBackground = in.createTypedArrayList(Image.CREATOR);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeInt(id);
-        dest.writeInt(width);
-        dest.writeInt(height);
-        dest.writeString(photo64);
-        dest.writeString(photo128);
-        dest.writeString(photo256);
+        dest.writeTypedList(images);
+        dest.writeTypedList(imagesWithBackground);
     }
 
     public static final Creator<Sticker> CREATOR = new Creator<Sticker>() {
@@ -58,53 +135,26 @@ public class Sticker extends AbsModel implements Parcelable {
         }
     };
 
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public List<Image> getImagesWithBackground() {
+        return imagesWithBackground;
+    }
+
+    public Sticker setImages(List<Image> images) {
+        this.images = images;
+        return this;
+    }
+
+    public Sticker setImagesWithBackground(List<Image> imagesWithBackground) {
+        this.imagesWithBackground = imagesWithBackground;
+        return this;
+    }
+
     public int getId() {
         return id;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public Sticker setWidth(int width) {
-        this.width = width;
-        return this;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public Sticker setHeight(int height) {
-        this.height = height;
-        return this;
-    }
-
-    public String getPhoto64() {
-        return photo64;
-    }
-
-    public Sticker setPhoto64(String photo64) {
-        this.photo64 = photo64;
-        return this;
-    }
-
-    public String getPhoto128() {
-        return photo128;
-    }
-
-    public Sticker setPhoto128(String photo128) {
-        this.photo128 = photo128;
-        return this;
-    }
-
-    public String getPhoto256() {
-        return photo256;
-    }
-
-    public Sticker setPhoto256(String photo256) {
-        this.photo256 = photo256;
-        return this;
     }
 
     @Override

@@ -370,8 +370,8 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         presenter?.fireVoicePlayButtonClick(voiceHolderId, voiceMessageId, voiceMessage)
     }
 
-    override fun onStickerClick(stickerId: Int) {
-        presenter?.fireStickerSendClick(stickerId)
+    override fun onStickerClick(sticker: Sticker) {
+        presenter?.fireStickerSendClick(sticker)
     }
 
     override fun onHashTagClicked(hashTag: String) {
@@ -499,7 +499,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
     override fun showDeleteForAllDialog(ids: ArrayList<Int>) {
         AlertDialog.Builder(requireActivity()).apply {
-            setTitle(R.string.messages_delete_for_all_question_title)
+            setTitle(R.string.confirmation)
             setMessage(R.string.messages_delete_for_all_question_message)
             setNeutralButton(R.string.button_cancel, null)
             setPositiveButton(R.string.button_for_all) { _, _ -> presenter?.fireDeleteForAllClick(ids) }

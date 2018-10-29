@@ -71,19 +71,11 @@ public class VKApiStickerSet implements Identificable {
         public String type;
 
         @SerializedName("stickers")
-        public List<Sticker> stickers;
+        public List<VKApiSticker> stickers;
     }
 
     @Override
     public int getId() {
         return product.id;
-    }
-
-    public static class Sticker {
-        @SerializedName("sticker_id")
-        public int sticker_id;
-
-        @SerializedName("is_allowed")
-        public boolean is_allowed;
     }
 }

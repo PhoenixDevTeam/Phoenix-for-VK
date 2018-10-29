@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.GridView;
 
 import biz.dealnote.messenger.R;
+import biz.dealnote.messenger.model.Sticker;
 import biz.dealnote.messenger.model.StickerSet;
 
 public class StickersGridView {
@@ -31,6 +32,6 @@ public class StickersGridView {
     }
 
     public interface OnStickerClickedListener {
-        void onStickerClick(int stickerId);
+        void onStickerClick(Sticker stickerId);
     }
 }

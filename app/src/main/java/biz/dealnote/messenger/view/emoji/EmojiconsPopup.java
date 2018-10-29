@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.Stores;
+import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.StickerSet;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
@@ -173,9 +173,8 @@ public class EmojiconsPopup {
                 .accounts()
                 .getCurrent();
 
-        List<StickerSet> stickerSets = Stores.getInstance()
-                .stickers()
-                .getPurchasedAndActive(accountId)
+        List<StickerSet> stickerSets = InteractorFactory.createStickersInteractor()
+                .getStickers(accountId)
                 .blockingGet();
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.emojicons, parent, false);

@@ -74,6 +74,7 @@ import biz.dealnote.messenger.model.VoiceMessage;
 import biz.dealnote.messenger.model.WikiPage;
 import biz.dealnote.messenger.util.Objects;
 
+import static biz.dealnote.messenger.domain.mappers.MapUtil.mapAll;
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
@@ -188,12 +189,12 @@ public class Dto2Model {
     }
 
     public static List<Community> transformCommunities(List<VKApiCommunity> dtos) {
-        return MapUtil.mapAll(dtos, Dto2Model::transformCommunity);
+        return mapAll(dtos, Dto2Model::transformCommunity);
     }
 
 
     public static List<User> transformUsers(List<VKApiUser> dtos) {
-        return MapUtil.mapAll(dtos, Dto2Model::transformUser);
+        return mapAll(dtos, Dto2Model::transformUser);
     }
 
     public static User transformUser(VKApiUser user) {
@@ -571,13 +572,14 @@ public class Dto2Model {
                 .setPhoto(Objects.isNull(link.photo) ? null : transform(link.photo));
     }
 
+    public static Sticker.Image map(VKApiSticker.Image dto){
+        return new Sticker.Image(dto.url, dto.width, dto.height);
+    }
+
     public static Sticker transform(@NonNull VKApiSticker dto) {
         return new Sticker(dto.sticker_id)
-                .setWidth(dto.width)
-                .setHeight(dto.height)
-                .setPhoto64(dto.photo_64)
-                .setPhoto128(dto.photo_128)
-                .setPhoto256(dto.photo_256);
+                .setImages(mapAll(dto.images, Dto2Model::map))
+                .setImagesWithBackground(mapAll(dto.images_with_background, Dto2Model::map));
     }
 
     public static FaveLink transform(@NonNull FaveLinkDto dto) {

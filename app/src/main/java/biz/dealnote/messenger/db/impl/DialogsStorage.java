@@ -143,16 +143,6 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
         });
     }
 
-    @Override
-    public Completable changeTitle(int accountId, int peedId, String title) {
-        return Completable.fromAction(() -> {
-            final Uri uri = MessengerContentProvider.getDialogsContentUriFor(accountId);
-            ContentValues cv = new ContentValues();
-            cv.put(DialogsColumns.TITLE, title);
-            getContentResolver().update(uri, cv, DialogsColumns._ID + " = ?", new String[]{String.valueOf(peedId)});
-        });
-    }
-
     private ContentValues createCv(DialogEntity entity) {
         ContentValues cv = new ContentValues();
         MessageEntity messageDbo = entity.getMessage();
@@ -363,6 +353,11 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
 
                 if(nonNull(patch.getPin())){
                     peerscv.put(PeersColumns.PINNED, serializeJson(patch.getPin().getPinned()));
+                }
+
+                if(nonNull(patch.getTitle())){
+                    peerscv.put(PeersColumns.TITLE, patch.getTitle().getTitle());
+                    dialogscv.put(DialogsColumns.TITLE, patch.getTitle().getTitle());
                 }
 
                 String[] args = {String.valueOf(patch.getId())};
