@@ -6,7 +6,7 @@ package biz.dealnote.messenger.push;
  */
 public final class PushType {
     public static final String MSG = "msg";
-    public static final String WALL_POST = "wall_post";
+    public static final String POST = "post";
     public static final String REPLY = "reply";
     public static final String COMMENT = "comment";
     public static final String WALL_PUBLISH = "wall_publish";

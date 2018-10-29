@@ -10,6 +10,7 @@ import java.util.Map;
 import biz.dealnote.messenger.push.IPushRegistrationResolver;
 import biz.dealnote.messenger.push.PushType;
 import biz.dealnote.messenger.push.message.FCMMessage;
+import biz.dealnote.messenger.push.message.WallPostFCMMessage;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Logger;
@@ -73,11 +74,11 @@ public class FcmListenerService extends FirebaseMessagingService {
             case "chat":
                 FCMMessage.fromRemoteMessage(message).notify(context, accountId);
                 break;
-
-            /*case PushType.WALL_POST:
+            case PushType.POST:
                 WallPostFCMMessage.fromRemoteMessage(message).nofify(context, accountId);
                 break;
-            case PushType.REPLY:
+
+            /*case PushType.REPLY:
                 ReplyFCMMessage.fromRemoteMessage(message).notify(context, accountId);
                 break;
             case PushType.COMMENT:
