@@ -14,7 +14,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Transformation;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -41,6 +44,8 @@ import static biz.dealnote.messenger.util.AppTextUtils.getDateFromUnixTime;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
 public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerView.ViewHolder> {
+
+    private final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
 
     private static final int TYPE_MY_MESSAGE = 1;
     private static final int TYPE_FRIEND_MESSAGE = 2;
@@ -136,7 +141,8 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
                 String text = getDateFromUnixTime(time);
 
                 if(updateTime != 0){
-                    text = text + " " + context.getString(R.string.message_edited_at, getDateFromUnixTime(updateTime));
+                    DATE.setTime(updateTime * 1000);
+                    text = text + " " + context.getString(R.string.message_edited_at, df.format(DATE));
                 }
 
                 textView.setText(text);
@@ -144,6 +150,8 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
                 break;
         }
     }
+
+    private static final Date DATE = new Date();
 
     private OwnerLinkSpanFactory.ActionListener ownerLinkAdapter = new LinkActionAdapter(){
         @Override

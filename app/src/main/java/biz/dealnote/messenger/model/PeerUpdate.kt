@@ -6,6 +6,7 @@ class PeerUpdate(val accountId: Int, val peerId: Int) {
     var lastMessage: LastMessage? = null
     var unread: Unread? = null
     var pin: Pin? = null
+    var title: Title? = null
 
     class Read (val messageId: Int)
 
@@ -14,4 +15,6 @@ class PeerUpdate(val accountId: Int, val peerId: Int) {
     class LastMessage(val messageId: Int)
 
     class Pin(val pinned: Message?)
+
+    class Title(val title: String?)
 }

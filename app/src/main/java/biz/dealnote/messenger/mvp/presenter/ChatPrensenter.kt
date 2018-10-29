@@ -269,6 +269,12 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 conversation?.pinned = pinned
                 resolvePinnedMessageView()
             }
+
+            update.title?.run {
+                conversation?.title = title
+                peer.title = title
+                resolveToolbarTitle()
+            }
         }
 
         if (requireListUpdate) {
@@ -1278,9 +1284,9 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     fun fireChatTitleTyped(newValue: String) {
-        val chatId = Peer.fromChatId(peerId)
+        val chatId = Peer.toChatId(peerId)
 
-        appendDisposable(messagesRepository.changeChatTitle(this.messagesOwnerId, chatId, newValue)
+        appendDisposable(messagesRepository.editChat(messagesOwnerId, chatId, newValue)
                 .fromIOToMain()
                 .subscribe(dummy(), Consumer { t -> showError(view, t) }))
     }

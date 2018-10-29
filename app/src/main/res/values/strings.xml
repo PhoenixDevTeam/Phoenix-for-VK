@@ -1208,6 +1208,6 @@
     <string name="messages_delete_for_all_question_message">Are you sure you want to delete the messages?</string>
     <string name="button_for_all">For all</string>
     <string name="button_for_me">For me</string>
-    <string name="message_edited_at">(edited at %1$s)</string>
+    <string name="message_edited_at">(edited %1$s)</string>
 
 </resources>
