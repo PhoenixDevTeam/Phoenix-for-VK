@@ -13,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.db.Stores;
-import biz.dealnote.messenger.db.interfaces.IDialogsStorage;
 import biz.dealnote.messenger.domain.IMessagesRepository;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.domain.Repository;
@@ -80,15 +78,12 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
         messagesInteractor = Repository.INSTANCE.getMessages();
         longpollManager = LongpollInstance.get();
 
-        final IDialogsStorage store = Stores.getInstance().dialogs();
-
         appendDisposable(messagesInteractor
                 .observePeerUpdates()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onPeerUpdate, ignore()));
 
-        appendDisposable(store
-                .observeDialogsDeleting()
+        appendDisposable(messagesInteractor.observePeerDeleting()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(dialog -> onDialogDeleted(dialog.getAccountId(), dialog.getPeerId()), ignore()));
 

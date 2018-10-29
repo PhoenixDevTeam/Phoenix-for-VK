@@ -31,6 +31,7 @@ import biz.dealnote.messenger.fragment.search.SearchContentType
 import biz.dealnote.messenger.fragment.search.criteria.MessageSeachCriteria
 import biz.dealnote.messenger.fragment.sheet.MessageAttachmentsFragment
 import biz.dealnote.messenger.listener.BackPressCallback
+import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener
 import biz.dealnote.messenger.listener.OnSectionResumeCallback
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener
 import biz.dealnote.messenger.model.*
@@ -108,6 +109,11 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             itemAnimator?.moveDuration = 0
             itemAnimator?.removeDuration = 0
             addOnScrollListener(PicassoPauseOnScrollListener(Constants.PICASSO_TAG))
+            addOnScrollListener(object : EndlessRecyclerOnScrollListener(){
+                override fun onScrollToLastElement() {
+                    presenter?.fireScrollToEnd()
+                }
+            })
         }
 
         headerView = inflater.inflate(R.layout.footer_load_more, recyclerView, false)

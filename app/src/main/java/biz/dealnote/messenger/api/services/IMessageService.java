@@ -11,6 +11,7 @@ import biz.dealnote.messenger.api.model.VkApiLongpollServer;
 import biz.dealnote.messenger.api.model.response.AttachmentsHistoryResponse;
 import biz.dealnote.messenger.api.model.response.BaseResponse;
 import biz.dealnote.messenger.api.model.response.ChatsInfoResponse;
+import biz.dealnote.messenger.api.model.response.ConversationDeleteResult;
 import biz.dealnote.messenger.api.model.response.DialogsResponse;
 import biz.dealnote.messenger.api.model.response.ItemsProfilesGroupsResponse;
 import biz.dealnote.messenger.api.model.response.LongpollHistoryResponse;
@@ -147,10 +148,10 @@ public interface IMessageService {
      * @return 1
      */
     @FormUrlEncoded
-    @POST("messages.deleteDialog")
-    Single<BaseResponse<Integer>> deleteDialog(@Field("peer_id") int peerId,
-                                               @Field("offset") Integer offset,
-                                               @Field("count") Integer count);
+    @POST("messages.deleteConversation")
+    Single<BaseResponse<ConversationDeleteResult>> deleteDialog(@Field("peer_id") int peerId,
+                                                                @Field("offset") Integer offset,
+                                                                @Field("count") Integer count);
 
     /**
      * Restores a deleted message.

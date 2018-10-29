@@ -16,6 +16,7 @@ import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.api.model.VkApiConversation;
 import biz.dealnote.messenger.api.model.VkApiLongpollServer;
 import biz.dealnote.messenger.api.model.response.AttachmentsHistoryResponse;
+import biz.dealnote.messenger.api.model.response.ConversationDeleteResult;
 import biz.dealnote.messenger.api.model.response.DialogsResponse;
 import biz.dealnote.messenger.api.model.response.ItemsProfilesGroupsResponse;
 import biz.dealnote.messenger.api.model.response.LongpollHistoryResponse;
@@ -106,12 +107,11 @@ class MessagesApi extends AbsApi implements IMessagesApi {
     }
 
     @Override
-    public Single<Boolean> deleteDialog(int peerId, Integer offset, Integer count) {
+    public Single<ConversationDeleteResult> deleteDialog(int peerId, Integer offset, Integer count) {
         return serviceRx(TokenType.USER, TokenType.COMMUNITY)
                 .flatMap(service -> service
                         .deleteDialog(peerId, offset, count)
-                        .map(extractResponseWithErrorHandling())
-                        .map(response -> response == 1));
+                        .map(extractResponseWithErrorHandling()));
     }
 
     @Override
