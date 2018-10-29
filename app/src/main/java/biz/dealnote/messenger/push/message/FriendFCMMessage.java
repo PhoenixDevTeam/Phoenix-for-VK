@@ -32,7 +32,7 @@ public class FriendFCMMessage {
 
     //private String first_name;
     //private String last_name;
-    private int uid;
+    private int from_id;
     //private long from;
     //private String type;
     //private int badge;
@@ -42,7 +42,7 @@ public class FriendFCMMessage {
         FriendFCMMessage message = new FriendFCMMessage();
         //message.first_name = bundle.getString("first_name");
         //message.last_name = bundle.getString("last_name");
-        message.uid = Integer.parseInt(remote.getData().get("uid"));
+        message.from_id = Integer.parseInt(remote.getData().get("from_id"));
         //message.from = optLong(bundle, "from");
         //message.type = bundle.getString("type");
         //message.badge = optInt(bundle, "badge");
@@ -58,7 +58,7 @@ public class FriendFCMMessage {
         }
 
         Context app = context.getApplicationContext();
-        OwnerInfo.getRx(app, accountId, uid)
+        OwnerInfo.getRx(app, accountId, from_id)
                 .subscribeOn(NotificationScheduler.INSTANCE)
                 .subscribe(ownerInfo -> notifyImpl(app, ownerInfo.getUser(), ownerInfo.getAvatar()), throwable -> {/*ignore*/});
     }
@@ -82,15 +82,15 @@ public class FriendFCMMessage {
                 .getCurrent();
 
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(Extra.PLACE, PlaceFactory.getOwnerWallPlace(aid, uid, user));
+        intent.putExtra(Extra.PLACE, PlaceFactory.getOwnerWallPlace(aid, from_id, user));
         intent.setAction(MainActivity.ACTION_OPEN_PLACE);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        PendingIntent contentIntent = PendingIntent.getActivity(context, uid, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, from_id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setContentIntent(contentIntent);
         Notification notification = builder.build();
 
         configOtherPushNotification(notification);
-        nManager.notify(String.valueOf(uid), NotificationHelper.NOTIFICATION_FRIEND_ID, notification);
+        nManager.notify(String.valueOf(from_id), NotificationHelper.NOTIFICATION_FRIEND_ID, notification);
     }
 }

@@ -9,12 +9,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Map;
 
 import biz.dealnote.messenger.api.util.VKStringUtils;
-import biz.dealnote.messenger.longpoll.NotificationHelper;
-import biz.dealnote.messenger.settings.ISettings;
-import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.util.Logger;
-
-import static biz.dealnote.messenger.util.Utils.hasFlag;
+import biz.dealnote.messenger.realtime.Processors;
+import biz.dealnote.messenger.realtime.QueueContainsException;
 
 public class FCMMessage {
 
@@ -90,7 +86,14 @@ public class FCMMessage {
     }
 
     public void notify(Context context, int accountId) {
-        int mask = Settings.get().notifications().getNotifPref(accountId, from_id);
+        try {
+            Processors.realtimeMessages().process(accountId, message_id, true);
+        } catch (QueueContainsException e) {
+            e.printStackTrace();
+        }
+
+        /*int mask = Settings.get().notifications().getNotifPref(accountId, from_id);
+
         if (!hasFlag(mask, ISettings.INotificationSettings.FLAG_SHOW_NOTIF)) {
             return;
         }
@@ -100,6 +103,6 @@ public class FCMMessage {
             return;
         }
 
-        NotificationHelper.notifNewMessage(context, accountId, body, peerId, message_id, vk_time);
+        NotificationHelper.notifNewMessage(context, accountId, body, peerId, message_id, vk_time);*/
     }
 }

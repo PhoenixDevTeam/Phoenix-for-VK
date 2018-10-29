@@ -11,6 +11,9 @@ import biz.dealnote.messenger.push.IPushRegistrationResolver;
 import biz.dealnote.messenger.push.PushType;
 import biz.dealnote.messenger.push.message.CommentFCMMessage;
 import biz.dealnote.messenger.push.message.FCMMessage;
+import biz.dealnote.messenger.push.message.FriendFCMMessage;
+import biz.dealnote.messenger.push.message.LikeFCMMessage;
+import biz.dealnote.messenger.push.message.NewPostPushMessage;
 import biz.dealnote.messenger.push.message.WallPostFCMMessage;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
@@ -70,26 +73,35 @@ public class FcmListenerService extends FirebaseMessagingService {
             return;
         }
 
-        switch (pushType) {
-            case PushType.MSG:
-            case "chat":
-                FCMMessage.fromRemoteMessage(message).notify(context, accountId);
-                break;
-            case PushType.POST:
-                WallPostFCMMessage.fromRemoteMessage(message).nofify(context, accountId);
-                break;
-            case PushType.COMMENT:
-                CommentFCMMessage.fromRemoteMessage(message).notify(context, accountId);
-                break;
+        try {
+            switch (pushType) {
+                case PushType.MSG:
+                case "chat":
+                    FCMMessage.fromRemoteMessage(message).notify(context, accountId);
+                    break;
+                case PushType.POST:
+                    WallPostFCMMessage.fromRemoteMessage(message).nofify(context, accountId);
+                    break;
+                case PushType.COMMENT:
+                    CommentFCMMessage.fromRemoteMessage(message).notify(context, accountId);
+                    break;
+                case PushType.FRIEND:
+                    FriendFCMMessage.fromRemoteMessage(message).notify(context, accountId);
+                    break;
+                case PushType.NEW_POST:
+                    new NewPostPushMessage(accountId, message).notifyIfNeed(context);
+                    break;
+                case PushType.LIKE:
+                    new LikeFCMMessage(accountId, message).notifyIfNeed(context);
+                    break;
+
             /*case PushType.REPLY:
                 ReplyFCMMessage.fromRemoteMessage(message).notify(context, accountId);
                 break;
             case PushType.WALL_PUBLISH:
                 WallPublishFCMMessage.fromRemoteMessage(message).notify(context, accountId);
                 break;
-            case PushType.FRIEND:
-                FriendFCMMessage.fromRemoteMessage(message).notify(context, accountId);
-                break;
+
             case PushType.FRIEND_ACCEPTED:
                 FriendAcceptedFCMMessage.fromRemoteMessage(message).notify(context, accountId);
                 break;
@@ -99,15 +111,14 @@ public class FcmListenerService extends FirebaseMessagingService {
             case PushType.BIRTHDAY:
                 BirthdayFCMMessage.fromRemoteMessage(message).notify(context, accountId);
                 break;
-            case PushType.NEW_POST:
-                new NewPostPushMessage(accountId, message).notifyIfNeed(context);
-                break;
-            case PushType.LIKE:
-                new LikeFCMMessage(accountId, message).notifyIfNeed(context);
-                break;*/
-            default:
-                PersistentLogger.logThrowable("Push issues", new Exception("Unespected Push event, collapse_key: " + pushType + ", dump: " + bundleDump));
-                break;
+
+            */
+                default:
+                    PersistentLogger.logThrowable("Push issues", new Exception("Unespected Push event, collapse_key: " + pushType + ", dump: " + bundleDump));
+                    break;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 }
