@@ -19,7 +19,6 @@ import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.push.ChatEntryFetcher;
 import biz.dealnote.messenger.push.NotificationScheduler;
-import biz.dealnote.messenger.push.NotificationUtils;
 import biz.dealnote.messenger.service.QuickReplyService;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
@@ -42,27 +41,19 @@ public class NotificationHelper {
     public static void notifNewMessage(final Context context, final int accountId, final String text, final int peerId, final int messageId, final long messageTime) {
         ChatEntryFetcher.getRx(context, accountId, peerId)
                 .subscribeOn(NotificationScheduler.INSTANCE)
-                .subscribe(response -> showNotification(context, accountId, response.title, text, messageId, peerId, messageTime, response.img), RxUtils.ignore());
+                .subscribe(info -> {
+                    Peer peer = new Peer(peerId).setTitle(info.title).setAvaUrl(info.img);
+                    showNotification(context, accountId, peer, text, messageId, peerId, messageTime, info.icon);
+                }, RxUtils.ignore());
     }
 
-    /**
-     * Отображение уведомления в statusbar о новом сообщении
-     *
-     * @param context  контекст
-     * @param title    имя собеседника или название беседы
-     * @param body     текст сообщения
-     * @param mid      идентификатор сообщения
-     * @param imgUrl   ссылка на аватар или изображение беседы
-     */
-    public static void showNotification(Context context, int accountId, String title, String body, int mid,
-                                        int peerId, long messageSentTime, String imgUrl) {
+    public static void showNotification(Context context, int accountId, Peer peer, String body, int mid,
+                                        int peerId, long messageSentTime, Bitmap avatar) {
         boolean hideBody = Settings.get()
                 .security()
                 .needHideMessagesBodyForNotif();
 
         String text = hideBody ? context.getString(R.string.message_text_is_not_available) : body;
-
-        Bitmap img = NotificationUtils.loadRoundedImage(context, imgUrl, R.drawable.ic_avatar_unknown);
 
         final NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -80,8 +71,8 @@ public class NotificationHelper {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_notify_statusbar)
-                .setLargeIcon(img)
-                .setContentTitle(title)
+                .setLargeIcon(avatar)
+                .setContentTitle(peer.getTitle())
                 .setContentText(text)
                 .setAutoCancel(true);
 
@@ -94,7 +85,7 @@ public class NotificationHelper {
         }
 
         //Our quickreply
-        Intent intentQuick = QuickAnswerActivity.forStart(context, accountId, peerId, text, mid, messageSentTime, imgUrl, title);
+        Intent intentQuick = QuickAnswerActivity.forStart(context, accountId, peerId, text, mid, messageSentTime, peer.getAvaUrl(), peer.getTitle());
         PendingIntent quickPendingIntent = PendingIntent.getActivity(context, mid, intentQuick, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Action actionCustomReply = new NotificationCompat.Action(R.drawable.reply, context.getString(R.string.quick_answer_title), quickPendingIntent);
 
@@ -114,8 +105,6 @@ public class NotificationHelper {
 
         Intent intent = new Intent(context, MainActivity.class);
         intent.setAction(MainActivity.ACTION_OPEN_PLACE);
-
-        final Peer peer = new Peer(peerId).setTitle(title).setAvaUrl(imgUrl);
 
         Place chatPlace = PlaceFactory.getChatPlace(accountId, accountId, peer);
         intent.putExtra(Extra.PLACE, chatPlace);
@@ -155,7 +144,7 @@ public class NotificationHelper {
         nManager.notify(createPeerTagFor(accountId, peerId), NOTIFICATION_MESSAGE, notification);
 
         if (Settings.get().notifications().isQuickReplyImmediately()) {
-            Intent startQuickReply = QuickAnswerActivity.forStart(context, accountId, peerId, text, mid, messageSentTime, imgUrl, title);
+            Intent startQuickReply = QuickAnswerActivity.forStart(context, accountId, peerId, text, mid, messageSentTime, peer.getAvaUrl(), peer.getTitle());
             startQuickReply.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startQuickReply.putExtra(QuickAnswerActivity.EXTRA_FOCUS_TO_FIELD, false);
             startQuickReply.putExtra(QuickAnswerActivity.EXTRA_LIVE_DELAY, true);

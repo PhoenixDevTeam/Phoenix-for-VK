@@ -44,16 +44,22 @@ public class FCMMessage {
     public String group_id;
     public int message_id;
     public int sender_id;
-    public long google_sent_time;
     public String photo_200_url;
 
-    class MessageContext {
+    public int peerId;
+
+    private static final class MessageContext {
         @SerializedName("msg_id")
         int msg_id;
 
         @SerializedName("sender_id")
         int sender_id;
+
+        @SerializedName("chat_id")
+        int chat_id;
     }
+
+    private static final Gson GSON = new Gson();
 
     public static FCMMessage fromRemoteMessage(RemoteMessage remote) {
         FCMMessage message = new FCMMessage();
@@ -67,22 +73,19 @@ public class FCMMessage {
         message.vk_time = Long.parseLong(data.get("time"));
         message.type = data.get("type");
         message.badge = Integer.parseInt(remote.getData().get("badge"));
-        //message.image = data.get("image"); //todo
         message.sound = Integer.parseInt(data.get("sound")) == 1;
         message.title = data.get("title");
         message.to_id = Integer.parseInt(data.get("to_id"));
         message.group_id = data.get("group_id");
 
-        MessageContext context = new Gson().fromJson(data.get("context"), MessageContext.class);
+        MessageContext context = GSON.fromJson(data.get("context"), MessageContext.class);
         message.message_id = context.msg_id;
         message.sender_id = context.sender_id;
 
-        FCMPhotoDto[] photo_array = new Gson().fromJson(data.get("image"), FCMPhotoDto[].class);
+        FCMPhotoDto[] photo_array = GSON.fromJson(data.get("image"), FCMPhotoDto[].class);
         message.photo_200_url = photo_array[0].url;
 
-        Logger.d("PUSH", "id:" + message.message_id + " " + "sender:" + message.sender_id);
-
-        message.google_sent_time = remote.getSentTime();
+        message.peerId = context.chat_id == 0 ? context.sender_id : context.chat_id;
         return message;
     }
 
@@ -97,8 +100,6 @@ public class FCMMessage {
             return;
         }
 
-        NotificationHelper.showNotification(context, accountId, title, body, message_id,
-                sender_id, vk_time, photo_200_url);
-
+        NotificationHelper.notifNewMessage(context, accountId, body, peerId, message_id, vk_time);
     }
 }

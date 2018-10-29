@@ -44,7 +44,7 @@ public class AppNotificationChannels {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static NotificationChannel getGroupChatMessageChannel(Context context){
         String channelName = context.getString(R.string.group_message_channel);
-        NotificationChannel channel = new NotificationChannel(GROUP_CHAT_MESSAGE_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel channel = new NotificationChannel(GROUP_CHAT_MESSAGE_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH);
         channel.setSound(NotificationHelper.findNotificationSound(), ATTRIBUTES);
         channel.enableLights(true);
         channel.enableVibration(true);
