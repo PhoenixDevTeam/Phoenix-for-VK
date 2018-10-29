@@ -388,7 +388,7 @@ public class DocsListPresenter extends AccountDependencyPresenter<IDocListView> 
     }
 
     public void pleaseNotifyViewAboutAdapterType() {
-        getView().setAdapterType(isImagesOnly());
+        getViewHost().setAdapterType(isImagesOnly());
     }
 
     public void fireLocalPhotosForUploadSelected(ArrayList<LocalPhoto> photos) {
