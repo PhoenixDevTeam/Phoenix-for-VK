@@ -45,7 +45,6 @@ import biz.dealnote.messenger.model.VoiceMessage;
 import biz.dealnote.messenger.model.WikiPage;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.AppTextUtils;
-import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.ViewUtils;
@@ -120,43 +119,6 @@ public class AttachmentsViewBinder {
             photosViewHelper.displayPhotos(attachments.getPostImages(), containers.getVgPhotos());
         }
     }
-
-    /*private void displayNewFriends(ArrayList<String> friends, ViewGroup container){
-        if (Objects.isNull(friends) || Objects.isNull(container)) return;
-        boolean empty = safeIsEmpty(friends);
-        Logger.d("DISPLAYING FRIENDS", friends.size() + "");
-
-        container.setVisibility(empty ? View.GONE : View.VISIBLE);
-        if (empty) {
-            return;
-        }
-
-        int i = friends.size() - container.getChildCount();
-        for (int j = 0; j < i; j++) {
-            container.addView(LayoutInflater.from(mContext).inflate(R.layout.item_feed_new_friend, container, false));
-        }
-
-        for (int g = 0; g < container.getChildCount(); g++) {
-            ViewGroup root = (ViewGroup) container.getChildAt(g);
-
-            if (g < friends.size()) {
-                ImageView avatar = (ImageView) root.findViewById(R.id.item_feed_new_friend_avatar);
-                TextView name = (TextView) root.findViewById(R.id.item_feed_new_friend_name);
-
-                VKApiOwner user = OwnersHelper.loadOwnerNameAndPhoto(mContext, Accounts.getCurrentUid(mContext), Integer.parseInt(friends.get(g)));
-
-                PicassoInstance.with()
-                        .load(user.get100photoOrSmaller())
-                        .transform(new RoundTransformation())
-                        .into(avatar);
-                name.setText(user.getFullName());
-                root.setVisibility(View.VISIBLE);
-            } else {
-                root.setVisibility(View.GONE);
-            }
-        }
-
-    }*/
 
     private void displayVoiceMessages(final ArrayList<VoiceMessage> voices, ViewGroup container) {
         if(Objects.isNull(container)) return;
@@ -435,7 +397,7 @@ public class AttachmentsViewBinder {
         Sticker sticker = stickers.get(0);
 
         int prefferedStickerSize = (int) dpToPx(PREFFERED_STICKER_SIZE, mContext);
-        Sticker.Image image = sticker.getImage(256, false);
+        Sticker.Image image = sticker.getImage(256, true);
 
         boolean horisontal = image.getHeight() < image.getWidth();
         double proporsion = (double) image.getWidth() / (double) image.getHeight();
@@ -454,7 +416,6 @@ public class AttachmentsViewBinder {
         imageView.getLayoutParams().height = (int) finalHeihgt;
         imageView.getLayoutParams().width = (int) finalWidth;
 
-        Logger.d("displayStickers", "url: " + image.getUrl());
         PicassoInstance.with()
                 .load(image.getUrl())
                 .into(imageView);
