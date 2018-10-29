@@ -35,6 +35,9 @@ abstract class AbsPresenter<V : IMvpView>(savedInstanceState: Bundle?) : IPresen
         get() = viewReference.get() != null
 
     val view: V?
+        get() = if (isGuiReady) viewReference.get() else null
+
+    val viewHost: V?
         get() = viewReference.get()
 
     init {
