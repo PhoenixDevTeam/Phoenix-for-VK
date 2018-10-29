@@ -167,6 +167,15 @@
                 android:checked="false"
                 android:layout_marginTop="8dp" />
 
+            <CheckBox
+                android:textColor="?android:textColorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/multiply_poll"
+                android:id="@+id/dialog_poll_create_multiply"
+                android:checked="false"
+                android:layout_marginTop="8dp" />
+
 
         </LinearLayout>
 

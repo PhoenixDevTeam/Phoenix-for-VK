@@ -17,6 +17,7 @@ public interface IPollsService {
     @POST("polls.create")
     Single<BaseResponse<VKApiPoll>> create(@Field("question") String question,
                                            @Field("is_anonymous") Integer isAnonymous,
+                                           @Field("is_multiple") Integer isMultiple,
                                            @Field("owner_id") Integer ownerId,
                                            @Field("add_answers") String addAnswers);
 

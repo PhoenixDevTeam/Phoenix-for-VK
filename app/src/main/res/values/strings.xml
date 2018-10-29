@@ -1208,5 +1208,6 @@
     <string name="button_for_all">For all</string>
     <string name="button_for_me">For me</string>
     <string name="message_edited_at">(edited %1$s)</string>
+    <string name="multiply_poll">Multiple choice</string>
 
 </resources>

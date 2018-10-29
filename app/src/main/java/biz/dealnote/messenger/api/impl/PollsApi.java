@@ -23,7 +23,7 @@ class PollsApi extends AbsApi implements IPollsApi {
     }
 
     @Override
-    public Single<VKApiPoll> create(String question, Boolean isAnonymous, Integer ownerId, Collection<String> addAnswers) {
+    public Single<VKApiPoll> create(String question, Boolean isAnonymous, Boolean isMultiple, Integer ownerId, Collection<String> addAnswers) {
         JsonArray array = new JsonArray();
         for (String answer : addAnswers) {
             array.add(answer);
@@ -31,7 +31,7 @@ class PollsApi extends AbsApi implements IPollsApi {
 
         return provideService(IPollsService.class, TokenType.USER)
                 .flatMap(service -> service
-                        .create(question, integerFromBoolean(isAnonymous), ownerId, array.toString())
+                        .create(question, integerFromBoolean(isAnonymous), integerFromBoolean(isMultiple), ownerId, array.toString())
                         .map(extractResponseWithErrorHandling()));
     }
 

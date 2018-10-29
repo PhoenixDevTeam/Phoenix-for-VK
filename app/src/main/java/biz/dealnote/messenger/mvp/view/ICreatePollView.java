@@ -22,4 +22,6 @@ public interface ICreatePollView extends IAccountDependencyView, IMvpView, IProg
     void showOptionError(int index, @StringRes int message);
 
     void sendResultAndGoBack(@NonNull Poll poll);
+
+    void setMultiply(boolean multiply);
 }

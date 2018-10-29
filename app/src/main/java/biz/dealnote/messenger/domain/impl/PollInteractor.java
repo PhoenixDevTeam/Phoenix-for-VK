@@ -22,10 +22,10 @@ public class PollInteractor implements IPollInteractor {
     }
 
     @Override
-    public Single<Poll> createPoll(int accountId, String question, boolean anon, int ownerId, List<String> options) {
+    public Single<Poll> createPoll(int accountId, String question, boolean anon, boolean multiple, int ownerId, List<String> options) {
         return networker.vkDefault(accountId)
                 .polls()
-                .create(question, anon, ownerId, options)
+                .create(question, anon, multiple, ownerId, options)
                 .map(Dto2Model::transform);
     }
 

@@ -11,7 +11,7 @@ import io.reactivex.Single;
  * Phoenix-for-VK
  */
 public interface IPollInteractor {
-    Single<Poll> createPoll(int accountId, String question, boolean anon, int ownerId, List<String> options);
+    Single<Poll> createPoll(int accountId, String question, boolean anon, boolean multiple, int ownerId, List<String> options);
     Single<Poll> addVote(int accountId, Poll poll, Set<Integer> answerIds);
     Single<Poll> removeVote(int accountId, Poll poll, int answerId);
     Single<Poll> getPollById(int accountId, int ownerId, int pollId, boolean isBoard);

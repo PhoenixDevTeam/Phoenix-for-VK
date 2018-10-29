@@ -14,7 +14,7 @@ import io.reactivex.Single;
 public interface IPollsApi {
 
     @CheckResult
-    Single<VKApiPoll> create(String question, Boolean isAnonymous, Integer ownerId, Collection<String> addAnswers);
+    Single<VKApiPoll> create(String question, Boolean isAnonymous, Boolean isMultiple, Integer ownerId, Collection<String> addAnswers);
 
     @CheckResult
     Single<Boolean> deleteVote(Integer ownerId, int pollId, int answerId, Boolean isBoard);
