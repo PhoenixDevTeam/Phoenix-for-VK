@@ -5,26 +5,25 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.text.Spannable;
 
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
-import biz.dealnote.messenger.link.LinkHelper;
-import biz.dealnote.messenger.link.internal.OwnerLinkSpanFactory;
 import biz.dealnote.messenger.longpoll.AppNotificationChannels;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
 import biz.dealnote.messenger.model.Commented;
 import biz.dealnote.messenger.model.CommentedType;
-import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.push.NotificationScheduler;
 import biz.dealnote.messenger.push.OwnerInfo;
 import biz.dealnote.messenger.settings.Settings;
+import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 
 import static biz.dealnote.messenger.push.NotificationUtils.configOtherPushNotification;
@@ -44,8 +43,12 @@ public class CommentFCMMessage {
     //private int sex;
     //public long from;
     private String text;
-    private String place;
-    //private String type;
+
+    private String type;
+
+    private int item_id;
+
+    private int owner_id;
 
     //extras: Bundle[{google.sent_time=1477925617791, from_id=175895893, reply_id=3686, sex=2,
     // text=да, type=comment, place=wall25651989_3499, google.message_id=0:1477925617795994%8c76e97a38a5ee5f, _genSrv=833239, sandbox=0, collapse_key=comment}]
@@ -53,13 +56,34 @@ public class CommentFCMMessage {
     public static CommentFCMMessage fromRemoteMessage(@NonNull RemoteMessage remote) {
         CommentFCMMessage message = new CommentFCMMessage();
         message.from_id = Integer.parseInt(remote.getData().get("from_id"));
-        message.reply_id = Integer.parseInt(remote.getData().get("reply_id"));
-        //message.sex = optInt(bundle, "sex");
-        //message.from = optLong(bundle, "google.sent_time");
-        message.text = remote.getData().get("text");
-        //message.type = bundle.getString("type");
-        message.place = remote.getData().get("place");
+        message.text = remote.getData().get("body");
+
+        PushContext context = new Gson().fromJson(remote.getData().get("context"), PushContext.class);
+        message.reply_id = context.reply_id;
+        message.type = context.type;
+        message.item_id = context.item_id;
+        message.owner_id = context.owner_id;
         return message;
+    }
+
+    private static final class PushContext {
+        @SerializedName("feedback")
+        boolean feedback;
+
+        @SerializedName("reply_id")
+        int reply_id;
+
+        @SerializedName("user_id")
+        int user_id;
+
+        @SerializedName("item_id")
+        int item_id;
+
+        @SerializedName("owner_id")
+        int owner_id;
+
+        @SerializedName("type")
+        String type;
     }
 
     public void notify(Context context, int accountId) {
@@ -72,41 +96,31 @@ public class CommentFCMMessage {
         Context app = context.getApplicationContext();
         OwnerInfo.getRx(context, accountId, from_id)
                 .subscribeOn(NotificationScheduler.INSTANCE)
-                .subscribe(ownerInfo -> notifyImpl(app, ownerInfo), throwable -> {/*ignore*/});
+                .subscribe(ownerInfo -> notifyImpl(app, ownerInfo), RxUtils.ignore());
     }
 
     private void notifyImpl(Context context, OwnerInfo ownerInfo) {
-        String url = "vk.com/" + place;
-        Commented commented = LinkHelper.findCommentedFrom(url);
+        Commented commented = null;
+        String title = null;
+
+        switch (type) {
+            case "photo_comment":
+                title = context.getString(R.string.photo_comment_push_title);
+                commented = new Commented(item_id, owner_id, CommentedType.PHOTO, null);
+                break;
+            case "video_comment":
+                title = context.getString(R.string.video_comment_push_title);
+                commented = new Commented(item_id, owner_id, CommentedType.VIDEO, null);
+                break;
+            case "comment":
+                title = context.getString(R.string.wall_comment_push_title);
+                commented = new Commented(item_id, owner_id, CommentedType.POST, null);
+                break;
+        }
 
         if (commented == null) {
             return;
         }
-
-        String subText = null;
-        switch (commented.getSourceType()) {
-            case CommentedType.PHOTO:
-                subText = context.getString(R.string.commented_to_photo);
-                break;
-            case CommentedType.VIDEO:
-                subText = context.getString(R.string.commented_to_video);
-                break;
-            case CommentedType.POST:
-                subText = context.getString(R.string.commented_to_post);
-                break;
-            case CommentedType.TOPIC:
-                // not supported
-                break;
-        }
-
-        if (subText == null) {
-            return;
-        }
-
-        Spannable snannedText = OwnerLinkSpanFactory.withSpans(text, true, false, null);
-        String targetText = snannedText == null ? null : snannedText.toString();
-
-        Owner owner = ownerInfo.getOwner();
 
         final NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Utils.hasOreo()){
@@ -116,10 +130,9 @@ public class CommentFCMMessage {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, AppNotificationChannels.COMMENTS_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notify_statusbar)
                 .setLargeIcon(ownerInfo.getAvatar())
-                .setContentTitle(owner.getFullName())
-                .setContentText(targetText)
-                .setSubText(subText)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(targetText))
+                .setContentTitle(title)
+                .setContentText(text)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                 .setAutoCancel(true);
 
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -139,6 +152,8 @@ public class CommentFCMMessage {
         Notification notification = builder.build();
 
         configOtherPushNotification(notification);
-        nManager.notify(place, NotificationHelper.NOTIFICATION_COMMENT_ID, notification);
+
+        String tag = type + item_id + "_" + owner_id;
+        nManager.notify(tag, NotificationHelper.NOTIFICATION_COMMENT_ID, notification);
     }
 }

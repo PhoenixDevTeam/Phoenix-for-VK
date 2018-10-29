@@ -1209,5 +1209,8 @@
     <string name="button_for_me">For me</string>
     <string name="message_edited_at">(edited %1$s)</string>
     <string name="multiply_poll">Multiple choice</string>
+    <string name="photo_comment_push_title">New comment for photo</string>
+    <string name="video_comment_push_title">New comment to video</string>
+    <string name="wall_comment_push_title">New wall comment</string>
 
 </resources>
