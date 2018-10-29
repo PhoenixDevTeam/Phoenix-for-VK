@@ -748,23 +748,27 @@ public class Dto2Entity {
                 .setAccessKey(dto.access_key);
     }
 
+    public static PollEntity.Answer map(VKApiPoll.Answer dto){
+        return new PollEntity.Answer(dto.id, dto.text, dto.votes, dto.rate);
+    }
+
     public static PollEntity buildPollEntity(VKApiPoll dto) {
-        List<PollEntity.AnswerDbo> answerDbos = new ArrayList<>(safeCountOf(dto.answers));
-
-        if (nonNull(dto.answers)) {
-            for (VKApiPoll.Answer answer : dto.answers) {
-                answerDbos.add(new PollEntity.AnswerDbo(answer.id, answer.text, answer.votes, answer.rate));
-            }
-        }
-
         return new PollEntity(dto.id, dto.owner_id)
                 .setAnonymous(dto.anonymous)
-                .setAnswers(answerDbos)
-                .setBoard(dto.isBoard)
+                .setAnswers(mapAll(dto.answers, Dto2Entity::map))
+                .setBoard(dto.is_board)
                 .setCreationTime(dto.created)
-                .setMyAnswerId(dto.answer_id)
+                .setMyAnswerIds(dto.answer_ids)
                 .setVoteCount(dto.votes)
-                .setQuestion(dto.question);
+                .setQuestion(dto.question)
+                .setClosed(dto.closed)
+                .setAuthorId(dto.author_id)
+                .setCanVote(dto.can_vote)
+                .setCanEdit(dto.can_edit)
+                .setCanReport(dto.can_report)
+                .setCanShare(dto.can_share)
+                .setEndDate(dto.end_date)
+                .setMultiple(dto.multiple);
     }
 
     public static PostEntity buildPostEntity(VKApiPost dto) {

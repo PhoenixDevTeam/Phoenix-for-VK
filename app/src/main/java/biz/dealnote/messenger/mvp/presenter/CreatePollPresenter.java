@@ -97,10 +97,11 @@ public class CreatePollPresenter extends AccountDependencyPresenter<ICreatePollV
     @OnGuiCreated
     private void resolveProgressDialog() {
         if (isGuiReady()) {
-            if (creationNow)
+            if (creationNow) {
                 getView().displayProgressDialog(R.string.please_wait, R.string.publication, false);
-        } else {
-            getView().dismissProgressDialog();
+            } else {
+                getView().dismissProgressDialog();
+            }
         }
     }
 

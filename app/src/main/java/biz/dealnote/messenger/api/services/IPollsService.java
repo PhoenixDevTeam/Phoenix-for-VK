@@ -33,7 +33,7 @@ public interface IPollsService {
     @POST("polls.addVote")
     Single<BaseResponse<Integer>> addVote(@Field("owner_id") Integer ownerId,
                                           @Field("poll_id") int pollId,
-                                          @Field("answer_id") int answerId,
+                                          @Field("answer_ids") String answerIds,
                                           @Field("is_board") Integer isBoard);
 
     @FormUrlEncoded

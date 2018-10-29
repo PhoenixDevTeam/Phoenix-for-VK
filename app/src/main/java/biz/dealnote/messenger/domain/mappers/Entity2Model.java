@@ -543,25 +543,30 @@ public class Entity2Model {
         return document;
     }
 
-    public static Poll buildPollFromDbo(PollEntity dbo) {
-        List<Poll.Answer> answers = new ArrayList<>(safeCountOf(dbo.getAnswers()));
-        if (nonNull(dbo.getAnswers())) {
-            for (PollEntity.AnswerDbo answer : dbo.getAnswers()) {
-                answers.add(new Poll.Answer(answer.getId())
-                        .setRate(answer.getRate())
-                        .setText(answer.getText())
-                        .setVoteCount(answer.getVoteCount()));
-            }
-        }
+    public static Poll.Answer map(PollEntity.Answer entity){
+        return new Poll.Answer(entity.getId())
+                .setRate(entity.getRate())
+                .setText(entity.getText())
+                .setVoteCount(entity.getVoteCount());
+    }
 
-        return new Poll(dbo.getId(), dbo.getOwnerId())
-                .setAnonymous(dbo.isAnonymous())
-                .setAnswers(answers)
-                .setBoard(dbo.isBoard())
-                .setCreationTime(dbo.getCreationTime())
-                .setMyAnswerId(dbo.getMyAnswerId())
-                .setQuestion(dbo.getQuestion())
-                .setVoteCount(dbo.getVoteCount());
+    public static Poll buildPollFromDbo(PollEntity entity) {
+        return new Poll(entity.getId(), entity.getOwnerId())
+                .setAnonymous(entity.isAnonymous())
+                .setAnswers(mapAll(entity.getAnswers(), Entity2Model::map))
+                .setBoard(entity.isBoard())
+                .setCreationTime(entity.getCreationTime())
+                .setMyAnswerIds(entity.getMyAnswerIds())
+                .setQuestion(entity.getQuestion())
+                .setVoteCount(entity.getVoteCount())
+                .setClosed(entity.closed)
+                .setAuthorId(entity.authorId)
+                .setCanVote(entity.canVote)
+                .setCanEdit(entity.canEdit)
+                .setCanReport(entity.canReport)
+                .setCanShare(entity.canShare)
+                .setEndDate(entity.endDate)
+                .setMultiple(entity.multiple);
     }
 
     public static Link buildLinkFromDbo(LinkEntity dbo) {

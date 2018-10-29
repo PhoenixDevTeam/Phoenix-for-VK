@@ -64,7 +64,7 @@ public class VKApiPoll implements VKApiAttachment {
     /**
      * Response ID of the current user(if the current user has not yet posted in this poll, it contains 0)
      */
-    public int answer_id;
+    public int[] answer_ids;
 
     /* возвращется для анонимных опросов. */
     public boolean anonymous;
@@ -78,7 +78,24 @@ public class VKApiPoll implements VKApiAttachment {
      * true – опрос находится в обсуждении,
      * false – опрос прикреплен к стене.
      */
-    public boolean isBoard;
+    public boolean is_board;
+
+    public boolean closed;
+
+    public int author_id;
+
+    public boolean can_vote;
+
+    public boolean can_edit;
+
+    public boolean can_report;
+
+    public boolean can_share;
+
+    public long end_date;
+
+    public boolean multiple;
+
 
     /**
      * Creates empty Country instance.

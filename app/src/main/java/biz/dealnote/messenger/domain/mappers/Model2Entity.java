@@ -133,8 +133,8 @@ public class Model2Entity {
                 .setSource(page.getSource());
     }
 
-    public static PollEntity.AnswerDbo mapAnswer(Poll.Answer answer) {
-        return new PollEntity.AnswerDbo(answer.getId(), answer.getText(), answer.getVoteCount(), answer.getRate());
+    public static PollEntity.Answer mapAnswer(Poll.Answer answer) {
+        return new PollEntity.Answer(answer.getId(), answer.getText(), answer.getVoteCount(), answer.getRate());
     }
 
     public static PollEntity buildPollDbo(Poll poll){
@@ -142,10 +142,18 @@ public class Model2Entity {
                 .setAnswers(mapAll(poll.getAnswers(), Model2Entity::mapAnswer, false))
                 .setQuestion(poll.getQuestion())
                 .setVoteCount(poll.getVoteCount())
-                .setMyAnswerId(poll.getMyAnswerId())
+                .setMyAnswerIds(poll.getMyAnswerIds())
                 .setCreationTime(poll.getCreationTime())
                 .setAnonymous(poll.isAnonymous())
-                .setBoard(poll.isBoard());
+                .setBoard(poll.isBoard())
+                .setClosed(poll.isClosed())
+                .setAuthorId(poll.getAuthorId())
+                .setCanVote(poll.isCanVote())
+                .setCanEdit(poll.isCanEdit())
+                .setCanReport(poll.isCanReport())
+                .setCanShare(poll.isCanShare())
+                .setEndDate(poll.getEndDate())
+                .setMultiple(poll.isMultiple());
     }
 
     public static LinkEntity buildLinkDbo(Link link){

@@ -3,11 +3,13 @@ package biz.dealnote.messenger.adapter;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +20,7 @@ import biz.dealnote.messenger.settings.CurrentTheme;
 
 public class PollAnswersAdapter extends RecyclerBindableAdapter<Poll.Answer, PollAnswersAdapter.ViewHolder> {
 
-    private int checked;
+    private Set<Integer> checkedIds;
     private boolean checkable;
     private OnAnswerChangedCallback listener;
     private Context context;
@@ -26,6 +28,7 @@ public class PollAnswersAdapter extends RecyclerBindableAdapter<Poll.Answer, Pol
     public PollAnswersAdapter(Context context, @NonNull List<Poll.Answer> items) {
         super(items);
         this.context = context;
+        this.checkedIds = new HashSet<>();
     }
 
     @Override
@@ -39,9 +42,11 @@ public class PollAnswersAdapter extends RecyclerBindableAdapter<Poll.Answer, Pol
         holder.pbRate.setProgress((int) answer.getRate());
         holder.pbRate.getProgressDrawable().setColorFilter(CurrentTheme.getIconColorActive(context), PorterDuff.Mode.MULTIPLY);
 
+        boolean isMyAnswer = checkedIds.contains(answer.getId());
+
         holder.rbButton.setOnCheckedChangeListener(null);
-        holder.rbButton.setChecked(checked == answer.getId());
-        holder.rbButton.setOnCheckedChangeListener((compoundButton, b) -> changeChecked(answer.getId()));
+        holder.rbButton.setChecked(isMyAnswer);
+        holder.rbButton.setOnCheckedChangeListener((compoundButton, checked) -> changeChecked(answer.getId(), checked));
 
         holder.mVotedRoot.setVisibility(checkable ? View.GONE : View.VISIBLE);
         holder.rbButton.setVisibility(checkable ? View.VISIBLE : View.GONE);
@@ -60,7 +65,7 @@ public class PollAnswersAdapter extends RecyclerBindableAdapter<Poll.Answer, Pol
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvCount;
-        RadioButton rbButton;
+        CheckBox rbButton;
         TextView tvTitle;
         ProgressBar pbRate;
         View mVotedRoot;
@@ -75,34 +80,35 @@ public class PollAnswersAdapter extends RecyclerBindableAdapter<Poll.Answer, Pol
         }
     }
 
-    private void changeChecked(int id) {
-        if (!checkable) {
-            return;
+    private boolean multiple;
+
+    private void changeChecked(int id, boolean isChecked) {
+        if (checkable) {
+            if (isChecked) {
+                if (multiple) {
+                    checkedIds.add(id);
+                } else {
+                    checkedIds.clear();
+                    checkedIds.add(id);
+                }
+            } else {
+                checkedIds.remove(id);
+            }
+
+            if (listener != null) {
+                listener.onAnswerChanged(checkedIds);
+            }
+
+            notifyDataSetChanged();
         }
-
-        checked = id;
-
-        if (listener != null) {
-            listener.onAnswerChanged(checked);
-        }
-
-        notifyDataSetChanged();
     }
 
-    public void setCheckable(boolean checkable) {
+    public void setData(List<Poll.Answer> answers, boolean checkable, boolean multiple, Set<Integer> checkedIds) {
+        setItems(answers, false);
         this.checkable = checkable;
-    }
-
-    public int getChecked() {
-        return checked;
-    }
-
-    public void setChecked(int checked) {
-        this.checked = checked;
-    }
-
-    public OnAnswerChangedCallback getListener() {
-        return listener;
+        this.multiple = multiple;
+        this.checkedIds = checkedIds;
+        notifyDataSetChanged();
     }
 
     public void setListener(OnAnswerChangedCallback listener) {
@@ -110,6 +116,6 @@ public class PollAnswersAdapter extends RecyclerBindableAdapter<Poll.Answer, Pol
     }
 
     public interface OnAnswerChangedCallback {
-        void onAnswerChanged(int newid);
+        void onAnswerChanged(Set<Integer> checked);
     }
 }

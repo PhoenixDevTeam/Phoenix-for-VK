@@ -521,11 +521,19 @@ public class Dto2Model {
         return new Poll(dto.id, dto.owner_id)
                 .setAnonymous(dto.anonymous)
                 .setAnswers(answers)
-                .setBoard(dto.isBoard)
+                .setBoard(dto.is_board)
                 .setCreationTime(dto.created)
-                .setMyAnswerId(dto.answer_id)
+                .setMyAnswerIds(dto.answer_ids)
                 .setQuestion(dto.question)
-                .setVoteCount(dto.votes);
+                .setVoteCount(dto.votes)
+                .setClosed(dto.closed)
+                .setAuthorId(dto.author_id)
+                .setCanVote(dto.can_vote)
+                .setCanEdit(dto.can_edit)
+                .setCanReport(dto.can_report)
+                .setCanShare(dto.can_share)
+                .setEndDate(dto.end_date)
+                .setMultiple(dto.multiple);
     }
 
     public static Photo transform(@NonNull VKApiPhoto dto) {
