@@ -17,7 +17,6 @@
     <View
         android:layout_width="42dp"
         android:layout_height="2dp"
-        android:layout_marginTop="12dp"
-        android:background="?android:textColorPrimary" />
+        android:layout_marginTop="12dp" />
 
 </LinearLayout>
