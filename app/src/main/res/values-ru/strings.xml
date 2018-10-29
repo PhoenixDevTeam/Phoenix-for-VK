@@ -1042,4 +1042,9 @@
     <string name="button_for_all">Для всех</string>
     <string name="button_for_me">Для меня</string>
     <string name="message_edited_at">(ред. %1$s)</string>
+
+    <string name="multiply_poll">Мультивыбор</string>
+    <string name="photo_comment_push_title">Новый комментарий к фото</string>
+    <string name="video_comment_push_title">Новый комментарий к видео</string>
+    <string name="wall_comment_push_title">Новый комментарий к записи</string>
 </resources>

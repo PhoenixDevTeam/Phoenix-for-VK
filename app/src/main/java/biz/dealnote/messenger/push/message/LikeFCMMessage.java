@@ -10,6 +10,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import androidx.core.app.NotificationCompat;
@@ -17,6 +18,11 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
 import biz.dealnote.messenger.longpoll.AppNotificationChannels;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
+import biz.dealnote.messenger.model.Commented;
+import biz.dealnote.messenger.model.CommentedType;
+import biz.dealnote.messenger.model.Photo;
+import biz.dealnote.messenger.place.Place;
+import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Utils;
 
@@ -54,6 +60,9 @@ public class LikeFCMMessage {
 
         @SerializedName("type")
         String type;
+
+        @SerializedName("reply_id")
+        int reply_id;
     }
 
     private final int accountId;
@@ -73,6 +82,7 @@ public class LikeFCMMessage {
     private int item_id;
     private int owner_id;
     private String like_type;
+    private int reply_id;
 
     public LikeFCMMessage(int accountId, RemoteMessage remote) {
         this.accountId = accountId;
@@ -95,10 +105,38 @@ public class LikeFCMMessage {
         this.item_id = context.item_id;
         this.owner_id = context.owner_id;
         this.like_type = context.type;
+        this.reply_id = context.reply_id;
     }
 
     //todo implement place
     private void notifyImpl(Context context) {
+        Place place = null;
+
+        if("post".equals(like_type)){
+            place = PlaceFactory.getPostPreviewPlace(accountId, item_id, owner_id, null);
+        } else if("photo".equals(like_type)){
+            ArrayList<Photo> photos = Utils.singletonArrayList(
+                    new Photo().setId(item_id).setOwnerId(owner_id)
+            );
+
+            place = PlaceFactory.getSimpleGalleryPlace(accountId, photos, 0, true);
+        } else if("video".equals(like_type)){
+            place = PlaceFactory.getVideoPreviewPlace(accountId, owner_id, item_id, null);
+        } else if("post_comment".equals(like_type)){
+            Commented commented = new Commented(item_id, owner_id, CommentedType.POST, null);
+            place = PlaceFactory.getCommentsPlace(accountId, commented, reply_id);
+        } else if("photo_comment".equals(like_type)){
+            Commented commented = new Commented(item_id, owner_id, CommentedType.PHOTO, null);
+            place = PlaceFactory.getCommentsPlace(accountId, commented, reply_id);
+        } else if("video_comment".equals(like_type)){
+            Commented commented = new Commented(item_id, owner_id, CommentedType.VIDEO, null);
+            place = PlaceFactory.getCommentsPlace(accountId, commented, reply_id);
+        }
+
+        if(place == null){
+            return;
+        }
+
 //        VkPlace parsedPlace = VkPlace.parse(object);
 //
 //        if (isNull(parsedPlace)) {

@@ -8,13 +8,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Map;
 
-import biz.dealnote.messenger.api.util.VKStringUtils;
-import biz.dealnote.messenger.longpoll.NotificationHelper;
-import biz.dealnote.messenger.settings.ISettings;
-import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.util.Logger;
-
-import static biz.dealnote.messenger.util.Utils.hasFlag;
+import biz.dealnote.messenger.realtime.Processors;
+import biz.dealnote.messenger.realtime.QueueContainsException;
 
 public class FCMMessage {
 
@@ -29,22 +24,22 @@ public class FCMMessage {
     // {"width":50,"url":"https:\/\/pp.userapi.com\/c837424\/v837424529\/5c2cd\/BB6tk_bcJ3U.jpg","height":50}],
     // sound=1, title=Yevgeni Polkin, to_id=216143660, group_id=msg_280186075, context={"msg_id":828342,"sender_id":280186075}}
 
-    public long from;
-    public String collapse_key;
-    public String image_type;
-    public int from_id;
-    public String body;
-    public long vk_time;
-    public String type;
-    public int badge;
-    public String image;
-    public boolean sound;
-    public String title;
-    public int to_id;
-    public String group_id;
+    //public long from;
+    //public String collapse_key;
+    //public String image_type;
+    //public int from_id;
+    //public String body;
+   // public long vk_time;
+    //public String type;
+    //public int badge;
+    //public String image;
+    //public boolean sound;
+    //public String title;
+    //public int to_id;
+    //public String group_id;
     public int message_id;
-    public int sender_id;
-    public String photo_200_url;
+    //public int sender_id;
+    //public String photo_200_url;
 
     public int peerId;
 
@@ -65,32 +60,39 @@ public class FCMMessage {
         FCMMessage message = new FCMMessage();
         Map<String, String> data = remote.getData();
 
-        message.from = Long.parseLong(remote.getFrom());
-        message.collapse_key = data.get("collapse_key");
-        message.image_type = data.get("image_type");
-        message.from_id = Integer.parseInt(data.get("from_id"));
-        message.body = VKStringUtils.unescape(data.get("body"));
-        message.vk_time = Long.parseLong(data.get("time"));
-        message.type = data.get("type");
-        message.badge = Integer.parseInt(remote.getData().get("badge"));
-        message.sound = Integer.parseInt(data.get("sound")) == 1;
-        message.title = data.get("title");
-        message.to_id = Integer.parseInt(data.get("to_id"));
-        message.group_id = data.get("group_id");
+        //message.from = Long.parseLong(remote.getFrom());
+        //message.collapse_key = data.get("collapse_key");
+        //message.image_type = data.get("image_type");
+        //message.from_id = Integer.parseInt(data.get("from_id"));
+        //message.body = VKStringUtils.unescape(data.get("body"));
+        //message.vk_time = Long.parseLong(data.get("time"));
+        //message.type = data.get("type");
+        //message.badge = Integer.parseInt(remote.getData().get("badge"));
+        //message.sound = Integer.parseInt(data.get("sound")) == 1;
+        //message.title = data.get("title");
+        //message.to_id = Integer.parseInt(data.get("to_id"));
+        //message.group_id = data.get("group_id");
 
         MessageContext context = GSON.fromJson(data.get("context"), MessageContext.class);
         message.message_id = context.msg_id;
-        message.sender_id = context.sender_id;
+        //message.sender_id = context.sender_id;
 
-        FCMPhotoDto[] photo_array = GSON.fromJson(data.get("image"), FCMPhotoDto[].class);
-        message.photo_200_url = photo_array[0].url;
+        //FCMPhotoDto[] photo_array = GSON.fromJson(data.get("image"), FCMPhotoDto[].class);
+        //message.photo_200_url = photo_array[0].url;
 
         message.peerId = context.chat_id == 0 ? context.sender_id : context.chat_id;
         return message;
     }
 
     public void notify(Context context, int accountId) {
-        int mask = Settings.get().notifications().getNotifPref(accountId, from_id);
+        try {
+            Processors.realtimeMessages().process(accountId, message_id, true);
+        } catch (QueueContainsException e) {
+            e.printStackTrace();
+        }
+
+        /*int mask = Settings.get().notifications().getNotifPref(accountId, from_id);
+
         if (!hasFlag(mask, ISettings.INotificationSettings.FLAG_SHOW_NOTIF)) {
             return;
         }
@@ -100,6 +102,6 @@ public class FCMMessage {
             return;
         }
 
-        NotificationHelper.notifNewMessage(context, accountId, body, peerId, message_id, vk_time);
+        NotificationHelper.notifNewMessage(context, accountId, body, peerId, message_id, vk_time);*/
     }
 }
