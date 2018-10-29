@@ -1,72 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="?android:colorBackground"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:contentPadding="0dp"
+    app:strokeColor="?attr/dividerColor"
+    app:strokeWidth="1dp"
+    tools:ignore="UnusedAttribute">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        app:cardBackgroundColor="?message_bubble_color"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="2dp"
-        app:contentPadding="0dp">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <biz.dealnote.messenger.view.AspectRatioImageView
-                    android:id="@+id/item_video_album_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    app:aspectRatioEnabled="true"
-                    app:aspectRatioH="9"
-                    app:aspectRatioW="16"
-                    app:dominantMeasurement="width" />
-
-                <TextView
-                    android:id="@+id/item_video_album_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/item_video_album_image"
-                    android:layout_alignEnd="@+id/item_video_album_image"
-                    android:layout_marginBottom="5dp"
-                    android:background="#90000000"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/font_size_additional"
-                    android:textStyle="bold"
-                    tools:text="3 videos" />
-
-            </RelativeLayout>
-
-
-            <TextView
-                android:id="@+id/item_video_album_title"
+            <biz.dealnote.messenger.view.AspectRatioImageView
+                android:id="@+id/item_video_album_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical|start"
-                android:paddingBottom="4dp"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:paddingTop="4dp"
-                android:textColor="?android:textColorPrimary"
-                android:textSize="@dimen/font_size_subtitle"
+                android:scaleType="centerCrop"
+                app:aspectRatioEnabled="true"
+                app:aspectRatioH="9"
+                app:aspectRatioW="16"
+                app:dominantMeasurement="width" />
+
+            <TextView
+                android:id="@+id/item_video_album_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/item_video_album_image"
+                android:layout_alignBottom="@+id/item_video_album_image"
+                android:layout_marginBottom="5dp"
+                android:background="#90000000"
+                android:gravity="center"
+                android:padding="4dp"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/font_size_additional"
                 android:textStyle="bold"
-                tools:text="Take Me To Church - Hozier Cover Sofia Karlberg" />
+                tools:text="3 videos" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/item_video_album_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|start"
+            android:paddingStart="6dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="4dp"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/font_size_subtitle"
+            android:textStyle="bold"
+            tools:text="Take Me To Church - Hozier Cover Sofia Karlberg" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
