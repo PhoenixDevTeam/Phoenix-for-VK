@@ -21,34 +21,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceFragmentCompat;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.util.Logger;
 
-public class NotificationPreferencesFragment extends PreferenceFragmentCompat {
+public class NotificationPreferencesFragment extends androidx.core.preference.PreferenceFragment {
 
-    private static final String TAG = NotificationPreferencesFragment.class.getSimpleName();
-
-    public static final int REQUEST_CODE_RINGTONE = 116;
+    private static final int REQUEST_CODE_RINGTONE = 116;
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.notication_settings);
 
         findPreference("notif_sound").setOnPreferenceClickListener(preference -> {
             showAlertDialog();
             return true;
         });
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        Logger.d(TAG, "finalize");
-        super.finalize();
     }
 
     @Override
@@ -66,7 +57,7 @@ public class NotificationPreferencesFragment extends PreferenceFragmentCompat {
         }
     }
 
-    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
+    private static <T, E> T getKeyByValue(Map<T, E> map, E value) {
         for (Map.Entry<T, E> entry : map.entrySet()) {
             if (value.equals(entry.getValue())) {
                 return entry.getKey();
