@@ -52,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 169;
+    private static final int DATABASE_VERSION = 170;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -310,7 +310,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 //" [" + StikerSetColumns.CAN_PURCHASE + "] BOOLEAN, " +
                 //" [" + StikerSetColumns.PAYMENT_TYPE + "] VARCHAR(2048), " +
                 //" [" + StikerSetColumns.STICKERS_BASE_URL + "] VARCHAR(2048), " +
-                " [" + StikerSetColumns.STICKERS_IDS + "] TEXT, " +
+                " [" + StikerSetColumns.STICKERS + "] TEXT, " +
                 " CONSTRAINT [] PRIMARY KEY([" + StikerSetColumns._ID + "]) ON CONFLICT REPLACE);";
         db.execSQL(sql);
     }

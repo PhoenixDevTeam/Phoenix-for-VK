@@ -21,6 +21,10 @@
 
 package biz.dealnote.messenger.api.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
  * Describes a photo object from VK.
  */
@@ -31,30 +35,22 @@ public class VKApiSticker implements VKApiAttachment {
      */
     public int sticker_id;
 
-    /**
-     * Width (in pixels) of the original photo.
-     */
-    public int width;
+    @SerializedName("images")
+    public List<Image> images;
 
-    /**
-     * Height (in pixels) of the original photo.
-     */
-    public int height;
+    @SerializedName("images_with_background")
+    public List<Image> images_with_background;
 
-    /**
-     * URL of image with maximum size 64x64px.
-     */
-    public String photo_64;
+    public static final class Image {
+        @SerializedName("url")
+        public String url;
 
-    /**
-     * URL of image with maximum size 128x128px.
-     */
-    public String photo_128;
+        @SerializedName("width")
+        public int width;
 
-    /**
-     * URL of image with maximum size 256x256px.
-     */
-    public String photo_256;
+        @SerializedName("height")
+        public int height;
+    }
 
     @Override
     public String getType() {

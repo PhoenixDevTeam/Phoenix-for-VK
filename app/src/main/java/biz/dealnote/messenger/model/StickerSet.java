@@ -1,6 +1,6 @@
 package biz.dealnote.messenger.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by admin on 08.01.2017.
@@ -8,28 +8,20 @@ import java.util.ArrayList;
  */
 public class StickerSet {
 
-    private String photo70;
+    private final String photo70;
 
-    private final ArrayList<Integer> ids;
+    private final List<Sticker> stickers;
 
-    public StickerSet(){
-        ids = new ArrayList<>();
+    public StickerSet(String photo70, List<Sticker> stickers) {
+        this.photo70 = photo70;
+        this.stickers = stickers;
     }
 
-    public void addId(int id){
-        ids.add(id);
+    public List<Sticker> getStickers() {
+        return stickers;
     }
 
     public String getPhoto70() {
         return photo70;
-    }
-
-    public StickerSet setPhoto70(String photo70) {
-        this.photo70 = photo70;
-        return this;
-    }
-
-    public ArrayList<Integer> getIds() {
-        return ids;
     }
 }

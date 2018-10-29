@@ -1399,9 +1399,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         }
     }
 
-    fun fireStickerSendClick(stickerId: Int) {
-        val sticker = Sticker(stickerId)
-
+    fun fireStickerSendClick(sticker: Sticker) {
         val builder = SaveMessageBuilder(messagesOwnerId, peerId).attach(sticker)
         sendMessage(builder)
     }

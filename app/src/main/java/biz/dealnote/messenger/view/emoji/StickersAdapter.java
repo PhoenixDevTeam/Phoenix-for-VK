@@ -14,16 +14,16 @@ import java.lang.ref.WeakReference;
 import androidx.annotation.NonNull;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.api.model.VKApiStickerSet;
+import biz.dealnote.messenger.model.Sticker;
 import biz.dealnote.messenger.model.StickerSet;
 import biz.dealnote.messenger.util.AssertUtils;
 
-public class StickersAdapter extends ArrayAdapter<Integer> {
+public class StickersAdapter extends ArrayAdapter<Sticker> {
 
     private StickersGridView.OnStickerClickedListener stickerClickedListener;
 
     public StickersAdapter(Context context, StickerSet data) {
-        super(context, R.layout.sticker_grid_item, data.getIds());
+        super(context, R.layout.sticker_grid_item, data.getStickers());
     }
 
     public void setStickerClickedListener(StickersGridView.OnStickerClickedListener listener) {
@@ -34,35 +34,30 @@ public class StickersAdapter extends ArrayAdapter<Integer> {
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
         final ViewHolder holder;
-        Integer strickerId = getItem(position);
-        AssertUtils.requireNonNull(strickerId);
+        Sticker sticker = getItem(position);
 
-        View viewToUse;
+        AssertUtils.requireNonNull(sticker);
+
+        View view;
 
         if (convertView == null) {
-            holder = new ViewHolder();
-            viewToUse = View.inflate(getContext(), R.layout.sticker_grid_item, null);
-            holder.icon = viewToUse.findViewById(R.id.sticker_grid_item_image);
-            viewToUse.setTag(holder);
+            view = View.inflate(getContext(), R.layout.sticker_grid_item, null);
+            holder = new ViewHolder(view);
+            view.setTag(holder);
         } else {
-            viewToUse = convertView;
-            holder = (ViewHolder) viewToUse.getTag();
+            view = convertView;
+            holder = (ViewHolder) view.getTag();
         }
 
-        String url = VKApiStickerSet.buildImgUrl256(strickerId);
+        String url = sticker.getImage(256, true).getUrl();
 
         PicassoInstance.with()
                 .load(url)
                 .networkPolicy(NetworkPolicy.OFFLINE)
                 .into(holder.icon, new LoadOnErrorCallback(holder.icon, url));
 
-        holder.icon.setOnClickListener(v -> {
-            Integer id = getItem(position);
-            AssertUtils.requireNonNull(id);
-            stickerClickedListener.onStickerClick(id);
-        });
-
-        return viewToUse;
+        holder.icon.setOnClickListener(v -> stickerClickedListener.onStickerClick(sticker));
+        return view;
     }
 
     private static class LoadOnErrorCallback implements Callback {
@@ -95,7 +90,10 @@ public class StickersAdapter extends ArrayAdapter<Integer> {
         }
     }
 
-    class ViewHolder {
-        ImageView icon;
+    static final class ViewHolder {
+        final ImageView icon;
+        ViewHolder(View itemView) {
+            this.icon = itemView.findViewById(R.id.sticker_grid_item_image);
+        }
     }
 }

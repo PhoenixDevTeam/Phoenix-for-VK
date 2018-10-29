@@ -280,8 +280,12 @@ public class Model2Entity {
 
     public static StickerEntity buildStickerEntity(Sticker sticker) {
         return new StickerEntity(sticker.getId())
-                .setWidth(sticker.getWidth())
-                .setHeight(sticker.getHeight());
+                .setImagesWithBackground(mapAll(sticker.getImagesWithBackground(), Model2Entity::map))
+                .setImagesWithBackground(mapAll(sticker.getImages(), Model2Entity::map));
+    }
+
+    public static StickerEntity.Img map(Sticker.Image image){
+        return new StickerEntity.Img(image.getUrl(), image.getWidth(), image.getHeight());
     }
 
     public static AudioEntity buildAudioEntity(Audio audio) {

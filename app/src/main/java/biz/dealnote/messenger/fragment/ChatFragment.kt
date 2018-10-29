@@ -370,8 +370,8 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         presenter?.fireVoicePlayButtonClick(voiceHolderId, voiceMessageId, voiceMessage)
     }
 
-    override fun onStickerClick(stickerId: Int) {
-        presenter?.fireStickerSendClick(stickerId)
+    override fun onStickerClick(sticker: Sticker) {
+        presenter?.fireStickerSendClick(sticker)
     }
 
     override fun onHashTagClicked(hashTag: String) {

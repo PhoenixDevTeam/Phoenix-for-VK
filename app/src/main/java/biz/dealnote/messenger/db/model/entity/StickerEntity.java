@@ -1,5 +1,7 @@
 package biz.dealnote.messenger.db.model.entity;
 
+import java.util.List;
+
 /**
  * Created by Ruslan Kolbasa on 04.09.2017.
  * phoenix
@@ -8,9 +10,9 @@ public class StickerEntity extends Entity {
 
     private final int id;
 
-    private int width;
+    private List<Img> images;
 
-    private int height;
+    private List<Img> imagesWithBackground;
 
     public StickerEntity(int id) {
         this.id = id;
@@ -20,21 +22,46 @@ public class StickerEntity extends Entity {
         return id;
     }
 
-    public StickerEntity setHeight(int height) {
-        this.height = height;
+    public StickerEntity setImages(List<Img> images) {
+        this.images = images;
         return this;
     }
 
-    public StickerEntity setWidth(int width) {
-        this.width = width;
+    public StickerEntity setImagesWithBackground(List<Img> imagesWithBackground) {
+        this.imagesWithBackground = imagesWithBackground;
         return this;
     }
 
-    public int getHeight() {
-        return height;
+    public List<Img> getImages() {
+        return images;
     }
 
-    public int getWidth() {
-        return width;
+    public List<Img> getImagesWithBackground() {
+        return imagesWithBackground;
+    }
+
+    public static final class Img {
+
+        private final String url;
+        private final int width;
+        private final int height;
+
+        public Img(String url, int width, int height) {
+            this.url = url;
+            this.width = width;
+            this.height = height;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public String getUrl() {
+            return url;
+        }
     }
 }

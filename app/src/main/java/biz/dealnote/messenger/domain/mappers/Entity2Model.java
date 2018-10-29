@@ -29,6 +29,7 @@ import biz.dealnote.messenger.db.model.entity.PostEntity;
 import biz.dealnote.messenger.db.model.entity.PrivacyEntity;
 import biz.dealnote.messenger.db.model.entity.SchoolEntity;
 import biz.dealnote.messenger.db.model.entity.StickerEntity;
+import biz.dealnote.messenger.db.model.entity.StickerSetEntity;
 import biz.dealnote.messenger.db.model.entity.TopicEntity;
 import biz.dealnote.messenger.db.model.entity.UniversityEntity;
 import biz.dealnote.messenger.db.model.entity.UserDetailsEntity;
@@ -62,6 +63,7 @@ import biz.dealnote.messenger.model.PostSource;
 import biz.dealnote.messenger.model.School;
 import biz.dealnote.messenger.model.SimplePrivacy;
 import biz.dealnote.messenger.model.Sticker;
+import biz.dealnote.messenger.model.StickerSet;
 import biz.dealnote.messenger.model.Topic;
 import biz.dealnote.messenger.model.University;
 import biz.dealnote.messenger.model.User;
@@ -473,10 +475,18 @@ public class Entity2Model {
                 .setGenre(dbo.getGenre());
     }
 
-    public static Sticker buildStickerFromDbo(StickerEntity dbo) {
-        return new Sticker(dbo.getId())
-                .setHeight(dbo.getHeight())
-                .setWidth(dbo.getWidth());
+    public static Sticker buildStickerFromDbo(StickerEntity entity) {
+        return new Sticker(entity.getId())
+                .setImages(mapAll(entity.getImages(), Entity2Model::map))
+                .setImagesWithBackground(mapAll(entity.getImagesWithBackground(), Entity2Model::map));
+    }
+
+    public static StickerSet map(StickerSetEntity entity){
+        return new StickerSet(entity.getPhoto70(), mapAll(entity.getStickers(), Entity2Model::buildStickerFromDbo));
+    }
+
+    public static Sticker.Image map(StickerEntity.Img entity){
+        return new Sticker.Image(entity.getUrl(), entity.getWidth(), entity.getHeight());
     }
 
     public static WikiPage buildWikiPageFromDbo(PageEntity dbo) {

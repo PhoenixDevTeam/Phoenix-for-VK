@@ -42,6 +42,7 @@ import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.Comment;
 import biz.dealnote.messenger.model.Commented;
 import biz.dealnote.messenger.model.Owner;
+import biz.dealnote.messenger.model.Sticker;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.CommentsPresenter;
 import biz.dealnote.messenger.mvp.view.ICommentsView;
@@ -124,7 +125,7 @@ public class CommentsFragment extends PlaceSupportMvpFragment<CommentsPresenter,
         mInputController = new CommentsInputViewController(requireActivity(), root, this);
         mInputController.setOnSickerClickListener(this);
 
-        mLinearLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, true);
+        mLinearLayoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, true);
 
         mRecyclerView = root.findViewById(R.id.list);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
@@ -425,8 +426,8 @@ public class CommentsFragment extends PlaceSupportMvpFragment<CommentsPresenter,
     }
 
     @Override
-    public void onStickerClick(int stickerId) {
-        getPresenter().fireStickerClick(stickerId);
+    public void onStickerClick(Sticker sticker) {
+        getPresenter().fireStickerClick(sticker);
     }
 
     @Override

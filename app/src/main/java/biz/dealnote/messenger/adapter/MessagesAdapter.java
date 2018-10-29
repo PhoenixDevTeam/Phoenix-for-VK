@@ -26,13 +26,13 @@ import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.api.model.VKApiStickerSet;
 import biz.dealnote.messenger.link.internal.LinkActionAdapter;
 import biz.dealnote.messenger.link.internal.OwnerLinkSpanFactory;
 import biz.dealnote.messenger.model.CryptStatus;
 import biz.dealnote.messenger.model.LastReadId;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.MessageStatus;
+import biz.dealnote.messenger.model.Sticker;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.ViewUtils;
@@ -111,11 +111,12 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
 
     private void bindStickerHolder(StickerMessageHolder holder, final Message message) {
         bindBaseMessageHolder(holder, message);
-        int stickerId = message.getAttachments().getStickers().get(0).getId();
 
-        String url = VKApiStickerSet.buildImgUrl256(stickerId);
+        Sticker sticker = message.getAttachments().getStickers().get(0);
+        Sticker.Image image = sticker.getImage(256, true);
+
         PicassoInstance.with()
-                .load(url)
+                .load(image.getUrl())
                 .into(holder.sticker);
     }
 

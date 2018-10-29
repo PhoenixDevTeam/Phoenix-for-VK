@@ -24,6 +24,7 @@ import biz.dealnote.messenger.api.model.VKApiPoll;
 import biz.dealnote.messenger.api.model.VKApiPost;
 import biz.dealnote.messenger.api.model.VKApiSchool;
 import biz.dealnote.messenger.api.model.VKApiSticker;
+import biz.dealnote.messenger.api.model.VKApiStickerSet;
 import biz.dealnote.messenger.api.model.VKApiTopic;
 import biz.dealnote.messenger.api.model.VKApiUniversity;
 import biz.dealnote.messenger.api.model.VKApiUser;
@@ -77,6 +78,7 @@ import biz.dealnote.messenger.db.model.entity.PrivacyEntity;
 import biz.dealnote.messenger.db.model.entity.SchoolEntity;
 import biz.dealnote.messenger.db.model.entity.SimpleDialogEntity;
 import biz.dealnote.messenger.db.model.entity.StickerEntity;
+import biz.dealnote.messenger.db.model.entity.StickerSetEntity;
 import biz.dealnote.messenger.db.model.entity.TopicEntity;
 import biz.dealnote.messenger.db.model.entity.UniversityEntity;
 import biz.dealnote.messenger.db.model.entity.UserDetailsEntity;
@@ -813,8 +815,24 @@ public class Dto2Entity {
 
     public static StickerEntity buildStickerEntity(VKApiSticker sticker) {
         return new StickerEntity(sticker.sticker_id)
-                .setHeight(sticker.height)
-                .setWidth(sticker.width);
+                .setImages(mapAll(sticker.images, Dto2Entity::map))
+                .setImagesWithBackground(mapAll(sticker.images_with_background, Dto2Entity::map));
+    }
+
+    public static StickerSetEntity map(VKApiStickerSet.Product dto){
+        return new StickerSetEntity(dto.id)
+                .setTitle(dto.title)
+                .setPromoted(dto.promoted)
+                .setActive(dto.active)
+                .setPurchased(dto.purchased)
+                .setPhoto35("https://vk.com/images/store/stickers/" + dto.id + "/cover_35b.png")
+                .setPhoto70("https://vk.com/images/store/stickers/" + dto.id + "/cover_70b.png")
+                .setPhoto140("https://vk.com/images/store/stickers/" + dto.id + "/cover_140b.png")
+                .setStickers(mapAll(dto.stickers, Dto2Entity::buildStickerEntity));
+    }
+
+    public static StickerEntity.Img map(VKApiSticker.Image dto){
+        return new StickerEntity.Img(dto.url, dto.width, dto.height);
     }
 
     public static PageEntity buildPageEntity(VKApiWikiPage dto) {

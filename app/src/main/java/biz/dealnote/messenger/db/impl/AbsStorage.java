@@ -14,6 +14,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import biz.dealnote.messenger.db.DBHelper;
 import biz.dealnote.messenger.db.MapFunction;
 import biz.dealnote.messenger.db.interfaces.Cancelable;
 import biz.dealnote.messenger.db.interfaces.IStorage;
@@ -60,6 +61,11 @@ public class AbsStorage implements IStorage {
     @Nullable
     static String serializeJson(@Nullable Object o){
         return isNull(o) ? null : GSON.toJson(o);
+    }
+
+    @NonNull
+    DBHelper helper(int accountId){
+        return DBHelper.getInstance(getContext(), accountId);
     }
 
     @Nullable

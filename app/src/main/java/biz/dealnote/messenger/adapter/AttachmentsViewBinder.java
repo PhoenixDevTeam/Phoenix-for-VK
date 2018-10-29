@@ -45,6 +45,7 @@ import biz.dealnote.messenger.model.VoiceMessage;
 import biz.dealnote.messenger.model.WikiPage;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.AppTextUtils;
+import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.ViewUtils;
@@ -421,7 +422,7 @@ public class AttachmentsViewBinder {
 
     private void displayStickers(List<Sticker> stickers, ViewGroup stickersContainer) {
         stickersContainer.setVisibility(safeIsEmpty(stickers) ? View.GONE : View.VISIBLE);
-        if (safeIsEmpty(stickers)) {
+        if (isEmpty(stickers)) {
             return;
         }
 
@@ -433,25 +434,29 @@ public class AttachmentsViewBinder {
         ImageView imageView = (ImageView) stickersContainer.getChildAt(0);
         Sticker sticker = stickers.get(0);
 
-        boolean horisontal = sticker.getHeight() < sticker.getWidth();
-        double proporsion = (double) sticker.getWidth() / (double) sticker.getHeight();
+        int prefferedStickerSize = (int) dpToPx(PREFFERED_STICKER_SIZE, mContext);
+        Sticker.Image image = sticker.getImage(256, false);
 
-        float finalWidth;
-        float finalHeihgt;
+        boolean horisontal = image.getHeight() < image.getWidth();
+        double proporsion = (double) image.getWidth() / (double) image.getHeight();
+
+        final float finalWidth;
+        final float finalHeihgt;
 
         if (horisontal) {
-            finalWidth = dpToPx(PREFFERED_STICKER_SIZE, mContext);
+            finalWidth = prefferedStickerSize;
             finalHeihgt = (float) (finalWidth / proporsion);
         } else {
-            finalHeihgt = dpToPx(PREFFERED_STICKER_SIZE, mContext);
+            finalHeihgt = prefferedStickerSize;
             finalWidth = (float) (finalHeihgt * proporsion);
         }
 
         imageView.getLayoutParams().height = (int) finalHeihgt;
         imageView.getLayoutParams().width = (int) finalWidth;
 
+        Logger.d("displayStickers", "url: " + image.getUrl());
         PicassoInstance.with()
-                .load(sticker.getPhoto256())
+                .load(image.getUrl())
                 .into(imageView);
     }
 
