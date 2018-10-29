@@ -14,6 +14,7 @@ import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.ParcelUtils;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
+import static biz.dealnote.messenger.util.Utils.nonEmpty;
 import static biz.dealnote.messenger.util.Utils.safeCountOf;
 
 public class Message extends AbsModel implements Parcelable, Identificable, ISelectable {
@@ -564,6 +565,10 @@ public class Message extends AbsModel implements Parcelable, Identificable, ISel
 
     public boolean isSticker() {
         return nonNull(attachments) && safeCountOf(attachments.getStickers()) > 0;
+    }
+
+    public boolean isVoiceMessage(){
+        return nonNull(attachments) && nonEmpty(attachments.getVoiceMessages());
     }
 
     public Map<Integer, String> getExtras() {

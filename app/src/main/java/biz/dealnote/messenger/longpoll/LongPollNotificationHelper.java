@@ -2,14 +2,7 @@ package biz.dealnote.messenger.longpoll;
 
 import android.content.Context;
 
-import java.util.List;
-
-import androidx.annotation.NonNull;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.api.model.VKApiMessage;
-import biz.dealnote.messenger.api.model.longpoll.InputMessagesSetReadUpdate;
-import biz.dealnote.messenger.api.model.longpoll.MessageFlagsResetUpdate;
-import biz.dealnote.messenger.api.model.longpoll.VkApiLongpollUpdates;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.settings.Settings;
@@ -17,7 +10,6 @@ import biz.dealnote.messenger.util.Logger;
 
 import static biz.dealnote.messenger.util.Utils.hasFlag;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
-import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
 public class LongPollNotificationHelper {
 
@@ -60,30 +52,5 @@ public class LongPollNotificationHelper {
         }
 
         NotificationHelper.notifNewMessage(context, accountId, body, peerId, messageId, date);
-    }
-
-
-    public static void fireUpdates(Context context, int accountId, VkApiLongpollUpdates item) {
-        if (nonEmpty(item.message_flags_reset_updates)) {
-            fireMessagesFlagsReset(context, accountId, item.message_flags_reset_updates);
-        }
-
-        if (nonEmpty(item.input_messages_set_read_updates)) {
-            fireMessagesRead(context, accountId, item.input_messages_set_read_updates);
-        }
-    }
-
-    private static void fireMessagesRead(Context context, int accountId, @NonNull List<InputMessagesSetReadUpdate> updates) {
-        for (InputMessagesSetReadUpdate update : updates) {
-            NotificationHelper.tryCancelNotificationForPeer(context, accountId, update.peer_id);
-        }
-    }
-
-    private static void fireMessagesFlagsReset(Context context, int accountId, List<MessageFlagsResetUpdate> updates) {
-        for (MessageFlagsResetUpdate update : updates) {
-            if (update.mask == VKApiMessage.FLAG_UNREAD) {
-                NotificationHelper.tryCancelNotificationForPeer(context, accountId, update.peer_id);
-            }
-        }
     }
 }

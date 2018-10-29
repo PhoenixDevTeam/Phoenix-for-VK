@@ -41,6 +41,8 @@ public interface IMessagesRepository {
 
     Completable handleWriteUpdates(int accountId, @NonNull List<WriteTextInDialogUpdate> updates);
 
+    Flowable<SentMsg> observeSentMessages();
+
     Flowable<List<PeerUpdate>> observePeerUpdates();
 
     Flowable<List<MessageUpdate>> observeMessageUpdates();

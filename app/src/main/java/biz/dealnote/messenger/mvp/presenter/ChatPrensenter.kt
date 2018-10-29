@@ -932,6 +932,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
 
     private fun canEdit(message: Message): Boolean {
         return message.isOut && Unixtime.now() - message.date < 24 * 60 * 60
+                && !message.isSticker && !message.isVoiceMessage
     }
 
     private fun canChangePin(): Boolean {

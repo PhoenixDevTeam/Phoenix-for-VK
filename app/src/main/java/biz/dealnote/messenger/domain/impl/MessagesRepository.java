@@ -75,7 +75,6 @@ import biz.dealnote.messenger.domain.mappers.Model2Dto;
 import biz.dealnote.messenger.domain.mappers.Model2Entity;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.exception.UploadNotResolvedException;
-import biz.dealnote.messenger.longpoll.NotificationHelper;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
@@ -157,6 +156,7 @@ public class MessagesRepository implements IMessagesRepository {
     private final PublishProcessor<PeerDeleting> peerDeletingPublisher = PublishProcessor.create();
     private final PublishProcessor<List<MessageUpdate>> messageUpdatesPublisher = PublishProcessor.create();
     private final PublishProcessor<List<WriteText>> writeTextPublisher = PublishProcessor.create();
+    private final PublishProcessor<SentMsg> sentMessagesPublisher = PublishProcessor.create();
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final Scheduler senderScheduler = Schedulers.from(Executors.newFixedThreadPool(1));
@@ -222,7 +222,7 @@ public class MessagesRepository implements IMessagesRepository {
 
     private void onMessageSent(SentMsg msg) {
         nowSending = false;
-        NotificationHelper.tryCancelNotificationForPeer(app, msg.getAccountId(), msg.getPeerId());
+        sentMessagesPublisher.onNext(msg);
         send();
     }
 
@@ -378,6 +378,11 @@ public class MessagesRepository implements IMessagesRepository {
         }
 
         return applyPeerUpdatesAndPublish(accountId, patches);
+    }
+
+    @Override
+    public Flowable<SentMsg> observeSentMessages() {
+        return sentMessagesPublisher.onBackpressureBuffer();
     }
 
     @Override

@@ -119,7 +119,6 @@ public class AndroidLongpollManager implements ILongpollManager, UserLongpoll.Ca
     }
 
     private void onUpdatesSaved(int accountId, VkApiLongpollUpdates updates) {
-        LongPollNotificationHelper.fireUpdates(app, accountId, updates);
         actionsPublisher.onNext(updates);
     }
 
