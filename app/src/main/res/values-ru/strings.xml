@@ -1042,4 +1042,18 @@
     <string name="files_uploading_notification_title">Загрузка файлов</string>
     <string name="service_pinned_message">%1$s закрепил сообщение</string>
     <string name="service_unpinned_message">%1$s открепил сообщение</string>
+    <string name="service_invite_user_by_link">%1$s присоединился по ссылке</string>
+    <string name="photo_preview_size_title">Размер пред. просмотра фото</string>
+    <string name="channel_keep_longpoll">Longpoll</string>
+    <string name="press_to_stop_service">Нажмите, чтобы остановить!</string>
+    <string name="keep_longpoll_notification_title">Уведомления Phoenix</string>
+    <string name="settings_keep_longpoll_title">Удерживать Longpoll</string>
+    <string name="settings_keep_longpoll_summary">Поддерживать связь со службой уведомлений. ВНИМАНИЕ! Это может привести к увеличению потребления батареи!</string>
+    <string name="close">Закрыть</string>
+    <string name="attach">Прикрепить</string>
+    <string name="edit_message">Редактировать сообщение</string>
+    <string name="messages_delete_for_all_question_message">Вы действительно хотите удалить сообщения?</string>
+    <string name="button_for_all">Для всех</string>
+    <string name="button_for_me">Для меня</string>
+    <string name="message_edited_at">(ред. %1$s)</string>
 </resources>

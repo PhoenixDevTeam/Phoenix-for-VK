@@ -1190,11 +1190,11 @@
     <string name="select_post_destination_label">Select post destination</string>
     <string name="gif" translatable="false">GIF %1$s</string>
     <string name="photo_preview_size_title">Photo preview size</string>
-    <string name="channel_keep_longpoll">Keep longpoll</string>
+    <string name="channel_keep_longpoll">Longpoll</string>
     <string name="press_to_stop_service">Press to stop!</string>
     <string name="keep_longpoll_notification_title">Phoenix Notifications</string>
     <string name="settings_keep_longpoll_title">Keep longpoll</string>
-    <string name="settings_keep_longpoll_summary">Keep connection to notification service.\nATTENTION! This can cause increased battery usage!</string>
+    <string name="settings_keep_longpoll_summary">Keep connection to notification service. ATTENTION! This can cause increased battery usage!</string>
     <string name="channel_upload_files">Uploading files</string>
     <string name="files_uploading_notification_title">Uploading files</string>
     <string name="upload_new_photo">Change profile avatar</string>
@@ -1202,9 +1202,8 @@
     <string name="avatar_was_changed_successfully">Your avatar was changed successfully!</string>
     <string name="close">Close</string>
     <string name="attach">Attach</string>
-    <string name="emoji">Emoij</string>
+    <string name="emoji" translatable="false">Emoij</string>
     <string name="edit_message">Edit message</string>
-    <string name="messages_delete_for_all_question_title">Delete message</string>
     <string name="messages_delete_for_all_question_message">Are you sure you want to delete the messages?</string>
     <string name="button_for_all">For all</string>
     <string name="button_for_me">For me</string>
