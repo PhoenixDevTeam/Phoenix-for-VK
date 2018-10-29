@@ -10,20 +10,13 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceScreen;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -35,11 +28,17 @@ import java.util.Collection;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.preference.PreferenceFragment;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -75,12 +74,11 @@ import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.RoundTransformation;
 import biz.dealnote.messenger.util.Utils;
 
-import static android.preference.Preference.OnPreferenceChangeListener;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
 import static biz.dealnote.messenger.util.Utils.safelyClose;
 import static biz.dealnote.messenger.util.Utils.safelyRecycle;
 
-public class PreferencesFragment extends PreferenceFragment {
+public class PreferencesFragment extends PreferenceFragmentCompat {
 
     public static final int APP_GROUP_ID = 72124992;
 
@@ -100,9 +98,6 @@ public class PreferencesFragment extends PreferenceFragment {
     private static final String KEY_NOTIFICATION = "notifications";
     private static final String KEY_SECURITY = "security";
     private static final String KEY_DRAWER_ITEMS = "drawer_categories";
-    private static final String KEY_LOCKSCREEN_ART = "lockscreen_art";
-
-    private static final String TAG = PreferencesFragment.class.getSimpleName();
 
     private static final int REQUEST_LIGHT_SIDEBAR_BACKGROUND = 117;
     private static final int REQUEST_DARK_SIDEBAR_BACKGROUND = 118;
@@ -149,8 +144,7 @@ public class PreferencesFragment extends PreferenceFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.settings);
 
         if (!AppPrefs.isFullApp()) {
@@ -158,7 +152,7 @@ public class PreferencesFragment extends PreferenceFragment {
         }
 
         if (!AppPrefs.FULL_APP) {
-            PreferenceScreen screen = this.getPreferenceScreen();
+            PreferenceScreen screen = getPreferenceScreen();
             Preference getFullApp = new Preference(getActivity());
             getFullApp.setTitle(R.string.get_full_app_title);
             getFullApp.setSummary(R.string.get_full_app_summary);
@@ -170,7 +164,7 @@ public class PreferencesFragment extends PreferenceFragment {
             screen.addPreference(getFullApp);
         }
 
-        OnPreferenceChangeListener recreateListener = (preference, o) -> {
+        Preference.OnPreferenceChangeListener recreateListener = (preference, o) -> {
             requireActivity().recreate();
             return true;
         };
@@ -242,6 +236,7 @@ public class PreferencesFragment extends PreferenceFragment {
             if (Utils.hasOreo()) {
                 ((PreferenceCategory) findPreference("group_general")).removePreference(notification);
             }
+
             notification.setOnPreferenceClickListener(preference -> {
                 PlaceFactory.getNotificationSettingsPlace().tryOpenWith(requireActivity());
                 return true;
@@ -377,10 +372,9 @@ public class PreferencesFragment extends PreferenceFragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.preference_list_fragment, container, false);
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
-        return root;
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(view.findViewById(R.id.toolbar));
     }
 
     private void tryDeleteFile(@NonNull File file) throws IOException {
