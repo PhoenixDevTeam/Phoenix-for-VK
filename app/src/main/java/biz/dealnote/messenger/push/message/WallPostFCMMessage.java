@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Map;
 
@@ -16,9 +18,6 @@ import androidx.core.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
-import biz.dealnote.messenger.link.VkLinkParser;
-import biz.dealnote.messenger.link.types.AbsLink;
-import biz.dealnote.messenger.link.types.WallPostLink;
 import biz.dealnote.messenger.longpoll.AppNotificationChannels;
 import biz.dealnote.messenger.longpoll.NotificationHelper;
 import biz.dealnote.messenger.model.Owner;
@@ -26,43 +25,67 @@ import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.push.NotificationScheduler;
 import biz.dealnote.messenger.push.OwnerInfo;
 import biz.dealnote.messenger.settings.Settings;
-import biz.dealnote.messenger.util.PersistentLogger;
+import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 
 import static biz.dealnote.messenger.push.NotificationUtils.configOtherPushNotification;
 
 public class WallPostFCMMessage {
 
-    private static final String TAG = WallPostFCMMessage.class.getSimpleName();
-
     //from_id=175895893, first_name=Руслан, from=376771982493, text=Тест push-уведомлений, type=wall_post, place=wall25651989_2509, collapse_key=wall_post, last_name=Колбаса
 
     private int from_id;
+    private int post_id;
     //public String first_name;
     //public String last_name;
     //public long from;
-    private String text;
+    private String body;
     //public String type;
     private String place;
+    private int owner_id;
 
+    /*2018-10-29 14:09:00.106 18518-18893/biz.dealnote.phoenix D/FcmListenerService: onMessage, from: 237327763482, pushType: post, data: {image_type=user, from_id=175895893, id=wall_post_25651989_4099, url=https://vk.com/wall25651989_4099, body=Руслан Колбаса: Дарова!, icon=write_24, time=1540814940, type=post, category=wall_posts, badge=64, image=[{"width":200,"url":"https:\/\/pp.userapi.com\/c626917\/v626917893\/f230\/KnzJyeBQr30.jpg","height":200},{"width":100,"url":"https:\/\/pp.userapi.com\/c626917\/v626917893\/f232\/A7dV0Aj_zHE.jpg","height":100},{"width":50,"url":"https:\/\/pp.userapi.com\/c626917\/v626917893\/f233\/wThqed0he9s.jpg","height":50}], sound=1, title=Новая запись на стене, to_id=25651989, group_id=posts, context={"feedback":true,"item_id":"4099","owner_id":"25651989","type":"post"}}
+        2018-10-29 14:09:00.107 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: image_type, value: user, class: class java.lang.String
+        2018-10-29 14:09:00.107 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: from_id, value: 175895893, class: class java.lang.String
+        2018-10-29 14:09:00.107 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: id, value: wall_post_25651989_4099, class: class java.lang.String
+        2018-10-29 14:09:00.107 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: url, value: https://vk.com/wall25651989_4099, class: class java.lang.String
+        2018-10-29 14:09:00.107 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: body, value: Руслан Колбаса: Дарова!, class: class java.lang.String
+        2018-10-29 14:09:00.107 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: icon, value: write_24, class: class java.lang.String
+        2018-10-29 14:09:00.107 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: time, value: 1540814940, class: class java.lang.String
+        2018-10-29 14:09:00.107 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: type, value: post, class: class java.lang.String
+        2018-10-29 14:09:00.107 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: category, value: wall_posts, class: class java.lang.String
+        2018-10-29 14:09:00.107 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: badge, value: 64, class: class java.lang.String
+        2018-10-29 14:09:00.108 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: image, value: [{"width":200,"url":"https:\/\/pp.userapi.com\/c626917\/v626917893\/f230\/KnzJyeBQr30.jpg","height":200},{"width":100,"url":"https:\/\/pp.userapi.com\/c626917\/v626917893\/f232\/A7dV0Aj_zHE.jpg","height":100},{"width":50,"url":"https:\/\/pp.userapi.com\/c626917\/v626917893\/f233\/wThqed0he9s.jpg","height":50}], class: class java.lang.String
+        2018-10-29 14:09:00.108 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: sound, value: 1, class: class java.lang.String
+        2018-10-29 14:09:00.108 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: title, value: Новая запись на стене, class: class java.lang.String
+        2018-10-29 14:09:00.108 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: to_id, value: 25651989, class: class java.lang.String
+        2018-10-29 14:09:00.108 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: group_id, value: posts, class: class java.lang.String
+        2018-10-29 14:09:00.108 18518-18893/biz.dealnote.phoenix D/FcmListenerService: key: context, value: {"feedback":true,"item_id":"4099","owner_id":"25651989","type":"post"}, class: class java.lang.String
+  */
     public static WallPostFCMMessage fromRemoteMessage(@NonNull RemoteMessage remote) {
         WallPostFCMMessage message = new WallPostFCMMessage();
         Map<String, String> data = remote.getData();
         message.from_id = Integer.parseInt(remote.getData().get("from_id"));
-        //message.first_name = bundle.getString("first_name");
-        //message.last_name = bundle.getString("last_name");
 
-        //if(bundle.containsKey("from")){
-        //    message.from = Long.parseLong(bundle.getString("from"));
-        //}
+        message.body = data.get("body");
+        message.place = data.get("url");
 
-        message.text = data.get("text");
-        //message.type = bundle.getString("type");
-        message.place = data.get("place");
+        PushContext context = new Gson().fromJson(data.get("context"), PushContext.class);
+        message.post_id = context.itemId;
+        message.owner_id = context.ownerId;
         return message;
     }
 
-    public void nofify(final Context context, int accountId){
+    private static final class PushContext {
+        @SerializedName("item_id")
+        int itemId;
+        @SerializedName("owner_id")
+        int ownerId;
+        @SerializedName("type")
+        String type;
+    }
+
+    public void nofify(final Context context, int accountId) {
         if (!Settings.get()
                 .notifications()
                 .isNewPostOnOwnWallNotifEnabled()) {
@@ -72,22 +95,12 @@ public class WallPostFCMMessage {
         Context app = context.getApplicationContext();
         OwnerInfo.getRx(app, accountId, from_id)
                 .subscribeOn(NotificationScheduler.INSTANCE)
-                .subscribe(ownerInfo -> notifyImpl(app, ownerInfo.getOwner(), ownerInfo.getAvatar()), throwable -> {/*ignore*/});
+                .subscribe(ownerInfo -> notifyImpl(app, ownerInfo.getOwner(), ownerInfo.getAvatar()), RxUtils.ignore());
     }
 
-    private void notifyImpl(Context context, @NonNull Owner owner, Bitmap avatar){
-        String url = "vk.com/" + place;
-
-        AbsLink link = VkLinkParser.parse(url);
-        if(link == null || !(link instanceof WallPostLink)){
-            PersistentLogger.logThrowable("Push issues", new Exception("Unknown place: " + place));
-            return;
-        }
-
-        WallPostLink wallPostLink = (WallPostLink) link;
-
+    private void notifyImpl(Context context, @NonNull Owner owner, Bitmap avatar) {
         final NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Utils.hasOreo()){
+        if (Utils.hasOreo()) {
             nManager.createNotificationChannel(AppNotificationChannels.getNewPostChannel(context));
         }
 
@@ -96,7 +109,7 @@ public class WallPostFCMMessage {
                 .setLargeIcon(avatar)
                 .setContentTitle(owner.getFullName())
                 .setContentText(context.getString(R.string.published_post_on_your_wall))
-                .setSubText(text)
+                .setSubText(body)
                 .setAutoCancel(true);
 
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -106,11 +119,11 @@ public class WallPostFCMMessage {
                 .getCurrent();
 
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(Extra.PLACE, PlaceFactory.getPostPreviewPlace(aid, wallPostLink.postId, wallPostLink.ownerId));
+        intent.putExtra(Extra.PLACE, PlaceFactory.getPostPreviewPlace(aid, post_id, owner_id));
         intent.setAction(MainActivity.ACTION_OPEN_PLACE);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        PendingIntent contentIntent = PendingIntent.getActivity(context, wallPostLink.postId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, post_id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setContentIntent(contentIntent);
         Notification notification = builder.build();
 
