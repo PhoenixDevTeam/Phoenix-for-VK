@@ -1,9 +1,9 @@
 package biz.dealnote.messenger.view;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatImageView;
@@ -31,7 +31,7 @@ public class ColorFilterImageView extends AppCompatImageView {
     private int color;
     private boolean disabledColorFilter;
 
-    private void init(Context context, AttributeSet attrs){
+    private void init(Context context, AttributeSet attrs) {
         final TypedArray attrArray = context.obtainStyledAttributes(attrs, R.styleable.ColorFilterImageView);
 
         try {
@@ -45,9 +45,9 @@ public class ColorFilterImageView extends AppCompatImageView {
 
     private void resolveColorFilter() {
         if (disabledColorFilter) {
-            setColorFilter(null);
+            setImageTintList(null);
         } else {
-            setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+            setImageTintList(ColorStateList.valueOf(color));
         }
     }
 
