@@ -195,7 +195,7 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     }
 
     private void onDialogRemovedSuccessfully(int accountId, int peeId) {
-        getView().showSnackbar(R.string.deleted, true);
+        callView(v -> v.showSnackbar(R.string.deleted, true));
         onDialogDeleted(accountId, peeId);
     }
 
@@ -315,14 +315,13 @@ public class DialogsPresenter extends AccountDependencyPresenter<IDialogsView> {
     }
 
     private void onDialogDeleted(int accountId, int peerId) {
-        if (this.dialogsOwnerId != accountId) {
+        if (dialogsOwnerId != accountId) {
             return;
         }
 
         int index = indexOf(dialogs, peerId);
-
         if (index != -1) {
-            this.dialogs.remove(index);
+            dialogs.remove(index);
             safeNotifyDataSetChanged();
         }
     }
