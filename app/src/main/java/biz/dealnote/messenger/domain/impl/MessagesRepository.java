@@ -1,8 +1,6 @@
 package biz.dealnote.messenger.domain.impl;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -94,7 +92,6 @@ import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.WriteText;
 import biz.dealnote.messenger.model.criteria.DialogsCriteria;
 import biz.dealnote.messenger.model.criteria.MessagesCriteria;
-import biz.dealnote.messenger.service.ErrorLocalizer;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.upload.IUploadManager;
 import biz.dealnote.messenger.upload.Method;
@@ -143,8 +140,6 @@ public class MessagesRepository implements IMessagesRepository {
                 return dbos;
             });
 
-    private final Context app;
-
     private final ISettings.IAccountsSettings accountsSettings;
     private final IOwnersRepository ownersRepository;
     private final IStorages storages;
@@ -157,13 +152,13 @@ public class MessagesRepository implements IMessagesRepository {
     private final PublishProcessor<List<MessageUpdate>> messageUpdatesPublisher = PublishProcessor.create();
     private final PublishProcessor<List<WriteText>> writeTextPublisher = PublishProcessor.create();
     private final PublishProcessor<SentMsg> sentMessagesPublisher = PublishProcessor.create();
+    private final PublishProcessor<Throwable> sendErrorsPublisher = PublishProcessor.create();
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final Scheduler senderScheduler = Schedulers.from(Executors.newFixedThreadPool(1));
 
-    public MessagesRepository(Context context, ISettings.IAccountsSettings accountsSettings, INetworker networker,
+    public MessagesRepository(ISettings.IAccountsSettings accountsSettings, INetworker networker,
                               IOwnersRepository ownersRepository, IStorages storages, IUploadManager uploadManager) {
-        this.app = context.getApplicationContext();
         this.accountsSettings = accountsSettings;
         this.ownersRepository = ownersRepository;
         this.networker = networker;
@@ -178,6 +173,11 @@ public class MessagesRepository implements IMessagesRepository {
         compositeDisposable.add(accountsSettings.observeRegistered()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(ignored -> onAccountsChanged(), ignore()));
+    }
+
+    @Override
+    public Flowable<Throwable> observeMessagesSendErrors() {
+        return sendErrorsPublisher.onBackpressureBuffer();
     }
 
     @Override
@@ -235,7 +235,7 @@ public class MessagesRepository implements IMessagesRepository {
             return;
         }
 
-        Toast.makeText(app, ErrorLocalizer.localizeThrowable(app, cause), Toast.LENGTH_LONG).show();
+        sendErrorsPublisher.onNext(t);
     }
 
     private void sendMessage(Collection<Integer> accountIds) {

@@ -33,6 +33,8 @@ import io.reactivex.Single;
  * phoenix
  */
 public interface IMessagesRepository {
+    Flowable<Throwable> observeMessagesSendErrors();
+
     Completable handleFlagsUpdates(int accountId, @Nullable List<MessageFlagsSetUpdate> setUpdates, @Nullable List<MessageFlagsResetUpdate> resetUpdates);
 
     Completable handleReadUpdates(int accountId, @Nullable List<OutputMessagesSetReadUpdate> setUpdates, @Nullable List<InputMessagesSetReadUpdate> resetUpdates);
