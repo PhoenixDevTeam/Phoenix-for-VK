@@ -153,7 +153,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
                 .observeRemoving()
                 .filter(predicate)
                 .toMainThread()
-                .subscribe { _ -> onRepositoryAttachmentsRemoved() })
+                .subscribe { onRepositoryAttachmentsRemoved() })
 
         appendDisposable(messagesRepository
                 .observeMessageUpdates()
@@ -616,7 +616,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     private fun sendMessage(builder: SaveMessageBuilder) {
         messagesRepository.put(builder)
                 .fromIOToMain()
-                .doOnSuccess { _ -> startSendService() }
+                .doOnSuccess { startSendService() }
                 .subscribe(WeakConsumer(messageSavedConsumer), WeakConsumer(messageSaveFailConsumer))
     }
 
@@ -1112,7 +1112,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
      */
     private fun deleteSelectedMessages() {
         val sent = ArrayList<Int>(0)
-        val canDeleteForAll = ArrayList<Int>(0);
+        val canDeleteForAll = ArrayList<Int>(0)
 
         var hasChanged = false
         val iterator = data.iterator()
@@ -1166,7 +1166,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun canDeleteForAll(message: Message): Boolean {
-        return message.isOut && Unixtime.now() - message.date < 24 * 60 * 60;
+        return message.isOut && Unixtime.now() - message.date < 24 * 60 * 60
     }
 
     private fun cancelWaitingForUploadMessage(messageId: Int) {
