@@ -100,8 +100,6 @@ public interface IMessagesRepository {
 
     Single<Message> put(SaveMessageBuilder builder);
 
-    Single<Integer> send(int accountId, int dbid);
-
     Single<SentMsg> sendUnsentMessage(Collection<Integer> accountIds);
 
     Completable enqueueAgain(int accountId, int messageId);

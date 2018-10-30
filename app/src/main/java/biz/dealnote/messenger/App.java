@@ -40,7 +40,7 @@ public class App extends Application {
                 .observePeerUpdates()
                 .flatMap(Flowable::fromIterable)
                 .subscribe(update -> {
-                    if (update.getReadOut() != null) {
+                    if (update.getReadIn() != null) {
                         tryCancelNotificationForPeer(App.this, update.getAccountId(), update.getPeerId());
                     }
                 }));

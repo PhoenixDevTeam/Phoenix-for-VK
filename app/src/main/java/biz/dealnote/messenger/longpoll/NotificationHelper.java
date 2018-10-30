@@ -186,13 +186,13 @@ public class NotificationHelper {
     }
 
     public static void tryCancelNotificationForPeer(Context context, int accountId, int peerId) {
-        int mask = Settings.get()
-                .notifications()
-                .getNotifPref(accountId, peerId);
+        //int mask = Settings.get()
+        //        .notifications()
+        //        .getNotifPref(accountId, peerId);
 
-        if (hasFlag(mask, ISettings.INotificationSettings.FLAG_SHOW_NOTIF)) {
+        //if (hasFlag(mask, ISettings.INotificationSettings.FLAG_SHOW_NOTIF)) {
             getService(context).cancel(NotificationHelper.createPeerTagFor(accountId, peerId),
                     NotificationHelper.NOTIFICATION_MESSAGE);
-        }
+        //}
     }
 }

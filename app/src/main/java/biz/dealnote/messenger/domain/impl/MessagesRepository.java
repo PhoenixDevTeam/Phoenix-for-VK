@@ -916,33 +916,6 @@ public class MessagesRepository implements IMessagesRepository {
                 });
     }
 
-    @Override
-    public Single<Integer> send(int accountId, int dbid) {
-        final IMessagesStorage store = this.storages.messages();
-
-        return store
-                .findMessagesByIds(accountId, Collections.singletonList(dbid), true, false)
-                .flatMap(dbos -> {
-                    if (dbos.isEmpty()) {
-                        throw new NotFoundException();
-                    }
-
-                    final MessageEntity entity = dbos.get(0);
-                    return changeMessageStatus(accountId, dbid, MessageStatus.SENDING, null)
-                            .andThen(internalSend(accountId, entity)
-                                    .flatMap(vkid -> {
-                                        final PeerPatch patch = new PeerPatch(entity.getPeerId())
-                                                .withLastMessage(vkid)
-                                                .withUnreadCount(0);
-
-                                        return changeMessageStatus(accountId, dbid, MessageStatus.SENT, vkid)
-                                                .andThen(applyPeerUpdatesAndPublish(accountId, Collections.singletonList(patch)))
-                                                .andThen(Single.just(vkid));
-                                    })
-                                    .onErrorResumeNext(throwable -> changeMessageStatus(accountId, dbid, MessageStatus.ERROR, null).andThen(Single.error(throwable))));
-                });
-    }
-
     private Completable changeMessageStatus(int accountId, int messageId, @MessageStatus int status, @Nullable Integer vkid) {
         MessageUpdate update = new MessageUpdate(accountId, messageId);
         update.setStatusUpdate(new MessageUpdate.StatusUpdate(status, vkid));
