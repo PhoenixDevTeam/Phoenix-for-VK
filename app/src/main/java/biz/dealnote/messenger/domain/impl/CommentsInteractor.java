@@ -153,10 +153,10 @@ public class CommentsInteractor implements ICommentsInteractor {
 
                     List<CommentEntity> dbos = new ArrayList<>(commentDtos.size());
                     for (VKApiComment dto : commentDtos) {
-                        dbos.add(Dto2Entity.buildCommentDbo(commented.getSourceId(), commented.getSourceOwnerId(), commented.getSourceType(), commented.getAccessKey(), dto));
+                        dbos.add(Dto2Entity.mapComment(commented.getSourceId(), commented.getSourceOwnerId(), commented.getSourceType(), commented.getAccessKey(), dto));
                     }
 
-                    return cacheData(accountId, commented, dbos, Dto2Entity.buildOwnerDbos(users, groups), invalidateCache)
+                    return cacheData(accountId, commented, dbos, Dto2Entity.mapOwners(users, groups), invalidateCache)
                             .andThen(modelsSingle.map(data -> {
                                 CommentsBundle bundle = new CommentsBundle(data)
                                         .setAdminLevel(response.admin_level)
@@ -572,11 +572,11 @@ public class CommentsInteractor implements ICommentsInteractor {
                     if (storeToCache) {
                         List<CommentEntity> dbos = new ArrayList<>(comments.size());
                         for (VKApiComment dto : comments) {
-                            dbos.add(Dto2Entity.buildCommentDbo(commented.getSourceId(), commented.getSourceOwnerId(), commented.getSourceType(), commented.getAccessKey(), dto));
+                            dbos.add(Dto2Entity.mapComment(commented.getSourceId(), commented.getSourceOwnerId(), commented.getSourceType(), commented.getAccessKey(), dto));
                         }
 
                         storeCompletable = cache.comments()
-                                .insert(accountId, sourceId, ownerId, sourceType, dbos, Dto2Entity.buildOwnerDbos(users, communities), false)
+                                .insert(accountId, sourceId, ownerId, sourceType, dbos, Dto2Entity.mapOwners(users, communities), false)
                                 .ignoreElement();
                     } else {
                         storeCompletable = Completable.complete();

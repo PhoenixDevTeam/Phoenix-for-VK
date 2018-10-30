@@ -55,7 +55,7 @@ public class PhotosInteractor implements IPhotosInteractor {
 
                     for(VKApiPhoto dto : dtos){
                         photos.add(Dto2Model.transform(dto));
-                        dbos.add(Dto2Entity.buildPhotoEntity(dto));
+                        dbos.add(Dto2Entity.mapPhoto(dto));
                     }
 
                     return cache.photos()

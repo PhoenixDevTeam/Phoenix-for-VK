@@ -72,12 +72,12 @@ public class FaveInteractor implements IFaveInteractor {
                         ids.append(dto);
                     }
 
-                    final OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
+                    final OwnerEntities ownerEntities = Dto2Entity.mapOwners(response.profiles, response.groups);
 
                     final List<PostEntity> dbos = new ArrayList<>(safeCountOf(response.posts));
                     if(nonNull(response.posts)){
                         for(VKApiPost dto : response.posts){
-                            dbos.add(Dto2Entity.buildPostEntity(dto));
+                            dbos.add(Dto2Entity.mapPost(dto));
                         }
                     }
 
@@ -135,7 +135,7 @@ public class FaveInteractor implements IFaveInteractor {
                     List<Photo> photos = new ArrayList<>(dtos.size());
 
                     for(VKApiPhoto dto : dtos){
-                        dbos.add(Dto2Entity.buildPhotoEntity(dto));
+                        dbos.add(Dto2Entity.mapPhoto(dto));
                         photos.add(Dto2Model.transform(dto));
                     }
 
@@ -171,7 +171,7 @@ public class FaveInteractor implements IFaveInteractor {
                     List<Video> videos = new ArrayList<>(dtos.size());
 
                     for(VKApiVideo dto : dtos){
-                        dbos.add(Dto2Entity.buildVideoEntity(dto));
+                        dbos.add(Dto2Entity.mapVideo(dto));
                         videos.add(Dto2Model.transform(dto));
                     }
 
@@ -196,7 +196,7 @@ public class FaveInteractor implements IFaveInteractor {
                     boolean hasNext = count + offset < items.count;
 
                     List<VKApiUser> dtos = listEmptyIfNull(items.getItems());
-                    List<UserEntity> entities = Dto2Entity.buildUserDbos(dtos);
+                    List<UserEntity> entities = Dto2Entity.mapUsers(dtos);
                     List<User> users = Dto2Model.transformUsers(dtos);
 
                     return cache.fave()

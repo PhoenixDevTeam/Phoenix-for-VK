@@ -107,7 +107,6 @@ import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.Utils.listEmptyIfNull;
 import static biz.dealnote.messenger.util.Utils.nonEmpty;
-import static biz.dealnote.messenger.util.Utils.safeCountOf;
 
 /**
  * Created by Ruslan Kolbasa on 04.09.2017.
@@ -133,11 +132,11 @@ public class Dto2Entity {
                 VkApiMentionWallFeedback mentionWallFeedback = (VkApiMentionWallFeedback) feedback;
 
                 final MentionEntity mentionDbo = new MentionEntity(type);
-                PostEntity post = buildPostEntity(mentionWallFeedback.post);
+                PostEntity post = mapPost(mentionWallFeedback.post);
                 mentionDbo.setWhere(post);
 
                 if (nonNull(feedback.reply)) {
-                    mentionDbo.setReply(buildCommentDbo(post.getId(), post.getOwnerId(), CommentedType.POST, null, feedback.reply));
+                    mentionDbo.setReply(mapComment(post.getId(), post.getOwnerId(), CommentedType.POST, null, feedback.reply));
                 }
 
                 mentionDbo.setDate(feedback.date);
@@ -152,10 +151,10 @@ public class Dto2Entity {
                 final MentionCommentEntity mentionCommentDbo = new MentionCommentEntity(type);
                 mentionCommentDbo.setDate(feedback.date);
                 mentionCommentDbo.setCommented(entity.entity);
-                mentionCommentDbo.setWhere(buildCommentDbo(entity.id, entity.ownerId, entity.type, entity.accessKey, mentionCommentFeedback.where));
+                mentionCommentDbo.setWhere(mapComment(entity.id, entity.ownerId, entity.type, entity.accessKey, mentionCommentFeedback.where));
 
                 if (nonNull(feedback.reply)) {
-                    mentionCommentDbo.setReply(buildCommentDbo(entity.id, entity.ownerId, entity.type, entity.accessKey, feedback.reply));
+                    mentionCommentDbo.setReply(mapComment(entity.id, entity.ownerId, entity.type, entity.accessKey, feedback.reply));
                 }
 
                 return mentionCommentDbo;
@@ -163,14 +162,14 @@ public class Dto2Entity {
             case FeedbackType.WALL:
             case FeedbackType.WALL_PUBLISH:
                 VkApiWallFeedback wallFeedback = (VkApiWallFeedback) feedback;
-                PostEntity postEntity = buildPostEntity(wallFeedback.post);
+                PostEntity postEntity = mapPost(wallFeedback.post);
 
                 final PostFeedbackEntity postFeedbackEntity = new PostFeedbackEntity(type);
                 postFeedbackEntity.setDate(feedback.date);
                 postFeedbackEntity.setPost(postEntity);
 
                 if (nonNull(feedback.reply)) {
-                    postFeedbackEntity.setReply(buildCommentDbo(postEntity.getId(), postEntity.getOwnerId(), CommentedType.POST, null, feedback.reply));
+                    postFeedbackEntity.setReply(mapComment(postEntity.getId(), postEntity.getOwnerId(), CommentedType.POST, null, feedback.reply));
                 }
 
                 return postFeedbackEntity;
@@ -182,12 +181,12 @@ public class Dto2Entity {
                 CEntity commented = createFromCommentable(commentFeedback.comment_of);
 
                 final NewCommentEntity commentEntity = new NewCommentEntity(type);
-                commentEntity.setComment(buildCommentDbo(commented.id, commented.ownerId, commented.type, commented.accessKey, commentFeedback.comment));
+                commentEntity.setComment(mapComment(commented.id, commented.ownerId, commented.type, commented.accessKey, commentFeedback.comment));
                 commentEntity.setCommented(commented.entity);
                 commentEntity.setDate(feedback.date);
 
                 if (nonNull(feedback.reply)) {
-                    commentEntity.setReply(buildCommentDbo(commented.id, commented.ownerId, commented.type, commented.accessKey, feedback.reply));
+                    commentEntity.setReply(mapComment(commented.id, commented.ownerId, commented.type, commented.accessKey, feedback.reply));
                 }
 
                 return commentEntity;
@@ -202,14 +201,14 @@ public class Dto2Entity {
                 final ReplyCommentEntity replyCommentEntity = new ReplyCommentEntity(type);
                 replyCommentEntity.setDate(feedback.date);
                 replyCommentEntity.setCommented(c.entity);
-                replyCommentEntity.setFeedbackComment(buildCommentDbo(c.id, c.ownerId, c.type, c.accessKey, replyCommentFeedback.feedback_comment));
+                replyCommentEntity.setFeedbackComment(mapComment(c.id, c.ownerId, c.type, c.accessKey, replyCommentFeedback.feedback_comment));
 
                 if (nonNull(replyCommentFeedback.own_comment)) {
-                    replyCommentEntity.setOwnComment(buildCommentDbo(c.id, c.ownerId, c.type, c.accessKey, replyCommentFeedback.own_comment));
+                    replyCommentEntity.setOwnComment(mapComment(c.id, c.ownerId, c.type, c.accessKey, replyCommentFeedback.own_comment));
                 }
 
                 if (nonNull(feedback.reply)) {
-                    replyCommentEntity.setReply(buildCommentDbo(c.id, c.ownerId, c.type, c.accessKey, feedback.reply));
+                    replyCommentEntity.setReply(mapComment(c.id, c.ownerId, c.type, c.accessKey, feedback.reply));
                 }
 
                 return replyCommentEntity;
@@ -234,7 +233,7 @@ public class Dto2Entity {
 
                 final LikeCommentEntity likeCommentEntity = new LikeCommentEntity(type);
                 likeCommentEntity.setCommented(ce.entity);
-                likeCommentEntity.setLiked(buildCommentDbo(ce.id, ce.ownerId, ce.type, ce.accessKey, likeCommentFeedback.comment));
+                likeCommentEntity.setLiked(mapComment(ce.id, ce.ownerId, ce.type, ce.accessKey, likeCommentFeedback.comment));
                 likeCommentEntity.setDate(feedback.date);
                 likeCommentEntity.setLikesOwnerIds(likeCommentFeedback.users.ids);
                 return likeCommentEntity;
@@ -248,11 +247,11 @@ public class Dto2Entity {
                 copyEntity.setDate(feedback.date);
 
                 if (type == FeedbackType.COPY_POST) {
-                    copyEntity.setCopied(buildPostEntity((VKApiPost) copyFeedback.what));
+                    copyEntity.setCopied(mapPost((VKApiPost) copyFeedback.what));
                 } else if (type == FeedbackType.COPY_PHOTO) {
-                    copyEntity.setCopied(buildPhotoEntity((VKApiPhoto) copyFeedback.what));
+                    copyEntity.setCopied(mapPhoto((VKApiPhoto) copyFeedback.what));
                 } else {
-                    copyEntity.setCopied(buildVideoEntity((VKApiVideo) copyFeedback.what));
+                    copyEntity.setCopied(mapVideo((VKApiVideo) copyFeedback.what));
                 }
 
                 List<Copies.IdPair> copyPairs = listEmptyIfNull(copyFeedback.copies.pairs);
@@ -290,15 +289,15 @@ public class Dto2Entity {
 
     private static Entity createFromLikeable(Likeable likeable) {
         if (likeable instanceof VKApiPost) {
-            return buildPostEntity((VKApiPost) likeable);
+            return mapPost((VKApiPost) likeable);
         }
 
         if (likeable instanceof VKApiPhoto) {
-            return buildPhotoEntity((VKApiPhoto) likeable);
+            return mapPhoto((VKApiPhoto) likeable);
         }
 
         if (likeable instanceof VKApiVideo) {
-            return buildVideoEntity((VKApiVideo) likeable);
+            return mapVideo((VKApiVideo) likeable);
         }
 
         throw new UnsupportedOperationException("Unsupported commentable type: " + likeable);
@@ -306,17 +305,17 @@ public class Dto2Entity {
 
     private static CEntity createFromCommentable(Commentable commentable) {
         if (commentable instanceof VKApiPost) {
-            PostEntity entity = buildPostEntity((VKApiPost) commentable);
+            PostEntity entity = mapPost((VKApiPost) commentable);
             return new CEntity(entity.getId(), entity.getOwnerId(), CommentedType.POST, null, entity);
         }
 
         if (commentable instanceof VKApiPhoto) {
-            PhotoEntity entity = buildPhotoEntity((VKApiPhoto) commentable);
+            PhotoEntity entity = mapPhoto((VKApiPhoto) commentable);
             return new CEntity(entity.getId(), entity.getOwnerId(), CommentedType.PHOTO, entity.getAccessKey(), entity);
         }
 
         if (commentable instanceof VKApiVideo) {
-            VideoEntity entity = buildVideoEntity((VKApiVideo) commentable);
+            VideoEntity entity = mapVideo((VKApiVideo) commentable);
             return new CEntity(entity.getId(), entity.getOwnerId(), CommentedType.VIDEO, entity.getAccessKey(), entity);
         }
 
@@ -335,7 +334,7 @@ public class Dto2Entity {
                 .setPhoto160(dto.photo_160)
                 .setPhoto320(dto.photo_320)
                 .setTitle(dto.title)
-                .setPrivacy(nonNull(dto.privacy) ? buildPrivacyDbo(dto.privacy) : null);
+                .setPrivacy(nonNull(dto.privacy) ? mapPrivacy(dto.privacy) : null);
     }
 
     public static TopicEntity buildTopicDbo(VKApiTopic dto) {
@@ -361,26 +360,26 @@ public class Dto2Entity {
                 .setCanUpload(dto.can_upload)
                 .setUpdatedTime(dto.updated)
                 .setCreatedTime(dto.created)
-                .setSizes(nonNull(dto.photo) ? buildPhotoSizeDbo(dto.photo) : null)
+                .setSizes(nonNull(dto.photo) ? mapPhotoSizes(dto.photo) : null)
                 .setCommentsDisabled(dto.comments_disabled)
                 .setUploadByAdminsOnly(dto.upload_by_admins_only)
-                .setPrivacyView(nonNull(dto.privacy_view) ? buildPrivacyDbo(dto.privacy_view) : null)
-                .setPrivacyComment(nonNull(dto.privacy_comment) ? buildPrivacyDbo(dto.privacy_comment) : null);
+                .setPrivacyView(nonNull(dto.privacy_view) ? mapPrivacy(dto.privacy_view) : null)
+                .setPrivacyComment(nonNull(dto.privacy_comment) ? mapPrivacy(dto.privacy_comment) : null);
     }
 
-    public static OwnerEntities buildOwnerDbos(List<VKApiUser> users, List<VKApiCommunity> communities) {
-        return new OwnerEntities(buildUserDbos(users), buildCommunityDbos(communities));
+    public static OwnerEntities mapOwners(List<VKApiUser> users, List<VKApiCommunity> communities) {
+        return new OwnerEntities(mapUsers(users), mapCommunities(communities));
     }
 
-    public static List<CommunityEntity> buildCommunityDbos(List<VKApiCommunity> communities) {
-        return mapAll(communities, Dto2Entity::buildCommunityDbo);
+    public static List<CommunityEntity> mapCommunities(List<VKApiCommunity> communities) {
+        return mapAll(communities, Dto2Entity::mapCommunity);
     }
 
-    public static List<UserEntity> buildUserDbos(List<VKApiUser> users) {
-        return mapAll(users, Dto2Entity::buildUserDbo, true);
+    public static List<UserEntity> mapUsers(List<VKApiUser> users) {
+        return mapAll(users, Dto2Entity::mapUser, true);
     }
 
-    public static CommunityEntity buildCommunityDbo(VKApiCommunity community) {
+    public static CommunityEntity mapCommunity(VKApiCommunity community) {
         return new CommunityEntity(community.id)
                 .setName(community.name)
                 .setScreenName(community.screen_name)
@@ -395,7 +394,7 @@ public class Dto2Entity {
                 .setPhoto200(community.photo_200);
     }
 
-    public static UserEntity buildUserDbo(VKApiUser user) {
+    public static UserEntity mapUser(VKApiUser user) {
         return new UserEntity(user.id)
                 .setFirstName(user.first_name)
                 .setLastName(user.last_name)
@@ -414,7 +413,7 @@ public class Dto2Entity {
                 .setFriendStatus(user.friend_status);
     }
 
-    public static UserDetailsEntity buildUserDetailsDbo(VKApiUser user) {
+    public static UserDetailsEntity mapUserDetails(VKApiUser user) {
         UserDetailsEntity dbo = new UserDetailsEntity();
 
         try {
@@ -429,10 +428,10 @@ public class Dto2Entity {
 
         }
 
-        dbo.setStatusAudio(nonNull(user.status_audio) ? buildAudioEntity(user.status_audio) : null);
+        dbo.setStatusAudio(nonNull(user.status_audio) ? mapAudio(user.status_audio) : null);
         dbo.setBdate(user.bdate);
-        dbo.setCity(isNull(user.city) ? null : dto2entity(user.city));
-        dbo.setCountry(isNull(user.country) ? null : dto2entity(user.country));
+        dbo.setCity(isNull(user.city) ? null : mapCity(user.city));
+        dbo.setCountry(isNull(user.country) ? null : mapCountry(user.country));
         dbo.setHomeTown(user.home_town);
         dbo.setPhone(user.mobile_phone);
         dbo.setHomePhone(user.home_phone);
@@ -457,11 +456,11 @@ public class Dto2Entity {
                     .setPostponedWallCount(counters.postponed_wall);
         }
 
-        dbo.setMilitaries(mapAll(user.militaries, Dto2Entity::dto2entity));
-        dbo.setCareers(mapAll(user.careers, Dto2Entity::dto2entity));
-        dbo.setUniversities(mapAll(user.universities, Dto2Entity::dto2entity));
-        dbo.setSchools(mapAll(user.schools, Dto2Entity::dto2entity));
-        dbo.setRelatives(mapAll(user.relatives, Dto2Entity::dto2entity));
+        dbo.setMilitaries(mapAll(user.militaries, Dto2Entity::mapMilitary));
+        dbo.setCareers(mapAll(user.careers, Dto2Entity::mapCareer));
+        dbo.setUniversities(mapAll(user.universities, Dto2Entity::mapUniversity));
+        dbo.setSchools(mapAll(user.schools, Dto2Entity::mapSchool));
+        dbo.setRelatives(mapAll(user.relatives, Dto2Entity::mapUserRelative));
 
         dbo.setRelation(user.relation);
         dbo.setRelationPartnerId(user.relation_partner == null ? 0 : user.relation_partner.id);
@@ -487,14 +486,14 @@ public class Dto2Entity {
         return dbo;
     }
 
-    public static UserDetailsEntity.RelativeEntity dto2entity(VKApiUser.Relative relative) {
+    public static UserDetailsEntity.RelativeEntity mapUserRelative(VKApiUser.Relative relative) {
         return new UserDetailsEntity.RelativeEntity()
                 .setId(relative.id)
                 .setType(relative.type)
                 .setName(relative.name);
     }
 
-    public static SchoolEntity dto2entity(VKApiSchool dto) {
+    public static SchoolEntity mapSchool(VKApiSchool dto) {
         return new SchoolEntity()
                 .setCityId(dto.city_id)
                 .setClazz(dto.clazz)
@@ -506,7 +505,7 @@ public class Dto2Entity {
                 .setName(dto.name);
     }
 
-    public static UniversityEntity dto2entity(VKApiUniversity dto) {
+    public static UniversityEntity mapUniversity(VKApiUniversity dto) {
         return new UniversityEntity()
                 .setId(dto.id)
                 .setCityId(dto.city_id)
@@ -521,7 +520,7 @@ public class Dto2Entity {
                 .setGraduationYear(dto.graduation);
     }
 
-    public static MilitaryEntity dto2entity(VKApiMilitary dto) {
+    public static MilitaryEntity mapMilitary(VKApiMilitary dto) {
         return new MilitaryEntity()
                 .setCountryId(dto.country_id)
                 .setFrom(dto.from)
@@ -530,7 +529,7 @@ public class Dto2Entity {
                 .setUntil(dto.until);
     }
 
-    public static CareerEntity dto2entity(VKApiCareer dto) {
+    public static CareerEntity mapCareer(VKApiCareer dto) {
         return new CareerEntity()
                 .setCityId(dto.city_id)
                 .setCompany(dto.company)
@@ -541,11 +540,11 @@ public class Dto2Entity {
                 .setGroupId(dto.group_id);
     }
 
-    public static CountryEntity dto2entity(VKApiCountry dto) {
+    public static CountryEntity mapCountry(VKApiCountry dto) {
         return new CountryEntity(dto.id, dto.title);
     }
 
-    public static CityEntity dto2entity(VKApiCity dto) {
+    public static CityEntity mapCity(VKApiCity dto) {
         return new CityEntity()
                 .setArea(dto.area)
                 .setId(dto.id)
@@ -554,7 +553,7 @@ public class Dto2Entity {
                 .setRegion(dto.region);
     }
 
-    public static NewsEntity buildNewsEntity(VKApiNews news) {
+    public static NewsEntity mapNews(VKApiNews news) {
         NewsEntity entity = new NewsEntity()
                 .setType(news.type)
                 .setSourceId(news.source_id)
@@ -581,20 +580,20 @@ public class Dto2Entity {
                 .setViews(news.views);
 
         if (news.hasAttachments()) {
-            entity.setAttachments(buildAttachmentsEntities(news.attachments));
+            entity.setAttachments(mapAttachemntsList(news.attachments));
         } else {
             entity.setAttachments(Collections.emptyList());
         }
 
-        entity.setCopyHistory(mapAll(news.copy_history, Dto2Entity::buildPostEntity, false));
+        entity.setCopyHistory(mapAll(news.copy_history, Dto2Entity::mapPost, false));
         return entity;
     }
 
-    public static CommentEntity buildCommentDbo(int sourceId, int sourceOwnerId, int sourceType, String sourceAccessKey, VKApiComment comment) {
+    public static CommentEntity mapComment(int sourceId, int sourceOwnerId, int sourceType, String sourceAccessKey, VKApiComment comment) {
         List<Entity> attachmentsEntities;
 
         if(nonNull(comment.attachments)){
-            attachmentsEntities = buildAttachmentsEntities(comment.attachments);
+            attachmentsEntities = mapAttachemntsList(comment.attachments);
         } else {
             attachmentsEntities = Collections.emptyList();
         }
@@ -614,7 +613,7 @@ public class Dto2Entity {
                 .setAttachments(attachmentsEntities);
     }
 
-    public static SimpleDialogEntity dto2Entity(VkApiConversation dto){
+    public static SimpleDialogEntity mapConversation(VkApiConversation dto){
         SimpleDialogEntity entity = new SimpleDialogEntity(dto.peer.id)
                 .setInRead(dto.inRead)
                 .setOutRead(dto.outRead)
@@ -626,7 +625,7 @@ public class Dto2Entity {
             entity.setTitle(dto.settings.title);
 
             if(nonNull(dto.settings.pinnedMesage)){
-                entity.setPinned(buildMessageDbo(dto.settings.pinnedMesage));
+                entity.setPinned(mapMessage(dto.settings.pinnedMesage));
             }
 
             if(nonNull(dto.settings.photo)){
@@ -639,8 +638,8 @@ public class Dto2Entity {
         return entity;
     }
 
-    public static DialogEntity dialog(VkApiDialog dto) {
-        MessageEntity messageEntity = buildMessageDbo(dto.lastMessage);
+    public static DialogEntity mapDialog(VkApiDialog dto) {
+        MessageEntity messageEntity = mapMessage(dto.lastMessage);
 
         DialogEntity entity = new DialogEntity(messageEntity.getPeerId())
                 .setLastMessageId(messageEntity.getId())
@@ -654,7 +653,7 @@ public class Dto2Entity {
             entity.setTitle(dto.conversation.settings.title);
 
             if(nonNull(dto.conversation.settings.pinnedMesage)){
-                entity.setPinned(buildMessageDbo(dto.conversation.settings.pinnedMesage));
+                entity.setPinned(mapMessage(dto.conversation.settings.pinnedMesage));
             }
 
             if(nonNull(dto.conversation.settings.photo)){
@@ -667,7 +666,7 @@ public class Dto2Entity {
         return entity;
     }
 
-    public static List<Entity> buildAttachmentsEntities(VkApiAttachments attachments) {
+    public static List<Entity> mapAttachemntsList(VkApiAttachments attachments) {
         List<VkApiAttachments.Entry> entries = attachments.entryList();
 
         if (entries.isEmpty()) {
@@ -675,7 +674,7 @@ public class Dto2Entity {
         }
 
         if (entries.size() == 1) {
-            return Collections.singletonList(buildAttachmentEntity(entries.get(0).attachment));
+            return Collections.singletonList(mapAttachment(entries.get(0).attachment));
         }
 
         List<Entity> entities = new ArrayList<>(entries.size());
@@ -686,39 +685,39 @@ public class Dto2Entity {
                 continue;
             }
 
-            entities.add(buildAttachmentEntity(entry.attachment));
+            entities.add(mapAttachment(entry.attachment));
         }
 
         return entities;
     }
 
-    public static Entity buildAttachmentEntity(VKApiAttachment dto) {
+    public static Entity mapAttachment(VKApiAttachment dto) {
         if (dto instanceof VKApiPhoto) {
-            return buildPhotoEntity((VKApiPhoto) dto);
+            return mapPhoto((VKApiPhoto) dto);
         }
 
         if (dto instanceof VKApiVideo) {
-            return buildVideoEntity((VKApiVideo) dto);
+            return mapVideo((VKApiVideo) dto);
         }
 
         if (dto instanceof VkApiDoc) {
-            return buildDocumentEntity((VkApiDoc) dto);
+            return mapDoc((VkApiDoc) dto);
         }
 
         if (dto instanceof VKApiLink) {
-            return buildLinkEntity((VKApiLink) dto);
+            return mapLink((VKApiLink) dto);
         }
 
         if (dto instanceof VKApiWikiPage) {
-            return buildPageEntity((VKApiWikiPage) dto);
+            return mapWikiPage((VKApiWikiPage) dto);
         }
 
         if (dto instanceof VKApiSticker) {
-            return buildStickerEntity((VKApiSticker) dto);
+            return mapSticker((VKApiSticker) dto);
         }
 
         if (dto instanceof VKApiPost) {
-            return buildPostEntity((VKApiPost) dto);
+            return mapPost((VKApiPost) dto);
         }
 
         if (dto instanceof VKApiPoll) {
@@ -726,17 +725,17 @@ public class Dto2Entity {
         }
 
         if (dto instanceof VKApiAudio) {
-            return buildAudioEntity((VKApiAudio) dto);
+            return mapAudio((VKApiAudio) dto);
         }
 
         if(dto instanceof VkApiAudioMessage){
-            return map((VkApiAudioMessage) dto);
+            return mapAudioMessage((VkApiAudioMessage) dto);
         }
 
         throw new UnsupportedOperationException("Unsupported attachment, class: " + dto.getClass());
     }
 
-    public static AudioEntity buildAudioEntity(VKApiAudio dto) {
+    public static AudioEntity mapAudio(VKApiAudio dto) {
         return new AudioEntity(dto.id, dto.owner_id)
                 .setArtist(dto.artist)
                 .setTitle(dto.title)
@@ -748,14 +747,14 @@ public class Dto2Entity {
                 .setAccessKey(dto.access_key);
     }
 
-    public static PollEntity.Answer map(VKApiPoll.Answer dto){
+    public static PollEntity.Answer mapPollAnswer(VKApiPoll.Answer dto){
         return new PollEntity.Answer(dto.id, dto.text, dto.votes, dto.rate);
     }
 
     public static PollEntity buildPollEntity(VKApiPoll dto) {
         return new PollEntity(dto.id, dto.owner_id)
                 .setAnonymous(dto.anonymous)
-                .setAnswers(mapAll(dto.answers, Dto2Entity::map))
+                .setAnswers(mapAll(dto.answers, Dto2Entity::mapPollAnswer))
                 .setBoard(dto.is_board)
                 .setCreationTime(dto.created)
                 .setMyAnswerIds(dto.answer_ids)
@@ -771,7 +770,7 @@ public class Dto2Entity {
                 .setMultiple(dto.multiple);
     }
 
-    public static PostEntity buildPostEntity(VKApiPost dto) {
+    public static PostEntity mapPost(VKApiPost dto) {
         PostEntity dbo = new PostEntity(dto.id, dto.owner_id)
                 .setFromId(dto.from_id)
                 .setDate(dto.date)
@@ -803,13 +802,13 @@ public class Dto2Entity {
         }
 
         if (dto.hasAttachments()) {
-            dbo.setAttachments(buildAttachmentsEntities(dto.attachments));
+            dbo.setAttachments(mapAttachemntsList(dto.attachments));
         } else {
             dbo.setAttachments(Collections.emptyList());
         }
 
         if (dto.hasCopyHistory()) {
-            dbo.setCopyHierarchy(mapAll(dto.copy_history, Dto2Entity::buildPostEntity));
+            dbo.setCopyHierarchy(mapAll(dto.copy_history, Dto2Entity::mapPost));
         } else {
             dbo.setCopyHierarchy(Collections.emptyList());
         }
@@ -817,13 +816,13 @@ public class Dto2Entity {
         return dbo;
     }
 
-    public static StickerEntity buildStickerEntity(VKApiSticker sticker) {
+    public static StickerEntity mapSticker(VKApiSticker sticker) {
         return new StickerEntity(sticker.sticker_id)
-                .setImages(mapAll(sticker.images, Dto2Entity::map))
-                .setImagesWithBackground(mapAll(sticker.images_with_background, Dto2Entity::map));
+                .setImages(mapAll(sticker.images, Dto2Entity::mapStickerImage))
+                .setImagesWithBackground(mapAll(sticker.images_with_background, Dto2Entity::mapStickerImage));
     }
 
-    public static StickerSetEntity map(VKApiStickerSet.Product dto){
+    public static StickerSetEntity mapStikerSet(VKApiStickerSet.Product dto){
         return new StickerSetEntity(dto.id)
                 .setTitle(dto.title)
                 .setPromoted(dto.promoted)
@@ -832,14 +831,14 @@ public class Dto2Entity {
                 .setPhoto35("https://vk.com/images/store/stickers/" + dto.id + "/cover_35b.png")
                 .setPhoto70("https://vk.com/images/store/stickers/" + dto.id + "/cover_70b.png")
                 .setPhoto140("https://vk.com/images/store/stickers/" + dto.id + "/cover_140b.png")
-                .setStickers(mapAll(dto.stickers, Dto2Entity::buildStickerEntity));
+                .setStickers(mapAll(dto.stickers, Dto2Entity::mapSticker));
     }
 
-    public static StickerEntity.Img map(VKApiSticker.Image dto){
+    public static StickerEntity.Img mapStickerImage(VKApiSticker.Image dto){
         return new StickerEntity.Img(dto.url, dto.width, dto.height);
     }
 
-    public static PageEntity buildPageEntity(VKApiWikiPage dto) {
+    public static PageEntity mapWikiPage(VKApiWikiPage dto) {
         return new PageEntity(dto.id, dto.owner_id)
                 .setCreatorId(dto.creator_id)
                 .setTitle(dto.title)
@@ -852,15 +851,15 @@ public class Dto2Entity {
                 .setViewUrl(dto.view_url);
     }
 
-    public static LinkEntity buildLinkEntity(VKApiLink link) {
+    public static LinkEntity mapLink(VKApiLink link) {
         return new LinkEntity(link.url)
                 .setCaption(link.caption)
                 .setDescription(link.description)
                 .setTitle(link.title)
-                .setPhoto(nonNull(link.photo) ? buildPhotoEntity(link.photo) : null);
+                .setPhoto(nonNull(link.photo) ? mapPhoto(link.photo) : null);
     }
 
-    public static AudioMessageEntity map(VkApiAudioMessage dto){
+    public static AudioMessageEntity mapAudioMessage(VkApiAudioMessage dto){
         return new AudioMessageEntity(dto.id, dto.owner_id)
                 .setAccessKey(dto.access_key)
                 .setDuration(dto.duration)
@@ -869,7 +868,7 @@ public class Dto2Entity {
                 .setWaveform(dto.waveform);
     }
 
-    public static DocumentEntity buildDocumentEntity(VkApiDoc dto) {
+    public static DocumentEntity mapDoc(VkApiDoc dto) {
         DocumentEntity dbo = new DocumentEntity(dto.id, dto.ownerId)
                 .setTitle(dto.title)
                 .setSize(dto.size)
@@ -881,7 +880,7 @@ public class Dto2Entity {
 
         if (nonNull(dto.preview)) {
             if (nonNull(dto.preview.photo) && nonNull(dto.preview.photo.sizes)) {
-                dbo.setPhoto(buildPhotoSizeDbo(dto.preview.photo.sizes));
+                dbo.setPhoto(mapPhotoSizes(dto.preview.photo.sizes));
             }
 
             if (nonNull(dto.preview.video)) {
@@ -898,7 +897,7 @@ public class Dto2Entity {
         return dbo;
     }
 
-    public static MessageEntity buildMessageDbo(VKApiMessage dto) {
+    public static MessageEntity mapMessage(VKApiMessage dto) {
         boolean encrypted = CryptHelper.analizeMessageBody(dto.body) == MessageType.CRYPTED;
 
         int randomId = 0;
@@ -930,19 +929,19 @@ public class Dto2Entity {
                 .setUpdateTime(dto.update_time);
 
         if (entity.isHasAttachmens()) {
-            entity.setAttachments(buildAttachmentsEntities(dto.attachments));
+            entity.setAttachments(mapAttachemntsList(dto.attachments));
         } else {
             entity.setAttachments(Collections.emptyList());
         }
 
         if (nonEmpty(dto.fwd_messages)) {
             if (dto.fwd_messages.size() == 1) {
-                entity.setForwardMessages(Collections.singletonList(buildMessageDbo(dto.fwd_messages.get(0))));
+                entity.setForwardMessages(Collections.singletonList(mapMessage(dto.fwd_messages.get(0))));
             } else {
                 List<MessageEntity> fwds = new ArrayList<>(dto.fwd_messages.size());
 
                 for (VKApiMessage f : dto.fwd_messages) {
-                    fwds.add(buildMessageDbo(f));
+                    fwds.add(mapMessage(f));
                 }
 
                 entity.setForwardMessages(fwds);
@@ -954,7 +953,7 @@ public class Dto2Entity {
         return entity;
     }
 
-    public static VideoEntity buildVideoEntity(VKApiVideo dto) {
+    public static VideoEntity mapVideo(VKApiVideo dto) {
         return new VideoEntity(dto.id, dto.owner_id)
                 .setAlbumId(dto.album_id)
                 .setTitle(dto.title)
@@ -975,8 +974,8 @@ public class Dto2Entity {
                 .setUserLikes(dto.user_likes)
                 .setRepeat(dto.repeat)
                 .setLikesCount(dto.likes)
-                .setPrivacyView(nonNull(dto.privacy_view) ? buildPrivacyDbo(dto.privacy_view) : null)
-                .setPrivacyComment(nonNull(dto.privacy_comment) ? buildPrivacyDbo(dto.privacy_comment) : null)
+                .setPrivacyView(nonNull(dto.privacy_view) ? mapPrivacy(dto.privacy_view) : null)
+                .setPrivacyComment(nonNull(dto.privacy_comment) ? mapPrivacy(dto.privacy_comment) : null)
                 .setMp4link240(dto.mp4_240)
                 .setMp4link360(dto.mp4_360)
                 .setMp4link480(dto.mp4_480)
@@ -990,19 +989,11 @@ public class Dto2Entity {
                 .setCanAdd(dto.can_add);
     }
 
-    public static PrivacyEntity buildPrivacyDbo(VkApiPrivacy dto) {
-        List<PrivacyEntity.Entry> entries = new ArrayList<>(safeCountOf(dto.entries));
-
-        if (nonNull(dto.entries)) {
-            for (VkApiPrivacy.Entry entry : dto.entries) {
-                entries.add(new PrivacyEntity.Entry(entry.type, entry.id, entry.allowed));
-            }
-        }
-
-        return new PrivacyEntity(dto.category, entries.toArray(new PrivacyEntity.Entry[entries.size()]));
+    public static PrivacyEntity mapPrivacy(VkApiPrivacy dto) {
+        return new PrivacyEntity(dto.category, mapAll(dto.entries, orig -> new PrivacyEntity.Entry(orig.type, orig.id, orig.allowed)));
     }
 
-    public static PhotoEntity buildPhotoEntity(VKApiPhoto dto) {
+    public static PhotoEntity mapPhoto(VKApiPhoto dto) {
         return new PhotoEntity(dto.id, dto.owner_id)
                 .setAlbumId(dto.album_id)
                 .setWidth(dto.width)
@@ -1017,60 +1008,60 @@ public class Dto2Entity {
                 .setAccessKey(dto.access_key)
                 .setPostId(dto.post_id)
                 .setDeleted(false) //cant bee deleted
-                .setSizes(buildPhotoSizeDbo(dto.sizes));
+                .setSizes(mapPhotoSizes(dto.sizes));
     }
 
-    public static PhotoSizeEntity.Size dto2entity(PhotoSizeDto dto) {
+    public static PhotoSizeEntity.Size mapPhotoSize(PhotoSizeDto dto) {
         return new PhotoSizeEntity.Size()
                 .setH(dto.height)
                 .setW(dto.width)
                 .setUrl(dto.url);
     }
 
-    public static PhotoSizeEntity buildPhotoSizeDbo(List<PhotoSizeDto> dtos) {
+    public static PhotoSizeEntity mapPhotoSizes(List<PhotoSizeDto> dtos) {
         PhotoSizeEntity sizes = new PhotoSizeEntity();
 
         if (nonNull(dtos)) {
             for (PhotoSizeDto dto : dtos) {
                 switch (dto.type) {
                     case PhotoSizeDto.Type.S:
-                        sizes.setS(dto2entity(dto));
+                        sizes.setS(mapPhotoSize(dto));
                         break;
 
                     case PhotoSizeDto.Type.M:
-                        sizes.setM(dto2entity(dto));
+                        sizes.setM(mapPhotoSize(dto));
                         break;
 
                     case PhotoSizeDto.Type.X:
-                        sizes.setX(dto2entity(dto));
+                        sizes.setX(mapPhotoSize(dto));
                         break;
 
                     case PhotoSizeDto.Type.Y:
-                        sizes.setY(dto2entity(dto));
+                        sizes.setY(mapPhotoSize(dto));
                         break;
 
                     case PhotoSizeDto.Type.Z:
-                        sizes.setZ(dto2entity(dto));
+                        sizes.setZ(mapPhotoSize(dto));
                         break;
 
                     case PhotoSizeDto.Type.W:
-                        sizes.setW(dto2entity(dto));
+                        sizes.setW(mapPhotoSize(dto));
                         break;
 
                     case PhotoSizeDto.Type.O:
-                        sizes.setO(dto2entity(dto));
+                        sizes.setO(mapPhotoSize(dto));
                         break;
 
                     case PhotoSizeDto.Type.P:
-                        sizes.setP(dto2entity(dto));
+                        sizes.setP(mapPhotoSize(dto));
                         break;
 
                     case PhotoSizeDto.Type.Q:
-                        sizes.setQ(dto2entity(dto));
+                        sizes.setQ(mapPhotoSize(dto));
                         break;
 
                     case PhotoSizeDto.Type.R:
-                        sizes.setR(dto2entity(dto));
+                        sizes.setR(mapPhotoSize(dto));
                         break;
                 }
             }

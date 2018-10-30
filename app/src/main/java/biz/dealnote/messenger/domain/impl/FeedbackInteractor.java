@@ -75,7 +75,7 @@ public class FeedbackInteractor implements IFeedbackInteractor {
                         dbos.add(dbo);
                     }
 
-                    final OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
+                    final OwnerEntities ownerEntities = Dto2Entity.mapOwners(response.profiles, response.groups);
                     final List<Owner> owners = Dto2Model.transformOwners(response.profiles, response.groups);
 
                     return cache.notifications()

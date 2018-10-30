@@ -36,7 +36,7 @@ public class StickersInteractor implements IStickersInteractor {
                 .getProducts(true, "active", "stickers")
                 .flatMapCompletable(items -> {
                     List<VKApiStickerSet.Product> list = listEmptyIfNull(items.items);
-                    return storage.store(accountId, mapAll(list, Dto2Entity::map));
+                    return storage.store(accountId, mapAll(list, Dto2Entity::mapStikerSet));
                 });
     }
 

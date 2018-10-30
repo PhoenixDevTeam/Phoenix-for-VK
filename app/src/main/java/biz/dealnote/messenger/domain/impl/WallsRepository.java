@@ -184,7 +184,7 @@ public class WallsRepository implements IWallsRepository {
                         ids.append(dto);
                     }
 
-                    final OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
+                    final OwnerEntities ownerEntities = Dto2Entity.mapOwners(response.profiles, response.groups);
                     return ownersRepository
                             .findBaseOwnersDataAsBundle(accountId, ids.getAll(), IOwnersRepository.MODE_ANY, owners)
                             .flatMap(bundle -> {
@@ -192,7 +192,7 @@ public class WallsRepository implements IWallsRepository {
 
                                 List<PostEntity> dbos = new ArrayList<>(dtos.size());
                                 for (VKApiPost dto : dtos) {
-                                    dbos.add(Dto2Entity.buildPostEntity(dto));
+                                    dbos.add(Dto2Entity.mapPost(dto));
                                 }
 
                                 return storages.wall()
@@ -392,9 +392,9 @@ public class WallsRepository implements IWallsRepository {
                         throw new NotFoundException();
                     }
 
-                    PostEntity dbo = Dto2Entity.buildPostEntity(response.posts.get(0));
+                    PostEntity dbo = Dto2Entity.mapPost(response.posts.get(0));
 
-                    OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
+                    OwnerEntities ownerEntities = Dto2Entity.mapOwners(response.profiles, response.groups);
                     return cache.storeWallEntities(accountId, Collections.singletonList(dbo), ownerEntities, null)
                             .map(ints -> ints[0])
                             .flatMap(dbid -> cache

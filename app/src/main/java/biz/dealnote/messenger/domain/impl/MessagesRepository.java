@@ -134,7 +134,7 @@ public class MessagesRepository implements IMessagesRepository {
                 List<MessageEntity> dbos = new ArrayList<>(dtos.size());
 
                 for (VKApiMessage dto : dtos) {
-                    dbos.add(Dto2Entity.buildMessageDbo(dto));
+                    dbos.add(Dto2Entity.mapMessage(dto));
                 }
 
                 return dbos;
@@ -456,10 +456,10 @@ public class MessagesRepository implements IMessagesRepository {
                     }
 
                     VkApiConversation dto = response.items.get(0);
-                    SimpleDialogEntity entity = Dto2Entity.dto2Entity(dto);
+                    SimpleDialogEntity entity = Dto2Entity.mapConversation(dto);
 
                     List<Owner> existsOwners = Dto2Model.transformOwners(response.profiles, response.groups);
-                    OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
+                    OwnerEntities ownerEntities = Dto2Entity.mapOwners(response.profiles, response.groups);
 
                     return ownersRepository.insertOwners(accountId, ownerEntities)
                             .andThen(storages.dialogs().saveSimple(accountId, entity))
@@ -582,7 +582,7 @@ public class MessagesRepository implements IMessagesRepository {
         return networker.vkDefault(accountId)
                 .messages()
                 .getById(Collections.singletonList(messageId))
-                .map(dtos -> MapUtil.mapAll(dtos, Dto2Entity::buildMessageDbo))
+                .map(dtos -> MapUtil.mapAll(dtos, Dto2Entity::mapMessage))
                 .compose(entities2Models(accountId))
                 .flatMap(messages -> {
                     if (messages.isEmpty()) {
@@ -787,7 +787,7 @@ public class MessagesRepository implements IMessagesRepository {
                     }
 
                     List<Owner> existsOwners = Dto2Model.transformOwners(response.profiles, response.groups);
-                    OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
+                    OwnerEntities ownerEntities = Dto2Entity.mapOwners(response.profiles, response.groups);
 
                     return ownersRepository
                             .findBaseOwnersDataAsBundle(accountId, ownerIds, IOwnersRepository.MODE_ANY, existsOwners)
@@ -797,7 +797,7 @@ public class MessagesRepository implements IMessagesRepository {
                                 final List<Message> encryptedMessages = new ArrayList<>(0);
 
                                 for (VkApiDialog dto : apiDialogs) {
-                                    DialogEntity entity = Dto2Entity.dialog(dto);
+                                    DialogEntity entity = Dto2Entity.mapDialog(dto);
                                     entities.add(entity);
 
                                     Dialog dialog = Dto2Model.transform(accountId, dto, owners);
