@@ -24,12 +24,21 @@ public final class ParcelableModelWrapper implements Parcelable {
         TYPES.add(Chat.class);
         TYPES.add(Poll.class);
         TYPES.add(Link.class);
+        TYPES.add(Comment.class);
     }
 
     private final AbsModel model;
 
     public static ParcelableModelWrapper wrap(AbsModel model){
         return new ParcelableModelWrapper(model);
+    }
+
+    public static AbsModel readModel(Parcel in){
+        return in.<ParcelableModelWrapper>readParcelable(ParcelableModelWrapper.class.getClassLoader()).get();
+    }
+
+    public static void writeModel(Parcel dest, int flags, AbsModel owner){
+        dest.writeParcelable(new ParcelableModelWrapper(owner), flags);
     }
 
     private ParcelableModelWrapper(AbsModel model) {
