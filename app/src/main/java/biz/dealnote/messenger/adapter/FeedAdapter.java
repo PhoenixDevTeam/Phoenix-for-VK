@@ -99,7 +99,7 @@ public class FeedAdapter extends RecyclerBindableAdapter<News, FeedAdapter.PostH
             }
         });
 
-        holder.topDivider.setVisibility(needToShowTopDivider(item) ? View.VISIBLE : View.GONE);
+        holder.topDivider.setVisibility(View.GONE);
         holder.bottomDivider.setVisibility(needToShowBottomDivider(item) ? View.VISIBLE : View.GONE);
 
         holder.viewsCounterRoot.setVisibility(item.getViewCount() > 0 ? View.VISIBLE : View.GONE);

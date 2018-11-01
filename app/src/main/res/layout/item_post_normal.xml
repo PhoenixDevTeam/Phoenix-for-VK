@@ -56,28 +56,27 @@
             android:id="@+id/bottom_divider"
             layout="@layout/line_divider" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/buttons_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <biz.dealnote.messenger.view.CircleCounterButton
-                android:id="@+id/like_button"
-                android:layout_width="wrap_content"
+                android:id="@+id/share_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:active_background_color="?attr/icon_color_active"
-                app:always_counter="false"
-                app:button_icon="@drawable/heart"
+                app:button_icon="@drawable/share_variant"
                 app:noactive_icon_color="?attr/icon_color_static" />
 
             <biz.dealnote.messenger.view.CircleCounterButton
                 android:id="@+id/comments_button"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/like_button"
+                android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:active_background_color="?attr/icon_color_active"
                 app:always_counter="false"
@@ -85,16 +84,17 @@
                 app:noactive_icon_color="?attr/icon_color_static" />
 
             <biz.dealnote.messenger.view.CircleCounterButton
-                android:id="@+id/share_button"
-                android:layout_width="wrap_content"
+                android:id="@+id/like_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:active_background_color="?attr/icon_color_active"
-                app:button_icon="@drawable/share_variant"
+                app:always_counter="false"
+                app:button_icon="@drawable/heart"
                 app:noactive_icon_color="?attr/icon_color_static" />
 
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
 

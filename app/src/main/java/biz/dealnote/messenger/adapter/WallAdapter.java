@@ -136,7 +136,7 @@ public class WallAdapter extends RecyclerBindableAdapter<Post, RecyclerView.View
 
         holder.root.setOnClickListener(v -> clickListener.onPostClick(post));
 
-        holder.topDivider.setVisibility(needToShowTopDivider(post) ? View.VISIBLE : View.GONE);
+        holder.topDivider.setVisibility(View.GONE);
         holder.bottomDivider.setVisibility(needToShowBottomDivider(post) ? View.VISIBLE : View.GONE);
 
         if (holder.viewCounterRoot != null) {

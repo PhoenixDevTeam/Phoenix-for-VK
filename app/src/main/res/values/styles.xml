@@ -87,9 +87,9 @@
 
     <style name="Theme.Toolbar.Photo" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:gravity">center</item>
-        <item name="android:tint">#FFF</item>
-        <item name="android:textColorPrimary">#FFF</item>
-        <item name="popupTheme">@style/Widget.AppCompat.PopupMenu</item>
+        <item name="android:tint">@android:color/white</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
     <style name="Theme.Tablayout" parent="Widget.MaterialComponents.TabLayout">

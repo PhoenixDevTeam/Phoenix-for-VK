@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:text="Rustam Fattakhetdinov"
+                    tools:text="Rustam Fattakhetdinov"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle"
                     android:textStyle="bold" />
@@ -60,7 +60,7 @@
                     android:id="@+id/item_post_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Today 19:26"
+                    tools:text="Today 19:26"
                     android:textColor="?android:textColorSecondary"
                     android:textSize="@dimen/font_size_additional" />
 
@@ -120,7 +120,7 @@
                     android:autoLink="web"
                     android:gravity="start"
                     android:linksClickable="false"
-                    android:text="Message"
+                    tools:text="Message"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle"
                     app:displayHashTags="true"
@@ -160,49 +160,42 @@
             android:id="@+id/bottom_divider"
             layout="@layout/line_divider" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/buttons_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <biz.dealnote.messenger.view.CircleCounterButton
-                android:id="@+id/like_button"
-                android:layout_width="wrap_content"
+                android:id="@+id/share_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_weight="1"
                 app:active_background_color="?attr/icon_color_active"
-                app:always_counter="false"
-                app:button_icon="@drawable/heart"
+                app:button_icon="@drawable/share_variant"
                 app:noactive_icon_color="?attr/icon_color_static" />
 
             <biz.dealnote.messenger.view.CircleCounterButton
                 android:id="@+id/comments_button"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/like_button"
-                android:layout_toLeftOf="@+id/like_button"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_weight="1"
                 app:active_background_color="?attr/icon_color_active"
                 app:always_counter="false"
                 app:button_icon="@drawable/comment"
                 app:noactive_icon_color="?attr/icon_color_static" />
 
             <biz.dealnote.messenger.view.CircleCounterButton
-                android:id="@+id/share_button"
-                android:layout_width="wrap_content"
+                android:id="@+id/like_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_weight="1"
                 app:active_background_color="?attr/icon_color_active"
-                app:button_icon="@drawable/share_variant"
+                app:always_counter="false"
+                app:button_icon="@drawable/heart"
                 app:noactive_icon_color="?attr/icon_color_static" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

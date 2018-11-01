@@ -45,7 +45,7 @@ public class CenteredToolbar extends Toolbar {
     }
 
     @Override
-    public void setSubtitle(int resId) {
+    public void setSubtitle(@StringRes int resId) {
         String s = getResources().getString(resId);
         setSubtitle(s);
     }

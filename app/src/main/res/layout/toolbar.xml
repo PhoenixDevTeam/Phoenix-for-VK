@@ -7,7 +7,7 @@
     android:layout_marginStart="@dimen/card_margin"
     android:layout_marginEnd="@dimen/card_margin"
     app:cardBackgroundColor="?attr/colorPrimary"
-    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardCornerRadius="@dimen/toolbar_corner_radius"
     app:strokeColor="?attr/dividerColor"
     app:strokeWidth="1dp">
 
