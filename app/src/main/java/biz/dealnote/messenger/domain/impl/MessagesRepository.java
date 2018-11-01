@@ -1,8 +1,6 @@
 package biz.dealnote.messenger.domain.impl;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -75,7 +73,6 @@ import biz.dealnote.messenger.domain.mappers.Model2Dto;
 import biz.dealnote.messenger.domain.mappers.Model2Entity;
 import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.exception.UploadNotResolvedException;
-import biz.dealnote.messenger.longpoll.NotificationHelper;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.AppChatUser;
 import biz.dealnote.messenger.model.Conversation;
@@ -95,7 +92,6 @@ import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.WriteText;
 import biz.dealnote.messenger.model.criteria.DialogsCriteria;
 import biz.dealnote.messenger.model.criteria.MessagesCriteria;
-import biz.dealnote.messenger.service.ErrorLocalizer;
 import biz.dealnote.messenger.settings.ISettings;
 import biz.dealnote.messenger.upload.IUploadManager;
 import biz.dealnote.messenger.upload.Method;
@@ -138,13 +134,11 @@ public class MessagesRepository implements IMessagesRepository {
                 List<MessageEntity> dbos = new ArrayList<>(dtos.size());
 
                 for (VKApiMessage dto : dtos) {
-                    dbos.add(Dto2Entity.buildMessageDbo(dto));
+                    dbos.add(Dto2Entity.mapMessage(dto));
                 }
 
                 return dbos;
             });
-
-    private final Context app;
 
     private final ISettings.IAccountsSettings accountsSettings;
     private final IOwnersRepository ownersRepository;
@@ -157,13 +151,14 @@ public class MessagesRepository implements IMessagesRepository {
     private final PublishProcessor<PeerDeleting> peerDeletingPublisher = PublishProcessor.create();
     private final PublishProcessor<List<MessageUpdate>> messageUpdatesPublisher = PublishProcessor.create();
     private final PublishProcessor<List<WriteText>> writeTextPublisher = PublishProcessor.create();
+    private final PublishProcessor<SentMsg> sentMessagesPublisher = PublishProcessor.create();
+    private final PublishProcessor<Throwable> sendErrorsPublisher = PublishProcessor.create();
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final Scheduler senderScheduler = Schedulers.from(Executors.newFixedThreadPool(1));
 
-    public MessagesRepository(Context context, ISettings.IAccountsSettings accountsSettings, INetworker networker,
+    public MessagesRepository(ISettings.IAccountsSettings accountsSettings, INetworker networker,
                               IOwnersRepository ownersRepository, IStorages storages, IUploadManager uploadManager) {
-        this.app = context.getApplicationContext();
         this.accountsSettings = accountsSettings;
         this.ownersRepository = ownersRepository;
         this.networker = networker;
@@ -178,6 +173,11 @@ public class MessagesRepository implements IMessagesRepository {
         compositeDisposable.add(accountsSettings.observeRegistered()
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(ignored -> onAccountsChanged(), ignore()));
+    }
+
+    @Override
+    public Flowable<Throwable> observeMessagesSendErrors() {
+        return sendErrorsPublisher.onBackpressureBuffer();
     }
 
     @Override
@@ -222,7 +222,7 @@ public class MessagesRepository implements IMessagesRepository {
 
     private void onMessageSent(SentMsg msg) {
         nowSending = false;
-        NotificationHelper.tryCancelNotificationForPeer(app, msg.getAccountId(), msg.getPeerId());
+        sentMessagesPublisher.onNext(msg);
         send();
     }
 
@@ -235,7 +235,7 @@ public class MessagesRepository implements IMessagesRepository {
             return;
         }
 
-        Toast.makeText(app, ErrorLocalizer.localizeThrowable(app, cause), Toast.LENGTH_LONG).show();
+        sendErrorsPublisher.onNext(t);
     }
 
     private void sendMessage(Collection<Integer> accountIds) {
@@ -381,6 +381,11 @@ public class MessagesRepository implements IMessagesRepository {
     }
 
     @Override
+    public Flowable<SentMsg> observeSentMessages() {
+        return sentMessagesPublisher.onBackpressureBuffer();
+    }
+
+    @Override
     public Flowable<List<MessageUpdate>> observeMessageUpdates() {
         return messageUpdatesPublisher.onBackpressureBuffer();
     }
@@ -451,10 +456,10 @@ public class MessagesRepository implements IMessagesRepository {
                     }
 
                     VkApiConversation dto = response.items.get(0);
-                    SimpleDialogEntity entity = Dto2Entity.dto2Entity(dto);
+                    SimpleDialogEntity entity = Dto2Entity.mapConversation(dto);
 
                     List<Owner> existsOwners = Dto2Model.transformOwners(response.profiles, response.groups);
-                    OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
+                    OwnerEntities ownerEntities = Dto2Entity.mapOwners(response.profiles, response.groups);
 
                     return ownersRepository.insertOwners(accountId, ownerEntities)
                             .andThen(storages.dialogs().saveSimple(accountId, entity))
@@ -577,7 +582,7 @@ public class MessagesRepository implements IMessagesRepository {
         return networker.vkDefault(accountId)
                 .messages()
                 .getById(Collections.singletonList(messageId))
-                .map(dtos -> MapUtil.mapAll(dtos, Dto2Entity::buildMessageDbo))
+                .map(dtos -> MapUtil.mapAll(dtos, Dto2Entity::mapMessage))
                 .compose(entities2Models(accountId))
                 .flatMap(messages -> {
                     if (messages.isEmpty()) {
@@ -782,7 +787,7 @@ public class MessagesRepository implements IMessagesRepository {
                     }
 
                     List<Owner> existsOwners = Dto2Model.transformOwners(response.profiles, response.groups);
-                    OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
+                    OwnerEntities ownerEntities = Dto2Entity.mapOwners(response.profiles, response.groups);
 
                     return ownersRepository
                             .findBaseOwnersDataAsBundle(accountId, ownerIds, IOwnersRepository.MODE_ANY, existsOwners)
@@ -792,7 +797,7 @@ public class MessagesRepository implements IMessagesRepository {
                                 final List<Message> encryptedMessages = new ArrayList<>(0);
 
                                 for (VkApiDialog dto : apiDialogs) {
-                                    DialogEntity entity = Dto2Entity.dialog(dto);
+                                    DialogEntity entity = Dto2Entity.mapDialog(dto);
                                     entities.add(entity);
 
                                     Dialog dialog = Dto2Model.transform(accountId, dto, owners);
@@ -908,33 +913,6 @@ public class MessagesRepository implements IMessagesRepository {
                                                     return message;
                                                 }));
                             });
-                });
-    }
-
-    @Override
-    public Single<Integer> send(int accountId, int dbid) {
-        final IMessagesStorage store = this.storages.messages();
-
-        return store
-                .findMessagesByIds(accountId, Collections.singletonList(dbid), true, false)
-                .flatMap(dbos -> {
-                    if (dbos.isEmpty()) {
-                        throw new NotFoundException();
-                    }
-
-                    final MessageEntity entity = dbos.get(0);
-                    return changeMessageStatus(accountId, dbid, MessageStatus.SENDING, null)
-                            .andThen(internalSend(accountId, entity)
-                                    .flatMap(vkid -> {
-                                        final PeerPatch patch = new PeerPatch(entity.getPeerId())
-                                                .withLastMessage(vkid)
-                                                .withUnreadCount(0);
-
-                                        return changeMessageStatus(accountId, dbid, MessageStatus.SENT, vkid)
-                                                .andThen(applyPeerUpdatesAndPublish(accountId, Collections.singletonList(patch)))
-                                                .andThen(Single.just(vkid));
-                                    })
-                                    .onErrorResumeNext(throwable -> changeMessageStatus(accountId, dbid, MessageStatus.ERROR, null).andThen(Single.error(throwable))));
                 });
     }
 

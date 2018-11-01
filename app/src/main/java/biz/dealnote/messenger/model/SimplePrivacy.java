@@ -3,7 +3,7 @@ package biz.dealnote.messenger.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import biz.dealnote.messenger.api.model.VkApiPrivacy;
 
@@ -14,9 +14,9 @@ import biz.dealnote.messenger.api.model.VkApiPrivacy;
 public class SimplePrivacy implements Parcelable {
 
     private final String type;
-    private final ArrayList<Entry> entries;
+    private final List<Entry> entries;
 
-    public SimplePrivacy(String type, ArrayList<Entry> entries) {
+    public SimplePrivacy(String type, List<Entry> entries) {
         this.type = type;
         this.entries = entries;
     }
@@ -42,7 +42,7 @@ public class SimplePrivacy implements Parcelable {
         return type;
     }
 
-    public ArrayList<Entry> getEntries() {
+    public List<Entry> getEntries() {
         return entries;
     }
 

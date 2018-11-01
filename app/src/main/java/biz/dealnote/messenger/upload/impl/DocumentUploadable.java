@@ -92,7 +92,7 @@ public class DocumentUploadable implements IUploadable<Document> {
                                     UploadResult<Document> result = new UploadResult<>(server, document);
 
                                     if(upload.isAutoCommit()){
-                                        DocumentEntity entity = Dto2Entity.buildDocumentEntity(tmpList.get(0));
+                                        DocumentEntity entity = Dto2Entity.mapDoc(tmpList.get(0));
                                         return commit(storage, upload, entity).andThen(Single.just(result));
                                     } else {
                                         return Single.just(result);

@@ -46,7 +46,7 @@ public class CommunitiesInteractor implements ICommunitiesInteractor {
                 .get(userId, true, null, GroupColumns.API_FIELDS, offset, count)
                 .flatMap(items -> {
                     List<VKApiCommunity> dtos = listEmptyIfNull(items.getItems());
-                    List<CommunityEntity> dbos = Dto2Entity.buildCommunityDbos(dtos);
+                    List<CommunityEntity> dbos = Dto2Entity.mapCommunities(dtos);
 
                     return stores.relativeship()
                             .storeComminities(accountId, dbos, userId, offset == 0)

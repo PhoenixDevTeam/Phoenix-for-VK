@@ -88,7 +88,7 @@ public class Photo2AlbumUploadable implements IUploadable<Photo> {
                                             return Single.error(new NotFoundException());
                                         }
 
-                                        PhotoEntity entity = Dto2Entity.buildPhotoEntity(photos.get(0));
+                                        PhotoEntity entity = Dto2Entity.mapPhoto(photos.get(0));
                                         Photo photo = Dto2Model.transform(photos.get(0));
                                         Single<UploadResult<Photo>> result = Single.just(new UploadResult<>(server, photo));
                                         return upload.isAutoCommit() ? commit(storage, upload, entity).andThen(result) : result;

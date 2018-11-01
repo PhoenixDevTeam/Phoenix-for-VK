@@ -1,6 +1,5 @@
 package biz.dealnote.messenger.domain
 
-import biz.dealnote.messenger.App
 import biz.dealnote.messenger.Injection
 import biz.dealnote.messenger.db.Stores
 import biz.dealnote.messenger.domain.impl.MessagesRepository
@@ -18,8 +17,7 @@ object Repository {
     }
 
     val messages: IMessagesRepository by lazy {
-        MessagesRepository(App.getInstance(),
-                Settings.get().accounts(),
+        MessagesRepository(Settings.get().accounts(),
                 Injection.provideNetworkInterfaces(),
                 owners,
                 Injection.provideStores(),

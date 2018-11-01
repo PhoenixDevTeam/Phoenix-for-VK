@@ -4,14 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.CallSuper;
-import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.Comment;
 
 /**
  * Created by ruslan.kolbasa on 09.12.2016.
  * phoenix
  */
-public abstract class Feedback extends AbsModel implements Parcelable {
+public abstract class Feedback implements Parcelable {
 
     @FeedbackType
     private final int type;
@@ -47,8 +46,6 @@ public abstract class Feedback extends AbsModel implements Parcelable {
     }
 
     protected Feedback(Parcel in) {
-        super(in);
-        //noinspection ResourceType
         type = in.readInt();
         date = in.readLong();
         reply = in.readParcelable(Comment.class.getClassLoader());
@@ -62,7 +59,6 @@ public abstract class Feedback extends AbsModel implements Parcelable {
     @CallSuper
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
         dest.writeInt(type);
         dest.writeLong(date);
         dest.writeParcelable(reply, flags);

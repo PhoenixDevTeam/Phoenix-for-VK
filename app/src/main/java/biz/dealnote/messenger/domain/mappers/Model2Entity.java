@@ -41,7 +41,6 @@ import static biz.dealnote.messenger.domain.mappers.MapUtil.mapAll;
 import static biz.dealnote.messenger.domain.mappers.MapUtil.mapAndAdd;
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
-import static biz.dealnote.messenger.util.Utils.safeCountOf;
 
 /**
  * Created by Ruslan Kolbasa on 05.09.2017.
@@ -82,7 +81,7 @@ public class Model2Entity {
         mapAndAdd(attachments.getStickers(), Model2Entity::buildStickerEntity, entities);
         mapAndAdd(attachments.getPhotos(), Model2Entity::buildPhotoEntity, entities);
         mapAndAdd(attachments.getDocs(), Model2Entity::buildDocumentDbo, entities);
-        mapAndAdd(attachments.getVoiceMessages(), Model2Entity::buildAudioMessageEntity, entities);
+        mapAndAdd(attachments.getVoiceMessages(), Model2Entity::mapAudio, entities);
         mapAndAdd(attachments.getVideos(), Model2Entity::buildVideoDbo, entities);
         mapAndAdd(attachments.getPosts(), Model2Entity::buildPostDbo, entities);
         mapAndAdd(attachments.getLinks(), Model2Entity::buildLinkDbo, entities);
@@ -232,29 +231,19 @@ public class Model2Entity {
                 .setPlatform(video.getPlatform())
                 .setRepeat(video.isRepeat())
                 .setDuration(video.getDuration())
-                .setPrivacyView(isNull(video.getPrivacyView()) ? null : buildPrivacyDbo(video.getPrivacyView()))
-                .setPrivacyComment(isNull(video.getPrivacyComment()) ? null : buildPrivacyDbo(video.getPrivacyComment()))
+                .setPrivacyView(isNull(video.getPrivacyView()) ? null : mapPrivacy(video.getPrivacyView()))
+                .setPrivacyComment(isNull(video.getPrivacyComment()) ? null : mapPrivacy(video.getPrivacyComment()))
                 .setCanEdit(video.isCanEdit())
                 .setCanAdd(video.isCanAdd())
                 .setCanComment(video.isCanComment())
                 .setCanRepost(video.isCanRepost());
     }
 
-    public static PrivacyEntity buildPrivacyDbo(SimplePrivacy privacy){
-        List<SimplePrivacy.Entry> entries = privacy.getEntries();
-        PrivacyEntity.Entry[] entryDbos = new PrivacyEntity.Entry[(safeCountOf(entries))];
-
-        if(nonNull(entries)){
-            for(int i = 0; i < entries.size(); i++){
-                SimplePrivacy.Entry entry = entries.get(i);
-                entryDbos[i] = new PrivacyEntity.Entry(entry.getType(), entry.getId(), entry.isAllowed());
-            }
-        }
-
-        return new PrivacyEntity(privacy.getType(), entryDbos);
+    public static PrivacyEntity mapPrivacy(SimplePrivacy privacy){
+        return new PrivacyEntity(privacy.getType(), mapAll(privacy.getEntries(), orig -> new PrivacyEntity.Entry(orig.getType(), orig.getId(), orig.isAllowed())));
     }
 
-    public static AudioMessageEntity buildAudioMessageEntity(VoiceMessage message){
+    public static AudioMessageEntity mapAudio(VoiceMessage message){
         return new AudioMessageEntity(message.getId(), message.getOwnerId())
                 .setWaveform(message.getWaveform())
                 .setLinkOgg(message.getLinkOgg())

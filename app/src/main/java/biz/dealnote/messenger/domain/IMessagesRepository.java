@@ -33,6 +33,8 @@ import io.reactivex.Single;
  * phoenix
  */
 public interface IMessagesRepository {
+    Flowable<Throwable> observeMessagesSendErrors();
+
     Completable handleFlagsUpdates(int accountId, @Nullable List<MessageFlagsSetUpdate> setUpdates, @Nullable List<MessageFlagsResetUpdate> resetUpdates);
 
     Completable handleReadUpdates(int accountId, @Nullable List<OutputMessagesSetReadUpdate> setUpdates, @Nullable List<InputMessagesSetReadUpdate> resetUpdates);
@@ -40,6 +42,8 @@ public interface IMessagesRepository {
     Completable handleUnreadBadgeUpdates(int accountId, @NonNull List<BadgeCountChangeUpdate> updates);
 
     Completable handleWriteUpdates(int accountId, @NonNull List<WriteTextInDialogUpdate> updates);
+
+    Flowable<SentMsg> observeSentMessages();
 
     Flowable<List<PeerUpdate>> observePeerUpdates();
 
@@ -97,8 +101,6 @@ public interface IMessagesRepository {
     Single<List<Message>> findCachedMessages(int accountId, List<Integer> ids);
 
     Single<Message> put(SaveMessageBuilder builder);
-
-    Single<Integer> send(int accountId, int dbid);
 
     Single<SentMsg> sendUnsentMessage(Collection<Integer> accountIds);
 

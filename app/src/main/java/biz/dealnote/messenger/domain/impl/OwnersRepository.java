@@ -154,8 +154,8 @@ public class OwnersRepository implements IOwnersRepository {
                         .users()
                         .getUserWallInfo(userId, VKApiUser.ALL_FIELDS, null)
                         .flatMap(user -> {
-                            UserEntity userEntity = Dto2Entity.buildUserDbo(user);
-                            UserDetailsEntity detailsEntity = Dto2Entity.buildUserDetailsDbo(user);
+                            UserEntity userEntity = Dto2Entity.mapUser(user);
+                            UserDetailsEntity detailsEntity = Dto2Entity.mapUserDetails(user);
                             return cache.storeUserDbos(accountId, singletonList(userEntity))
                                     .andThen(cache.storeUserDetails(accountId, userId, detailsEntity))
                                     .andThen(getCachedFullData(accountId, userId));
@@ -192,14 +192,14 @@ public class OwnersRepository implements IOwnersRepository {
             completable = completable.andThen(networker.vkDefault(accountId)
                     .groups()
                     .getById(dividedIds.gids, null, null, GroupColumns.API_FIELDS)
-                    .flatMapCompletable(communities -> cache.storeCommunityDbos(accountId, Dto2Entity.buildCommunityDbos(communities))));
+                    .flatMapCompletable(communities -> cache.storeCommunityDbos(accountId, Dto2Entity.mapCommunities(communities))));
         }
 
         if (nonEmpty(dividedIds.uids)) {
             completable = completable.andThen(networker.vkDefault(accountId)
                     .users()
                     .get(dividedIds.uids, null, UserColumns.API_FIELDS, null)
-                    .flatMapCompletable(users -> cache.storeUserDbos(accountId, Dto2Entity.buildUserDbos(users))));
+                    .flatMapCompletable(users -> cache.storeUserDbos(accountId, Dto2Entity.mapUsers(users))));
         }
 
         return completable;
@@ -501,7 +501,7 @@ public class OwnersRepository implements IOwnersRepository {
         return networker.vkDefault(accountId)
                 .users()
                 .get(uids, null, UserColumns.API_FIELDS, null)
-                .flatMap(dtos -> cache.storeUserDbos(accountId, Dto2Entity.buildUserDbos(dtos))
+                .flatMap(dtos -> cache.storeUserDbos(accountId, Dto2Entity.mapUsers(dtos))
                         .andThen(Single.just(Dto2Model.transformUsers(dtos))));
     }
 
@@ -510,7 +510,7 @@ public class OwnersRepository implements IOwnersRepository {
                 .groups()
                 .getById(gids, null, null, GroupColumns.API_FIELDS)
                 .flatMap(dtos -> {
-                    List<CommunityEntity> communityEntities = Dto2Entity.buildCommunityDbos(dtos);
+                    List<CommunityEntity> communityEntities = Dto2Entity.mapCommunities(dtos);
                     List<Community> communities = Dto2Model.transformCommunities(dtos);
                     return cache.storeCommunityDbos(accountId, communityEntities)
                             .andThen(Single.just(communities));

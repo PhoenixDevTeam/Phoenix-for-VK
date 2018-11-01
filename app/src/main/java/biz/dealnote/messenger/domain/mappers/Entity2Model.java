@@ -91,7 +91,7 @@ public class Entity2Model {
         return new VideoAlbum(dbo.getId(), dbo.getOwnerId())
                 .setTitle(dbo.getTitle())
                 .setCount(dbo.getCount())
-                .setPrivacy(nonNull(dbo.getPrivacy()) ? buildPrivacyFromDbo(dbo.getPrivacy()) : null)
+                .setPrivacy(nonNull(dbo.getPrivacy()) ? mapSimplePrivacy(dbo.getPrivacy()) : null)
                 .setPhoto160(dbo.getPhoto160())
                 .setPhoto320(dbo.getPhoto320())
                 .setUpdatedTime(dbo.getUpdateTime());
@@ -303,8 +303,8 @@ public class Entity2Model {
                 .setUpdatedTime(entity.getUpdatedTime())
                 .setCreatedTime(entity.getCreatedTime())
                 .setSizes(nonNull(entity.getSizes()) ? buildPhotoSizesFromDbo(entity.getSizes()) : PhotoSizes.empty())
-                .setPrivacyView(nonNull(entity.getPrivacyView()) ? buildPrivacyFromDbo(entity.getPrivacyView()) : null)
-                .setPrivacyComment(nonNull(entity.getPrivacyComment()) ? buildPrivacyFromDbo(entity.getPrivacyComment()) : null)
+                .setPrivacyView(nonNull(entity.getPrivacyView()) ? mapSimplePrivacy(entity.getPrivacyView()) : null)
+                .setPrivacyComment(nonNull(entity.getPrivacyComment()) ? mapSimplePrivacy(entity.getPrivacyComment()) : null)
                 .setUploadByAdminsOnly(entity.isUploadByAdminsOnly())
                 .setCommentsDisabled(entity.isCommentsDisabled());
     }
@@ -677,14 +677,8 @@ public class Entity2Model {
         return post;
     }
 
-    public static SimplePrivacy buildPrivacyFromDbo(PrivacyEntity dbo) {
-        ArrayList<SimplePrivacy.Entry> entries = new ArrayList<>(dbo.getEntries().length);
-
-        for (PrivacyEntity.Entry entry : dbo.getEntries()) {
-            entries.add(new SimplePrivacy.Entry(entry.getType(), entry.getId(), entry.isAllowed()));
-        }
-
-        return new SimplePrivacy(dbo.getType(), entries);
+    public static SimplePrivacy mapSimplePrivacy(PrivacyEntity dbo) {
+        return new SimplePrivacy(dbo.getType(), mapAll(dbo.getEntries(), orig -> new SimplePrivacy.Entry(orig.getType(), orig.getId(), orig.isAllowed())));
     }
 
     public static Video buildVideoFromDbo(VideoEntity entity) {
@@ -710,8 +704,8 @@ public class Entity2Model {
                 .setUserLikes(entity.isUserLikes())
                 .setRepeat(entity.isRepeat())
                 .setLikesCount(entity.getLikesCount())
-                .setPrivacyView(nonNull(entity.getPrivacyView()) ? buildPrivacyFromDbo(entity.getPrivacyView()) : null)
-                .setPrivacyComment(nonNull(entity.getPrivacyComment()) ? buildPrivacyFromDbo(entity.getPrivacyComment()) : null)
+                .setPrivacyView(nonNull(entity.getPrivacyView()) ? mapSimplePrivacy(entity.getPrivacyView()) : null)
+                .setPrivacyComment(nonNull(entity.getPrivacyComment()) ? mapSimplePrivacy(entity.getPrivacyComment()) : null)
                 .setMp4link240(entity.getMp4link240())
                 .setMp4link360(entity.getMp4link360())
                 .setMp4link480(entity.getMp4link480())

@@ -90,7 +90,7 @@ public class Comment extends AbsModel implements Parcelable, Identificable {
         canEdit = in.readByte() != 0;
         attachments = in.readParcelable(Attachments.class.getClassLoader());
         commented = in.readParcelable(Commented.class.getClassLoader());
-        author = in.readParcelable(fromId > 0 ? User.class.getClassLoader() : Community.class.getClassLoader());
+        author = ParcelableOwnerWrapper.readOwner(in);
         dbid = in.readInt();
         deleted = in.readByte() != 0;
     }
@@ -274,7 +274,7 @@ public class Comment extends AbsModel implements Parcelable, Identificable {
         dest.writeByte((byte) (canEdit ? 1 : 0));
         dest.writeParcelable(attachments, flags);
         dest.writeParcelable(commented, flags);
-        dest.writeParcelable(author, flags);
+        ParcelableOwnerWrapper.writeOwner(dest, flags, author);
         dest.writeInt(dbid);
         dest.writeByte((byte) (deleted ? 1 : 0));
     }

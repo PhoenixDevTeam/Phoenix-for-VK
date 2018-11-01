@@ -26,29 +26,31 @@ import biz.dealnote.messenger.model.Topic;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.model.feedback.Feedback;
+import biz.dealnote.messenger.model.feedback.ParcelableFeedbackWrapper;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.util.Utils;
 
 public class FeedbackLinkDialog extends DialogFragment implements FeedbackLinkAdapter.ActionListener {
 
-    public static FeedbackLinkDialog newInstance(int accountId, Feedback appNotification) {
+    public static FeedbackLinkDialog newInstance(int accountId, Feedback feedback) {
         Bundle bundle = new Bundle();
         bundle.putInt(Extra.ACCOUNT_ID, accountId);
-        bundle.putParcelable("appNotification", appNotification);
+        bundle.putParcelable("feedback", new ParcelableFeedbackWrapper(feedback));
         FeedbackLinkDialog feedbackLinkDialog = new FeedbackLinkDialog();
         feedbackLinkDialog.setArguments(bundle);
         return feedbackLinkDialog;
     }
 
-    private Feedback mNotification;
+    private Feedback mFeedback;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNotification = getArguments().getParcelable("appNotification");
+        ParcelableFeedbackWrapper wrapper = getArguments().getParcelable("feedback");
+        mFeedback = wrapper.get();
     }
 
-    public static void fillClassFields(List<Field> fields, Class<?> type) {
+    private static void fillClassFields(List<Field> fields, Class<?> type) {
         fields.addAll(Arrays.asList(type.getDeclaredFields()));
 
         if (type.getSuperclass() != null) {
@@ -105,7 +107,7 @@ public class FeedbackLinkDialog extends DialogFragment implements FeedbackLinkAd
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        FeedbackLinkAdapter adapter = new FeedbackLinkAdapter(getActivity(), getAllModels(mNotification), this);
+        FeedbackLinkAdapter adapter = new FeedbackLinkAdapter(getActivity(), getAllModels(mFeedback), this);
         recyclerView.setAdapter(adapter);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())

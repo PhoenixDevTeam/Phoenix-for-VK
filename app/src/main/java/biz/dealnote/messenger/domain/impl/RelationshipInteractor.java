@@ -58,7 +58,7 @@ public class RelationshipInteractor implements IRelationshipInteractor {
                 .get(userId, order, null, count, offset, UserColumns.API_FIELDS, null)
                 .map(items -> Utils.listEmptyIfNull(items.getItems()))
                 .flatMap(dtos -> {
-                    List<UserEntity> dbos = Dto2Entity.buildUserDbos(dtos);
+                    List<UserEntity> dbos = Dto2Entity.mapUsers(dtos);
                     List<User> users = Dto2Model.transformUsers(dtos);
 
                     return repositories.relativeship()
@@ -86,7 +86,7 @@ public class RelationshipInteractor implements IRelationshipInteractor {
                 .getFollowers(userId, offset, count, UserColumns.API_FIELDS, null)
                 .map(items -> Utils.listEmptyIfNull(items.getItems()))
                 .flatMap(dtos -> {
-                    List<UserEntity> dbos = Dto2Entity.buildUserDbos(dtos);
+                    List<UserEntity> dbos = Dto2Entity.mapUsers(dtos);
                     List<User> users = Dto2Model.transformUsers(dtos);
 
                     return repositories.relativeship()

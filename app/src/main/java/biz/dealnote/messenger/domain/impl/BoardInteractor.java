@@ -78,7 +78,7 @@ public class BoardInteractor implements IBoardInteractor {
                         dbos.add(Dto2Entity.buildTopicDbo(dto));
                     }
 
-                    final OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
+                    final OwnerEntities ownerEntities = Dto2Entity.mapOwners(response.profiles, response.groups);
 
                     VKOwnIds ownerIds = new VKOwnIds();
                     for (TopicEntity dbo : dbos) {

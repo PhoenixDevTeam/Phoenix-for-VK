@@ -67,11 +67,11 @@ public class FeedInteractor implements IFeedInteractor {
                     for(VKApiNews news : feed){
                         if(!hasNewsSupport(news)) continue;
 
-                        dbos.add(Dto2Entity.buildNewsEntity(news));
+                        dbos.add(Dto2Entity.mapNews(news));
                         ownIds.appendNews(news);
                     }
 
-                    final OwnerEntities ownerEntities = Dto2Entity.buildOwnerDbos(response.profiles, response.groups);
+                    final OwnerEntities ownerEntities = Dto2Entity.mapOwners(response.profiles, response.groups);
 
                     return stores.feed()
                             .store(accountId, dbos, ownerEntities, Utils.isEmpty(startFrom))

@@ -3,6 +3,9 @@ package biz.dealnote.messenger.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by admin on 24.01.2017.
  * phoenix
@@ -25,6 +28,41 @@ public final class ParcelableOwnerWrapper implements Parcelable {
 
     public Owner get() {
         return owner;
+    }
+
+    public static Owner readOwner(Parcel in){
+        return in.<ParcelableOwnerWrapper>readParcelable(ParcelableOwnerWrapper.class.getClassLoader()).get();
+    }
+
+    public static void writeOwner(Parcel dest, int flags, Owner owner){
+        dest.writeParcelable(new ParcelableOwnerWrapper(owner), flags);
+    }
+
+    public static List<Owner> readOwners(Parcel in){
+        boolean isNull = in.readInt() == 1;
+        if(isNull){
+            return null;
+        }
+
+        int ownersCount = in.readInt();
+        List<Owner> owners = new ArrayList<>(ownersCount);
+        for(int i = 0; i < ownersCount; i++){
+            owners.add(readOwner(in));
+        }
+
+        return owners;
+    }
+
+    public static void writeOwners(Parcel dest, int flags, List<Owner> owners){
+        if(owners == null){
+            dest.writeInt(1);
+            return;
+        }
+
+        dest.writeInt(owners.size());
+        for(Owner owner : owners){
+            writeOwner(dest, flags, owner);
+        }
     }
 
     private ParcelableOwnerWrapper(Parcel in) {

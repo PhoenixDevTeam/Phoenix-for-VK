@@ -1,5 +1,7 @@
 package biz.dealnote.messenger.db.model.entity;
 
+import java.util.List;
+
 /**
  * Created by Ruslan Kolbasa on 04.09.2017.
  * phoenix
@@ -8,9 +10,9 @@ public class PrivacyEntity {
 
     private final String type;
 
-    private final Entry[] entries;
+    private final List<Entry> entries;
 
-    public PrivacyEntity(String type, Entry[] entries) {
+    public PrivacyEntity(String type, List<Entry> entries) {
         this.type = type;
         this.entries = entries;
     }
@@ -46,7 +48,7 @@ public class PrivacyEntity {
         return type;
     }
 
-    public Entry[] getEntries() {
+    public List<Entry> getEntries() {
         return entries;
     }
 }
