@@ -70,13 +70,13 @@ public class CenteredToolbar extends Toolbar {
         tvTitle = new TextView(getContext());
         tvTitle.setSingleLine();
         tvTitle.setEllipsize(TextUtils.TruncateAt.END);
-        tvTitle.setTextAppearance(getContext(), R.style.TextAppearance_AppCompat_Widget_ActionBar_Title);
-        tvTitle.setTypeface(ResourcesCompat.getFont(getContext(), R.font.open_sans_semibold));
+        tvTitle.setTextAppearance(getContext(), R.style.TextAppearance_MaterialComponents_Headline6);
+        tvTitle.setTypeface(ResourcesCompat.getFont(getContext(), R.font.open_sans));
 
         tvSubtitle = new TextView(getContext());
         tvSubtitle.setSingleLine();
         tvSubtitle.setEllipsize(TextUtils.TruncateAt.END);
-        tvSubtitle.setTextAppearance(getContext(), R.style.TextAppearance_AppCompat_Widget_ActionBar_Subtitle);
+        tvSubtitle.setTextAppearance(getContext(), R.style.TextAppearance_MaterialComponents_Subtitle1);
         tvSubtitle.setTypeface(ResourcesCompat.getFont(getContext(), R.font.open_sans));
 
         LinearLayout linear = new LinearLayout(getContext());

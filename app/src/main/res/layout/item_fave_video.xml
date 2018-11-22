@@ -10,6 +10,7 @@
     app:cardBackgroundColor="?android:colorBackground"
     app:cardCornerRadius="@dimen/card_corner_radius"
     app:contentPadding="0dp"
+    app:cardElevation="0dp"
     app:strokeColor="?attr/dividerColor"
     app:strokeWidth="1dp"
     tools:ignore="UnusedAttribute">

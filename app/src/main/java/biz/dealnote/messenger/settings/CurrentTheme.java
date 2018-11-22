@@ -85,11 +85,11 @@ public class CurrentTheme {
     }
 
     public static int getPrimaryTextColorCode(Context context) {
-        return getColorFromSystemAttrs(R.attr.colorOnPrimary, context);
+        return getColorFromSystemAttrs(android.R.attr.textColorPrimary, context);
     }
 
     public static int getSecondaryTextColorCode(Context context) {
-        return getColorFromSystemAttrs(R.attr.colorOnSecondary, context);
+        return getColorFromSystemAttrs(android.R.attr.textColorSecondary, context);
     }
 
     public static int getDialogsUnreadColor(Context context) {

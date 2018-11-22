@@ -10,21 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <include
             android:id="@+id/toolbarRootView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:clipToPadding="true"
-                app:theme="@style/Theme.Toolbar" />
-
-        </RelativeLayout>
+            layout="@layout/toolbar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
