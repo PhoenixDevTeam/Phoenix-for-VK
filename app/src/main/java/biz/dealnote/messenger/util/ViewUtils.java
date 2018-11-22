@@ -117,7 +117,7 @@ public class ViewUtils {
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(CurrentTheme.getMessageBackgroundSquare(activity));
 
         int primaryColor = CurrentTheme.getIconColorActive(activity);
-        int accentColor = CurrentTheme.getColorAccent(activity);
+        int accentColor = CurrentTheme.getColorSecondary(activity);
         swipeRefreshLayout.setColorSchemeColors(primaryColor, accentColor);
     }
 

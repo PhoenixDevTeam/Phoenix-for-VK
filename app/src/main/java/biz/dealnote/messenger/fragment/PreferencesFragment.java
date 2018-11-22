@@ -10,20 +10,13 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -34,10 +27,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import biz.dealnote.messenger.Constants;
@@ -297,7 +294,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
     private void disableOnlyFullAppPrefs() {
         String fullOnly = " FULL ONLY ";
-        int color = Utils.adjustAlpha(CurrentTheme.getColorAccent(getActivity()), 100);
+        int color = Utils.adjustAlpha(CurrentTheme.getColorSecondary(getActivity()), 100);
 
         for (String name : AppPrefs.ONLY_FULL_APP_PREFS) {
             Preference preference = findPreference(name);

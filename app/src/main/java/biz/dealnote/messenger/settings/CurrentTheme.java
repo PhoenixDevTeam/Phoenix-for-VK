@@ -52,20 +52,16 @@ public class CurrentTheme {
         }
     }
 
-    public static int getColorPrimaryDark(Context context) {
-        return getColorFromAttrs(R.attr.colorPrimaryDark, context, "#000000");
-    }
-
     public static int getColorPrimary(Context context) {
         return getColorFromAttrs(R.attr.colorPrimary, context, "#000000");
     }
 
     public static int getNavigationBarColor(Context context) {
-        return getColorFromAttrs(R.attr.colorPrimary, context, "#000000");
+        return getColorFromAttrs(android.R.attr.navigationBarColor, context, "#000000");
     }
 
-    public static int getColorAccent(Context context) {
-        return getColorFromAttrs(R.attr.colorAccent, context, "#000000");
+    public static int getColorSecondary(Context context) {
+        return getColorFromAttrs(R.attr.colorSecondary, context, "#000000");
     }
 
     public static int getStatusBarNonColored(Context context) {
@@ -89,11 +85,11 @@ public class CurrentTheme {
     }
 
     public static int getPrimaryTextColorCode(Context context) {
-        return getColorFromSystemAttrs(android.R.attr.textColorPrimary, context);
+        return getColorFromSystemAttrs(R.attr.colorOnPrimary, context);
     }
 
     public static int getSecondaryTextColorCode(Context context) {
-        return getColorFromSystemAttrs(android.R.attr.textColorSecondary, context);
+        return getColorFromSystemAttrs(R.attr.colorOnSecondary, context);
     }
 
     public static int getDialogsUnreadColor(Context context) {

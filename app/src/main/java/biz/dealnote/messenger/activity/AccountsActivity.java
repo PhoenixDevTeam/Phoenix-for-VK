@@ -21,7 +21,7 @@ public class AccountsActivity extends AppCompatActivity {
         Window w = getWindow();
         w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        w.setStatusBarColor(CurrentTheme.getColorPrimaryDark(this));
+        w.setStatusBarColor(CurrentTheme.getColorPrimary(this));
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);

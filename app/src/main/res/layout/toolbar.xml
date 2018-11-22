@@ -6,10 +6,10 @@
     android:layout_marginTop="@dimen/card_margin"
     android:layout_marginStart="@dimen/card_margin"
     android:layout_marginEnd="@dimen/card_margin"
-    app:cardBackgroundColor="?attr/colorPrimary"
-    app:cardCornerRadius="@dimen/toolbar_corner_radius"
-    app:strokeColor="?attr/dividerColor"
-    app:strokeWidth="1dp">
+    app:cardBackgroundColor="?attr/colorPrimary">
+    <!--app:cardCornerRadius="@dimen/toolbar_corner_radius"-->
+    <!--app:strokeColor="?attr/dividerColor"-->
+    <!--app:strokeWidth="1dp"-->
 
     <biz.dealnote.messenger.view.CenteredToolbar
         android:id="@+id/toolbar"

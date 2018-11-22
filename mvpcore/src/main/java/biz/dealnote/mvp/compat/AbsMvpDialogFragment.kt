@@ -1,7 +1,6 @@
 package biz.dealnote.mvp.compat
 
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import android.view.View
 
 import biz.dealnote.mvp.core.IMvpView

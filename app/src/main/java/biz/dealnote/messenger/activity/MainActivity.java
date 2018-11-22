@@ -728,12 +728,13 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     @Override
     public void setStatusbarColored(boolean colored, boolean invertIcons) {
         int statusbarNonColored = CurrentTheme.getStatusBarNonColored(this);
+        int statusbarColored = CurrentTheme.getColorPrimary(this);
 
         if (Utils.hasLollipop()) {
             Window w = getWindow();
             w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            w.setStatusBarColor(colored ? Color.TRANSPARENT : statusbarNonColored);
+            w.setStatusBarColor(colored ? statusbarColored : statusbarNonColored);
             int navigationColor = colored ? CurrentTheme.getNavigationBarColor(this) : Color.BLACK;
             w.setNavigationBarColor(navigationColor);
         }

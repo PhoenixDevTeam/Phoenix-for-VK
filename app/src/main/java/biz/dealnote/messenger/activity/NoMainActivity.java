@@ -29,7 +29,7 @@ public abstract class NoMainActivity extends AppCompatActivity {
         Window w = getWindow();
         w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        w.setStatusBarColor(CurrentTheme.getColorPrimaryDark(this));
+        w.setStatusBarColor(CurrentTheme.getColorPrimary(this));
         w.setNavigationBarColor(CurrentTheme.getNavigationBarColor(this));
 
         getSupportFragmentManager().addOnBackStackChangedListener(mBackStackListener);

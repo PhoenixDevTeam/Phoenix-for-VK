@@ -62,6 +62,6 @@
     <integer name="attachments_editor_column_count">3</integer>
 
     <dimen name="card_corner_radius">12dp</dimen>
-    <dimen name="toolbar_corner_radius">24dp</dimen>
+    <dimen name="toolbar_corner_radius">12dp</dimen>
     <dimen name="card_margin">8dp</dimen>
 </resources>

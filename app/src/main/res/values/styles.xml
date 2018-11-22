@@ -15,19 +15,18 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
 
+        <item name="android:statusBarColor">?colorPrimary</item>
         <item name="colorPrimary">#FFF</item>
-        <item name="colorPrimaryDark">#FFF</item>
-        <item name="colorAccent">#424242</item>
+        <item name="colorPrimaryVariant">#FFF</item>
+        <item name="colorSecondary">#424242</item>
+        <item name="colorOnPrimary">#212121</item>
+        <item name="colorOnSecondary">#FFF</item>
+        <item name="colorOnBackground">#212121</item>
 
         <item name="icon_color_active">#233446</item>
         <item name="icon_color_static">#424242</item>
 
         <item name="dividerColor">#DADCE0</item>
-
-        <item name="android:colorBackground">@android:color/background_light</item>
-
-        <!--<item name="android:textColorPrimary">#212121</item>-->
-        <!--<item name="android:textColorSecondary">#424242</item>-->
 
         <item name="dialogs_unread_color">#20b0b0b0</item>
         <item name="navi_menu_selector">@drawable/list_selector_white</item>
@@ -82,7 +81,7 @@
 
     <style name="Theme.Toolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:gravity">center</item>
-        <item name="android:tint">?colorAccent</item>
+        <item name="android:tint">?colorSecondary</item>
     </style>
 
     <style name="Theme.Toolbar.Photo" parent="Widget.MaterialComponents.Toolbar">
@@ -96,6 +95,8 @@
         <item name="tabRippleColor">#424242</item>
         <item name="tabMode">scrollable</item>
         <item name="tabTextColor">?android:textColorPrimary</item>
+        <item name="tabIndicatorColor">#424242</item>
+        <item name="enforceTextAppearance">true</item>
         <item name="android:background">?colorPrimary</item>
     </style>
 

@@ -142,7 +142,7 @@ public class PrivacyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     private void bindListEntry(EntryViewHolder holder, final FriendList friendList, final boolean allow) {
-        holder.avatar.setColorFilter(CurrentTheme.getColorAccent(mContext));
+        holder.avatar.setColorFilter(CurrentTheme.getColorSecondary(mContext));
 
         PicassoInstance.with()
                 .load(R.drawable.ic_privacy_friends_list)

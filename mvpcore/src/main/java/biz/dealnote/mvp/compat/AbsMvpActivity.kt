@@ -1,7 +1,7 @@
 package biz.dealnote.mvp.compat
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 
 import biz.dealnote.mvp.core.IMvpView
 import biz.dealnote.mvp.core.IPresenter
@@ -10,17 +10,12 @@ import biz.dealnote.mvp.core.IPresenter
  * Created by ruslan.kolbasa on 08.09.2016.
  * mvpcore
  */
-abstract class AbsMvpActivity<P : IPresenter<V>, V : IMvpView> : AppCompatActivity(), ViewHostDelegate.IFactoryProvider<P, V> {
+abstract class AbsMvpActivity<P : IPresenter<V>, V : IMvpView> : ComponentActivity(), ViewHostDelegate.IFactoryProvider<P, V> {
 
     private val delegate = ViewHostDelegate<P, V>()
 
     protected val presenter: P?
         get() = delegate.presenter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        delegate.onCreate(this, getViewHost(), this, supportLoaderManager, savedInstanceState)
-    }
 
     // Override in case of fragment not implementing IPresenter<View> interface
     protected fun getViewHost(): V = this as V

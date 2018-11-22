@@ -10,28 +10,30 @@
         <item name="actionModeBackground">?attr/colorPrimary</item>
         <item name="statusbarNonColoredColor">#000</item>
         <item name="toolbarElevation">@dimen/toolbar_with_elevation</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="App.DayNight" parent="Base.App.DayNight">
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:windowLightStatusBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:colorBackground">#1F2226</item>
 
+        <item name="android:statusBarColor">?colorPrimary</item>
         <item name="colorPrimary">#1F2226</item>
-        <item name="colorPrimaryDark">#1F2226</item>
-        <item name="colorAccent">#78909c</item>
+        <item name="colorPrimaryVariant">#1F2226</item>
+        <item name="colorSecondary">#78909c</item>
+        <item name="colorSecondaryVariant">#78909c</item>
+        <item name="colorOnPrimary">#ffffffff</item>
+        <item name="colorOnSecondary">#b3ffffff</item>
+        <item name="colorOnBackground">#FFF</item>
 
         <item name="icon_color_active">#78909c</item>
         <item name="icon_color_static">@android:color/white</item>
 
         <item name="dividerColor">#313131</item>
 
-        <item name="android:colorBackground">#1F2226</item>
-
         <item name="dialogs_unread_color">#40909090</item>
         <item name="navi_menu_selector">@drawable/list_selector_dark</item>
-
-        <!--<item name="android:textColorPrimary">#ffffffff</item>-->
-        <!--<item name="android:textColorSecondary">#b3ffffff</item>-->
 
         <item name="messages_background_color">#151515</item>
         <item name="oval_avatar_background">@drawable/sel_button_round_4</item>
@@ -80,7 +82,10 @@
 
     <style name="Theme.Tablayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabRippleColor">@android:color/white</item>
+        <item name="tabMode">scrollable</item>
         <item name="tabTextColor">?android:textColorPrimary</item>
+        <item name="enforceTextAppearance">true</item>
+        <item name="tabIndicatorColor">@android:color/white</item>
         <item name="android:background">?colorPrimary</item>
     </style>
 
