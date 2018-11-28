@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +23,6 @@ import biz.dealnote.messenger.util.Optional;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
 import io.reactivex.schedulers.Schedulers;
 
 import static biz.dealnote.messenger.util.Utils.getCauseIfRuntime;
@@ -45,6 +43,21 @@ public class PushRegistrationResolver implements IPushRegistrationResolver {
         this.devideIdProvider = devideIdProvider;
         this.settings = settings;
         this.networker = networker;
+    }
+
+    private static Single<String> getFcmToken() {
+        return Single.create(emitter -> {
+            OnCompleteListener<InstanceIdResult> listener = task -> {
+                if (task.isSuccessful()) {
+                    InstanceIdResult result = task.getResult();
+                    emitter.onSuccess(result.getToken());
+                } else {
+                    emitter.onError(task.getException());
+                }
+            };
+
+            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(listener);
+        });
     }
 
     @Override
@@ -184,18 +197,6 @@ public class PushRegistrationResolver implements IPushRegistrationResolver {
                 });
     }
 
-    private static final class Data {
-
-        final String gcmToken;
-
-        final String deviceId;
-
-        Data(String gcmToken, String deviceId) {
-            this.gcmToken = gcmToken;
-            this.deviceId = deviceId;
-        }
-    }
-
     private Reason analizeRegistration(VkPushRegistration available, Data data, Optional<Integer> optionAccountId) {
         if (!data.deviceId.equals(available.getDeviceId())) {
             return Reason.REMOVE;
@@ -224,36 +225,26 @@ public class PushRegistrationResolver implements IPushRegistrationResolver {
         return Reason.OK;
     }
 
-    private enum Reason {
-        OK, REMOVE, UNREGISTER_AND_REMOVE
-    }
-
-    private static Single<String> getFcmToken() {
-        return Single.create(e -> {
-            final WeakReference<SingleEmitter<String>> weak = new WeakReference<>(e);
-            e.setCancellable(weak::clear);
-
-            OnCompleteListener<InstanceIdResult> listener = task -> {
-                final SingleEmitter<String> emitter = weak.get();
-
-                if (emitter == null || emitter.isDisposed()) return;
-
-                if (task.isSuccessful()) {
-                    InstanceIdResult result = task.getResult();
-                    emitter.onSuccess(result.getToken());
-                } else {
-                    emitter.onError(task.getException());
-                }
-            };
-
-            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(listener);
-        });
-    }
-
     private Single<Data> getInfo() {
         return getFcmToken().flatMap(s -> {
             Data data = new Data(s, devideIdProvider.getDeviceId());
             return Single.just(data);
         });
+    }
+
+    private enum Reason {
+        OK, REMOVE, UNREGISTER_AND_REMOVE
+    }
+
+    private static final class Data {
+
+        final String gcmToken;
+
+        final String deviceId;
+
+        Data(String gcmToken, String deviceId) {
+            this.gcmToken = gcmToken;
+            this.deviceId = deviceId;
+        }
     }
 }

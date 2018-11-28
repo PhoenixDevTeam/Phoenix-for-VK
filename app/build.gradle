@@ -16,8 +16,8 @@ android {
         applicationId "biz.dealnote.messenger"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 45401
-        versionName '4.5.4'
+        versionCode 45500
+        versionName '4.5.5'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -128,20 +128,20 @@ ext {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "androidx.core:core:1.0.0"
+    implementation "androidx.core:core:1.0.1"
     implementation "com.google.android.material:material:1.0.0"
-    implementation "androidx.appcompat:appcompat:1.0.0"
+    implementation "androidx.appcompat:appcompat:1.0.2"
     implementation "androidx.recyclerview:recyclerview:1.0.0"
     implementation "androidx.viewpager:viewpager:1.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation "androidx.drawerlayout:drawerlayout:1.0.0"
-    implementation "androidx.vectordrawable:vectordrawable:1.0.0"
+    implementation "androidx.vectordrawable:vectordrawable:1.0.1"
     implementation "androidx.media:media:1.0.0"
     implementation "androidx.browser:browser:1.0.0"
     implementation "androidx.preference:preference:1.0.0"
     implementation "androidx.exifinterface:exifinterface:1.0.0"
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.github.chrisbanes:PhotoView:2.1.4'
+    implementation 'com.github.chrisbanes:PhotoView:2.2.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
@@ -152,11 +152,11 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitLibraryVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpLibraryVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLibraryVersion"
-    implementation "com.google.firebase:firebase-core:16.0.4"
-    implementation "com.google.firebase:firebase-database:16.0.4"
+    implementation "com.google.firebase:firebase-core:16.0.5"
+    implementation "com.google.firebase:firebase-database:16.0.5"
     implementation "com.google.firebase:firebase-messaging:17.3.4"
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.8.0'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.8.4'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.6'
 }
 
 apply plugin: 'com.google.gms.google-services'
