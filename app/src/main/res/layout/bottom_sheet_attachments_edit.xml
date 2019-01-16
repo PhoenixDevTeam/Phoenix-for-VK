@@ -55,10 +55,7 @@
         android:layout_height="wrap_content"
         android:gravity="center|end"
         android:orientation="horizontal"
-        android:paddingStart="8dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="4dp">
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/buttonCamera"

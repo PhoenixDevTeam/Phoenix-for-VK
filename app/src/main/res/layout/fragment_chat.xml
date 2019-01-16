@@ -12,7 +12,6 @@
         android:background="?android:colorBackground">
 
         <include
-            android:id="@+id/toolbarRootView"
             layout="@layout/toolbar" />
 
     </com.google.android.material.appbar.AppBarLayout>

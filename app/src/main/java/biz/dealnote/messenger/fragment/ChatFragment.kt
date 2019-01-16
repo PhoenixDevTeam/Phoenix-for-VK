@@ -99,7 +99,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         (requireActivity() as AppCompatActivity).setSupportActionBar(root.findViewById(R.id.toolbar))
 
         emptyText = root.findViewById(R.id.fragment_chat_empty_text)
-        toolbarRootView = root.findViewById(R.id.toolbarRootView)
+        toolbarRootView = root.findViewById(R.id.toolbar)
 
         recyclerView = root.findViewById(R.id.fragment_friend_dialog_list)
         recyclerView?.apply {

@@ -8,12 +8,11 @@
     android:fitsSystemWindows="true">
 
     <include
-        android:id="@+id/toolbar_container"
         layout="@layout/toolbar" />
 
     <FrameLayout
         android:layout_above="@+id/linearLayout"
-        android:layout_below="@id/toolbar_container"
+        android:layout_below="@id/toolbar"
         android:background="?android:colorBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -36,7 +36,7 @@ public class HorizontalOptionsAdapter<T extends Entry> extends RecyclerBindableA
 
     @Override
     protected int layoutId(int type) {
-        return R.layout.item_round_button;
+        return R.layout.item_chip;
     }
 
     static class Holder extends RecyclerView.ViewHolder {

@@ -19,17 +19,20 @@
         <item name="android:windowLightStatusBar" tools:targetApi="o_mr1">false</item>
         <item name="android:colorBackground">#1F2226</item>
 
-        <item name="android:statusBarColor">?colorPrimary</item>
-        <item name="colorPrimary">#1F2226</item>
-        <item name="colorPrimaryVariant">#1F2226</item>
-        <item name="colorSecondary">#78909c</item>
-        <item name="colorSecondaryVariant">#78909c</item>
-        <item name="colorOnPrimary">#ffffffff</item>
-        <item name="colorOnSecondary">#b3ffffff</item>
-        <item name="colorOnBackground">#FFF</item>
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="colorPrimaryVariant">#FF3F51B5</item>
+        <item name="colorSecondary">#FF3F51B5</item>
+        <item name="colorSecondaryVariant">#FF3F51B5</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorOnBackground">#FFFFFF</item>
 
-        <item name="icon_color_active">#78909c</item>
-        <item name="icon_color_static">@android:color/white</item>
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.OutlinedButton
+        </item>
+        <item name="materialCardViewStyle">@style/Theme.MaterialCardView</item>
+        <item name="floatingActionButtonStyle">@style/Theme.FloatingActionButton</item>
+        <item name="icon_color_active">#3F51B5</item>
+        <item name="icon_color_static">#FFF</item>
 
         <item name="dividerColor">#313131</item>
 
@@ -74,20 +77,6 @@
         <item name="message_bubble_color">#151515</item>
         <item name="quick_reply_icon_color">#FFF</item>
         <item name="toolbarBackIcon">@drawable/arrow_left</item>
-    </style>
-
-    <style name="Theme.Toolbar" parent="Widget.MaterialComponents.Toolbar">
-        <item name="android:gravity">center</item>
-        <item name="android:tint">?android:textColorPrimary</item>
-    </style>
-
-    <style name="Theme.Tablayout" parent="Widget.MaterialComponents.TabLayout">
-        <item name="tabRippleColor">@android:color/white</item>
-        <item name="tabMode">scrollable</item>
-        <item name="tabTextColor">?android:textColorPrimary</item>
-        <item name="enforceTextAppearance">true</item>
-        <item name="tabIndicatorColor">@android:color/white</item>
-        <item name="android:background">?colorPrimary</item>
     </style>
 
 </resources>
