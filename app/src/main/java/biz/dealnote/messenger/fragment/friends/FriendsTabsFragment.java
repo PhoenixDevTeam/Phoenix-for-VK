@@ -154,11 +154,11 @@ public class FriendsTabsFragment extends BaseMvpFragment<FriendsTabsPresenter, I
 
     @Override
     public void setDrawerFriendsSectionSelected(boolean selected) {
-        if (getActivity() instanceof OnSectionResumeCallback) {
+        if (requireActivity() instanceof OnSectionResumeCallback) {
             if (selected) {
-                ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_FRIENDS);
+                ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_FRIENDS);
             } else {
-                ((OnSectionResumeCallback) getActivity()).onClearSelection();
+                ((OnSectionResumeCallback) requireActivity()).onClearSelection();
             }
         }
     }

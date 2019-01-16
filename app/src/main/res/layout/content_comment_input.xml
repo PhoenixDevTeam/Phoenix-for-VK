@@ -35,7 +35,7 @@
             <ImageView
                 android:id="@+id/author_avatar"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
+
                 android:layout_alignParentBottom="true"
                 android:layout_width="18dp"
                 android:layout_height="18dp" />
@@ -93,7 +93,6 @@
                     android:paddingEnd="4dp"
                     android:paddingTop="4dp"
                     android:saveEnabled="false"
-                    android:textColor="?android:textColorPrimary"
                     android:textColorHint="?android:textColorHint"
                     android:textSize="@dimen/font_size_subtitle"
                     app:emojiconSize="20sp" />
@@ -114,9 +113,9 @@
         android:id="@+id/fragment_input_att_count_conrainer"
         android:layout_width="22dp"
         android:layout_height="22dp"
-        android:layout_alignParentLeft="true"
+
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="32dp"
+
         android:layout_marginStart="32dp"
         android:background="@drawable/circle_back_white">
 

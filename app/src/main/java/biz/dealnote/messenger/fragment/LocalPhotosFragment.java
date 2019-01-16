@@ -63,10 +63,10 @@ public class LocalPhotosFragment extends BaseMvpFragment<LocalPhotosPresenter, I
 
         mSwipeRefreshLayout = view.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         int columnCount = getResources().getInteger(R.integer.local_gallery_column_count);
-        RecyclerView.LayoutManager manager = new GridLayoutManager(getActivity(), columnCount);
+        RecyclerView.LayoutManager manager = new GridLayoutManager(requireActivity(), columnCount);
 
         mRecyclerView = view.findViewById(R.id.list);
         mRecyclerView.setLayoutManager(manager);
@@ -92,7 +92,7 @@ public class LocalPhotosFragment extends BaseMvpFragment<LocalPhotosPresenter, I
 
     @Override
     public void displayData(@NonNull List<LocalPhoto> data) {
-        mAdapter = new LocalPhotosAdapter(getActivity(), data);
+        mAdapter = new LocalPhotosAdapter(requireActivity(), data);
         mAdapter.setClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -142,7 +142,7 @@ public class LocalPhotosFragment extends BaseMvpFragment<LocalPhotosPresenter, I
 
     @Override
     public void showError(String text) {
-        if(isAdded()) Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
+        if (isAdded()) Toast.makeText(requireActivity(), text, Toast.LENGTH_LONG).show();
     }
 
     @Override

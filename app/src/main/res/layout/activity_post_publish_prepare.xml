@@ -11,7 +11,6 @@
         android:paddingBottom="8dp"
         android:textSize="20sp"
         android:text="@string/select_post_destination_label"
-        android:textColor="?android:textColorPrimary"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -2,6 +2,8 @@ package biz.dealnote.messenger.dialog;
 
 import android.app.Activity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import androidx.appcompat.app.AlertDialog;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.settings.Settings;
@@ -16,34 +18,35 @@ public class ImageSizeAlertDialog {
         this.mOnSelectedCallback = builder.mOnSelectedCallback;
     }
 
-    public void show() {
-        new AlertDialog.Builder(mActivity)
-                .setTitle(mActivity.getString(R.string.select_image_size_title))
-                .setItems(R.array.array_image_sizes_names, (dialogInterface, j) -> {
-                    int selectedSize = Upload.IMAGE_SIZE_FULL;
-                    switch (j) {
-                        case 0:
-                            selectedSize = Upload.IMAGE_SIZE_800;
-                            break;
-                        case 1:
-                            selectedSize = Upload.IMAGE_SIZE_1200;
-                            break;
-                        case 2:
-                            selectedSize = Upload.IMAGE_SIZE_FULL;
-                            break;
-                    }
+    public static void showUploadPhotoSizeIfNeed(Activity activity, final Callback callback) {
+        Integer size = Settings.get()
+                .main()
+                .getUploadImageSize();
 
-                    if (Objects.nonNull(mOnSelectedCallback)) {
-                        mOnSelectedCallback.onSizeSelected(selectedSize);
-                    }
-                })
-                .setCancelable(false)
-                .setNegativeButton(R.string.button_cancel, (dialog1, which) -> {
-                    if (Objects.nonNull(mOnCancelCallback)) {
-                        mOnCancelCallback.onCancel();
-                    }
-                })
-                .show();
+        if (Objects.isNull(size)) {
+            AlertDialog dialog = new MaterialAlertDialogBuilder(activity)
+                    .setTitle(activity.getString(R.string.select_image_size_title))
+                    .setItems(R.array.array_image_sizes_names, (dialogInterface, j) -> {
+                        int selectedSize = Upload.IMAGE_SIZE_FULL;
+
+                        switch (j) {
+                            case 0:
+                                selectedSize = Upload.IMAGE_SIZE_800;
+                                break;
+                            case 1:
+                                selectedSize = Upload.IMAGE_SIZE_1200;
+                                break;
+                            case 2:
+                                selectedSize = Upload.IMAGE_SIZE_FULL;
+                                break;
+                        }
+
+                        callback.onSizeSelected(selectedSize);
+                    }).setCancelable(true).create();
+            dialog.show();
+        } else {
+            callback.onSizeSelected(size);
+        }
     }
 
     public interface OnSelectedCallback {
@@ -87,35 +90,34 @@ public class ImageSizeAlertDialog {
         }
     }
 
-    public static void showUploadPhotoSizeIfNeed(Activity activity, final Callback callback) {
-        Integer size = Settings.get()
-                .main()
-                .getUploadImageSize();
+    public void show() {
+        new MaterialAlertDialogBuilder(mActivity)
+                .setTitle(mActivity.getString(R.string.select_image_size_title))
+                .setItems(R.array.array_image_sizes_names, (dialogInterface, j) -> {
+                    int selectedSize = Upload.IMAGE_SIZE_FULL;
+                    switch (j) {
+                        case 0:
+                            selectedSize = Upload.IMAGE_SIZE_800;
+                            break;
+                        case 1:
+                            selectedSize = Upload.IMAGE_SIZE_1200;
+                            break;
+                        case 2:
+                            selectedSize = Upload.IMAGE_SIZE_FULL;
+                            break;
+                    }
 
-        if (Objects.isNull(size)) {
-            AlertDialog dialog = new AlertDialog.Builder(activity)
-                    .setTitle(activity.getString(R.string.select_image_size_title))
-                    .setItems(R.array.array_image_sizes_names, (dialogInterface, j) -> {
-                        int selectedSize = Upload.IMAGE_SIZE_FULL;
-
-                        switch (j) {
-                            case 0:
-                                selectedSize = Upload.IMAGE_SIZE_800;
-                                break;
-                            case 1:
-                                selectedSize = Upload.IMAGE_SIZE_1200;
-                                break;
-                            case 2:
-                                selectedSize = Upload.IMAGE_SIZE_FULL;
-                                break;
-                        }
-
-                        callback.onSizeSelected(selectedSize);
-                    }).setCancelable(true).create();
-            dialog.show();
-        } else {
-            callback.onSizeSelected(size);
-        }
+                    if (Objects.nonNull(mOnSelectedCallback)) {
+                        mOnSelectedCallback.onSizeSelected(selectedSize);
+                    }
+                })
+                .setCancelable(false)
+                .setNegativeButton(R.string.button_cancel, (dialog1, which) -> {
+                    if (Objects.nonNull(mOnCancelCallback)) {
+                        mOnCancelCallback.onCancel();
+                    }
+                })
+                .show();
     }
 
     public interface Callback {

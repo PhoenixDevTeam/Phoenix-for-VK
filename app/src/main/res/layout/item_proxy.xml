@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="?android:colorBackground"
         app:cardCornerRadius="2dp"
         app:cardElevation="2dp">
 
@@ -48,7 +47,6 @@
 
                         <TextView
                             tools:text="10.0.0.1"
-                            android:textColor="?android:textColorPrimary"
                             android:id="@+id/address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -73,7 +71,6 @@
 
                         <TextView
                             tools:text="3128"
-                            android:textColor="?android:textColorPrimary"
                             android:id="@+id/port"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -105,7 +102,6 @@
                             android:textColor="?android:textColorSecondary" />
 
                         <TextView
-                            android:textColor="?android:textColorPrimary"
                             tools:text="dealnotedev"
                             android:id="@+id/username"
                             android:layout_width="match_parent"
@@ -130,7 +126,6 @@
                             android:textColor="?android:textColorSecondary" />
 
                         <TextView
-                            android:textColor="?android:textColorPrimary"
                             tools:text="******"
                             android:id="@+id/password"
                             android:layout_width="match_parent"

@@ -69,7 +69,7 @@ public class CreatePinFragment extends BaseMvpFragment<CreatePinPresenter, ICrea
     @Override
     public void displayErrorAnimation() {
         if(Objects.nonNull(mValuesRoot)){
-            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_invalid_pin);
+            Animation animation = AnimationUtils.loadAnimation(requireActivity(), R.anim.anim_invalid_pin);
             mValuesRoot.startAnimation(animation);
         }
     }

@@ -16,13 +16,12 @@
             android:layout_height="match_parent"
             android:padding="@dimen/content_medium_margin"
             android:text="@string/store_on_disk"
-            android:textColor="?android:textColorPrimary"
             android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp"
+
             android:layout_marginStart="42dp"
             android:text="@string/store_on_disk_summary"
             android:textColor="?android:textColorSecondary" />
@@ -33,13 +32,12 @@
             android:layout_height="match_parent"
             android:padding="@dimen/content_medium_margin"
             android:text="@string/store_in_ram"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_title" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp"
+
             android:layout_marginStart="42dp"
             android:text="@string/store_in_ram_summary"
             android:textColor="?android:textColorSecondary" />

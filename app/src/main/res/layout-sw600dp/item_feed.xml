@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="?android:colorBackground"
         app:cardCornerRadius="2dp"
         app:cardElevation="2dp"
         app:contentPadding="0dp">
@@ -43,7 +42,6 @@
                         android:id="@+id/item_post_owner_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_subtitle"
                         android:textStyle="bold"
                         tools:text="Rustam Fattakhetdinov" />
@@ -52,7 +50,6 @@
                         android:id="@+id/item_post_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="?android:textColorSecondary"
                         android:textSize="@dimen/font_size_additional"
                         tools:text="Today 19:26" />
 
@@ -77,7 +74,6 @@
                         android:id="@+id/post_views_counter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="?android:textColorSecondary"
                         android:textSize="@dimen/font_size_additional"
                         tools:text="1533" />
 
@@ -118,7 +114,6 @@
                         android:gravity="start"
                         android:linksClickable="false"
                         android:text="Message"
-                        android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_title"
                         app:displayHashTags="true"
                         app:emojiconSize="20sp"
@@ -133,7 +128,6 @@
                         android:fontFamily="sans-serif-condensed"
                         android:text="@string/show_more"
                         android:textAllCaps="true"
-                        android:textColor="?colorAccent"
                         android:textSize="@dimen/font_size_title" />
 
                 </RelativeLayout>

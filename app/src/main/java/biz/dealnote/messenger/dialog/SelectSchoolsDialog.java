@@ -79,7 +79,7 @@ public class SelectSchoolsDialog extends AccountDependencyDialogFragment impleme
         });
 
         mRecyclerView = root.findViewById(R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
 
         return root;
     }
@@ -96,7 +96,7 @@ public class SelectSchoolsDialog extends AccountDependencyDialogFragment impleme
             firstRun = true;
         }
 
-        mAdapter = new SchoolsAdapter(getActivity(), mData);
+        mAdapter = new SchoolsAdapter(requireActivity(), mData);
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
 

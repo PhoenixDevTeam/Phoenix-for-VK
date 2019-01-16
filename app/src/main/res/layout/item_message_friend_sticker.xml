@@ -46,7 +46,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="time"
-            android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/font_size_additional" />
 
     </LinearLayout>

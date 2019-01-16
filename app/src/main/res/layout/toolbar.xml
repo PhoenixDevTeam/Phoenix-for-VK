@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<biz.dealnote.messenger.view.CenteredToolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/card_margin"
-    android:layout_marginStart="@dimen/card_margin"
-    android:layout_marginEnd="@dimen/card_margin"
-    app:cardBackgroundColor="?attr/colorPrimary"
-    app:cardCornerRadius="@dimen/toolbar_corner_radius"
-    app:cardElevation="0dp">
-    <!--app:strokeColor="?attr/dividerColor"-->
-    <!--app:strokeWidth="1dp"-->
+    android:layout_height="56dp"
+    android:clipToPadding="true"
+    app:theme="@style/Theme.Toolbar" />
 
-    <biz.dealnote.messenger.view.CenteredToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:clipToPadding="true"
-        app:theme="@style/Theme.Toolbar" />
 
-</com.google.android.material.card.MaterialCardView>

@@ -90,7 +90,7 @@ public class SelectProfilesActivity extends MainActivity implements SelectedProf
 
         SelectProfileCriteria criteria = new SelectProfileCriteria().setFriendsOnly(true);
 
-        Intent intent = new Intent(fragment.getActivity(), SelectProfilesActivity.class);
+        Intent intent = new Intent(fragment.requireActivity(), SelectProfilesActivity.class);
         intent.setAction(SelectProfilesActivity.ACTION_OPEN_PLACE);
         intent.putExtra(Extra.PLACE, place);
         intent.putExtra(Extra.CRITERIA, criteria);

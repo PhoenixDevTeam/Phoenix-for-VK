@@ -9,12 +9,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Extra;
@@ -73,10 +74,10 @@ public class MessageEditFragment extends AbsPresenterBottomSheetFragment<Message
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
 
-        View view = View.inflate(getActivity(), R.layout.bottom_sheet_attachments, null);
+        View view = View.inflate(requireActivity(), R.layout.bottom_sheet_attachments, null);
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         mEmptyView = view.findViewById(R.id.empty_root);
 
@@ -127,7 +128,7 @@ public class MessageEditFragment extends AbsPresenterBottomSheetFragment<Message
     @Override
     public void displayAttachments(List<AttachmenEntry> entries) {
         if(nonNull(mRecyclerView)){
-            this.mAdapter = new AttachmentsBottomSheetAdapter(getActivity(), entries, this);
+            this.mAdapter = new AttachmentsBottomSheetAdapter(requireActivity(), entries, this);
             this.mRecyclerView.setAdapter(mAdapter);
         }
     }
@@ -145,7 +146,7 @@ public class MessageEditFragment extends AbsPresenterBottomSheetFragment<Message
                 .with(new LocalPhotosSelectableSource())
                 .with(new VkPhotosSelectableSource(accountId, ownerId));
 
-        Intent intent = DualTabPhotoActivity.createIntent(getActivity(), 10, sources);
+        Intent intent = DualTabPhotoActivity.createIntent(requireActivity(), 10, sources);
         startActivityForResult(intent, REQUEST_ADD_VKPHOTO);
     }
 
@@ -159,7 +160,7 @@ public class MessageEditFragment extends AbsPresenterBottomSheetFragment<Message
     @Override
     public void displaySelectUploadPhotoSizeDialog(List<LocalPhoto> photos) {
         int[] values = {Upload.IMAGE_SIZE_800, Upload.IMAGE_SIZE_1200, Upload.IMAGE_SIZE_FULL};
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.select_image_size_title)
                 .setItems(R.array.array_image_sizes_names, (dialogInterface, j)
                         -> getPresenter().fireUploadPhotoSizeSelected(photos, values[j]))
@@ -204,13 +205,13 @@ public class MessageEditFragment extends AbsPresenterBottomSheetFragment<Message
 
     @Override
     public void startAddDocumentActivity(int accountId) {
-        Intent intent = AttachmentsActivity.createIntent(getActivity(), accountId, Types.DOC);
+        Intent intent = AttachmentsActivity.createIntent(requireActivity(), accountId, Types.DOC);
         startActivityForResult(intent, REQUEST_SELECT_ATTACHMENTS);
     }
 
     @Override
     public void startAddVideoActivity(int accountId, int ownerId) {
-        Intent intent = VideoSelectActivity.createIntent(getActivity(), accountId, ownerId);
+        Intent intent = VideoSelectActivity.createIntent(requireActivity(), accountId, ownerId);
         startActivityForResult(intent, REQUEST_SELECT_ATTACHMENTS);
     }
 

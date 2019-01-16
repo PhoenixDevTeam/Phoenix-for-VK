@@ -13,13 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -97,17 +98,17 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_attachments_manager_new, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         int spancount = getResources().getInteger(R.integer.attachments_editor_column_count);
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        RecyclerView.LayoutManager manager = new GridLayoutManager(getActivity(), spancount);
+        RecyclerView.LayoutManager manager = new GridLayoutManager(requireActivity(), spancount);
         recyclerView.setLayoutManager(manager);
 
         View headerView = inflater.inflate(R.layout.header_attachments_manager, recyclerView, false);
 
-        mAdapter = new AttchmentsEditorAdapter(getActivity(), Collections.emptyList(), this);
+        mAdapter = new AttchmentsEditorAdapter(requireActivity(), Collections.emptyList(), this);
         mAdapter.addHeader(headerView);
 
         recyclerView.setAdapter(mAdapter);
@@ -219,7 +220,7 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
 
     @Override
     public void openAddVkPhotosWindow(int maxSelectionCount, int accountId, int ownerId) {
-        Intent intent = new Intent(getActivity(), PhotoAlbumsActivity.class);
+        Intent intent = new Intent(requireActivity(), PhotoAlbumsActivity.class);
         intent.putExtra(Extra.OWNER_ID, accountId);
         intent.putExtra(Extra.ACCOUNT_ID, ownerId);
         intent.putExtra(Extra.ACTION, VKPhotosFragment.ACTION_SELECT_PHOTOS);
@@ -227,7 +228,7 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
     }
 
     private void startAttachmentsActivity(int accountId, int type, int requestCode) {
-        Intent intent = new Intent(getActivity(), AttachmentsActivity.class);
+        Intent intent = new Intent(requireActivity(), AttachmentsActivity.class);
         intent.putExtra(Extra.TYPE, type);
         intent.putExtra(Extra.ACCOUNT_ID, accountId);
         startActivityForResult(intent, requestCode);
@@ -250,7 +251,7 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
 
     @Override
     public void openAddPhotoFromGalleryWindow(int maxSelectionCount) {
-        Intent attachPhotoIntent = new Intent(getActivity(), PhotosActivity.class);
+        Intent attachPhotoIntent = new Intent(requireActivity(), PhotosActivity.class);
         attachPhotoIntent.putExtra(PhotosActivity.EXTRA_MAX_SELECTION_COUNT, maxSelectionCount);
         startActivityForResult(attachPhotoIntent, REQUEST_PHOTO_FROM_GALLERY);
     }
@@ -278,7 +279,7 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
     @Override
     public void openCamera(@NonNull Uri photoCameraUri) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoCameraUri);
             startActivityForResult(takePictureIntent, REQUEST_PHOTO_FROM_CAMERA);
         }
@@ -359,7 +360,7 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
     @Override
     public void displaySelectUploadPhotoSizeDialog(@NonNull List<LocalPhoto> photos) {
         int[] values = {Upload.IMAGE_SIZE_800, Upload.IMAGE_SIZE_1200, Upload.IMAGE_SIZE_FULL};
-        new AlertDialog.Builder(getActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.select_image_size_title)
                 .setItems(R.array.array_image_sizes_names,
                         (dialogInterface, index) -> getPresenter().fireUploadPhotoSizeSelected(photos, values[index]))
@@ -370,13 +371,13 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
     public void openPollCreationWindow(int accountId, int ownerId) {
         PlaceFactory.getCreatePollPlace(accountId, ownerId)
                 .targetTo(this, REQUEST_CREATE_POLL)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override
     public void displayChoosePhotoTypeDialog() {
         String[] items = {getString(R.string.from_vk_albums), getString(R.string.from_local_albums), getString(R.string.from_camera)};
-        new AlertDialog.Builder(getActivity()).setItems(items, (dialogInterface, i) -> {
+        new MaterialAlertDialogBuilder(requireActivity()).setItems(items, (dialogInterface, i) -> {
             switch (i) {
                 case 0:
                     getPresenter().firePhotoFromVkChoose();
@@ -394,7 +395,7 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
     @Override
     public void notifySystemAboutNewPhoto(@NonNull Uri uri) {
         Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
-        getActivity().sendBroadcast(scanIntent);
+        requireActivity().sendBroadcast(scanIntent);
     }
 
     @Override
@@ -409,7 +410,7 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
 
         if (nonNull(mTimerTextInfo)) {
             if (nonNull(unixtime)) {
-                String formattedTime = AppTextUtils.getDateFromUnixTime(getActivity(), unixtime);
+                String formattedTime = AppTextUtils.getDateFromUnixTime(requireActivity(), unixtime);
                 mTimerTextInfo.setText(getString(R.string.will_be_post_at, formattedTime.toLowerCase()));
                 mTimerTextInfo.setVisibility(View.VISIBLE);
             } else {
@@ -448,14 +449,14 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
     public void showEnterTimeDialog(long initialTimeUnixtime) {
-        new DateTimePicker.Builder(getActivity())
+        new DateTimePicker.Builder(requireActivity())
                 .setTime(initialTimeUnixtime)
                 .setCallback(unixtime -> getPresenter().fireTimerTimeSelected(unixtime))
                 .show();

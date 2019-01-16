@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text="Directory"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_title" />
 
         <TextView
@@ -30,7 +29,6 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text="details"
-            android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/font_size_subtitle" />
 
     </LinearLayout>

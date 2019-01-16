@@ -69,13 +69,13 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_communities, container, false);
-        //((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        //((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
             @Override
             public void onScrollToLastElement() {
@@ -83,7 +83,7 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
             }
         });
 
-        mAdapter = new CommunitiesAdapter(getActivity(), Collections.emptyList(), new int[0]);
+        mAdapter = new CommunitiesAdapter(requireActivity(), Collections.emptyList(), new int[0]);
         mAdapter.setActionListener(this);
 
         recyclerView.setAdapter(mAdapter);
@@ -98,7 +98,7 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
     }
 
     private void resolveLeftButton() {
-        FragmentActivity activity = getActivity();
+        FragmentActivity activity = requireActivity();
 
         try {
             if (nonNull(activity) && nonNull(mSearchView)) {
@@ -123,8 +123,8 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
 
     @Override
     public void onDetach() {
-        if (getActivity() != null) {
-            getActivity().getSupportFragmentManager().removeOnBackStackChangedListener(backStackChangedListener);
+        if (requireActivity() != null) {
+            requireActivity().getSupportFragmentManager().removeOnBackStackChangedListener(backStackChangedListener);
         }
 
         super.onDetach();
@@ -154,7 +154,7 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(), true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }
@@ -231,7 +231,7 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
 
     @Override
     public void onBackButtonClick() {
-        FragmentActivity activity = getActivity();
+        FragmentActivity activity = requireActivity();
         if (isNull(activity)) return;
 
         if (activity.getSupportFragmentManager().getBackStackEntryCount() == 1 && activity instanceof AppStyleable) {

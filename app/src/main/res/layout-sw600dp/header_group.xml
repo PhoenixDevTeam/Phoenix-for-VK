@@ -7,7 +7,7 @@
         android:id="@+id/relativeLayout175"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimary">
@@ -41,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="24dp" />
 
             <TextView
@@ -51,7 +50,6 @@
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
                 android:maxLines="6"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="14dp"
                 android:visibility="visible" />
 
@@ -64,7 +62,6 @@
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
                 android:maxLines="6"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="14dp"
                 android:visibility="visible"
                 emojicon:emojiconSize="20sp" />
@@ -106,7 +103,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -115,7 +111,6 @@
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_followers"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
 
             </LinearLayout>
@@ -135,7 +130,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -144,7 +138,6 @@
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_topics"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
 
             </LinearLayout>
@@ -164,7 +157,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -173,7 +165,6 @@
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_documents"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
 
             </LinearLayout>
@@ -193,7 +184,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -202,7 +192,6 @@
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_photos"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
 
             </LinearLayout>
@@ -222,7 +211,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -231,7 +219,6 @@
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_audios"
-                    android:textColor="?android:textColorPrimary"
                     android:textIsSelectable="false"
                     android:textSize="@dimen/font_size_subtitle" />
 
@@ -252,7 +239,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -261,7 +247,6 @@
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_videos"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
 
             </LinearLayout>
@@ -275,7 +260,6 @@
 
             <Button
                 android:id="@+id/header_group_primary_button"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="16dp"
@@ -286,7 +270,6 @@
 
             <Button
                 android:id="@+id/header_group_secondary_button"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="16dp"

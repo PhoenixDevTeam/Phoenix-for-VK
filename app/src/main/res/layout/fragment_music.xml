@@ -23,7 +23,6 @@
                 android:gravity="center"
                 android:text="@string/audios_disabled_title"
                 android:textSize="18sp"
-                android:textColor="?android:textColorPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -32,7 +31,6 @@
                 android:gravity="center"
                 android:text="@string/audios_disabled_summary_message"
                 android:textSize="14sp"
-                android:textColor="?android:textColorSecondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

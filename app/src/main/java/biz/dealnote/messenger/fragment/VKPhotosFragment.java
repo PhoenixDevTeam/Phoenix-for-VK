@@ -92,12 +92,12 @@ public class VKPhotosFragment extends BaseMvpFragment<VkPhotosPresenter, IVkPhot
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         int columnCount = getResources().getInteger(R.integer.local_gallery_column_count);
-        RecyclerView.LayoutManager manager = new GridLayoutManager(getActivity(), columnCount);
+        RecyclerView.LayoutManager manager = new GridLayoutManager(requireActivity(), columnCount);
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         RecyclerView mRecyclerView = root.findViewById(R.id.list);
         mRecyclerView.setLayoutManager(manager);
@@ -114,7 +114,7 @@ public class VKPhotosFragment extends BaseMvpFragment<VkPhotosPresenter, IVkPhot
         mFab = root.findViewById(R.id.fr_photo_gallery_attach);
         mFab.setOnClickListener(v -> onFabClicked());
 
-        mAdapter = new BigVkPhotosAdapter(getActivity(), Collections.emptyList(), Collections.emptyList(), TAG);
+        mAdapter = new BigVkPhotosAdapter(requireActivity(), Collections.emptyList(), Collections.emptyList(), TAG);
         mAdapter.setPhotosActionListener(this);
         mAdapter.setUploadActionListener(this);
         mRecyclerView.setAdapter(mAdapter);
@@ -164,7 +164,7 @@ public class VKPhotosFragment extends BaseMvpFragment<VkPhotosPresenter, IVkPhot
     }
 
     private void onPhotosForUploadSelected(@NonNull final List<LocalPhoto> photos) {
-        ImageSizeAlertDialog.showUploadPhotoSizeIfNeed(getActivity(), size -> doUploadPhotosToAlbum(photos, size));
+        ImageSizeAlertDialog.showUploadPhotoSizeIfNeed(requireActivity(), size -> doUploadPhotosToAlbum(photos, size));
     }
 
     private void doUploadPhotosToAlbum(@NonNull List<LocalPhoto> photos, int size) {
@@ -177,7 +177,7 @@ public class VKPhotosFragment extends BaseMvpFragment<VkPhotosPresenter, IVkPhot
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }
@@ -285,11 +285,11 @@ public class VKPhotosFragment extends BaseMvpFragment<VkPhotosPresenter, IVkPhot
 
     @Override
     public void setDrawerPhotosSelected(boolean selected) {
-        if(getActivity() instanceof OnSectionResumeCallback){
+        if (requireActivity() instanceof OnSectionResumeCallback) {
             if (selected) {
-                ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_PHOTOS);
+                ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_PHOTOS);
             } else {
-                ((OnSectionResumeCallback) getActivity()).onClearSelection();
+                ((OnSectionResumeCallback) requireActivity()).onClearSelection();
             }
         }
     }
@@ -304,12 +304,12 @@ public class VKPhotosFragment extends BaseMvpFragment<VkPhotosPresenter, IVkPhot
 
     @Override
     public void showSelectPhotosToast() {
-        Toast.makeText(getActivity(), getString(R.string.select_attachments), Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireActivity(), getString(R.string.select_attachments), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void startLocalPhotosSelection() {
-        if (!AppPerms.hasReadStoragePermision(getActivity())) {
+        if (!AppPerms.hasReadStoragePermision(requireActivity())) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_READ_EXTARNAL_STORAGE);
             return;
         }
@@ -328,14 +328,14 @@ public class VKPhotosFragment extends BaseMvpFragment<VkPhotosPresenter, IVkPhot
     }
 
     private void startLocalPhotosSelectionActibity(){
-        Intent intent = new Intent(getActivity(), PhotosActivity.class);
+        Intent intent = new Intent(requireActivity(), PhotosActivity.class);
         intent.putExtra(PhotosActivity.EXTRA_MAX_SELECTION_COUNT, Integer.MAX_VALUE);
         startActivityForResult(intent, REQUEST_UPLOAD_LOCAL_PHOTO);
     }
 
     @Override
     public void startLocalPhotosSelectionIfHasPermission() {
-        if(AppPerms.hasReadStoragePermision(getActivity())){
+        if (AppPerms.hasReadStoragePermision(requireActivity())) {
             startLocalPhotosSelectionActibity();
         }
     }

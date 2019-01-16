@@ -25,12 +25,12 @@ public class ConversationPhotosFragment extends AbsChatAttachmentsFragment<Photo
     @Override
     protected RecyclerView.LayoutManager createLayoutManager() {
         int columns = getContext().getResources().getInteger(R.integer.photos_column_count);
-        return new GridLayoutManager(getActivity(), columns);
+        return new GridLayoutManager(requireActivity(), columns);
     }
 
     @Override
     public RecyclerView.Adapter createAdapter() {
-        FavePhotosAdapter apiPhotoFavePhotosAdapter = new FavePhotosAdapter(getActivity(), Collections.emptyList());
+        FavePhotosAdapter apiPhotoFavePhotosAdapter = new FavePhotosAdapter(requireActivity(), Collections.emptyList());
         apiPhotoFavePhotosAdapter.setPhotoSelectionListener(this);
         return apiPhotoFavePhotosAdapter;
     }
@@ -57,6 +57,6 @@ public class ConversationPhotosFragment extends AbsChatAttachmentsFragment<Photo
 
     @Override
     public void goToTempPhotosGallery(int accountId, @NonNull TmpSource source, int index) {
-        PlaceFactory.getTmpSourceGalleryPlace(accountId, source, index).tryOpenWith(getActivity());
+        PlaceFactory.getTmpSourceGalleryPlace(accountId, source, index).tryOpenWith(requireActivity());
     }
 }

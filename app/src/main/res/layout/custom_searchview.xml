@@ -43,7 +43,6 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:maxLines="1"
-                android:textColor="?android:textColorPrimary"
                 android:textColorHint="?android:textColorSecondary"
                 android:textSize="@dimen/font_size_title" />
 

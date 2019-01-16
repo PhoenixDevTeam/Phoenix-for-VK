@@ -78,8 +78,8 @@ public class RequestExecuteFragment extends BaseMvpFragment<RequestExecutePresen
     @Override
     public void onResume() {
         super.onResume();
-        if(getActivity() instanceof OnSectionResumeCallback){
-            ((OnSectionResumeCallback)getActivity()).onClearSelection();
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onClearSelection();
         }
 
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
@@ -91,9 +91,9 @@ public class RequestExecuteFragment extends BaseMvpFragment<RequestExecutePresen
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override

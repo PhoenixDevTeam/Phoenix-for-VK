@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -65,9 +67,9 @@ public class DirectAuthDialog extends BaseMvpDialogFragment<DirectAuthPresenter,
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
 
-        View view = View.inflate(getActivity(), R.layout.dialog_direct_auth, null);
+        View view = View.inflate(requireActivity(), R.layout.dialog_direct_auth, null);
 
         this.mLogin = view.findViewById(R.id.field_username);
         this.mLogin.addTextChangedListener(new TextWatcherAdapter() {
@@ -219,7 +221,7 @@ public class DirectAuthDialog extends BaseMvpDialogFragment<DirectAuthPresenter,
     @Override
     public void hideKeyboard() {
         try {
-            InputMethodManager im = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager im = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             im.hideSoftInputFromWindow(mLogin.getWindowToken(), 0);
             im.hideSoftInputFromWindow(mPassword.getWindowToken(), 0);
             im.hideSoftInputFromWindow(mCaptcha.getWindowToken(), 0);

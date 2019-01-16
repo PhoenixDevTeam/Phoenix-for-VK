@@ -103,10 +103,6 @@
             android:summary="@string/drawer_categories_summary"
             android:title="@string/drawer_categories_title" />
 
-        <Preference
-            android:key="reset_sidebar_background"
-            android:title="@string/set_default" />
-
     </PreferenceCategory>
 
     <PreferenceCategory

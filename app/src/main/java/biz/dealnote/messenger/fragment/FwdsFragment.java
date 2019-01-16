@@ -57,9 +57,9 @@ public class FwdsFragment extends PlaceSupportMvpFragment<FwdsPresenter, IFwdsVi
         ((AppCompatActivity)requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        mAdapter = new MessagesAdapter(getActivity(), Collections.emptyList(), this);
+        mAdapter = new MessagesAdapter(requireActivity(), Collections.emptyList(), this);
         mAdapter.setOnMessageActionListener(this);
         mAdapter.setVoiceActionListener(this);
         recyclerView.setAdapter(mAdapter);
@@ -69,8 +69,8 @@ public class FwdsFragment extends PlaceSupportMvpFragment<FwdsPresenter, IFwdsVi
     @Override
     public void onResume() {
         super.onResume();
-        if(getActivity() instanceof OnSectionResumeCallback){
-            ((OnSectionResumeCallback)getActivity()).onClearSelection();
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onClearSelection();
         }
 
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
@@ -82,7 +82,7 @@ public class FwdsFragment extends PlaceSupportMvpFragment<FwdsPresenter, IFwdsVi
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

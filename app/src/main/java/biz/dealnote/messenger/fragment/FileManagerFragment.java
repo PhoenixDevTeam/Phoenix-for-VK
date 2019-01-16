@@ -118,7 +118,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
         mRecyclerView = root.findViewById(R.id.list);
         empty = root.findViewById(R.id.empty);
 
-        mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        mLinearLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setHasFixedSize(Boolean.TRUE);
 
@@ -179,7 +179,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
         try {
             path.mkdirs();
         } catch (SecurityException e) {
-            Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(requireActivity(), e.toString(), Toast.LENGTH_LONG).show();
         }
 
         fileList.clear();
@@ -221,8 +221,8 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
     private void returnDirectoryFinishActivity() {
         Intent retIntent = new Intent();
         retIntent.putExtra(returnDirectoryParameter, path.getAbsolutePath());
-        getActivity().setResult(Activity.RESULT_OK, retIntent);
-        getActivity().finish();
+        requireActivity().setResult(Activity.RESULT_OK, retIntent);
+        requireActivity().finish();
     }
 
     private void returnFileFinishActivity(String filePath) {
@@ -271,7 +271,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add(R.string.create_dir)
-                .setIcon(CurrentTheme.getDrawableFromAttribute(getActivity(), R.attr.toolbarPlusIcon))
+                .setIcon(CurrentTheme.getDrawableFromAttribute(requireActivity(), R.attr.toolbarPlusIcon))
                 .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
                 .setOnMenuItemClickListener(item -> {
                     showTextInputDialog();
@@ -319,7 +319,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
      * Отображение диалога для ввода имени новой папки
      */
     private void showTextInputDialog() {
-        new InputTextDialog.Builder(getActivity())
+        new InputTextDialog.Builder(requireActivity())
                 .setInputType(InputType.TYPE_CLASS_TEXT)
                 .setTitleRes(R.string.enter_dir_name)
                 .setAllowEmpty(false)
@@ -330,7 +330,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
                         mAdapter.notifyDataSetChanged();
                         updateCurrentDirectoryTextView();
                     } else {
-                        Toast.makeText(getActivity(), R.string.cannot_create_catalog, Toast.LENGTH_LONG).show();
+                        Toast.makeText(requireActivity(), R.string.cannot_create_catalog, Toast.LENGTH_LONG).show();
                     }
                 })
                 .show();
@@ -376,7 +376,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
 
                 updateCurrentDirectoryTextView();
             } else {
-                Toast.makeText(getActivity(), R.string.path_not_exist, Toast.LENGTH_LONG).show();
+                Toast.makeText(requireActivity(), R.string.path_not_exist, Toast.LENGTH_LONG).show();
             }
         } else {
             if (!directoryShownIsEmpty) {

@@ -64,7 +64,7 @@ public class AudiosFragment extends BaseMvpFragment<AudiosPresenter, IAudiosView
         root.findViewById(R.id.button_details).setOnClickListener(v -> openPost());
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
             @Override
             public void onScrollToLastElement() {
@@ -72,8 +72,8 @@ public class AudiosFragment extends BaseMvpFragment<AudiosPresenter, IAudiosView
             }
         });
 
-        mAudioRecyclerAdapter = new AudioRecyclerAdapter(getActivity(), Collections.emptyList());
-        mAudioRecyclerAdapter.setClickListener((position, audio) -> getPresenter().playAudio(getActivity(), position));
+        mAudioRecyclerAdapter = new AudioRecyclerAdapter(requireActivity(), Collections.emptyList());
+        mAudioRecyclerAdapter.setClickListener((position, audio) -> getPresenter().playAudio(requireActivity(), position));
         recyclerView.setAdapter(mAudioRecyclerAdapter);
         return root;
     }
@@ -93,14 +93,14 @@ public class AudiosFragment extends BaseMvpFragment<AudiosPresenter, IAudiosView
             actionBar.setSubtitle(null);
         }
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_AUDIOS);
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_AUDIOS);
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

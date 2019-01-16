@@ -12,11 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -80,13 +80,13 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
 
-        View root = View.inflate(getActivity(), R.layout.sheet_filter_edirt, null);
+        View root = View.inflate(requireActivity(), R.layout.sheet_filter_edirt, null);
 
         Toolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.search_options);
 
         MenuItem saveItem = toolbar.getMenu().add(R.string.save);
-        saveItem.setIcon(CurrentTheme.getDrawableFromAttribute(getActivity(), R.attr.toolbarOKIcon));
+        saveItem.setIcon(CurrentTheme.getDrawableFromAttribute(requireActivity(), R.attr.toolbarOKIcon));
         saveItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         saveItem.setOnMenuItemClickListener(menuItem -> {
             onSaveClick();
@@ -97,7 +97,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
         RecyclerView mRecyclerView = root.findViewById(R.id.recycler_view);
 
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
 
         mAdapter = new SearchOptionsAdapter(mData);
@@ -119,9 +119,9 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
     @Override
     public void onSpinnerOptionClick(final SpinnerOption spinnerOption) {
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(spinnerOption.title)
-                .setItems(spinnerOption.createAvailableNames(getActivity()), (dialog, which) -> {
+                .setItems(spinnerOption.createAvailableNames(requireActivity()), (dialog, which) -> {
                     spinnerOption.value = spinnerOption.available.get(which);
                     mAdapter.notifyDataSetChanged();
                 })
@@ -216,7 +216,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
                     showCitiesDialog(databaseOption, countryId);
                 } else {
                     String message = getString(R.string.please_select_option, getString(dependency.title));
-                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -227,7 +227,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
                     showUniversitiesDialog(databaseOption, countryId);
                 } else {
                     String message = getString(R.string.please_select_option, getString(dependency.title));
-                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -238,7 +238,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
                     showFacultiesDialog(databaseOption, universityId);
                 } else {
                     String message = getString(R.string.please_select_option, getString(dependency.title));
-                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -249,7 +249,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
                     showChairsDialog(databaseOption, facultyId);
                 } else {
                     String message = getString(R.string.please_select_option, getString(dependency.title));
-                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -260,7 +260,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
                     showSchoolsDialog(databaseOption, cityId);
                 } else {
                     String message = getString(R.string.please_select_option, getString(dependency.title));
-                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -271,7 +271,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
                     showSchoolClassesDialog(databaseOption, countryId);
                 } else {
                     String message = getString(R.string.please_select_option, getString(dependency.title));
-                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -280,7 +280,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
     @Override
     public void onSimpleNumberOptionClick(final SimpleNumberOption option) {
-        new InputTextDialog.Builder(getActivity())
+        new InputTextDialog.Builder(requireActivity())
                 .setTitleRes(option.title)
                 .setAllowEmpty(true)
                 .setInputType(InputType.TYPE_CLASS_NUMBER)
@@ -306,7 +306,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
 
     @Override
     public void onSimpleTextOptionClick(final SimpleTextOption option) {
-        new InputTextDialog.Builder(getActivity())
+        new InputTextDialog.Builder(requireActivity())
                 .setTitleRes(option.title)
                 .setInputType(InputType.TYPE_CLASS_TEXT)
                 .setValue(option.value)

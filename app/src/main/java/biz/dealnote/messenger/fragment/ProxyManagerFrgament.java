@@ -57,7 +57,7 @@ public class ProxyManagerFrgament extends BaseMvpFragment<ProxyManagerPresenter,
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
         mProxiesAdapter = new ProxiesAdapter(Collections.emptyList(), this);
         recyclerView.setAdapter(mProxiesAdapter);

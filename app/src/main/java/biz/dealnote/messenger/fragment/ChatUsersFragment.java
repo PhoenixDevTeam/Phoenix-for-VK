@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -16,7 +17,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -68,15 +68,15 @@ public class ChatUsersFragment extends BaseMvpFragment<ChatMembersPresenter, ICh
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        mAdapter = new ChatMembersListAdapter(getActivity(), Collections.emptyList());
+        mAdapter = new ChatMembersListAdapter(requireActivity(), Collections.emptyList());
         mAdapter.setActionListener(this);
         recyclerView.setAdapter(mAdapter);
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         FloatingActionButton fabAdd = root.findViewById(R.id.fragment_chat_users_add);
         fabAdd.setOnClickListener(v -> getPresenter().fireAddUserClick());
@@ -109,14 +109,14 @@ public class ChatUsersFragment extends BaseMvpFragment<ChatMembersPresenter, ICh
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(), true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }
 
     @Override
     public void onRemoveClick(final AppChatUser user) {
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.confirmation)
                 .setMessage(getString(R.string.remove_chat_user_commit, user.getMember().getFullName()))
                 .setPositiveButton(R.string.button_ok, (dialog, which) -> getPresenter().fireUserDeteleConfirmed(user))
@@ -169,7 +169,7 @@ public class ChatUsersFragment extends BaseMvpFragment<ChatMembersPresenter, ICh
         final Place place = PlaceFactory.getFriendsFollowersPlace(accountId, accountId, FriendsTabsFragment.TAB_ALL_FRIENDS, null);
         final SelectProfileCriteria criteria = new SelectProfileCriteria().setFriendsOnly(true);
 
-        Intent intent = SelectProfilesActivity.createIntent(getActivity(), place, criteria);
+        Intent intent = SelectProfilesActivity.createIntent(requireActivity(), place, criteria);
 
         startActivityForResult(intent, REQUEST_CODE_ADD_USER);
     }

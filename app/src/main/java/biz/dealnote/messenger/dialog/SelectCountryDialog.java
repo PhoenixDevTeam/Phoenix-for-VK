@@ -7,12 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Extra;
@@ -36,9 +37,9 @@ public class SelectCountryDialog extends BaseMvpDialogFragment<CountriesPresente
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = View.inflate(getActivity(), R.layout.dialog_countries, null);
+        View view = View.inflate(requireActivity(), R.layout.dialog_countries, null);
 
-        Dialog dialog = new AlertDialog.Builder(requireActivity())
+        Dialog dialog = new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.countries_title)
                 .setView(view)
                 .setNegativeButton(R.string.button_cancel, null)
@@ -53,9 +54,9 @@ public class SelectCountryDialog extends BaseMvpDialogFragment<CountriesPresente
         });
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        mAdapter = new CountriesAdapter(getActivity(), Collections.emptyList());
+        mAdapter = new CountriesAdapter(requireActivity(), Collections.emptyList());
         mAdapter.setListener(this);
 
         recyclerView.setAdapter(mAdapter);

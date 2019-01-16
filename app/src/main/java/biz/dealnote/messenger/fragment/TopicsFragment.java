@@ -68,7 +68,7 @@ public class TopicsFragment extends BaseMvpFragment<TopicsPresenter, ITopicsView
         ((AppCompatActivity)requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(requireActivity());
 
         recyclerView.setLayoutManager(manager);
         recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
@@ -78,7 +78,7 @@ public class TopicsFragment extends BaseMvpFragment<TopicsPresenter, ITopicsView
             }
         });
 
-        mAdapter = new TopicsAdapter(getActivity(), Collections.emptyList(), this);
+        mAdapter = new TopicsAdapter(requireActivity(), Collections.emptyList(), this);
 
         View footer = inflater.inflate(R.layout.footer_load_more, recyclerView, false);
         helper = LoadMoreFooterHelper.createFrom(footer, () -> getPresenter().fireLoadMoreClick());
@@ -88,7 +88,7 @@ public class TopicsFragment extends BaseMvpFragment<TopicsPresenter, ITopicsView
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         fabCreate = root.findViewById(R.id.fragment_topics_create);
         fabCreate.setOnClickListener(view -> getPresenter().fireButtonCreateClick());
@@ -106,7 +106,7 @@ public class TopicsFragment extends BaseMvpFragment<TopicsPresenter, ITopicsView
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

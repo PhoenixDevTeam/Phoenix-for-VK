@@ -28,7 +28,7 @@
                 android:id="@+id/avatar_root"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true">
 
@@ -47,7 +47,7 @@
                     android:layout_alignLeft="@+id/avatar"
                     android:layout_alignStart="@+id/avatar"
                     android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="4dp"
+
                     android:layout_marginStart="4dp"
                     android:padding="4dp"
                     app:circle_color="?icon_color_active" />
@@ -58,13 +58,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/avatar_root"
-                android:layout_toRightOf="@+id/avatar_root"
+
                 android:layout_toEndOf="@+id/avatar_root"
                 android:gravity="end"
                 android:orientation="vertical"
                 android:paddingBottom="12dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp">
+                android:layout_marginStart="8dp">
+
 
                 <TextView
                     tools:text="Алексей Иванов"
@@ -73,7 +73,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="end"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -83,11 +82,9 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="end"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle" />
 
                 <TextView
-                    android:textColor="?android:textColorPrimary"
                     tools:text="Заблокирован Русланом Колбасой 20 мая 2017 в 16:13"
                     android:id="@+id/status"
                     android:layout_width="wrap_content"

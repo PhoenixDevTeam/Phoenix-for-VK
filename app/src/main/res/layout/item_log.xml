@@ -7,10 +7,9 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        app:cardBackgroundColor="?attr/android:colorBackground"
+        app:cardBackgroundColor="?android:colorBackground"
         app:cardCornerRadius="0dp"
         app:cardElevation="2dp"
-        app:contentPadding="0dp"
         android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -28,7 +27,7 @@
 
                 <ImageView
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
+
                     android:background="@drawable/circle_white"
                     android:id="@+id/log_icon"
                     android:layout_width="@dimen/avatar_size_small"
@@ -39,14 +38,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_toLeftOf="@+id/log_button_share"
+
                     android:layout_toStartOf="@+id/log_button_share"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/log_icon"
+
                     android:layout_toEndOf="@+id/log_icon"
                     android:orientation="vertical"
-                    android:layout_marginLeft="16dp"
+
                     android:layout_marginStart="16dp">
 
                     <TextView
@@ -55,7 +54,6 @@
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         tools:text="Rustam Fattakhetdinov"
-                        android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_subtitle"
                         android:textStyle="bold" />
 
@@ -64,7 +62,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="Today 19:26"
-                        android:textColor="?android:textColorSecondary"
                         android:textSize="@dimen/font_size_additional" />
 
                 </LinearLayout>
@@ -73,13 +70,13 @@
                     android:padding="8dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
+
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:id="@+id/log_button_share"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+
                     android:layout_alignParentEnd="true"
-                    android:layout_marginLeft="16dp"
+
                     app:filter_color="?android:textColorSecondary"
                     android:src="@drawable/share_variant"
                     android:layout_width="wrap_content"
@@ -102,7 +99,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="Message"
-                    android:textColor="?android:textColorSecondary"
                     android:textSize="12sp" />
 
                 <TextView

@@ -61,7 +61,6 @@
                         android:autoLink="web"
                         android:gravity="start"
                         android:text="Message"
-                        android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/font_size_title"
                         emojicon:emojiconSize="20sp" />
 
@@ -71,7 +70,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:text="time"
-                        android:textColor="?android:textColorSecondary"
                         android:textSize="@dimen/font_size_additional" />
 
                 </biz.dealnote.messenger.view.BubbleLinearLayout>
@@ -100,7 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="6dp"
-                    android:layout_toLeftOf="@+id/activity_quick_answer_send"
+
                     android:layout_toEndOf="@+id/activity_quick_answer_to_dialog"
                     android:layout_toStartOf="@+id/activity_quick_answer_send"
                     android:background="?message_bubble_color"
@@ -112,7 +110,6 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:paddingTop="8dp"
-                    android:textColor="?android:textColorPrimary"
                     android:textColorHint="?android:textColorSecondary"
                     android:textSize="@dimen/font_size_title" />
 

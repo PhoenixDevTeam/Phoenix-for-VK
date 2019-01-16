@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Collections;
@@ -23,7 +24,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -106,10 +106,10 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_document_preview, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(rootView.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(rootView.findViewById(R.id.toolbar));
         preview = rootView.findViewById(R.id.fragment_document_preview);
         ivDocIcon = rootView.findViewById(R.id.no_preview_icon);
-        ivDocIcon.getBackground().setColorFilter(CurrentTheme.getIconColorActive(getActivity()), PorterDuff.Mode.MULTIPLY);
+        ivDocIcon.getBackground().setColorFilter(CurrentTheme.getIconColorActive(requireActivity()), PorterDuff.Mode.MULTIPLY);
 
         tvTitle = rootView.findViewById(R.id.fragment_document_title);
         tvSubtitle = rootView.findViewById(R.id.fragment_document_subtitle);
@@ -231,7 +231,7 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }
@@ -295,7 +295,7 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
     }
 
     private void remove() {
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.remove_confirm)
                 .setMessage(R.string.doc_remove_confirm_message)
                 .setPositiveButton(R.string.button_yes, (dialog, which) -> doRemove())
@@ -312,7 +312,7 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
                 getString(R.string.repost_to_wall)
         };
 
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setItems(items, (dialogInterface, i) -> {
                     switch (i) {
                         case 0:
@@ -341,8 +341,8 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
     }
 
     private void download() {
-        if (!AppPerms.hasWriteStoragePermision(getActivity())) {
-            AppPerms.requestWriteStoragePermission(getActivity());
+        if (!AppPerms.hasWriteStoragePermision(requireActivity())) {
+            AppPerms.requestWriteStoragePermission(requireActivity());
             return;
         }
 
@@ -393,7 +393,7 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
     }
 
     private void addYourSelf() {
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.confirmation)
                 .setMessage(R.string.add_document_to_yourself_commit)
                 .setPositiveButton(R.string.button_yes, (dialog, which) -> doAddYourSelf())

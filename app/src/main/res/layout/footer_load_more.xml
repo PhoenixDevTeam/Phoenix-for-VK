@@ -7,7 +7,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/footer_load_more_run"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_centerInParent="true"
@@ -16,7 +15,6 @@
         android:paddingEnd="16dp"
         android:text="@string/load_more"
         android:textAllCaps="true"
-        android:textColor="?colorAccent"
         android:textSize="@dimen/font_size_subtitle" />
 
     <ProgressBar
@@ -31,7 +29,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/end_of_list"
-        android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/font_size_subtitle"
         android:visibility="gone" />
 

@@ -7,7 +7,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorPrimary">
+        android:background="?android:colorBackground">
 
         <biz.dealnote.messenger.view.MySearchView
             android:id="@+id/searchview"

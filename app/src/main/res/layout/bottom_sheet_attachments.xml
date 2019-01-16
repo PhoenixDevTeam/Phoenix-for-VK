@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toEndOf="@+id/offset_view"
-            android:layout_toRightOf="@+id/offset_view"
+
             android:gravity="center"
             android:orientation="vertical"
             android:padding="16dp">
@@ -45,7 +45,6 @@
                 android:gravity="center"
                 android:maxWidth="200dp"
                 android:text="@string/message_attachment_empty_text"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -109,7 +108,6 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_send"
-            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send_short" />

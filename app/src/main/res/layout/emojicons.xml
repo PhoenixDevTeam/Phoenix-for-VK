@@ -14,7 +14,7 @@
             android:id="@+id/recycleView"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:layout_toLeftOf="@+id/backspase"
+
             android:layout_toStartOf="@+id/backspase" />
 
         <ImageButton
@@ -22,7 +22,7 @@
             android:layout_width="48dp"
             android:layout_height="42dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+
             android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="center"
             android:src="@drawable/backspace"

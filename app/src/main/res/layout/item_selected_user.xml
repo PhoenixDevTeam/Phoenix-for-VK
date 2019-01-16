@@ -27,7 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             tools:text="User.Name"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_subtitle" />
 
         <ImageView

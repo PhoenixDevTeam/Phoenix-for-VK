@@ -21,7 +21,7 @@ public class ConversationDocsFragment extends AbsChatAttachmentsFragment<Documen
 
     @Override
     protected RecyclerView.LayoutManager createLayoutManager() {
-        return new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        return new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false);
     }
 
     @Override

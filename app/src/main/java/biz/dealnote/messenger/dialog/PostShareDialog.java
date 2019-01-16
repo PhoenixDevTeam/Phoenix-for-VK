@@ -5,12 +5,13 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import biz.dealnote.messenger.Extra;
@@ -135,7 +136,7 @@ public class PostShareDialog extends DialogFragment {
 
         mAdapter = new MenuAdapter(requireActivity(), items);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity())
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.repost_title)
                 .setAdapter(mAdapter, (dialog, which) -> onItemClick(items.get(which)))
                 .setNegativeButton(R.string.button_cancel, null);

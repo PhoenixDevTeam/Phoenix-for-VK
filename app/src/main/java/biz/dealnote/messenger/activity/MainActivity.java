@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +26,6 @@ import java.util.List;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -728,7 +728,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     @Override
     public void setStatusbarColored(boolean colored, boolean invertIcons) {
         int statusbarNonColored = CurrentTheme.getStatusBarNonColored(this);
-        int statusbarColored = CurrentTheme.getColorPrimary(this);
+        int statusbarColored = CurrentTheme.getStatusBarColor(this);
 
         if (Utils.hasLollipop()) {
             Window w = getWindow();
@@ -1157,7 +1157,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         // чтобы при повторном вызове onWindowFocusChanged не отобразился этот диалог
         Settings.get().main().incrementRunCount();
 
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.app_community_invite_title)
                 .setMessage(R.string.app_community_invite_message)
                 .setPositiveButton(R.string.button_go, (dialog, which) -> {

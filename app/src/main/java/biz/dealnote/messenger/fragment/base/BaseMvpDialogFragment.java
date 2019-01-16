@@ -21,14 +21,14 @@ public abstract class BaseMvpDialogFragment<P extends AbsPresenter<V>, V extends
     @Override
     public void showToast(@StringRes int titleTes, boolean isLong, Object... params) {
         if(isAdded()){
-            Toast.makeText(getActivity(), getString(titleTes), isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity(), getString(titleTes), isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void showError(String text) {
         if(isAdded()){
-            Utils.showRedTopToast(getActivity(), text);
+            Utils.showRedTopToast(requireActivity(), text);
         }
     }
 

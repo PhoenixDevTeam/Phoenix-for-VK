@@ -2,10 +2,11 @@ package biz.dealnote.messenger.fragment;
 
 import android.Manifest;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.Collections;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
 import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
@@ -46,7 +47,7 @@ public abstract class AbsDocumentPreviewFragment<P extends BaseDocumentPresenter
                 getString(R.string.repost_to_wall)
         };
 
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setItems(items, (dialogInterface, i) -> {
                     switch (i) {
                         case 0:

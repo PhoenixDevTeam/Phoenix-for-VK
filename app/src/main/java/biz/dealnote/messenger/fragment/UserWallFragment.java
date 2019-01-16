@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -13,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
 
     @Override
     public void showAvatarUploadedMessage(int accountId, Post post) {
-        new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.success)
                 .setMessage(R.string.avatar_was_changed_successfully)
                 .setPositiveButton(R.string.button_show, (dialog, which) -> PlaceFactory.getPostPreviewPlace(accountId, post.getVkid(), post.getOwnerId(), post).tryOpenWith(requireActivity()))
@@ -109,7 +109,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
         if (isNull(mHeaderHolder)) return;
 
         mHeaderHolder.tvName.setText(user.getFullName());
-        mHeaderHolder.tvLastSeen.setText(UserInfoResolveUtil.getUserActivityLine(getActivity(), user));
+        mHeaderHolder.tvLastSeen.setText(UserInfoResolveUtil.getUserActivityLine(requireActivity(), user));
         mHeaderHolder.tvLastSeen.setAllCaps(false);
 
         String screenName = "@" + user.screen_name;
@@ -142,15 +142,15 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
         }
 
         *//*View mainUserInfoView = mHeaderHolder.infoSections.findViewById(R.id.section_contact_info);
-        UserInfoResolveUtil.fillMainUserInfo(getActivity(), mainUserInfoView, user, new LinkActionAdapter() {
+        UserInfoResolveUtil.fillMainUserInfo(requireActivity(), mainUserInfoView, user, new LinkActionAdapter() {
             @Override
             public void onOwnerClick(int ownerId) {
                 onOpenOwner(ownerId);
             }
         });
 
-        UserInfoResolveUtil.fill(getActivity(), mHeaderHolder.infoSections.findViewById(R.id.section_beliefs), user);
-        UserInfoResolveUtil.fillPersonalInfo(getActivity(), mHeaderHolder.infoSections.findViewById(R.id.section_personal), user);*//*
+        UserInfoResolveUtil.fill(requireActivity(), mHeaderHolder.infoSections.findViewById(R.id.section_beliefs), user);
+        UserInfoResolveUtil.fillPersonalInfo(requireActivity(), mHeaderHolder.infoSections.findViewById(R.id.section_personal), user);*//*
 
         SelectionUtils.addSelectionProfileSupport(getContext(), mHeaderHolder.avatarRoot, user);
     }*/
@@ -239,7 +239,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
 
     @Override
     public void showEditStatusDialog(String initialValue) {
-        new InputTextDialog.Builder(getActivity())
+        new InputTextDialog.Builder(requireActivity())
                 .setInputType(InputType.TYPE_CLASS_TEXT)
                 .setTitleRes(R.string.edit_status)
                 .setHint(R.string.enter_your_status)
@@ -251,7 +251,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
 
     @Override
     public void showAddToFriendsMessageDialog() {
-        new InputTextDialog.Builder(getActivity())
+        new InputTextDialog.Builder(requireActivity())
                 .setInputType(InputType.TYPE_CLASS_TEXT)
                 .setTitleRes(R.string.add_to_friends)
                 .setHint(R.string.attach_message)
@@ -269,13 +269,13 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
             items = new String[]{getString(R.string.open_photo_album)};
         }
 
-        new AlertDialog.Builder(getActivity()).setItems(items, (dialogInterface, i) -> {
+        new MaterialAlertDialogBuilder(requireActivity()).setItems(items, (dialogInterface, i) -> {
             switch (i) {
                 case 0:
                     getPresenter().fireOpenAvatarsPhotoAlbum();
                     break;
                 case 1:
-                    Intent attachPhotoIntent = new Intent(getActivity(), PhotosActivity.class);
+                    Intent attachPhotoIntent = new Intent(requireActivity(), PhotosActivity.class);
                     attachPhotoIntent.putExtra(PhotosActivity.EXTRA_MAX_SELECTION_COUNT, 1);
                     startActivityForResult(attachPhotoIntent, REQUEST_UPLOAD_AVATAR);
                     break;
@@ -357,7 +357,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
             bPrimaryAction = root.findViewById(R.id.subscribe_btn);
 
             RecyclerView filtersList = root.findViewById(R.id.post_filter_recyclerview);
-            filtersList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+            filtersList.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false));
 
             mPostFilterAdapter = new HorizontalOptionsAdapter<>(Collections.emptyList());
             mPostFilterAdapter.setListener(entry -> getPresenter().fireFilterClick(entry));

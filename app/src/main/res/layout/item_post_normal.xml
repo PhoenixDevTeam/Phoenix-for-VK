@@ -9,12 +9,7 @@
     android:layout_marginEnd="@dimen/card_margin"
     android:layout_marginBottom="@dimen/card_margin"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="?android:colorBackground"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="0dp"
-    app:contentPadding="0dp"
-    app:strokeColor="?attr/dividerColor"
-    app:strokeWidth="1dp"
+
     tools:ignore="UnusedAttribute">
 
     <LinearLayout
@@ -37,7 +32,6 @@
                 android:paddingBottom="8dp"
                 android:text="@string/post_is_pinned"
                 android:textAllCaps="true"
-                android:textColor="?android:textColorSecondary"
                 android:textSize="@dimen/font_size_additional" />
 
             <include layout="@layout/line_divider" />

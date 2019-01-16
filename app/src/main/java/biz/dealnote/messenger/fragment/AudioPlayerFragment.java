@@ -324,7 +324,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
 
     private void safeToast(int res) {
         if (isAdded()) {
-            Toast.makeText(getActivity(), res, Toast.LENGTH_LONG).show();
+            Toast.makeText(requireActivity(), res, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -383,8 +383,8 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
     public void onResume() {
         super.onResume();
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onClearSelection();
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onClearSelection();
         }
 
         // Set the playback drawables
@@ -397,7 +397,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(), true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }
@@ -439,7 +439,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         final long next = refreshCurrentTime();
         queueNextRefresh(next);
 
-        MusicUtils.notifyForegroundStateChanged(getActivity(), isPlaying());
+        MusicUtils.notifyForegroundStateChanged(requireActivity(), isPlaying());
     }
 
     /**
@@ -448,7 +448,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
     @Override
     public void onStop() {
         super.onStop();
-        MusicUtils.notifyForegroundStateChanged(getActivity(), false);
+        MusicUtils.notifyForegroundStateChanged(requireActivity(), false);
     }
 
     /**
@@ -551,7 +551,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
             effects.putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC);
             startActivityForResult(effects, REQUEST_EQ);
         } catch (final ActivityNotFoundException ignored) {
-            Toast.makeText(getActivity(), "No system equalizer found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity(), "No system equalizer found", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -651,7 +651,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
             long newpos = mStartSeekPos - delta;
             if (newpos < 0) {
                 // move to previous track
-                MusicUtils.previous(getActivity());
+                MusicUtils.previous(requireActivity());
                 final long duration = MusicUtils.duration();
                 mStartSeekPos += duration;
                 newpos += duration;

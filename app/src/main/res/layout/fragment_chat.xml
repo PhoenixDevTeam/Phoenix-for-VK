@@ -8,7 +8,8 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?android:colorBackground">
 
         <include
             android:id="@+id/toolbarRootView"
@@ -34,19 +35,19 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp" />
+                android:layout_marginStart="12dp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
+
                 android:layout_toStartOf="@+id/buttonUnpin"
-                android:layout_toLeftOf="@+id/buttonUnpin"
+
                 android:layout_toEndOf="@+id/pinned_avatar"
-                android:layout_toRightOf="@+id/pinned_avatar"
+
                 android:orientation="vertical">
 
                 <TextView
@@ -54,7 +55,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="14sp"
                     tools:text="Artem Kolbasa" />
 
@@ -63,7 +63,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
-                    android:textColor="?android:textColorSecondary"
                     android:textSize="12sp"
                     tools:text="Hi! How are you?" />
 
@@ -74,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
+
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
@@ -135,9 +134,9 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_toStartOf="@+id/buttonCancelEditing"
-                android:layout_toLeftOf="@+id/buttonCancelEditing"
+
                 android:layout_toEndOf="@+id/iconEdit"
-                android:layout_toRightOf="@+id/iconEdit"
+
                 android:orientation="vertical">
 
                 <TextView
@@ -152,7 +151,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:textColor="?android:textColorSecondary"
                     tools:text="Hi! How are you?" />
 
             </LinearLayout>
@@ -162,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
+
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
                 android:src="@drawable/close"
@@ -190,7 +188,6 @@
         android:gravity="center"
         android:padding="16dp"
         android:text="@string/chat_empty_text"
-        android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/font_size_subtitle" />
 
 </RelativeLayout>

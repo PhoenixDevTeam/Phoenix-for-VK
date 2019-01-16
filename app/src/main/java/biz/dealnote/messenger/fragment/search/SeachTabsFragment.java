@@ -234,7 +234,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
     @Override
     public void onBackButtonClick() {
         if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() == 1
-                && getActivity() instanceof AppStyleable) {
+                && requireActivity() instanceof AppStyleable) {
             ((AppStyleable) requireActivity()).openDrawer(true, GravityCompat.START);
         } else {
             requireActivity().onBackPressed();
@@ -271,11 +271,11 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(), true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
+        if (requireActivity() instanceof OnSectionResumeCallback) {
             ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_SEARCH);
         }
     }
@@ -283,9 +283,9 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
     private void resolveLeftButton() {
         int count = requireActivity().getSupportFragmentManager().getBackStackEntryCount();
         if (mSearchView != null) {
-            mSearchView.setLeftIcon(count == 1 && getActivity() instanceof AppStyleable ?
-                    CurrentTheme.getResIdFromAttribute(getActivity(), R.attr.toolbarDrawerIcon) :
-                    CurrentTheme.getResIdFromAttribute(getActivity(), R.attr.toolbarBackIcon));
+            mSearchView.setLeftIcon(count == 1 && requireActivity() instanceof AppStyleable ?
+                    CurrentTheme.getResIdFromAttribute(requireActivity(), R.attr.toolbarDrawerIcon) :
+                    CurrentTheme.getResIdFromAttribute(requireActivity(), R.attr.toolbarBackIcon));
         }
     }
 

@@ -122,11 +122,11 @@ public class ActivityUtils {
 
     @Nullable
     public static androidx.appcompat.app.ActionBar supportToolbarFor(Fragment fragment) {
-        if (fragment.getActivity() == null) {
+        if (fragment.requireActivity() == null) {
             return null;
         }
 
-        return ((AppCompatActivity) fragment.getActivity()).getSupportActionBar();
+        return ((AppCompatActivity) fragment.requireActivity()).getSupportActionBar();
     }
 
     public static void setToolbarTitle(Fragment fragment, @StringRes int res){

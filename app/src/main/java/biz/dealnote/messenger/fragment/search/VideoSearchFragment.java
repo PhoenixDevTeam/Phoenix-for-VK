@@ -35,7 +35,7 @@ public class VideoSearchFragment extends AbsSearchFragment<VideosSearchPresenter
 
     @Override
     RecyclerView.Adapter createAdapter(List<Video> data) {
-        VideosAdapter adapter = new VideosAdapter(getActivity(), data);
+        VideosAdapter adapter = new VideosAdapter(requireActivity(), data);
         adapter.setVideoOnClickListener(this);
         return adapter;
     }

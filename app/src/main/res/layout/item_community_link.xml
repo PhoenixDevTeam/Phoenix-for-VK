@@ -35,10 +35,10 @@
 
     <LinearLayout
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/icon_root"
+
         android:layout_toEndOf="@+id/icon_root"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -47,14 +47,12 @@
             android:textSize="18sp"
             tools:text="Phoenix Lite - Google Play"
             android:id="@+id/title"
-            android:textColor="?android:textColorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
             tools:text="play.google.com"
             android:id="@+id/subtitle"
-            android:textColor="?android:textColorSecondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

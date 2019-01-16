@@ -6,11 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.Collection;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -35,12 +36,12 @@ public class SecurityPreferencesFragment extends PreferenceFragmentCompat implem
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.security_settings);
 
-        mUsePinForSecurityPreference = (SwitchPreference) findPreference(SecuritySettings.KEY_USE_PIN_FOR_SECURITY);
+        mUsePinForSecurityPreference = findPreference(SecuritySettings.KEY_USE_PIN_FOR_SECURITY);
         mUsePinForSecurityPreference.setOnPreferenceChangeListener(this);
 
         Preference changePinPreference = findPreference(SecuritySettings.KEY_CHANGE_PIN);
         changePinPreference.setOnPreferenceClickListener(preference -> {
-            startActivityForResult(new Intent(getActivity(), CreatePinActivity.class), REQUEST_CHANGE_PIN);
+            startActivityForResult(new Intent(requireActivity(), CreatePinActivity.class), REQUEST_CHANGE_PIN);
             return true;
         });
 
@@ -52,8 +53,8 @@ public class SecurityPreferencesFragment extends PreferenceFragmentCompat implem
         });
 
         findPreference("encryption_terms_of_use").setOnPreferenceClickListener(preference -> {
-            View view = View.inflate(getActivity(), R.layout.content_encryption_terms_of_use, null);
-            new AlertDialog.Builder(requireActivity())
+            View view = View.inflate(requireActivity(), R.layout.content_encryption_terms_of_use, null);
+            new MaterialAlertDialogBuilder(requireActivity())
                     .setView(view)
                     .setTitle(R.string.phoenix_encryption)
                     .setNegativeButton(R.string.button_cancel, null)
@@ -70,7 +71,7 @@ public class SecurityPreferencesFragment extends PreferenceFragmentCompat implem
 
     private void onClearKeysClick() {
         String[] items = {getString(R.string.for_the_current_account), getString(R.string.for_all_accounts)};
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setItems(items, (dialog, which) -> onClearKeysClick(which == 1))
                 .setNegativeButton(R.string.button_cancel, null)
                 .show();
@@ -95,7 +96,7 @@ public class SecurityPreferencesFragment extends PreferenceFragmentCompat implem
             }
         }
 
-        Toast.makeText(getActivity(), R.string.deleted, Toast.LENGTH_LONG).show();
+        Toast.makeText(requireActivity(), R.string.deleted, Toast.LENGTH_LONG).show();
     }
 
     private void removeKeysFor(int accountId) {
@@ -119,14 +120,14 @@ public class SecurityPreferencesFragment extends PreferenceFragmentCompat implem
             actionBar.setSubtitle(R.string.security);
         }
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_SETTINGS);
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_SETTINGS);
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }
@@ -135,7 +136,7 @@ public class SecurityPreferencesFragment extends PreferenceFragmentCompat implem
     private static final int REQUEST_CHANGE_PIN = 1787;
 
     private void startCreatePinActivity() {
-        startActivityForResult(new Intent(getActivity(), CreatePinActivity.class), REQUEST_CREATE_PIN);
+        startActivityForResult(new Intent(requireActivity(), CreatePinActivity.class), REQUEST_CREATE_PIN);
     }
 
     @Override

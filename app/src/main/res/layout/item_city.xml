@@ -10,7 +10,6 @@
 
     <TextView
         android:id="@+id/title"
-        android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/font_size_title"
         android:text="City title"
         android:layout_width="match_parent"

@@ -105,7 +105,7 @@ public class DocsFragment extends BaseMvpFragment<DocsListPresenter, IDocListVie
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         mRecyclerView = root.findViewById(R.id.recycler_view);
 
@@ -124,16 +124,16 @@ public class DocsFragment extends BaseMvpFragment<DocsListPresenter, IDocListVie
         buttonAdd.setOnClickListener(v -> getPresenter().fireButtonAddClick());
 
         RecyclerView uploadRecyclerView = root.findViewById(R.id.uploads_recycler_view);
-        uploadRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        uploadRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-        mUploadAdapter = new DocsUploadAdapter(getActivity(), Collections.emptyList(), this);
+        mUploadAdapter = new DocsUploadAdapter(requireActivity(), Collections.emptyList(), this);
 
         uploadRecyclerView.setAdapter(mUploadAdapter);
 
-        mHeaderView = View.inflate(getActivity(), R.layout.header_feed, null);
+        mHeaderView = View.inflate(requireActivity(), R.layout.header_feed, null);
 
         RecyclerView headerRecyclerView = mHeaderView.findViewById(R.id.header_list);
-        headerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        headerRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         mFiltersAdapter = new HorizontalOptionsAdapter<>(Collections.emptyList());
         mFiltersAdapter.setListener(entry -> getPresenter().fireFilterClick(entry));
@@ -172,9 +172,9 @@ public class DocsFragment extends BaseMvpFragment<DocsListPresenter, IDocListVie
     private RecyclerView.LayoutManager createLayoutManager(boolean asImages) {
         if (asImages) {
             int columnCount = getResources().getInteger(R.integer.local_gallery_column_count);
-            return new GridLayoutManager(getActivity(), columnCount);
+            return new GridLayoutManager(requireActivity(), columnCount);
         } else {
-            return new LinearLayoutManager(getActivity());
+            return new LinearLayoutManager(requireActivity());
         }
     }
 
@@ -285,7 +285,7 @@ public class DocsFragment extends BaseMvpFragment<DocsListPresenter, IDocListVie
                 .with(new FileManagerSelectableSource())
                 .with(new LocalPhotosSelectableSource());
 
-        Intent intent = DualTabPhotoActivity.createIntent(getActivity(), 10, sources);
+        Intent intent = DualTabPhotoActivity.createIntent(requireActivity(), 10, sources);
         startActivityForResult(intent, REQUEST_CODE_FILE);
     }
 
@@ -380,14 +380,14 @@ public class DocsFragment extends BaseMvpFragment<DocsListPresenter, IDocListVie
             actionBar.setSubtitle(null);
         }
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_DOCS);
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_DOCS);
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

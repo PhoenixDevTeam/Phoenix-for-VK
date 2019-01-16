@@ -108,7 +108,7 @@ public abstract class BaseMvpFragment<P extends AbsPresenter<V>, V extends IMvpV
     }
 
     protected void styleSwipeRefreshLayoutWithCurrentTheme(@NonNull SwipeRefreshLayout swipeRefreshLayout){
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), swipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), swipeRefreshLayout);
     }
 
     private ProgressDialog mLoadingProgressDialog;
@@ -117,7 +117,7 @@ public abstract class BaseMvpFragment<P extends AbsPresenter<V>, V extends IMvpV
     public void displayProgressDialog(@StringRes int title, @StringRes int message, boolean cancelable) {
         dismissProgressDialog();
 
-        mLoadingProgressDialog = new ProgressDialog(getActivity());
+        mLoadingProgressDialog = new ProgressDialog(requireActivity());
         mLoadingProgressDialog.setTitle(title);
         mLoadingProgressDialog.setMessage(getString(message));
         mLoadingProgressDialog.setCancelable(cancelable);

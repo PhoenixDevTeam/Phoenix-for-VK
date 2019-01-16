@@ -61,7 +61,7 @@ public class VideoAlbumsFragment extends BaseMvpFragment<VideoAlbumsPresenter, I
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         mEmpty = root.findViewById(R.id.empty);
 
@@ -77,7 +77,7 @@ public class VideoAlbumsFragment extends BaseMvpFragment<VideoAlbumsPresenter, I
             }
         });
 
-        mAdapter = new VideoAlbumsNewAdapter(getActivity(), Collections.emptyList());
+        mAdapter = new VideoAlbumsNewAdapter(requireActivity(), Collections.emptyList());
         mAdapter.setListener(this);
         recyclerView.setAdapter(mAdapter);
 

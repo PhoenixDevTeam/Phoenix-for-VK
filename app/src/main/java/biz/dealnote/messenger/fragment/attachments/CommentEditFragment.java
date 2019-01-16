@@ -7,8 +7,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
@@ -79,7 +80,7 @@ public class CommentEditFragment extends AbsAttachmentsEditFragment<CommentEditP
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }
@@ -103,7 +104,7 @@ public class CommentEditFragment extends AbsAttachmentsEditFragment<CommentEditP
 
     @Override
     public void showConfirmWithoutSavingDialog() {
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.confirmation)
                 .setMessage(R.string.save_changes_question)
                 .setPositiveButton(R.string.button_yes, (dialog, which) -> getPresenter().fireReadyClick())

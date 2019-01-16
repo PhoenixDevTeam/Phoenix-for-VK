@@ -79,7 +79,7 @@ public class NewsfeedCommentsFragment extends PlaceSupportMvpFragment<NewsfeedCo
             }
         });
 
-        mAdapter = new NewsfeedCommentsAdapter(getActivity(), Collections.emptyList(), this);
+        mAdapter = new NewsfeedCommentsAdapter(requireActivity(), Collections.emptyList(), this);
         mAdapter.setActionListener(this);
         mAdapter.setOwnerClickListener(this);
 
@@ -103,14 +103,14 @@ public class NewsfeedCommentsFragment extends PlaceSupportMvpFragment<NewsfeedCo
         ActivityUtils.setToolbarTitle(this, R.string.drawer_newsfeed_comments);
         ActivityUtils.setToolbarSubtitle(this, null);
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_NEWSFEED_COMMENTS);
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_NEWSFEED_COMMENTS);
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

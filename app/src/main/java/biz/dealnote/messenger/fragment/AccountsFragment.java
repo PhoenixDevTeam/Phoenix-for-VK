@@ -15,13 +15,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -96,7 +97,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
             firstRun = true;
         }
 
-        mAdapter = new AccountAdapter(getActivity(), mData, this);
+        mAdapter = new AccountAdapter(requireActivity(), mData, this);
         mRecyclerView.setAdapter(mAdapter);
 
         if (firstRun) {
@@ -233,7 +234,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
     private static final int REQEUST_DIRECT_LOGIN = 108;
 
     private void startLoginViaWeb() {
-        Intent intent = LoginActivity.createIntent(getActivity(), String.valueOf(Constants.API_ID), Auth.getScope());
+        Intent intent = LoginActivity.createIntent(requireActivity(), String.valueOf(Constants.API_ID), Auth.getScope());
         startActivityForResult(intent, REQUEST_LOGIN);
     }
 
@@ -296,7 +297,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
             items = new String[]{getString(R.string.delete)};
         }
 
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(account.getDisplayName())
                 .setItems(items, (dialog, which) -> {
                     switch (which) {
@@ -335,7 +336,7 @@ public class AccountsFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void startProxySettings() {
-        startActivity(new Intent(getActivity(), ProxyManagerActivity.class));
+        startActivity(new Intent(requireActivity(), ProxyManagerActivity.class));
     }
 
     private void showPrivacyPolicy() {

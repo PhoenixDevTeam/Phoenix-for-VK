@@ -78,7 +78,7 @@ public class SelectCityDialog extends AccountDependencyDialogFragment implements
         });
 
         mRecyclerView = root.findViewById(R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
 
         return root;
     }
@@ -95,7 +95,7 @@ public class SelectCityDialog extends AccountDependencyDialogFragment implements
             firstRun = true;
         }
 
-        mAdapter = new CitiesAdapter(getActivity(), mData);
+        mAdapter = new CitiesAdapter(requireActivity(), mData);
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
 

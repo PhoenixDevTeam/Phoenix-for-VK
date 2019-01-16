@@ -28,7 +28,6 @@
             android:id="@+id/header_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?android:textColorPrimary"
             android:textSize="18sp"
             tools:text="Example" />
 
@@ -62,7 +61,6 @@
             android:id="@+id/item_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?android:textColorSecondary"
             android:textSize="14sp"
             tools:text="Example" />
 

@@ -70,7 +70,7 @@ public class FaveTabsFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_fave_tabs, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         return root;
     }
 
@@ -112,14 +112,14 @@ public class FaveTabsFragment extends BaseFragment {
             actionBar.setSubtitle(null);
         }
 
-        if(getActivity() instanceof OnSectionResumeCallback){
-            ((OnSectionResumeCallback)getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_BOOKMARKS);
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_BOOKMARKS);
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

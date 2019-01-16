@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Collections;
@@ -16,7 +17,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -79,17 +79,17 @@ public class VKPhotoAlbumsFragment extends BaseMvpFragment<PhotoAlbumsPresenter,
 
         mSwipeRefreshLayout = view.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         RecyclerView recyclerView = view.findViewById(R.id.list);
 
         mEmptyText = view.findViewById(R.id.empty);
 
         int columnCount = getResources().getInteger(R.integer.photos_albums_column_count);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columnCount));
+        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), columnCount));
         recyclerView.addOnScrollListener(new PicassoPauseOnScrollListener(Constants.PICASSO_TAG));
 
-        mAdapter = new VkPhotoAlbumsAdapter(getActivity(), Collections.emptyList());
+        mAdapter = new VkPhotoAlbumsAdapter(requireActivity(), Collections.emptyList());
         mAdapter.setClickListener(this);
 
         recyclerView.setAdapter(mAdapter);
@@ -115,7 +115,7 @@ public class VKPhotoAlbumsFragment extends BaseMvpFragment<PhotoAlbumsPresenter,
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }
@@ -150,7 +150,7 @@ public class VKPhotoAlbumsFragment extends BaseMvpFragment<PhotoAlbumsPresenter,
 
     @Override
     public void showDeleteConfirmDialog(@NonNull final PhotoAlbum album) {
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.remove_confirm)
                 .setMessage(R.string.album_remove_confirm_message)
                 .setPositiveButton(R.string.button_yes, (dialog, which) -> getPresenter().fireAlbumDeletingConfirmed(album))
@@ -211,7 +211,7 @@ public class VKPhotoAlbumsFragment extends BaseMvpFragment<PhotoAlbumsPresenter,
     @Override
     public void showAlbumContextMenu(@NonNull PhotoAlbum album) {
         String[] items = {getString(R.string.delete), getString(R.string.edit)};
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(album.getTitle())
                 .setItems(items, (dialog, which) -> {
                     switch (which) {
@@ -265,11 +265,11 @@ public class VKPhotoAlbumsFragment extends BaseMvpFragment<PhotoAlbumsPresenter,
 
     @Override
     public void seDrawertPhotoSectionActive(boolean active) {
-        if (getActivity() instanceof OnSectionResumeCallback) {
+        if (requireActivity() instanceof OnSectionResumeCallback) {
             if (active) {
-                ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_PHOTOS);
+                ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_PHOTOS);
             } else {
-                ((OnSectionResumeCallback) getActivity()).onClearSelection();
+                ((OnSectionResumeCallback) requireActivity()).onClearSelection();
             }
         }
     }

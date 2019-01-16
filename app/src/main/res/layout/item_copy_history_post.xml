@@ -16,7 +16,7 @@
 
         <ImageView
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+
             android:layout_centerVertical="true"
             android:id="@+id/item_copy_history_post_avatar"
             android:layout_width="@dimen/avatar_size_tiny"
@@ -25,18 +25,17 @@
         <TextView
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/item_copy_history_post_avatar"
-            android:layout_toRightOf="@+id/item_copy_history_post_avatar"
-            android:layout_toLeftOf="@+id/item_copy_history_post_dots"
+
+
             android:layout_toStartOf="@+id/item_copy_history_post_dots"
             android:id="@+id/item_post_copy_owner_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+
             android:layout_marginStart="8dp"
             android:gravity="center_vertical"
             android:maxLines="1"
             tools:text="Post owner"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_subtitle"
             android:textStyle="bold" />
 
@@ -47,7 +46,7 @@
             android:layout_centerVertical="true"
             app:filter_color="?android:textColorSecondary"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+
             android:src="@drawable/ic_horisontal_dots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -74,7 +73,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 tools:text="Message"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
                 app:displayHashTags="true"
                 app:emojiconSize="20sp"
@@ -87,7 +85,6 @@
                 android:fontFamily="sans-serif-condensed"
                 android:text="@string/show_more"
                 android:textAllCaps="true"
-                android:textColor="?colorAccent"
                 android:textSize="@dimen/font_size_subtitle" />
         </LinearLayout>
 

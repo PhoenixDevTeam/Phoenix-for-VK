@@ -108,21 +108,21 @@ public class VideosTabsFragment extends BaseFragment {
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if (actionBar != null) {
             actionBar.setTitle(R.string.videos);
-            actionBar.setSubtitle(isMy() ? null : OwnerHelper.loadOwnerFullName(getActivity(), getAccountId(), ownerId));
+            actionBar.setSubtitle(isMy() ? null : OwnerHelper.loadOwnerFullName(requireActivity(), getAccountId(), ownerId));
         }
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
+        if (requireActivity() instanceof OnSectionResumeCallback) {
             if (isMy()) {
-                ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_VIDEOS);
+                ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_VIDEOS);
             } else {
-                ((OnSectionResumeCallback) getActivity()).onClearSelection();
+                ((OnSectionResumeCallback) requireActivity()).onClearSelection();
             }
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

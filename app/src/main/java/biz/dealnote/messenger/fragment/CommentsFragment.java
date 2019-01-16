@@ -17,6 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +27,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -365,8 +366,8 @@ public class CommentsFragment extends PlaceSupportMvpFragment<CommentsPresenter,
     @Override
     public void showAuthorSelectDialog(List<Owner> owners) {
         final ArrayList<Owner> data = new ArrayList<>(owners);
-        OwnersListAdapter adapter = new OwnersListAdapter(getActivity(), data);
-        new AlertDialog.Builder(requireActivity())
+        OwnersListAdapter adapter = new OwnersListAdapter(requireActivity(), data);
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.select_comment_author)
                 .setAdapter(adapter, (dialog, which) -> getPresenter().fireAuthorSelected(data.get(which)))
                 .setNegativeButton(R.string.button_cancel, null)
@@ -404,7 +405,7 @@ public class CommentsFragment extends PlaceSupportMvpFragment<CommentsPresenter,
 
     @Override
     public void displayDeepLookingCommentProgress() {
-        mDeepLookingProgressDialog = new ProgressDialog(getActivity());
+        mDeepLookingProgressDialog = new ProgressDialog(requireActivity());
         mDeepLookingProgressDialog.setMessage(getString(R.string.please_wait));
         mDeepLookingProgressDialog.setCancelable(true);
         mDeepLookingProgressDialog.setOnCancelListener(dialog -> getPresenter().fireDeepLookingCancelledByUser());
@@ -573,14 +574,14 @@ public class CommentsFragment extends PlaceSupportMvpFragment<CommentsPresenter,
     public void onResume() {
         super.onResume();
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onClearSelection();
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onClearSelection();
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

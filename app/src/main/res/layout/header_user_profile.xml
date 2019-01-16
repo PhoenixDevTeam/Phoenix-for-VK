@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="?attr/colorPrimary"
         android:paddingBottom="16dp">
 
         <RelativeLayout
@@ -32,10 +31,10 @@
                 android:id="@+id/header_navi_menu_online"
                 android:layout_width="@dimen/online_dot_size_big"
                 android:layout_height="@dimen/online_dot_size_big"
-                android:layout_alignBottom="@+id/avatar"
                 android:layout_alignStart="@+id/avatar"
-                android:layout_marginBottom="4dp"
+                android:layout_alignBottom="@+id/avatar"
                 android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
                 android:padding="4dp"
                 app:circle_color="?icon_color_active" />
 
@@ -48,9 +47,9 @@
             android:layout_toEndOf="@+id/fragment_user_profile_avatar_container"
             android:gravity="end"
             android:orientation="vertical"
-            android:paddingBottom="12dp"
             android:paddingStart="8dp"
-            android:paddingEnd="16dp">
+            android:paddingEnd="16dp"
+            android:paddingBottom="12dp">
 
             <TextView
                 android:id="@+id/fragment_user_profile_name"
@@ -58,7 +57,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_big_title" />
 
 
@@ -68,7 +66,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle" />
 
             <TextView
@@ -78,7 +75,6 @@
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle" />
 
             <biz.dealnote.messenger.view.emoji.EmojiconTextView
@@ -90,7 +86,6 @@
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
                 android:maxLines="6"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
                 android:visibility="visible"
                 app:emojiconSize="20sp" />
@@ -125,7 +120,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -135,7 +129,6 @@
                     android:fontFamily="@font/open_sans_light"
                     android:gravity="center"
                     android:text="@string/counter_friends"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
@@ -154,17 +147,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
+                    android:gravity="center"
                     android:text="@string/counter_followers"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
@@ -183,17 +174,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
+                    android:gravity="center"
                     android:text="@string/counter_groups"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
@@ -220,17 +209,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
+                    android:gravity="center"
                     android:text="@string/counter_photos"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
@@ -250,17 +237,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
+                    android:gravity="center"
                     android:text="@string/counter_audios"
-                    android:textColor="?android:textColorPrimary"
                     android:textIsSelectable="false"
                     android:textSize="@dimen/font_size_counter" />
 
@@ -281,17 +266,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
+                    android:gravity="center"
                     android:text="@string/counter_videos"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_counter" />
 
             </LinearLayout>
@@ -301,11 +284,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:baselineAligned="false"
             android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -315,14 +298,12 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/subscribe_btn"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:text="Add to friends"
                     android:textAllCaps="true"
-                    android:textColor="?icon_color_active"
                     android:textSize="@dimen/font_size_additional" />
 
             </RelativeLayout>
@@ -333,16 +314,14 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="50">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/info_btn"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:text="@string/more_info"
                     android:textAllCaps="true"
-                    android:textColor="?icon_color_active"
                     android:textSize="@dimen/font_size_additional" />
             </RelativeLayout>
 
@@ -364,8 +343,8 @@
         android:layout_below="@+id/profile_data_container"
         android:layout_alignParentEnd="true"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="4dp"
         android:layout_marginTop="-38dp"
+        android:layout_marginEnd="4dp"
         android:src="@drawable/email"
         app:fabSize="mini"
         app:useCompatPadding="true" />

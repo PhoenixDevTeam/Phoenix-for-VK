@@ -75,7 +75,7 @@ public class SingleTabSeachFragment extends Fragment implements MySearchView.OnQ
 
         MySearchView searchView = root.findViewById(R.id.searchview);
         searchView.setOnQueryTextListener(this);
-        searchView.setOnBackButtonClickListener(() -> getActivity().onBackPressed());
+        searchView.setOnBackButtonClickListener(() -> requireActivity().onBackPressed());
         searchView.setOnAdditionalButtonClickListener(this);
         searchView.setQuery(getInitialCriteriaText(), true);
 
@@ -132,12 +132,12 @@ public class SingleTabSeachFragment extends Fragment implements MySearchView.OnQ
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
 
-        if(getActivity() instanceof OnSectionResumeCallback){
-            ((OnSectionResumeCallback) getActivity()).onClearSelection();
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onClearSelection();
         }
     }
 
@@ -163,10 +163,10 @@ public class SingleTabSeachFragment extends Fragment implements MySearchView.OnQ
             case SearchContentType.WALL:
             case SearchContentType.VIDEOS:
             case SearchContentType.MESSAGES:
-                return CurrentTheme.getColorFromAttrs(getActivity(),
+                return CurrentTheme.getColorFromAttrs(requireActivity(),
                         R.attr.messages_background_color, Color.WHITE);
             default:
-                return CurrentTheme.getColorFromAttrs(getActivity(),
+                return CurrentTheme.getColorFromAttrs(requireActivity(),
                         android.R.attr.colorBackground, Color.WHITE);
         }
     }

@@ -52,16 +52,16 @@ public class AllFriendsFragment extends BaseMvpFragment<AllFriendsPresenter, IAl
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         View root = inflater.inflate(R.layout.fragment_friends, container, false);
         RecyclerView mRecyclerView = root.findViewById(R.id.list);
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager manager = new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.addOnScrollListener(new PicassoPauseOnScrollListener(Constants.PICASSO_TAG));
         mRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
@@ -88,14 +88,14 @@ public class AllFriendsFragment extends BaseMvpFragment<AllFriendsPresenter, IAl
             }
         });
 
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mySearchView.getWindowToken(), 0);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             root.findViewById(R.id.appbar).setElevation(0);
         }
 
-        mAdapter = new FriendsRecycleAdapter(Collections.emptyList(), getActivity());
+        mAdapter = new FriendsRecycleAdapter(Collections.emptyList(), requireActivity());
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
         return root;
@@ -140,7 +140,7 @@ public class AllFriendsFragment extends BaseMvpFragment<AllFriendsPresenter, IAl
 
     @Override
     public void showUserWall(int accountId, User user) {
-        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(requireActivity());
     }
 
     @Override

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 
 import java.util.ArrayList;
@@ -25,7 +26,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -172,7 +172,7 @@ public class VideoPreviewFragment extends BaseMvpFragment<VideoPreviewPresenter,
 
     private void playWithExternalSoftware(String url) {
         if (isEmpty(url)) {
-            Toast.makeText(getActivity(), R.string.error_video_playback_is_not_possible, Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity(), R.string.error_video_playback_is_not_possible, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -181,7 +181,7 @@ public class VideoPreviewFragment extends BaseMvpFragment<VideoPreviewPresenter,
         if (nonNull(requireActivity().getPackageManager().resolveActivity(intent, 0))) {
             startActivity(intent);
         } else {
-            Toast.makeText(getActivity(), R.string.no_compatible_software_installed, Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity(), R.string.no_compatible_software_installed, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -303,7 +303,7 @@ public class VideoPreviewFragment extends BaseMvpFragment<VideoPreviewPresenter,
             items = new String[]{getString(R.string.repost_send_message)};
         }
 
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setItems(items, (dialogInterface, i) -> {
                     switch (i) {
                         case 0:
@@ -398,7 +398,7 @@ public class VideoPreviewFragment extends BaseMvpFragment<VideoPreviewPresenter,
                         .setSection(SECTION_PLAY));
 
             } else if (external.contains("coub")) {
-                if (AppPrefs.isCoubInstalled(getActivity())) {
+                if (AppPrefs.isCoubInstalled(requireActivity())) {
                     items.add(new Item(Menu.COUB, new Text(R.string.title_play_in_coub))
                             .setIcon(R.drawable.ic_play_coub)
                             .setSection(SECTION_PLAY));
@@ -429,7 +429,7 @@ public class VideoPreviewFragment extends BaseMvpFragment<VideoPreviewPresenter,
 
         MenuAdapter adapter = new MenuAdapter(requireActivity(), items);
 
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setAdapter(adapter, (dialog, which) -> onPlayMenuItemClick(video, items.get(which)))
                 .setNegativeButton(R.string.button_cancel, null)
                 .show();
@@ -492,7 +492,7 @@ public class VideoPreviewFragment extends BaseMvpFragment<VideoPreviewPresenter,
         List<Item> items = createDirectVkPlayItems(video, section);
         MenuAdapter adapter = new MenuAdapter(requireActivity(), items);
 
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setAdapter(adapter, (dialog, which) -> {
                     Item item = items.get(which);
                     switch (item.getKey()) {
@@ -566,14 +566,14 @@ public class VideoPreviewFragment extends BaseMvpFragment<VideoPreviewPresenter,
             actionBar.setTitle(R.string.video);
         }
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onClearSelection();
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onClearSelection();
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(), true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

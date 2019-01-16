@@ -11,9 +11,9 @@
         android:id="@+id/item_text_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+
         android:layout_marginStart="16dp"
-        android:layout_marginRight="8dp"
+
         android:layout_marginEnd="8dp"
         android:paddingBottom="6dp">
 
@@ -21,12 +21,11 @@
             android:id="@+id/item_post_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+
             android:layout_alignParentStart="true"
             android:autoLink="web"
             android:gravity="start"
             android:linksClickable="false"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_subtitle"
             emojicon:displayHashTags="true"
             emojicon:emojiconSize="20sp"
@@ -37,14 +36,13 @@
             android:id="@+id/item_post_show_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+
             android:layout_alignParentStart="true"
             android:layout_below="@+id/item_post_text"
             android:fontFamily="sans-serif-condensed"
             android:text="@string/show_more"
             android:textAllCaps="true"
-            android:textColor="?colorAccent"
-            android:textSize="@dimen/font_size_subtitle"/>
+            android:textSize="@dimen/font_size_subtitle" />
 
     </RelativeLayout>
 
@@ -66,9 +64,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_post_attachments"
-        android:layout_marginLeft="16dp"
+
         android:layout_marginStart="16dp"
-        android:layout_marginRight="8dp"
+
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center_vertical">
@@ -83,9 +81,8 @@
             android:id="@+id/item_post_signer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+
             android:layout_marginStart="8dp"
-            android:textColor="?colorAccent"
             android:textSize="@dimen/font_size_subtitle"
             tools:text="Emin Guliev"/>
     </LinearLayout>

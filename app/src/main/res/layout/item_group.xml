@@ -29,7 +29,6 @@
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:text="Phoenix for VK"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_title" />
 
         <TextView
@@ -38,7 +37,6 @@
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:text="Программное обеспечение"
-            android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/font_size_subtitle" />
 
     </LinearLayout>

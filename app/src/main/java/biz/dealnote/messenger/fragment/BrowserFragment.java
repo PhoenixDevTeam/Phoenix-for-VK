@@ -119,9 +119,9 @@ public class BrowserFragment extends BaseFragment implements BackPressCallback {
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(), true)
+                .setBarsColored(requireActivity(), true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -173,7 +173,7 @@ public class BrowserFragment extends BaseFragment implements BackPressCallback {
             //link: null, url: https://vk.com/doc124456557_415878705
 
             if (link == null) {
-                LinkHelper.openLinkInBrowser(getActivity(), url);
+                LinkHelper.openLinkInBrowser(requireActivity(), url);
                 return true;
             }
 
@@ -183,11 +183,11 @@ public class BrowserFragment extends BaseFragment implements BackPressCallback {
             }
 
             if (link instanceof AwayLink) {
-                LinkHelper.openLinkInBrowser(getActivity(), ((AwayLink) link).link);
+                LinkHelper.openLinkInBrowser(requireActivity(), ((AwayLink) link).link);
                 return true;
             }
 
-            if (LinkHelper.openVKLink(getActivity(), mAccountId, link)) {
+            if (LinkHelper.openVKLink(requireActivity(), mAccountId, link)) {
                 return true;
             }
 

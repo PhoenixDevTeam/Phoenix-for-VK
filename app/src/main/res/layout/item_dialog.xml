@@ -79,7 +79,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Name"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_title" />
 
             <biz.dealnote.messenger.view.emoji.EmojiconTextView
@@ -90,7 +89,6 @@
                 android:gravity="start"
                 android:maxLines="3"
                 android:text="Message"
-                android:textColor="?android:textColorSecondary"
                 android:textSize="@dimen/font_size_subtitle"
                 app:emojiconSize="20sp" />
 
@@ -104,7 +102,6 @@
             android:layout_alignParentBottom="false"
             android:layout_alignParentEnd="true"
             android:text="time"
-            android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/font_size_additional"/>
 
         <LinearLayout

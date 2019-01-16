@@ -84,14 +84,14 @@ public class CommunityControlFragment extends Fragment {
         ActivityUtils.setToolbarTitle(this, R.string.community_control);
         ActivityUtils.setToolbarSubtitle(this, mCommunity.getFullName());
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onClearSelection();
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onClearSelection();
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

@@ -79,7 +79,7 @@ public class SelectUniversityDialog extends AccountDependencyDialogFragment impl
         });
 
         mRecyclerView = root.findViewById(R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
 
         return root;
     }
@@ -96,7 +96,7 @@ public class SelectUniversityDialog extends AccountDependencyDialogFragment impl
             firstRun = true;
         }
 
-        mAdapter = new UniversitiesAdapter(getActivity(), mData);
+        mAdapter = new UniversitiesAdapter(requireActivity(), mData);
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
 

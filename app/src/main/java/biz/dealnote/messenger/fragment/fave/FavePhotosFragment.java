@@ -54,7 +54,7 @@ public class FavePhotosFragment extends BaseMvpFragment<FavePhotosPresenter, IFa
         mEmpty = root.findViewById(R.id.empty);
 
         int columns = getContext().getResources().getInteger(R.integer.photos_column_count);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), columns);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(requireActivity(), columns);
         recyclerView.setLayoutManager(gridLayoutManager);
 
         recyclerView.addOnScrollListener(new PicassoPauseOnScrollListener(Constants.PICASSO_TAG));
@@ -67,9 +67,9 @@ public class FavePhotosFragment extends BaseMvpFragment<FavePhotosPresenter, IFa
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
-        mAdapter = new FavePhotosAdapter(getActivity(), Collections.emptyList());
+        mAdapter = new FavePhotosAdapter(requireActivity(), Collections.emptyList());
         mAdapter.setPhotoSelectionListener(this);
         recyclerView.setAdapter(mAdapter);
 

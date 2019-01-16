@@ -36,14 +36,14 @@ public class GroupsSearchFragment extends AbsSearchFragment<CommunitiesSearchPre
 
     @Override
     RecyclerView.Adapter createAdapter(List<Community> data) {
-        PeopleAdapter adapter = new PeopleAdapter(getActivity(), data);
+        PeopleAdapter adapter = new PeopleAdapter(requireActivity(), data);
         adapter.setClickListener(this);
         return adapter;
     }
 
     @Override
     protected RecyclerView.LayoutManager createLayoutManager() {
-        return new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        return new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
     }
 
     @Override
@@ -62,6 +62,6 @@ public class GroupsSearchFragment extends AbsSearchFragment<CommunitiesSearchPre
 
     @Override
     public void openCommunityWall(int accountId, Community community) {
-        PlaceFactory.getOwnerWallPlace(accountId, community).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, community).tryOpenWith(requireActivity());
     }
 }

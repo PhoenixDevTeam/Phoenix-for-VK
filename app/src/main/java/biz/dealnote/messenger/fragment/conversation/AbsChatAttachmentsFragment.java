@@ -58,7 +58,7 @@ public abstract class AbsChatAttachmentsFragment<T, P extends BaseChatAttachment
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(getPresenter()::fireRefresh);
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         this.mAdapter = createAdapter();
         mRecyclerView.setAdapter(mAdapter);
@@ -123,7 +123,7 @@ public abstract class AbsChatAttachmentsFragment<T, P extends BaseChatAttachment
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

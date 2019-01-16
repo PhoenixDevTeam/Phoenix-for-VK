@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +18,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,7 +75,7 @@ public class UserBannedFragment extends BaseMvpFragment<UserBannedPresenter, IUs
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
         mRecyclerView = root.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         mRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
             @Override
             public void onScrollToLastElement() {
@@ -82,7 +83,7 @@ public class UserBannedFragment extends BaseMvpFragment<UserBannedPresenter, IUs
             }
         });
 
-        mPeopleAdapter = new PeopleAdapter(getActivity(), Collections.emptyList());
+        mPeopleAdapter = new PeopleAdapter(requireActivity(), Collections.emptyList());
         mPeopleAdapter.setLongClickListener(this);
         mPeopleAdapter.setClickListener(owner -> getPresenter().fireUserClick((User) owner));
         mRecyclerView.setAdapter(mPeopleAdapter);
@@ -137,8 +138,8 @@ public class UserBannedFragment extends BaseMvpFragment<UserBannedPresenter, IUs
     public void onResume() {
         super.onResume();
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onClearSelection();
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onClearSelection();
         }
 
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
@@ -150,9 +151,9 @@ public class UserBannedFragment extends BaseMvpFragment<UserBannedPresenter, IUs
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     @Override
@@ -175,13 +176,13 @@ public class UserBannedFragment extends BaseMvpFragment<UserBannedPresenter, IUs
     public void startUserSelection(int accountId) {
         Place place = PlaceFactory.getFriendsFollowersPlace(accountId, accountId, FriendsTabsFragment.TAB_ALL_FRIENDS, null);
         SelectProfileCriteria criteria = new SelectProfileCriteria();
-        Intent intent = SelectProfilesActivity.createIntent(getActivity(), place, criteria);
+        Intent intent = SelectProfilesActivity.createIntent(requireActivity(), place, criteria);
         startActivityForResult(intent, REQUEST_SELECT);
     }
 
     @Override
     public void showSuccessToast() {
-        Toast.makeText(getActivity(), R.string.success, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireActivity(), R.string.success, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -206,7 +207,7 @@ public class UserBannedFragment extends BaseMvpFragment<UserBannedPresenter, IUs
 
     @Override
     public boolean onOwnerLongClick(Owner owner) {
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(owner.getFullName())
                 .setItems(new String[]{getString(R.string.delete)}, (dialog, which) -> getPresenter().fireRemoveClick((User) owner))
                 .setNegativeButton(R.string.button_cancel, null)

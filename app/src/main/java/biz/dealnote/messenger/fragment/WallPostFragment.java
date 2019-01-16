@@ -86,34 +86,34 @@ public class WallPostFragment extends PlaceSupportMvpFragment<WallPostPresenter,
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.attachmentsViewBinder = new AttachmentsViewBinder(getActivity(), this);
+        this.attachmentsViewBinder = new AttachmentsViewBinder(requireActivity(), this);
         this.attachmentsViewBinder.setOnHashTagClickListener(this);
-        this.transformation = CurrentTheme.createTransformationForAvatar(getActivity());
+        this.transformation = CurrentTheme.createTransformationForAvatar(requireActivity());
     }
 
     @Override
     public void displayPinComplete(boolean pinned) {
-        Toast.makeText(getActivity(), pinned ? R.string.pin_result : R.string.unpin_result, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireActivity(), pinned ? R.string.pin_result : R.string.unpin_result, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void displayDeleteOrRestoreComplete(boolean deleted) {
-        Toast.makeText(getActivity(), deleted ? R.string.delete_result : R.string.restore_result, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireActivity(), deleted ? R.string.delete_result : R.string.restore_result, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onClearSelection();
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onClearSelection();
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
-                .apply(getActivity());
+                .apply(requireActivity());
     }
 
     private AttachmentsHolder mAttachmentsViews;
@@ -123,7 +123,7 @@ public class WallPostFragment extends PlaceSupportMvpFragment<WallPostPresenter,
         root = (ViewGroup) inflater.inflate(R.layout.fragment_post, container, false);
         mAttachmentsViews = AttachmentsHolder.forPost(root);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mShareButton = root.findViewById(R.id.share_button);
         mCommentsButton = root.findViewById(R.id.comments_button);
@@ -207,20 +207,20 @@ public class WallPostFragment extends PlaceSupportMvpFragment<WallPostPresenter,
 
     @Override
     public void copyLinkToClipboard(String link) {
-        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(getString(R.string.link), link);
         clipboard.setPrimaryClip(clip);
 
-        Toast.makeText(getActivity(), R.string.copied_url, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireActivity(), R.string.copied_url, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void copyTextToClipboard(String text) {
-        ClipboardManager manager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager manager = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText(getString(R.string.post_text), text);
         manager.setPrimaryClip(clipData);
 
-        Toast.makeText(getActivity(), R.string.copied_text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireActivity(), R.string.copied_text, Toast.LENGTH_SHORT).show();
     }
 
     private boolean mTextSelectionAllowed;
@@ -333,7 +333,7 @@ public class WallPostFragment extends PlaceSupportMvpFragment<WallPostPresenter,
 
     @Override
     public void displayToolbatSubtitle(int subtitleType, long datetime) {
-        String formattedDate = AppTextUtils.getDateFromUnixTime(getActivity(), datetime);
+        String formattedDate = AppTextUtils.getDateFromUnixTime(requireActivity(), datetime);
 
         switch (subtitleType){
             case SUBTITLE_NORMAL:
@@ -458,12 +458,12 @@ public class WallPostFragment extends PlaceSupportMvpFragment<WallPostPresenter,
 
     @Override
     public void goToPostEditing(int accountId, @NonNull Post post) {
-        PlaceUtil.goToPostEditor(getActivity(), accountId, post);
+        PlaceUtil.goToPostEditor(requireActivity(), accountId, post);
     }
 
     @Override
     public void showPostNotReadyToast() {
-        Toast.makeText(getActivity(), R.string.wall_post_is_not_yet_initialized, Toast.LENGTH_LONG).show();
+        Toast.makeText(requireActivity(), R.string.wall_post_is_not_yet_initialized, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -484,7 +484,7 @@ public class WallPostFragment extends PlaceSupportMvpFragment<WallPostPresenter,
     @Override
     public void goToNewsSearch(int accountId, String hashTag) {
         NewsFeedCriteria criteria = new NewsFeedCriteria(hashTag);
-        PlaceFactory.getSingleTabSearchPlace(accountId, SearchContentType.NEWS, criteria).tryOpenWith(getActivity());
+        PlaceFactory.getSingleTabSearchPlace(accountId, SearchContentType.NEWS, criteria).tryOpenWith(requireActivity());
     }
 
     @Override

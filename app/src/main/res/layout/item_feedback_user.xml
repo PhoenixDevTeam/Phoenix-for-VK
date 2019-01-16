@@ -44,7 +44,7 @@
             android:id="@+id/item_friend_avatar_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+
             android:layout_alignParentStart="true"
             android:layout_alignTop="@+id/relativeLayout">
 
@@ -90,7 +90,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
                 android:textStyle="bold"/>
 
@@ -99,7 +98,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="comment for post..."
-                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle" />
 
             <TextView
@@ -109,7 +107,6 @@
                 android:layout_marginTop="2dp"
                 android:maxLines="2"
                 android:text="time"
-                android:textColor="?android:textColorSecondary"
                 android:textSize="@dimen/font_size_additional" />
 
         </LinearLayout>

@@ -54,7 +54,7 @@ public class FavePostsFragment extends PlaceSupportMvpFragment<FavePostsPresente
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         mEmpty = root.findViewById(R.id.empty);
 
@@ -62,7 +62,7 @@ public class FavePostsFragment extends PlaceSupportMvpFragment<FavePostsPresente
         if (Utils.is600dp(requireActivity())) {
             manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         } else {
-            manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            manager = new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false);
         }
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
@@ -76,7 +76,7 @@ public class FavePostsFragment extends PlaceSupportMvpFragment<FavePostsPresente
             }
         });
 
-        mAdapter = new WallAdapter(getActivity(), Collections.emptyList(), this, this);
+        mAdapter = new WallAdapter(requireActivity(), Collections.emptyList(), this, this);
         recyclerView.setAdapter(mAdapter);
         return root;
     }

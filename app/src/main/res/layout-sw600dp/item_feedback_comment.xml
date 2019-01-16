@@ -85,7 +85,7 @@
                             android:id="@+id/item_comment_top_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_toLeftOf="@+id/item_feedback_comment_attachment"
+
                             android:layout_toEndOf="@+id/item_comment_owner_avatar"
                             android:layout_toStartOf="@+id/item_feedback_comment_attachment"
                             android:orientation="vertical"
@@ -101,7 +101,6 @@
                                 android:maxLines="1"
                                 android:paddingEnd="8dp"
                                 android:text="Name"
-                                android:textColor="?android:textColorPrimary"
                                 android:textSize="@dimen/font_size_title" />
 
                             <biz.dealnote.messenger.view.emoji.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
@@ -112,7 +111,6 @@
                                 android:gravity="start"
                                 android:paddingEnd="8dp"
                                 android:text="Message"
-                                android:textColor="?android:textColorPrimary"
                                 android:textSize="@dimen/font_size_subtitle"
                                 emojicon:emojiconSize="18sp" />
 
@@ -138,7 +136,6 @@
                                 android:maxLines="3"
                                 android:paddingEnd="8dp"
                                 android:text="time"
-                                android:textColor="?android:textColorSecondary"
                                 android:textSize="@dimen/font_size_subtitle" />
 
                         </LinearLayout>
@@ -166,7 +163,7 @@
                             android:id="@+id/item_comment_reply_owner_avatar"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:layout_alignParentLeft="true"
+
                             android:layout_alignParentStart="false"
                             android:layout_alignTop="@+id/item_comment_reply_top_container"
                             android:layout_marginStart="2dp"
@@ -195,7 +192,6 @@
                                 android:layout_height="wrap_content"
                                 android:maxLines="1"
                                 android:text="Name"
-                                android:textColor="?android:textColorPrimary"
                                 android:textIsSelectable="false"
                                 android:textSize="@dimen/font_size_title" />
 
@@ -205,7 +201,6 @@
                                 android:layout_height="wrap_content"
                                 android:autoLink="web"
                                 android:text="Message"
-                                android:textColor="?android:textColorPrimary"
                                 android:textSize="@dimen/font_size_subtitle"
                                 app:emojiconSize="18sp" />
 
@@ -230,7 +225,6 @@
                                 android:layout_marginEnd="8dp"
                                 android:maxLines="1"
                                 android:text="time"
-                                android:textColor="?android:textColorSecondary"
                                 android:textSize="@dimen/font_size_subtitle" />
 
                         </LinearLayout>

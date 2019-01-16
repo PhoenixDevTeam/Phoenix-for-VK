@@ -38,7 +38,6 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:text="@string/button_add_photo"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="12sp" />
 
         </LinearLayout>

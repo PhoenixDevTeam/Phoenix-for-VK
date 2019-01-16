@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -183,7 +182,7 @@ public class SecuritySettings implements ISettings.ISecuritySettings {
     private static String calculateHash(String value) {
         try {
             return AeSimpleSHA1.sha1(value);
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException();
         }
     }

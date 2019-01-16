@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.net.Uri;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,7 +15,6 @@ import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.Repository;
@@ -66,7 +67,7 @@ public class PlaceUtil {
     private static void safelyShowError(WeakReference<Activity> reference, Throwable throwable) {
         Activity a = reference.get();
         if (a != null) {
-            new AlertDialog.Builder(a)
+            new MaterialAlertDialogBuilder(a)
                     .setTitle(R.string.error)
                     .setMessage(Utils.getCauseIfRuntime(throwable).getMessage())
                     .setPositiveButton(R.string.button_ok, null)

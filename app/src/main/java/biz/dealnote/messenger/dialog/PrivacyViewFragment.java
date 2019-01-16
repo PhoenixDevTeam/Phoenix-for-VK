@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import biz.dealnote.messenger.Extra;
@@ -59,18 +60,18 @@ public class PrivacyViewFragment extends AccountDependencyDialogFragment impleme
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View root = View.inflate(getActivity(), R.layout.fragment_privacy_view, null);
+        View root = View.inflate(requireActivity(), R.layout.fragment_privacy_view, null);
 
         int columns = getResources().getInteger(R.integer.privacy_entry_column_count);
 
-        mAdapter = new PrivacyAdapter(getActivity(), mPrivacy);
+        mAdapter = new PrivacyAdapter(requireActivity(), mPrivacy);
         mAdapter.setActionListener(this);
 
         RecyclerView recyclerView = root.findViewById(R.id.recycleView);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
 
-        return new AlertDialog.Builder(getActivity())
+        return new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.privacy_settings)
                 .setView(root)
                 .setPositiveButton(R.string.button_ok, (dialog, which) -> returnResult())
@@ -95,7 +96,7 @@ public class PrivacyViewFragment extends AccountDependencyDialogFragment impleme
                 getString(R.string.privacy_to_only_me)
         };
 
-        new AlertDialog.Builder(getActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setItems(items, (dialog, which) -> {
                     switch (which){
                         case 0:

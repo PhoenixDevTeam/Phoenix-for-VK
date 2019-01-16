@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Base.App.DayNight" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:statusBarColor">?android:colorBackground</item>
         <item name="android:navigationBarColor" tools:targetApi="o_mr1">?android:colorBackground
         </item>
         <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">?dividerColor</item>

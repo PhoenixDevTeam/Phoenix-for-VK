@@ -1,6 +1,5 @@
 package biz.dealnote.messenger.util;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -24,7 +23,7 @@ public class AeSimpleSHA1 {
         return buf.toString();
     }
 
-    public static String sha1(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public static String sha1(String text) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-1");
         byte[] textBytes = text.getBytes(StandardCharsets.ISO_8859_1);
         md.update(textBytes, 0, textBytes.length);

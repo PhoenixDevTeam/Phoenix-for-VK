@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
@@ -9,12 +8,7 @@
     android:layout_marginEnd="@dimen/card_margin"
     android:layout_marginBottom="@dimen/card_margin"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="?android:colorBackground"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="0dp"
-    app:contentPadding="0dp"
-    app:strokeColor="?attr/dividerColor"
-    app:strokeWidth="1dp"
+
     tools:ignore="UnusedAttribute">
 
 

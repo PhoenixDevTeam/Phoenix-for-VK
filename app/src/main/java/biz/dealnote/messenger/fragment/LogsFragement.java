@@ -65,12 +65,12 @@ public class LogsFragement extends BaseMvpFragment<LogsPresenter, ILogsView>
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
         RecyclerView recyclerView = root.findViewById(R.id.events_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
         View headerView = inflater.inflate(R.layout.header_logs, recyclerView, false);
 
         RecyclerView typesRecyclerView = headerView.findViewById(R.id.types_recycler_view);
-        typesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        typesRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         mTypesAdapter = new HorizontalOptionsAdapter<>(Collections.emptyList());
         mTypesAdapter.setListener(this);
@@ -116,14 +116,14 @@ public class LogsFragement extends BaseMvpFragment<LogsPresenter, ILogsView>
             actionBar.setSubtitle(null);
         }
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onClearSelection();
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onClearSelection();
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

@@ -119,14 +119,14 @@ public class VideosFragment extends BaseMvpFragment<VideosListPresenter, IVideos
         setToolbarTitle(getString(R.string.videos));
 
         if (!inTabsContainer) {
-            if (getActivity() instanceof OnSectionResumeCallback) {
-                ((OnSectionResumeCallback) getActivity()).onClearSelection();
+            if (requireActivity() instanceof OnSectionResumeCallback) {
+                ((OnSectionResumeCallback) requireActivity()).onClearSelection();
             }
 
             new ActivityFeatures.Builder()
                     .begin()
                     .setBlockNavigationDrawer(false)
-                    .setBarsColored(getActivity(),true)
+                    .setBarsColored(requireActivity(), true)
                     .build()
                     .apply(requireActivity());
         }
@@ -150,7 +150,7 @@ public class VideosFragment extends BaseMvpFragment<VideosListPresenter, IVideos
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         mEmpty = root.findViewById(R.id.empty);
 

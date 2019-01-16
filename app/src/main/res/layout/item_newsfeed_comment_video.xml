@@ -9,12 +9,7 @@
     android:layout_marginEnd="@dimen/card_margin"
     android:layout_marginBottom="@dimen/card_margin"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="?android:colorBackground"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="0dp"
-    app:contentPadding="0dp"
-    app:strokeColor="?attr/dividerColor"
-    app:strokeWidth="1dp"
+
     tools:ignore="UnusedAttribute">
 
     <LinearLayout
@@ -37,10 +32,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
+
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
+
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -48,7 +43,6 @@
                     android:id="@+id/video_views_counter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?android:textColorSecondary"
                     android:textSize="@dimen/font_size_additional"
                     tools:text="1533" />
 
@@ -56,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginLeft="4dp"
+
                     android:src="@drawable/ic_eye_white_vector"
                     app:filter_color="?android:textColorSecondary" />
 
@@ -73,11 +67,11 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
+
                 android:layout_toStartOf="@+id/video_views_counter_root"
-                android:layout_toLeftOf="@+id/video_views_counter_root"
+
                 android:layout_toEndOf="@+id/video_owner_avatar"
-                android:layout_toRightOf="@+id/video_owner_avatar"
+
                 android:orientation="vertical">
 
                 <TextView
@@ -85,7 +79,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_subtitle"
                     android:textStyle="bold"
                     tools:text="Owner name" />
@@ -94,7 +87,6 @@
                     android:id="@+id/video_datetime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?android:textColorSecondary"
                     android:textSize="@dimen/font_size_additional"
                     tools:text="Today 19:26" />
 
@@ -150,7 +142,6 @@
             android:maxLines="1"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_subtitle"
             android:textStyle="bold"
             tools:text="Video title" />

@@ -10,13 +10,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import biz.dealnote.messenger.R;
@@ -85,17 +86,17 @@ public class NotificationPreferencesFragment extends PreferenceFragmentCompat {
 
         selection = Arrays.asList(array).indexOf(selectionKey);
 
-        new AlertDialog.Builder(requireActivity()).setSingleChoiceItems(array, selection, (dialog, which) -> {
+        new MaterialAlertDialogBuilder(requireActivity()).setSingleChoiceItems(array, selection, (dialog, which) -> {
             selection = which;
             stopRingtoneIfExist();
             String title = array[which];
             String uri = ringrones.get(title);
-            Ringtone r = RingtoneManager.getRingtone(getActivity(), Uri.parse(uri));
+            Ringtone r = RingtoneManager.getRingtone(requireActivity(), Uri.parse(uri));
             current = r;
             r.play();
         }).setPositiveButton("OK", (dialog, which) -> {
             if (selection == -1) {
-                Toast.makeText(getActivity(), R.string.ringtone_not_selected, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity(), R.string.ringtone_not_selected, Toast.LENGTH_SHORT).show();
             } else {
                 String title = array[selection];
                 Settings.get()
@@ -134,7 +135,7 @@ public class NotificationPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     public Map<String, String> getNotifications() {
-        RingtoneManager manager = new RingtoneManager(getActivity());
+        RingtoneManager manager = new RingtoneManager(requireActivity());
         manager.setType(RingtoneManager.TYPE_NOTIFICATION);
         Cursor cursor = manager.getCursor();
         Map<String, String> list = new HashMap<>();
@@ -159,14 +160,14 @@ public class NotificationPreferencesFragment extends PreferenceFragmentCompat {
             actionBar.setSubtitle(R.string.notif_setting_title);
         }
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_SETTINGS);
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_SETTINGS);
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

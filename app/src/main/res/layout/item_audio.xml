@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/item_music_divider_group"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingBottom="8dp"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
         android:layout_toEndOf="@+id/item_audio_play"
@@ -21,7 +21,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/item_audio_time"
+
             android:layout_toStartOf="@+id/item_audio_time"
             android:orientation="vertical"
             android:paddingEnd="16dp">
@@ -31,8 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="Artist"
-                android:textColor="?android:textColorPrimary"
+                tools:text="Artist"
                 android:textSize="@dimen/font_size_title" />
 
             <TextView
@@ -41,8 +40,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:paddingEnd="16dp"
-                android:text="Title"
-                android:textColor="?android:textColorSecondary"
+                tools:text="Title"
                 android:textSize="@dimen/font_size_subtitle" />
 
         </LinearLayout>
@@ -53,8 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:maxLines="1"
-            android:text="Time"
-            android:textColor="?android:textColorSecondary"
+            tools:text="Time"
             android:textSize="@dimen/font_size_additional"
             android:textStyle="bold" />
 

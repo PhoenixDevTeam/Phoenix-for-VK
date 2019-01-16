@@ -86,7 +86,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="Name"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_title" />
 
                 <biz.dealnote.messenger.view.emoji.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
@@ -97,7 +96,6 @@
                     android:gravity="start"
                     android:maxLines="3"
                     android:text="Message"
-                    android:textColor="?android:textColorSecondary"
                     android:textSize="@dimen/font_size_subtitle"
                     emojicon:emojiconSize="20sp" />
 

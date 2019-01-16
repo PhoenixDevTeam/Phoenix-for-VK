@@ -59,7 +59,7 @@ public class SelectFacultyDialog extends AccountDependencyDialogFragment impleme
 
         View root = inflater.inflate(R.layout.dialog_simple_recycler_view, container, false);
         mRecyclerView = root.findViewById(R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
 
         return root;
     }
@@ -74,7 +74,7 @@ public class SelectFacultyDialog extends AccountDependencyDialogFragment impleme
             firstRun = true;
         }
 
-        mAdapter = new FacultiesAdapter(getActivity(), mData);
+        mAdapter = new FacultiesAdapter(requireActivity(), mData);
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
 

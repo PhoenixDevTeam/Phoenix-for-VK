@@ -24,7 +24,6 @@
             android:gravity="center"
             android:padding="16dp"
             android:text="@string/search_option_empty_text"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_subtitle" />
 
     </FrameLayout>

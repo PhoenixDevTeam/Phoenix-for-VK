@@ -57,7 +57,7 @@ public class RepostFragment extends AbsAttachmentsEditFragment<RepostPresenter, 
 
     @OnGuiCreated
     public void goBack() {
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 
     @Override

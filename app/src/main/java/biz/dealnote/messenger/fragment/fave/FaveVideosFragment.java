@@ -52,7 +52,7 @@ public class FaveVideosFragment extends BaseMvpFragment<FaveVideosPresenter, IFa
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         mEmpty = root.findViewById(R.id.empty);
 
@@ -70,7 +70,7 @@ public class FaveVideosFragment extends BaseMvpFragment<FaveVideosPresenter, IFa
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        mAdapter = new VideosAdapter(getActivity(), Collections.emptyList());
+        mAdapter = new VideosAdapter(requireActivity(), Collections.emptyList());
         mAdapter.setVideoOnClickListener(this);
         recyclerView.setAdapter(mAdapter);
 
@@ -128,7 +128,7 @@ public class FaveVideosFragment extends BaseMvpFragment<FaveVideosPresenter, IFa
     @Override
     public void goToPreview(int accountId, Video video) {
         PlaceFactory.getVideoPreviewPlace(accountId, video)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }
 
     @Override

@@ -89,7 +89,7 @@ public class EnterPinFragment extends BaseMvpFragment<EnterPinPresenter, IEnterP
     @Override
     public void displayErrorAnimation() {
         if(Objects.nonNull(mValuesRoot)){
-            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_invalid_pin);
+            Animation animation = AnimationUtils.loadAnimation(requireActivity(), R.anim.anim_invalid_pin);
             mValuesRoot.startAnimation(animation);
         }
     }
@@ -100,7 +100,7 @@ public class EnterPinFragment extends BaseMvpFragment<EnterPinPresenter, IEnterP
             PicassoInstance.with()
                     .load(url)
                     .error(R.drawable.ic_avatar_unknown)
-                    .transform(CurrentTheme.createTransformationForAvatar(getActivity()))
+                    .transform(CurrentTheme.createTransformationForAvatar(requireActivity()))
                     .into(mAvatar);
         }
     }
@@ -110,7 +110,7 @@ public class EnterPinFragment extends BaseMvpFragment<EnterPinPresenter, IEnterP
         if(Objects.nonNull(mAvatar)){
             PicassoInstance.with()
                     .load(R.drawable.ic_avatar_unknown)
-                    .transform(CurrentTheme.createTransformationForAvatar(getActivity()))
+                    .transform(CurrentTheme.createTransformationForAvatar(requireActivity()))
                     .into(mAvatar);
         }
     }

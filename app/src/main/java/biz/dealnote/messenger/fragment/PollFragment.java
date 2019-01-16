@@ -65,12 +65,12 @@ public class PollFragment extends BaseMvpFragment<PollPresenter, IPollView>
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        mAnswersAdapter = new PollAnswersAdapter(getActivity(), Collections.emptyList());
+        mAnswersAdapter = new PollAnswersAdapter(requireActivity(), Collections.emptyList());
         mAnswersAdapter.setListener(this);
 
-        View header = LayoutInflater.from(getActivity()).inflate(R.layout.header_poll, recyclerView, false);
+        View header = LayoutInflater.from(requireActivity()).inflate(R.layout.header_poll, recyclerView, false);
         mAnswersAdapter.addHeader(header);
 
         mQuestion = header.findViewById(R.id.title);

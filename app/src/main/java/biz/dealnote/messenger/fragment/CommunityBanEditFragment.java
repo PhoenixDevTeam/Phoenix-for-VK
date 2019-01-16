@@ -15,12 +15,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -148,7 +149,7 @@ public class CommunityBanEditFragment extends BaseMvpFragment<CommunityBanEditPr
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }
@@ -255,7 +256,7 @@ public class CommunityBanEditFragment extends BaseMvpFragment<CommunityBanEditPr
             strings[i] = options.get(i).getTitle();
         }
 
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.select_from_list_title)
                 .setItems(strings, (dialog, which) -> getPresenter().fireOptionSelected(requestCode, options.get(which)))
                 .setNegativeButton(R.string.button_cancel, null)

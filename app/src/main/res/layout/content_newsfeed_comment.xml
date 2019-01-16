@@ -20,11 +20,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="16dp"
+
+
         android:layout_marginStart="16dp"
         android:layout_toEndOf="@+id/item_comment_owner_avatar"
-        android:layout_toRightOf="@+id/item_comment_owner_avatar"
+
         android:orientation="vertical"
         android:paddingBottom="2dp"
         android:paddingTop="2dp"
@@ -35,7 +35,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_subtitle"
             android:textStyle="bold"
             tools:text="Name" />
@@ -46,7 +45,6 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:gravity="start"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_subtitle"
             app:displayHashTags="true"
             app:emojiconSize="18sp"
@@ -76,11 +74,10 @@
                 android:id="@+id/item_comment_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+
                 android:layout_alignParentStart="true"
                 android:layout_alignWithParentIfMissing="false"
                 android:layout_centerVertical="true"
-                android:textColor="?android:textColorSecondary"
                 android:textSize="@dimen/font_size_additional"
                 tools:text="time" />
 
@@ -89,10 +86,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
+
                 android:layout_marginStart="8dp"
                 android:layout_toEndOf="@+id/item_comment_time"
-                android:layout_toRightOf="@id/item_comment_time"
+
                 android:gravity="center">
 
                 <TextView
@@ -100,7 +97,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAllCaps="true"
-                    android:textColor="?android:textColorSecondary"
                     android:textSize="@dimen/font_size_additional"
                     tools:text="58" />
 

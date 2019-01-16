@@ -50,7 +50,7 @@ public class FaveLinksFragment extends BaseMvpFragment<FaveLinksPresenter, IFave
         RecyclerView recyclerView = root.findViewById(android.R.id.list);
         mEmpty = root.findViewById(R.id.empty);
 
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager manager = new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         recyclerView.addOnScrollListener(new PicassoPauseOnScrollListener(Constants.PICASSO_TAG));
         recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
@@ -61,10 +61,10 @@ public class FaveLinksFragment extends BaseMvpFragment<FaveLinksPresenter, IFave
         });
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        mAdapter = new FaveLinksAdapter(Collections.emptyList(), getActivity());
+        mAdapter = new FaveLinksAdapter(Collections.emptyList(), requireActivity());
         mAdapter.setClickListener(this);
         recyclerView.setAdapter(mAdapter);
 
@@ -86,7 +86,7 @@ public class FaveLinksFragment extends BaseMvpFragment<FaveLinksPresenter, IFave
 
     @Override
     public void openLink(int accountId, FaveLink link) {
-        LinkHelper.openLinkInBrowser(getActivity(), link.getUrl());
+        LinkHelper.openLinkInBrowser(requireActivity(), link.getUrl());
     }
 
     @Override

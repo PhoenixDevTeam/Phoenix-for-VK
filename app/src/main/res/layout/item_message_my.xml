@@ -58,7 +58,6 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             tools:text="Message"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_subtitle"
             app:displayHashTags="true"
             app:emojiconSize="20sp"
@@ -88,7 +87,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="time"
-                android:textColor="?android:textColorSecondary"
                 android:textSize="@dimen/font_size_additional" />
 
             <ImageView

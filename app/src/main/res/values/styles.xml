@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Base.App.DayNight" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:statusBarColor">?android:colorBackground</item>
         <item name="android:navigationBarColor" tools:targetApi="o_mr1">?android:colorBackground
         </item>
         <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">?dividerColor</item>
@@ -15,14 +16,18 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
 
-        <item name="android:statusBarColor">?colorPrimary</item>
-        <item name="colorPrimary">#FFF</item>
-        <item name="colorPrimaryVariant">#FFF</item>
-        <item name="colorSecondary">#424242</item>
-        <item name="colorOnPrimary">#212121</item>
-        <item name="colorOnSecondary">#FFF</item>
+        <item name="colorPrimary">#6200EE</item>
+        <item name="colorPrimaryVariant">#3700B3</item>
+        <item name="colorSecondary">#6200EE</item>
+        <item name="colorSecondaryVariant">#3700B3</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
         <item name="colorOnBackground">#212121</item>
 
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.OutlinedButton
+        </item>
+        <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
+        <item name="floatingActionButtonStyle">@style/Theme.FloatingActionButton</item>
         <item name="icon_color_active">#233446</item>
         <item name="icon_color_static">#424242</item>
 
@@ -81,7 +86,6 @@
 
     <style name="Theme.Toolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:gravity">center</item>
-        <item name="android:tint">?colorSecondary</item>
     </style>
 
     <style name="Theme.Toolbar.Photo" parent="Widget.MaterialComponents.Toolbar">
@@ -92,12 +96,16 @@
     </style>
 
     <style name="Theme.Tablayout" parent="Widget.MaterialComponents.TabLayout">
-        <item name="tabRippleColor">#424242</item>
+        <item name="tabRippleColor">?colorPrimary</item>
         <item name="tabMode">scrollable</item>
         <item name="tabTextColor">?android:textColorPrimary</item>
-        <item name="tabIndicatorColor">#424242</item>
+        <item name="tabIndicatorColor">?colorPrimary</item>
         <item name="enforceTextAppearance">true</item>
-        <item name="android:background">?colorPrimary</item>
+    </style>
+
+    <style name="Theme.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">?colorOnSecondary</item>
+        <item name="tint">?colorSecondary</item>
     </style>
 
 </resources>

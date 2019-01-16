@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?colorPrimary"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -27,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toEndOf="@+id/offset_view"
-            android:layout_toRightOf="@+id/offset_view"
+
             android:gravity="center"
             android:orientation="vertical"
             android:padding="16dp">
@@ -45,7 +44,6 @@
                 android:gravity="center"
                 android:maxWidth="200dp"
                 android:text="@string/message_attachment_empty_text"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -55,7 +53,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorPrimaryDark"
         android:gravity="center|end"
         android:orientation="horizontal"
         android:paddingStart="8dp"
@@ -102,13 +99,11 @@
             android:src="@drawable/ic_arrow_down_vector"
             android:tint="?android:textColorPrimary" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonSave"
-            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save"
-            android:textColor="?android:textColorPrimary" />
+            android:text="@string/save" />
     </LinearLayout>
 
 </LinearLayout>

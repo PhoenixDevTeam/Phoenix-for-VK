@@ -7,13 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -66,7 +67,7 @@ public class CommunityBlacklistFragment extends BaseMvpFragment<CommunityBlackli
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
             @Override
             public void onScrollToLastElement() {
@@ -74,7 +75,7 @@ public class CommunityBlacklistFragment extends BaseMvpFragment<CommunityBlackli
             }
         });
 
-        mAdapter = new CommunityBannedAdapter(getActivity(), Collections.emptyList());
+        mAdapter = new CommunityBannedAdapter(requireActivity(), Collections.emptyList());
         mAdapter.setActionListener(this);
 
         recyclerView.setAdapter(mAdapter);
@@ -143,7 +144,7 @@ public class CommunityBlacklistFragment extends BaseMvpFragment<CommunityBlackli
         SelectProfileCriteria c = new SelectProfileCriteria();
 
         Place place = PlaceFactory.getSingleTabSearchPlace(accountId, SearchContentType.PEOPLE, criteria);
-        Intent intent = SelectProfilesActivity.createIntent(getActivity(), place, c);
+        Intent intent = SelectProfilesActivity.createIntent(requireActivity(), place, c);
         startActivityForResult(intent, REQUEST_SELECT_PROFILES);
     }
 
@@ -167,7 +168,7 @@ public class CommunityBlacklistFragment extends BaseMvpFragment<CommunityBlackli
     @Override
     public void onBannedLongClick(Banned banned) {
         String[] items = {getString(R.string.delete)};
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(banned.getBanned().getFullName())
                 .setItems(items, (dialog, which) -> getPresenter().fireBannedRemoveClick(banned))
                 .setNegativeButton(R.string.button_cancel, null)

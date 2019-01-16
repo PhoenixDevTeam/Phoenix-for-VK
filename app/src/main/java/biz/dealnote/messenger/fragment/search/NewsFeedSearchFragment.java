@@ -37,16 +37,16 @@ public class NewsFeedSearchFragment extends AbsSearchFragment<NewsFeedSearchPres
 
     @Override
     RecyclerView.Adapter createAdapter(List<Post> data) {
-        return new WallAdapter(getActivity(), data, this, this);
+        return new WallAdapter(requireActivity(), data, this, this);
     }
 
     @Override
     protected RecyclerView.LayoutManager createLayoutManager() {
-        if (Utils.is600dp(getActivity())) {
+        if (Utils.is600dp(requireActivity())) {
             boolean land = Utils.isLandscape(getContext());
             return new StaggeredGridLayoutManager(land ? 2 : 1, StaggeredGridLayoutManager.VERTICAL);
         } else {
-            return new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            return new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false);
         }
     }
 

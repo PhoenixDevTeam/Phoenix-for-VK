@@ -25,7 +25,6 @@
             android:padding="8dp" />
 
         <TextView
-            android:textColor="?colorAccent"
             android:layout_width="match_parent"
             android:textSize="@dimen/font_size_subtitle"
             android:text="@string/results_in_a_network"

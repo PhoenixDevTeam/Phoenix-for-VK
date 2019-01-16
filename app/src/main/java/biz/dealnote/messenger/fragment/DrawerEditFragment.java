@@ -53,7 +53,7 @@ public class DrawerEditFragment extends AbsMvpFragment<DrawerEditPresenter, IDra
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
         ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
             @Override

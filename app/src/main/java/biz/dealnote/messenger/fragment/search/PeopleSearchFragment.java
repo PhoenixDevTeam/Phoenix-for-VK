@@ -36,14 +36,14 @@ public class PeopleSearchFragment extends AbsSearchFragment<PeopleSearchPresente
 
     @Override
     RecyclerView.Adapter createAdapter(List<User> data) {
-        PeopleAdapter adapter = new PeopleAdapter(getActivity(), data);
+        PeopleAdapter adapter = new PeopleAdapter(requireActivity(), data);
         adapter.setClickListener(this);
         return adapter;
     }
 
     @Override
     protected RecyclerView.LayoutManager createLayoutManager() {
-        return new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        return new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
     }
 
     @Override

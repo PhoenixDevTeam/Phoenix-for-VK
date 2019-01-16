@@ -62,7 +62,7 @@ public class PlaylistFragment extends BaseFragment implements AudioRecyclerAdapt
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mRecyclerView = root.findViewById(R.id.list);
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
+        LinearLayoutManager manager = new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
         return root;
     }
@@ -71,7 +71,7 @@ public class PlaylistFragment extends BaseFragment implements AudioRecyclerAdapt
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mAdapter = new AudioRecyclerAdapter(getActivity(), mData);
+        mAdapter = new AudioRecyclerAdapter(requireActivity(), mData);
         mAdapter.setClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -82,7 +82,7 @@ public class PlaylistFragment extends BaseFragment implements AudioRecyclerAdapt
 
     @Override
     public void onClick(int position, Audio audio) {
-        MusicPlaybackService.startForPlayList(getActivity(), (ArrayList) MusicUtils.getQueue(), position, false);
+        MusicPlaybackService.startForPlayList(requireActivity(), (ArrayList) MusicUtils.getQueue(), position, false);
     }
 
     @Override

@@ -7,12 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -55,7 +56,7 @@ public class CommunityLinksFragment extends BaseMvpFragment<CommunityLinksPresen
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
         mLinksAdapter = new CommunityLinksAdapter(Collections.emptyList());
         mLinksAdapter.setActionListener(this);
@@ -110,7 +111,7 @@ public class CommunityLinksFragment extends BaseMvpFragment<CommunityLinksPresen
     @Override
     public void onLongClick(VKApiCommunity.Link link) {
         String[] items = {getString(R.string.edit), getString(R.string.delete)};
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(link.name)
                 .setItems(items, (dialog, which) -> {
                     switch (which){

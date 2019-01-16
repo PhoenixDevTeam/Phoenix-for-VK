@@ -77,7 +77,7 @@ public class CreatePhotoAlbumFragment extends BaseMvpFragment<EditPhotoAlbumPres
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mRecyclerView = root.findViewById(R.id.recycleView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         return root;
     }
 
@@ -242,7 +242,7 @@ public class CreatePhotoAlbumFragment extends BaseMvpFragment<EditPhotoAlbumPres
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }
@@ -259,7 +259,7 @@ public class CreatePhotoAlbumFragment extends BaseMvpFragment<EditPhotoAlbumPres
         PlaceFactory.getVKPhotosAlbumPlace(getAccountId(), album.owner_id, album.id,
                 VKPhotosFragment.ACTION_SHOW_PHOTOS)
                 .withParcelableExtra(Extra.ALBUM, album)
-                .tryOpenWith(getActivity());
+                .tryOpenWith(requireActivity());
     }*/
 
     /*@Override

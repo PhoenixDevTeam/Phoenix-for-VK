@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:text="@string/restore"
         android:textAllCaps="true"
-        android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/font_size_subtitle" />
 
 

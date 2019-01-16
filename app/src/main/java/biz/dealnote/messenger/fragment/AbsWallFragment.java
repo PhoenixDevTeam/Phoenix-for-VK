@@ -107,7 +107,7 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         RecyclerView.LayoutManager manager;
         if (Utils.is600dp(requireActivity())) {
@@ -137,7 +137,7 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
         FloatingActionButton fabCreate = root.findViewById(R.id.fragment_user_profile_fab);
         fabCreate.setOnClickListener(v -> getPresenter().fireCreateClick());
 
-        mWallAdapter = new WallAdapter(getActivity(), Collections.emptyList(), this, this);
+        mWallAdapter = new WallAdapter(requireActivity(), Collections.emptyList(), this, this);
         mWallAdapter.addHeader(headerView);
         mWallAdapter.addFooter(footerView);
         mWallAdapter.setNonPublishedPostActionListener(this);
@@ -330,14 +330,14 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
     public void onResume() {
         super.onResume();
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onClearSelection();
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onClearSelection();
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(), true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

@@ -107,7 +107,7 @@ public abstract class PlaceSupportMvpFragment<P extends PlaceSupportPresenter<V>
 
     @Override
     public void openLink(int accountId, @NonNull Link link) {
-        LinkHelper.openLinkInBrowser(getActivity(), link.getUrl());
+        LinkHelper.openLinkInBrowser(requireActivity(), link.getUrl());
     }
 
     @Override
@@ -143,7 +143,7 @@ public abstract class PlaceSupportMvpFragment<P extends PlaceSupportPresenter<V>
 
     @Override
     public void playAudioList(int accountId, int position, @NonNull ArrayList<Audio> apiAudio) {
-        MusicPlaybackService.startForPlayList(getActivity(), apiAudio, position, false);
+        MusicPlaybackService.startForPlayList(requireActivity(), apiAudio, position, false);
         PlaceFactory.getPlayerPlace(accountId).tryOpenWith(requireActivity());
     }
 

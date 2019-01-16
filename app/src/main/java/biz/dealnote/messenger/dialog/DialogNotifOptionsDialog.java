@@ -4,8 +4,9 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 import biz.dealnote.messenger.Extra;
@@ -53,7 +54,7 @@ public class DialogNotifOptionsDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View root = View.inflate(getActivity(), R.layout.dialog_dialog_options, null);
+        View root = View.inflate(requireActivity(), R.layout.dialog_dialog_options, null);
 
         scEnable = root.findViewById(R.id.enable);
         scHighPriority = root.findViewById(R.id.priority);
@@ -69,7 +70,7 @@ public class DialogNotifOptionsDialog extends DialogFragment {
         scVibro.setChecked(hasFlag(mask, FLAG_VIBRO));
         scLed.setChecked(hasFlag(mask, FLAG_LED));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity())
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.peer_notification_settings)
                 .setPositiveButton(R.string.button_ok, (dialog, whichButton) -> onSaveClick())
                 .setNeutralButton(R.string.set_default, (dialog, which) -> Settings.get()

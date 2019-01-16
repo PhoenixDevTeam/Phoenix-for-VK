@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="?attr/colorPrimary"
         android:paddingBottom="16dp">
 
         <ImageView
@@ -41,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_big_title" />
 
             <TextView
@@ -51,7 +49,6 @@
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
                 android:maxLines="6"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
                 android:visibility="visible" />
 
@@ -64,7 +61,6 @@
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
                 android:maxLines="6"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/font_size_subtitle"
                 android:visibility="visible"
                 emojicon:emojiconSize="20sp" />
@@ -80,7 +76,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/profile_data_container"
         android:layout_marginBottom="2dp"
-        android:background="?android:colorBackground"
         android:elevation="2dp"
         android:paddingBottom="4dp"
         android:paddingStart="12dp"
@@ -106,7 +101,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -115,7 +109,6 @@
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_followers"
-                    android:textColor="?android:textColorPrimary"
                     android:gravity="center"
                     android:textSize="@dimen/font_size_counter" />
 
@@ -135,7 +128,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -144,7 +136,6 @@
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_topics"
-                    android:textColor="?android:textColorPrimary"
                     android:gravity="center"
                     android:textSize="@dimen/font_size_counter" />
 
@@ -165,7 +156,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -174,7 +164,6 @@
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_documents"
-                    android:textColor="?android:textColorPrimary"
                     android:gravity="center"
                     android:textSize="@dimen/font_size_counter" />
 
@@ -201,7 +190,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -210,7 +198,6 @@
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_photos"
-                    android:textColor="?android:textColorPrimary"
                     android:gravity="center"
                     android:textSize="@dimen/font_size_counter" />
 
@@ -231,7 +218,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -240,7 +226,6 @@
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_audios"
-                    android:textColor="?android:textColorPrimary"
                     android:gravity="center"
                     android:textSize="@dimen/font_size_counter" />
 
@@ -261,7 +246,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_big_title" />
 
                 <TextView
@@ -270,7 +254,6 @@
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
                     android:text="@string/counter_videos"
-                    android:textColor="?android:textColorPrimary"
                     android:gravity="center"
                     android:textSize="@dimen/font_size_counter" />
 
@@ -285,7 +268,6 @@
 
             <Button
                 android:id="@+id/header_group_primary_button"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="16dp"
@@ -296,7 +278,6 @@
 
             <Button
                 android:id="@+id/header_group_secondary_button"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="16dp"

@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import androidx.appcompat.app.AlertDialog;
 import biz.dealnote.messenger.R;
 
@@ -30,7 +32,7 @@ public class InputTextDialog {
     }
 
     public void show() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(titleRes);
         View view = View.inflate(context, R.layout.dialog_enter_text, null);
 

@@ -228,7 +228,7 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
 
     @Override
     public void startLoginCommunityActivity(int groupId) {
-        Intent intent = LoginActivity.createIntent(getActivity(), String.valueOf(Constants.API_ID), "messages,photos,docs,manage", Collections.singletonList(groupId));
+        Intent intent = LoginActivity.createIntent(requireActivity(), String.valueOf(Constants.API_ID), "messages,photos,docs,manage", Collections.singletonList(groupId));
         startActivityForResult(intent, REQUEST_LOGIN_COMMUNITY);
     }
 
@@ -315,7 +315,7 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
             fabMessage = root.findViewById(R.id.header_group_fab_message);
 
             RecyclerView filterList = root.findViewById(R.id.post_filter_recyclerview);
-            filterList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+            filterList.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false));
             mFiltersAdapter = new HorizontalOptionsAdapter<>(Collections.emptyList());
             mFiltersAdapter.setListener(entry -> getPresenter().fireFilterEntryClick(entry));
 

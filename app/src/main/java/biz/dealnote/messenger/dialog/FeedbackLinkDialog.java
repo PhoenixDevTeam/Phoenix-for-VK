@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +13,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -102,15 +103,15 @@ public class FeedbackLinkDialog extends DialogFragment implements FeedbackLinkAd
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = View.inflate(getActivity(), R.layout.fragment_feedback_links, null);
+        View view = View.inflate(requireActivity(), R.layout.fragment_feedback_links, null);
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        FeedbackLinkAdapter adapter = new FeedbackLinkAdapter(getActivity(), getAllModels(mFeedback), this);
+        FeedbackLinkAdapter adapter = new FeedbackLinkAdapter(requireActivity(), getAllModels(mFeedback), this);
         recyclerView.setAdapter(adapter);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.choose_action)
                 .setNegativeButton(R.string.button_cancel, null)
                 .setView(view);
@@ -129,36 +130,36 @@ public class FeedbackLinkDialog extends DialogFragment implements FeedbackLinkAd
     @Override
     public void onPostClick(@NonNull Post post) {
         close();
-        PlaceFactory.getPostPreviewPlace(getAccountId(), post.getVkid(), post.getOwnerId(), post).tryOpenWith(getActivity());
+        PlaceFactory.getPostPreviewPlace(getAccountId(), post.getVkid(), post.getOwnerId(), post).tryOpenWith(requireActivity());
     }
 
     @Override
     public void onCommentClick(@NonNull Comment comment) {
         close();
-        PlaceFactory.getCommentsPlace(getAccountId(), comment.getCommented(), comment.getId()).tryOpenWith(getActivity());
+        PlaceFactory.getCommentsPlace(getAccountId(), comment.getCommented(), comment.getId()).tryOpenWith(requireActivity());
     }
 
     @Override
     public void onTopicClick(@NonNull Topic topic) {
         close();
-        PlaceFactory.getCommentsPlace(getAccountId(), Commented.from(topic), null).tryOpenWith(getActivity());
+        PlaceFactory.getCommentsPlace(getAccountId(), Commented.from(topic), null).tryOpenWith(requireActivity());
     }
 
     @Override
     public void onPhotoClick(@NonNull Photo photo) {
         close();
-        PlaceFactory.getSimpleGalleryPlace(getAccountId(), Utils.singletonArrayList(photo), 0, true).tryOpenWith(getActivity());
+        PlaceFactory.getSimpleGalleryPlace(getAccountId(), Utils.singletonArrayList(photo), 0, true).tryOpenWith(requireActivity());
     }
 
     @Override
     public void onVideoClick(@NonNull Video video) {
         close();
-        PlaceFactory.getVideoPreviewPlace(getAccountId(), video).tryOpenWith(getActivity());
+        PlaceFactory.getVideoPreviewPlace(getAccountId(), video).tryOpenWith(requireActivity());
     }
 
     @Override
     public void onUserClick(@NonNull User user) {
         close();
-        PlaceFactory.getOwnerWallPlace(getAccountId(), user).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(getAccountId(), user).tryOpenWith(requireActivity());
     }
 }

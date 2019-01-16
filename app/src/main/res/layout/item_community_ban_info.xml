@@ -37,7 +37,7 @@
 
     <LinearLayout
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -46,21 +46,18 @@
             android:textSize="18sp"
             tools:text="Ruslan Kolbasa"
             android:id="@+id/name"
-            android:textColor="?android:textColorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
             tools:text="Заблокирован Р. Колбасой навсегда"
             android:id="@+id/date_and_admin_info"
-            android:textColor="?android:textColorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
             tools:text="Комментарий: Досвидули"
             android:id="@+id/comment_text"
-            android:textColor="?android:textColorSecondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

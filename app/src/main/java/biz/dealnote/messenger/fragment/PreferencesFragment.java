@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,7 +31,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.CheckBoxPreference;
@@ -84,7 +85,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
     public static final String KEY_DEFAULT_CATEGORY = "default_category";
     public static final String KEY_AVATAR_STYLE = "avatar_style";
-    public static final String KEY_NAVIGATION_COLORED = "navigation_colored";
     private static final String KEY_NIGHT_SWITCH = "night_switch";
     private static final String KEY_TALK_ABOUT = "talk_about";
     private static final String KEY_JOIN_APP_GROUP = "join_app_group";
@@ -92,7 +92,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
     private static final String KEY_NOTIFICATION = "notifications";
     private static final String KEY_SECURITY = "security";
     private static final String KEY_DRAWER_ITEMS = "drawer_categories";
-    private static final String KEY_LOCKSCREEN_ART = "lockscreen_art";
 
     private static final String TAG = PreferencesFragment.class.getSimpleName();
 
@@ -122,7 +121,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
         if (!AppPrefs.FULL_APP) {
             PreferenceScreen screen = this.getPreferenceScreen();
-            Preference getFullApp = new Preference(getActivity());
+            Preference getFullApp = new Preference(requireActivity());
             getFullApp.setTitle(R.string.get_full_app_title);
             getFullApp.setSummary(R.string.get_full_app_summary);
             getFullApp.setOnPreferenceClickListener(preference -> {
@@ -133,7 +132,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
             screen.addPreference(getFullApp);
         }
 
-        final ListPreference nightPreference = (ListPreference) findPreference(KEY_NIGHT_SWITCH);
+        final ListPreference nightPreference = findPreference(KEY_NIGHT_SWITCH);
 
         nightPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             switch (Integer.parseInt(newValue.toString())) {
@@ -152,13 +151,13 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
             return true;
         });
 
-        ListPreference prefPhotoPreview = (ListPreference) findPreference("photo_preview_size");
+        ListPreference prefPhotoPreview = findPreference("photo_preview_size");
         prefPhotoPreview.setOnPreferenceChangeListener((preference, newValue) -> {
             Settings.get().main().notifyPrefPreviewSizeChanged();
             return true;
         });
 
-        ListPreference defCategory = (ListPreference) findPreference(KEY_DEFAULT_CATEGORY);
+        ListPreference defCategory = findPreference(KEY_DEFAULT_CATEGORY);
         initStartPagePreference(defCategory);
 
         Preference talkPreference = findPreference(KEY_TALK_ABOUT);
@@ -260,7 +259,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
         findPreference("proxy")
                 .setOnPreferenceClickListener(preference -> {
-                    startActivity(new Intent(getActivity(), ProxyManagerActivity.class));
+                    startActivity(new Intent(requireActivity(), ProxyManagerActivity.class));
                     return true;
                 });
 
@@ -270,7 +269,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 });
 
-        CheckBoxPreference keepLongpoll = (CheckBoxPreference) findPreference("keep_longpoll");
+        CheckBoxPreference keepLongpoll = findPreference("keep_longpoll");
         keepLongpoll.setOnPreferenceChangeListener((preference, newValue) -> {
             boolean keep = (boolean) newValue;
             if(keep){
@@ -294,7 +293,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
     private void disableOnlyFullAppPrefs() {
         String fullOnly = " FULL ONLY ";
-        int color = Utils.adjustAlpha(CurrentTheme.getColorSecondary(getActivity()), 100);
+        int color = Utils.adjustAlpha(CurrentTheme.getColorSecondary(requireActivity()), 100);
 
         for (String name : AppPrefs.ONLY_FULL_APP_PREFS) {
             Preference preference = findPreference(name);
@@ -318,7 +317,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
     private void onSecurityClick() {
         if (Settings.get().security().isUsePinForSecurity()) {
-            startActivityForResult(new Intent(getActivity(), EnterPinActivity.class), REQUEST_PIN_FOR_SECURITY);
+            startActivityForResult(new Intent(requireActivity(), EnterPinActivity.class), REQUEST_PIN_FOR_SECURITY);
         } else {
             PlaceFactory.getSecuritySettingsPlace().tryOpenWith(requireActivity());
         }
@@ -372,7 +371,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
             fos.flush();
         } catch (IOException e) {
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(requireActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             return;
         } finally {
             safelyRecycle(original);
@@ -406,8 +405,8 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void openAboutUs() {
-        View view = View.inflate(getActivity(), R.layout.dialog_about_us, null);
-        new AlertDialog.Builder(requireActivity())
+        View view = View.inflate(requireActivity(), R.layout.dialog_about_us, null);
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setView(view)
                 .show();
     }
@@ -430,7 +429,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
                 .ui()
                 .getAvatarStyle();
 
-        View view = View.inflate(getActivity(), R.layout.dialog_avatar_style, null);
+        View view = View.inflate(requireActivity(), R.layout.dialog_avatar_style, null);
         ImageView ivCircle = view.findViewById(R.id.circle_avatar);
         ImageView ivOval = view.findViewById(R.id.oval_avatar);
         final ImageView ivCircleSelected = view.findViewById(R.id.circle_avatar_selected);
@@ -448,10 +447,10 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
         PicassoInstance.with()
                 .load(R.drawable.cat)
-                .transform(new MaskTransformation(getActivity(), R.drawable.avatar_mask))
+                .transform(new MaskTransformation(requireActivity(), R.drawable.avatar_mask))
                 .into(ivOval);
 
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.avatar_style_title)
                 .setView(view)
                 .setPositiveButton(R.string.button_ok, (dialog, which) -> {
@@ -494,7 +493,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
             @Override
             protected void onPostExecute(String s) {
                 if (isAdded()) {
-                    Toast.makeText(getActivity(), s == null ? getString(R.string.thank_you) : s, Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireActivity(), s == null ? getString(R.string.thank_you) : s, Toast.LENGTH_LONG).show();
                 }
             }
         }.execute();
@@ -618,14 +617,14 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
             actionBar.setSubtitle(null);
         }
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_SETTINGS);
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_SETTINGS);
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

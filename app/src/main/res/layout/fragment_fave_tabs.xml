@@ -10,7 +10,8 @@
         android:id="@+id/appbar"
         android:elevation="?toolbarElevation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?android:colorBackground">
 
         <include layout="@layout/toolbar" />
 

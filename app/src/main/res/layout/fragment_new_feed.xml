@@ -33,7 +33,6 @@
             android:gravity="center"
             android:padding="16dp"
             android:text="@string/feeds_empty_text"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_subtitle"
             android:visibility="gone" />
     </RelativeLayout>

@@ -60,7 +60,6 @@
                     android:paddingEnd="8dp"
                     android:paddingTop="4dp"
                     android:text="User.Name"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_additional" />
             </LinearLayout>
 

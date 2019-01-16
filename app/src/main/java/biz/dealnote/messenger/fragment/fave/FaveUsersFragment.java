@@ -52,7 +52,7 @@ public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFave
         RecyclerView recyclerView = root.findViewById(android.R.id.list);
         int columns = getContext().getResources().getInteger(R.integer.photos_column_count);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), columns);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(requireActivity(), columns);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.addOnScrollListener(new PicassoPauseOnScrollListener(Constants.PICASSO_TAG));
         recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
@@ -64,9 +64,9 @@ public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFave
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
-        mAdapter = new FaveUsersAdapter(Collections.emptyList(), getActivity());
+        mAdapter = new FaveUsersAdapter(Collections.emptyList(), requireActivity());
         mAdapter.setClickListener(this);
 
         recyclerView.setAdapter(mAdapter);
@@ -114,7 +114,7 @@ public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFave
 
     @Override
     public void openUserWall(int accountId, User user) {
-        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(requireActivity());
     }
 
     @Override

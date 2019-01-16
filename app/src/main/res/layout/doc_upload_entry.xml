@@ -51,7 +51,7 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:layout_marginLeft="8dp"
+
                 android:layout_marginStart="8dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
@@ -64,7 +64,6 @@
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="14sp"
                     tools:text="Doc title" />
 
@@ -73,7 +72,6 @@
                     android:id="@+id/status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="?android:textColorSecondary"
                     android:textSize="12sp"
                     tools:text="Upload status" />
 

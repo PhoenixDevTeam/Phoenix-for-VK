@@ -23,7 +23,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textColor="?android:textColorPrimary"
             android:padding="4dp"
             android:textSize="@dimen/font_size_big_title" />
 
@@ -44,7 +43,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/developer"
-                android:textColor="?android:textColorPrimary"
                 android:padding="4dp"
                 android:textSize="@dimen/font_size_subtitle" />
 
@@ -57,7 +55,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ruslan_kolbasa"
-                    android:textColor="?android:textColorPrimary"
                     android:padding="4dp"
                     android:textSize="@dimen/font_size_subtitle" />
 
@@ -65,7 +62,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/emin_guliev"
-                    android:textColor="?android:textColorPrimary"
                     android:padding="4dp"
                     android:textSize="@dimen/font_size_subtitle" />
 

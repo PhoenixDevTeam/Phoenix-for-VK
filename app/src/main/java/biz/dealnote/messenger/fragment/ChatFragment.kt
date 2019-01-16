@@ -15,7 +15,6 @@ import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.annotation.AttrRes
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import biz.dealnote.messenger.*
@@ -52,6 +51,7 @@ import biz.dealnote.messenger.view.LoadMoreFooterHelper
 import biz.dealnote.messenger.view.emoji.EmojiconTextView
 import biz.dealnote.messenger.view.emoji.StickersGridView
 import biz.dealnote.mvp.core.IPresenterFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -498,7 +498,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     override fun showDeleteForAllDialog(ids: ArrayList<Int>) {
-        AlertDialog.Builder(requireActivity()).apply {
+        MaterialAlertDialogBuilder(requireActivity()).apply {
             setTitle(R.string.confirmation)
             setMessage(R.string.messages_delete_for_all_question_message)
             setNeutralButton(R.string.button_cancel, null)
@@ -615,7 +615,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     override fun showErrorSendDialog(message: Message) {
         val items = arrayOf(getString(R.string.try_again), getString(R.string.delete))
 
-        AlertDialog.Builder(requireActivity())
+        MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.sending_message_failed)
                 .setItems(items) { _, i ->
                     when (i) {
@@ -683,7 +683,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
         val items = arrayOf(getString(R.string.photos), getString(R.string.videos), getString(R.string.documents), getString(R.string.music))
 
-        AlertDialog.Builder(requireActivity()).setItems(items) { _, which ->
+        MaterialAlertDialogBuilder(requireActivity()).setItems(items) { _, which ->
             showConversationAttachments(accountId, peerId, types[which])
         }.show()
     }
@@ -720,7 +720,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             }
         }
 
-        AlertDialog.Builder(requireActivity())
+        MaterialAlertDialogBuilder(requireActivity())
                 .setItems(items, listener)
                 .setCancelable(true)
                 .show()
@@ -735,7 +735,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     override fun displayIniciateKeyExchangeQuestion(@KeyLocationPolicy keyStoragePolicy: Int) {
-        AlertDialog.Builder(requireActivity())
+        MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.key_exchange)
                 .setMessage(R.string.you_dont_have_encryption_keys_stored_initiate_key_exchange)
                 .setPositiveButton(R.string.button_ok) { _, _ -> presenter?.fireIniciateKeyExchangeClick(keyStoragePolicy) }
@@ -750,7 +750,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
         buttonOnDisk.isChecked = true
 
-        AlertDialog.Builder(requireActivity())
+        MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.choose_location_key_store)
                 .setView(view)
                 .setPositiveButton(R.string.button_ok) { _, _ ->
@@ -766,7 +766,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
     override fun showEncryptionDisclaimerDialog(requestCode: Int) {
         val view = View.inflate(activity, R.layout.content_encryption_terms_of_use, null)
-        AlertDialog.Builder(requireActivity())
+        MaterialAlertDialogBuilder(requireActivity())
                 .setView(view)
                 .setTitle(R.string.phoenix_encryption)
                 .setPositiveButton(R.string.button_accept) { _, _ -> presenter?.fireTermsOfUseAcceptClick(requestCode) }

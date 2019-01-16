@@ -123,7 +123,7 @@ public class FeedFragment extends PlaceSupportMvpFragment<FeedPresenter, IFeedVi
             boolean land = Utils.isLandscape(requireActivity());
             mFeedLayoutManager = new StaggeredGridLayoutManager(land ? 2 : 1, StaggeredGridLayoutManager.VERTICAL);
         } else {
-            mFeedLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
+            mFeedLayoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false);
         }
 
         mRecycleView = root.findViewById(R.id.fragment_feeds_list);
@@ -146,10 +146,10 @@ public class FeedFragment extends PlaceSupportMvpFragment<FeedPresenter, IFeedVi
         ViewGroup headerView = (ViewGroup) inflater.inflate(R.layout.header_feed, mRecycleView, false);
         RecyclerView headerRecyclerView = headerView.findViewById(R.id.header_list);
 
-        mHeaderLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mHeaderLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false);
         headerRecyclerView.setLayoutManager(mHeaderLayoutManager);
 
-        mAdapter = new FeedAdapter(getActivity(), Collections.emptyList(), this);
+        mAdapter = new FeedAdapter(requireActivity(), Collections.emptyList(), this);
 
         mAdapter.setClickListener(this);
         mAdapter.addFooter(footerView);
@@ -211,14 +211,14 @@ public class FeedFragment extends PlaceSupportMvpFragment<FeedPresenter, IFeedVi
             actionBar.setSubtitle(null);
         }
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_FEED);
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_FEED);
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

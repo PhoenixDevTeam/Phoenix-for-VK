@@ -56,6 +56,10 @@ public class CurrentTheme {
         return getColorFromAttrs(R.attr.colorPrimary, context, "#000000");
     }
 
+    public static int getStatusBarColor(Context context) {
+        return getColorFromAttrs(android.R.attr.statusBarColor, context, "#000000");
+    }
+
     public static int getNavigationBarColor(Context context) {
         return getColorFromAttrs(android.R.attr.navigationBarColor, context, "#000000");
     }

@@ -40,7 +40,7 @@ public class MessagesSearchFragment extends AbsSearchFragment<MessagesSearchPres
 
     @Override
     RecyclerView.Adapter createAdapter(List<Message> data) {
-        MessagesAdapter adapter = new MessagesAdapter(getActivity(), data, this);
+        MessagesAdapter adapter = new MessagesAdapter(requireActivity(), data, this);
         //adapter.setOnHashTagClickListener(this);
         adapter.setOnMessageActionListener(this);
         return adapter;
@@ -48,7 +48,7 @@ public class MessagesSearchFragment extends AbsSearchFragment<MessagesSearchPres
 
     @Override
     protected RecyclerView.LayoutManager createLayoutManager() {
-        return new LinearLayoutManager(getActivity());
+        return new LinearLayoutManager(requireActivity());
     }
 
     @Override
@@ -82,6 +82,6 @@ public class MessagesSearchFragment extends AbsSearchFragment<MessagesSearchPres
 
     @Override
     public void goToMessagesLookup(int accountId, int peerId, int messageId) {
-        PlaceFactory.getMessagesLookupPlace(accountId, peerId, messageId).tryOpenWith(getActivity());
+        PlaceFactory.getMessagesLookupPlace(accountId, peerId, messageId).tryOpenWith(requireActivity());
     }
 }

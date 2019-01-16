@@ -54,7 +54,7 @@ public class WallSearchFragment extends AbsSearchFragment<WallSearchPresenter, I
 
     @Override
     RecyclerView.Adapter createAdapter(List<Post> data) {
-        WallAdapter adapter = new WallAdapter(getActivity(), data, this, this);
+        WallAdapter adapter = new WallAdapter(requireActivity(), data, this, this);
         return adapter;
     }
 
@@ -62,11 +62,11 @@ public class WallSearchFragment extends AbsSearchFragment<WallSearchPresenter, I
     RecyclerView.LayoutManager createLayoutManager() {
         RecyclerView.LayoutManager manager;
 
-        if (Utils.is600dp(getActivity())) {
-            boolean land = Utils.isLandscape(getActivity());
+        if (Utils.is600dp(requireActivity())) {
+            boolean land = Utils.isLandscape(requireActivity());
             manager = new StaggeredGridLayoutManager(land ? 2 : 1, StaggeredGridLayoutManager.VERTICAL);
         } else {
-            manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            manager = new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false);
         }
 
         return manager;

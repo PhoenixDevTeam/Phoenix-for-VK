@@ -25,7 +25,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_1"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="24dp" />
 
             <TextView
@@ -50,7 +49,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_2"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="24dp" />
 
             <TextView
@@ -75,7 +73,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_3"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="24dp" />
 
             <TextView
@@ -105,7 +102,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_4"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="24dp" />
 
             <TextView
@@ -130,7 +126,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_5"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="24dp" />
 
             <TextView
@@ -155,7 +150,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_6"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="24dp" />
 
             <TextView
@@ -185,7 +179,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_7"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="24dp" />
 
             <TextView
@@ -210,7 +203,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_8"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="24dp" />
 
             <TextView
@@ -235,7 +227,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_9"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="24dp" />
 
             <TextView
@@ -282,7 +273,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_0"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="24dp" />
 
         </LinearLayout>

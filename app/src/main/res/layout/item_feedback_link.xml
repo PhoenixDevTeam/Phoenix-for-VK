@@ -16,7 +16,7 @@
         android:layout_height="32dp"
         android:layout_centerVertical="true"
         android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
+
         android:scaleType="centerCrop" />
 
     <LinearLayout
@@ -32,7 +32,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Small Text"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_subtitle"
             android:textStyle="bold"/>
 
@@ -42,7 +41,6 @@
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:text="Medium Text"
-            android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/font_size_additional"
             app:emojiconSize="16sp" />
 
@@ -53,9 +51,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+
         android:layout_centerVertical="true"
-        android:layout_marginLeft="8dp"
+
         android:layout_marginStart="8dp"
         android:src="@drawable/arrow_right_bold" />
 

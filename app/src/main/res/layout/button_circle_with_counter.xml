@@ -22,7 +22,6 @@
         android:layout_marginStart="6dp"
         android:layout_toEndOf="@+id/icon"
         android:gravity="center"
-        android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/font_size_subtitle"
         tools:text="34" />
 

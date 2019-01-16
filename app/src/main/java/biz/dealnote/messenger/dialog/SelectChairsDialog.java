@@ -60,7 +60,7 @@ public class SelectChairsDialog extends AccountDependencyDialogFragment implemen
 
         View root = inflater.inflate(R.layout.dialog_simple_recycler_view, container, false);
         mRecyclerView = root.findViewById(R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
         return root;
     }
 
@@ -74,7 +74,7 @@ public class SelectChairsDialog extends AccountDependencyDialogFragment implemen
             firstRun = true;
         }
 
-        mAdapter = new ChairsAdapter(getActivity(), mData);
+        mAdapter = new ChairsAdapter(requireActivity(), mData);
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
 

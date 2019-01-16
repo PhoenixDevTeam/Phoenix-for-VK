@@ -28,7 +28,6 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?android:textColorPrimary"
                 android:textSize="14sp"
                 tools:text="Option name" />
 
@@ -44,9 +43,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
+
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
+
                 android:layout_marginStart="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
@@ -59,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/delete"
+
                 android:layout_toStartOf="@+id/delete"
                 android:gravity="end"
                 android:textColor="?attr/colorAccent"

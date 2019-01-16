@@ -58,7 +58,7 @@ public class SelectSchoolClassesDialog extends AccountDependencyDialogFragment i
 
         View root = inflater.inflate(R.layout.dialog_simple_recycler_view, container, false);
         mRecyclerView = root.findViewById(R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
 
         return root;
     }
@@ -73,7 +73,7 @@ public class SelectSchoolClassesDialog extends AccountDependencyDialogFragment i
             firstRun = true;
         }
 
-        mAdapter = new SchoolClassesAdapter(getActivity(), mData);
+        mAdapter = new SchoolClassesAdapter(requireActivity(), mData);
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
 

@@ -93,7 +93,7 @@ public class PostCreateFragment extends AbsPostEditFragment<PostCreatePresenter,
 
     @Override
     public void displayUploadUriSizeDialog(@NonNull List<Uri> uris) {
-        new ImageSizeAlertDialog.Builder(getActivity())
+        new ImageSizeAlertDialog.Builder(requireActivity())
                 .setOnSelectedCallback(size -> getPresenter().fireUriUploadSizeSelected(uris, size))
                 .setOnCancelCallback(() -> getPresenter().fireUriUploadCancelClick())
                 .show();

@@ -41,7 +41,7 @@ public final class AESCrypt {
      * @param password used to generated key
      * @return SHA256 of the password
      */
-    private static SecretKeySpec generateKey(final String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    private static SecretKeySpec generateKey(final String password) throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
         byte[] bytes = password.getBytes(StandardCharsets.UTF_8);
         digest.update(bytes, 0, bytes.length);

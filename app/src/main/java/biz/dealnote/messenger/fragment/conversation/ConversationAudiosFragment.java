@@ -20,12 +20,12 @@ public class ConversationAudiosFragment extends AbsChatAttachmentsFragment<Audio
 
     @Override
     protected RecyclerView.LayoutManager createLayoutManager() {
-        return new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        return new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
     }
 
     @Override
     public RecyclerView.Adapter createAdapter() {
-        AudioRecyclerAdapter audioRecyclerAdapter = new AudioRecyclerAdapter(getActivity(), Collections.emptyList());
+        AudioRecyclerAdapter audioRecyclerAdapter = new AudioRecyclerAdapter(requireActivity(), Collections.emptyList());
         audioRecyclerAdapter.setClickListener(this);
         return audioRecyclerAdapter;
     }

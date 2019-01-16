@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="72dp"
-        android:layout_toLeftOf="@+id/active"
+
         android:layout_toStartOf="@+id/active"
         android:orientation="vertical"
         android:paddingEnd="16dp">
@@ -20,7 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_title" />
 
         <TextView
@@ -28,7 +27,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Time"
-            android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/font_size_subtitle" />
 
     </LinearLayout>

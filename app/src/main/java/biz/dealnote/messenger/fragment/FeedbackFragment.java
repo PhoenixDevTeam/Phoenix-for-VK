@@ -76,9 +76,9 @@ public class FeedbackFragment extends PlaceSupportMvpFragment<FeedbackPresenter,
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(requireActivity());
         RecyclerView recyclerView = root.findViewById(R.id.recycleView);
         recyclerView.setLayoutManager(manager);
         recyclerView.addOnScrollListener(new PicassoPauseOnScrollListener(Constants.PICASSO_TAG));
@@ -94,7 +94,7 @@ public class FeedbackFragment extends PlaceSupportMvpFragment<FeedbackPresenter,
         mLoadMoreHelper.switchToState(LoadMoreState.INVISIBLE);
         mLoadMoreHelper.setEndOfListText("• • • • • • • •");
 
-        mAdapter = new FeedbackAdapter(getActivity(), Collections.emptyList(), this);
+        mAdapter = new FeedbackAdapter(requireActivity(), Collections.emptyList(), this);
         mAdapter.addFooter(footerView);
         mAdapter.setClickListener(this);
         recyclerView.setAdapter(mAdapter);
@@ -114,14 +114,14 @@ public class FeedbackFragment extends PlaceSupportMvpFragment<FeedbackPresenter,
             actionBar.setSubtitle(null);
         }
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_FEEDBACK);
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_FEEDBACK);
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

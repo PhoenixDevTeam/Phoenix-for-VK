@@ -18,7 +18,6 @@
             android:layout_marginStart="16dp"
             android:gravity="center_vertical"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/navi_drawer_font_size"
             android:typeface="normal"
             tools:text="Test action" />

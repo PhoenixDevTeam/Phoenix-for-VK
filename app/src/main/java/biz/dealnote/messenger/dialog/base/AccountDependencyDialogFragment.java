@@ -101,48 +101,48 @@ public abstract class AccountDependencyDialogFragment extends BaseDialogFragment
 
     @Override
     public void onVideoPlay(@NonNull Video video) {
-        PlaceFactory.getVideoPreviewPlace(getAccountId(), video).tryOpenWith(getActivity());
+        PlaceFactory.getVideoPreviewPlace(getAccountId(), video).tryOpenWith(requireActivity());
     }
 
     @Override
     public void onAudioPlay(int position, @NonNull ArrayList<Audio> audios) {
-        MusicPlaybackService.startForPlayList(getActivity(), audios, position, false);
-        PlaceFactory.getPlayerPlace(getAccountId()).tryOpenWith(getActivity());
+        MusicPlaybackService.startForPlayList(requireActivity(), audios, position, false);
+        PlaceFactory.getPlayerPlace(getAccountId()).tryOpenWith(requireActivity());
     }
 
     @Override
     public void onForwardMessagesOpen(@NonNull ArrayList<Message> messages) {
-        PlaceFactory.getForwardMessagesPlace(getAccountId(), messages).tryOpenWith(getActivity());
+        PlaceFactory.getForwardMessagesPlace(getAccountId(), messages).tryOpenWith(requireActivity());
     }
 
     @Override
     public void onOpenOwner(int userId) {
-        PlaceFactory.getOwnerWallPlace(getAccountId(), userId, null).tryOpenWith(getActivity());
+        PlaceFactory.getOwnerWallPlace(getAccountId(), userId, null).tryOpenWith(requireActivity());
     }
 
     @Override
     public void onDocPreviewOpen(@NonNull Document document) {
-        PlaceFactory.getDocPreviewPlace(getAccountId(), document).tryOpenWith(getActivity());
+        PlaceFactory.getDocPreviewPlace(getAccountId(), document).tryOpenWith(requireActivity());
     }
 
     @Override
     public void onPostOpen(@NonNull Post post) {
-        PlaceFactory.getPostPreviewPlace(getAccountId(), post.getVkid(), post.getOwnerId(), post).tryOpenWith(getActivity());
+        PlaceFactory.getPostPreviewPlace(getAccountId(), post.getVkid(), post.getOwnerId(), post).tryOpenWith(requireActivity());
     }
 
     @Override
     public void onLinkOpen(@NonNull Link link) {
-        LinkHelper.openLinkInBrowser(getActivity(), link.getUrl());
+        LinkHelper.openLinkInBrowser(requireActivity(), link.getUrl());
     }
 
     @Override
     public void onWikiPageOpen(@NonNull WikiPage page) {
-        PlaceFactory.getWikiPagePlace(getAccountId(), page.getViewUrl()).tryOpenWith(getActivity());
+        PlaceFactory.getWikiPagePlace(getAccountId(), page.getViewUrl()).tryOpenWith(requireActivity());
     }
 
     @Override
     public void onPhotosOpen(@NonNull ArrayList<Photo> photos, int index) {
-        PlaceFactory.getSimpleGalleryPlace(getAccountId(), photos, index, true).tryOpenWith(getActivity());
+        PlaceFactory.getSimpleGalleryPlace(getAccountId(), photos, index, true).tryOpenWith(requireActivity());
     }
 
     protected void onAccountContextInvalidState() {

@@ -315,7 +315,7 @@ public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresent
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View stepView = LayoutInflater.from(getActivity()).inflate(R.layout.content_gif_page, container, false);
+            View stepView = LayoutInflater.from(requireActivity()).inflate(R.layout.content_gif_page, container, false);
 
             final Holder holder = new Holder(position, stepView);
 

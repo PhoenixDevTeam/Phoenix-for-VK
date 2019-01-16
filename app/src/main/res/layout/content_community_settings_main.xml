@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:textColor="?android:textColorPrimary"
         android:textSize="24sp"
         android:text="@string/community_options_main_info_title"
         android:layout_width="wrap_content"
@@ -59,13 +58,12 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:textColor="?android:textColorSecondary"
             android:text="@string/community_options_type_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <Button
-            android:layout_marginLeft="8dp"
+
             android:layout_marginStart="8dp"
             tools:text="Open"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
@@ -92,7 +90,6 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:textColor="?android:textColorSecondary"
             android:textSize="14sp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"

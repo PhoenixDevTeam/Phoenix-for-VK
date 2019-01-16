@@ -93,8 +93,8 @@ public class UserDetailsFragment extends BaseMvpFragment<UserDetailsPresenter, I
     @Override
     public void onResume() {
         super.onResume();
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onClearSelection();
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onClearSelection();
         }
 
         new ActivityFeatures.Builder()

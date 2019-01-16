@@ -48,7 +48,6 @@
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:paddingTop="4dp"
-                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/font_size_additional"
                     tools:text="User.Name" />
             </LinearLayout>

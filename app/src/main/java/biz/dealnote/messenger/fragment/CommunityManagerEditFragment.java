@@ -205,7 +205,7 @@ public class CommunityManagerEditFragment extends BaseMvpFragment<CommunityManag
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(true)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

@@ -8,13 +8,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -76,7 +77,7 @@ public class MessagesLookFragment extends PlaceSupportMvpFragment<MessagesLookPr
         View root = inflater.inflate(R.layout.fragment_messages_lookup, container, false);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, true);
 
         mRecyclerView = root.findViewById(R.id.recycleView);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -104,7 +105,7 @@ public class MessagesLookFragment extends PlaceSupportMvpFragment<MessagesLookPr
 
     @Override
     public void showDeleteForAllDialog(ArrayList<Integer> ids) {
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(R.string.confirmation)
                 .setMessage(R.string.messages_delete_for_all_question_message)
                 .setNeutralButton(R.string.button_cancel, null)
@@ -125,7 +126,7 @@ public class MessagesLookFragment extends PlaceSupportMvpFragment<MessagesLookPr
 
     @Override
     public void displayMessages(@NonNull List<Message> messages, @NonNull LastReadId lastReadId) {
-        mMessagesAdapter = new MessagesAdapter(getActivity(), messages, lastReadId, this);
+        mMessagesAdapter = new MessagesAdapter(requireActivity(), messages, lastReadId, this);
         mMessagesAdapter.setOnMessageActionListener(this);
         mMessagesAdapter.addFooter(mHeaderView);
         mMessagesAdapter.addHeader(mFooterView);
@@ -301,7 +302,7 @@ public class MessagesLookFragment extends PlaceSupportMvpFragment<MessagesLookPr
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }

@@ -42,7 +42,7 @@ public class DocsSearchFragment extends AbsSearchFragment<DocsSearchPresenter, I
 
     @Override
     protected RecyclerView.LayoutManager createLayoutManager() {
-        return new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        return new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false);
     }
 
     @Override

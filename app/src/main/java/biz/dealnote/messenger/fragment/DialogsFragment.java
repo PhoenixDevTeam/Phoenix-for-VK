@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -23,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -94,7 +94,7 @@ public class DialogsFragment extends BaseMvpFragment<DialogsPresenter, IDialogsV
         ((AppCompatActivity) requireActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         mRecyclerView = root.findViewById(R.id.recycleView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         mRecyclerView.addOnScrollListener(new PicassoPauseOnScrollListener(DialogsAdapter.PICASSO_TAG));
         mRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
             @Override
@@ -106,12 +106,12 @@ public class DialogsFragment extends BaseMvpFragment<DialogsPresenter, IDialogsV
         mSwipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(getActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
         mFab = root.findViewById(R.id.fab);
         mFab.setOnClickListener(v -> createGroupChat());
 
-        mAdapter = new DialogsAdapter(getActivity(), Collections.emptyList());
+        mAdapter = new DialogsAdapter(requireActivity(), Collections.emptyList());
         mAdapter.setClickListener(this);
 
         mRecyclerView.setAdapter(mAdapter);
@@ -257,7 +257,7 @@ public class DialogsFragment extends BaseMvpFragment<DialogsPresenter, IDialogsV
             options.add(addToShortcuts);
         }
 
-        new AlertDialog.Builder(requireActivity())
+        new MaterialAlertDialogBuilder(requireActivity())
                 .setTitle(dialog.getDisplayTitle(requireActivity()))
                 .setItems(options.toArray(new String[options.size()]), (dialogInterface, which) -> {
                     final String selected = options.get(which);
@@ -313,14 +313,14 @@ public class DialogsFragment extends BaseMvpFragment<DialogsPresenter, IDialogsV
             actionBar.setSubtitle(requireArguments().getString(Extra.SUBTITLE));
         }
 
-        if (getActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) getActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_DIALOGS);
+        if (requireActivity() instanceof OnSectionResumeCallback) {
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_DIALOGS);
         }
 
         new ActivityFeatures.Builder()
                 .begin()
                 .setBlockNavigationDrawer(false)
-                .setBarsColored(getActivity(),true)
+                .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
     }
@@ -376,7 +376,7 @@ public class DialogsFragment extends BaseMvpFragment<DialogsPresenter, IDialogsV
 
     @Override
     public void showEnterNewGroupChatTitle(List<User> users) {
-        new InputTextDialog.Builder(getActivity())
+        new InputTextDialog.Builder(requireActivity())
                 .setTitleRes(R.string.set_groupchat_title)
                 .setAllowEmpty(true)
                 .setInputType(InputType.TYPE_CLASS_TEXT)

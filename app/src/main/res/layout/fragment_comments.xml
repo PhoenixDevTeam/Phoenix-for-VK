@@ -32,7 +32,6 @@
             android:gravity="center"
             android:padding="16dp"
             android:text="@string/comments_empty_text"
-            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/font_size_subtitle" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -49,7 +48,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/linearLayout"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_margin="8dp"
         android:gravity="center"
         android:orientation="horizontal">
@@ -58,11 +56,9 @@
             android:id="@+id/fragment_comments_reply_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColor="?android:textColorPrimary"
             android:textIsSelectable="false"
             android:textSize="@dimen/font_size_subtitle"
             tools:text="Ruslan Kolbasa" />

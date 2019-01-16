@@ -46,12 +46,12 @@ public class DialogsSearchFragment extends AbsSearchFragment<DialogsSearchPresen
 
     @Override
     RecyclerView.Adapter createAdapter(List<Object> data) {
-        return new DialogPreviewAdapter(getActivity(), data, this);
+        return new DialogPreviewAdapter(requireActivity(), data, this);
     }
 
     @Override
     RecyclerView.LayoutManager createLayoutManager() {
-        return new LinearLayoutManager(getActivity());
+        return new LinearLayoutManager(requireActivity());
     }
 
     @Override
