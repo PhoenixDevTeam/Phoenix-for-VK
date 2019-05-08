@@ -116,7 +116,8 @@
     <string-array name="night_mode_names">
         <item>Виключений</item>
         <item>Включений</item>
-        <item>Автоматично</item>
+        <item>Автоматично (по часу)</item>
+        <item>Аналогічно темі системи</item>
     </string-array>
 
     <string name="select_image_size_summary">Виберіть розмір відправляється зображення (Рекомендований середній)</string>

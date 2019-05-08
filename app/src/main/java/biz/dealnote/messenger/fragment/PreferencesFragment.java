@@ -20,15 +20,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +29,18 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -143,7 +146,10 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     break;
                 case NightMode.AUTO:
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_TIME);
+                    break;
+                case NightMode.FOLLOW_SYSTEM:
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
                     break;
             }
 
@@ -191,8 +197,8 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
                 if (Utils.hasOreo()) {
                     Intent intent = new Intent();
                     intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-                    intent.putExtra("android.provider.extra.APP_PACKAGE", getContext().getPackageName());
-                    getContext().startActivity(intent);
+                    intent.putExtra("android.provider.extra.APP_PACKAGE", requireContext().getPackageName());
+                    requireContext().startActivity(intent);
                 } else {
                     PlaceFactory.getNotificationSettingsPlace().tryOpenWith(requireActivity());
                 }
@@ -282,7 +288,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(view.findViewById(R.id.toolbar));
     }
@@ -464,7 +470,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private int getAccountId() {
-        return getArguments().getInt(Extra.ACCOUNT_ID);
+        return requireArguments().getInt(Extra.ACCOUNT_ID);
     }
 
     private void openAppCommunity() {
