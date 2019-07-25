@@ -18,7 +18,7 @@ object AnnotatedHandlerFinder {
         loadAnnotatedMethods(listenerClass, methods)
 
         if (listenerClass != includeSuperclass) {
-            loadAnnotatedSubscriberMethods(listenerClass.superclass, methods, includeSuperclass)
+            loadAnnotatedSubscriberMethods(listenerClass.superclass!!, methods, includeSuperclass)
         }
     }
 
