@@ -3,18 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="4dp"
     android:paddingStart="12dp"
+    android:paddingTop="4dp"
     android:paddingEnd="12dp"
-    android:paddingTop="4dp">
+    android:paddingBottom="4dp">
 
     <ImageView
         android:id="@+id/item_comment_owner_avatar"
         android:layout_width="@dimen/avatar_size_small"
         android:layout_height="@dimen/avatar_size_small"
-        android:layout_marginEnd="12dp"
-
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="12dp" />
 
     <LinearLayout
         android:id="@+id/item_comment_top_container"
@@ -31,8 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:textSize="@dimen/font_size_subtitle"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             tools:text="Name" />
 
         <biz.dealnote.messenger.view.emoji.EmojiconTextView
@@ -41,7 +39,7 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:gravity="start"
-            android:textSize="@dimen/font_size_subtitle"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             app:displayHashTags="true"
             app:emojiconSize="18sp"
             app:hashTagColor="?attr/colorAccent"
@@ -52,8 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp">
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
 
             <include
                 layout="@layout/comment_attachment_links"
@@ -70,23 +68,20 @@
                 android:id="@+id/item_comment_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:layout_alignParentStart="true"
                 android:layout_alignWithParentIfMissing="false"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/font_size_additional"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 tools:text="time" />
 
             <LinearLayout
-                android:layout_marginStart="8dp"
-
                 android:id="@+id/item_comment_like_root"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/item_comment_time"
-
                 android:layout_width="wrap_content"
-                android:gravity="center"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/item_comment_time"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/item_comment_like_counter"

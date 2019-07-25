@@ -19,7 +19,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-
         android:layout_centerVertical="true"
         android:gravity="center_vertical|end"
         android:orientation="vertical">
@@ -42,7 +41,7 @@
                 android:id="@+id/post_views_counter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/font_size_additional"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 tools:text="1533" />
 
             <ImageView
@@ -60,12 +59,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-
         android:layout_marginStart="16dp"
         android:layout_toStartOf="@+id/end_content_root"
-
         android:layout_toEndOf="@+id/item_post_avatar"
-
         android:orientation="vertical">
 
         <TextView
@@ -73,8 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:textSize="@dimen/font_size_subtitle"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             tools:text="Rustam Fattakhetdinov" />
 
         <LinearLayout
@@ -87,14 +82,13 @@
                 android:id="@+id/item_post_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/font_size_additional"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 tools:text="Today 19:26" />
 
             <ImageView
                 android:id="@+id/platform_icon"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-
                 android:layout_marginStart="4dp"
                 android:tint="?icon_color_static" />
 

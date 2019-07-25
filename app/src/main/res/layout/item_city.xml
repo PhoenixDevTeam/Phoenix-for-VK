@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
+    android:orientation="vertical"
     android:paddingStart="16dp"
-    android:paddingEnd="16dp"
     android:paddingTop="8dp"
+    android:paddingEnd="16dp"
     android:paddingBottom="8dp">
 
     <TextView
         android:id="@+id/title"
-        android:textSize="@dimen/font_size_title"
-        android:text="City title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        tools:text="City title" />
 
     <TextView
         android:id="@+id/area"
-        android:textColor="?android:textColorSecondary"
-        android:textSize="@dimen/font_size_additional"
-        android:text="Area"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+        tools:text="Area" />
 
     <TextView
         android:id="@+id/region"
-        android:textColor="?android:textColorSecondary"
-        android:textSize="@dimen/font_size_additional"
-        android:text="Region"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        tools:text="Region" />
 
 </LinearLayout>

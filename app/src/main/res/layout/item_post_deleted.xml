@@ -17,7 +17,6 @@
         android:layout_below="@id/item_post_deleted_warning"
         android:text="@string/restore"
         android:textAllCaps="true"
-        android:layout_centerHorizontal="true"
-        style="?android:attr/borderlessButtonStyle"/>
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

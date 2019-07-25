@@ -17,9 +17,9 @@
             android:layout_height="@dimen/avatar_size_big"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/sel_button_round_5_white"
             android:padding="1.5dp" />
 
@@ -30,9 +30,9 @@
             android:layout_toEndOf="@+id/header_group_avatar"
             android:gravity="end"
             android:orientation="vertical"
-            android:paddingBottom="12dp"
             android:paddingStart="8dp"
-            android:paddingEnd="16dp">
+            android:paddingEnd="16dp"
+            android:paddingBottom="12dp">
 
             <TextView
                 android:id="@+id/header_group_name"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
-                android:textSize="@dimen/font_size_big_title" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
             <TextView
                 android:id="@+id/header_group_id"
@@ -49,7 +49,7 @@
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
                 android:maxLines="6"
-                android:textSize="@dimen/font_size_subtitle"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 android:visibility="visible" />
 
 
@@ -61,7 +61,7 @@
                 android:fontFamily="@font/open_sans_light"
                 android:gravity="end"
                 android:maxLines="6"
-                android:textSize="@dimen/font_size_subtitle"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:visibility="visible"
                 emojicon:emojiconSize="20sp" />
 
@@ -77,10 +77,10 @@
         android:layout_below="@id/profile_data_container"
         android:layout_marginBottom="2dp"
         android:elevation="2dp"
-        android:paddingBottom="4dp"
         android:paddingStart="12dp"
+        android:paddingTop="16dp"
         android:paddingEnd="12dp"
-        android:paddingTop="16dp">
+        android:paddingBottom="4dp">
 
         <TableRow
             android:layout_width="fill_parent"
@@ -101,16 +101,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textSize="@dimen/font_size_big_title" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
-                    android:text="@string/counter_followers"
                     android:gravity="center"
-                    android:textSize="@dimen/font_size_counter" />
+                    android:text="@string/counter_followers"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
             </LinearLayout>
 
@@ -128,16 +128,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textSize="@dimen/font_size_big_title" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
-                    android:text="@string/counter_topics"
                     android:gravity="center"
-                    android:textSize="@dimen/font_size_counter" />
+                    android:text="@string/counter_topics"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
             </LinearLayout>
 
@@ -156,16 +156,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textSize="@dimen/font_size_big_title" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
-                    android:text="@string/counter_documents"
                     android:gravity="center"
-                    android:textSize="@dimen/font_size_counter" />
+                    android:text="@string/counter_documents"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
             </LinearLayout>
         </TableRow>
@@ -190,16 +190,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textSize="@dimen/font_size_big_title" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
-                    android:text="@string/counter_photos"
                     android:gravity="center"
-                    android:textSize="@dimen/font_size_counter" />
+                    android:text="@string/counter_photos"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
             </LinearLayout>
 
@@ -218,16 +218,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textSize="@dimen/font_size_big_title" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
-                    android:text="@string/counter_audios"
                     android:gravity="center"
-                    android:textSize="@dimen/font_size_counter" />
+                    android:text="@string/counter_audios"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
             </LinearLayout>
 
@@ -246,16 +246,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_light"
-                    android:textSize="@dimen/font_size_big_title" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
                     android:fontFamily="@font/open_sans_light"
-                    android:text="@string/counter_videos"
                     android:gravity="center"
-                    android:textSize="@dimen/font_size_counter" />
+                    android:text="@string/counter_videos"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
             </LinearLayout>
         </TableRow>
@@ -273,8 +273,8 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:textAllCaps="true"
-                android:textColor="?icon_color_active"
-                android:textSize="@dimen/font_size_additional" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                android:textColor="?icon_color_active" />
 
             <Button
                 android:id="@+id/header_group_secondary_button"
@@ -283,8 +283,9 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 android:textColor="?icon_color_active"
-                android:textSize="@dimen/font_size_additional"
+
                 android:visibility="gone" />
 
         </LinearLayout>
@@ -304,8 +305,8 @@
         android:layout_below="@+id/profile_data_container"
         android:layout_alignParentEnd="true"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="4dp"
         android:layout_marginTop="-38dp"
+        android:layout_marginEnd="4dp"
         android:src="@drawable/email"
         app:fabSize="mini"
         app:useCompatPadding="true" />

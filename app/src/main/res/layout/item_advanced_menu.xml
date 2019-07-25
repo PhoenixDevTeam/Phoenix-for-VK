@@ -28,7 +28,7 @@
             android:id="@+id/header_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             tools:text="Example" />
 
     </LinearLayout>
@@ -67,7 +67,7 @@
                 android:id="@+id/item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 tools:text="Example" />
 
             <TextView
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
-                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 tools:text="Example" />
 
         </LinearLayout>

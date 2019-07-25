@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_alignParentStart="true"
     android:minHeight="64dp">
 
@@ -12,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="72dp"
-
         android:layout_toStartOf="@+id/item_user_remove"
         android:orientation="vertical"
         android:paddingEnd="8dp">
@@ -21,17 +21,18 @@
             android:id="@+id/item_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:maxLines="1"
-            android:text="Name"
-            android:textSize="@dimen/font_size_title" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="Name" />
 
         <TextView
             android:id="@+id/item_user_invited_by"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:text="Time"
-            android:textSize="@dimen/font_size_subtitle" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            tools:text="Time" />
 
     </LinearLayout>
 
@@ -56,7 +57,7 @@
             android:layout_height="@dimen/online_dot_size"
             android:layout_alignParentBottom="true"
             app:circle_color="?icon_color_active"
-            app:stroke_color="?android:colorBackground"/>
+            app:stroke_color="?android:colorBackground" />
 
     </RelativeLayout>
 
@@ -69,7 +70,8 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true">
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"

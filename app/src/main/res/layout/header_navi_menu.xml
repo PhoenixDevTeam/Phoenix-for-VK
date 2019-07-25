@@ -25,14 +25,14 @@
             android:id="@+id/header_navi_menu_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             tools:text="User name" />
 
         <TextView
             android:id="@+id/header_navi_menu_usernick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_subtitle"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             tools:text="\@nick" />
 
     </LinearLayout>

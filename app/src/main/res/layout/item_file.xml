@@ -1,11 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
-    android:paddingBottom="8dp"
     android:paddingStart="16dp"
+    android:paddingTop="8dp"
     android:paddingEnd="16dp"
-    android:paddingTop="8dp">
+    android:paddingBottom="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,16 +21,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="Directory"
-            android:textSize="@dimen/font_size_title" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="Directory" />
 
         <TextView
             android:id="@+id/item_file_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="details"
-            android:textSize="@dimen/font_size_subtitle" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            tools:text="details" />
 
     </LinearLayout>
 

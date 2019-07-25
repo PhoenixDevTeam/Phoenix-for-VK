@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout android:gravity="center_horizontal"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_message_bubble"
-    android:layout_centerHorizontal="true"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent"
+    android:layout_centerHorizontal="true"
+    android:gravity="center"
     android:orientation="vertical"
-    android:weightSum="1"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="12dp">
+    android:padding="12dp"
+    android:weightSum="1">
 
     <TextView
-        android:gravity="center"
         android:id="@+id/item_service_message_text"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Message"
-        android:textSize="@dimen/font_size_subtitle" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        tools:text="Message" />
 
     <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
         android:orientation="vertical">
 
         <include
-            android:layout_height="wrap_content"
+            layout="@layout/attachment_links"
             android:layout_width="wrap_content"
-            layout="@layout/attachment_links" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
 
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>
 

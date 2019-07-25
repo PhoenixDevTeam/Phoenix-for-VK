@@ -1,78 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_marginBottom="1dp"
+    app:cardCornerRadius="40dp"
+    app:cardElevation="5dp">
 
-    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
-        android:layout_margin="8dp"
-        card_view:cardBackgroundColor="?android:colorBackground"
-        card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="1dp"
-        card_view:contentPadding="4dp">
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:minHeight="48dp">
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/button_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:src="?toolbarBackIcon"
+            android:tint="?android:textColorSecondary" />
+
+        <AutoCompleteTextView
+            android:id="@+id/input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toStartOf="@+id/right_buttons"
+            android:layout_toEndOf="@+id/button_back"
+            android:background="@null"
+            android:hint="@string/text_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text|textAutoComplete|textNoSuggestions"
+            android:maxLines="1"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColorHint="?android:textColorSecondary" />
+
+        <LinearLayout
+            android:id="@+id/right_buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/button_back"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_centerVertical="true"
+                android:id="@+id/clear"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="8dp"
-                android:src="?toolbarBackIcon" />
+                android:padding="12dp"
+                android:src="@drawable/close"
+                android:tint="?android:textColorSecondary" />
 
-            <AutoCompleteTextView
-                android:id="@+id/input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_toStartOf="@+id/right_buttons"
-                android:layout_toEndOf="@+id/button_back"
-                android:background="@null"
-                android:hint="@string/text_hint"
-                android:imeOptions="actionSearch"
-                android:inputType="text|textAutoComplete|textNoSuggestions"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:maxLines="1"
-                android:textColorHint="?android:textColorSecondary"
-                android:textSize="@dimen/font_size_title" />
+            <ImageView
+                android:id="@+id/additional"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="12dp"
+                android:src="@drawable/dots_vertical"
+                android:tint="?android:textColorSecondary" />
 
-            <LinearLayout
-                android:id="@+id/right_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:orientation="horizontal">
+        </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/clear"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="8dp"
-                    android:src="@drawable/close" />
+    </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/additional"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="8dp"
-                    android:src="@drawable/dots_vertical" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

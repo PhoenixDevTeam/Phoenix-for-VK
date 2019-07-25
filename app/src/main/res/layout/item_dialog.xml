@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -18,10 +19,8 @@
             android:layout_marginStart="4dp"
             android:gravity="center_vertical"
             android:padding="12dp"
-            android:text="Today"
-            android:textColor="?icon_color_active"
-            android:textSize="@dimen/font_size_subtitle"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="Today" />
 
         <include layout="@layout/line_divider" />
 
@@ -33,10 +32,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/header_root"
         android:background="?attr/selectableItemBackground"
-        android:paddingBottom="8dp"
         android:paddingStart="16dp"
+        android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingTop="8dp">
+        android:paddingBottom="8dp">
 
         <RelativeLayout
             android:id="@+id/avatar_root"
@@ -78,8 +77,8 @@
                 android:id="@+id/dialog_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Name"
-                android:textSize="@dimen/font_size_title" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="Name" />
 
             <biz.dealnote.messenger.view.emoji.EmojiconTextView
                 android:id="@+id/dialog_message"
@@ -88,9 +87,9 @@
                 android:layout_marginEnd="6dp"
                 android:gravity="start"
                 android:maxLines="3"
-                android:text="Message"
-                android:textSize="@dimen/font_size_subtitle"
-                app:emojiconSize="20sp" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                app:emojiconSize="20sp"
+                tools:text="Message" />
 
         </LinearLayout>
 
@@ -99,16 +98,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/name_message_container"
-            android:layout_alignParentBottom="false"
             android:layout_alignParentEnd="true"
-            android:text="time"
-            android:textSize="@dimen/font_size_additional"/>
+            android:layout_alignParentBottom="false"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="time" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_alignTop="@+id/name_message_container"
+            android:layout_alignParentEnd="true"
             android:orientation="horizontal">
 
             <RelativeLayout
@@ -123,10 +122,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-                    android:text="2"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     android:textColor="#ffffff"
-                    android:textSize="12dp"
-                    android:textStyle="bold" />
+                    tools:text="2" />
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>

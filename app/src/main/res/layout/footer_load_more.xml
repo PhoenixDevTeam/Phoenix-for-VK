@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="4dp">
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/footer_load_more_run"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
@@ -15,7 +15,7 @@
         android:paddingEnd="16dp"
         android:text="@string/load_more"
         android:textAllCaps="true"
-        android:textSize="@dimen/font_size_subtitle" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
     <ProgressBar
         android:id="@+id/footer_load_more_progress"

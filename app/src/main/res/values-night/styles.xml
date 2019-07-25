@@ -11,13 +11,13 @@
         <item name="actionModeBackground">?attr/colorPrimary</item>
         <item name="statusbarNonColoredColor">#000</item>
         <item name="toolbarElevation">@dimen/toolbar_with_elevation</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
     <style name="App.DayNight" parent="Base.App.DayNight">
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:windowLightStatusBar" tools:targetApi="o_mr1">false</item>
-        <item name="android:colorBackground">#1F2226</item>
+        <!--        <item name="android:colorBackground">#1F2226</item>-->
 
         <item name="colorPrimary">#3F51B5</item>
         <item name="colorPrimaryVariant">#FF3F51B5</item>
@@ -29,7 +29,14 @@
 
         <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.OutlinedButton
         </item>
-        <item name="materialCardViewStyle">@style/Theme.MaterialCardView</item>
+        <!--        <item name="materialCardViewStyle">@style/Theme.MaterialCardView</item>-->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.AppTheme.SmallComponent
+        </item>
+        <item name="shapeAppearanceMediumComponent">
+            @style/ShapeAppearance.AppTheme.MediumComponent
+        </item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.AppTheme.LargeComponent
+        </item>
         <item name="floatingActionButtonStyle">@style/Theme.FloatingActionButton</item>
         <item name="icon_color_active">#3F51B5</item>
         <item name="icon_color_static">#FFF</item>
@@ -43,7 +50,7 @@
         <item name="oval_avatar_background">@drawable/sel_button_round_4</item>
         <item name="message_unread_color">#f564b5f6</item>
 
-        <item name="message_bubble_color">#30373F</item>
+        <item name="message_bubble_color">#313131</item>
 
         <item name="toolbarDrawerIcon">@drawable/phoenix_drawer</item>
         <item name="toolbarBackIcon">@drawable/arrow_left</item>

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/selectableItemBackground"
     android:orientation="vertical"
     android:paddingBottom="10dp"
@@ -16,7 +17,6 @@
         android:layout_height="32dp"
         android:layout_centerVertical="true"
         android:layout_marginEnd="12dp"
-
         android:scaleType="centerCrop" />
 
     <LinearLayout
@@ -31,17 +31,16 @@
             android:id="@+id/item_feedback_link_text2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Small Text"
-            android:textSize="@dimen/font_size_subtitle"
-            android:textStyle="bold"/>
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="Small Text" />
 
         <biz.dealnote.messenger.view.emoji.EmojiconTextView
             android:id="@+id/item_feedback_link_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:text="Medium Text"
-            android:textSize="@dimen/font_size_additional"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="Medium Text"
             app:emojiconSize="16sp" />
 
     </LinearLayout>
@@ -51,9 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-
         android:layout_centerVertical="true"
-
         android:layout_marginStart="8dp"
         android:src="@drawable/arrow_right_bold" />
 

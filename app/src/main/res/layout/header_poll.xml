@@ -9,14 +9,14 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/font_size_title" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
     <TextView
         android:id="@+id/votes_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="?android:textColorSecondary"
-        android:textSize="@dimen/font_size_subtitle" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:textColor="?android:textColorSecondary" />
 
 
 </LinearLayout>

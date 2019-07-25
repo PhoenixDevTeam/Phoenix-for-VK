@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout android:elevation="5dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    android:layout_width="match_parent"
+    android:elevation="5dp"
     android:orientation="vertical"
-    android:paddingBottom="16dp"
-    android:paddingEnd="16dp"
     android:paddingStart="56dp"
     android:paddingTop="72dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:paddingEnd="16dp"
+    android:paddingBottom="16dp">
 
     <TextView
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/account_manager"
-        android:textSize="@dimen/font_size_big_title" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
 </LinearLayout>

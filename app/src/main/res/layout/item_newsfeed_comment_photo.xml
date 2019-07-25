@@ -9,7 +9,6 @@
     android:layout_marginEnd="@dimen/card_margin"
     android:layout_marginBottom="@dimen/card_margin"
     android:foreground="?android:attr/selectableItemBackground"
-
     tools:ignore="UnusedAttribute">
 
     <LinearLayout
@@ -36,9 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
-
                 android:layout_toEndOf="@+id/photo_owner_avatar"
-
                 android:orientation="vertical">
 
                 <TextView
@@ -46,15 +43,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:textSize="@dimen/font_size_subtitle"
-                    android:textStyle="bold"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                     tools:text="Owner name" />
 
                 <TextView
                     android:id="@+id/photo_datetime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/font_size_additional"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     tools:text="Today 19:26" />
 
             </LinearLayout>
@@ -81,8 +77,7 @@
             android:maxLines="1"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:textSize="@dimen/font_size_subtitle"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             tools:text="Video title" />
 
         <include

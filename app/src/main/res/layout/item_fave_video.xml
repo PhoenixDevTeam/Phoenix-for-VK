@@ -7,7 +7,6 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:foreground="?android:attr/selectableItemBackground"
-
     tools:ignore="UnusedAttribute">
 
     <LinearLayout
@@ -39,8 +38,7 @@
                 android:gravity="center"
                 android:padding="4dp"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/font_size_additional"
-                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 tools:text="3:28" />
 
             <ImageView
@@ -64,8 +62,7 @@
             android:paddingTop="4dp"
             android:paddingEnd="6dp"
             android:paddingBottom="4dp"
-            android:textSize="@dimen/font_size_subtitle"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             tools:text="Take Me To Church - Hozier Cover Sofia Karlberg" />
 
         <View
@@ -83,8 +80,7 @@
             android:gravity="center"
             android:maxLines="2"
             android:padding="4dp"
-            android:textSize="@dimen/font_size_additional"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             tools:text="10000 views" />
 
     </LinearLayout>

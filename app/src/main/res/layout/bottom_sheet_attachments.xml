@@ -43,7 +43,7 @@
                 android:gravity="center"
                 android:maxWidth="200dp"
                 android:text="@string/message_attachment_empty_text"
-                android:textSize="12sp" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
 
         </LinearLayout>
 
@@ -100,7 +100,7 @@
             android:src="@drawable/ic_arrow_down_vector"
             android:tint="?android:textColorPrimary" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/button_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

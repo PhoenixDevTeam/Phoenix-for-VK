@@ -8,9 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/title"
-            android:textSize="@dimen/font_size_title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/title_hint" />
@@ -21,9 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/description"
-            android:textSize="@dimen/font_size_title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/description_hint" />

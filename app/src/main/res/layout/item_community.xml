@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/header_root"
@@ -13,32 +13,29 @@
         android:orientation="vertical">
 
         <TextView
-            android:padding="8dp"
             android:id="@+id/header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginStart="8dp"
             android:gravity="center_vertical"
-            tools:text="My communities"
-            android:textColor="?icon_color_active"
-            android:textSize="@dimen/font_size_title"
-            android:textStyle="bold" />
+            android:padding="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="My communities" />
 
         <include layout="@layout/line_divider" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:background="?attr/selectableItemBackground"
         android:id="@+id/content_root"
-        android:paddingBottom="12dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="12dp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="12dp">
 
         <ImageView
             android:id="@+id/avatar"
@@ -46,18 +43,17 @@
             android:layout_height="@dimen/avatar_size_small" />
 
         <LinearLayout
-            android:layout_marginStart="16dp"
-
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:textSize="@dimen/font_size_title"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 tools:text="Name" />
 
             <TextView
@@ -65,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:textSize="@dimen/font_size_additional"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 tools:text="Name" />
 
         </LinearLayout>

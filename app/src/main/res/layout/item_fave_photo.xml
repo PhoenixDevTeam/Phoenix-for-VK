@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aspect="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -33,7 +34,7 @@
             android:layout_alignBottom="@id/imageView"
             android:layout_alignEnd="@+id/imageView"
             android:layout_alignParentBottom="false"
-            android:layout_alignRight="@+id/imageView"
+            android:layout_alignStart="@+id/imageView"
             android:background="?attr/colorPrimaryDark"
             android:paddingStart="4dp"
             android:paddingEnd="8dp">
@@ -45,10 +46,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="2dp"
                 android:layout_toEndOf="@+id/vk_photo_item_like"
-                android:text="4000"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/font_size_additional"
-                android:textStyle="bold" />
+                tools:text="4000" />
 
             <TextView
                 android:id="@+id/vk_photo_item_comment_counter"
@@ -56,10 +56,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:text="1.5K"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/font_size_additional"
-                android:textStyle="bold" />
+                tools:text="1.5K" />
 
             <ImageView
                 android:id="@+id/vk_photo_item_comment"
@@ -87,4 +86,4 @@
     </RelativeLayout>
 
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

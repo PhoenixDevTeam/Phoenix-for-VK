@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.Logger;
 
 public class MySearchView extends LinearLayout {
@@ -54,10 +53,6 @@ public class MySearchView extends LinearLayout {
         mButtonBack = findViewById(R.id.button_back);
         mButtonClear = findViewById(R.id.clear);
         mButtonAdditional = findViewById(R.id.additional);
-
-        mButtonBack.setColorFilter(CurrentTheme.getIconColorStatic(getContext()));
-        mButtonClear.setColorFilter(CurrentTheme.getIconColorStatic(getContext()));
-        mButtonAdditional.setColorFilter(CurrentTheme.getIconColorStatic(getContext()));
 
         mInput.addTextChangedListener(new TextWatcherAdapter() {
             @Override

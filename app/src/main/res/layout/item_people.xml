@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:minHeight="64dp">
 
     <RelativeLayout
-        android:layout_centerVertical="true"
         android:id="@+id/avatar_root"
-        android:layout_marginStart="16dp"
         android:layout_width="@dimen/avatar_size_usual"
-        android:layout_height="@dimen/avatar_size_usual">
+        android:layout_height="@dimen/avatar_size_usual"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp">
 
         <ImageView
             android:id="@+id/item_people_avatar"
@@ -35,16 +36,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="Name"
-            android:textSize="@dimen/font_size_title" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="Name" />
 
         <TextView
             android:id="@+id/item_people_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:text="Time"
-            android:textSize="@dimen/font_size_subtitle" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            tools:text="Time" />
 
     </LinearLayout>
 

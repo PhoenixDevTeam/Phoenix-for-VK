@@ -3,15 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
-    tools:ignore="UnusedAttribute"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="8dp"
     android:foreground="?android:attr/selectableItemBackground"
-
-    app:strokeWidth="1dp">
+    tools:ignore="UnusedAttribute">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,16 +46,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    tools:text="Rustam Fattakhetdinov"
-                    android:textSize="@dimen/font_size_subtitle"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    tools:text="Rustam Fattakhetdinov" />
 
                 <TextView
                     android:id="@+id/item_post_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Today 19:26"
-                    android:textSize="@dimen/font_size_additional" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    tools:text="Today 19:26" />
 
             </LinearLayout>
 
@@ -72,17 +69,17 @@
 
                 <TextView
                     android:id="@+id/post_views_counter"
-                    tools:text="1533"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/font_size_additional" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    tools:text="1533" />
 
-                <biz.dealnote.messenger.view.ColorFilterImageView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:src="@drawable/ic_eye_white_vector"
-                    app:filter_color="?android:textColorSecondary" />
+                    android:tint="?android:textColorSecondary" />
 
             </LinearLayout>
 
@@ -114,11 +111,11 @@
                     android:autoLink="web"
                     android:gravity="start"
                     android:linksClickable="false"
-                    tools:text="Message"
-                    android:textSize="@dimen/font_size_subtitle"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     app:displayHashTags="true"
                     app:emojiconSize="20sp"
-                    app:hashTagColor="?attr/colorAccent" />
+                    app:hashTagColor="?attr/colorAccent"
+                    tools:text="Message" />
 
                 <TextView
                     android:id="@+id/item_post_show_more"
@@ -128,7 +125,7 @@
                     android:layout_alignParentStart="true"
                     android:text="@string/show_more"
                     android:textAllCaps="true"
-                    android:textSize="@dimen/font_size_subtitle" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
 
             </RelativeLayout>
 
@@ -163,6 +160,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 app:active_background_color="?attr/icon_color_active"
                 app:button_icon="@drawable/share_variant"
                 app:noactive_icon_color="?attr/icon_color_static" />
@@ -172,6 +171,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 app:active_background_color="?attr/icon_color_active"
                 app:always_counter="false"
                 app:button_icon="@drawable/comment"
@@ -182,6 +183,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 app:active_background_color="?attr/icon_color_active"
                 app:always_counter="false"
                 app:button_icon="@drawable/heart"

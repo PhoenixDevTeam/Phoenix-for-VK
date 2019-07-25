@@ -8,7 +8,6 @@
     android:layout_marginEnd="@dimen/card_margin"
     android:layout_marginBottom="@dimen/card_margin"
     android:foreground="?android:attr/selectableItemBackground"
-
     tools:ignore="UnusedAttribute">
 
     <LinearLayout

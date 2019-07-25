@@ -2,12 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="?attr/selectableItemBackground"
     android:layout_height="wrap_content"
-    android:paddingBottom="8dp"
+    android:background="?attr/selectableItemBackground"
     android:paddingStart="16dp"
+    android:paddingTop="8dp"
     android:paddingEnd="16dp"
-    android:paddingTop="8dp">
+    android:paddingBottom="8dp">
 
     <ImageView
         android:id="@+id/item_comment_owner_avatar"
@@ -20,14 +20,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-
-
         android:layout_marginStart="16dp"
         android:layout_toEndOf="@+id/item_comment_owner_avatar"
-
         android:orientation="vertical"
-        android:paddingBottom="2dp"
         android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         android:weightSum="1">
 
         <TextView
@@ -35,8 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:textSize="@dimen/font_size_subtitle"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             tools:text="Name" />
 
         <biz.dealnote.messenger.view.emoji.EmojiconTextView
@@ -45,7 +41,7 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:gravity="start"
-            android:textSize="@dimen/font_size_subtitle"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             app:displayHashTags="true"
             app:emojiconSize="18sp"
             app:hashTagColor="?attr/colorAccent"
@@ -56,8 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp">
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
 
             <include
                 layout="@layout/comment_attachment_links"
@@ -74,11 +70,10 @@
                 android:id="@+id/item_comment_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:layout_alignParentStart="true"
                 android:layout_alignWithParentIfMissing="false"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/font_size_additional"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 tools:text="time" />
 
             <LinearLayout
@@ -97,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAllCaps="true"
-                    android:textSize="@dimen/font_size_additional"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     tools:text="58" />
 
                 <ImageView

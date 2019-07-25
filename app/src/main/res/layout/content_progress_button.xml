@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_subtitle" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
     </LinearLayout>
 </RelativeLayout>

@@ -229,7 +229,7 @@
 
     <string name="title_activity_create_post">Create wall post</string>
 
-    <string name="chat_empty_text">There will be displayed chat history.</string>
+    <string name="chat_empty_text">Here will be displayed chat history.</string>
 
     <string name="emojis_type_title">Use system emoticons</string>
     <string name="emojis_type_summary">System emoticons will be used if checked</string>
@@ -761,7 +761,7 @@
     <string name="account_switched_to">Current account is</string>
     <string name="wall_post_is_not_yet_initialized">Wall post is not yet initialized, please wait</string>
     <string name="post_is_pinned">Post is pinned</string>
-    <string name="will_be_post_at">Will be post %1$s</string>
+    <string name="will_be_posted_at">Will be posted at %1$s</string>
     <string name="date_is_invalid">Date is invalid. Enter valid date</string>
     <string name="this_device_does_not_support_gcm">This device does not supports GCM</string>
     <string name="double_press_to_exit">Double-click to exit the application</string>

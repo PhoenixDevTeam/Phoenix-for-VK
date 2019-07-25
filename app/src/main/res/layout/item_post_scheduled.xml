@@ -9,46 +9,47 @@
     android:layout_marginEnd="@dimen/card_margin"
     android:layout_marginBottom="@dimen/card_margin"
     android:foreground="?android:attr/selectableItemBackground"
-
     tools:ignore="UnusedAttribute">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/content_post_header" />
+
+        <include
+            android:id="@+id/top_divider"
+            layout="@layout/line_divider" />
+
+        <include layout="@layout/content_post" />
+
+        <include
+            android:id="@+id/bottom_divider"
+            layout="@layout/line_divider" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="end"
+            android:padding="4dp">
 
-            <include layout="@layout/content_post_header" />
-
-            <include
-                android:id="@+id/top_divider"
-                layout="@layout/line_divider" />
-
-            <include layout="@layout/content_post" />
-
-            <include
-                android:id="@+id/bottom_divider"
-                layout="@layout/line_divider" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:padding="4dp">
-
-                <biz.dealnote.messenger.view.CircleCounterButton
-                    android:id="@+id/button_delete"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:active_background_color="?attr/icon_color_active"
-                    app:always_counter="false"
-                    app:button_icon="@drawable/delete"
-                    app:noactive_icon_color="?attr/icon_color_static" />
-
-            </LinearLayout>
+            <biz.dealnote.messenger.view.CircleCounterButton
+                android:id="@+id/button_delete"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                app:active_background_color="?attr/icon_color_active"
+                app:always_counter="false"
+                app:button_icon="@drawable/delete"
+                app:noactive_icon_color="?attr/icon_color_static" />
 
         </LinearLayout>
+
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
 

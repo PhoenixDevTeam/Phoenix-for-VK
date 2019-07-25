@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingTop="6dp">
 
@@ -15,41 +15,35 @@
         android:paddingEnd="8dp">
 
         <ImageView
-            android:layout_marginStart="8dp"
-
-            android:layout_centerVertical="true"
             android:id="@+id/item_copy_history_post_avatar"
             android:layout_width="@dimen/avatar_size_tiny"
-            android:layout_height="@dimen/avatar_size_tiny" />
+            android:layout_height="@dimen/avatar_size_tiny"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp" />
 
         <TextView
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/item_copy_history_post_avatar"
-
-
-            android:layout_toStartOf="@+id/item_copy_history_post_dots"
             android:id="@+id/item_post_copy_owner_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
+            android:layout_toStartOf="@+id/item_copy_history_post_dots"
+            android:layout_toEndOf="@+id/item_copy_history_post_avatar"
             android:gravity="center_vertical"
             android:maxLines="1"
-            tools:text="Post owner"
-            android:textSize="@dimen/font_size_subtitle"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            tools:text="Post owner" />
 
-        <biz.dealnote.messenger.view.ColorFilterImageView
+        <ImageView
             android:id="@+id/item_copy_history_post_dots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="8dp"
-            android:layout_centerVertical="true"
-            app:filter_color="?android:textColorSecondary"
-            android:layout_alignParentEnd="true"
-
             android:src="@drawable/ic_horisontal_dots"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:tint="?android:textColorSecondary" />
 
     </RelativeLayout>
 
@@ -62,32 +56,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="4dp"
             android:paddingStart="16dp"
+            android:paddingTop="4dp"
             android:paddingEnd="16dp"
-            android:paddingTop="4dp">
+            android:paddingBottom="4dp">
 
             <biz.dealnote.messenger.view.emoji.EmojiconTextView
                 android:id="@+id/item_post_copy_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                tools:text="Message"
-                android:textSize="@dimen/font_size_subtitle"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:displayHashTags="true"
                 app:emojiconSize="20sp"
-                app:hashTagColor="?attr/colorAccent" />
+                app:hashTagColor="?attr/colorAccent"
+                tools:text="Message" />
 
             <TextView
                 android:id="@+id/item_post_copy_show_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
                 android:text="@string/show_more"
                 android:textAllCaps="true"
-                android:textSize="@dimen/font_size_subtitle" />
-        </LinearLayout>
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
 
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -9,7 +9,6 @@
     android:layout_marginEnd="@dimen/card_margin"
     android:layout_marginBottom="@dimen/card_margin"
     android:foreground="?android:attr/selectableItemBackground"
-
     tools:ignore="UnusedAttribute">
 
     <LinearLayout
@@ -32,7 +31,7 @@
                 android:paddingBottom="8dp"
                 android:text="@string/post_is_pinned"
                 android:textAllCaps="true"
-                android:textSize="@dimen/font_size_additional" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
 
             <include layout="@layout/line_divider" />
 
@@ -63,6 +62,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
                 app:active_background_color="?attr/icon_color_active"
                 app:button_icon="@drawable/share_variant"
                 app:noactive_icon_color="?attr/icon_color_static" />
@@ -73,6 +74,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
                 app:active_background_color="?attr/icon_color_active"
                 app:always_counter="false"
                 app:button_icon="@drawable/comment"
@@ -84,6 +87,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
                 app:active_background_color="?attr/icon_color_active"
                 app:always_counter="false"
                 app:button_icon="@drawable/heart"

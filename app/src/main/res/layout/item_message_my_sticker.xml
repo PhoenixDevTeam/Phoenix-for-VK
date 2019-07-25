@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/message_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:gravity="end"
-    android:paddingBottom="2dp"
     android:paddingStart="4dp"
+    android:paddingTop="2dp"
     android:paddingEnd="4dp"
-    android:paddingTop="2dp">
+    android:paddingBottom="2dp">
 
     <ImageView
         android:id="@+id/item_message_avatar"
         android:layout_width="@dimen/avatar_size_small"
         android:layout_height="@dimen/avatar_size_small"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginEnd="2dp" />
 
     <biz.dealnote.messenger.view.OnlineView
         android:id="@+id/item_message_important"
         android:layout_width="@dimen/online_dot_size"
         android:layout_height="@dimen/online_dot_size"
-        android:layout_alignBottom="@+id/item_message_avatar"
-        android:layout_alignLeft="@+id/item_message_avatar"
         android:layout_alignStart="@+id/item_message_avatar"
+        android:layout_alignBottom="@+id/item_message_avatar"
         android:padding="3dp"
         android:src="@drawable/star"
         app:circle_color="?icon_color_active"
@@ -50,8 +50,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="time"
-            android:textSize="@dimen/font_size_additional" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="time" />
 
     </LinearLayout>
 

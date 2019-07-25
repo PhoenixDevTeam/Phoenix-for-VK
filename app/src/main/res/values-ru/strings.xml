@@ -658,7 +658,7 @@
     <string name="peer_notification_settings">Настройки уведомлений</string>
     <string name="wall_post_is_not_yet_initialized">Информация о записи еще не получена, пожалуйста, подождите</string>
     <string name="post_is_pinned">Запись закреплена</string>
-    <string name="will_be_post_at">Будет опубликован %1$s</string>
+    <string name="will_be_posted_at">Будет опубликован %1$s</string>
     <string name="date_is_invalid">Вы ввели неверную дату</string>
     <string name="this_device_does_not_support_gcm">Это устройство не поддерживает GCM</string>
     <string name="double_press_to_exit">Двойное нажатие для выхода из приложения</string>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -11,12 +12,10 @@
         android:id="@+id/item_document_big_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentStart="false"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/item_document_big_ext"
         android:gravity="center"
-        android:scaleType="centerCrop"
-        android:textAllCaps="true" />
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/item_document_big_ext"
@@ -26,12 +25,10 @@
         android:layout_centerVertical="true"
         android:background="@drawable/rectangle_back"
         android:gravity="center"
-        android:scaleType="centerCrop"
-        android:text=".EXT"
         android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/font_size_additional"
-        android:textStyle="bold" />
+        tools:text=".EXT" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,17 +45,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="Title"
-            android:textSize="@dimen/font_size_title" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="Title" />
 
         <TextView
             android:id="@+id/item_document_big_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="Size"
-            android:textSize="@dimen/font_size_subtitle"
-            android:textStyle="italic" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            tools:text="Size" />
     </LinearLayout>
 
 

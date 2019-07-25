@@ -9,7 +9,6 @@
     android:layout_marginEnd="@dimen/card_margin"
     android:layout_marginBottom="@dimen/card_margin"
     android:foreground="?android:attr/selectableItemBackground"
-
     tools:ignore="UnusedAttribute">
 
     <LinearLayout
@@ -17,8 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <RelativeLayout
             style='style="?android:attr/borderlessButtonStyle"'
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,10 +30,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
-
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -43,16 +39,15 @@
                     android:id="@+id/video_views_counter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/font_size_additional"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     tools:text="1533" />
 
-                <biz.dealnote.messenger.view.ColorFilterImageView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-
                     android:src="@drawable/ic_eye_white_vector"
-                    app:filter_color="?android:textColorSecondary" />
+                    android:tint="?android:textColorSecondary" />
 
             </LinearLayout>
 
@@ -67,11 +62,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
-
                 android:layout_toStartOf="@+id/video_views_counter_root"
-
                 android:layout_toEndOf="@+id/video_owner_avatar"
-
                 android:orientation="vertical">
 
                 <TextView
@@ -79,15 +71,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:textSize="@dimen/font_size_subtitle"
-                    android:textStyle="bold"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                     tools:text="Owner name" />
 
                 <TextView
                     android:id="@+id/video_datetime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/font_size_additional"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     tools:text="Today 19:26" />
 
             </LinearLayout>
@@ -113,14 +104,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/video_image"
-                android:layout_alignRight="@+id/video_image"
                 android:layout_alignBottom="@+id/video_image"
                 android:background="#90000000"
                 android:gravity="center"
                 android:padding="4dp"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/font_size_additional"
-                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 tools:text="3:28" />
 
             <ImageView
@@ -142,8 +131,7 @@
             android:maxLines="1"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:textSize="@dimen/font_size_subtitle"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             tools:text="Video title" />
 
         <include

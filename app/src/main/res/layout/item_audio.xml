@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:paddingBottom="8dp"
     android:paddingStart="16dp"
+    android:paddingTop="8dp"
     android:paddingEnd="16dp"
-    android:paddingTop="8dp">
+    android:paddingBottom="8dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
         android:layout_toEndOf="@+id/item_audio_play"
@@ -21,7 +20,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_toStartOf="@+id/item_audio_time"
             android:orientation="vertical"
             android:paddingEnd="16dp">
@@ -31,8 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                tools:text="Artist"
-                android:textSize="@dimen/font_size_title" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="Artist" />
 
             <TextView
                 android:id="@+id/dialog_message"
@@ -40,8 +38,8 @@
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:paddingEnd="16dp"
-                tools:text="Title"
-                android:textSize="@dimen/font_size_subtitle" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                tools:text="Title" />
 
         </LinearLayout>
 
@@ -51,9 +49,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:maxLines="1"
-            tools:text="Time"
-            android:textSize="@dimen/font_size_additional"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="Time" />
 
     </RelativeLayout>
 

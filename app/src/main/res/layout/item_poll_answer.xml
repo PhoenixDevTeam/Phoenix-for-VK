@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:checked="false"
         android:padding="8dp"
-        android:textSize="@dimen/font_size_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         tools:text="Answer title" />
 
     <LinearLayout
@@ -29,7 +29,7 @@
             android:id="@+id/item_poll_answer_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             tools:text="Title" />
 
         <RelativeLayout
@@ -54,10 +54,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center_vertical"
-                android:text="34"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/font_size_additional"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="34" />
 
         </RelativeLayout>
     </LinearLayout>

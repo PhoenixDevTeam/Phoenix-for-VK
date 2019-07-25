@@ -10,12 +10,12 @@ android {
         exclude 'META-INF/NOTICE'
     }
 
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "biz.dealnote.messenger"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 50012
         versionName '5.0.0-alpha12'
 
@@ -128,8 +128,8 @@ ext {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "com.google.android.material:material:1.1.0-alpha06"
-    implementation "androidx.core:core:1.1.0-beta01"
+    implementation "com.google.android.material:material:1.1.0-alpha08"
+    implementation "androidx.core:core:1.2.0-alpha02"
     implementation "androidx.recyclerview:recyclerview:1.0.0"
     implementation "androidx.viewpager:viewpager:1.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
@@ -137,7 +137,7 @@ dependencies {
     implementation "androidx.vectordrawable:vectordrawable:1.0.1"
     implementation "androidx.media:media:1.0.1"
     implementation "androidx.browser:browser:1.0.0"
-    implementation "androidx.preference:preference:1.1.0-alpha05"
+    implementation "androidx.preference:preference:1.1.0-rc01"
     implementation "androidx.exifinterface:exifinterface:1.0.0"
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
@@ -151,10 +151,10 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitLibraryVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpLibraryVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLibraryVersion"
-    implementation "com.google.firebase:firebase-core:16.0.9"
-    implementation "com.google.firebase:firebase-database:17.0.0"
-    implementation "com.google.firebase:firebase-messaging:18.0.0"
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
+    implementation "com.google.firebase:firebase-core:17.0.1"
+    implementation "com.google.firebase:firebase-database:18.0.0"
+    implementation "com.google.firebase:firebase-messaging:19.0.1"
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.8.4'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

@@ -13,7 +13,6 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/font_size_title" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
 </LinearLayout>

@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:emojicon="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp">
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
 
     <RelativeLayout
         android:id="@+id/item_text_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="16dp"
-
         android:layout_marginEnd="8dp"
         android:paddingBottom="6dp">
 
@@ -26,23 +24,20 @@
             android:autoLink="web"
             android:gravity="start"
             android:linksClickable="false"
-            android:textSize="@dimen/font_size_subtitle"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             emojicon:displayHashTags="true"
             emojicon:emojiconSize="20sp"
             emojicon:hashTagColor="?attr/colorAccent"
-            tools:text="Message"/>
+            tools:text="Message" />
 
         <TextView
             android:id="@+id/item_post_show_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/item_post_text"
-            android:fontFamily="sans-serif-condensed"
+            android:layout_alignParentStart="true"
             android:text="@string/show_more"
-            android:textAllCaps="true"
-            android:textSize="@dimen/font_size_subtitle" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
     </RelativeLayout>
 
@@ -56,7 +51,7 @@
         <include
             layout="@layout/post_attachment_links"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
@@ -64,11 +59,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_post_attachments"
-
         android:layout_marginStart="16dp"
-
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center_vertical">
 
         <ImageView
@@ -81,10 +74,9 @@
             android:id="@+id/item_post_signer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginStart="8dp"
-            android:textSize="@dimen/font_size_subtitle"
-            tools:text="Emin Guliev"/>
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            tools:text="Emin Guliev" />
     </LinearLayout>
 
 </RelativeLayout>

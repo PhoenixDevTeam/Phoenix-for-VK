@@ -19,7 +19,6 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
-
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp">
 
@@ -78,7 +77,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-
                     android:background="@android:color/transparent"
                     android:hint="@string/text_hint"
                     android:imeOptions="actionDone"
@@ -89,7 +87,7 @@
                     android:paddingBottom="4dp"
                     android:saveEnabled="false"
                     android:textColorHint="?android:textColorHint"
-                    android:textSize="@dimen/font_size_subtitle"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     app:emojiconSize="20sp" />
 
             </LinearLayout>

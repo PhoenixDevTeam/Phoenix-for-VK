@@ -1,109 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="2dp"
-        app:contentPadding="0dp">
+        android:layout_height="match_parent"
+        android:background="?message_bubble_color"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?message_bubble_color"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
+
+            <biz.dealnote.messenger.view.AspectRatioImageView
+                android:id="@+id/item_attachment_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:background="@drawable/background_unknown_image"
+                android:scaleType="centerCrop"
+                app:aspectRatioEnabled="true"
+                app:aspectRatioH="1"
+                app:aspectRatioW="1"
+                app:dominantMeasurement="width" />
+
+            <ImageView
+                android:id="@+id/item_attachment_tint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignStart="@+id/item_attachment_image"
+                android:layout_alignTop="@+id/item_attachment_image"
+                android:layout_alignEnd="@+id/item_attachment_image"
+                android:layout_alignBottom="@+id/item_attachment_image"
+                android:background="#9b000000" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <biz.dealnote.messenger.view.AspectRatioImageView
-                    android:id="@+id/item_attachment_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/background_unknown_image"
-                    android:scaleType="centerCrop"
-                    app:aspectRatioEnabled="true"
-                    app:aspectRatioH="1"
-                    app:aspectRatioW="1"
-                    app:dominantMeasurement="width" />
+                android:id="@+id/item_attachment_progress_root"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
 
                 <ImageView
-                    android:id="@+id/item_attachment_tint"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignBottom="@+id/item_attachment_image"
-                    android:layout_alignStart="@+id/item_attachment_image"
-                    android:layout_alignEnd="@+id/item_attachment_image"
-                    android:layout_alignTop="@+id/item_attachment_image"
-                    android:background="#9b000000" />
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/circle_back"
+                    android:padding="8dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/close" />
 
-                <RelativeLayout
-                    android:id="@+id/item_attachment_progress_root"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_centerInParent="true"
-                        android:background="@drawable/circle_back"
-                        android:padding="8dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/close" />
-
-                    <biz.dealnote.messenger.view.CircleRoadProgress
-                        android:id="@+id/item_attachment_progress"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        app:arcLoadingColor="?attr/colorAccent"
-                        app:arcLoadingStartAngle="270"
-                        app:arcLoadingStrokeWidth="4dp"
-                        app:roadColor="#ffffff"
-                        app:roadStrokeWidth="8dp" />
-
-                </RelativeLayout>
+                <biz.dealnote.messenger.view.CircleRoadProgress
+                    android:id="@+id/item_attachment_progress"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    app:arcLoadingColor="?attr/colorAccent"
+                    app:arcLoadingStartAngle="270"
+                    app:arcLoadingStrokeWidth="4dp"
+                    app:roadColor="#ffffff"
+                    app:roadStrokeWidth="8dp" />
 
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?attr/dividerColor" />
+        </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/item_attachment_title_root"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/dividerColor" />
+
+        <LinearLayout
+            android:id="@+id/item_attachment_title_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_attachment_title"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/item_attachment_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:minLines="2"
-                    android:padding="4dp"
-                    android:textSize="@dimen/font_size_additional"
-                    tools:text="Device.Camera" />
-            </LinearLayout>
-
+                android:gravity="center"
+                android:maxLines="2"
+                android:minLines="2"
+                android:padding="4dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                tools:text="Device.Camera" />
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </LinearLayout>
 
-</RelativeLayout>
+</com.google.android.material.card.MaterialCardView>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -11,19 +12,19 @@
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="8dp"
         android:paddingStart="16dp"
+        android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingTop="8dp">
+        android:paddingBottom="8dp">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:text="Title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:textColor="?icon_color_active"
-            android:textSize="@dimen/font_size_title" />
+            tools:text="Title" />
 
         <TextView
             android:id="@+id/count"
@@ -31,13 +32,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:background="@drawable/tab_counter_background"
-            android:paddingBottom="2dp"
             android:paddingStart="6dp"
-            android:paddingEnd="6dp"
             android:paddingTop="2dp"
-            android:text="count"
+            android:paddingEnd="6dp"
+            android:paddingBottom="2dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_size_additional" />
+            tools:text="count" />
 
     </LinearLayout>
 
@@ -48,16 +49,16 @@
         android:minHeight="64dp">
 
         <RelativeLayout
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
             android:id="@+id/item_friend_avatar_container"
             android:layout_width="@dimen/avatar_size_usual"
-            android:layout_height="@dimen/avatar_size_usual">
+            android:layout_height="@dimen/avatar_size_usual"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp">
 
             <ImageView
                 android:id="@+id/item_friend_avatar"
                 android:layout_width="@dimen/avatar_size_usual"
-                android:layout_height="@dimen/avatar_size_usual"/>
+                android:layout_height="@dimen/avatar_size_usual" />
 
         </RelativeLayout>
 
@@ -77,16 +78,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="Name"
-                android:textSize="@dimen/font_size_title" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="Name" />
 
             <TextView
                 android:id="@+id/item_friend_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:text="Time"
-                android:textSize="@dimen/font_size_subtitle" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                tools:text="Time" />
 
         </LinearLayout>
 

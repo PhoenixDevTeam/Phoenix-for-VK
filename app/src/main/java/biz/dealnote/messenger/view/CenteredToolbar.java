@@ -9,11 +9,13 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
+
+import com.google.android.material.appbar.MaterialToolbar;
+
 import biz.dealnote.messenger.R;
 
-public class CenteredToolbar extends Toolbar {
+public class CenteredToolbar extends MaterialToolbar {
 
     private TextView tvTitle;
     private TextView tvSubtitle;
@@ -87,7 +89,7 @@ public class CenteredToolbar extends Toolbar {
 
         tvSubtitle.setVisibility(GONE);
 
-        Toolbar.LayoutParams lp = new Toolbar.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        MaterialToolbar.LayoutParams lp = new MaterialToolbar.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lp.gravity = Gravity.CENTER;
         linear.setLayoutParams(lp);
 

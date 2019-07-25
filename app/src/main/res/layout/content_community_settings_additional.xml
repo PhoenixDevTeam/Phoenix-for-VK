@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/community_options_additional_info_title"
-        android:textSize="24sp" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
     <LinearLayout
         android:id="@+id/category_root"

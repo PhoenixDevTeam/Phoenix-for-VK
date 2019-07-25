@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -9,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
-        android:text="00:15"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
         android:textColor="?attr/icon_color_active"
-        android:textSize="@dimen/font_size_additional"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:text="00:15" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +33,6 @@
             android:id="@+id/item_voice_wave_form_view"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-
             android:layout_marginStart="12dp"
             app:waveform_active_color="?attr/colorPrimary"
             app:waveform_noactive_color="?attr/icon_color_static" />

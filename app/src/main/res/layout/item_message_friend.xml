@@ -22,7 +22,6 @@
         android:layout_width="@dimen/online_dot_size"
         android:layout_height="@dimen/online_dot_size"
         android:layout_alignStart="@+id/item_message_avatar"
-        android:layout_alignLeft="@+id/item_message_avatar"
         android:layout_alignBottom="@+id/item_message_avatar"
         android:background="@drawable/circle_back"
         android:padding="3dp"
@@ -55,7 +54,7 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:gravity="start"
-            android:textSize="@dimen/font_size_subtitle"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             app:displayHashTags="true"
             app:emojiconSize="20sp"
             app:fixWrapText="true"
@@ -94,11 +93,10 @@
                 android:id="@+id/item_message_status_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="time"
-                android:textSize="@dimen/font_size_additional" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                tools:text="time" />
 
         </LinearLayout>
-
 
     </biz.dealnote.messenger.view.BubbleLinearLayout>
 

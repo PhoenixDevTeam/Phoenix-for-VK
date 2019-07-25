@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/comment_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -17,12 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:padding="12dp"
             android:gravity="center_vertical"
-            android:text="Today"
-            android:textColor="?icon_color_active"
-            android:textSize="@dimen/font_size_subtitle"
-            android:textStyle="bold" />
+            android:padding="12dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="Today" />
 
         <include layout="@layout/line_divider" />
 
@@ -35,18 +34,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/header_root"
         android:background="?attr/selectableItemBackground"
-        android:paddingBottom="10dp"
         android:paddingStart="16dp"
+        android:paddingTop="10dp"
         android:paddingEnd="16dp"
-        android:paddingTop="10dp">
+        android:paddingBottom="10dp">
 
         <RelativeLayout
             android:id="@+id/item_friend_avatar_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/relativeLayout">
+            android:layout_alignTop="@+id/relativeLayout"
+            android:layout_alignParentStart="true">
 
             <ImageView
                 android:id="@+id/item_friend_avatar"
@@ -59,9 +57,8 @@
                 android:id="@+id/item_circle_friend_changable"
                 android:layout_width="@dimen/online_dot_size"
                 android:layout_height="@dimen/online_dot_size"
-                android:layout_alignBottom="@+id/item_friend_avatar"
-                android:layout_alignLeft="@+id/item_friend_avatar"
                 android:layout_alignStart="@+id/item_friend_avatar"
+                android:layout_alignBottom="@+id/item_friend_avatar"
                 android:padding="3dp"
                 android:src="@drawable/plus"
                 app:circle_color="?icon_color_active"
@@ -89,16 +86,15 @@
                 android:id="@+id/item_friend_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name"
-                android:textSize="@dimen/font_size_subtitle"
-                android:textStyle="bold"/>
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="Name" />
 
             <TextView
                 android:id="@+id/item_additional_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="comment for post..."
-                android:textSize="@dimen/font_size_subtitle" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                tools:text="comment for post..." />
 
             <TextView
                 android:id="@+id/item_friend_time"
@@ -106,8 +102,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:maxLines="2"
-                android:text="time"
-                android:textSize="@dimen/font_size_additional" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                tools:text="time" />
 
         </LinearLayout>
 

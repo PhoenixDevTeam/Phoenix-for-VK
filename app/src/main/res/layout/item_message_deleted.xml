@@ -13,16 +13,15 @@
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:text="@string/message_was_deleted"
-        android:textColor="?android:textColorPrimary" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
     <Button
+        android:layout_marginStart="8dp"
         android:id="@+id/item_messages_deleted_restore"
-        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/restore"
-        android:textAllCaps="true"
-        android:textSize="@dimen/font_size_subtitle" />
+        android:textAllCaps="true" />
 
 
 </LinearLayout>

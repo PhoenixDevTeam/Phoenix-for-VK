@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/footer_load_more_run"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,14 +21,14 @@
         android:layout_centerInParent="true" />
 
     <TextView
-        android:textAllCaps="true"
         android:id="@+id/footer_load_more_end_of_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_centerInParent="true"
+        android:gravity="center"
         android:text="@string/end_of_list"
-        android:textColor="?android:textColorSecondary"
-        android:textSize="12sp" />
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        android:textColor="?android:textColorSecondary" />
 
 </RelativeLayout>

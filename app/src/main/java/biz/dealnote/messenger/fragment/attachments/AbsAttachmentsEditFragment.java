@@ -13,17 +13,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
@@ -411,7 +412,7 @@ public abstract class AbsAttachmentsEditFragment<P extends AbsAttachmentsEditPre
         if (nonNull(mTimerTextInfo)) {
             if (nonNull(unixtime)) {
                 String formattedTime = AppTextUtils.getDateFromUnixTime(requireActivity(), unixtime);
-                mTimerTextInfo.setText(getString(R.string.will_be_post_at, formattedTime.toLowerCase()));
+                mTimerTextInfo.setText(getString(R.string.will_be_posted_at, formattedTime.toLowerCase()));
                 mTimerTextInfo.setVisibility(View.VISIBLE);
             } else {
                 mTimerTextInfo.setVisibility(View.GONE);

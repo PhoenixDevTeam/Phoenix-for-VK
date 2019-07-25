@@ -67,7 +67,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     private var headerView: View? = null
     private var loadMoreFooterHelper: LoadMoreFooterHelper? = null
 
-    private var recyclerView: androidx.recyclerview.widget.RecyclerView? = null
+    private var recyclerView: RecyclerView? = null
     private var adapter: MessagesAdapter? = null
 
     private var inputViewController: InputViewController? = null
@@ -109,7 +109,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             itemAnimator?.moveDuration = 0
             itemAnimator?.removeDuration = 0
             addOnScrollListener(PicassoPauseOnScrollListener(Constants.PICASSO_TAG))
-            addOnScrollListener(object : EndlessRecyclerOnScrollListener(){
+            addOnScrollListener(object : EndlessRecyclerOnScrollListener() {
                 override fun onScrollToLastElement() {
                     presenter?.fireScrollToEnd()
                 }
@@ -228,7 +228,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         inflater.inflate(R.menu.menu_chat, menu)
     }
 
-    private fun createLayoutManager(): androidx.recyclerview.widget.RecyclerView.LayoutManager {
+    private fun createLayoutManager(): RecyclerView.LayoutManager {
         return androidx.recyclerview.widget.LinearLayoutManager(activity, RecyclerView.VERTICAL, true)
     }
 
@@ -275,7 +275,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
             val aid = requireArguments().getInt(Extra.ACCOUNT_ID)
             val messagesOwnerId = requireArguments().getInt(Extra.OWNER_ID)
             val peer = requireArguments().getParcelable<Peer>(Extra.PEER)
-            return ChatPrensenter(aid, messagesOwnerId, peer, createStartConfig(), saveInstanceState)
+            return ChatPrensenter(aid, messagesOwnerId, peer!!, createStartConfig(), saveInstanceState)
         }
     }
 
@@ -527,7 +527,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         }
 
         val reference = WeakReference(fragment)
-        val recyclerView: androidx.recyclerview.widget.RecyclerView = rootView.findViewById(R.id.recyclerView)
+        val recyclerView: RecyclerView = rootView.findViewById(R.id.recyclerView)
         val emptyView: View = rootView.findViewById(R.id.emptyRootView)
         val adapter = AttachmentsBottomSheetAdapter(rootView.context, attachments, this)
 

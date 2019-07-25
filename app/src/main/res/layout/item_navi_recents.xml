@@ -21,7 +21,7 @@
             android:layout_marginStart="56dp"
             android:gravity="center_vertical"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:textSize="@dimen/navi_drawer_font_size"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             tools:text="Test action" />
 
         <ImageView
