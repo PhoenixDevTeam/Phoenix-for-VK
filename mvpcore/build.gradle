@@ -3,11 +3,11 @@ apply plugin: 'kotlin-android'
 
 android {
 
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -22,9 +22,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.activity:activity:1.0.0-alpha08"
-    implementation "androidx.fragment:fragment:1.1.0-alpha08"
-    implementation "androidx.loader:loader:1.1.0-beta01"
+    implementation "androidx.activity:activity:1.1.0-alpha01"
+    implementation "androidx.fragment:fragment:1.2.0-alpha01"
+    implementation "androidx.loader:loader:1.1.0-rc01"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 repositories {

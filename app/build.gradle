@@ -16,8 +16,8 @@ android {
         applicationId "biz.dealnote.messenger"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 50012
-        versionName '5.0.0-alpha12'
+        versionCode 50013
+        versionName '5.0.0-alpha13'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
