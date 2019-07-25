@@ -4,17 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <biz.dealnote.messenger.view.MySearchView
+        android:id="@+id/searchview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:colorBackground">
-
-        <biz.dealnote.messenger.view.MySearchView
-            android:id="@+id/searchview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+        android:layout_height="wrap_content" />
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
