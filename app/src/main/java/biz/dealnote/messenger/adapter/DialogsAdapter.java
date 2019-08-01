@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Transformation;
 
 import java.text.SimpleDateFormat;
@@ -22,8 +25,6 @@ import java.util.EventListener;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.model.ChatAction;
 import biz.dealnote.messenger.model.Dialog;
@@ -60,7 +61,7 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
         this.mDialogs = dialogs;
         this.mTransformation = CurrentTheme.createTransformationForAvatar(context);
         this.mDialogsUnreadColor = CurrentTheme.getDialogsUnreadColor(context);
-        this.mIconColorActiveColor = CurrentTheme.getIconColorActive(context);
+        this.mIconColorActiveColor = CurrentTheme.getColorPrimary(context);
         this.mForegroundColorSpan = new ForegroundColorSpan(CurrentTheme.getPrimaryTextColorCode(context));
         this.mDataObserver = new RecyclerView.AdapterDataObserver() {
             @Override

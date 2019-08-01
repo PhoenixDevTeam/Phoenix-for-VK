@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_sad_vector"
-                android:tint="?attr/icon_color_static" />
+                android:tint="?attr/colorOnSurface" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -65,7 +65,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
             android:src="@drawable/ic_camera_oval_vector"
-            android:tint="?attr/icon_color_static" />
+            android:tint="?attr/colorOnSurface" />
 
         <ImageView
             android:id="@+id/buttonVideo"
@@ -75,7 +75,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
             android:src="@drawable/video"
-            android:tint="?attr/icon_color_static" />
+            android:tint="?attr/colorOnSurface" />
 
         <ImageView
             android:id="@+id/buttonDoc"
@@ -85,7 +85,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
             android:src="@drawable/book"
-            android:tint="?attr/icon_color_static" />
+            android:tint="?attr/colorOnSurface" />
 
         <ImageButton
             android:id="@+id/buttonHide"

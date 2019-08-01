@@ -233,7 +233,7 @@
                 app:active_background_color="?icon_color_active"
                 app:active_icon_color="#FFFFFF"
                 app:button_icon="@drawable/ic_vk_share"
-                app:noactive_icon_color="?attr/icon_color_static" />
+                app:noactive_icon_color="?attr/colorOnSurface" />
 
             <biz.dealnote.messenger.view.CircleCounterButton
                 android:id="@+id/audio_add"
@@ -245,7 +245,7 @@
                 app:active_background_color="?icon_color_active"
                 app:active_icon_color="#FFFFFF"
                 app:button_icon="@drawable/plus"
-                app:noactive_icon_color="?attr/icon_color_static" />
+                app:noactive_icon_color="?attr/colorOnSurface" />
 
             <biz.dealnote.messenger.view.CircleCounterButton
                 android:id="@+id/audio_share"
@@ -257,7 +257,7 @@
                 app:active_background_color="?icon_color_active"
                 app:active_icon_color="#FFFFFF"
                 app:button_icon="@drawable/share_variant"
-                app:noactive_icon_color="?attr/icon_color_static" />
+                app:noactive_icon_color="?attr/colorOnSurface" />
 
         </LinearLayout>
     </RelativeLayout>

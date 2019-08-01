@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.AbsRecyclerViewAdapter;
@@ -70,7 +71,7 @@ public class NewsfeedCommentsAdapter extends AbsRecyclerViewAdapter<NewsfeedComm
         this.attachmentsViewBinder = new AttachmentsViewBinder(context, callback);
 
         this.colorTextSecondary = CurrentTheme.getSecondaryTextColorCode(context);
-        this.iconColorActive = CurrentTheme.getIconColorActive(context);
+        this.iconColorActive = CurrentTheme.getColorPrimary(context);
 
         this.linkActionAdapter = new LinkActionAdapter() {
             // do nothing

@@ -12,6 +12,10 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.squareup.picasso.Transformation;
 
 import java.lang.ref.WeakReference;
@@ -20,9 +24,6 @@ import java.util.EventListener;
 import java.util.List;
 import java.util.Set;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.holder.IdentificableHolder;
@@ -81,7 +82,7 @@ public class AttachmentsViewBinder {
         this.mAvatarTransformation = CurrentTheme.createTransformationForAvatar(context);
         this.photosViewHelper = new PhotosViewHelper(context, attachmentsActionCallback);
         this.mAttachmentsActionCallback = attachmentsActionCallback;
-        this.mActiveWaveFormColor = CurrentTheme.getIconColorActive(context);
+        this.mActiveWaveFormColor = CurrentTheme.getColorPrimary(context);
         this.mNoactiveWaveFormColor = Utils.adjustAlpha(mActiveWaveFormColor, 0.5f);
     }
 
@@ -468,7 +469,7 @@ public class AttachmentsViewBinder {
                         } else {
                             ivType.setVisibility(View.VISIBLE);
                             ivPhoto.setVisibility(View.GONE);
-                            ivType.getBackground().setColorFilter(CurrentTheme.getIconColorActive(mContext), PorterDuff.Mode.MULTIPLY);
+                            ivType.getBackground().setColorFilter(CurrentTheme.getColorPrimary(mContext), PorterDuff.Mode.MULTIPLY);
                             ivType.setImageResource(R.drawable.file);
                         }
                         break;
@@ -488,13 +489,13 @@ public class AttachmentsViewBinder {
                     case Types.WIKI_PAGE:
                         ivType.setVisibility(View.VISIBLE);
                         ivPhoto.setVisibility(View.GONE);
-                        ivType.getBackground().setColorFilter(CurrentTheme.getIconColorActive(mContext), PorterDuff.Mode.MULTIPLY);
+                        ivType.getBackground().setColorFilter(CurrentTheme.getColorPrimary(mContext), PorterDuff.Mode.MULTIPLY);
                         ivType.setImageResource(R.drawable.share);
                         break;
                     case Types.POLL:
                         ivType.setVisibility(View.VISIBLE);
                         ivPhoto.setVisibility(View.GONE);
-                        ivType.getBackground().setColorFilter(CurrentTheme.getIconColorActive(mContext), PorterDuff.Mode.MULTIPLY);
+                        ivType.getBackground().setColorFilter(CurrentTheme.getColorPrimary(mContext), PorterDuff.Mode.MULTIPLY);
                         ivType.setImageResource(R.drawable.chart_bar);
                         break;
                     default:
@@ -606,7 +607,7 @@ public class AttachmentsViewBinder {
             tvTitle = root.findViewById(R.id.dialog_message);
             tvSubtitle = root.findViewById(R.id.item_audio_subtitle);
             ibPlay = root.findViewById(R.id.item_audio_play);
-            ibPlay.getBackground().setColorFilter(CurrentTheme.getIconColorActive(context), PorterDuff.Mode.MULTIPLY);
+            ibPlay.getBackground().setColorFilter(CurrentTheme.getColorPrimary(context), PorterDuff.Mode.MULTIPLY);
         }
     }
 

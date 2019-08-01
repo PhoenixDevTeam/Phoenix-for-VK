@@ -36,9 +36,8 @@
         </item>
         <item name="floatingActionButtonStyle">@style/Theme.FloatingActionButton</item>
         <item name="icon_color_active">#3F51B5</item>
-        <item name="icon_color_static">#424242</item>
 
-        <item name="dividerColor">#DADCE0</item>
+        <item name="dividerColor">#E1E3E7</item>
 
         <item name="dialogs_unread_color">#20b0b0b0</item>
         <item name="navi_menu_selector">@drawable/list_selector_white</item>

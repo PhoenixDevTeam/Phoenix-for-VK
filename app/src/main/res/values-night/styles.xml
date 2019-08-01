@@ -39,7 +39,6 @@
         </item>
         <item name="floatingActionButtonStyle">@style/Theme.FloatingActionButton</item>
         <item name="icon_color_active">#3F51B5</item>
-        <item name="icon_color_static">#FFF</item>
 
         <item name="dividerColor">#313131</item>
 

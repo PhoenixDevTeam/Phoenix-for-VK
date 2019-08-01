@@ -16,11 +16,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
@@ -52,7 +53,7 @@ public class CommentsAdapter extends RecyclerBindableAdapter<Comment, RecyclerVi
         this.attachmentsViewBinder = new AttachmentsViewBinder(context, attachmentsActionCallback);
         this.transformation = CurrentTheme.createTransformationForAvatar(context);
         this.colorTextSecondary = CurrentTheme.getSecondaryTextColorCode(context);
-        this.iconColorActive = CurrentTheme.getIconColorActive(context);
+        this.iconColorActive = CurrentTheme.getColorPrimary(context);
     }
 
     public void setOnHashTagClickListener(EmojiconTextView.OnHashTagClickListener onHashTagClickListener) {
@@ -235,7 +236,7 @@ public class CommentsAdapter extends RecyclerBindableAdapter<Comment, RecyclerVi
             ivLike = root.findViewById(R.id.item_comment_like);
             tvLikeCounter = root.findViewById(R.id.item_comment_like_counter);
             selectionView = root.findViewById(R.id.item_comment_selection);
-            selectionView.setBackgroundColor(CurrentTheme.getIconColorActive(context));
+            selectionView.setBackgroundColor(CurrentTheme.getColorPrimary(context));
             ivLike.setColorFilter(CurrentTheme.getSecondaryTextColorCode(context), PorterDuff.Mode.MULTIPLY);
             vAttachmentsRoot = root.findViewById(R.id.item_comment_attachments_root);
 

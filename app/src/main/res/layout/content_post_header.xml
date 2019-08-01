@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/lock_outline"
-            android:tint="?icon_color_static" />
+            android:tint="?colorOnSurface" />
 
         <LinearLayout
             android:id="@+id/post_views_counter_root"
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:src="@drawable/ic_eye_white_vector"
-                android:tint="?icon_color_static" />
+                android:tint="?colorOnSurface" />
 
         </LinearLayout>
 
@@ -90,7 +90,7 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginStart="4dp"
-                android:tint="?icon_color_static" />
+                android:tint="?colorOnSurface" />
 
         </LinearLayout>
 

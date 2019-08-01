@@ -22,11 +22,10 @@
             android:layout_width="48dp"
             android:layout_height="42dp"
             android:layout_alignParentEnd="true"
-
             android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="center"
             android:src="@drawable/backspace"
-            android:tint="?icon_color_static" />
+            android:tint="?colorOnSurface" />
 
     </RelativeLayout>
 

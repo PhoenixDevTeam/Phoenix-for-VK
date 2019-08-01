@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.model.Audio;
 import biz.dealnote.messenger.settings.CurrentTheme;
@@ -28,7 +29,7 @@ public class AudioRecyclerAdapter extends RecyclerView.Adapter<AudioRecyclerAdap
         this.mContext = context;
         this.mData = data;
         this.unselectedDrawable = ContextCompat.getDrawable(context, R.drawable.circle_back_white);
-        this.unselectedDrawable.setColorFilter(CurrentTheme.getIconColorActive(context), PorterDuff.Mode.MULTIPLY);
+        this.unselectedDrawable.setColorFilter(CurrentTheme.getColorPrimary(context), PorterDuff.Mode.MULTIPLY);
     }
 
     @Override

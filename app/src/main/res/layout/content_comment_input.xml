@@ -1,42 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/fragment_input_container"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:id="@+id/buttonSendLayout"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp">
-
-            <ImageView
-                android:id="@+id/buttonSendBackground"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/circle_back_white" />
+            android:id="@+id/buttonSendContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true">
 
             <ImageButton
                 android:id="@+id/buttonSend"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="10dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/send" />
+                android:src="@drawable/send"
+                android:tint="?colorOnSurface" />
 
             <ImageView
                 android:id="@+id/author_avatar"
-                android:layout_alignParentEnd="true"
-
-                android:layout_alignParentBottom="true"
                 android:layout_width="18dp"
                 android:layout_height="18dp" />
 
@@ -47,10 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_toStartOf="@+id/buttonSendLayout"
+            android:layout_toStartOf="@+id/buttonSendContainer"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -59,45 +47,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/attach"
                 android:padding="8dp"
                 android:src="@drawable/attachment"
-                android:tint="?icon_color_static" />
+                android:tint="?colorOnSurface" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/fragment_input_att_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-6dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                tools:text="4" />
+
+            <ImageView
+                android:id="@+id/buttonEmoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/emoji"
+                android:padding="8dp"
+                android:src="@drawable/emoticon"
+                android:tint="?colorOnSurface" />
+
+            <biz.dealnote.messenger.view.emoji.EmojiconEditText
+                android:id="@+id/fragment_input_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?message_bubble_color"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_marginStart="4dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/text_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences|textMultiLine|textLongMessage"
+                android:maxLines="8"
+                android:minHeight="48dp"
+                android:saveEnabled="false"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:textColorHint="?android:textColorHint"
+                app:emojiconSize="20sp" />
 
-                <ImageView
-                    android:id="@+id/buttonEmoji"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="8dp"
-                    android:src="@drawable/emoticon"
-                    android:tint="?icon_color_static" />
-
-                <biz.dealnote.messenger.view.emoji.EmojiconEditText
-                    android:id="@+id/fragment_input_text"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/text_hint"
-                    android:imeOptions="actionDone"
-                    android:inputType="textCapSentences|textMultiLine|textLongMessage"
-                    android:maxLines="8"
-                    android:minHeight="48dp"
-                    android:paddingBottom="4dp"
-                    android:paddingEnd="4dp"
-                    android:paddingTop="4dp"
-                    android:saveEnabled="false"
-                    android:textColorHint="?android:textColorHint"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                    app:emojiconSize="20sp" />
-
-            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 
@@ -109,23 +97,5 @@
         android:background="?android:colorBackground"
         android:visibility="gone" />
 
-    <RelativeLayout
-        android:id="@+id/fragment_input_att_count_conrainer"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="32dp"
-        android:background="@drawable/circle_back_white">
-
-        <TextView
-            android:id="@+id/fragment_input_att_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="false"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:textColor="#ffffff"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
-    </RelativeLayout>
 
 </RelativeLayout>

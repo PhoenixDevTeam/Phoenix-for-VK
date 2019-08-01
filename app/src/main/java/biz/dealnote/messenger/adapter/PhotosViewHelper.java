@@ -8,10 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
@@ -38,7 +39,7 @@ public class PhotosViewHelper {
     PhotosViewHelper(Context context, @NonNull AttachmentsViewBinder.OnAttachmentsActionCallback attachmentsActionCallback) {
         this.context = context;
         this.attachmentsActionCallback = attachmentsActionCallback;
-        this.mIconColorActive = CurrentTheme.getIconColorActive(context);
+        this.mIconColorActive = CurrentTheme.getColorPrimary(context);
         this.mPhotoPreviewSize = Settings.get().main().getPrefPreviewImageSize();
     }
 

@@ -2,11 +2,12 @@ package biz.dealnote.messenger.adapter.horizontal;
 
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.chip.Chip;
 
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
 
@@ -45,7 +46,7 @@ public class HorizontalOptionsAdapter<T extends Entry> extends RecyclerBindableA
 
         Holder(View itemView) {
             super(itemView);
-            chip = itemView.findViewById(R.id.progress_button);
+            chip = itemView.findViewById(R.id.chip);
         }
     }
 

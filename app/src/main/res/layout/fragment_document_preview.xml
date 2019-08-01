@@ -85,7 +85,7 @@
                     android:clickable="true"
                     custom:active_background_color="?attr/icon_color_active"
                     custom:always_counter="false"
-                    custom:noactive_icon_color="?attr/icon_color_static" />
+                    custom:noactive_icon_color="?attr/colorOnSurface" />
 
                 <biz.dealnote.messenger.view.CircleCounterButton
                     android:id="@+id/download_button"
@@ -97,7 +97,7 @@
                     custom:active_background_color="?attr/icon_color_active"
                     custom:always_counter="false"
                     custom:button_icon="@drawable/download"
-                    custom:noactive_icon_color="?attr/icon_color_static" />
+                    custom:noactive_icon_color="?attr/colorOnSurface" />
 
                 <biz.dealnote.messenger.view.CircleCounterButton
                     android:id="@+id/share_button"
@@ -108,7 +108,7 @@
                     custom:active_background_color="?attr/icon_color_active"
                     custom:always_counter="false"
                     custom:button_icon="@drawable/share_variant"
-                    custom:noactive_icon_color="?attr/icon_color_static" />
+                    custom:noactive_icon_color="?attr/colorOnSurface" />
             </LinearLayout>
         </RelativeLayout>
 

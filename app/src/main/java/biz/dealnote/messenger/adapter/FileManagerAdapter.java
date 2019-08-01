@@ -8,9 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.model.FileItem;
 import biz.dealnote.messenger.settings.CurrentTheme;
@@ -60,7 +61,7 @@ public class FileManagerAdapter extends RecyclerView.Adapter<FileManagerAdapter.
             fileDetails = itemView.findViewById(R.id.item_file_details);
             icon = itemView.findViewById(R.id.item_file_icon);
 
-            icon.getBackground().setColorFilter(CurrentTheme.getIconColorActive(itemView.getContext()), PorterDuff.Mode.MULTIPLY);
+            icon.getBackground().setColorFilter(CurrentTheme.getColorPrimary(itemView.getContext()), PorterDuff.Mode.MULTIPLY);
         }
     }
 

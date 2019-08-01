@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Transformation;
 
 import java.text.SimpleDateFormat;
@@ -19,9 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
@@ -79,7 +80,7 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
         this.attachmentsViewBinder = new AttachmentsViewBinder(context, callback);
         this.avatarTransformation = CurrentTheme.createTransformationForAvatar(context);
         this.selectedDrawable = new ShapeDrawable(new OvalShape());
-        this.selectedDrawable.getPaint().setColor(CurrentTheme.getIconColorActive(context));
+        this.selectedDrawable.getPaint().setColor(CurrentTheme.getColorPrimary(context));
         this.unreadColor = CurrentTheme.getMessageUnreadColor(context);
     }
 

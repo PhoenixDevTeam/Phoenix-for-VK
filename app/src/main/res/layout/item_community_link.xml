@@ -23,7 +23,7 @@
             android:padding="12dp"
             android:src="@drawable/ic_external"
             app:backgroundColor="?attr/colorAccent"
-            app:iconColor="?attr/icon_color_static" />
+            app:iconColor="?attr/colorOnSurface" />
 
         <ImageView
             android:id="@+id/icon"

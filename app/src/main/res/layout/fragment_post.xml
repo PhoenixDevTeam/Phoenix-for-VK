@@ -113,7 +113,7 @@
                         custom:active_background_color="?attr/icon_color_active"
                         custom:always_counter="true"
                         custom:button_icon="@drawable/heart"
-                        custom:noactive_icon_color="?attr/icon_color_static" />
+                        custom:noactive_icon_color="?attr/colorOnSurface" />
 
                     <biz.dealnote.messenger.view.CircleCounterButton
                         android:id="@+id/comments_button"
@@ -128,7 +128,7 @@
                         custom:active_background_color="?attr/icon_color_active"
                         custom:always_counter="true"
                         custom:button_icon="@drawable/comment"
-                        custom:noactive_icon_color="?attr/icon_color_static" />
+                        custom:noactive_icon_color="?attr/colorOnSurface" />
 
                     <biz.dealnote.messenger.view.CircleCounterButton
                         android:id="@+id/share_button"
@@ -143,7 +143,7 @@
                         custom:active_background_color="?attr/icon_color_active"
                         custom:always_counter="true"
                         custom:button_icon="@drawable/share_variant"
-                        custom:noactive_icon_color="?attr/icon_color_static" />
+                        custom:noactive_icon_color="?attr/colorOnSurface" />
 
                 </RelativeLayout>
             </LinearLayout>

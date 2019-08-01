@@ -6,6 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -13,12 +20,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityUtils;
@@ -76,7 +77,7 @@ public class PollFragment extends BaseMvpFragment<PollPresenter, IPollView>
         mQuestion = header.findViewById(R.id.title);
         mVotesCount = header.findViewById(R.id.votes_count);
 
-        mButton = root.findViewById(R.id.progress_button);
+        mButton = root.findViewById(R.id.chip);
         mButton.setOnClickListener(view -> getPresenter().fireButtonClick());
 
         recyclerView.setAdapter(mAnswersAdapter);

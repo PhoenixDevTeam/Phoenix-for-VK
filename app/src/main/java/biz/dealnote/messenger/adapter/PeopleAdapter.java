@@ -9,11 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.SelectionUtils;
@@ -87,7 +88,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         holder.name.setText(user.getFullName());
 
         holder.subtitle.setText(UserInfoResolveUtil.getUserActivityLine(mContext, user));
-        holder.subtitle.setTextColor(user.isOnline() ? CurrentTheme.getIconColorActive(mContext): STATUS_COLOR_OFFLINE);
+        holder.subtitle.setTextColor(user.isOnline() ? CurrentTheme.getColorPrimary(mContext) : STATUS_COLOR_OFFLINE);
 
         holder.online.setVisibility(user.isOnline() ? View.VISIBLE : View.GONE);
         Integer onlineIcon = ViewUtils.getOnlineIcon(user.isOnline(), user.isOnlineMobile(), user.getPlatform(), user.getOnlineApp());
@@ -137,7 +138,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             subtitle = itemView.findViewById(R.id.item_people_subtitle);
             avatar = itemView.findViewById(R.id.item_people_avatar);
             online = itemView.findViewById(R.id.item_people_online);
-            online.setColorFilter(CurrentTheme.getIconColorActive(mContext), PorterDuff.Mode.MULTIPLY);
+            online.setColorFilter(CurrentTheme.getColorPrimary(mContext), PorterDuff.Mode.MULTIPLY);
         }
     }
 

@@ -45,7 +45,7 @@
                 app:active_background_color="?attr/icon_color_active"
                 app:always_counter="false"
                 app:button_icon="@drawable/delete"
-                app:noactive_icon_color="?attr/icon_color_static" />
+                app:noactive_icon_color="?attr/colorOnSurface" />
 
         </LinearLayout>
 

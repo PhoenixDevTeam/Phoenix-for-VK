@@ -78,7 +78,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
                 android:src="?attr/toolbarCloseIcon"
-                android:tint="?attr/icon_color_static" />
+                android:tint="?attr/colorOnSurface" />
 
         </RelativeLayout>
 
@@ -125,7 +125,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
                 android:src="@drawable/pencil"
-                app:filter_color="?attr/icon_color_static" />
+                app:filter_color="?attr/colorOnSurface" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -161,7 +161,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
                 android:src="@drawable/close"
-                android:tint="?attr/icon_color_static" />
+                android:tint="?attr/colorOnSurface" />
 
         </RelativeLayout>
 

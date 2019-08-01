@@ -5,12 +5,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
 import biz.dealnote.messenger.api.PicassoInstance;
@@ -32,8 +33,8 @@ public class MenuListAdapter extends RecyclerBindableAdapter<AbsDrawerItem, Recy
     public MenuListAdapter(@NonNull Context context, @NonNull List<AbsDrawerItem> pageItems, @NonNull ActionListener actionListener) {
         super(pageItems);
         this.unselectedTextColor = CurrentTheme.getPrimaryTextColorCode(context);
-        this.activeColor = CurrentTheme.getIconColorActive(context);
-        this.unselectedIconColor = CurrentTheme.getIconColorStatic(context);
+        this.activeColor = CurrentTheme.getColorPrimary(context);
+        this.unselectedIconColor = CurrentTheme.getColorOnSurface(context);
         this.transformation = CurrentTheme.createTransformationForAvatar(context);
         this.actionListener = actionListener;
     }

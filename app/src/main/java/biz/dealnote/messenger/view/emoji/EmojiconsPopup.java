@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.view.emoji;
 
 import android.app.Activity;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -17,15 +16,16 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.StickerSet;
@@ -264,7 +264,7 @@ public class EmojiconsPopup {
 
     private Drawable getTintedDrawable(int resourceID) {
         Drawable drawable = ContextCompat.getDrawable(mContext, resourceID);
-        drawable.setColorFilter(CurrentTheme.getIconColorStatic(mContext), PorterDuff.Mode.MULTIPLY);
+        drawable.setTint(CurrentTheme.getColorOnSurface(mContext));
         return drawable;
     }
 

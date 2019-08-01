@@ -1,20 +1,17 @@
 package biz.dealnote.messenger.adapter;
 
-import android.content.Context;
-import android.graphics.PorterDuff;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.EventListener;
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
 import biz.dealnote.messenger.model.LogEvent;
 import biz.dealnote.messenger.model.LogEventWrapper;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.AppTextUtils;
 
 import static biz.dealnote.messenger.util.Utils.safeLenghtOf;
@@ -113,12 +110,6 @@ public class LogsAdapter extends RecyclerBindableAdapter<LogEventWrapper, LogsAd
 
             this.bodyRoot = itemView.findViewById(R.id.log_body_root);
             this.buttonExpand = itemView.findViewById(R.id.log_button_expand);
-
-            Context context = itemView.getContext();
-
-            ImageView icon = itemView.findViewById(R.id.log_icon);
-            icon.getBackground().setColorFilter(CurrentTheme.getColorPrimary(context), PorterDuff.Mode.MULTIPLY);
-            icon.setColorFilter(CurrentTheme.getIconColorStatic(context));
         }
     }
 

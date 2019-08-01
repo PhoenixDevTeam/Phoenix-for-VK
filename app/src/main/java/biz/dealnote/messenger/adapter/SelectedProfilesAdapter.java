@@ -1,19 +1,19 @@
 package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Transformation;
 
 import java.util.EventListener;
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.model.User;
@@ -144,10 +144,10 @@ public class SelectedProfilesAdapter extends RecyclerView.Adapter<RecyclerView.V
             this.avatar = itemView.findViewById(R.id.avatar);
             this.name = itemView.findViewById(R.id.name);
             this.buttonRemove = itemView.findViewById(R.id.button_remove);
-            this.buttonRemove.setColorFilter(CurrentTheme.getIconColorStatic(mContext), PorterDuff.Mode.MULTIPLY);
+            this.buttonRemove.getDrawable().setTint(CurrentTheme.getColorOnSurface(mContext));
 
             View root = itemView.findViewById(R.id.root);
-            root.getBackground().setColorFilter(CurrentTheme.getMessageBackgroundSquare(mContext), PorterDuff.Mode.MULTIPLY);
+            root.getBackground().setTint(CurrentTheme.getMessageBackgroundSquare(mContext));
             //root.getBackground().setAlpha(180);
         }
     }

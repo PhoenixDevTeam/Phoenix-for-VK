@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:youtube_button_icon="@drawable/camera"
-        app:youtube_button_icon_color="?attr/icon_color_static"
+        app:youtube_button_icon_color="?attr/colorOnSurface"
         app:youtube_button_text="@string/photo"
-        app:youtube_button_text_color="?attr/icon_color_static" />
+        app:youtube_button_text_color="?attr/colorOnSurface" />
 
     <biz.dealnote.messenger.view.YoutubeButton
         android:id="@+id/fragment_create_post_audio"
@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:youtube_button_icon="@drawable/music"
-        app:youtube_button_icon_color="?attr/icon_color_static"
+        app:youtube_button_icon_color="?attr/colorOnSurface"
         app:youtube_button_text="@string/music"
-        app:youtube_button_text_color="?attr/icon_color_static" />
+        app:youtube_button_text_color="?attr/colorOnSurface" />
 
     <biz.dealnote.messenger.view.YoutubeButton
         android:id="@+id/fragment_create_post_video"
@@ -34,9 +34,9 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:youtube_button_icon="@drawable/video"
-        app:youtube_button_icon_color="?attr/icon_color_static"
+        app:youtube_button_icon_color="?attr/colorOnSurface"
         app:youtube_button_text="@string/video"
-        app:youtube_button_text_color="?attr/icon_color_static" />
+        app:youtube_button_text_color="?attr/colorOnSurface" />
 
     <biz.dealnote.messenger.view.YoutubeButton
         android:id="@+id/fragment_create_post_doc"
@@ -44,9 +44,9 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:youtube_button_icon="@drawable/book"
-        app:youtube_button_icon_color="?attr/icon_color_static"
+        app:youtube_button_icon_color="?attr/colorOnSurface"
         app:youtube_button_text="@string/document_short"
-        app:youtube_button_text_color="?attr/icon_color_static" />
+        app:youtube_button_text_color="?attr/colorOnSurface" />
 
     <biz.dealnote.messenger.view.YoutubeButton
         android:id="@+id/fragment_create_post_poll"
@@ -54,17 +54,17 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:youtube_button_icon="@drawable/chart_bar"
-        app:youtube_button_icon_color="?attr/icon_color_static"
+        app:youtube_button_icon_color="?attr/colorOnSurface"
         app:youtube_button_text="@string/poll"
-        app:youtube_button_text_color="?attr/icon_color_static" />
+        app:youtube_button_text_color="?attr/colorOnSurface" />
 
     <!-- <biz.dealnote.messenger.view.YoutubeButton
          android:id="@+id/fragment_create_post_timer"
          android:background="?attr/selectableItemBackgroundBorderless"
          app:youtube_button_icon="@drawable/clock"
-         app:youtube_button_icon_color="?attr/icon_color_static"
+         app:youtube_button_icon_color="?attr/colorOnSurface"
          app:youtube_button_text="@string/timer"
-         app:youtube_button_text_color="?attr/icon_color_static"
+         app:youtube_button_text_color="?attr/colorOnSurface"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"/>-->
 

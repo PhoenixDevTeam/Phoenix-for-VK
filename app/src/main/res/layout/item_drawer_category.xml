@@ -29,7 +29,7 @@
             android:layout_centerVertical="true"
             android:padding="8dp"
             android:src="@drawable/ic_menu_24_white"
-            android:tint="?attr/icon_color_static" />
+            android:tint="?attr/colorOnSurface" />
 
     </RelativeLayout>
 

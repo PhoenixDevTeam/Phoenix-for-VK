@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
 import biz.dealnote.messenger.adapter.holder.SharedHolders;
 import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.Objects;
@@ -51,7 +52,7 @@ public abstract class AbsSteppersVerticalAdapter<H extends AbsStepsHost> extends
         boolean isLast = position == getItemCount() - 1;
         boolean isActive = position <= mHost.getCurrentStep();
 
-        int activeColor = CurrentTheme.getIconColorActive(holder.itemView.getContext());
+        int activeColor = CurrentTheme.getColorPrimary(holder.itemView.getContext());
         int inactiveColor = Color.parseColor("#2cb1b1b1");
         int tintColor = isActive ? activeColor : inactiveColor;
 

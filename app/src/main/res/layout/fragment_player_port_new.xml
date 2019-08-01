@@ -21,7 +21,7 @@
             app:active="false"
             app:active_background_color="?attr/icon_color_active"
             app:button_icon="@drawable/ic_vk_share"
-            app:noactive_icon_color="?icon_color_static" />
+            app:noactive_icon_color="?colorOnSurface" />
 
         <biz.dealnote.messenger.view.CircleCounterButton
             android:id="@+id/audio_add"
@@ -32,7 +32,7 @@
             app:active="false"
             app:active_background_color="?attr/icon_color_active"
             app:button_icon="@drawable/plus"
-            app:noactive_icon_color="?icon_color_static" />
+            app:noactive_icon_color="?colorOnSurface" />
 
         <biz.dealnote.messenger.view.CircleCounterButton
             android:id="@+id/audio_share"
@@ -43,7 +43,7 @@
             app:active="false"
             app:active_background_color="?attr/icon_color_active"
             app:button_icon="@drawable/share_variant"
-            app:noactive_icon_color="?icon_color_static" />
+            app:noactive_icon_color="?colorOnSurface" />
 
     </LinearLayout>
 
@@ -229,7 +229,7 @@
             android:contentDescription="@string/album_cover"
             android:scaleType="centerCrop"
             android:src="@drawable/itunes"
-            android:tint="?attr/icon_color_static" />
+            android:tint="?attr/colorOnSurface" />
 
         <include layout="@layout/toolbar_transparent" />
 

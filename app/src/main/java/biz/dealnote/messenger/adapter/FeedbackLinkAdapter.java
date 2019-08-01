@@ -10,13 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Transformation;
 
 import java.util.EventListener;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.link.internal.OwnerLinkSpanFactory;
@@ -149,7 +150,7 @@ public class FeedbackLinkAdapter extends RecyclerView.Adapter<FeedbackLinkAdapte
             mSubtitle = root.findViewById(R.id.item_feedback_link_text2);
             ivImage = root.findViewById(R.id.item_feedback_link_image);
             ivForward = root.findViewById(R.id.item_feedback_link_forward);
-            ivForward.setColorFilter(CurrentTheme.getIconColorActive(mContext), PorterDuff.Mode.MULTIPLY);
+            ivForward.setColorFilter(CurrentTheme.getColorPrimary(mContext), PorterDuff.Mode.MULTIPLY);
 
             root.setOnClickListener(v -> {
                 Object item = mData.get(getAdapterPosition());

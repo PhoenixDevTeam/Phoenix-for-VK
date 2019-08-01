@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/progress_button"
+    android:id="@+id/chip"
     style="@style/Widget.MaterialComponents.Chip.Action"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/title"
     android:layout_marginStart="8dp"
     android:layout_marginEnd="4dp"
-    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
     app:chipStrokeColor="?dividerColor"
     app:chipStrokeWidth="1dp"
-    app:chipBackgroundColor="?android:colorBackground"
+    app:chipBackgroundColor="?colorSurface"
     app:textAllCaps="true" />

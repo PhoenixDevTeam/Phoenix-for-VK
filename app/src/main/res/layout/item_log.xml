@@ -28,7 +28,9 @@
                 android:layout_marginStart="16dp"
                 android:background="@drawable/circle_white"
                 android:scaleType="center"
-                android:src="@drawable/ic_log_vector" />
+                android:backgroundTint="?colorPrimary"
+                android:src="@drawable/ic_log_vector"
+                android:tint="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="match_parent"

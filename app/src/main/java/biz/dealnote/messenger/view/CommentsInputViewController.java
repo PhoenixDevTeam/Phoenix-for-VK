@@ -2,12 +2,9 @@ package biz.dealnote.messenger.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.settings.CurrentTheme;
@@ -22,8 +20,6 @@ import biz.dealnote.messenger.view.emoji.EmojiconsPopup;
 import biz.dealnote.messenger.view.emoji.StickersGridView;
 
 public class CommentsInputViewController {
-
-    private static final int BUTTON_COLOR_NOACTIVE = Color.parseColor("#A6A6A6");
 
     private Context mActivity;
     private OnInputActionCallback callback;
@@ -38,14 +34,13 @@ public class CommentsInputViewController {
     private boolean sendOnEnter;
 
     private TextView tvAttCount;
-    private ViewGroup attCountContainer;
 
     private ImageView mButtonSend;
-    private ImageView mButtonSendBackground;
 
     private TextWatcherAdapter mTextWatcher;
 
     private int mIconColorActive;
+    private int mIconColorInactive;
 
     public CommentsInputViewController(@NonNull final Activity activity, @NonNull View rootView, @NonNull OnInputActionCallback callback) {
         this.callback = callback;
@@ -59,19 +54,15 @@ public class CommentsInputViewController {
             }
         };
 
-        mIconColorActive = CurrentTheme.getIconColorActive(activity);
+        mIconColorActive = CurrentTheme.getColorPrimary(activity);
+        mIconColorInactive = CurrentTheme.getColorOnSurface(activity);
+
 
         mButtonSend = rootView.findViewById(R.id.buttonSend);
         mButtonSend.setOnClickListener(v -> onSendButtonClick());
         mButtonSend.setOnLongClickListener(v -> callback.onSendLongClick());
 
-        mButtonSendBackground = rootView.findViewById(R.id.buttonSendBackground);
-        mButtonSendBackground.getDrawable().setColorFilter(mIconColorActive, PorterDuff.Mode.MULTIPLY);
-
         tvAttCount = rootView.findViewById(R.id.fragment_input_att_count);
-
-        attCountContainer = rootView.findViewById(R.id.fragment_input_att_count_conrainer);
-        attCountContainer.getBackground().setColorFilter(CurrentTheme.getIconColorActive(activity), PorterDuff.Mode.MULTIPLY);
 
         rlEmojiContainer = rootView.findViewById(R.id.fragment_input_emoji_container);
 
@@ -186,7 +177,7 @@ public class CommentsInputViewController {
 
     public void setAttachmentsCount(int count) {
         tvAttCount.setText(String.valueOf(count));
-        attCountContainer.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+        tvAttCount.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
         tvAttCount.setTextSize(TypedValue.COMPLEX_UNIT_DIP, count > 9 ? 10 : 12);
     }
 
@@ -210,17 +201,11 @@ public class CommentsInputViewController {
     }
 
     private void resolveSendButton() {
-        mButtonSend.getDrawable().setColorFilter(mCanSendNormalMessage ? Color.WHITE : BUTTON_COLOR_NOACTIVE, PorterDuff.Mode.MULTIPLY);
-        mButtonSendBackground.getDrawable().setColorFilter(mCanSendNormalMessage ? mIconColorActive : Color.parseColor("#D4D4D4"), PorterDuff.Mode.MULTIPLY);
+        mButtonSend.getDrawable().setTint(mCanSendNormalMessage ? mIconColorActive : mIconColorInactive);
     }
 
     public void setCanSendNormalMessage(boolean canSend) {
         mCanSendNormalMessage = canSend;
-        resolveSendButton();
-    }
-
-    public void setup(boolean canSendNormalMessage){
-        this.mCanSendNormalMessage = canSendNormalMessage;
         resolveSendButton();
     }
 

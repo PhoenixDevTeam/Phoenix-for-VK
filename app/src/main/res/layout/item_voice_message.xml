@@ -35,7 +35,7 @@
             android:layout_height="56dp"
             android:layout_marginStart="12dp"
             app:waveform_active_color="?attr/colorPrimary"
-            app:waveform_noactive_color="?attr/icon_color_static" />
+            app:waveform_noactive_color="?attr/colorOnSurface" />
 
     </LinearLayout>
 

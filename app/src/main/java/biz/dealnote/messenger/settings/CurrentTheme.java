@@ -10,9 +10,10 @@ import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
 
+import androidx.core.content.ContextCompat;
+
 import com.squareup.picasso.Transformation;
 
-import androidx.core.content.ContextCompat;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.util.MaskTransformation;
 import biz.dealnote.messenger.util.RoundTransformation;
@@ -56,6 +57,15 @@ public class CurrentTheme {
         return getColorFromAttrs(R.attr.colorPrimary, context, "#000000");
     }
 
+    public static int getColorSurface(Context context) {
+        return getColorFromAttrs(R.attr.colorSurface, context, "#000000");
+    }
+
+    public static int getColorOnSurface(Context context) {
+        return getColorFromAttrs(R.attr.colorOnSurface, context, "#000000");
+    }
+
+
     public static int getStatusBarColor(Context context) {
         return getColorFromAttrs(android.R.attr.statusBarColor, context, "#000000");
     }
@@ -74,14 +84,6 @@ public class CurrentTheme {
 
     public static int getMessageUnreadColor(Context context) {
         return getColorFromAttrs(R.attr.message_unread_color, context, "#ffffff");
-    }
-
-    public static int getIconColorActive(Context context) {
-        return getColorFromAttrs(R.attr.icon_color_active, context, "#000000");
-    }
-
-    public static int getIconColorStatic(Context context) {
-        return getColorFromAttrs(R.attr.icon_color_static, context, "#000000");
     }
 
     public static int getMessageBackgroundSquare(Context context) {

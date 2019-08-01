@@ -1,15 +1,17 @@
 package biz.dealnote.messenger.view.emoji;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.settings.CurrentTheme;
@@ -25,12 +27,12 @@ public class SectionsAdapter extends RecyclerView.Adapter<SectionsAdapter.Holder
     }
 
     @Override
-    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Holder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         return new Holder(LayoutInflater.from(mContext).inflate(R.layout.emoji_section_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(Holder holder, int position) {
+    public void onBindViewHolder(@NotNull Holder holder, int position) {
         AbsSection section = data.get(position);
         switch (section.type){
             case AbsSection.TYPE_EMOJI:
@@ -40,7 +42,7 @@ public class SectionsAdapter extends RecyclerView.Adapter<SectionsAdapter.Holder
                         .cancelRequest(holder.icon);
 
                 holder.icon.setImageDrawable(emojiSection.drawable);
-                holder.icon.setColorFilter(CurrentTheme.getIconColorStatic(mContext), PorterDuff.Mode.MULTIPLY);
+                holder.icon.getDrawable().setTint(CurrentTheme.getColorOnSurface(mContext));
                 break;
 
             case AbsSection.TYPE_STICKER:
@@ -56,13 +58,13 @@ public class SectionsAdapter extends RecyclerView.Adapter<SectionsAdapter.Holder
                         .cancelRequest(holder.icon);
 
                 holder.icon.setImageResource(R.drawable.image);
-                holder.icon.setColorFilter(CurrentTheme.getIconColorStatic(mContext), PorterDuff.Mode.MULTIPLY);
+                holder.icon.getDrawable().setTint(CurrentTheme.getColorOnSurface(mContext));
                 break;
         }
 
         if(section.active){
             holder.root.setBackgroundResource(R.drawable.circle_back_white);
-            holder.root.getBackground().setColorFilter(CurrentTheme.getMessageBackgroundSquare(mContext), PorterDuff.Mode.MULTIPLY);
+            holder.root.getBackground().setTint(CurrentTheme.getMessageBackgroundSquare(mContext));
         } else {
             holder.root.setBackground(null);
         }

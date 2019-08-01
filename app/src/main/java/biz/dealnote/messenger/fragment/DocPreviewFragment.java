@@ -15,16 +15,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
@@ -109,7 +110,7 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
         ((AppCompatActivity) requireActivity()).setSupportActionBar(rootView.findViewById(R.id.toolbar));
         preview = rootView.findViewById(R.id.fragment_document_preview);
         ivDocIcon = rootView.findViewById(R.id.no_preview_icon);
-        ivDocIcon.getBackground().setColorFilter(CurrentTheme.getIconColorActive(requireActivity()), PorterDuff.Mode.MULTIPLY);
+        ivDocIcon.getBackground().setColorFilter(CurrentTheme.getColorPrimary(requireActivity()), PorterDuff.Mode.MULTIPLY);
 
         tvTitle = rootView.findViewById(R.id.fragment_document_title);
         tvSubtitle = rootView.findViewById(R.id.fragment_document_subtitle);
