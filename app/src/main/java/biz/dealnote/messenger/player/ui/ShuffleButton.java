@@ -17,10 +17,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import androidx.appcompat.widget.AppCompatImageButton;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.player.MusicPlaybackService;
 import biz.dealnote.messenger.player.util.MusicUtils;
-import biz.dealnote.messenger.settings.CurrentTheme;
 
 public class ShuffleButton extends AppCompatImageButton implements OnClickListener {
     public ShuffleButton(final Context context, final AttributeSet attrs) {
@@ -38,11 +38,9 @@ public class ShuffleButton extends AppCompatImageButton implements OnClickListen
         switch (MusicUtils.getShuffleMode()) {
             case MusicPlaybackService.SHUFFLE:
                 setImageResource(R.drawable.shuffle);
-                setColorFilter(CurrentTheme.getIconColorActive(getContext()));
                 break;
             case MusicPlaybackService.SHUFFLE_NONE:
                 setImageResource(R.drawable.shuffle_disabled);
-                setColorFilter(CurrentTheme.getIconColorStatic(getContext()));
                 break;
             default:
                 break;

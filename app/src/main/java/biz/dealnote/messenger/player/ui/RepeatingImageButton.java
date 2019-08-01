@@ -21,9 +21,9 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
 import androidx.appcompat.widget.AppCompatImageButton;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.player.util.MusicUtils;
-import biz.dealnote.messenger.settings.CurrentTheme;
 
 /**
  * A {@link ImageButton} that will repeatedly call a 'listener' method as long
@@ -135,7 +135,6 @@ public class RepeatingImageButton extends AppCompatImageButton implements OnClic
     }
 
     public void updateState() {
-        setColorFilter(CurrentTheme.getIconColorStatic(getContext()));
         switch (getId()) {
             case R.id.action_button_next:
                 setImageResource(R.drawable.page_last);

@@ -12,17 +12,16 @@
 package biz.dealnote.messenger.player.ui;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import androidx.appcompat.widget.AppCompatImageButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.player.util.MusicUtils;
-import biz.dealnote.messenger.settings.CurrentTheme;
 
-public class PlayPauseButton extends AppCompatImageButton implements OnClickListener {
+public class PlayPauseButton extends FloatingActionButton implements OnClickListener {
 
     public PlayPauseButton(final Context context, final AttributeSet attrs) {
         super(context, attrs);
@@ -36,7 +35,6 @@ public class PlayPauseButton extends AppCompatImageButton implements OnClickList
     }
 
     public void updateState() {
-        getBackground().setColorFilter(CurrentTheme.getIconColorActive(getContext()), PorterDuff.Mode.MULTIPLY);
         if (MusicUtils.isPlaying()) {
             setImageResource(R.drawable.pause);
         } else {

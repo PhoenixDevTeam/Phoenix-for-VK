@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/additional_actions"
@@ -60,10 +60,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/divider2"
-
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="2dp"
         android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:baselineAligned="false"
         android:gravity="center"
         android:padding="4dp">
@@ -75,12 +74,13 @@
 
             <biz.dealnote.messenger.player.ui.ShuffleButton
                 android:id="@+id/action_button_shuffle"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="@dimen/audio_player_controls_end_button_width"
                 android:layout_height="@dimen/audio_player_controls_end_button_height"
                 android:layout_gravity="center"
                 android:scaleType="centerInside"
-                android:src="@drawable/shuffle_disabled" />
+                android:src="@drawable/shuffle_disabled"
+                android:tint="?colorOnSurface" />
         </FrameLayout>
 
         <FrameLayout
@@ -90,31 +90,28 @@
 
             <biz.dealnote.messenger.player.ui.RepeatingImageButton
                 android:id="@+id/action_button_previous"
-                style="?borderlessButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="@dimen/audio_player_controls_main_button_width"
                 android:layout_height="@dimen/audio_player_controls_main_button_height"
                 android:layout_gravity="center"
                 android:scaleType="centerInside"
                 android:src="@drawable/page_first"
-                android:tint="#FFF" />
+                android:tint="?colorOnSurface" />
         </FrameLayout>
 
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:paddingBottom="2dp">
+            android:layout_weight="1">
 
             <biz.dealnote.messenger.player.ui.PlayPauseButton
                 android:id="@+id/action_button_play"
-                android:layout_width="@dimen/audio_player_controls_main_button_width"
-                android:layout_height="@dimen/audio_player_controls_main_button_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="4dp"
-                android:background="@drawable/circle_back_white"
-                android:elevation="2dp"
-                android:focusable="true"
-                android:scaleType="centerInside"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:fabSize="normal"
                 android:src="@drawable/play" />
         </FrameLayout>
 
@@ -125,13 +122,13 @@
 
             <biz.dealnote.messenger.player.ui.RepeatingImageButton
                 android:id="@+id/action_button_next"
-                style="?borderlessButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="@dimen/audio_player_controls_main_button_width"
                 android:layout_height="@dimen/audio_player_controls_main_button_height"
                 android:layout_gravity="center"
                 android:scaleType="centerInside"
                 android:src="@drawable/page_last"
-                android:tint="#FFF" />
+                android:tint="?colorOnSurface" />
         </FrameLayout>
 
         <FrameLayout
@@ -141,13 +138,14 @@
 
             <biz.dealnote.messenger.player.ui.RepeatButton
                 android:id="@+id/action_button_repeat"
-                style="?borderlessButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="@dimen/audio_player_controls_end_button_width"
                 android:layout_height="@dimen/audio_player_controls_end_button_height"
                 android:layout_gravity="center"
                 android:focusable="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/repeat_off" />
+                android:src="@drawable/repeat_off"
+                android:tint="?colorOnSurface" />
         </FrameLayout>
     </LinearLayout>
 
@@ -157,30 +155,28 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/audio_player_controls"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp">
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
 
         <TextView
             android:id="@+id/audio_player_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            tools:text="Emin"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="22dp" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            tools:text="Emin" />
 
         <TextView
             android:id="@+id/audio_player_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            tools:text="Sunny"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textSize="16dp" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="Sunny" />
 
     </LinearLayout>
 
@@ -198,20 +194,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:gravity="center"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textSize="14sp" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
         <TextView
             android:id="@+id/audio_player_total_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_alignParentEnd="true"
-
             android:layout_marginEnd="16dp"
             android:gravity="center"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textSize="14sp" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
         <SeekBar
             android:id="@android:id/progress"
@@ -224,21 +216,20 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_marginBottom="24dp"
-        android:elevation="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/seekbar_container"
-        android:background="?attr/colorPrimary">
+        android:layout_marginBottom="24dp"
+        android:background="?attr/colorSurface">
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerInParent="true"
             android:contentDescription="@string/album_cover"
+            android:scaleType="centerCrop"
             android:src="@drawable/itunes"
-            android:tint="?attr/icon_color_static"
-            android:scaleType="centerCrop"/>
+            android:tint="?attr/icon_color_static" />
 
         <include layout="@layout/toolbar_transparent" />
 

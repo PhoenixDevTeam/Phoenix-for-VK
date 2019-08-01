@@ -17,10 +17,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import androidx.appcompat.widget.AppCompatImageButton;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.player.MusicPlaybackService;
 import biz.dealnote.messenger.player.util.MusicUtils;
-import biz.dealnote.messenger.settings.CurrentTheme;
 
 public class RepeatButton extends AppCompatImageButton implements OnClickListener {
 
@@ -38,15 +38,12 @@ public class RepeatButton extends AppCompatImageButton implements OnClickListene
     public void updateRepeatState() {
         switch (MusicUtils.getRepeatMode()) {
             case MusicPlaybackService.REPEAT_ALL:
-                setColorFilter(CurrentTheme.getIconColorActive(getContext()));
                 setImageDrawable(getResources().getDrawable(R.drawable.repeat));
                 break;
             case MusicPlaybackService.REPEAT_CURRENT:
-                setColorFilter(CurrentTheme.getIconColorActive(getContext()));
                 setImageDrawable(getResources().getDrawable(R.drawable.repeat_once));
                 break;
             case MusicPlaybackService.REPEAT_NONE:
-                setColorFilter(CurrentTheme.getIconColorStatic(getContext()));
                 setImageDrawable(getResources().getDrawable(R.drawable.repeat_off));
                 break;
             default:

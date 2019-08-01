@@ -11,7 +11,14 @@
         android:layout_height="wrap_content"
         android:background="?android:colorBackground">
 
-        <include layout="@layout/toolbar_no_card" />
+        <RelativeLayout
+            android:id="@+id/toolbar_root"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/toolbar_no_card" />
+
+        </RelativeLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
