@@ -6,6 +6,5 @@
     android:layout_height="wrap_content"
     android:clipToPadding="true"
     app:subtitleTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
-    app:theme="@style/Theme.Toolbar.Photo"
-    app:titleTextAppearance="@style/TextAppearance.Toolbar.Title" />
+    app:theme="@style/Theme.Toolbar.Photo" />
 
