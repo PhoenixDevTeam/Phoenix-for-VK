@@ -10,10 +10,9 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:clipToPadding="true"
         app:subtitleTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
-        app:titleTextAppearance="@style/TextAppearance.Toolbar.Title"
         app:theme="@style/Theme.Toolbar" />
 </com.google.android.material.card.MaterialCardView>
 
