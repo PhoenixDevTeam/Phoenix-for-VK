@@ -202,10 +202,9 @@
         <!-- Shortcut launcher Activity -->
         <!-- Search interface -->
         <!-- Used to set options -->
-        <receiver android:name=".player.MediaButtonIntentReceiver">
+        <receiver android:name="androidx.media.session.MediaButtonReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
-                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
             </intent-filter>
         </receiver>
 

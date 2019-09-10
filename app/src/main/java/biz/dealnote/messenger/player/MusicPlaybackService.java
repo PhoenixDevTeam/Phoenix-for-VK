@@ -15,7 +15,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -38,6 +37,8 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -45,7 +46,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
 
-import androidx.annotation.NonNull;
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.domain.IAudioInteractor;
@@ -73,10 +73,6 @@ public class MusicPlaybackService extends Service {
     public static final String QUEUE_CHANGED = "biz.dealnote.phoenix.player.queuechanged";
 
 
-    /**
-     * Called to indicate a general service commmand. Used in
-     * {@link MediaButtonIntentReceiver}
-     */
     public static final String SERVICECMD = "biz.dealnote.phoenix.player.musicservicecommand";
     public static final String TOGGLEPAUSE_ACTION = "biz.dealnote.phoenix.player.togglepause";
     public static final String PAUSE_ACTION = "biz.dealnote.phoenix.player.pause";
@@ -152,8 +148,6 @@ public class MusicPlaybackService extends Service {
 
     private MediaControllerCompat.TransportControls mTransportController;
 
-    private ComponentName mMediaButtonReceiverComponent;
-
     private int mPlayPos = -1;
 
     private int mShuffleMode = SHUFFLE_NONE;
@@ -213,7 +207,6 @@ public class MusicPlaybackService extends Service {
         mPlayerHandler = new MusicPlayerHandler(this, thread.getLooper());
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        mMediaButtonReceiverComponent = new ComponentName(getPackageName(), MediaButtonIntentReceiver.class.getName());
 
         setUpRemoteControlClient();
 
@@ -250,12 +243,8 @@ public class MusicPlaybackService extends Service {
     }
 
     private void setUpRemoteControlClient() {
-        final Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        mediaButtonIntent.setComponent(mMediaButtonReceiverComponent);
-
         mAudioManager.requestAudioFocus(mAudioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-        mMediaSession = new MediaSessionCompat(getApplication(), "TAG", mMediaButtonReceiverComponent, null);
-        mMediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+        mMediaSession = new MediaSessionCompat(getApplication(), "TAG", null, null);
         PlaybackStateCompat playbackStateCompat = new PlaybackStateCompat.Builder()
                 .setActions(
                         PlaybackStateCompat.ACTION_SEEK_TO |
@@ -362,14 +351,7 @@ public class MusicPlaybackService extends Service {
             handleCommandIntent(intent);
         }
 
-        // Make sure the service will shut down on its own if it was
-        // just started but not bound to and nothing is playing
         scheduleDelayedShutdown();
-
-        if (intent != null && intent.getBooleanExtra(FROM_MEDIA_BUTTON, false)) {
-            MediaButtonIntentReceiver.completeWakefulIntent(intent);
-        }
-
         return START_STICKY;
     }
 
@@ -904,7 +886,6 @@ public class MusicPlaybackService extends Service {
             return;
         }
 
-        mAudioManager.registerMediaButtonEventReceiver(new ComponentName(getPackageName(), MediaButtonIntentReceiver.class.getName()));
         if (mPlayer != null && mPlayer.isInitialized()) {
 
             final long duration = mPlayer.duration();

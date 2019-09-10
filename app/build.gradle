@@ -121,29 +121,29 @@ allprojects {
 }
 
 ext {
-    retrofitLibraryVersion = '2.4.0'
-    okhttpLibraryVersion = '3.10.0'
+    retrofitLibraryVersion = '2.6.1'
+    okhttpLibraryVersion = '4.1.1'
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "com.google.android.material:material:1.1.0-alpha09"
-    implementation "androidx.core:core:1.2.0-alpha02"
+    implementation 'androidx.core:core:1.2.0-alpha03'
     implementation "androidx.recyclerview:recyclerview:1.0.0"
     implementation "androidx.viewpager:viewpager:1.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation "androidx.drawerlayout:drawerlayout:1.0.0"
-    implementation "androidx.vectordrawable:vectordrawable:1.0.1"
-    implementation "androidx.media:media:1.0.1"
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
+    implementation 'androidx.media:media:1.1.0'
     implementation "androidx.browser:browser:1.0.0"
     implementation "androidx.preference:preference:1.1.0-rc01"
     implementation "androidx.exifinterface:exifinterface:1.0.0"
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     implementation project(path: ':mvpcore', configuration: 'default')
     implementation "com.squareup.retrofit2:retrofit:$retrofitLibraryVersion"
@@ -151,9 +151,9 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitLibraryVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpLibraryVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLibraryVersion"
-    implementation "com.google.firebase:firebase-core:17.0.1"
-    implementation "com.google.firebase:firebase-database:18.0.1"
-    implementation "com.google.firebase:firebase-messaging:19.0.1"
+    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-database:19.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.8.4'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
