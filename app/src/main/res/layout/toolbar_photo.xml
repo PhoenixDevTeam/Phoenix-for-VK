@@ -5,5 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:clipToPadding="true"
-    app:theme="@style/Theme.Toolbar.Photo" />
+    app:subtitleTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
+    app:theme="@style/Theme.Toolbar.Photo"
+    app:titleTextAppearance="@style/TextAppearance.Toolbar.Title" />
 

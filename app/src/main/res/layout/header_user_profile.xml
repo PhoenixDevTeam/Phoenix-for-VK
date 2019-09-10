@@ -308,7 +308,7 @@
                     android:paddingEnd="16dp"
                     android:text="Add to friends"
                     android:textAllCaps="true"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+                    style="@style/Widget.MaterialComponents.Button.TextButton" />
 
             </RelativeLayout>
 
@@ -326,7 +326,7 @@
                     android:paddingEnd="16dp"
                     android:text="@string/more_info"
                     android:textAllCaps="true"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+                    style="@style/Widget.MaterialComponents.Button.TextButton" />
             </RelativeLayout>
 
         </LinearLayout>

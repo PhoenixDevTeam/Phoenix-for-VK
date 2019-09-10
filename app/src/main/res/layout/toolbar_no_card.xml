@@ -1,7 +1,9 @@
-<biz.dealnote.messenger.view.CenteredToolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.appbar.MaterialToolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:clipToPadding="true"
-    app:theme="@style/Theme.Toolbar" />
+    app:subtitleTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
+    app:theme="@style/Theme.Toolbar"
+    app:titleTextAppearance="@style/TextAppearance.Toolbar.Title" />

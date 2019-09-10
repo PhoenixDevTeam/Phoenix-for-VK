@@ -17,19 +17,12 @@
     <style name="App.DayNight" parent="Base.App.DayNight">
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:windowLightStatusBar" tools:targetApi="o_mr1">false</item>
-        <!--        <item name="android:colorBackground">#1F2226</item>-->
 
-        <item name="colorPrimary">#3F51B5</item>
-        <item name="colorPrimaryVariant">#FF3F51B5</item>
-        <item name="colorSecondary">#FF3F51B5</item>
-        <item name="colorSecondaryVariant">#FF3F51B5</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
-        <item name="colorOnSecondary">#FFFFFF</item>
-        <item name="colorOnBackground">#FFFFFF</item>
+        <item name="colorPrimary">#448AFF</item>
+        <item name="colorSecondary">#82B1FF</item>
+        <item name="colorOnPrimary">#FFF</item>
+        <item name="colorOnSecondary">#FFF</item>
 
-        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.OutlinedButton
-        </item>
-        <!--        <item name="materialCardViewStyle">@style/Theme.MaterialCardView</item>-->
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.AppTheme.SmallComponent
         </item>
         <item name="shapeAppearanceMediumComponent">
@@ -38,7 +31,7 @@
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.AppTheme.LargeComponent
         </item>
         <item name="floatingActionButtonStyle">@style/Theme.FloatingActionButton</item>
-        <item name="icon_color_active">#3F51B5</item>
+        <item name="icon_color_active">#448AFF</item>
 
         <item name="dividerColor">#313131</item>
 
@@ -75,7 +68,7 @@
         <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash</item>
     </style>
 
-    <style name="QuickReply" parent="Theme.AppCompat.Dialog">
+    <style name="QuickReply" parent="Theme.MaterialComponents.Dialog">
         <item name="android:background">#1F2226</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

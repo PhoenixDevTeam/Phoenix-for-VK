@@ -16,17 +16,11 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
 
-        <item name="colorPrimary">#3F51B5</item>
-        <item name="colorPrimaryVariant">#FF3F51B5</item>
-        <item name="colorSecondary">#FF3F51B5</item>
-        <item name="colorSecondaryVariant">#FF3F51B5</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
-        <item name="colorOnSecondary">#FFFFFF</item>
-        <item name="colorOnBackground">#212121</item>
+        <item name="colorPrimary">#448AFF</item>
+        <item name="colorSecondary">#82B1FF</item>
+        <item name="colorOnPrimary">#FFF</item>
+        <item name="colorOnSecondary">#FFF</item>
 
-        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.OutlinedButton
-        </item>
-        <!--        <item name="materialCardViewStyle">@style/Theme.MaterialCardView</item>-->
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.AppTheme.SmallComponent
         </item>
         <item name="shapeAppearanceMediumComponent">
@@ -35,7 +29,7 @@
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.AppTheme.LargeComponent
         </item>
         <item name="floatingActionButtonStyle">@style/Theme.FloatingActionButton</item>
-        <item name="icon_color_active">#3F51B5</item>
+        <item name="icon_color_active">#448AFF</item>
 
         <item name="dividerColor">#E1E3E7</item>
 
@@ -74,7 +68,7 @@
     </style>
 
 
-    <style name="QuickReply" parent="Theme.AppCompat.DayNight.Dialog">
+    <style name="QuickReply" parent="Theme.MaterialComponents.Dialog">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="message_bubble_color">#ECECEC</item>
@@ -90,11 +84,18 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="Theme.Toolbar" parent="Widget.MaterialComponents.Toolbar">
-        <item name="android:gravity">center</item>
+    <style name="Theme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <item name="android:tint">?colorOnSurface</item>
+        <item name="titleTextAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="subtitleTextAppearance">@style/TextAppearance.MaterialComponents.Subtitle2
+        </item>
     </style>
 
-    <style name="Theme.Toolbar.Photo" parent="Widget.MaterialComponents.Toolbar">
+    <style name="TextAppearance.Toolbar.Title" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Theme.Toolbar.Photo" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
         <item name="android:gravity">center</item>
         <item name="android:tint">@android:color/white</item>
         <item name="android:textColor">?android:textColorSecondary</item>
