@@ -1,7 +1,6 @@
 package biz.dealnote.messenger.fragment.base;
 
 import android.app.ProgressDialog;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -10,13 +9,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.mvp.view.IErrorView;
 import biz.dealnote.messenger.mvp.view.IProgressView;
 import biz.dealnote.messenger.mvp.view.IToastView;
 import biz.dealnote.messenger.mvp.view.IToolbarView;
 import biz.dealnote.messenger.mvp.view.base.IAccountDependencyView;
-import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.util.ViewUtils;
 import biz.dealnote.mvp.compat.AbsMvpFragment;
@@ -43,10 +42,6 @@ public abstract class BaseMvpFragment<P extends AbsPresenter<V>, V extends IMvpV
         if(isAdded()){
             Toast.makeText(requireActivity(), getString(titleTes, params), isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public Bundle requireArguments(){
-        return AssertUtils.requireNonNull(getArguments());
     }
 
     @Override

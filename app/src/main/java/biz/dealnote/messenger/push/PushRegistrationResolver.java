@@ -52,7 +52,7 @@ public class PushRegistrationResolver implements IPushRegistrationResolver {
                     InstanceIdResult result = task.getResult();
                     emitter.onSuccess(result.getToken());
                 } else {
-                    emitter.onError(task.getException());
+                    emitter.tryOnError(task.getException());
                 }
             };
 
