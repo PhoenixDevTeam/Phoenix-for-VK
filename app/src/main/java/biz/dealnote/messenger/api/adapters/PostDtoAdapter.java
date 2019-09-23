@@ -33,6 +33,19 @@ public class PostDtoAdapter extends AbsAdapter implements JsonDeserializer<VKApi
         dto.owner_id = getFirstInt(root, 0, "owner_id", "to_id", "source_id");
 
         dto.from_id = optInt(root, "from_id");
+
+        if(dto.from_id == 0){
+            // "copy_history": [
+            // {
+            //     ... this post has been removed ...
+            //     "id": 1032,
+            //     "owner_id": 216143660,
+            //     "from_id": 0,
+            //     "date": 0,
+            //     "post_type": "post",
+            dto.from_id = dto.owner_id;
+        }
+
         dto.date = optLong(root, "date");
         dto.text = optString(root, "text");
         dto.reply_owner_id = optInt(root, "reply_owner_id", 0);

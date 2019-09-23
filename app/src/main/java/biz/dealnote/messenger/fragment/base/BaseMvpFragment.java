@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.mvp.view.IErrorView;
 import biz.dealnote.messenger.mvp.view.IProgressView;
