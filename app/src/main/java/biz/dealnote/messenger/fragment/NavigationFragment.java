@@ -95,7 +95,8 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
 
     private NavigationDrawerCallbacks mCallbacks;
     private BottomSheetBehavior mBottomSheetBehavior;
-    private View mFragmentContainerView;
+
+    private ViewGroup vgProfileContainer;
     private ImageView ivHeaderAvatar;
     private TextView tvUserName;
     private TextView tvDomain;
@@ -204,6 +205,7 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 3));
 
+        vgProfileContainer = root.findViewById(R.id.content_root);
         ivHeaderAvatar = root.findViewById(R.id.header_navi_menu_avatar);
         tvUserName = root.findViewById(R.id.header_navi_menu_username);
         tvDomain = root.findViewById(R.id.header_navi_menu_usernick);
@@ -233,7 +235,7 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
 
         refreshUserInfo();
 
-        ivHeaderAvatar.setOnClickListener(v -> {
+        vgProfileContainer.setOnClickListener(v -> {
             closeSheet();
             openMyWall();
         });
@@ -273,7 +275,7 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         if (mAccountId == ISettings.IAccountsSettings.INVALID_ID) {
             return;
         }
-        PlaceFactory.getNewsfeedCommentsPlace(mAccountId).tryOpenWith(requireActivity());
+        PlaceFactory.getNotificationsPlace(mAccountId).tryOpenWith(requireActivity());
     }
 
     private ArrayList<AbsMenuItem> generateNavDrawerItems() {
@@ -379,15 +381,6 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         if (mBottomSheetBehavior != null) {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
-    }
-
-    /**
-     * Users of this fragment must call this method to set up the navigation drawer interactions.
-     *
-     * @param fragmentId The android:id of this fragment in its activity's layout.
-     */
-    public void setUp(int fragmentId) {
-        mFragmentContainerView = requireActivity().findViewById(fragmentId);
     }
 
     private void selectItem(AbsMenuItem item, boolean longClick) {

@@ -23,17 +23,19 @@ import biz.dealnote.messenger.util.Utils;
 
 public class MenuListAdapter extends RecyclerBindableAdapter<AbsMenuItem, RecyclerView.ViewHolder> {
 
-    private int unselectedTextColor;
-    private int activeColor;
-    private int unselectedIconColor;
+    private int colorPrimary;
+    private int colorSurface;
+    private int colorOnPrimary;
+    private int colorOnSurface;
     private Transformation transformation;
     private final ActionListener actionListener;
 
     public MenuListAdapter(@NonNull Context context, @NonNull List<AbsMenuItem> pageItems, @NonNull ActionListener actionListener) {
         super(pageItems);
-        this.unselectedTextColor = CurrentTheme.getPrimaryTextColorCode(context);
-        this.activeColor = CurrentTheme.getColorPrimary(context);
-        this.unselectedIconColor = CurrentTheme.getColorOnSurface(context);
+        this.colorPrimary = CurrentTheme.getColorPrimary(context);
+        this.colorSurface = CurrentTheme.getColorSurface(context);
+        this.colorOnPrimary = CurrentTheme.getColorOnPrimary(context);
+        this.colorOnSurface = CurrentTheme.getColorOnSurface(context);
         this.transformation = CurrentTheme.createTransformationForAvatar(context);
         this.actionListener = actionListener;
     }
@@ -55,13 +57,15 @@ public class MenuListAdapter extends RecyclerBindableAdapter<AbsMenuItem, Recycl
 
     private void bindIconHolder(NormalHolder holder, IconMenuItem item) {
         holder.txtTitle.setText(item.getTitle());
-        holder.txtTitle.setTextColor(item.isSelected() ? activeColor : unselectedTextColor);
+        holder.txtTitle.setTextColor(item.isSelected() ? colorOnPrimary : colorOnSurface);
 
         holder.tvCount.setVisibility(item.getCount() > 0 ? View.VISIBLE : View.GONE);
         holder.tvCount.setText(String.valueOf(item.getCount()));
 
         holder.imgIcon.setImageResource(item.getIcon());
-        holder.imgIcon.setColorFilter(item.isSelected() ? activeColor : unselectedIconColor);
+        holder.imgIcon.setColorFilter(item.isSelected() ? colorOnPrimary : colorOnSurface);
+
+        holder.contentRoot.getBackground().setTint(item.isSelected() ? colorPrimary : colorSurface);
         holder.contentRoot.setOnClickListener(v -> actionListener.onDrawerItemClick(item));
         holder.contentRoot.setOnLongClickListener(view -> {
             actionListener.onDrawerItemLongClick(item);
@@ -71,7 +75,7 @@ public class MenuListAdapter extends RecyclerBindableAdapter<AbsMenuItem, Recycl
 
     private void bindRecentChat(RecentChatHolder holder, RecentChat item) {
         holder.tvChatTitle.setText(item.getTitle());
-        holder.tvChatTitle.setTextColor(item.isSelected() ? activeColor : unselectedTextColor);
+        holder.tvChatTitle.setTextColor(item.isSelected() ? colorOnPrimary : colorOnSurface);
 
         if (Utils.isEmpty(item.getIconUrl())) {
             PicassoInstance.with()

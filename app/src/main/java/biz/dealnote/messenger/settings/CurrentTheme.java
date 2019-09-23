@@ -57,6 +57,10 @@ public class CurrentTheme {
         return getColorFromAttrs(R.attr.colorPrimary, context, "#000000");
     }
 
+    public static int getColorOnPrimary(Context context) {
+        return getColorFromAttrs(R.attr.colorOnPrimary, context, "#000000");
+    }
+
     public static int getColorSurface(Context context) {
         return getColorFromAttrs(R.attr.colorSurface, context, "#000000");
     }
@@ -64,7 +68,6 @@ public class CurrentTheme {
     public static int getColorOnSurface(Context context) {
         return getColorFromAttrs(R.attr.colorOnSurface, context, "#000000");
     }
-
 
     public static int getStatusBarColor(Context context) {
         return getColorFromAttrs(android.R.attr.statusBarColor, context, "#000000");
@@ -149,4 +152,6 @@ public class CurrentTheme {
     private static String intToHexColor(int color) {
         return String.format("#%06X", (0xFFFFFF & color));
     }
+
+
 }

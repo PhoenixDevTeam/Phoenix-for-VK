@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         } else {
             mToolbar.setNavigationIcon(CurrentTheme.getDrawableFromAttribute(this, R.attr.toolbarDrawerIcon));
             mToolbar.setNavigationOnClickListener(v -> {
-
+                showCommunityInviteDialog();
             });
         }
     }
@@ -353,7 +353,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
         mNavigationMenu = findViewById(R.id.navigation_menu);
 
-        getNavigationFragment().setUp(R.id.navigation_menu);
         getSupportFragmentManager().addOnBackStackChangedListener(mOnBackStackChangedListener);
         resolveToolbarNavigationIcon();
 
@@ -777,9 +776,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 break;
 
             case Place.WIKI_PAGE:
-                attachToFront(BrowserFragment.newInstance(args));
-                break;
-
             case Place.EXTERNAL_LINK:
                 attachToFront(BrowserFragment.newInstance(args));
                 break;

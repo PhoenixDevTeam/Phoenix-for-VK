@@ -45,6 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:tint="?colorOnSurface"
                 android:src="@drawable/rss" />
 
             <ImageButton
@@ -53,6 +54,7 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:tint="?colorOnSurface"
                 android:src="@drawable/magnify" />
 
             <ImageButton
@@ -61,6 +63,7 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:tint="?colorOnSurface"
                 android:src="@drawable/email" />
 
             <ImageButton
@@ -69,6 +72,7 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:tint="?colorOnSurface"
                 android:src="@drawable/heart" />
 
             <ImageButton
@@ -77,6 +81,7 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:tint="?colorOnSurface"
                 android:src="@drawable/ic_menu_24_white" />
 
         </LinearLayout>
