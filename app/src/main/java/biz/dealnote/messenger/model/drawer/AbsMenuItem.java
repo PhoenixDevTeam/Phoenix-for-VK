@@ -3,9 +3,9 @@ package biz.dealnote.messenger.model.drawer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class AbsDrawerItem implements Parcelable {
+public class AbsMenuItem implements Parcelable {
 
-    public static final int TYPE_WITH_ICON = 0;
+    public static final int TYPE_ICON = 0;
     public static final int TYPE_WITHOUT_ICON = 1;
     public static final int TYPE_DIVIDER = 2;
     public static final int TYPE_RECENT_CHAT = 3;
@@ -20,9 +20,15 @@ public class AbsDrawerItem implements Parcelable {
         return selected;
     }
 
-    public AbsDrawerItem(int type) {
-        this.type = type;
-    }
+    public static Creator<AbsMenuItem> CREATOR = new Creator<AbsMenuItem>() {
+        public AbsMenuItem createFromParcel(Parcel source) {
+            return new AbsMenuItem(source);
+        }
+
+        public AbsMenuItem[] newArray(int size) {
+            return new AbsMenuItem[size];
+        }
+    };
 
     private int type;
 
@@ -41,26 +47,20 @@ public class AbsDrawerItem implements Parcelable {
         dest.writeInt(selected ? 1 : 0);
     }
 
-    public AbsDrawerItem(Parcel in) {
+    public AbsMenuItem(int type) {
+        this.type = type;
+    }
+
+    public AbsMenuItem(Parcel in) {
         this.type = in.readInt();
         this.selected = in.readInt() == 1;
     }
-
-    public static Creator<AbsDrawerItem> CREATOR = new Creator<AbsDrawerItem>() {
-        public AbsDrawerItem createFromParcel(Parcel source) {
-            return new AbsDrawerItem(source);
-        }
-
-        public AbsDrawerItem[] newArray(int size) {
-            return new AbsDrawerItem[size];
-        }
-    };
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AbsDrawerItem that = (AbsDrawerItem) o;
+        AbsMenuItem that = (AbsMenuItem) o;
         return type == that.type;
     }
 

@@ -10,7 +10,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import biz.dealnote.messenger.model.drawer.AbsDrawerItem;
+import biz.dealnote.messenger.model.drawer.AbsMenuItem;
 import biz.dealnote.messenger.model.drawer.RecentChat;
 
 import static biz.dealnote.messenger.util.Utils.safeIsEmpty;
@@ -52,7 +52,7 @@ class RecentChatsSettings implements ISettings.IRecentChats {
     @Override
     public void store(int accountid, List<RecentChat> chats) {
         Set<String> target = new LinkedHashSet<>();
-        for(AbsDrawerItem item : chats){
+        for (AbsMenuItem item : chats) {
             if(item instanceof RecentChat){
 
                 if(((RecentChat) item).getAid() != accountid) continue;

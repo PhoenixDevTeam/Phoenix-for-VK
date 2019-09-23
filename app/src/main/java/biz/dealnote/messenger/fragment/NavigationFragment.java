@@ -5,19 +5,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.squareup.picasso.Transformation;
 
-import java.io.File;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.MenuListAdapter;
@@ -29,12 +32,10 @@ import biz.dealnote.messenger.fragment.base.BaseFragment;
 import biz.dealnote.messenger.model.Sex;
 import biz.dealnote.messenger.model.SwitchableCategory;
 import biz.dealnote.messenger.model.User;
-import biz.dealnote.messenger.model.drawer.AbsDrawerItem;
-import biz.dealnote.messenger.model.drawer.DividerDrawerItem;
-import biz.dealnote.messenger.model.drawer.IconDrawerItem;
-import biz.dealnote.messenger.model.drawer.NoIconDrawerItem;
+import biz.dealnote.messenger.model.drawer.AbsMenuItem;
+import biz.dealnote.messenger.model.drawer.IconMenuItem;
 import biz.dealnote.messenger.model.drawer.RecentChat;
-import biz.dealnote.messenger.model.drawer.SectionDrawerItem;
+import biz.dealnote.messenger.model.drawer.SectionMenuItem;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.settings.AppPrefs;
 import biz.dealnote.messenger.settings.ISettings;
@@ -44,21 +45,16 @@ import biz.dealnote.messenger.util.RxUtils;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static biz.dealnote.messenger.model.SwitchableCategory.BOOKMARKS;
-import static biz.dealnote.messenger.model.SwitchableCategory.DIALOGS;
 import static biz.dealnote.messenger.model.SwitchableCategory.DOCS;
-import static biz.dealnote.messenger.model.SwitchableCategory.FEED;
 import static biz.dealnote.messenger.model.SwitchableCategory.FEEDBACK;
 import static biz.dealnote.messenger.model.SwitchableCategory.FRIENDS;
 import static biz.dealnote.messenger.model.SwitchableCategory.GROUPS;
 import static biz.dealnote.messenger.model.SwitchableCategory.MUSIC;
-import static biz.dealnote.messenger.model.SwitchableCategory.NEWSFEED_COMMENTS;
 import static biz.dealnote.messenger.model.SwitchableCategory.PHOTOS;
-import static biz.dealnote.messenger.model.SwitchableCategory.SEARCH;
 import static biz.dealnote.messenger.model.SwitchableCategory.VIDEOS;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
-import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
 public class NavigationFragment extends BaseFragment implements MenuListAdapter.ActionListener {
 
@@ -78,35 +74,41 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
     public static final int PAGE_SEARCH = 13;
     public static final int PAGE_NEWSFEED_COMMENTS = 14;
 
-    public static final SectionDrawerItem SECTION_ITEM_FRIENDS = new IconDrawerItem(PAGE_FRIENDS, R.drawable.person, R.string.friends);
-    public static final SectionDrawerItem SECTION_ITEM_DIALOGS = new IconDrawerItem(PAGE_DIALOGS, R.drawable.email, R.string.dialogs);
-    public static final SectionDrawerItem SECTION_ITEM_FEED = new IconDrawerItem(PAGE_FEED, R.drawable.rss, R.string.feed);
-    public static final SectionDrawerItem SECTION_ITEM_FEEDBACK = new IconDrawerItem(PAGE_NOTIFICATION, R.drawable.heart, R.string.drawer_feedback);
-    public static final SectionDrawerItem SECTION_ITEM_NEWSFEED_COMMENTS = new IconDrawerItem(PAGE_NEWSFEED_COMMENTS, R.drawable.comment, R.string.drawer_newsfeed_comments);
-    public static final SectionDrawerItem SECTION_ITEM_GROUPS = new IconDrawerItem(PAGE_GROUPS, R.drawable.google_circles, R.string.groups);
-    public static final SectionDrawerItem SECTION_ITEM_PHOTOS = new IconDrawerItem(PAGE_PHOTOS, R.drawable.camera, R.string.photos);
-    public static final SectionDrawerItem SECTION_ITEM_VIDEOS = new IconDrawerItem(PAGE_VIDEOS, R.drawable.video, R.string.videos);
-    public static final SectionDrawerItem SECTION_ITEM_BOOKMARKS = new IconDrawerItem(PAGE_BOOKMARKS, R.drawable.star, R.string.bookmarks);
-    public static final SectionDrawerItem SECTION_ITEM_AUDIOS = new IconDrawerItem(PAGE_MUSIC, R.drawable.music, R.string.music);
-    public static final SectionDrawerItem SECTION_ITEM_DOCS = new IconDrawerItem(PAGE_DOCUMENTS, R.drawable.file, R.string.attachment_documents);
-    public static final SectionDrawerItem SECTION_ITEM_SEARCH = new IconDrawerItem(PAGE_SEARCH, R.drawable.magnify, R.string.search);
+    public static final SectionMenuItem SECTION_ITEM_FRIENDS = new IconMenuItem(PAGE_FRIENDS, R.drawable.person, R.string.friends);
+    public static final SectionMenuItem SECTION_ITEM_DIALOGS = new IconMenuItem(PAGE_DIALOGS, R.drawable.email, R.string.dialogs);
+    public static final SectionMenuItem SECTION_ITEM_FEED = new IconMenuItem(PAGE_FEED, R.drawable.rss, R.string.feed);
+    public static final SectionMenuItem SECTION_ITEM_FEEDBACK = new IconMenuItem(PAGE_NOTIFICATION, R.drawable.heart, R.string.drawer_feedback);
+    public static final SectionMenuItem SECTION_ITEM_NEWSFEED_COMMENTS = new IconMenuItem(PAGE_NEWSFEED_COMMENTS, R.drawable.comment, R.string.drawer_newsfeed_comments);
+    public static final SectionMenuItem SECTION_ITEM_GROUPS = new IconMenuItem(PAGE_GROUPS, R.drawable.google_circles, R.string.groups);
+    public static final SectionMenuItem SECTION_ITEM_PHOTOS = new IconMenuItem(PAGE_PHOTOS, R.drawable.camera, R.string.photos);
+    public static final SectionMenuItem SECTION_ITEM_VIDEOS = new IconMenuItem(PAGE_VIDEOS, R.drawable.video, R.string.videos);
+    public static final SectionMenuItem SECTION_ITEM_BOOKMARKS = new IconMenuItem(PAGE_BOOKMARKS, R.drawable.star, R.string.bookmarks);
+    public static final SectionMenuItem SECTION_ITEM_AUDIOS = new IconMenuItem(PAGE_MUSIC, R.drawable.music, R.string.music);
+    public static final SectionMenuItem SECTION_ITEM_DOCS = new IconMenuItem(PAGE_DOCUMENTS, R.drawable.file, R.string.attachment_documents);
+    public static final SectionMenuItem SECTION_ITEM_SEARCH = new IconMenuItem(PAGE_SEARCH, R.drawable.magnify, R.string.search);
 
-    public static final SectionDrawerItem SECTION_ITEM_SETTINGS = new NoIconDrawerItem(PAGE_PREFERENSES, R.string.settings);
-    public static final SectionDrawerItem SECTION_ITEM_BY_FULL_APP = new NoIconDrawerItem(PAGE_BUY_FULL_APP, R.string.buy_phoenix);
-    public static final SectionDrawerItem SECTION_ITEM_ACCOUNTS = new NoIconDrawerItem(PAGE_ACCOUNTS, R.string.accounts);
+    public static final SectionMenuItem SECTION_ITEM_SETTINGS = new IconMenuItem(PAGE_PREFERENSES, R.drawable.settings, R.string.settings);
+    public static final SectionMenuItem SECTION_ITEM_BY_FULL_APP = new IconMenuItem(PAGE_BUY_FULL_APP, R.drawable.phoenix_drawer, R.string.buy_phoenix);
+    public static final SectionMenuItem SECTION_ITEM_ACCOUNTS = new IconMenuItem(PAGE_ACCOUNTS, R.drawable.account_circle, R.string.accounts);
 
     private static final int MAX_RECENT_COUNT = 5;
 
     private NavigationDrawerCallbacks mCallbacks;
-    private DrawerLayout mDrawerLayout;
+    private BottomSheetBehavior mBottomSheetBehavior;
     private View mFragmentContainerView;
     private ImageView ivHeaderAvatar;
     private TextView tvUserName;
     private TextView tvDomain;
 
+    private ImageButton ibFeed;
+    private ImageButton ibSearch;
+    private ImageButton ibMessages;
+    private ImageButton ibFeedback;
+    private ImageButton ibOther;
+
     private List<RecentChat> mRecentChats;
     private MenuListAdapter mAdapter;
-    private List<AbsDrawerItem> mDrawerItems;
+    private List<AbsMenuItem> mDrawerItems;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private int mAccountId;
@@ -157,38 +159,27 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         }
     }
 
-    @Override
-    public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+    private static AbsMenuItem getItemBySwitchableCategory(@SwitchableCategory int type) {
+        switch (type) {
+            case FRIENDS:
+                return SECTION_ITEM_FRIENDS;
+            case FEEDBACK:
+                return SECTION_ITEM_FEEDBACK;
+            case GROUPS:
+                return SECTION_ITEM_GROUPS;
+            case PHOTOS:
+                return SECTION_ITEM_PHOTOS;
+            case VIDEOS:
+                return SECTION_ITEM_VIDEOS;
+            case MUSIC:
+                return SECTION_ITEM_AUDIOS;
+            case DOCS:
+                return SECTION_ITEM_DOCS;
+            case BOOKMARKS:
+                return SECTION_ITEM_BOOKMARKS;
+        }
 
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-
-        View vHeader = inflater.inflate(R.layout.header_navi_menu, recyclerView, false);
-
-        boolean dark = Settings.get().ui().isDarkModeEnabled(requireActivity());
-        File file = PreferencesFragment.getDrawerBackgroundFile(requireActivity(), !dark);
-
-        ivHeaderAvatar = vHeader.findViewById(R.id.header_navi_menu_avatar);
-        tvUserName = vHeader.findViewById(R.id.header_navi_menu_username);
-        tvDomain = vHeader.findViewById(R.id.header_navi_menu_usernick);
-
-        mDrawerItems = new ArrayList<>();
-        mDrawerItems.addAll(generateNavDrawerItems());
-
-        mAdapter = new MenuListAdapter(requireActivity(), mDrawerItems, this);
-        mAdapter.addHeader(vHeader);
-
-        recyclerView.setAdapter(mAdapter);
-
-        refreshUserInfo();
-
-        ivHeaderAvatar.setOnClickListener(v -> {
-            closeDrawer();
-            openMyWall();
-        });
-
-        return root;
+        throw new UnsupportedOperationException();
     }
 
     private void refreshUserInfo() {
@@ -203,8 +194,72 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         if (mAccountId == ISettings.IAccountsSettings.INVALID_ID) {
             return;
         }
-
         PlaceFactory.getOwnerWallPlace(mAccountId, mAccountId, null).tryOpenWith(requireActivity());
+    }
+
+    @Override
+    public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 3));
+
+        ivHeaderAvatar = root.findViewById(R.id.header_navi_menu_avatar);
+        tvUserName = root.findViewById(R.id.header_navi_menu_username);
+        tvDomain = root.findViewById(R.id.header_navi_menu_usernick);
+
+        ibFeed = root.findViewById(R.id.menu_feed);
+        ibSearch = root.findViewById(R.id.menu_search);
+        ibMessages = root.findViewById(R.id.menu_messages);
+        ibFeedback = root.findViewById(R.id.menu_feedback);
+        ibOther = root.findViewById(R.id.menu_other);
+
+        ibFeed.setOnClickListener(e -> openMyFeed());
+        ibSearch.setOnClickListener(e -> openSearch());
+        ibMessages.setOnClickListener(e -> openMyMessages());
+        ibFeedback.setOnClickListener(e -> openMyFeedback());
+        ibOther.setOnClickListener(e -> openSheet());
+
+        mDrawerItems = new ArrayList<>();
+        mDrawerItems.addAll(generateNavDrawerItems());
+
+        mAdapter = new MenuListAdapter(requireActivity(), mDrawerItems, this);
+
+        mBottomSheetBehavior = BottomSheetBehavior.from(root.findViewById(R.id.bottom_sheet));
+
+        recyclerView.setAdapter(mAdapter);
+
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        refreshUserInfo();
+
+        ivHeaderAvatar.setOnClickListener(v -> {
+            closeSheet();
+            openMyWall();
+        });
+
+        return root;
+    }
+
+    private void openMyFeed() {
+        if (mAccountId == ISettings.IAccountsSettings.INVALID_ID) {
+            return;
+        }
+        PlaceFactory.getFeedPlace(mAccountId).tryOpenWith(requireActivity());
+    }
+
+    private void openMyMessages() {
+        if (mAccountId == ISettings.IAccountsSettings.INVALID_ID) {
+            return;
+        }
+        PlaceFactory.getDialogsPlace(mAccountId, mAccountId, null).tryOpenWith(requireActivity());
+    }
+
+    private void openSearch() {
+        if (mAccountId == ISettings.IAccountsSettings.INVALID_ID) {
+            return;
+        }
+        PlaceFactory.getSearchPlace(mAccountId, 0, null).tryOpenWith(requireActivity());
     }
 
     public void refreshDrawerItems() {
@@ -214,44 +269,20 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         safellyNotifyDataSetChanged();
     }
 
-    private static AbsDrawerItem getItemBySwitchableCategory(@SwitchableCategory int type) {
-        switch (type) {
-            case FRIENDS:
-                return SECTION_ITEM_FRIENDS;
-            case DIALOGS:
-                return SECTION_ITEM_DIALOGS;
-            case FEED:
-                return SECTION_ITEM_FEED;
-            case FEEDBACK:
-                return SECTION_ITEM_FEEDBACK;
-            case NEWSFEED_COMMENTS:
-                return SECTION_ITEM_NEWSFEED_COMMENTS;
-            case GROUPS:
-                return SECTION_ITEM_GROUPS;
-            case PHOTOS:
-                return SECTION_ITEM_PHOTOS;
-            case VIDEOS:
-                return SECTION_ITEM_VIDEOS;
-            case MUSIC:
-                return SECTION_ITEM_AUDIOS;
-            case DOCS:
-                return SECTION_ITEM_DOCS;
-            case BOOKMARKS:
-                return SECTION_ITEM_BOOKMARKS;
-            case SEARCH:
-                return SECTION_ITEM_SEARCH;
+    private void openMyFeedback() {
+        if (mAccountId == ISettings.IAccountsSettings.INVALID_ID) {
+            return;
         }
-
-        throw new UnsupportedOperationException();
+        PlaceFactory.getNewsfeedCommentsPlace(mAccountId).tryOpenWith(requireActivity());
     }
 
-    private ArrayList<AbsDrawerItem> generateNavDrawerItems() {
+    private ArrayList<AbsMenuItem> generateNavDrawerItems() {
         ISettings.IDrawerSettings settings = Settings.get().drawerSettings();
 
         @SwitchableCategory
         int[] categories = settings.getCategoriesOrder();
 
-        ArrayList<AbsDrawerItem> items = new ArrayList<>();
+        ArrayList<AbsMenuItem> items = new ArrayList<>();
 
         for (int category : categories) {
             if (settings.isCategoryEnabled(category)) {
@@ -262,12 +293,12 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
             }
         }
 
-        items.add(new DividerDrawerItem());
+//        items.add(new DividerMenuItem());
 
-        if (nonEmpty(mRecentChats)) {
-            items.addAll(mRecentChats);
-            items.add(new DividerDrawerItem());
-        }
+//        if (nonEmpty(mRecentChats)) {
+//            items.addAll(mRecentChats);
+//            items.add(new DividerMenuItem());
+//        }
 
         items.add(SECTION_ITEM_SETTINGS);
 
@@ -335,39 +366,32 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
     }
 
     public boolean isDrawerOpen() {
-        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+        return mBottomSheetBehavior != null && mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
     }
 
-    public void openDrawer() {
-        if (mDrawerLayout != null) {
-            mDrawerLayout.openDrawer(mFragmentContainerView);
+    public void openSheet() {
+        if (mBottomSheetBehavior != null) {
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
     }
 
-    public void closeDrawer() {
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
+    public void closeSheet() {
+        if (mBottomSheetBehavior != null) {
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
     }
 
     /**
      * Users of this fragment must call this method to set up the navigation drawer interactions.
      *
-     * @param fragmentId   The android:id of this fragment in its activity's layout.
-     * @param drawerLayout The DrawerLayout containing this fragment's UI.
+     * @param fragmentId The android:id of this fragment in its activity's layout.
      */
-    public void setUp(int fragmentId, DrawerLayout drawerLayout) {
+    public void setUp(int fragmentId) {
         mFragmentContainerView = requireActivity().findViewById(fragmentId);
-        mDrawerLayout = drawerLayout;
-//        if (drawerLayout != null) {
-//            mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-//        }
     }
 
-    private void selectItem(AbsDrawerItem item, boolean longClick) {
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
-        }
+    private void selectItem(AbsMenuItem item, boolean longClick) {
+        closeSheet();
 
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(item, longClick);
@@ -375,7 +399,7 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         try {
             mCallbacks = (NavigationDrawerCallbacks) context;
@@ -390,8 +414,8 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         mCallbacks = null;
     }
 
-    public void selectPage(AbsDrawerItem item) {
-        for(AbsDrawerItem i : mDrawerItems){
+    public void selectPage(AbsMenuItem item) {
+        for (AbsMenuItem i : mDrawerItems) {
             i.setSelected(i == item);
         }
         safellyNotifyDataSetChanged();
@@ -399,7 +423,7 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
 
     private void backupRecentChats() {
         List<RecentChat> chats = new ArrayList<>(5);
-        for (AbsDrawerItem item : mDrawerItems) {
+        for (AbsMenuItem item : mDrawerItems) {
             if (item instanceof RecentChat) {
                 chats.add((RecentChat) item);
             }
@@ -421,9 +445,9 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         backupRecentChats();
 
         mAccountId = newAccountId;
-        SECTION_ITEM_DIALOGS.setCount(Stores.getInstance()
-                .dialogs()
-                .getUnreadDialogsCount(mAccountId));
+//        SECTION_ITEM_DIALOGS.setCount(Stores.getInstance()
+//                .dialogs()
+//                .getUnreadDialogsCount(mAccountId));
 
         mRecentChats = Settings.get()
                 .recentChats()
@@ -446,16 +470,16 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
     }
 
     @Override
-    public void onDrawerItemClick(AbsDrawerItem item) {
+    public void onDrawerItemClick(AbsMenuItem item) {
         selectItem(item, false);
     }
 
     @Override
-    public void onDrawerItemLongClick(AbsDrawerItem item) {
+    public void onDrawerItemLongClick(AbsMenuItem item) {
         selectItem(item, true);
     }
 
     public interface NavigationDrawerCallbacks {
-        void onNavigationDrawerItemSelected(AbsDrawerItem item, boolean longClick);
+        void onNavigationDrawerItemSelected(AbsMenuItem item, boolean longClick);
     }
 }

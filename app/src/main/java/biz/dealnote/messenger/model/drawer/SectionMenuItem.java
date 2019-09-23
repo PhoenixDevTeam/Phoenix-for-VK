@@ -3,7 +3,7 @@ package biz.dealnote.messenger.model.drawer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class SectionDrawerItem extends AbsDrawerItem implements Parcelable {
+public class SectionMenuItem extends AbsMenuItem implements Parcelable {
 
     private int section;
     private int title;
@@ -33,19 +33,20 @@ public class SectionDrawerItem extends AbsDrawerItem implements Parcelable {
         this.count = count;
     }
 
-    public SectionDrawerItem(int type, int section, int title) {
+    public static Creator<SectionMenuItem> CREATOR = new Creator<SectionMenuItem>() {
+        public SectionMenuItem createFromParcel(Parcel source) {
+            return new SectionMenuItem(source);
+        }
+
+        public SectionMenuItem[] newArray(int size) {
+            return new SectionMenuItem[size];
+        }
+    };
+
+    public SectionMenuItem(int type, int section, int title) {
         super(type);
         this.section = section;
         this.title = title;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        SectionDrawerItem that = (SectionDrawerItem) o;
-        return section == that.section;
     }
 
     @Override
@@ -68,20 +69,19 @@ public class SectionDrawerItem extends AbsDrawerItem implements Parcelable {
         dest.writeInt(count);
     }
 
-    public SectionDrawerItem(Parcel in) {
+    public SectionMenuItem(Parcel in) {
         super(in);
         this.section = in.readInt();
         this.title = in.readInt();
         this.count = in.readInt();
     }
 
-    public static Creator<SectionDrawerItem> CREATOR = new Creator<SectionDrawerItem>() {
-        public SectionDrawerItem createFromParcel(Parcel source) {
-            return new SectionDrawerItem(source);
-        }
-
-        public SectionDrawerItem[] newArray(int size) {
-            return new SectionDrawerItem[size];
-        }
-    };
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        SectionMenuItem that = (SectionMenuItem) o;
+        return section == that.section;
+    }
 }

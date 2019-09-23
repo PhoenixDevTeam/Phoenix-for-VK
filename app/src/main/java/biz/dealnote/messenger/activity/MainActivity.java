@@ -10,10 +10,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -23,16 +33,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
@@ -100,9 +100,9 @@ import biz.dealnote.messenger.model.Manager;
 import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.UserDetails;
-import biz.dealnote.messenger.model.drawer.AbsDrawerItem;
+import biz.dealnote.messenger.model.drawer.AbsMenuItem;
 import biz.dealnote.messenger.model.drawer.RecentChat;
-import biz.dealnote.messenger.model.drawer.SectionDrawerItem;
+import biz.dealnote.messenger.model.drawer.SectionMenuItem;
 import biz.dealnote.messenger.mvp.presenter.DocsListPresenter;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
@@ -156,9 +156,9 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     /**
      * Атрибуты секции, которая на данный момент находится на главном контейнере экрана
      */
-    private AbsDrawerItem mCurrentFrontSection;
+    private AbsMenuItem mCurrentFrontSection;
     private Toolbar mToolbar;
-    private DrawerLayout mDrawerLayout;
+    private ViewGroup mDrawerLayout;
     private MusicUtils.ServiceToken mAudioPlayServiceToken;
 
     private FragmentManager.OnBackStackChangedListener mOnBackStackChangedListener = () -> {
@@ -169,72 +169,10 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     protected int mLayoutRes = R.layout.activity_main;
     private boolean mDestroyed;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getDelegate().applyDayNight();
-
-        mCompositeDisposable.add(Settings.get()
-                .accounts()
-                .observeChanges()
-                .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(this::onCurrentAccountChange));
-
-        bindToAudioPlayService();
-
-        setContentView(mLayoutRes);
-
-        mAccountId = Settings.get()
-                .accounts()
-                .getCurrent();
-
-        setStatusbarColored(true, Settings.get().ui().isDarkModeEnabled(this));
-
-        mDrawerLayout = findViewById(R.id.my_drawer_layout);
-        mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                if (newState != DrawerLayout.STATE_IDLE || mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    keyboardHide();
-                }
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                switch (drawerView.getId()) {
-                    case R.id.navigation_drawer:
-                        postResume(MainActivity::openTargetPage);
-                        break;
-                }
-            }
-        });
-
-        getNavigationFragment().setUp(R.id.navigation_drawer, mDrawerLayout);
-        getSupportFragmentManager().addOnBackStackChangedListener(mOnBackStackChangedListener);
-        resolveToolbarNavigationIcon();
-
-        if (isNull(savedInstanceState)) {
-            boolean intentWasHandled = handleIntent(getIntent());
-
-            if (!intentWasHandled) {
-                Place place = Settings.get().ui().getDefaultPage(mAccountId);
-                place.tryOpenWith(this);
-            }
-
-            checkGCMRegistration();
-
-            if (!isAuthValid()) {
-                startAccountsActivity();
-            } else {
-                boolean needPin = Settings.get().security().isUsePinForEntrance()
-                        && !getIntent().getBooleanExtra(EXTRA_NO_REQUIRE_PIN, false);
-                if (needPin) {
-                    startEnterPinActivity();
-                }
-            }
-        }
-    }
+    /**
+     * First - DrawerItem, second - Clear back stack before adding
+     */
+    private Pair<AbsMenuItem, Boolean> mTargetPage;
 
     private void postResume(Action<MainActivity> action) {
         if (resumed) {
@@ -305,15 +243,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         } else {
             mToolbar.setNavigationIcon(CurrentTheme.getDrawableFromAttribute(this, R.attr.toolbarDrawerIcon));
             mToolbar.setNavigationOnClickListener(v -> {
-                if (mDrawerLayout.getDrawerLockMode(GravityCompat.START) == DrawerLayout.LOCK_MODE_UNLOCKED) {
-                    NavigationFragment navigationFragment = getNavigationFragment();
 
-                    if (navigationFragment.isDrawerOpen()) {
-                        navigationFragment.closeDrawer();
-                    } else {
-                        navigationFragment.openDrawer();
-                    }
-                }
             });
         }
     }
@@ -400,27 +330,70 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         return false;
     }
 
-    private void openTargetPage() {
-        if (mTargetPage == null) {
-            return;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getDelegate().applyDayNight();
+
+        mCompositeDisposable.add(Settings.get()
+                .accounts()
+                .observeChanges()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onCurrentAccountChange));
+
+        bindToAudioPlayService();
+
+        setContentView(mLayoutRes);
+
+        mAccountId = Settings.get()
+                .accounts()
+                .getCurrent();
+
+        setStatusbarColored(true, Settings.get().ui().isDarkModeEnabled(this));
+
+        mDrawerLayout = findViewById(R.id.my_drawer_layout);
+//        mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+//            @Override
+//            public void onDrawerStateChanged(int newState) {
+//                if (newState != DrawerLayout.STATE_IDLE || mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+//                    keyboardHide();
+//                }
+//            }
+//
+//            @Override
+//            public void onDrawerClosed(View drawerView) {
+//                switch (drawerView.getId()) {
+//                    case R.id.navigation_drawer:
+        postResume(MainActivity::openTargetPage);
+//                        break;
+//                }
+//            }
+//        });
+
+        getNavigationFragment().setUp(R.id.navigation_menu);
+        getSupportFragmentManager().addOnBackStackChangedListener(mOnBackStackChangedListener);
+        resolveToolbarNavigationIcon();
+
+        if (isNull(savedInstanceState)) {
+            boolean intentWasHandled = handleIntent(getIntent());
+
+            if (!intentWasHandled) {
+                Place place = Settings.get().ui().getDefaultPage(mAccountId);
+                place.tryOpenWith(this);
+            }
+
+            checkGCMRegistration();
+
+            if (!isAuthValid()) {
+                startAccountsActivity();
+            } else {
+                boolean needPin = Settings.get().security().isUsePinForEntrance()
+                        && !getIntent().getBooleanExtra(EXTRA_NO_REQUIRE_PIN, false);
+                if (needPin) {
+                    startEnterPinActivity();
+                }
+            }
         }
-
-        AbsDrawerItem item = mTargetPage.getFirst();
-        boolean clearBackStack = mTargetPage.getSecond();
-
-        if (item.equals(mCurrentFrontSection)) {
-            return;
-        }
-
-        if (item.getType() == AbsDrawerItem.TYPE_WITH_ICON || item.getType() == AbsDrawerItem.TYPE_WITHOUT_ICON) {
-            openDrawerPage(item, clearBackStack);
-        }
-
-        if (item.getType() == AbsDrawerItem.TYPE_RECENT_CHAT) {
-            openRecentChat((RecentChat) item);
-        }
-
-        mTargetPage = null;
     }
 
     @Override
@@ -464,22 +437,63 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         openChat(accountId, messagesOwnerId, new Peer(chat.getPeerId()).setAvaUrl(chat.getIconUrl()).setTitle(chat.getTitle()));
     }
 
-    private NavigationFragment getNavigationFragment() {
-        FragmentManager fm = getSupportFragmentManager();
-        return (NavigationFragment) fm.findFragmentById(R.id.navigation_drawer);
+    private void openTargetPage() {
+        if (mTargetPage == null) {
+            return;
+        }
+
+        AbsMenuItem item = mTargetPage.getFirst();
+        boolean clearBackStack = mTargetPage.getSecond();
+
+        if (item.equals(mCurrentFrontSection)) {
+            return;
+        }
+
+        if (item.getType() == AbsMenuItem.TYPE_ICON) {
+            openDrawerPage(item, clearBackStack);
+        }
+
+        if (item.getType() == AbsMenuItem.TYPE_RECENT_CHAT) {
+            openRecentChat((RecentChat) item);
+        }
+
+        mTargetPage = null;
     }
 
-    private void openDrawerPage(@NonNull AbsDrawerItem item) {
+    private NavigationFragment getNavigationFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        return (NavigationFragment) fm.findFragmentById(R.id.navigation_menu);
+    }
+
+    private void openDrawerPage(@NonNull AbsMenuItem item) {
         openDrawerPage(item, true);
     }
 
-    private void openDrawerPage(@NonNull AbsDrawerItem item, boolean clearBackStack) {
-        if (item.getType() == AbsDrawerItem.TYPE_RECENT_CHAT) {
+    private void startAccountsActivity() {
+        Intent intent = new Intent(this, AccountsActivity.class);
+        startActivityForResult(intent, REQUEST_LOGIN);
+    }
+
+    private void clearBackStack() {
+        FragmentManager manager = getSupportFragmentManager();
+        /*if (manager.getBackStackEntryCount() > 0) {
+            FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
+            manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }*/
+
+        manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        // TODO: 13.12.2017 Exception java.lang.IllegalStateException:Can not perform this action after onSaveInstanceState
+        Logger.d(TAG, "Back stack was cleared");
+    }
+
+    private void openDrawerPage(@NonNull AbsMenuItem item, boolean clearBackStack) {
+        if (item.getType() == AbsMenuItem.TYPE_RECENT_CHAT) {
             openRecentChat((RecentChat) item);
             return;
         }
 
-        SectionDrawerItem sectionDrawerItem = (SectionDrawerItem) item;
+        SectionMenuItem sectionDrawerItem = (SectionMenuItem) item;
         if (sectionDrawerItem.getSection() == NavigationFragment.PAGE_ACCOUNTS) {
             startAccountsActivity();
             return;
@@ -545,40 +559,17 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         }
     }
 
-    private void startAccountsActivity() {
-        Intent intent = new Intent(this, AccountsActivity.class);
-        startActivityForResult(intent, REQUEST_LOGIN);
-    }
-
-    private void clearBackStack() {
-        FragmentManager manager = getSupportFragmentManager();
-        /*if (manager.getBackStackEntryCount() > 0) {
-            FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
-            manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        }*/
-
-        manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-        // TODO: 13.12.2017 Exception java.lang.IllegalStateException:Can not perform this action after onSaveInstanceState
-        Logger.d(TAG, "Back stack was cleared");
-    }
-
-    /**
-     * First - DrawerItem, second - Clear back stack before adding
-     */
-    private Pair<AbsDrawerItem, Boolean> mTargetPage;
-
     @Override
-    public void onNavigationDrawerItemSelected(AbsDrawerItem item, boolean longClick) {
+    public void onNavigationDrawerItemSelected(AbsMenuItem item, boolean longClick) {
         if (mCurrentFrontSection != null && mCurrentFrontSection.equals(item)) {
             return;
         }
 
         mTargetPage = Pair.Companion.create(item, !longClick);
 
-        if (mDrawerLayout == null) {
-            openTargetPage();
-        }
+//        if (mDrawerLayout == null) {
+        openTargetPage();
+//        }
 
         //после закрытия бокового меню откроется данная страница
     }
@@ -656,7 +647,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     @Override
     public void onBackPressed() {
         if (getNavigationFragment().isDrawerOpen()) {
-            getNavigationFragment().closeDrawer();
+            getNavigationFragment().closeSheet();
             return;
         }
 
@@ -697,7 +688,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     }
 
     @Override
-    public void onSectionResume(SectionDrawerItem sectionDrawerItem) {
+    public void onSectionResume(SectionMenuItem sectionDrawerItem) {
         getNavigationFragment().selectPage(sectionDrawerItem);
         mCurrentFrontSection = sectionDrawerItem;
     }
@@ -774,20 +765,20 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
     @Override
     public void blockDrawer(boolean block, int gravity) {
-        if (block) {
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, gravity);
-        } else {
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, gravity);
-        }
+//        if (block) {
+//            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, gravity);
+//        } else {
+//            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, gravity);
+//        }
     }
 
     @Override
     public void openDrawer(boolean open, int gravity) {
-        if (open) {
-            mDrawerLayout.openDrawer(gravity);
-        } else {
-            mDrawerLayout.closeDrawer(gravity);
-        }
+//        if (open) {
+//            mDrawerLayout.openDrawer(gravity);
+//        } else {
+//            mDrawerLayout.closeDrawer(gravity);
+//        }
     }
 
     @Override

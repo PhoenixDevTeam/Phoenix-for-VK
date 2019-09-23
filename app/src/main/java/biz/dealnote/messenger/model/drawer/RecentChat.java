@@ -3,7 +3,7 @@ package biz.dealnote.messenger.model.drawer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class RecentChat extends AbsDrawerItem implements Parcelable {
+public class RecentChat extends AbsMenuItem implements Parcelable {
 
     private int aid;
     private int peerId;

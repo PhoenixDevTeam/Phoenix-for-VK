@@ -1,53 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="?attr/navi_menu_selector">
+    android:layout_margin="8dp"
+    android:background="?dividerColor"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="8dp">
 
-    <RelativeLayout
-        android:id="@+id/content_root"
-        android:background="?attr/selectableItemBackground"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="@dimen/navi_drawer_icon_size"
+        android:layout_height="@dimen/navi_drawer_icon_size"
+        tools:src="@drawable/google_circles" />
 
-        <ImageView
-            android:id="@+id/icon"
-            tools:src="@drawable/google_circles"
-            android:layout_width="@dimen/navi_drawer_icon_size"
-            android:layout_height="@dimen/navi_drawer_icon_size"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_alignParentStart="true"
             android:id="@+id/title"
-            android:layout_toStartOf="@+id/counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="72dp"
             android:gravity="center_vertical"
-            android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            tools:text="Test action"
-            android:textSize="@dimen/navi_drawer_font_size" />
+            android:textSize="@dimen/navi_drawer_font_size"
+            tools:text="Test action" />
 
         <TextView
             android:id="@+id/counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"
             android:gravity="center"
-            android:paddingBottom="4dp"
-            android:paddingStart="6dp"
-            android:paddingEnd="6dp"
-            android:paddingTop="4dp"
-            tools:text="1"
+            android:padding="6dp"
             android:textColor="?attr/icon_color_active"
-            android:textSize="@dimen/navi_drawer_font_size" />
+            android:textSize="@dimen/navi_drawer_font_size"
+            tools:text="1" />
 
-    </RelativeLayout>
-</FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>
