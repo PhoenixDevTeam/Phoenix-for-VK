@@ -629,7 +629,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
         new ActivityFeatures.Builder()
                 .begin()
-                .setBlockNavigationDrawer(false)
+                .setHideNavigationMenu(false)
                 .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());

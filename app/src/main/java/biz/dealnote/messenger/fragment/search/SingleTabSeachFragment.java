@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
@@ -131,7 +132,7 @@ public class SingleTabSeachFragment extends Fragment implements MySearchView.OnQ
         super.onResume();
         new ActivityFeatures.Builder()
                 .begin()
-                .setBlockNavigationDrawer(false)
+                .setHideNavigationMenu(false)
                 .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());

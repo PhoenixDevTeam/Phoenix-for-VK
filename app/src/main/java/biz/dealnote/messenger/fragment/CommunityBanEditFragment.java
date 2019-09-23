@@ -15,14 +15,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
@@ -148,7 +149,7 @@ public class CommunityBanEditFragment extends BaseMvpFragment<CommunityBanEditPr
 
         new ActivityFeatures.Builder()
                 .begin()
-                .setBlockNavigationDrawer(true)
+                .setHideNavigationMenu(true)
                 .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());

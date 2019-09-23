@@ -11,15 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.tabs.TabLayout;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
@@ -235,7 +235,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
     public void onBackButtonClick() {
         if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() == 1
                 && requireActivity() instanceof AppStyleable) {
-            ((AppStyleable) requireActivity()).openDrawer(true, GravityCompat.START);
+            ((AppStyleable) requireActivity()).openMenu(true);
         } else {
             requireActivity().onBackPressed();
         }
@@ -270,7 +270,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
 
         new ActivityFeatures.Builder()
                 .begin()
-                .setBlockNavigationDrawer(false)
+                .setHideNavigationMenu(false)
                 .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());

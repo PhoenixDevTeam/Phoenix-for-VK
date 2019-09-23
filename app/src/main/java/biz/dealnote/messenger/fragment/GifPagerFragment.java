@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -19,6 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import java.util.ArrayList;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
@@ -119,7 +120,7 @@ public class GifPagerFragment extends AbsDocumentPreviewFragment<GifPagerPresent
         super.onResume();
         new ActivityFeatures.Builder()
                 .begin()
-                .setBlockNavigationDrawer(true)
+                .setHideNavigationMenu(true)
                 .setBarsColored(false, false)
                 .build()
                 .apply(requireActivity());

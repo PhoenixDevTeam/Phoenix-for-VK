@@ -14,11 +14,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
@@ -204,7 +205,7 @@ public class CommunityManagerEditFragment extends BaseMvpFragment<CommunityManag
 
         new ActivityFeatures.Builder()
                 .begin()
-                .setBlockNavigationDrawer(true)
+                .setHideNavigationMenu(true)
                 .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());

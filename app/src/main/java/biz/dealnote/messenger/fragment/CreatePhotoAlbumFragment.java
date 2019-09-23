@@ -13,6 +13,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
@@ -241,7 +242,7 @@ public class CreatePhotoAlbumFragment extends BaseMvpFragment<EditPhotoAlbumPres
 
         new ActivityFeatures.Builder()
                 .begin()
-                .setBlockNavigationDrawer(true)
+                .setHideNavigationMenu(true)
                 .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());

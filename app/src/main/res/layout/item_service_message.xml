@@ -15,8 +15,8 @@
         android:orientation="vertical"
         android:weightSum="1"
         app:contentPaddingBottom="4dp"
-        app:contentPaddingLeft="8dp"
-        app:contentPaddingRight="8dp"
+        app:contentPaddingLeft="12dp"
+        app:contentPaddingRight="12dp"
         app:contentPaddingTop="4dp">
 
         <TextView
@@ -24,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             tools:text="Message" />
 

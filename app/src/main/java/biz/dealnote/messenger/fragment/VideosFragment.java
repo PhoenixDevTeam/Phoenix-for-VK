@@ -8,9 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Collections;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +15,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import java.util.Collections;
+import java.util.List;
+
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -125,7 +126,7 @@ public class VideosFragment extends BaseMvpFragment<VideosListPresenter, IVideos
 
             new ActivityFeatures.Builder()
                     .begin()
-                    .setBlockNavigationDrawer(false)
+                    .setHideNavigationMenu(false)
                     .setBarsColored(requireActivity(), true)
                     .build()
                     .apply(requireActivity());

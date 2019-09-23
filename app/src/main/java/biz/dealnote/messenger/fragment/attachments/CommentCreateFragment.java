@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
@@ -79,7 +80,7 @@ public class CommentCreateFragment extends AbsAttachmentsEditFragment<CommentCre
 
         new ActivityFeatures.Builder()
                 .begin()
-                .setBlockNavigationDrawer(true)
+                .setHideNavigationMenu(true)
                 .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());

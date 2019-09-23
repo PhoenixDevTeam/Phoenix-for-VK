@@ -779,7 +779,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         super.onResume()
         ActivityFeatures.Builder()
                 .begin()
-                .setBlockNavigationDrawer(false)
+                .setHideNavigationMenu(true)
                 .setBarsColored(activity, true)
                 .build()
                 .apply(requireActivity())

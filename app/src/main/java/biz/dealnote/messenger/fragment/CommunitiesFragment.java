@@ -6,19 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
@@ -40,7 +40,6 @@ import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.MySearchView;
 import biz.dealnote.mvp.core.IPresenterFactory;
 
-import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
 /**
@@ -153,7 +152,7 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
 
         new ActivityFeatures.Builder()
                 .begin()
-                .setBlockNavigationDrawer(false)
+                .setHideNavigationMenu(false)
                 .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
@@ -231,13 +230,10 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
 
     @Override
     public void onBackButtonClick() {
-        FragmentActivity activity = requireActivity();
-        if (isNull(activity)) return;
-
-        if (activity.getSupportFragmentManager().getBackStackEntryCount() == 1 && activity instanceof AppStyleable) {
-            ((AppStyleable) activity).openDrawer(true, GravityCompat.START);
+        if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() == 1 && requireActivity() instanceof AppStyleable) {
+            ((AppStyleable) requireActivity()).openMenu(true);
         } else {
-            activity.onBackPressed();
+            requireActivity().onBackPressed();
         }
     }
 }

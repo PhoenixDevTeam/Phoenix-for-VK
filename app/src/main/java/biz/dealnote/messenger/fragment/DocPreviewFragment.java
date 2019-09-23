@@ -231,7 +231,7 @@ public class DocPreviewFragment extends BaseFragment implements View.OnClickList
 
         new ActivityFeatures.Builder()
                 .begin()
-                .setBlockNavigationDrawer(false)
+                .setHideNavigationMenu(false)
                 .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());

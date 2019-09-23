@@ -1,9 +1,9 @@
 package biz.dealnote.messenger.listener;
 
 public interface AppStyleable {
-    void blockDrawer(boolean block, int gravity);
+    void hideMenu(boolean hide);
 
-    void openDrawer(boolean open, int gravity);
+    void openMenu(boolean open);
 
     void setStatusbarColored(boolean colored, boolean invertIcons);
 }

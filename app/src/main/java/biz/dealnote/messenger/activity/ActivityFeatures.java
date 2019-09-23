@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.GravityCompat;
+
 import biz.dealnote.messenger.listener.AppStyleable;
 import biz.dealnote.messenger.settings.Settings;
 
@@ -14,12 +14,12 @@ import biz.dealnote.messenger.settings.Settings;
  */
 public class ActivityFeatures {
 
-    private boolean blockNavigationDrawer;
+    private boolean hideMenu;
     private int statusBarColorOption;
     private boolean statusBarInvertIconsOption;
 
     public ActivityFeatures(@NonNull Builder builder){
-        this.blockNavigationDrawer = builder.blockNavigationFeature.blockNavigationDrawer;
+        this.hideMenu = builder.blockNavigationFeature.blockNavigationDrawer;
         this.statusBarColorOption = builder.statusbarColorFeature.statusBarColorOption;
         this.statusBarInvertIconsOption = builder.statusbarColorFeature.statusBarIconInvertedOption;
     }
@@ -45,18 +45,22 @@ public class ActivityFeatures {
         }
     }
 
+    public void apply(@NonNull Activity activity) {
+        if (!(activity instanceof AppStyleable)) return;
 
-    public static class BlockNavigationFeature extends Feature {
-        private boolean blockNavigationDrawer;
+        AppStyleable styleable = (AppStyleable) activity;
+        styleable.hideMenu(hideMenu);
 
-        private BlockNavigationFeature(Builder b) {
-            super(b);
-            b.blockNavigationFeature = this;
-        }
-
-        public StatusbarColorFeature setBlockNavigationDrawer(boolean blockNavigationDrawer) {
-            this.blockNavigationDrawer = blockNavigationDrawer;
-            return new StatusbarColorFeature(super.builder);
+        switch (statusBarColorOption) {
+            case (StatusbarColorFeature.STATUSBAR_COLOR_COLORED):
+                styleable.setStatusbarColored(true, statusBarInvertIconsOption);
+                break;
+            case (StatusbarColorFeature.STATUSBAR_COLOR_NON_COLORED):
+                styleable.setStatusbarColored(false, statusBarInvertIconsOption);
+                break;
+            default:
+                styleable.setStatusbarColored(false, statusBarInvertIconsOption);
+                break;
         }
     }
 
@@ -86,22 +90,17 @@ public class ActivityFeatures {
         }
     }
 
-    public void apply(@NonNull Activity activity){
-        if(!(activity instanceof AppStyleable)) return;
+    public static class BlockNavigationFeature extends Feature {
+        private boolean blockNavigationDrawer;
 
-        AppStyleable styleable = (AppStyleable) activity;
-        styleable.blockDrawer(blockNavigationDrawer, GravityCompat.START);
+        private BlockNavigationFeature(Builder b) {
+            super(b);
+            b.blockNavigationFeature = this;
+        }
 
-        switch (statusBarColorOption){
-            case (StatusbarColorFeature.STATUSBAR_COLOR_COLORED):
-                styleable.setStatusbarColored(true, statusBarInvertIconsOption);
-                break;
-            case (StatusbarColorFeature.STATUSBAR_COLOR_NON_COLORED):
-                styleable.setStatusbarColored(false, statusBarInvertIconsOption);
-                break;
-            default:
-                styleable.setStatusbarColored(false, statusBarInvertIconsOption);
-                break;
+        public StatusbarColorFeature setHideNavigationMenu(boolean blockNavigationDrawer) {
+            this.blockNavigationDrawer = blockNavigationDrawer;
+            return new StatusbarColorFeature(super.builder);
         }
     }
 }

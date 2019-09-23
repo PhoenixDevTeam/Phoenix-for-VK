@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
      */
     private AbsMenuItem mCurrentFrontSection;
     private Toolbar mToolbar;
-    private ViewGroup mDrawerLayout;
+    private ViewGroup mNavigationMenu;
     private MusicUtils.ServiceToken mAudioPlayServiceToken;
 
     private FragmentManager.OnBackStackChangedListener mOnBackStackChangedListener = () -> {
@@ -351,24 +351,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
         setStatusbarColored(true, Settings.get().ui().isDarkModeEnabled(this));
 
-        mDrawerLayout = findViewById(R.id.my_drawer_layout);
-//        mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-//            @Override
-//            public void onDrawerStateChanged(int newState) {
-//                if (newState != DrawerLayout.STATE_IDLE || mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-//                    keyboardHide();
-//                }
-//            }
-//
-//            @Override
-//            public void onDrawerClosed(View drawerView) {
-//                switch (drawerView.getId()) {
-//                    case R.id.navigation_drawer:
-        postResume(MainActivity::openTargetPage);
-//                        break;
-//                }
-//            }
-//        });
+        mNavigationMenu = findViewById(R.id.navigation_menu);
 
         getNavigationFragment().setUp(R.id.navigation_menu);
         getSupportFragmentManager().addOnBackStackChangedListener(mOnBackStackChangedListener);
@@ -764,16 +747,16 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     }
 
     @Override
-    public void blockDrawer(boolean block, int gravity) {
-//        if (block) {
-//            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, gravity);
-//        } else {
-//            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, gravity);
-//        }
+    public void hideMenu(boolean hide) {
+        if (hide) {
+            mNavigationMenu.setVisibility(View.GONE);
+        } else {
+            mNavigationMenu.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
-    public void openDrawer(boolean open, int gravity) {
+    public void openMenu(boolean open) {
 //        if (open) {
 //            mDrawerLayout.openDrawer(gravity);
 //        } else {
