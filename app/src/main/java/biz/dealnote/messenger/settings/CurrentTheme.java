@@ -69,6 +69,14 @@ public class CurrentTheme {
         return getColorFromAttrs(R.attr.colorOnSurface, context, "#000000");
     }
 
+    public static int getColorBackground(Context context) {
+        return getColorFromAttrs(android.R.attr.colorBackground, context, "#000000");
+    }
+
+    public static int getColorOnBackground(Context context) {
+        return getColorFromAttrs(R.attr.colorOnBackground, context, "#000000");
+    }
+
     public static int getStatusBarColor(Context context) {
         return getColorFromAttrs(android.R.attr.statusBarColor, context, "#000000");
     }

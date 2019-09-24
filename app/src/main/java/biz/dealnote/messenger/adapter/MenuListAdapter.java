@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.squareup.picasso.Transformation;
 
 import java.util.List;
@@ -65,7 +66,7 @@ public class MenuListAdapter extends RecyclerBindableAdapter<AbsMenuItem, Recycl
         holder.imgIcon.setImageResource(item.getIcon());
         holder.imgIcon.setColorFilter(item.isSelected() ? colorOnPrimary : colorOnSurface);
 
-        holder.contentRoot.getBackground().setTint(item.isSelected() ? colorPrimary : colorSurface);
+        ((MaterialCardView) holder.contentRoot).setCardBackgroundColor(item.isSelected() ? colorPrimary : colorSurface);
         holder.contentRoot.setOnClickListener(v -> actionListener.onDrawerItemClick(item));
         holder.contentRoot.setOnLongClickListener(view -> {
             actionListener.onDrawerItemLongClick(item);

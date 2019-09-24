@@ -203,7 +203,7 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         View root = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
 
         vgProfileContainer = root.findViewById(R.id.content_root);
         ivHeaderAvatar = root.findViewById(R.id.header_navi_menu_avatar);
@@ -216,11 +216,29 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         ibFeedback = root.findViewById(R.id.menu_feedback);
         ibOther = root.findViewById(R.id.menu_other);
 
-        ibFeed.setOnClickListener(e -> openMyFeed());
-        ibSearch.setOnClickListener(e -> openSearch());
-        ibMessages.setOnClickListener(e -> openMyMessages());
-        ibFeedback.setOnClickListener(e -> openMyFeedback());
-        ibOther.setOnClickListener(e -> openSheet());
+        ibFeed.setOnClickListener(e -> {
+            closeSheet();
+            openMyFeed();
+        });
+        ibSearch.setOnClickListener(e -> {
+            closeSheet();
+            openSearch();
+        });
+        ibMessages.setOnClickListener(e -> {
+            closeSheet();
+            openMyMessages();
+        });
+        ibFeedback.setOnClickListener(e -> {
+            closeSheet();
+            openMyFeedback();
+        });
+        ibOther.setOnClickListener(e -> {
+            if (isDrawerOpen()) {
+                closeSheet();
+            } else {
+                openSheet();
+            }
+        });
 
         mDrawerItems = new ArrayList<>();
         mDrawerItems.addAll(generateNavDrawerItems());

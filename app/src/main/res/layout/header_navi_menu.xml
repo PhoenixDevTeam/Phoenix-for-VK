@@ -1,50 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:foreground="?android:attr/selectableItemBackground"
-    android:gravity="center"
-    app:contentPadding="8dp">
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/header_navi_menu_avatar"
+        android:layout_width="@dimen/avatar_size_usual"
+        android:layout_height="@dimen/avatar_size_usual" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fitsSystemWindows="true"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/header_navi_menu_avatar"
-            android:layout_width="@dimen/avatar_size_usual"
-            android:layout_height="@dimen/avatar_size_usual" />
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/header_navi_menu_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fitsSystemWindows="true"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="User name" />
 
-            <TextView
-                android:id="@+id/header_navi_menu_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                tools:text="User name" />
-
-            <TextView
-                android:id="@+id/header_navi_menu_usernick"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                tools:text="\@nick" />
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/header_navi_menu_usernick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            tools:text="\@nick" />
 
     </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</LinearLayout>

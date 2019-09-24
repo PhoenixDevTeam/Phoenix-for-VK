@@ -4,7 +4,7 @@
         <item name="android:statusBarColor">?android:colorBackground</item>
         <item name="android:navigationBarColor" tools:targetApi="o_mr1">?android:colorBackground
         </item>
-        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">?dividerColor</item>
+        <!--        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">?dividerColor</item>-->
         <item name="android:fontFamily">@font/open_sans</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeBackground">?attr/colorPrimary</item>
@@ -86,9 +86,10 @@
 
     <style name="Theme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
         <item name="android:tint">?colorOnSurface</item>
-        <item name="titleTextAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
-        <item name="subtitleTextAppearance">@style/TextAppearance.MaterialComponents.Subtitle2
-        </item>
+    </style>
+
+    <style name="TextAppearance.Toolbar.Title" parent="@style/TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">18dp</item>
     </style>
 
     <style name="Theme.Toolbar.Photo" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
