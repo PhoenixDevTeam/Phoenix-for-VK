@@ -31,7 +31,6 @@
             android:text="@string/list_is_empty"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_alignParentBottom="true"
             android:gravity="center" />
     </RelativeLayout>
 </LinearLayout>
