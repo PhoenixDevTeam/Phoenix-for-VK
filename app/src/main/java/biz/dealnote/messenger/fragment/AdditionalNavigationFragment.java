@@ -54,6 +54,7 @@ import static biz.dealnote.messenger.model.SwitchableCategory.VIDEOS;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
+import static biz.dealnote.messenger.util.Utils.nonEmpty;
 
 public class AdditionalNavigationFragment extends BaseFragment implements MenuListAdapter.ActionListener {
 
@@ -249,11 +250,6 @@ public class AdditionalNavigationFragment extends BaseFragment implements MenuLi
 
 //        items.add(new DividerMenuItem());
 
-//        if (nonEmpty(mRecentChats)) {
-//            items.addAll(mRecentChats);
-//            items.add(new DividerMenuItem());
-//        }
-
         items.add(SECTION_ITEM_SETTINGS);
 
         if (!AppPrefs.isFullApp()) {
@@ -261,6 +257,10 @@ public class AdditionalNavigationFragment extends BaseFragment implements MenuLi
         }
 
         items.add(SECTION_ITEM_ACCOUNTS);
+
+        if (nonEmpty(mRecentChats)) {
+            items.addAll(mRecentChats);
+        }
         return items;
     }
 

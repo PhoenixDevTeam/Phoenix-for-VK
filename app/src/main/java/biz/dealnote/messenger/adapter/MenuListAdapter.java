@@ -112,9 +112,9 @@ public class MenuListAdapter extends RecyclerBindableAdapter<AbsMenuItem, Recycl
     protected int layoutId(int type) {
         switch (type) {
             case AbsMenuItem.TYPE_RECENT_CHAT:
-                return R.layout.item_navi_recents;
+                return R.layout.item_navigation_recents;
             case AbsMenuItem.TYPE_ICON:
-                return R.layout.drawer_list_item;
+                return R.layout.item_navigation;
         }
 
         throw new IllegalStateException();
@@ -157,7 +157,7 @@ public class MenuListAdapter extends RecyclerBindableAdapter<AbsMenuItem, Recycl
             super(itemView);
             contentRoot = itemView.findViewById(R.id.content_root);
             tvChatTitle = itemView.findViewById(R.id.title);
-            ivChatImage = itemView.findViewById(R.id.item_friend_avatar);
+            ivChatImage = itemView.findViewById(R.id.avatar);
         }
     }
 }
