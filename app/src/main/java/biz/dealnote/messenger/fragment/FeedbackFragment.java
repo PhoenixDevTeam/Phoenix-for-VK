@@ -116,7 +116,7 @@ public class FeedbackFragment extends PlaceSupportMvpFragment<FeedbackPresenter,
         }
 
         if (requireActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_FEEDBACK);
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(AdditionalNavigationFragment.SECTION_ITEM_FEEDBACK);
         }
 
         new ActivityFeatures.Builder()

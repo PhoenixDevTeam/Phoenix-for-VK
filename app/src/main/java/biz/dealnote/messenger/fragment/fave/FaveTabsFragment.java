@@ -23,7 +23,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
-import biz.dealnote.messenger.fragment.NavigationFragment;
+import biz.dealnote.messenger.fragment.AdditionalNavigationFragment;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
 import biz.dealnote.messenger.link.types.FaveLink;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
@@ -114,7 +114,7 @@ public class FaveTabsFragment extends BaseFragment {
         }
 
         if (requireActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_BOOKMARKS);
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(AdditionalNavigationFragment.SECTION_ITEM_BOOKMARKS);
         }
 
         new ActivityFeatures.Builder()

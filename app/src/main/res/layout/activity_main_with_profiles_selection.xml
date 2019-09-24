@@ -28,8 +28,8 @@
     <!-- Your drawer view. This can be any view, LinearLayout is just an example. As we have set fitSystemWindows=true this will be displayed under the status bar. -->
 
     <fragment xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/navigation_menu"
-        android:name="biz.dealnote.messenger.fragment.NavigationFragment"
+        android:id="@+id/additional_navigation_menu"
+        android:name="biz.dealnote.messenger.fragment.AdditionalNavigationFragment"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

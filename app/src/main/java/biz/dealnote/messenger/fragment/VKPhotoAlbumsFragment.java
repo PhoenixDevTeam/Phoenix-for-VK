@@ -268,7 +268,7 @@ public class VKPhotoAlbumsFragment extends BaseMvpFragment<PhotoAlbumsPresenter,
     public void seDrawertPhotoSectionActive(boolean active) {
         if (requireActivity() instanceof OnSectionResumeCallback) {
             if (active) {
-                ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_PHOTOS);
+                ((OnSectionResumeCallback) requireActivity()).onSectionResume(AdditionalNavigationFragment.SECTION_ITEM_PHOTOS);
             } else {
                 ((OnSectionResumeCallback) requireActivity()).onClearSelection();
             }

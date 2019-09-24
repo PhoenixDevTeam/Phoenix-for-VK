@@ -24,7 +24,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.adapter.MyFragmentStatePagerAdapter;
-import biz.dealnote.messenger.fragment.NavigationFragment;
+import biz.dealnote.messenger.fragment.AdditionalNavigationFragment;
 import biz.dealnote.messenger.fragment.search.criteria.BaseSearchCriteria;
 import biz.dealnote.messenger.fragment.search.criteria.DocumentSearchCriteria;
 import biz.dealnote.messenger.fragment.search.criteria.GroupSearchCriteria;
@@ -276,7 +276,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
                 .apply(requireActivity());
 
         if (requireActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_SEARCH);
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(AdditionalNavigationFragment.SECTION_ITEM_SEARCH);
         }
     }
 

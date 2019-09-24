@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -27,6 +28,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.dialog.ResolveDomainDialog;
 import biz.dealnote.messenger.fragment.AbsWallFragment;
+import biz.dealnote.messenger.fragment.AdditionalNavigationFragment;
 import biz.dealnote.messenger.fragment.AudioPlayerFragment;
 import biz.dealnote.messenger.fragment.AudiosFragment;
 import biz.dealnote.messenger.fragment.BrowserFragment;
@@ -61,7 +64,6 @@ import biz.dealnote.messenger.fragment.GifPagerFragment;
 import biz.dealnote.messenger.fragment.LikesFragment;
 import biz.dealnote.messenger.fragment.LogsFragement;
 import biz.dealnote.messenger.fragment.MessagesLookFragment;
-import biz.dealnote.messenger.fragment.NavigationFragment;
 import biz.dealnote.messenger.fragment.NewsfeedCommentsFragment;
 import biz.dealnote.messenger.fragment.NotificationPreferencesFragment;
 import biz.dealnote.messenger.fragment.PhotoPagerFragment;
@@ -127,8 +129,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import static biz.dealnote.messenger.util.Objects.isNull;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class MainActivity extends AppCompatActivity implements NavigationFragment.NavigationDrawerCallbacks,
-        OnSectionResumeCallback, AppStyleable, PlaceProvider, ServiceConnection {
+public class MainActivity extends AppCompatActivity implements AdditionalNavigationFragment.NavigationDrawerCallbacks,
+        OnSectionResumeCallback, AppStyleable, PlaceProvider, ServiceConnection, BottomNavigationView.OnNavigationItemSelectedListener {
 
     public static final String ACTION_MAIN = "android.intent.action.MAIN";
     public static final String ACTION_CHAT_FROM_SHORTCUT = "biz.dealnote.messenger.ACTION_CHAT_FROM_SHORTCUT";
@@ -158,7 +160,8 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
      */
     private AbsMenuItem mCurrentFrontSection;
     private Toolbar mToolbar;
-    private ViewGroup mNavigationMenu;
+    private BottomNavigationView mBottomNavigation;
+    private ViewGroup mBottomNavigationContainer;
     private MusicUtils.ServiceToken mAudioPlayServiceToken;
 
     private FragmentManager.OnBackStackChangedListener mOnBackStackChangedListener = () -> {
@@ -207,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         startActivityForResult(intent, REQUEST_ENTER_PIN);
     }
 
-    private void checkGCMRegistration() {
+    private void checkFCMRegistration() {
         if (!checkPlayServices(this)) {
             Utils.showRedTopToast(this, R.string.this_device_does_not_support_gcm);
             return;
@@ -282,15 +285,15 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
         if (extras != null) {
             if (ActivityUtils.checkInputExist(this)) {
-                mCurrentFrontSection = NavigationFragment.SECTION_ITEM_DIALOGS;
-                openDrawerPage(mCurrentFrontSection);
+                mCurrentFrontSection = AdditionalNavigationFragment.SECTION_ITEM_DIALOGS;
+                openNavigationPage(mCurrentFrontSection);
                 return true;
             }
         }
 
         if (ACTION_SEND_ATTACHMENTS.equals(action)) {
-            mCurrentFrontSection = NavigationFragment.SECTION_ITEM_DIALOGS;
-            openDrawerPage(mCurrentFrontSection);
+            mCurrentFrontSection = AdditionalNavigationFragment.SECTION_ITEM_DIALOGS;
+            openNavigationPage(mCurrentFrontSection);
             return true;
         }
 
@@ -351,7 +354,10 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
         setStatusbarColored(true, Settings.get().ui().isDarkModeEnabled(this));
 
-        mNavigationMenu = findViewById(R.id.navigation_menu);
+        mBottomNavigation = findViewById(R.id.bottom_navigation_menu);
+        mBottomNavigation.setOnNavigationItemSelectedListener(this);
+
+        mBottomNavigationContainer = findViewById(R.id.bottom_navigation_menu_container);
 
         getSupportFragmentManager().addOnBackStackChangedListener(mOnBackStackChangedListener);
         resolveToolbarNavigationIcon();
@@ -364,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 place.tryOpenWith(this);
             }
 
-            checkGCMRegistration();
+            checkFCMRegistration();
 
             if (!isAuthValid()) {
                 startAccountsActivity();
@@ -395,7 +401,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         RecentChat recentChat = new RecentChat(accountId, peer.getId(), peer.getTitle(), peer.getAvaUrl());
 
         getNavigationFragment().appendRecentChat(recentChat);
-        getNavigationFragment().refreshDrawerItems();
+        getNavigationFragment().refreshNavigationItems();
         getNavigationFragment().selectPage(recentChat);
 
         Fragment fragment = getFrontFragement();
@@ -432,7 +438,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         }
 
         if (item.getType() == AbsMenuItem.TYPE_ICON) {
-            openDrawerPage(item, clearBackStack);
+            openNavigationPage(item, clearBackStack);
         }
 
         if (item.getType() == AbsMenuItem.TYPE_RECENT_CHAT) {
@@ -442,13 +448,13 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         mTargetPage = null;
     }
 
-    private NavigationFragment getNavigationFragment() {
+    private AdditionalNavigationFragment getNavigationFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        return (NavigationFragment) fm.findFragmentById(R.id.navigation_menu);
+        return (AdditionalNavigationFragment) fm.findFragmentById(R.id.additional_navigation_menu);
     }
 
-    private void openDrawerPage(@NonNull AbsMenuItem item) {
-        openDrawerPage(item, true);
+    private void openNavigationPage(@NonNull AbsMenuItem item) {
+        openNavigationPage(item, true);
     }
 
     private void startAccountsActivity() {
@@ -469,19 +475,19 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         Logger.d(TAG, "Back stack was cleared");
     }
 
-    private void openDrawerPage(@NonNull AbsMenuItem item, boolean clearBackStack) {
+    private void openNavigationPage(@NonNull AbsMenuItem item, boolean clearBackStack) {
         if (item.getType() == AbsMenuItem.TYPE_RECENT_CHAT) {
             openRecentChat((RecentChat) item);
             return;
         }
 
         SectionMenuItem sectionDrawerItem = (SectionMenuItem) item;
-        if (sectionDrawerItem.getSection() == NavigationFragment.PAGE_ACCOUNTS) {
+        if (sectionDrawerItem.getSection() == AdditionalNavigationFragment.PAGE_ACCOUNTS) {
             startAccountsActivity();
             return;
         }
 
-        if (sectionDrawerItem.getSection() == NavigationFragment.PAGE_BUY_FULL_APP) {
+        if (sectionDrawerItem.getSection() == AdditionalNavigationFragment.PAGE_BUY_FULL_APP) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(PreferencesFragment.FULL_APP_URL));
             startActivity(browserIntent);
             return;
@@ -496,44 +502,46 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
         final int aid = mAccountId;
 
+//        PlaceFactory.getDialogsPlace(aid, aid, null)
+
         switch (sectionDrawerItem.getSection()) {
-            case NavigationFragment.PAGE_DIALOGS:
+            case AdditionalNavigationFragment.PAGE_DIALOGS:
                 openPlace(PlaceFactory.getDialogsPlace(aid, aid, null));
                 break;
-            case NavigationFragment.PAGE_FRIENDS:
+            case AdditionalNavigationFragment.PAGE_FRIENDS:
                 openPlace(PlaceFactory.getFriendsFollowersPlace(aid, aid, FriendsTabsFragment.TAB_ALL_FRIENDS, null));
                 break;
-            case NavigationFragment.PAGE_GROUPS:
+            case AdditionalNavigationFragment.PAGE_GROUPS:
                 openPlace(PlaceFactory.getCommunitiesPlace(aid, aid));
                 break;
-            case NavigationFragment.PAGE_PREFERENSES:
+            case AdditionalNavigationFragment.PAGE_PREFERENSES:
                 openPlace(PlaceFactory.getPreferencesPlace(aid));
                 break;
-            case NavigationFragment.PAGE_MUSIC:
+            case AdditionalNavigationFragment.PAGE_MUSIC:
                 openPlace(PlaceFactory.getAudiosPlace(aid, aid));
                 break;
-            case NavigationFragment.PAGE_DOCUMENTS:
+            case AdditionalNavigationFragment.PAGE_DOCUMENTS:
                 openPlace(PlaceFactory.getDocumentsPlace(aid, aid, DocsListPresenter.ACTION_SHOW));
                 break;
-            case NavigationFragment.PAGE_FEED:
+            case AdditionalNavigationFragment.PAGE_FEED:
                 openPlace(PlaceFactory.getFeedPlace(aid));
                 break;
-            case NavigationFragment.PAGE_NOTIFICATION:
+            case AdditionalNavigationFragment.PAGE_NOTIFICATION:
                 openPlace(PlaceFactory.getNotificationsPlace(aid));
                 break;
-            case NavigationFragment.PAGE_PHOTOS:
+            case AdditionalNavigationFragment.PAGE_PHOTOS:
                 openPlace(PlaceFactory.getVKPhotoAlbumsPlace(aid, aid, VKPhotosFragment.ACTION_SHOW_PHOTOS, null));
                 break;
-            case NavigationFragment.PAGE_VIDEOS:
+            case AdditionalNavigationFragment.PAGE_VIDEOS:
                 openPlace(PlaceFactory.getVideosPlace(aid, aid, VideosFragment.ACTION_SHOW));
                 break;
-            case NavigationFragment.PAGE_BOOKMARKS:
+            case AdditionalNavigationFragment.PAGE_BOOKMARKS:
                 openPlace(PlaceFactory.getBookmarksPlace(aid, FaveTabsFragment.TAB_PHOTOS));
                 break;
-            case NavigationFragment.PAGE_SEARCH:
+            case AdditionalNavigationFragment.PAGE_SEARCH:
                 openPlace(PlaceFactory.getSearchPlace(aid, SeachTabsFragment.TAB_PEOPLE, null));
                 break;
-            case NavigationFragment.PAGE_NEWSFEED_COMMENTS:
+            case AdditionalNavigationFragment.PAGE_NEWSFEED_COMMENTS:
                 openPlace(PlaceFactory.getNewsfeedCommentsPlace(aid));
                 break;
             default:
@@ -628,7 +636,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
     @Override
     public void onBackPressed() {
-        if (getNavigationFragment().isDrawerOpen()) {
+        if (getNavigationFragment().isSheetOpen()) {
             getNavigationFragment().closeSheet();
             return;
         }
@@ -664,7 +672,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     }
 
     /* Убрать выделение в боковом меню */
-    private void resetDrawerSelection() {
+    private void resetNavigationSelection() {
         mCurrentFrontSection = null;
         getNavigationFragment().selectPage(null);
     }
@@ -679,14 +687,14 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     public void onChatResume(int accountId, int peerId, String title, String imgUrl) {
         RecentChat recentChat = new RecentChat(accountId, peerId, title, imgUrl);
         getNavigationFragment().appendRecentChat(recentChat);
-        getNavigationFragment().refreshDrawerItems();
+        getNavigationFragment().refreshNavigationItems();
         getNavigationFragment().selectPage(recentChat);
         mCurrentFrontSection = recentChat;
     }
 
     @Override
     public void onClearSelection() {
-        resetDrawerSelection();
+        resetNavigationSelection();
         mCurrentFrontSection = null;
     }
 
@@ -748,18 +756,19 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     @Override
     public void hideMenu(boolean hide) {
         if (hide) {
-            mNavigationMenu.setVisibility(View.GONE);
+            mBottomNavigationContainer.setVisibility(View.GONE);
+            getNavigationFragment().closeSheet();
         } else {
-            mNavigationMenu.setVisibility(View.VISIBLE);
+            mBottomNavigationContainer.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void openMenu(boolean open) {
 //        if (open) {
-//            mDrawerLayout.openDrawer(gravity);
+//            getNavigationFragment().openSheet();
 //        } else {
-//            mDrawerLayout.closeDrawer(gravity);
+//            getNavigationFragment().closeSheet();
 //        }
     }
 
@@ -837,8 +846,8 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 CommentEditFragment commentEditFragment = CommentEditFragment.newInstance(accountId, comment);
                 place.applyTargetingTo(commentEditFragment);
                 attachToFront(commentEditFragment);
+                break;
             }
-            break;
 
             case Place.EDIT_POST:
                 PostEditFragment postEditFragment = PostEditFragment.newInstance(args);
@@ -1060,18 +1069,16 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 attachToFront(UserBannedFragment.newInstance(args.getInt(Extra.ACCOUNT_ID)));
                 break;
 
-            case Place.DRAWER_EDIT: {
+            case Place.DRAWER_EDIT:
                 attachToFront(DrawerEditFragment.newInstance());
-            }
-            break;
+                break;
 
-            case Place.USER_DETAILS: {
+            case Place.USER_DETAILS:
                 int accountId = args.getInt(Extra.ACCOUNT_ID);
                 User user = args.getParcelable(Extra.USER);
                 UserDetails details = args.getParcelable("details");
                 attachToFront(UserDetailsFragment.newInstance(accountId, user, details));
-            }
-            break;
+                break;
 
             default:
                 throw new IllegalArgumentException("Main activity can't open this place, type: " + place.type);
@@ -1154,5 +1161,43 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 showCommunityInviteDialog();
             }
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_feed:
+                if (getNavigationFragment().isSheetOpen()) {
+                    getNavigationFragment().closeSheet();
+                }
+                openNavigationPage(AdditionalNavigationFragment.SECTION_ITEM_FEED);
+                return true;
+            case R.id.menu_search:
+                if (getNavigationFragment().isSheetOpen()) {
+                    getNavigationFragment().closeSheet();
+                }
+                openNavigationPage(AdditionalNavigationFragment.SECTION_ITEM_SEARCH);
+                return true;
+            case R.id.menu_messages:
+                if (getNavigationFragment().isSheetOpen()) {
+                    getNavigationFragment().closeSheet();
+                }
+                openNavigationPage(AdditionalNavigationFragment.SECTION_ITEM_DIALOGS);
+                return true;
+            case R.id.menu_feedback:
+                if (getNavigationFragment().isSheetOpen()) {
+                    getNavigationFragment().closeSheet();
+                }
+                openNavigationPage(AdditionalNavigationFragment.SECTION_ITEM_FEEDBACK);
+                return true;
+            case R.id.menu_other:
+                if (getNavigationFragment().isSheetOpen()) {
+                    getNavigationFragment().closeSheet();
+                } else {
+                    getNavigationFragment().openSheet();
+                }
+                return true;
+        }
+        return false;
     }
 }

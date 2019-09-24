@@ -114,7 +114,7 @@ public class VideosTabsFragment extends BaseFragment {
 
         if (requireActivity() instanceof OnSectionResumeCallback) {
             if (isMy()) {
-                ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_VIDEOS);
+                ((OnSectionResumeCallback) requireActivity()).onSectionResume(AdditionalNavigationFragment.SECTION_ITEM_VIDEOS);
             } else {
                 ((OnSectionResumeCallback) requireActivity()).onClearSelection();
             }

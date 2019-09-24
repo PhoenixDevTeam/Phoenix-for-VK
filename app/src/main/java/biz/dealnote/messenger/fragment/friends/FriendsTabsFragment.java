@@ -24,7 +24,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
-import biz.dealnote.messenger.fragment.NavigationFragment;
+import biz.dealnote.messenger.fragment.AdditionalNavigationFragment;
 import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
 import biz.dealnote.messenger.model.FriendsCounters;
@@ -157,7 +157,7 @@ public class FriendsTabsFragment extends BaseMvpFragment<FriendsTabsPresenter, I
     public void setDrawerFriendsSectionSelected(boolean selected) {
         if (requireActivity() instanceof OnSectionResumeCallback) {
             if (selected) {
-                ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_FRIENDS);
+                ((OnSectionResumeCallback) requireActivity()).onSectionResume(AdditionalNavigationFragment.SECTION_ITEM_FRIENDS);
             } else {
                 ((OnSectionResumeCallback) requireActivity()).onClearSelection();
             }

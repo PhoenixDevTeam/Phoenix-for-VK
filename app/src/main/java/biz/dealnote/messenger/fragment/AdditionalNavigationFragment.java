@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,17 +45,17 @@ import io.reactivex.disposables.CompositeDisposable;
 
 import static biz.dealnote.messenger.model.SwitchableCategory.BOOKMARKS;
 import static biz.dealnote.messenger.model.SwitchableCategory.DOCS;
-import static biz.dealnote.messenger.model.SwitchableCategory.FEEDBACK;
 import static biz.dealnote.messenger.model.SwitchableCategory.FRIENDS;
 import static biz.dealnote.messenger.model.SwitchableCategory.GROUPS;
 import static biz.dealnote.messenger.model.SwitchableCategory.MUSIC;
+import static biz.dealnote.messenger.model.SwitchableCategory.NEWSFEED_COMMENTS;
 import static biz.dealnote.messenger.model.SwitchableCategory.PHOTOS;
 import static biz.dealnote.messenger.model.SwitchableCategory.VIDEOS;
 import static biz.dealnote.messenger.util.Objects.nonNull;
 import static biz.dealnote.messenger.util.RxUtils.ignore;
 import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
 
-public class NavigationFragment extends BaseFragment implements MenuListAdapter.ActionListener {
+public class AdditionalNavigationFragment extends BaseFragment implements MenuListAdapter.ActionListener {
 
     public static final int PAGE_FRIENDS = 0;
     public static final int PAGE_DIALOGS = 1;
@@ -74,7 +73,7 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
     public static final int PAGE_SEARCH = 13;
     public static final int PAGE_NEWSFEED_COMMENTS = 14;
 
-    public static final SectionMenuItem SECTION_ITEM_FRIENDS = new IconMenuItem(PAGE_FRIENDS, R.drawable.person, R.string.friends);
+    public static final SectionMenuItem SECTION_ITEM_FRIENDS = new IconMenuItem(PAGE_FRIENDS, R.drawable.friends, R.string.friends);
     public static final SectionMenuItem SECTION_ITEM_DIALOGS = new IconMenuItem(PAGE_DIALOGS, R.drawable.email, R.string.dialogs);
     public static final SectionMenuItem SECTION_ITEM_FEED = new IconMenuItem(PAGE_FEED, R.drawable.rss, R.string.feed);
     public static final SectionMenuItem SECTION_ITEM_FEEDBACK = new IconMenuItem(PAGE_NOTIFICATION, R.drawable.heart, R.string.drawer_feedback);
@@ -101,12 +100,6 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
     private TextView tvUserName;
     private TextView tvDomain;
 
-    private ImageButton ibFeed;
-    private ImageButton ibSearch;
-    private ImageButton ibMessages;
-    private ImageButton ibFeedback;
-    private ImageButton ibOther;
-
     private List<RecentChat> mRecentChats;
     private MenuListAdapter mAdapter;
     private List<AbsMenuItem> mDrawerItems;
@@ -115,6 +108,36 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
     private int mAccountId;
 
     private IOwnersRepository ownersRepository;
+
+    private static AbsMenuItem getItemBySwitchableCategory(@SwitchableCategory int type) {
+        switch (type) {
+            case FRIENDS:
+                return SECTION_ITEM_FRIENDS;
+            case NEWSFEED_COMMENTS:
+                return SECTION_ITEM_NEWSFEED_COMMENTS;
+            case GROUPS:
+                return SECTION_ITEM_GROUPS;
+            case PHOTOS:
+                return SECTION_ITEM_PHOTOS;
+            case VIDEOS:
+                return SECTION_ITEM_VIDEOS;
+            case MUSIC:
+                return SECTION_ITEM_AUDIOS;
+            case DOCS:
+                return SECTION_ITEM_DOCS;
+            case BOOKMARKS:
+                return SECTION_ITEM_BOOKMARKS;
+        }
+
+        throw new UnsupportedOperationException();
+    }
+
+    private void onUnreadDialogsCountChange(int count) {
+        if (SECTION_ITEM_DIALOGS.getCount() != count) {
+            SECTION_ITEM_DIALOGS.setCount(count);
+            safellyNotifyDataSetChanged();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -150,37 +173,7 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         mCompositeDisposable.add(Settings.get().drawerSettings()
                 .observeChanges()
                 .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(o -> refreshDrawerItems()));
-    }
-
-    private void onUnreadDialogsCountChange(int count) {
-        if (SECTION_ITEM_DIALOGS.getCount() != count) {
-            SECTION_ITEM_DIALOGS.setCount(count);
-            safellyNotifyDataSetChanged();
-        }
-    }
-
-    private static AbsMenuItem getItemBySwitchableCategory(@SwitchableCategory int type) {
-        switch (type) {
-            case FRIENDS:
-                return SECTION_ITEM_FRIENDS;
-            case FEEDBACK:
-                return SECTION_ITEM_FEEDBACK;
-            case GROUPS:
-                return SECTION_ITEM_GROUPS;
-            case PHOTOS:
-                return SECTION_ITEM_PHOTOS;
-            case VIDEOS:
-                return SECTION_ITEM_VIDEOS;
-            case MUSIC:
-                return SECTION_ITEM_AUDIOS;
-            case DOCS:
-                return SECTION_ITEM_DOCS;
-            case BOOKMARKS:
-                return SECTION_ITEM_BOOKMARKS;
-        }
-
-        throw new UnsupportedOperationException();
+                .subscribe(o -> refreshNavigationItems()));
     }
 
     private void refreshUserInfo() {
@@ -210,46 +203,15 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         tvUserName = root.findViewById(R.id.header_navi_menu_username);
         tvDomain = root.findViewById(R.id.header_navi_menu_usernick);
 
-        ibFeed = root.findViewById(R.id.menu_feed);
-        ibSearch = root.findViewById(R.id.menu_search);
-        ibMessages = root.findViewById(R.id.menu_messages);
-        ibFeedback = root.findViewById(R.id.menu_feedback);
-        ibOther = root.findViewById(R.id.menu_other);
-
-        ibFeed.setOnClickListener(e -> {
-            closeSheet();
-            openMyFeed();
-        });
-        ibSearch.setOnClickListener(e -> {
-            closeSheet();
-            openSearch();
-        });
-        ibMessages.setOnClickListener(e -> {
-            closeSheet();
-            openMyMessages();
-        });
-        ibFeedback.setOnClickListener(e -> {
-            closeSheet();
-            openMyFeedback();
-        });
-        ibOther.setOnClickListener(e -> {
-            if (isDrawerOpen()) {
-                closeSheet();
-            } else {
-                openSheet();
-            }
-        });
-
         mDrawerItems = new ArrayList<>();
         mDrawerItems.addAll(generateNavDrawerItems());
 
         mAdapter = new MenuListAdapter(requireActivity(), mDrawerItems, this);
 
         mBottomSheetBehavior = BottomSheetBehavior.from(root.findViewById(R.id.bottom_sheet));
+        closeSheet();
 
         recyclerView.setAdapter(mAdapter);
-
-        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         refreshUserInfo();
 
@@ -261,39 +223,11 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         return root;
     }
 
-    private void openMyFeed() {
-        if (mAccountId == ISettings.IAccountsSettings.INVALID_ID) {
-            return;
-        }
-        PlaceFactory.getFeedPlace(mAccountId).tryOpenWith(requireActivity());
-    }
-
-    private void openMyMessages() {
-        if (mAccountId == ISettings.IAccountsSettings.INVALID_ID) {
-            return;
-        }
-        PlaceFactory.getDialogsPlace(mAccountId, mAccountId, null).tryOpenWith(requireActivity());
-    }
-
-    private void openSearch() {
-        if (mAccountId == ISettings.IAccountsSettings.INVALID_ID) {
-            return;
-        }
-        PlaceFactory.getSearchPlace(mAccountId, 0, null).tryOpenWith(requireActivity());
-    }
-
-    public void refreshDrawerItems() {
+    public void refreshNavigationItems() {
         mDrawerItems.clear();
         mDrawerItems.addAll(generateNavDrawerItems());
 
         safellyNotifyDataSetChanged();
-    }
-
-    private void openMyFeedback() {
-        if (mAccountId == ISettings.IAccountsSettings.INVALID_ID) {
-            return;
-        }
-        PlaceFactory.getNotificationsPlace(mAccountId).tryOpenWith(requireActivity());
     }
 
     private ArrayList<AbsMenuItem> generateNavDrawerItems() {
@@ -359,7 +293,7 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
             mRecentChats.add(0, recentChat);
         }
 
-        refreshDrawerItems();
+        refreshNavigationItems();
     }
 
     private void refreshHeader(User user) {
@@ -385,7 +319,7 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
         tvUserName.setText(user.getFullName());
     }
 
-    public boolean isDrawerOpen() {
+    public boolean isSheetOpen() {
         return mBottomSheetBehavior != null && mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
     }
 
@@ -464,7 +398,7 @@ public class NavigationFragment extends BaseFragment implements MenuListAdapter.
                 .recentChats()
                 .get(mAccountId);
 
-        refreshDrawerItems();
+        refreshNavigationItems();
 
         if (mAccountId != ISettings.IAccountsSettings.INVALID_ID) {
             refreshUserInfo();

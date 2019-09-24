@@ -122,7 +122,7 @@ public class SecurityPreferencesFragment extends PreferenceFragmentCompat implem
         }
 
         if (requireActivity() instanceof OnSectionResumeCallback) {
-            ((OnSectionResumeCallback) requireActivity()).onSectionResume(NavigationFragment.SECTION_ITEM_SETTINGS);
+            ((OnSectionResumeCallback) requireActivity()).onSectionResume(AdditionalNavigationFragment.SECTION_ITEM_SETTINGS);
         }
 
         new ActivityFeatures.Builder()
