@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/chip"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="4dp"
-    android:text="@string/title"
-    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-    app:chipBackgroundColor="?colorSurface"
-    app:chipStrokeColor="?dividerColor"
-    app:chipStrokeWidth="1dp"
-    app:textAllCaps="true" />
+    android:layout_margin="8dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:contentPadding="8dp"
+    tools:ignore="UnusedAttribute">
+
+    <TextView
+        android:id="@+id/chip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:text="@string/title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:textStyle="bold"
+        app:textAllCaps="true" />
+
+</com.google.android.material.card.MaterialCardView>

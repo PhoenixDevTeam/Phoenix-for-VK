@@ -102,7 +102,7 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
             if (nonNull(activity) && nonNull(mSearchView)) {
                 int count = activity.getSupportFragmentManager().getBackStackEntryCount();
                 mSearchView.setLeftIcon(count == 1 && activity instanceof AppStyleable ?
-                        R.drawable.phoenix_drawer : R.drawable.arrow_left);
+                        R.drawable.phoenix : R.drawable.arrow_left);
             }
         } catch (Exception ignored) {
         }

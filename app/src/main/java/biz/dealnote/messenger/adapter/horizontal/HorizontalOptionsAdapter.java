@@ -1,15 +1,18 @@
 package biz.dealnote.messenger.adapter.horizontal;
 
+import android.content.Context;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.chip.Chip;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.base.RecyclerBindableAdapter;
+import biz.dealnote.messenger.settings.CurrentTheme;
 
 public class HorizontalOptionsAdapter<T extends Entry> extends RecyclerBindableAdapter<T, HorizontalOptionsAdapter.Holder> {
 
@@ -24,10 +27,14 @@ public class HorizontalOptionsAdapter<T extends Entry> extends RecyclerBindableA
         String title = item.getTitle(holder.itemView.getContext());
         String targetTitle = title.startsWith("#") ? title : "#" + title;
 
+        Context context = holder.itemView.getContext();
         holder.chip.setText(targetTitle);
-        holder.chip.setChecked(true);
+        holder.background.setCardBackgroundColor(item.isActive() ?
+                CurrentTheme.getColorPrimary(context) : CurrentTheme.getColorSurface(context));
 
-        holder.itemView.setOnClickListener(v -> listener.onOptionClick(item));
+        holder.itemView.setOnClickListener(v -> {
+            listener.onOptionClick(item);
+        });
     }
 
     @Override
@@ -42,10 +49,12 @@ public class HorizontalOptionsAdapter<T extends Entry> extends RecyclerBindableA
 
     static class Holder extends RecyclerView.ViewHolder {
 
-        Chip chip;
+        MaterialCardView background;
+        TextView chip;
 
         Holder(View itemView) {
             super(itemView);
+            background = itemView.findViewById(R.id.card_view);
             chip = itemView.findViewById(R.id.chip);
         }
     }

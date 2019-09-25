@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Base.App.DayNight" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:statusBarColor">?android:colorBackground</item>
-        <item name="android:navigationBarColor" tools:targetApi="o_mr1">?android:colorBackground
-        </item>
-        <!--        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">?dividerColor</item>-->
-        <item name="android:fontFamily">@font/open_sans</item>
-        <item name="windowActionModeOverlay">true</item>
-        <item name="actionModeBackground">?attr/colorPrimary</item>
-        <item name="statusbarNonColoredColor">#000</item>
-        <item name="toolbarElevation">@dimen/toolbar_with_elevation</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-    </style>
-
     <style name="App.DayNight" parent="Base.App.DayNight">
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:windowLightStatusBar" tools:targetApi="o_mr1">false</item>
