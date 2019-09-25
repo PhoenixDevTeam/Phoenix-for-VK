@@ -34,7 +34,6 @@ import biz.dealnote.messenger.mvp.presenter.CommunitiesPresenter;
 import biz.dealnote.messenger.mvp.view.ICommunitiesView;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Utils;
 import biz.dealnote.messenger.view.MySearchView;
@@ -103,8 +102,7 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
             if (nonNull(activity) && nonNull(mSearchView)) {
                 int count = activity.getSupportFragmentManager().getBackStackEntryCount();
                 mSearchView.setLeftIcon(count == 1 && activity instanceof AppStyleable ?
-                        CurrentTheme.getResIdFromAttribute(activity, R.attr.toolbarDrawerIcon) :
-                        CurrentTheme.getResIdFromAttribute(activity, R.attr.toolbarBackIcon));
+                        R.drawable.phoenix_drawer : R.drawable.arrow_left);
             }
         } catch (Exception ignored) {
         }

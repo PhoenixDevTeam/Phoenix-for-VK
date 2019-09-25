@@ -50,7 +50,6 @@ import biz.dealnote.messenger.mvp.presenter.CommentsPresenter;
 import biz.dealnote.messenger.mvp.view.ICommentsView;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.RoundTransformation;
 import biz.dealnote.messenger.util.Utils;
@@ -617,8 +616,7 @@ public class CommentsFragment extends PlaceSupportMvpFragment<CommentsPresenter,
 
     @DrawableRes
     private int getDirectionIcon(boolean desc) {
-        return CurrentTheme.getResIdFromAttribute(requireActivity(),
-                desc ? R.attr.toolbarDoubleUpIcon : R.attr.toolbarDoubleDownIcon);
+        return desc ? R.drawable.double_up : R.drawable.double_down;
     }
 
     @Override

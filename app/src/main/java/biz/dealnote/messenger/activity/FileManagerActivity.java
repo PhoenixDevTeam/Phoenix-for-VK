@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.FileManagerFragment;
 import biz.dealnote.messenger.listener.BackPressCallback;
@@ -27,7 +28,7 @@ public class FileManagerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         if (toolbar != null) {
-            toolbar.setNavigationIcon(CurrentTheme.getDrawableFromAttribute(this, R.attr.toolbarCloseIcon));
+            toolbar.setNavigationIcon(R.drawable.close);
             toolbar.setNavigationOnClickListener(v -> finish());
         }
 

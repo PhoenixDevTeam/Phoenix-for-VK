@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/ready"
-        android:icon="?toolbarOKIcon"
+        android:icon="@drawable/check"
         android:title="@string/ready"
+        app:iconTint="?colorOnSurface"
         app:showAsAction="ifRoom"/>
 </menu>

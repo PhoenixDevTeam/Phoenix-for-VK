@@ -44,25 +44,6 @@
 
         <item name="message_bubble_color">#313131</item>
 
-        <item name="toolbarDrawerIcon">@drawable/phoenix_drawer</item>
-        <item name="toolbarBackIcon">@drawable/arrow_left</item>
-        <item name="toolbarCloseIcon">@drawable/close</item>
-        <item name="toolbarOKIcon">@drawable/check</item>
-        <item name="toolbarPlusIcon">@drawable/plus</item>
-        <item name="toolbarSearchIcon">@drawable/magnify</item>
-        <item name="toolbarCopyIcon">@drawable/content_copy</item>
-        <item name="toolbarDeleteIcon">@drawable/delete</item>
-        <item name="toolbarUpIcon">@drawable/chevron_up</item>
-        <item name="toolbarGraphicIcon">@drawable/chart_bar</item>
-        <item name="toolbarEditIcon">@drawable/pencil</item>
-        <item name="toolbarForwardIcon">@drawable/forward</item>
-        <item name="toolbarLockIcon">@drawable/lock</item>
-        <item name="toolbarLockPlusIcon">@drawable/ic_crypt_plus_white_vector</item>
-        <item name="toolbarUnlockIcon">@drawable/unlock</item>
-        <item name="toolbarDoubleUpIcon">@drawable/double_up</item>
-        <item name="toolbarDoubleDownIcon">@drawable/double_down</item>
-        <item name="toolbarPinIcon">@drawable/pin</item>
-
         <item name="chat_background_cookies">@drawable/cookies_dark</item>
         <item name="chat_background_lines">@drawable/lines_dark</item>
         <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash</item>
@@ -75,7 +56,6 @@
         <item name="oval_avatar_background">@drawable/sel_button_round_4</item>
         <item name="message_bubble_color">#151515</item>
         <item name="quick_reply_icon_color">#FFF</item>
-        <item name="toolbarBackIcon">@drawable/arrow_left</item>
     </style>
 
 </resources>

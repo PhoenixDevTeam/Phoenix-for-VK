@@ -800,18 +800,18 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
         if (encryptionStatusVisible) {
             @AttrRes
-            var attrRes = R.attr.toolbarUnlockIcon
+            var drawableRes = R.drawable.unlock
 
             if (optionMenuSettings.get(ENCRYPTION_ENABLED, false)) {
-                attrRes = if (optionMenuSettings.get(ENCRYPTION_PLUS_ENABLED, false)) {
-                    R.attr.toolbarLockPlusIcon
+                drawableRes = if (optionMenuSettings.get(ENCRYPTION_PLUS_ENABLED, false)) {
+                    R.drawable.lock_plus
                 } else {
-                    R.attr.toolbarLockIcon
+                    R.drawable.lock
                 }
             }
 
             try {
-                encryptionStatusItem.setIcon(CurrentTheme.getResIdFromAttribute(activity, attrRes))
+                encryptionStatusItem.setIcon(drawableRes)
             } catch (e: Exception) {
                 //java.lang.NullPointerException: Attempt to invoke virtual method
                 // 'android.content.res.Resources$Theme android.app.Activity.getTheme()' on a null object reference

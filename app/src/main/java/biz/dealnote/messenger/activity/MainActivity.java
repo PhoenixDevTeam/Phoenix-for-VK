@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -22,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -236,15 +234,10 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
 
         FragmentManager manager = getSupportFragmentManager();
         if (manager.getBackStackEntryCount() > 1) {
-            Drawable backIcon = getFrontFragement() instanceof PhotoPagerFragment ||
-                    getFrontFragement() instanceof GifPagerFragment ?
-                    ContextCompat.getDrawable(this, R.drawable.arrow_left) :
-                    CurrentTheme.getDrawableFromAttribute(this, R.attr.toolbarBackIcon);
-
-            mToolbar.setNavigationIcon(backIcon);
+            mToolbar.setNavigationIcon(R.drawable.arrow_left);
             mToolbar.setNavigationOnClickListener(v -> onBackPressed());
         } else {
-            mToolbar.setNavigationIcon(CurrentTheme.getDrawableFromAttribute(this, R.attr.toolbarDrawerIcon));
+            mToolbar.setNavigationIcon(R.drawable.phoenix_drawer);
             mToolbar.setNavigationOnClickListener(v -> {
                 showCommunityInviteDialog();
             });

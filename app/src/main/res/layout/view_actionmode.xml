@@ -15,7 +15,8 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/close"
         android:padding="8dp"
-        android:src="?attr/toolbarCloseIcon" />
+        android:src="@drawable/close"
+        android:tint="?colorOnSurface" />
 
     <TextView
         android:id="@+id/actionModeTitle"
@@ -46,7 +47,8 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/edit"
             android:padding="8dp"
-            android:src="?attr/toolbarEditIcon" />
+            android:src="@drawable/pencil"
+            android:tint="?colorOnSurface" />
 
         <ImageView
             android:id="@+id/buttonPin"
@@ -56,7 +58,8 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/pin"
             android:padding="8dp"
-            android:src="?attr/toolbarPinIcon" />
+            android:src="@drawable/pin"
+            android:tint="?colorOnSurface" />
 
         <ImageView
             android:id="@+id/buttonForward"
@@ -66,7 +69,8 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/forward"
             android:padding="8dp"
-            android:src="?attr/toolbarForwardIcon" />
+            android:src="@drawable/forward"
+            android:tint="?colorOnSurface" />
 
         <ImageView
             android:id="@+id/buttonCopy"
@@ -76,7 +80,8 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/copy"
             android:padding="8dp"
-            android:src="?attr/toolbarCopyIcon" />
+            android:src="@drawable/content_copy"
+            android:tint="?colorOnSurface" />
 
         <ImageView
             android:id="@+id/buttonDelete"
@@ -86,7 +91,8 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/delete"
             android:padding="8dp"
-            android:src="?attr/toolbarDeleteIcon" />
+            android:src="@drawable/delete"
+            android:tint="?colorOnSurface" />
 
     </LinearLayout>
 

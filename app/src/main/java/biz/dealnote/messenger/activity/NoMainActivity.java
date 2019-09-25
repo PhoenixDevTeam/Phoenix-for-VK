@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.settings.CurrentTheme;
@@ -56,9 +57,9 @@ public abstract class NoMainActivity extends AppCompatActivity {
 
         FragmentManager manager = getSupportFragmentManager();
         if (manager.getBackStackEntryCount() > 1) {
-            mToolbar.setNavigationIcon(CurrentTheme.getDrawableFromAttribute(this, R.attr.toolbarBackIcon));
+            mToolbar.setNavigationIcon(R.drawable.phoenix_drawer);
         } else {
-            mToolbar.setNavigationIcon(CurrentTheme.getDrawableFromAttribute(this, R.attr.toolbarCloseIcon));
+            mToolbar.setNavigationIcon(R.drawable.close);
         }
 
         mToolbar.setNavigationOnClickListener(v -> onBackPressed());

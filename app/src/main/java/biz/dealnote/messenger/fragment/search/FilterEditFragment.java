@@ -11,15 +11,16 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.SearchOptionsAdapter;
@@ -36,7 +37,6 @@ import biz.dealnote.messenger.fragment.search.options.SimpleBooleanOption;
 import biz.dealnote.messenger.fragment.search.options.SimpleNumberOption;
 import biz.dealnote.messenger.fragment.search.options.SimpleTextOption;
 import biz.dealnote.messenger.fragment.search.options.SpinnerOption;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.InputTextDialog;
 import biz.dealnote.messenger.util.Objects;
 import biz.dealnote.messenger.util.Utils;
@@ -86,7 +86,7 @@ public class FilterEditFragment extends BottomSheetDialogFragment implements Sea
         toolbar.setTitle(R.string.search_options);
 
         MenuItem saveItem = toolbar.getMenu().add(R.string.save);
-        saveItem.setIcon(CurrentTheme.getDrawableFromAttribute(requireActivity(), R.attr.toolbarOKIcon));
+        saveItem.setIcon(R.drawable.check);
         saveItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         saveItem.setOnMenuItemClickListener(menuItem -> {
             onSaveClick();

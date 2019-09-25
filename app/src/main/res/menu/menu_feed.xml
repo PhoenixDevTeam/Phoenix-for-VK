@@ -2,8 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/up"
-        android:icon="?toolbarUpIcon"
+        android:icon="@drawable/chevron_up"
         android:title="@string/up"
+        app:iconTint="?colorOnSurface"
         app:showAsAction="always"/>
 
     <item android:id="@+id/refresh"

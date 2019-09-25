@@ -19,6 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
@@ -28,17 +34,11 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.FileManagerAdapter;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.model.FileItem;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.InputTextDialog;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.Utils;
@@ -271,7 +271,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add(R.string.create_dir)
-                .setIcon(CurrentTheme.getDrawableFromAttribute(requireActivity(), R.attr.toolbarPlusIcon))
+                .setIcon(R.drawable.plus)
                 .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
                 .setOnMenuItemClickListener(item -> {
                     showTextInputDialog();

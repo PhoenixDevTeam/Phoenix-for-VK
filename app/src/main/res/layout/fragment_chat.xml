@@ -77,7 +77,7 @@
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
-                android:src="?attr/toolbarCloseIcon"
+                android:src="@drawable/close"
                 android:tint="?attr/colorOnSurface" />
 
         </RelativeLayout>

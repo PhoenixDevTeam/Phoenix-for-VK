@@ -24,8 +24,8 @@
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
-            android:src="?toolbarBackIcon"
-            android:tint="?android:textColorSecondary" />
+            android:src="@drawable/arrow_left"
+            android:tint="?colorOnSurface" />
 
         <AutoCompleteTextView
             android:id="@+id/input"

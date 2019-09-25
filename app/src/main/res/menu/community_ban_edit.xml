@@ -5,6 +5,7 @@
     <item android:id="@+id/action_save"
         app:showAsAction="always"
         android:title="@string/save"
-        android:icon="?toolbarOKIcon"/>
+        android:icon="@drawable/check"
+        app:iconTint="?colorOnSurface" />
 
 </menu>

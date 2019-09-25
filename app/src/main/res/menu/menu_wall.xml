@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_search"
-        android:icon="?toolbarSearchIcon"
+        android:icon="@drawable/magnify"
         app:showAsAction="always"
+        app:iconTint="?colorOnSurface"
         android:title="@string/search"/>
 
     <item android:title="@string/refresh"

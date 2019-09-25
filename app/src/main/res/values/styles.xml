@@ -42,25 +42,6 @@
 
         <item name="message_bubble_color">@android:color/white</item>
 
-        <item name="toolbarDrawerIcon">@drawable/phoenix_drawer_grey</item>
-        <item name="toolbarBackIcon">@drawable/arrow_left_grey</item>
-        <item name="toolbarSearchIcon">@drawable/magnify_grey</item>
-        <item name="toolbarCopyIcon">@drawable/content_copy_grey</item>
-        <item name="toolbarDeleteIcon">@drawable/delete_grey</item>
-        <item name="toolbarUpIcon">@drawable/chevron_up_grey</item>
-        <item name="toolbarGraphicIcon">@drawable/chart_bar_grey</item>
-        <item name="toolbarEditIcon">@drawable/pencil_grey</item>
-        <item name="toolbarForwardIcon">@drawable/forward_grey</item>
-        <item name="toolbarOKIcon">@drawable/check_grey600</item>
-        <item name="toolbarCloseIcon">@drawable/close_grey</item>
-        <item name="toolbarPlusIcon">@drawable/ic_plus_gray</item>
-        <item name="toolbarLockIcon">@drawable/lock_grey</item>
-        <item name="toolbarLockPlusIcon">@drawable/ic_crypt_plus_gray600_vector</item>
-        <item name="toolbarUnlockIcon">@drawable/unlock_grey</item>
-        <item name="toolbarDoubleUpIcon">@drawable/double_up_grey</item>
-        <item name="toolbarDoubleDownIcon">@drawable/double_down_grey</item>
-        <item name="toolbarPinIcon">@drawable/pin_grey</item>
-
         <item name="chat_background_cookies">@drawable/cookies_white</item>
         <item name="chat_background_lines">@drawable/lines_white</item>
 
@@ -74,7 +55,6 @@
         <item name="message_bubble_color">#ECECEC</item>
         <item name="oval_avatar_background">@drawable/sel_button_round_4_white</item>
         <item name="quick_reply_icon_color">#151515</item>
-        <item name="toolbarBackIcon">@drawable/arrow_left_grey</item>
     </style>
 
     <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">

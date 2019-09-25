@@ -56,25 +56,7 @@
 
     <attr name="oval_avatar_background" format="reference" />
 
-    <attr name="toolbarDrawerIcon" format="reference" />
-    <attr name="toolbarBackIcon" format="reference" />
-    <attr name="toolbarCloseIcon" format="reference" />
-    <attr name="toolbarOKIcon" format="reference" />
-    <attr name="toolbarPlusIcon" format="reference" />
-    <attr name="toolbarSearchIcon" format="reference" />
-    <attr name="toolbarCopyIcon" format="reference" />
-    <attr name="toolbarDeleteIcon" format="reference" />
-    <attr name="toolbarUpIcon" format="reference" />
-    <attr name="toolbarGraphicIcon" format="reference" />
-    <attr name="toolbarEditIcon" format="reference" />
-    <attr name="toolbarForwardIcon" format="reference" />
     <attr name="toolbarElevation" format="reference" />
-    <attr name="toolbarLockIcon" format="reference" />
-    <attr name="toolbarLockPlusIcon" format="reference" />
-    <attr name="toolbarUnlockIcon" format="reference" />
-    <attr name="toolbarDoubleUpIcon" format="reference" />
-    <attr name="toolbarDoubleDownIcon" format="reference" />
-    <attr name="toolbarPinIcon" format="reference" />
     <attr name="statusbarNonColoredColor" format="color" />
 
     <!-- QuickReply-->

@@ -17,7 +17,8 @@
     <ImageView
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="?toolbarOKIcon" />
+        android:src="@drawable/check"
+        android:tint="?colorOnSurface" />
 
     <TextView
         android:id="@+id/counter"

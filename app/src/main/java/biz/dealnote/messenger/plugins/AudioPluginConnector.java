@@ -3,6 +3,7 @@ package biz.dealnote.messenger.plugins;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +93,7 @@ public class AudioPluginConnector implements IAudioPluginConnector {
             if(errorCodeIndex >= 0){
                 int code = cursor.getInt(errorCodeIndex);
                 String message = cursor.getString(cursor.getColumnIndex("error_message"));
+                Log.d("ASDLogin", code + " " + message);
                 throw new AudioPluginException(code, message);
             }
         }

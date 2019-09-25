@@ -6,6 +6,7 @@
         app:showAsAction="always"
         android:title="@string/encryption_status"
         android:id="@+id/crypt_state"
+        app:iconTint="?colorOnSurface"
         android:icon="@drawable/unlock"/>
 
     <item
