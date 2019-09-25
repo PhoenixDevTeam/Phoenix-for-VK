@@ -8,9 +8,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -19,11 +24,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityUtils;
@@ -64,7 +64,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
 
     @Override
     public void displayBaseUserInfo(User user) {
-        if(isNull(mHeaderHolder)) return;
+        if (isNull(mHeaderHolder)) return;
 
         mHeaderHolder.tvName.setText(user.getFullName());
         mHeaderHolder.tvLastSeen.setText(UserInfoResolveUtil.getUserActivityLine(getContext(), user));
@@ -157,19 +157,19 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
 
     @Override
     public void displayCounters(int friends, int followers, int groups, int photos, int audios, int videos) {
-        if(nonNull(mHeaderHolder)){
+        if (nonNull(mHeaderHolder)) {
             setupCounter(mHeaderHolder.bFriends, friends);
-            setupCounter(mHeaderHolder.bFollowers, followers);
+//            setupCounter(mHeaderHolder.bFollowers, followers);
             setupCounter(mHeaderHolder.bGroups, groups);
             setupCounter(mHeaderHolder.bPhotos, photos);
-            setupCounter(mHeaderHolder.bAudios, audios);
+//            setupCounter(mHeaderHolder.bAudios, audios);
             setupCounter(mHeaderHolder.bVideos, videos);
         }
     }
 
     @Override
     public void displayUserStatus(String statusText) {
-        if(nonNull(mHeaderHolder)){
+        if (nonNull(mHeaderHolder)) {
             mHeaderHolder.tvStatus.setText(statusText);
         }
     }
@@ -215,13 +215,9 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
     }
 
     @Override
-    public void setupPrimaryActionButton(@StringRes Integer title) {
-        if (nonNull(mHeaderHolder)) {
-            if(nonNull(title)){
-                mHeaderHolder.bPrimaryAction.setText(title);
-            } else {
-                mHeaderHolder.bPrimaryAction.setText(null);
-            }
+    public void setupPrimaryActionButton(@StringRes Integer resourceId) {
+        if (nonNull(mHeaderHolder) && nonNull(resourceId)) {
+            mHeaderHolder.bPrimaryAction.setImageResource(resourceId);
         }
     }
 
@@ -261,9 +257,18 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
     }
 
     @Override
+    public void showDeleteFromFriendsMessageDialog() {
+        new MaterialAlertDialogBuilder(requireActivity())
+                .setTitle(R.string.delete_from_friends)
+                .setPositiveButton(R.string.button_yes, (dialogInterface, i) -> getPresenter().fireDeleteFromFriends())
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .show();
+    }
+
+    @Override
     public void showAvatarContextMenu(boolean canUploadAvatar) {
         String[] items;
-        if(canUploadAvatar){
+        if (canUploadAvatar) {
             items = new String[]{getString(R.string.open_photo_album), getString(R.string.upload_new_photo)};
         } else {
             items = new String[]{getString(R.string.open_photo_album)};
@@ -286,9 +291,9 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_UPLOAD_AVATAR && resultCode == Activity.RESULT_OK){
+        if (requestCode == REQUEST_UPLOAD_AVATAR && resultCode == Activity.RESULT_OK) {
             ArrayList<LocalPhoto> photos = data.getParcelableArrayListExtra(Extra.PHOTOS);
-            if(nonEmpty(photos)){
+            if (nonEmpty(photos)) {
                 getPresenter().fireNewAvatarPhotoSelected(photos.get(0));
             }
         }
@@ -326,15 +331,13 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
         OnlineView ivOnline;
 
         TextView bFriends;
-        TextView bFollowers;
         TextView bGroups;
         TextView bPhotos;
-        TextView bAudios;
         TextView bVideos;
 
         FloatingActionButton fabMessage;
-        Button bToggleInfo;
-        Button bPrimaryAction;
+        FloatingActionButton bToggleInfo;
+        FloatingActionButton bPrimaryAction;
 
         HorizontalOptionsAdapter<PostFilter> mPostFilterAdapter;
 
@@ -347,10 +350,8 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
             ivAvatar = root.findViewById(R.id.avatar);
             ivOnline = root.findViewById(R.id.header_navi_menu_online);
             bFriends = root.findViewById(R.id.fragment_user_profile_bfriends);
-            bFollowers = root.findViewById(R.id.fragment_user_profile_bfollowers);
             bGroups = root.findViewById(R.id.fragment_user_profile_bgroups);
             bPhotos = root.findViewById(R.id.fragment_user_profile_bphotos);
-            bAudios = root.findViewById(R.id.fragment_user_profile_baudios);
             bVideos = root.findViewById(R.id.fragment_user_profile_bvideos);
             fabMessage = root.findViewById(R.id.header_user_profile_fab_message);
             bToggleInfo = root.findViewById(R.id.info_btn);
@@ -370,9 +371,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
             fabMessage.setOnClickListener(v -> getPresenter().fireChatClick());
 
             root.findViewById(R.id.header_user_profile_photos_container).setOnClickListener(v -> getPresenter().fireHeaderPhotosClick());
-            root.findViewById(R.id.header_user_profile_audios_container).setOnClickListener(v -> getPresenter().fireHeaderAudiosClick());
             root.findViewById(R.id.header_user_profile_friends_container).setOnClickListener(v -> getPresenter().fireHeaderFriendsClick());
-            root.findViewById(R.id.header_user_profile_followers_container).setOnClickListener(v -> getPresenter().fireHeaderFollowersClick());
             root.findViewById(R.id.header_user_profile_groups_container).setOnClickListener(v -> getPresenter().fireHeaderGroupsClick());
             root.findViewById(R.id.header_user_profile_videos_container).setOnClickListener(v -> getPresenter().fireHeaderVideosClick());
         }

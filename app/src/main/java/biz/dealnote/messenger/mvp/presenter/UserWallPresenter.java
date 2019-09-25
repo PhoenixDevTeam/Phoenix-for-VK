@@ -2,13 +2,14 @@ package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.VKApiUser;
@@ -263,28 +264,28 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
     private void resolvePrimaryActionButton() {
         if (!isGuiReady()) return;
 
-        @StringRes
-        Integer title = null;
+        @DrawableRes
+        Integer resource = null;
         if (super.getAccountId() == ownerId) {
-            title = R.string.edit_status;
+            resource = R.drawable.pencil;
         } else {
             switch (user.getFriendStatus()) {
                 case VKApiUser.FRIEND_STATUS_IS_NOT_FRIEDND:
-                    title = R.string.add_to_friends;
+                    resource = R.drawable.person_add;
                     break;
                 case VKApiUser.FRIEND_STATUS_REQUEST_SENT:
-                    title = R.string.cancel_request;
+                    resource = R.drawable.person_wait;
                     break;
                 case VKApiUser.FRIEND_STATUS_HAS_INPUT_REQUEST:
-                    title = R.string.accept_request;
+                    resource = R.drawable.person_check;
                     break;
                 case VKApiUser.FRIEND_STATUS_IS_FRIEDND:
-                    title = R.string.delete_from_friends;
+                    resource = R.drawable.person_multiple;
                     break;
             }
         }
 
-        getView().setupPrimaryActionButton(title);
+        getView().setupPrimaryActionButton(resource);
     }
 
     public void firePrimaryActionsClick() {
@@ -300,7 +301,7 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
 
             case VKApiUser.FRIEND_STATUS_REQUEST_SENT:
             case VKApiUser.FRIEND_STATUS_IS_FRIEDND:
-                deleteFromFriends();
+                getView().showDeleteFromFriendsMessageDialog();
                 break;
 
             case VKApiUser.FRIEND_STATUS_HAS_INPUT_REQUEST:
@@ -347,7 +348,7 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
         resolvePrimaryActionButton();
     }
 
-    private void deleteFromFriends() {
+    public void fireDeleteFromFriends() {
         final int accountId = super.getAccountId();
         appendDisposable(relationshipInteractor.deleteFriends(accountId, ownerId)
                 .compose(RxUtils.applySingleIOToMainSchedulers())

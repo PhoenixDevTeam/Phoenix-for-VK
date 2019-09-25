@@ -50,7 +50,7 @@
     <dimen name="font_size_counter">14sp</dimen>
     <dimen name="font_size_additional">12sp</dimen>
 
-    <dimen name="avatar_size_big">100dp</dimen>
+    <dimen name="avatar_size_big">125dp</dimen>
     <dimen name="avatar_size_usual">48dp</dimen>
     <dimen name="avatar_size_small">40dp</dimen>
     <dimen name="avatar_size_tiny">32dp</dimen>

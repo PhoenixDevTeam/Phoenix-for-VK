@@ -84,7 +84,6 @@
                 android:id="@+id/dialog_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
                 android:gravity="start"
                 android:maxLines="3"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
