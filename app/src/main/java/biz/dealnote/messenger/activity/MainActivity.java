@@ -237,10 +237,13 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
             mToolbar.setNavigationIcon(R.drawable.arrow_left);
             mToolbar.setNavigationOnClickListener(v -> onBackPressed());
         } else {
-            mToolbar.setNavigationIcon(R.drawable.phoenix_drawer);
-            mToolbar.setNavigationOnClickListener(v -> {
-                showCommunityInviteDialog();
-            });
+            if (!isFragmentWithoutNavigation()) {
+                mToolbar.setNavigationIcon(R.drawable.phoenix_drawer);
+                mToolbar.setNavigationOnClickListener(v -> showCommunityInviteDialog());
+            } else {
+                mToolbar.setNavigationIcon(R.drawable.arrow_left);
+                mToolbar.setNavigationOnClickListener(v -> openNavigationPage(AdditionalNavigationFragment.SECTION_ITEM_FEED));
+            }
         }
     }
 
@@ -397,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
         getNavigationFragment().refreshNavigationItems();
         getNavigationFragment().selectPage(recentChat);
 
-        Fragment fragment = getFrontFragement();
+        Fragment fragment = getFrontFragment();
 
         if (fragment instanceof ChatFragment) {
             Logger.d(TAG, "Chat fragment is present. Try to re-init");
@@ -623,7 +626,7 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
         }
     }
 
-    private Fragment getFrontFragement() {
+    private Fragment getFrontFragment() {
         return getSupportFragmentManager().findFragmentById(R.id.fragment);
     }
 
@@ -634,7 +637,7 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
             return;
         }
 
-        Fragment front = getFrontFragement();
+        Fragment front = getFrontFragment();
         if (front instanceof BackPressCallback) {
             if (!(((BackPressCallback) front).onBackPressed())) {
                 return;
@@ -642,6 +645,10 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
         }
 
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            if (isFragmentWithoutNavigation()) {
+                openNavigationPage(AdditionalNavigationFragment.SECTION_ITEM_FEED);
+                return;
+            }
             if (mLastBackPressedTime < 0
                     || mLastBackPressedTime + DOUBLE_BACK_PRESSED_TIMEOUT > System.currentTimeMillis()
                     || !Settings.get().main().isNeedDoublePressToExit()) {
@@ -657,6 +664,13 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
     }
 
     protected long mLastBackPressedTime;
+
+    private boolean isFragmentWithoutNavigation() {
+        return getFrontFragment() instanceof ChatFragment ||
+                getFrontFragment() instanceof CommentsFragment ||
+                getFrontFragment() instanceof PostCreateFragment ||
+                getFrontFragment() instanceof GifPagerFragment;
+    }
 
     @Override
     public boolean onNavigateUp() {
@@ -749,8 +763,8 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
     @Override
     public void hideMenu(boolean hide) {
         if (hide) {
-            mBottomNavigationContainer.setVisibility(View.GONE);
             getNavigationFragment().closeSheet();
+            mBottomNavigationContainer.setVisibility(View.GONE);
         } else {
             mBottomNavigationContainer.setVisibility(View.VISIBLE);
         }
@@ -812,7 +826,7 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
                 break;
 
             case Place.PLAYER:
-                if (!(getFrontFragement() instanceof AudioPlayerFragment)) {
+                if (!(getFrontFragment() instanceof AudioPlayerFragment)) {
                     attachToFront(AudioPlayerFragment.newInstance(args));
                 }
                 break;
