@@ -82,7 +82,7 @@
     </style>
 
     <style name="Theme.Tablayout" parent="Widget.MaterialComponents.TabLayout">
-        <item name="android:background">?android:colorBackground</item>
+        <item name="android:background">?colorSurface</item>
         <item name="tabRippleColor">?colorPrimary</item>
         <item name="tabMode">scrollable</item>
         <item name="tabTextColor">?android:textColorPrimary</item>
@@ -91,16 +91,8 @@
     </style>
 
     <style name="Theme.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="backgroundTint">?android:colorBackground</item>
+        <item name="backgroundTint">?colorSurface</item>
         <item name="tint">?colorSecondary</item>
-    </style>
-
-    <style name="Theme.MaterialCardView" parent="Widget.MaterialComponents.CardView">
-        <item name="cardBackgroundColor">?android:colorBackground</item>
-        <item name="cardElevation">0dp</item>
-        <item name="cardCornerRadius">12dp</item>
-        <item name="strokeColor">?dividerColor</item>
-        <item name="strokeWidth">1dp</item>
     </style>
 
     <style name="ShapeAppearance.AppTheme.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">

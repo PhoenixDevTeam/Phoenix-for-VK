@@ -284,7 +284,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
         int count = requireActivity().getSupportFragmentManager().getBackStackEntryCount();
         if (mSearchView != null) {
             mSearchView.setLeftIcon(count == 1 && requireActivity() instanceof AppStyleable ?
-                    R.drawable.phoenix : R.drawable.arrow_left);
+                    R.drawable.phoenix_toolbar : R.drawable.arrow_left);
         }
     }
 
