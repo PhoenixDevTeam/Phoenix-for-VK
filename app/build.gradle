@@ -16,8 +16,8 @@ android {
         applicationId "biz.dealnote.messenger"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 50093
-        versionName '5.0.0-beta3'
+        versionCode 50094
+        versionName '5.0.0-beta4'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -121,8 +121,8 @@ allprojects {
 }
 
 ext {
-    retrofitLibraryVersion = '2.6.1'
-    okhttpLibraryVersion = '4.1.1'
+    retrofitLibraryVersion = '2.6.2'
+    okhttpLibraryVersion = '4.2.0'
 }
 
 dependencies {
