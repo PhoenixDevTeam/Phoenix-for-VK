@@ -14,67 +14,72 @@
         app:contentPadding="16dp"
         tools:ignore="UnusedAttribute">
 
-        <RelativeLayout
-            android:id="@+id/profile_data_container"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/header_group_avatar"
-                android:layout_width="@dimen/avatar_size_big"
-                android:layout_height="@dimen/avatar_size_big"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:background="@drawable/sel_button_round_5_white"
-                android:padding="1.5dp" />
+            <RelativeLayout
+                android:id="@+id/profile_data_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/header_group_avatar"
+                    android:layout_width="@dimen/avatar_size_big"
+                    android:layout_height="@dimen/avatar_size_big"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/sel_button_round_5_white"
+                    android:padding="1.5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/header_group_avatar"
+                    android:layout_toEndOf="@id/header_group_avatar"
+                    android:gravity="end"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/header_group_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="end"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <TextView
+                        android:id="@+id/header_group_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="end"
+                        android:maxLines="6"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                        android:visibility="visible" />
+
+
+                    <biz.dealnote.messenger.view.emoji.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/header_group_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="end"
+                        android:maxLines="6"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                        android:visibility="visible"
+                        emojicon:emojiconSize="20sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/header_group_avatar"
-                android:layout_toEndOf="@id/header_group_avatar"
-                android:gravity="end"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/header_group_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="end"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-                <TextView
-                    android:id="@+id/header_group_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="end"
-                    android:maxLines="6"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                    android:visibility="visible" />
-
-
-                <biz.dealnote.messenger.view.emoji.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/header_group_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="end"
-                    android:maxLines="6"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                    android:visibility="visible"
-                    emojicon:emojiconSize="20sp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/header_group_avatar"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:baselineAligned="false"
                 android:gravity="end"
                 android:orientation="horizontal">
@@ -101,38 +106,44 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:src="@drawable/email"
                     app:fabSize="mini" />
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/card_margin"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:contentPaddingLeft="@dimen/card_margin"
+        app:contentPaddingRight="@dimen/card_margin"
+        tools:ignore="UnusedAttribute">
 
-        <LinearLayout
-            android:id="@+id/profile_counter_container"
+        <HorizontalScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_gravity="center">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/header_group_members_container"
+            <LinearLayout
+                android:id="@+id/profile_counter_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:contentPadding="@dimen/card_margin"
-                tools:ignore="UnusedAttribute">
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/header_group_members_container"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/header_group_bmembers"
@@ -151,22 +162,15 @@
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/header_group_topics_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:contentPadding="@dimen/card_margin"
-                tools:ignore="UnusedAttribute">
-
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/header_group_topics_container"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/header_group_btopics"
@@ -185,22 +189,15 @@
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/header_group_documents_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:contentPadding="@dimen/card_margin"
-                tools:ignore="UnusedAttribute">
-
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/header_group_documents_container"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/header_group_bdocuments"
@@ -219,22 +216,16 @@
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/header_group_photos_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:contentPadding="@dimen/card_margin"
-                tools:ignore="UnusedAttribute">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/header_group_photos_container"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/header_group_bphotos"
@@ -253,22 +244,15 @@
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/header_group_videos_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:contentPadding="@dimen/card_margin"
-                tools:ignore="UnusedAttribute">
-
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/header_group_videos_container"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/header_group_bvideos"
@@ -287,11 +271,11 @@
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
 
-        </LinearLayout>
+        </HorizontalScrollView>
 
-    </HorizontalScrollView>
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/post_filter_recyclerview"

@@ -14,94 +14,100 @@
         app:contentPadding="16dp"
         tools:ignore="UnusedAttribute">
 
-        <RelativeLayout
-            android:id="@+id/profile_data_container"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/fragment_user_profile_avatar_container"
-                android:layout_width="@dimen/avatar_size_big"
-                android:layout_height="@dimen/avatar_size_big"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true">
+                android:id="@+id/profile_data_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/avatar"
+                <RelativeLayout
+                    android:id="@+id/fragment_user_profile_avatar_container"
                     android:layout_width="@dimen/avatar_size_big"
                     android:layout_height="@dimen/avatar_size_big"
-                    android:background="@drawable/sel_button_round_5_white"
-                    android:padding="1.5dp" />
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true">
 
-                <biz.dealnote.messenger.view.OnlineView
-                    android:id="@+id/header_navi_menu_online"
-                    android:layout_width="@dimen/online_dot_size_big"
-                    android:layout_height="@dimen/online_dot_size_big"
-                    android:layout_alignStart="@+id/avatar"
-                    android:layout_alignBottom="@+id/avatar"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:padding="4dp"
-                    app:circle_color="?icon_color_active" />
+                    <ImageView
+                        android:id="@+id/avatar"
+                        android:layout_width="@dimen/avatar_size_big"
+                        android:layout_height="@dimen/avatar_size_big"
+                        android:background="@drawable/sel_button_round_5_white"
+                        android:padding="1.5dp" />
+
+                    <biz.dealnote.messenger.view.OnlineView
+                        android:id="@+id/header_navi_menu_online"
+                        android:layout_width="@dimen/online_dot_size_big"
+                        android:layout_height="@dimen/online_dot_size_big"
+                        android:layout_alignStart="@+id/avatar"
+                        android:layout_alignBottom="@+id/avatar"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:padding="4dp"
+                        app:circle_color="?icon_color_active" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/fragment_user_profile_avatar_container"
+                    android:layout_toEndOf="@+id/fragment_user_profile_avatar_container"
+                    android:gravity="end|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/fragment_user_profile_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="end"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        tools:text="Emin Guliev" />
+
+                    <TextView
+                        android:id="@+id/fragment_user_profile_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="end"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                        tools:text="\@ezorrio" />
+
+                    <TextView
+                        android:id="@+id/fragment_user_profile_activity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="end"
+                        android:textSize="@dimen/font_size_subtitle" />
+
+                    <biz.dealnote.messenger.view.emoji.EmojiconTextView
+                        android:id="@+id/fragment_user_profile_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="end"
+                        android:maxLines="6"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                        android:visibility="visible"
+                        app:emojiconSize="20sp"
+                        tools:text="It is my status :D" />
+
+                </LinearLayout>
 
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/fragment_user_profile_avatar_container"
-                android:layout_toEndOf="@+id/fragment_user_profile_avatar_container"
-                android:gravity="end|center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/fragment_user_profile_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="end"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    tools:text="Emin Guliev" />
-
-                <TextView
-                    android:id="@+id/fragment_user_profile_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="end"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                    tools:text="\@ezorrio" />
-
-                <TextView
-                    android:id="@+id/fragment_user_profile_activity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="end"
-                    android:textSize="@dimen/font_size_subtitle" />
-
-                <biz.dealnote.messenger.view.emoji.EmojiconTextView
-                    android:id="@+id/fragment_user_profile_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="end"
-                    android:maxLines="6"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                    android:visibility="visible"
-                    app:emojiconSize="20sp"
-                    tools:text="It is my status :D" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/fragment_user_profile_avatar_container"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:baselineAligned="false"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -128,37 +134,43 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_horisontal_dots"
                     app:fabSize="mini" />
 
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
 
     </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
-        android:id="@+id/profile_counter_container"
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="@dimen/card_margin"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:contentPaddingLeft="@dimen/card_margin"
+        app:contentPaddingRight="@dimen/card_margin"
+        tools:ignore="UnusedAttribute">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/profile_counter_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:layout_weight="1"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:contentPadding="@dimen/card_margin"
-            tools:ignore="UnusedAttribute">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/header_user_profile_friends_container"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/fragment_user_profile_bfriends"
@@ -178,23 +190,14 @@
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:layout_weight="1"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:contentPadding="@dimen/card_margin"
-            tools:ignore="UnusedAttribute">
-
             <LinearLayout
                 android:id="@+id/header_user_profile_groups_container"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/fragment_user_profile_bgroups"
@@ -212,23 +215,16 @@
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:layout_weight="1"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:contentPadding="@dimen/card_margin"
-            tools:ignore="UnusedAttribute">
-
             <LinearLayout
                 android:id="@+id/header_user_profile_photos_container"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/fragment_user_profile_bphotos"
@@ -247,23 +243,15 @@
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:layout_weight="1"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:contentPadding="@dimen/card_margin"
-            tools:ignore="UnusedAttribute">
-
             <LinearLayout
                 android:id="@+id/header_user_profile_videos_container"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/fragment_user_profile_bvideos"
@@ -282,9 +270,10 @@
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/post_filter_recyclerview"
