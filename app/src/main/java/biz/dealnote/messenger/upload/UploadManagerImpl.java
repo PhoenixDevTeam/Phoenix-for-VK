@@ -7,6 +7,9 @@ import android.content.Context;
 import android.os.Build;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,8 +20,6 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
@@ -84,7 +85,7 @@ public class UploadManagerImpl implements IUploadManager {
         this.attachmentsRepository = attachmentsRepository;
         this.walls = walls;
         this.scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
-        this.timer = Flowable.interval(PROGRESS_LOOKUP_DELAY, PROGRESS_LOOKUP_DELAY, TimeUnit.MILLISECONDS);
+        this.timer = Flowable.interval(PROGRESS_LOOKUP_DELAY, PROGRESS_LOOKUP_DELAY, TimeUnit.MILLISECONDS).onBackpressureBuffer();
     }
 
     private static Upload intent2Upload(UploadIntent intent) {
@@ -161,17 +162,17 @@ public class UploadManagerImpl implements IUploadManager {
     private boolean needCreateChannel = true;
 
     private void updateNotification(List<IProgressUpdate> updates) {
-        if(nonEmpty(updates)){
+        if (nonEmpty(updates)) {
             int progress = updates.get(0).getProgress();
 
             final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            if(isNull(notificationManager)){
+            if (isNull(notificationManager)) {
                 return;
             }
 
             final NotificationCompat.Builder builder;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if(needCreateChannel){
+                if (needCreateChannel) {
                     NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, context.getString(R.string.channel_upload_files), NotificationManager.IMPORTANCE_LOW);
                     notificationManager.createNotificationChannel(channel);
                     needCreateChannel = false;
@@ -195,7 +196,7 @@ public class UploadManagerImpl implements IUploadManager {
     private void stopNotification() {
         notificationUpdateDisposable.clear();
         final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        if(nonNull(notificationManager)){
+        if (nonNull(notificationManager)) {
             notificationManager.cancel(NotificationHelper.NOTIFICATION_UPLOAD);
         }
     }
@@ -238,7 +239,7 @@ public class UploadManagerImpl implements IUploadManager {
             final Upload first = findFirstQueue();
             if (current != null) return;
 
-            if(first == null){
+            if (first == null) {
                 stopNotification();
                 return;
             }
