@@ -5,6 +5,7 @@
     <item
         android:id="@+id/direction"
         android:title="@string/direction"
+        app:iconTint="?colorOnSurface"
         app:showAsAction="always" />
 
     <item
