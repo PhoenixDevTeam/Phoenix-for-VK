@@ -28,7 +28,9 @@ public class HorizontalOptionsAdapter<T extends Entry> extends RecyclerBindableA
         String targetTitle = title.startsWith("#") ? title : "#" + title;
 
         Context context = holder.itemView.getContext();
-        holder.chip.setText(targetTitle);
+        holder.title.setText(targetTitle);
+        holder.title.setTextColor(item.isActive() ?
+                CurrentTheme.getColorOnPrimary(context) : CurrentTheme.getPrimaryTextColorCode(context));
         holder.background.setCardBackgroundColor(item.isActive() ?
                 CurrentTheme.getColorPrimary(context) : CurrentTheme.getColorSurface(context));
 
@@ -50,12 +52,12 @@ public class HorizontalOptionsAdapter<T extends Entry> extends RecyclerBindableA
     static class Holder extends RecyclerView.ViewHolder {
 
         MaterialCardView background;
-        TextView chip;
+        TextView title;
 
         Holder(View itemView) {
             super(itemView);
             background = itemView.findViewById(R.id.card_view);
-            chip = itemView.findViewById(R.id.chip);
+            title = itemView.findViewById(R.id.title);
         }
     }
 

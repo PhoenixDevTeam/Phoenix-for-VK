@@ -6,25 +6,28 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/header_root"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_margin="8dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardElevation="2dp"
+        app:contentPadding="8dp"
+        tools:ignore="UnusedAttribute">
 
         <TextView
             android:id="@+id/header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:gravity="center_vertical"
-            android:padding="12dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            tools:text="Today" />
+            android:layout_marginEnd="4dp"
+            android:text="@string/title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:textStyle="bold"
+            app:textAllCaps="true" />
 
-        <include layout="@layout/line_divider" />
-
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <RelativeLayout
         android:id="@+id/content_root"

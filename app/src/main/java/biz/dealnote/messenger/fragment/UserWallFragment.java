@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -217,7 +218,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
     @Override
     public void setupPrimaryActionButton(@StringRes Integer resourceId) {
         if (nonNull(mHeaderHolder) && nonNull(resourceId)) {
-            mHeaderHolder.bPrimaryAction.setImageResource(resourceId);
+            mHeaderHolder.bPrimaryAction.setText(resourceId);
         }
     }
 
@@ -336,8 +337,8 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
         TextView bVideos;
 
         FloatingActionButton fabMessage;
-        FloatingActionButton bToggleInfo;
-        FloatingActionButton bPrimaryAction;
+        FloatingActionButton fabMoreInfo;
+        Button bPrimaryAction;
 
         HorizontalOptionsAdapter<PostFilter> mPostFilterAdapter;
 
@@ -354,7 +355,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
             bPhotos = root.findViewById(R.id.fragment_user_profile_bphotos);
             bVideos = root.findViewById(R.id.fragment_user_profile_bvideos);
             fabMessage = root.findViewById(R.id.header_user_profile_fab_message);
-            bToggleInfo = root.findViewById(R.id.info_btn);
+            fabMoreInfo = root.findViewById(R.id.info_btn);
             bPrimaryAction = root.findViewById(R.id.subscribe_btn);
 
             RecyclerView filtersList = root.findViewById(R.id.post_filter_recyclerview);
@@ -366,7 +367,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
 
             tvStatus.setOnClickListener(v -> getPresenter().fireStatusClick());
 
-            bToggleInfo.setOnClickListener(v -> getPresenter().fireMoreInfoClick());
+            fabMoreInfo.setOnClickListener(v -> getPresenter().fireMoreInfoClick());
             bPrimaryAction.setOnClickListener(v -> getPresenter().firePrimaryActionsClick());
             fabMessage.setOnClickListener(v -> getPresenter().fireChatClick());
 

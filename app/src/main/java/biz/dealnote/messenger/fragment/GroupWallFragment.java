@@ -15,18 +15,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -245,12 +248,12 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
         setupCounter(mHeaderHolder.bMembers, members);
         setupCounter(mHeaderHolder.bDocuments, docs);
         setupCounter(mHeaderHolder.bPhotos, photos);
-        setupCounter(mHeaderHolder.bAudios, audio);
+//        setupCounter(mHeaderHolder.bAudios, audio);
         setupCounter(mHeaderHolder.bVideos, video);
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(@NotNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
         OptionMenuView optionMenuView = new OptionMenuView();
@@ -308,7 +311,6 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
             bMembers = root.findViewById(R.id.header_group_bmembers);
             bDocuments = root.findViewById(R.id.header_group_bdocuments);
             bPhotos = root.findViewById(R.id.header_group_bphotos);
-            bAudios = root.findViewById(R.id.header_group_baudios);
             bVideos = root.findViewById(R.id.header_group_bvideos);
             primaryActionButton = root.findViewById(R.id.header_group_primary_button);
             secondaryActionButton = root.findViewById(R.id.header_group_secondary_button);
@@ -328,8 +330,6 @@ public class GroupWallFragment extends AbsWallFragment<IGroupWallView, GroupWall
 
             root.findViewById(R.id.header_group_photos_container)
                     .setOnClickListener(v -> getPresenter().fireHeaderPhotosClick());
-            root.findViewById(R.id.header_group_audios_container)
-                    .setOnClickListener(v -> getPresenter().fireHeaderAudiosClick());
             root.findViewById(R.id.header_group_videos_container)
                     .setOnClickListener(v -> getPresenter().fireHeaderVideosClick());
             root.findViewById(R.id.header_group_members_container)

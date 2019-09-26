@@ -2,9 +2,9 @@ package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -264,28 +264,28 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
     private void resolvePrimaryActionButton() {
         if (!isGuiReady()) return;
 
-        @DrawableRes
-        Integer resource = null;
+        @StringRes
+        Integer title = null;
         if (super.getAccountId() == ownerId) {
-            resource = R.drawable.pencil;
+            title = R.string.edit_status;
         } else {
             switch (user.getFriendStatus()) {
                 case VKApiUser.FRIEND_STATUS_IS_NOT_FRIEDND:
-                    resource = R.drawable.person_add;
+                    title = R.string.add_to_friends;
                     break;
                 case VKApiUser.FRIEND_STATUS_REQUEST_SENT:
-                    resource = R.drawable.person_wait;
+                    title = R.string.cancel_request;
                     break;
                 case VKApiUser.FRIEND_STATUS_HAS_INPUT_REQUEST:
-                    resource = R.drawable.person_check;
+                    title = R.string.accept_request;
                     break;
                 case VKApiUser.FRIEND_STATUS_IS_FRIEDND:
-                    resource = R.drawable.person_multiple;
+                    title = R.string.delete_from_friends;
                     break;
             }
         }
 
-        getView().setupPrimaryActionButton(resource);
+        getView().setupPrimaryActionButton(title);
     }
 
     public void firePrimaryActionsClick() {

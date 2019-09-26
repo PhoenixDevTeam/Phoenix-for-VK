@@ -490,7 +490,7 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
         }
 
         mCurrentFrontSection = item;
-        getNavigationFragment().selectPage(item); // TODO NavigationFragment can bee NULL. WTF?
+        getNavigationFragment().selectPage(item);
 
         if (clearBackStack) {
             clearBackStack();
@@ -687,6 +687,25 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
     @Override
     public void onSectionResume(SectionMenuItem sectionDrawerItem) {
         getNavigationFragment().selectPage(sectionDrawerItem);
+
+        switch (sectionDrawerItem.getSection()) {
+            case AdditionalNavigationFragment.PAGE_FEED:
+                mBottomNavigation.getMenu().getItem(0).setChecked(true);
+                break;
+            case AdditionalNavigationFragment.PAGE_SEARCH:
+                mBottomNavigation.getMenu().getItem(1).setChecked(true);
+                break;
+            case AdditionalNavigationFragment.PAGE_DIALOGS:
+                mBottomNavigation.getMenu().getItem(2).setChecked(true);
+                break;
+            case AdditionalNavigationFragment.PAGE_NOTIFICATION:
+                mBottomNavigation.getMenu().getItem(3).setChecked(true);
+                break;
+            default:
+                mBottomNavigation.getMenu().getItem(4).setChecked(true);
+                break;
+        }
+
         mCurrentFrontSection = sectionDrawerItem;
     }
 

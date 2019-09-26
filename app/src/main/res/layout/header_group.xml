@@ -1,313 +1,303 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/profile_data_container"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:paddingBottom="16dp">
+        android:layout_margin="@dimen/card_margin"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:contentPadding="16dp"
+        tools:ignore="UnusedAttribute">
 
-        <ImageView
-            android:id="@+id/header_group_avatar"
-            android:layout_width="@dimen/avatar_size_big"
-            android:layout_height="@dimen/avatar_size_big"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/sel_button_round_5_white"
-            android:padding="1.5dp" />
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/profile_data_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/header_group_avatar"
-            android:layout_toEndOf="@+id/header_group_avatar"
-            android:gravity="end"
-            android:orientation="vertical"
-            android:paddingStart="8dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="12dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/header_group_name"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/header_group_avatar"
+                android:layout_width="@dimen/avatar_size_big"
+                android:layout_height="@dimen/avatar_size_big"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/sel_button_round_5_white"
+                android:padding="1.5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans_light"
+                android:layout_alignTop="@id/header_group_avatar"
+                android:layout_toEndOf="@id/header_group_avatar"
                 android:gravity="end"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/header_group_id"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/header_group_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:gravity="end"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                <TextView
+                    android:id="@+id/header_group_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:gravity="end"
+                    android:maxLines="6"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:visibility="visible" />
+
+
+                <biz.dealnote.messenger.view.emoji.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/header_group_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/open_sans_light"
+                    android:gravity="end"
+                    android:maxLines="6"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:visibility="visible"
+                    emojicon:emojiconSize="20sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans_light"
-                android:gravity="end"
-                android:maxLines="6"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                android:visibility="visible" />
-
-
-            <biz.dealnote.messenger.view.emoji.EmojiconTextView xmlns:emojicon="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/header_group_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_below="@id/header_group_avatar"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/open_sans_light"
+                android:baselineAligned="false"
                 android:gravity="end"
-                android:maxLines="6"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                android:visibility="visible"
-                emojicon:emojiconSize="20sp" />
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/header_group_primary_button"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1" />
 
-    </RelativeLayout>
+                <Button
+                    android:id="@+id/header_group_secondary_button"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1" />
 
-
-    <TableLayout
-        android:id="@+id/profile_counter_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/profile_data_container"
-        android:layout_marginBottom="2dp"
-        android:elevation="2dp"
-        android:paddingStart="12dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="4dp">
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:id="@+id/header_group_members_container"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="33"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/header_group_bmembers"
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/header_group_fab_message"
+                    style="@style/Widget.MaterialComponents.FloatingActionButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-2dp"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="center"
-                    android:text="@string/counter_followers"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
-
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/email"
+                    app:fabSize="mini" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/header_group_topics_container"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="33"
-                android:gravity="center"
-                android:orientation="vertical">
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/header_group_btopics"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+    </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-2dp"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="center"
-                    android:text="@string/counter_topics"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
-
-            </LinearLayout>
-
-            <LinearLayout
-
-                android:id="@+id/header_group_documents_container"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="33"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/header_group_bdocuments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-2dp"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="center"
-                    android:text="@string/counter_documents"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
-
-            </LinearLayout>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:id="@+id/header_group_photos_container"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="33"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/header_group_bphotos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-2dp"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="center"
-                    android:text="@string/counter_photos"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
-
-            </LinearLayout>
-
-            <LinearLayout
-
-                android:id="@+id/header_group_audios_container"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="33"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/header_group_baudios"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-2dp"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="center"
-                    android:text="@string/counter_audios"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
-
-            </LinearLayout>
-
-            <LinearLayout
-
-                android:id="@+id/header_group_videos_container"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="33"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/header_group_bvideos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-2dp"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="center"
-                    android:text="@string/counter_videos"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
-
-            </LinearLayout>
-        </TableRow>
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/profile_counter_container"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/header_group_primary_button"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/header_group_members_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:textAllCaps="true" />
+                android:layout_margin="@dimen/card_margin"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:contentPadding="@dimen/card_margin"
+                tools:ignore="UnusedAttribute">
 
-            <Button
-                android:id="@+id/header_group_secondary_button"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/header_group_bmembers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="center"
+                        android:text="@string/counter_followers"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/header_group_topics_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:textAllCaps="true"
-                android:visibility="gone" />
+                android:layout_margin="@dimen/card_margin"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:contentPadding="@dimen/card_margin"
+                tools:ignore="UnusedAttribute">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/header_group_btopics"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="center"
+                        android:text="@string/counter_topics"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/header_group_documents_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:contentPadding="@dimen/card_margin"
+                tools:ignore="UnusedAttribute">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/header_group_bdocuments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="center"
+                        android:text="@string/counter_documents"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/header_group_photos_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:contentPadding="@dimen/card_margin"
+                tools:ignore="UnusedAttribute">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/header_group_bphotos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="center"
+                        android:text="@string/counter_photos"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/header_group_videos_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:contentPadding="@dimen/card_margin"
+                tools:ignore="UnusedAttribute">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/header_group_bvideos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="center"
+                        android:text="@string/counter_videos"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
-    </TableLayout>
+
+    </HorizontalScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/post_filter_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_counter_container"
         android:scrollbars="none" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/header_group_fab_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_data_container"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="bottom|end"
-        android:layout_marginTop="-38dp"
-        android:layout_marginEnd="4dp"
-        android:src="@drawable/email"
-        app:fabSize="mini"
-        app:useCompatPadding="true" />
-
-</RelativeLayout>
-
+</LinearLayout>
 

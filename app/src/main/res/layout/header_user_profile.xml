@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/fragment_user_profile_avatar_container"
                 android:layout_toEndOf="@+id/fragment_user_profile_avatar_container"
-                android:gravity="end"
+                android:gravity="end|center_vertical"
                 android:orientation="vertical">
 
                 <TextView
@@ -95,38 +95,41 @@
                     app:emojiconSize="20sp"
                     tools:text="It is my status :D" />
 
-                <LinearLayout
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fragment_user_profile_avatar_container"
+                android:layout_marginTop="8dp"
+                android:baselineAligned="false"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/subscribe_btn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/header_user_profile_fab_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:gravity="center_vertical|end"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/email"
+                    app:fabSize="mini" />
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/subscribe_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:src="@drawable/person_add"
-                        app:fabSize="mini" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/header_user_profile_fab_message"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:src="@drawable/email"
-                        app:fabSize="mini" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/info_btn"
-                        style="@style/Widget.MaterialComponents.FloatingActionButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_horisontal_dots"
-                        app:fabSize="mini" />
-
-                </LinearLayout>
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/info_btn"
+                    style="@style/Widget.MaterialComponents.FloatingActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_horisontal_dots"
+                    app:fabSize="mini" />
 
             </LinearLayout>
 
