@@ -4,6 +4,5 @@
     <item android:id="@+id/ready"
         android:icon="@drawable/check"
         android:title="@string/ready"
-        app:iconTint="?colorOnSurface"
         app:showAsAction="ifRoom"/>
 </menu>

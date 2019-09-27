@@ -36,6 +36,13 @@
         <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash</item>
     </style>
 
+    <style name="Theme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <item name="android:tint">?colorOnSurface</item>
+        <item name="actionMenuTextColor">?colorOnSurface</item>
+        <item name="android:textColorPrimary">?colorOnSurface</item>
+        <item name="android:textColorSecondary">?colorOnSurface</item>
+    </style>
+
     <style name="QuickReply" parent="Theme.MaterialComponents.Dialog">
         <item name="android:background">#1F2226</item>
         <item name="windowActionBar">false</item>

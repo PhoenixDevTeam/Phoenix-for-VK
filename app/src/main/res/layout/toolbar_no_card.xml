@@ -5,5 +5,5 @@
     android:layout_height="48dp"
     android:clipToPadding="true"
     app:subtitleTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
-    app:theme="@style/Theme.Toolbar"
+    app:theme="@style/Theme.Toolbar.Surface"
     app:titleTextAppearance="@style/TextAppearance.Toolbar.Title" />

@@ -1,77 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="2dp"
-    app:cardCornerRadius="40dp"
-    app:cardElevation="2dp"
-    app:contentPadding="0dp">
 
-    <RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp">
+
+    <ImageView
+        android:id="@+id/button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/arrow_left"
+        android:tint="?colorOnSurface" />
+
+    <AutoCompleteTextView
+        android:id="@+id/input"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="10dp">
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:layout_toStartOf="@+id/right_buttons"
+        android:layout_toEndOf="@+id/button_back"
+        android:background="@null"
+        android:hint="@string/text_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="text|textAutoComplete|textNoSuggestions"
+        android:maxLines="1"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:textColorHint="?android:textColorSecondary" />
+
+    <LinearLayout
+        android:id="@+id/right_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/button_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:id="@+id/clear"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/arrow_left"
+            android:padding="10dp"
+            android:src="@drawable/close"
             android:tint="?colorOnSurface" />
 
-        <AutoCompleteTextView
-            android:id="@+id/input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:layout_toStartOf="@+id/right_buttons"
-            android:layout_toEndOf="@+id/button_back"
-            android:background="@null"
-            android:hint="@string/text_hint"
-            android:imeOptions="actionSearch"
-            android:inputType="text|textAutoComplete|textNoSuggestions"
-            android:maxLines="1"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:textColorHint="?android:textColorSecondary" />
+        <ImageView
+            android:id="@+id/additional"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:src="@drawable/dots_vertical"
+            android:tint="?colorOnSurface" />
 
-        <LinearLayout
-            android:id="@+id/right_buttons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:orientation="horizontal">
+    </LinearLayout>
 
-            <ImageView
-                android:id="@+id/clear"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="10dp"
-                android:src="@drawable/close"
-                android:tint="?android:textColorSecondary" />
-
-            <ImageView
-                android:id="@+id/additional"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="12dp"
-                android:src="@drawable/dots_vertical"
-                android:tint="?android:textColorSecondary" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</RelativeLayout>
