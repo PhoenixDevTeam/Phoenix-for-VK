@@ -10,11 +10,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.AttachmentsHolder;
@@ -857,7 +858,6 @@ public class FeedbackViewBinder {
     public void configCopyPostFeedback(CopyFeedback notification, FeedbackAdapter.UsersHolder holder) {
         Post post = (Post) notification.getWhat();
         List<Owner> users = notification.getOwners();
-        User user = (User) users.get(0);
 
         String action = genFullUsersString(users);
         action = action + SPACE + context.getString(R.string.shared_post);
@@ -894,7 +894,7 @@ public class FeedbackViewBinder {
                     .into(holder.ivAttachment);
         }
 
-        solveOwnerOpenByAvatar(holder.uAvatar, user.getId());
+        solveOwnerOpenByAvatar(holder.uAvatar, users.get(0).getOwnerId());
     }
 
     /**

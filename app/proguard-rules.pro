@@ -31,6 +31,10 @@
 -keep public class com.google.vending.licensing.ILicensingService
 -keep public class com.android.vending.licensing.ILicensingService
 
+-keep class * implements android.os.Parcelable {
+   public static final android.os.Parcelable$Creator *;
+}
+
 # For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
 -keepclasseswithmembernames class * {
     native <methods>;
@@ -54,14 +58,11 @@
     public static ** valueOf(java.lang.String);
 }
 
--keepclassmembers class * implements android.os.Parcelable {
-  public static final android.os.Parcelable$Creator CREATOR;
-}
-
 # OnGuiCreated annotation based on Java Reflection Api
 -keepclassmembers class ** {
   @biz.dealnote.mvp.reflect.OnGuiCreated *;
 }
+
 
 # -keep class !io.reactivex.**,!com.google.android.exoplayer2.** { *; }
 # -keep class !io.reactivex.**, !com.google.firebase.**, !android.support.**, !com.google.android.exoplayer2.**, !kotlin.** { *; }
