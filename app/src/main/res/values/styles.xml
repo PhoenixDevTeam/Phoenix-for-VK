@@ -65,10 +65,10 @@
     </style>
 
     <style name="Theme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
-        <item name="android:tint">?colorOnPrimary</item>
-        <item name="actionMenuTextColor">?colorOnPrimary</item>
-        <item name="android:textColorPrimary">?colorOnPrimary</item>
-        <item name="android:textColorSecondary">?colorOnPrimary</item>
+        <item name="android:tint">?colorOnSurface</item>
+        <item name="actionMenuTextColor">?colorOnSurface</item>
+        <item name="android:textColorPrimary">?colorOnSurface</item>
+        <item name="android:textColorSecondary">?colorOnSurface</item>
     </style>
 
     <style name="Theme.Toolbar.Surface" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
@@ -89,10 +89,11 @@
     </style>
 
     <style name="Theme.Tablayout" parent="Widget.MaterialComponents.TabLayout.Colored">
-        <item name="tabRippleColor">?colorOnPrimary</item>
+        <item name="tabRippleColor">?colorPrimary</item>
         <item name="tabMode">scrollable</item>
-        <item name="tabTextColor">?colorOnPrimary</item>
-        <item name="tabIndicatorColor">?colorOnPrimary</item>
+        <item name="tabTextColor">?colorOnSurface</item>
+        <item name="tabSelectedTextColor">?colorPrimary</item>
+        <item name="tabIndicatorColor">?colorPrimary</item>
         <item name="enforceTextAppearance">true</item>
     </style>
 

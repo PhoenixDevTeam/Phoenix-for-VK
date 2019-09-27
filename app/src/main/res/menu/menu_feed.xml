@@ -5,12 +5,14 @@
         android:id="@+id/up"
         android:icon="@drawable/chevron_up"
         android:title="@string/up"
+        app:iconTint="?colorOnSurface"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/refresh"
         android:icon="@drawable/refresh"
         android:title="@string/refresh"
+        app:iconTint="?colorOnSurface"
         app:showAsAction="always" />
 
 </menu>
