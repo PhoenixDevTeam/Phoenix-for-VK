@@ -6,12 +6,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
@@ -128,7 +129,7 @@ public class CommentFCMMessage {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, AppNotificationChannels.COMMENTS_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_notify_statusbar)
+                .setSmallIcon(R.drawable.phoenix_round)
                 .setLargeIcon(ownerInfo.getAvatar())
                 .setContentTitle(title)
                 .setContentText(text)

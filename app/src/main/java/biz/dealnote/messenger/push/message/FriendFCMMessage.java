@@ -7,10 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
-import com.google.firebase.messaging.RemoteMessage;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+
+import com.google.firebase.messaging.RemoteMessage;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
@@ -69,7 +70,7 @@ public class FriendFCMMessage {
             nManager.createNotificationChannel(AppNotificationChannels.getFriendRequestsChannel(context));
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, AppNotificationChannels.FRIEND_REQUESTS_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_notify_statusbar)
+                .setSmallIcon(R.drawable.phoenix_round)
                 .setLargeIcon(bitmap)
                 .setContentTitle(user.getFullName())
                 .setContentText(context.getString(R.string.subscribed_to_your_updates))

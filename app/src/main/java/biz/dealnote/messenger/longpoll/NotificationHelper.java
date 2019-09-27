@@ -10,6 +10,7 @@ import android.net.Uri;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.RemoteInput;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
@@ -70,7 +71,7 @@ public class NotificationHelper {
                 AppNotificationChannels.CHAT_MESSAGE_CHANNEL_ID;
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_notify_statusbar)
+                .setSmallIcon(R.drawable.phoenix_round)
                 .setLargeIcon(avatar)
                 .setContentTitle(peer.getTitle())
                 .setContentText(text)

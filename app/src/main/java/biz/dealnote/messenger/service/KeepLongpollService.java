@@ -13,6 +13,7 @@ import android.os.IBinder;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.longpoll.ILongpollManager;
@@ -122,7 +123,7 @@ public class KeepLongpollService extends Service {
 
         builder.setContentTitle(getString(R.string.keep_longpoll_notification_title))
                 .setContentText(getString(R.string.press_to_stop_service))
-                .setSmallIcon(R.drawable.ic_notify_statusbar)
+                .setSmallIcon(R.drawable.phoenix_round)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
                 .build();

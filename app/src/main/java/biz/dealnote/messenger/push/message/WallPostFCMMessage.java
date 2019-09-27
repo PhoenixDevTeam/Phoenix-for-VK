@@ -7,14 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
@@ -125,7 +126,7 @@ public class WallPostFCMMessage {
                     }
 
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(app, AppNotificationChannels.NEW_POST_CHANNEL_ID)
-                            .setSmallIcon(R.drawable.ic_notify_statusbar)
+                            .setSmallIcon(R.drawable.phoenix_round)
                             .setContentTitle(title)
                             .setContentText(body)
                             .setLargeIcon(info.getAvatar())
@@ -157,7 +158,7 @@ public class WallPostFCMMessage {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, AppNotificationChannels.NEW_POST_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_notify_statusbar)
+                .setSmallIcon(R.drawable.phoenix_round)
                 .setLargeIcon(avatar)
                 .setContentTitle(owner.getFullName())
                 .setContentText(context.getString(R.string.published_post_on_your_wall))

@@ -8,10 +8,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.Spannable;
 
-import com.google.firebase.messaging.RemoteMessage;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+
+import com.google.firebase.messaging.RemoteMessage;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
@@ -99,7 +100,7 @@ public class ReplyFCMMessage {
             nManager.createNotificationChannel(AppNotificationChannels.getCommentsChannel(context));
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, AppNotificationChannels.COMMENTS_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_notify_statusbar)
+                .setSmallIcon(R.drawable.phoenix_round)
                 .setLargeIcon(bitmap)
                 .setContentTitle(owner.getFullName())
                 .setContentText(targetText)

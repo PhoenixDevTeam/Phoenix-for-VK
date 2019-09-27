@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
             mToolbar.setNavigationOnClickListener(v -> onBackPressed());
         } else {
             if (!isFragmentWithoutNavigation()) {
-                mToolbar.setNavigationIcon(R.drawable.phoenix_toolbar);
+                mToolbar.setNavigationIcon(R.drawable.phoenix_round);
                 mToolbar.setNavigationOnClickListener(v -> showCommunityInviteDialog());
             } else {
                 mToolbar.setNavigationIcon(R.drawable.arrow_left);
