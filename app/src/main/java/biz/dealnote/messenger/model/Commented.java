@@ -128,7 +128,7 @@ public class Commented implements Parcelable {
         this.accessKey = in.readString();
     }
 
-    public static Creator<Commented> CREATOR = new Creator<Commented>() {
+    public static final Creator<Commented> CREATOR = new Creator<Commented>() {
         public Commented createFromParcel(Parcel source) {
             return new Commented(source);
         }
