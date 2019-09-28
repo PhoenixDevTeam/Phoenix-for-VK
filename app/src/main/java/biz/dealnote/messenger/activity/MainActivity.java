@@ -1192,24 +1192,29 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
         }
     }
 
+    private void openPageAndCloseSheet(AbsMenuItem item) {
+        if (getNavigationFragment().isSheetOpen()) {
+            getNavigationFragment().closeSheet();
+            onSheetItemSelected(item, false);
+        } else {
+            openNavigationPage(item);
+        }
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_feed:
-                getNavigationFragment().closeSheet();
-                onSheetItemSelected(AdditionalNavigationFragment.SECTION_ITEM_FEED, false);
+                openPageAndCloseSheet(AdditionalNavigationFragment.SECTION_ITEM_FEED);
                 return true;
             case R.id.menu_search:
-                getNavigationFragment().closeSheet();
-                onSheetItemSelected(AdditionalNavigationFragment.SECTION_ITEM_SEARCH, false);
+                openPageAndCloseSheet(AdditionalNavigationFragment.SECTION_ITEM_SEARCH);
                 return true;
             case R.id.menu_messages:
-                getNavigationFragment().closeSheet();
-                onSheetItemSelected(AdditionalNavigationFragment.SECTION_ITEM_DIALOGS, false);
+                openPageAndCloseSheet(AdditionalNavigationFragment.SECTION_ITEM_DIALOGS);
                 return true;
             case R.id.menu_feedback:
-                getNavigationFragment().closeSheet();
-                onSheetItemSelected(AdditionalNavigationFragment.SECTION_ITEM_FEEDBACK, false);
+                openPageAndCloseSheet(AdditionalNavigationFragment.SECTION_ITEM_FEEDBACK);
                 return true;
             case R.id.menu_other:
                 if (getNavigationFragment().isSheetOpen()) {
