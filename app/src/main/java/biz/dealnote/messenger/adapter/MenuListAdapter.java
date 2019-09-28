@@ -90,6 +90,7 @@ public class MenuListAdapter extends RecyclerBindableAdapter<AbsMenuItem, Recycl
                     .into(holder.ivChatImage);
         }
 
+        ((MaterialCardView) holder.contentRoot).setCardBackgroundColor(item.isSelected() ? colorPrimary : colorSurface);
         holder.contentRoot.setOnClickListener(v -> actionListener.onDrawerItemClick(item));
         holder.contentRoot.setOnLongClickListener(view -> {
             actionListener.onDrawerItemLongClick(item);

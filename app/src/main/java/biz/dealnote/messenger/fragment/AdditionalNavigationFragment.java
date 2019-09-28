@@ -348,6 +348,18 @@ public class AdditionalNavigationFragment extends BaseFragment implements MenuLi
         }
     }
 
+    public void unblockSheet() {
+        if (getView() != null) {
+            getView().setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void blockSheet() {
+        if (getView() != null) {
+            getView().setVisibility(View.GONE);
+        }
+    }
+
     private void selectItem(AbsMenuItem item, boolean longClick) {
         closeSheet();
 

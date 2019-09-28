@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
      */
     private AbsMenuItem mCurrentFrontSection;
     private Toolbar mToolbar;
+    private ViewGroup mSheetContainer;
     private BottomNavigationView mBottomNavigation;
     private ViewGroup mBottomNavigationContainer;
     private MusicUtils.ServiceToken mAudioPlayServiceToken;
@@ -783,9 +784,11 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
     public void hideMenu(boolean hide) {
         if (hide) {
             getNavigationFragment().closeSheet();
+            getNavigationFragment().blockSheet();
             mBottomNavigationContainer.setVisibility(View.GONE);
         } else {
             mBottomNavigationContainer.setVisibility(View.VISIBLE);
+            getNavigationFragment().unblockSheet();
         }
     }
 
@@ -1193,28 +1196,20 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_feed:
-                if (getNavigationFragment().isSheetOpen()) {
-                    getNavigationFragment().closeSheet();
-                }
-                openNavigationPage(AdditionalNavigationFragment.SECTION_ITEM_FEED);
+                getNavigationFragment().closeSheet();
+                onSheetItemSelected(AdditionalNavigationFragment.SECTION_ITEM_FEED, false);
                 return true;
             case R.id.menu_search:
-                if (getNavigationFragment().isSheetOpen()) {
-                    getNavigationFragment().closeSheet();
-                }
-                openNavigationPage(AdditionalNavigationFragment.SECTION_ITEM_SEARCH);
+                getNavigationFragment().closeSheet();
+                onSheetItemSelected(AdditionalNavigationFragment.SECTION_ITEM_SEARCH, false);
                 return true;
             case R.id.menu_messages:
-                if (getNavigationFragment().isSheetOpen()) {
-                    getNavigationFragment().closeSheet();
-                }
-                openNavigationPage(AdditionalNavigationFragment.SECTION_ITEM_DIALOGS);
+                getNavigationFragment().closeSheet();
+                onSheetItemSelected(AdditionalNavigationFragment.SECTION_ITEM_DIALOGS, false);
                 return true;
             case R.id.menu_feedback:
-                if (getNavigationFragment().isSheetOpen()) {
-                    getNavigationFragment().closeSheet();
-                }
-                openNavigationPage(AdditionalNavigationFragment.SECTION_ITEM_FEEDBACK);
+                getNavigationFragment().closeSheet();
+                onSheetItemSelected(AdditionalNavigationFragment.SECTION_ITEM_FEEDBACK, false);
                 return true;
             case R.id.menu_other:
                 if (getNavigationFragment().isSheetOpen()) {
