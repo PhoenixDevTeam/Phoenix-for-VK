@@ -17,7 +17,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 50100
-        versionName '5.0.0-rc'
+        versionName '5.0.0'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
