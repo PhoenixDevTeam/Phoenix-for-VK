@@ -27,6 +27,7 @@ public class CommentsInputViewController {
     private RelativeLayout rlEmojiContainer;
     private EmojiconsPopup emojiPopup;
     private ImageView ibEmoji;
+    private ImageView ibAttach;
 
     private boolean emojiOnScreen;
     private boolean emojiNeed;
@@ -66,7 +67,7 @@ public class CommentsInputViewController {
 
         rlEmojiContainer = rootView.findViewById(R.id.fragment_input_emoji_container);
 
-        ImageView ibAttach = rootView.findViewById(R.id.buttonAttach);
+        ibAttach = rootView.findViewById(R.id.buttonAttach);
         ibEmoji = rootView.findViewById(R.id.buttonEmoji);
 
         ibAttach.setOnClickListener(view -> callback.onAttachClick());
@@ -179,6 +180,10 @@ public class CommentsInputViewController {
         tvAttCount.setText(String.valueOf(count));
         tvAttCount.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
         tvAttCount.setTextSize(TypedValue.COMPLEX_UNIT_DIP, count > 9 ? 10 : 12);
+
+        int color = count > 0 ? mIconColorActive : mIconColorInactive;
+        tvAttCount.setTextColor(color);
+        ibAttach.getDrawable().setTint(color);
     }
 
     public boolean onBackPressed() {

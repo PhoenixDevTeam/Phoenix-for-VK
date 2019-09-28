@@ -580,7 +580,7 @@ public class CommentsFragment extends PlaceSupportMvpFragment<CommentsPresenter,
 
         new ActivityFeatures.Builder()
                 .begin()
-                .setHideNavigationMenu(false)
+                .setHideNavigationMenu(true)
                 .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());

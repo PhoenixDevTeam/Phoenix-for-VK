@@ -10,14 +10,14 @@ android {
         exclude 'META-INF/NOTICE'
     }
 
-    compileSdkVersion 29
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "biz.dealnote.messenger"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 50096
-        versionName '5.0.0-beta6'
+        targetSdkVersion 28
+        versionCode 50100
+        versionName '5.0.0-rc'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

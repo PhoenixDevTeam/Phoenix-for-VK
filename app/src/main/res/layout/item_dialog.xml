@@ -69,65 +69,73 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/avatar_root"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="6dp"
-            android:layout_toStartOf="@+id/item_chat_date"
+            android:layout_marginEnd="8dp"
             android:layout_toEndOf="@id/avatar_root"
             android:gravity="center_vertical"
             android:minHeight="42dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/dialog_title"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                tools:text="Name" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <biz.dealnote.messenger.view.emoji.EmojiconTextView
-                android:id="@+id/dialog_message"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:maxLines="3"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                app:emojiconSize="20sp"
-                tools:text="Message" />
+                <TextView
+                    android:id="@+id/dialog_title"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@id/unread_ticks"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                    tools:text="Name" />
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/unread_ticks"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_toStartOf="@id/item_chat_date"
+                    android:tint="?colorPrimary"
+                    tools:src="@drawable/check" />
 
-        <TextView
-            android:id="@+id/item_chat_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/name_message_container"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="false"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            tools:text="time" />
+                <TextView
+                    android:id="@+id/item_chat_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    tools:text="time" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/name_message_container"
-            android:layout_alignParentEnd="true"
-            android:orientation="horizontal">
+            </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/item_chat_unread_container"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@drawable/circle_back_white">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <biz.dealnote.messenger.view.emoji.EmojiconTextView
+                    android:id="@+id/dialog_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@id/item_chat_unread_count"
+                    android:gravity="start"
+                    android:maxLines="3"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    app:emojiconSize="20sp"
+                    tools:text="Message" />
 
                 <TextView
                     android:id="@+id/item_chat_unread_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/circle_back_white"
+                    android:backgroundTint="?colorPrimary"
                     android:gravity="center"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                    android:textColor="#ffffff"
+                    android:textColor="?colorOnPrimary"
                     tools:text="2" />
+
             </RelativeLayout>
+
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

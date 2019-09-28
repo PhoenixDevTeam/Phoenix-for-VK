@@ -1,8 +1,6 @@
 package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -50,8 +48,6 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
     private List<Dialog> mDialogs;
     private static final Date DATE = new Date();
     private Transformation mTransformation;
-    private int mDialogsUnreadColor;
-    private int mIconColorActiveColor;
     private ForegroundColorSpan mForegroundColorSpan;
     private long mStartOfToday;
     private RecyclerView.AdapterDataObserver mDataObserver;
@@ -60,8 +56,6 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
         this.mContext = context;
         this.mDialogs = dialogs;
         this.mTransformation = CurrentTheme.createTransformationForAvatar(context);
-        this.mDialogsUnreadColor = CurrentTheme.getDialogsUnreadColor(context);
-        this.mIconColorActiveColor = CurrentTheme.getColorPrimary(context);
         this.mForegroundColorSpan = new ForegroundColorSpan(CurrentTheme.getPrimaryTextColorCode(context));
         this.mDataObserver = new RecyclerView.AdapterDataObserver() {
             @Override
@@ -112,16 +106,19 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
             lastMessage = mContext.getString(R.string.service_message);
         }
 
-        String aurhorText = dialog.isLastMessageOut() ? mContext.getString(R.string.dialog_me) : dialog.getSenderShortName(mContext);
+        if (dialog.isChat()) {
+            String aurhorText = dialog.isLastMessageOut() ? mContext.getString(R.string.dialog_me) : dialog.getSenderShortName(mContext);
 
-        Spannable spannable = SpannableStringBuilder.valueOf(aurhorText + " - " + lastMessage);
-        spannable.setSpan(mForegroundColorSpan, 0, aurhorText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        holder.mDialogMessage.setText(spannable, TextView.BufferType.SPANNABLE);
+            Spannable spannable = SpannableStringBuilder.valueOf(aurhorText + " - " + lastMessage);
+            spannable.setSpan(mForegroundColorSpan, 0, aurhorText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.mDialogMessage.setText(spannable);
+        } else {
+            holder.mDialogMessage.setText(lastMessage);
+        }
 
         boolean lastMessageRead = dialog.isLastMessageRead();
         int titleTextStyle = getTextStyle(dialog.isChat(), dialog.isLastMessageOut(), lastMessageRead);
         holder.mDialogTitle.setTypeface(null, titleTextStyle);
-        holder.mDialogMessage.setBackgroundColor(lastMessageRead ? Color.TRANSPARENT : mDialogsUnreadColor);
 
         boolean online = false;
         boolean onlineMobile = false;
@@ -145,12 +142,14 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
             holder.ivOnline.setIcon(0);
         }
 
+        holder.ivUnreadTicks.setVisibility(dialog.isLastMessageOut() ? View.VISIBLE : View.GONE);
+        holder.ivUnreadTicks.setImageResource(lastMessageRead ? R.drawable.check_all : R.drawable.check);
+
         holder.ivOnline.setVisibility(online && !dialog.isChat() ? View.VISIBLE : View.GONE);
 
         boolean counterVisible = dialog.getUnreadCount() > 0;
         holder.tvUnreadCount.setText(AppTextUtils.getCounterWithK(dialog.getUnreadCount()));
         holder.tvUnreadCount.setVisibility(counterVisible ? View.VISIBLE : View.INVISIBLE);
-        holder.rlUnreadContainer.setVisibility(counterVisible ? View.VISIBLE : View.GONE);
 
         long lastMessageJavaTime = dialog.getLastMessageDate() * 1000;
         int headerStatus = getDivided(lastMessageJavaTime, previous == null ? null : previous.getLastMessageDate() * 1000);
@@ -274,8 +273,8 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
         TextView mDialogTitle;
         TextView mDialogMessage;
         ImageView ivAvatar;
-        ViewGroup rlUnreadContainer;
         TextView tvUnreadCount;
+        ImageView ivUnreadTicks;
         OnlineView ivOnline;
         TextView tvDate;
         View mHeaderRoot;
@@ -286,15 +285,13 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
             mContentRoot = view.findViewById(R.id.content_root);
             mDialogTitle = view.findViewById(R.id.dialog_title);
             mDialogMessage = view.findViewById(R.id.dialog_message);
+            ivUnreadTicks = view.findViewById(R.id.unread_ticks);
             ivAvatar = view.findViewById(R.id.item_chat_avatar);
-            rlUnreadContainer = view.findViewById(R.id.item_chat_unread_container);
             tvUnreadCount = view.findViewById(R.id.item_chat_unread_count);
             ivOnline = view.findViewById(R.id.item_chat_online);
             tvDate = view.findViewById(R.id.item_chat_date);
             mHeaderRoot = view.findViewById(R.id.header_root);
             mHeaderTitle = view.findViewById(R.id.header_title);
-
-            rlUnreadContainer.getBackground().setColorFilter(mIconColorActiveColor, PorterDuff.Mode.MULTIPLY);
         }
     }
 }
