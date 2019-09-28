@@ -117,6 +117,7 @@
                     android:layout_toStartOf="@id/item_chat_unread_count"
                     android:gravity="start"
                     android:maxLines="3"
+                    android:scrollbars="none"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                     app:emojiconSize="20sp"
                     tools:text="Message" />

@@ -210,6 +210,19 @@ public class AdditionalNavigationFragment extends BaseFragment implements MenuLi
         mAdapter = new MenuListAdapter(requireActivity(), mDrawerItems, this);
 
         mBottomSheetBehavior = BottomSheetBehavior.from(root.findViewById(R.id.bottom_sheet));
+        mBottomSheetBehavior.setSkipCollapsed(true);
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                if (slideOffset == -1) {
+                    mCallbacks.onSheetClosed();
+                }
+            }
+        });
         closeSheet();
 
         recyclerView.setAdapter(mAdapter);
@@ -339,7 +352,7 @@ public class AdditionalNavigationFragment extends BaseFragment implements MenuLi
         closeSheet();
 
         if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(item, longClick);
+            mCallbacks.onSheetItemSelected(item, longClick);
         }
     }
 
@@ -425,6 +438,8 @@ public class AdditionalNavigationFragment extends BaseFragment implements MenuLi
     }
 
     public interface NavigationDrawerCallbacks {
-        void onNavigationDrawerItemSelected(AbsMenuItem item, boolean longClick);
+        void onSheetItemSelected(AbsMenuItem item, boolean longClick);
+
+        void onSheetClosed();
     }
 }

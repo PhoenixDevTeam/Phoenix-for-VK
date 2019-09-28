@@ -188,6 +188,57 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
     private boolean resumed;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getDelegate().applyDayNight();
+
+        mCompositeDisposable.add(Settings.get()
+                .accounts()
+                .observeChanges()
+                .observeOn(Injection.provideMainThreadScheduler())
+                .subscribe(this::onCurrentAccountChange));
+
+        bindToAudioPlayService();
+
+        setContentView(mLayoutRes);
+
+        mAccountId = Settings.get()
+                .accounts()
+                .getCurrent();
+
+        setStatusbarColored(true, Settings.get().ui().isDarkModeEnabled(this));
+
+        mBottomNavigation = findViewById(R.id.bottom_navigation_menu);
+        mBottomNavigation.setOnNavigationItemSelectedListener(this);
+
+        mBottomNavigationContainer = findViewById(R.id.bottom_navigation_menu_container);
+
+        getSupportFragmentManager().addOnBackStackChangedListener(mOnBackStackChangedListener);
+        resolveToolbarNavigationIcon();
+
+        if (isNull(savedInstanceState)) {
+            boolean intentWasHandled = handleIntent(getIntent());
+
+            if (!intentWasHandled) {
+                Place place = Settings.get().ui().getDefaultPage(mAccountId);
+                place.tryOpenWith(this);
+            }
+
+            checkFCMRegistration();
+
+            if (!isAuthValid()) {
+                startAccountsActivity();
+            } else {
+                boolean needPin = Settings.get().security().isUsePinForEntrance()
+                        && !getIntent().getBooleanExtra(EXTRA_NO_REQUIRE_PIN, false);
+                if (needPin) {
+                    startEnterPinActivity();
+                }
+            }
+        }
+    }
+
+    @Override
     protected void onPause() {
         resumed = false;
         super.onPause();
@@ -327,57 +378,6 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
         }
 
         return false;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getDelegate().applyDayNight();
-
-        mCompositeDisposable.add(Settings.get()
-                .accounts()
-                .observeChanges()
-                .observeOn(Injection.provideMainThreadScheduler())
-                .subscribe(this::onCurrentAccountChange));
-
-        bindToAudioPlayService();
-
-        setContentView(mLayoutRes);
-
-        mAccountId = Settings.get()
-                .accounts()
-                .getCurrent();
-
-        setStatusbarColored(true, Settings.get().ui().isDarkModeEnabled(this));
-
-        mBottomNavigation = findViewById(R.id.bottom_navigation_menu);
-        mBottomNavigation.setOnNavigationItemSelectedListener(this);
-
-        mBottomNavigationContainer = findViewById(R.id.bottom_navigation_menu_container);
-
-        getSupportFragmentManager().addOnBackStackChangedListener(mOnBackStackChangedListener);
-        resolveToolbarNavigationIcon();
-
-        if (isNull(savedInstanceState)) {
-            boolean intentWasHandled = handleIntent(getIntent());
-
-            if (!intentWasHandled) {
-                Place place = Settings.get().ui().getDefaultPage(mAccountId);
-                place.tryOpenWith(this);
-            }
-
-            checkFCMRegistration();
-
-            if (!isAuthValid()) {
-                startAccountsActivity();
-            } else {
-                boolean needPin = Settings.get().security().isUsePinForEntrance()
-                        && !getIntent().getBooleanExtra(EXTRA_NO_REQUIRE_PIN, false);
-                if (needPin) {
-                    startEnterPinActivity();
-                }
-            }
-        }
     }
 
     @Override
@@ -546,18 +546,18 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(AbsMenuItem item, boolean longClick) {
+    public void onSheetItemSelected(AbsMenuItem item, boolean longClick) {
         if (mCurrentFrontSection != null && mCurrentFrontSection.equals(item)) {
             return;
         }
 
         mTargetPage = Pair.Companion.create(item, !longClick);
-
-//        if (mDrawerLayout == null) {
-        openTargetPage();
-//        }
-
         //после закрытия бокового меню откроется данная страница
+    }
+
+    @Override
+    public void onSheetClosed() {
+        postResume(MainActivity::openTargetPage);
     }
 
     @Override
