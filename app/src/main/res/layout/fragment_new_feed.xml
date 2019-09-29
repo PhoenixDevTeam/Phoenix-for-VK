@@ -1,7 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
@@ -21,6 +21,8 @@
                 android:id="@+id/fragment_feeds_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="56dp"
                 android:scrollbars="vertical" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -37,6 +39,6 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>
 
 

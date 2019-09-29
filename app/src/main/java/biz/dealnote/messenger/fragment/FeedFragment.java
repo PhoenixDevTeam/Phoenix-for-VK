@@ -118,7 +118,7 @@ public class FeedFragment extends PlaceSupportMvpFragment<FeedPresenter, IFeedVi
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        styleSwipeRefreshLayoutWithCurrentTheme(mSwipeRefreshLayout);
+        styleSwipeRefreshLayoutWithCurrentTheme(mSwipeRefreshLayout, true);
 
         if (Utils.is600dp(requireActivity())) {
             boolean land = Utils.isLandscape(requireActivity());

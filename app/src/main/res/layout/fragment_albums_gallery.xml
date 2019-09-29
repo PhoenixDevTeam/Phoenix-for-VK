@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <include layout="@layout/toolbar" />
 
@@ -21,10 +20,12 @@
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingTop="@dimen/recyclerview_toolbar_offset"
                 android:scrollbars="vertical" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/empty"
@@ -42,6 +43,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/plus"
-        app:layout_behavior="biz.dealnote.messenger.view.FABBehavior"/>
+        app:layout_behavior="biz.dealnote.messenger.view.FABBehavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

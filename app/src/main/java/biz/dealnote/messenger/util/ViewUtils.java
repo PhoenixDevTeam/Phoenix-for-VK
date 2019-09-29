@@ -115,11 +115,20 @@ public class ViewUtils {
     }
 
     public static void setupSwipeRefreshLayoutWithCurrentTheme(Activity activity, SwipeRefreshLayout swipeRefreshLayout) {
+        setupSwipeRefreshLayoutWithCurrentTheme(activity, swipeRefreshLayout, false);
+    }
+
+    public static void setupSwipeRefreshLayoutWithCurrentTheme(Activity activity, SwipeRefreshLayout swipeRefreshLayout, boolean needToolbarOffset) {
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(CurrentTheme.getMessageBackgroundSquare(activity));
 
         int primaryColor = CurrentTheme.getColorPrimary(activity);
         int accentColor = CurrentTheme.getColorSecondary(activity);
         swipeRefreshLayout.setColorSchemeColors(primaryColor, accentColor);
+        if (needToolbarOffset) {
+            swipeRefreshLayout.setProgressViewOffset(false,
+                    activity.getResources().getDimensionPixelSize(R.dimen.refresher_offset_start),
+                    activity.getResources().getDimensionPixelSize(R.dimen.refresher_offset_end));
+        }
     }
 
     public static void displayAvatar(@NonNull ImageView dest, Transformation transformation, String url, String tag, @DrawableRes int ifEmpty) {

@@ -6,15 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
@@ -48,8 +49,7 @@ public class FavePhotosFragment extends BaseMvpFragment<FavePhotosPresenter, IFa
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_photos, container, false);
-        root.findViewById(R.id.toolbar_container).setVisibility(View.GONE);
+        View root = inflater.inflate(R.layout.fragment_fave_photos, container, false);
         RecyclerView recyclerView = root.findViewById(android.R.id.list);
         mEmpty = root.findViewById(R.id.empty);
 

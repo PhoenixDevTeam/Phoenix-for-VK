@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Collections;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +14,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import java.util.Collections;
+import java.util.List;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.LocalPhotoAlbumsAdapter;
 import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
@@ -52,7 +53,7 @@ public class LocalImageAlbumsFragment extends BaseMvpFragment<LocalPhotoAlbumsPr
 
         mSwipeRefreshLayout = view.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout, true);
 
         int columnCount = getResources().getInteger(R.integer.photos_albums_column_count);
         RecyclerView.LayoutManager manager = new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);

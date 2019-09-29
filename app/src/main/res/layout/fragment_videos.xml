@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include
         layout="@layout/toolbar"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,18 +21,20 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"/>
+                android:layout_alignParentTop="true"
+                android:clipToPadding="false"
+                android:paddingTop="@dimen/recyclerview_toolbar_offset" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <TextView
             android:id="@+id/empty"
-            android:text="@string/list_is_empty"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentBottom="true"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="@string/list_is_empty" />
 
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

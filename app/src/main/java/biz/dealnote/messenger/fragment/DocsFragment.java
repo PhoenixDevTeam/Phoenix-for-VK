@@ -106,7 +106,7 @@ public class DocsFragment extends BaseMvpFragment<DocsListPresenter, IDocListVie
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout, true);
 
         mRecyclerView = root.findViewById(R.id.recycler_view);
 

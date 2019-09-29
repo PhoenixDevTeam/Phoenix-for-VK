@@ -102,8 +102,8 @@ public abstract class BaseMvpFragment<P extends AbsPresenter<V>, V extends IMvpV
         }
     }
 
-    protected void styleSwipeRefreshLayoutWithCurrentTheme(@NonNull SwipeRefreshLayout swipeRefreshLayout){
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), swipeRefreshLayout);
+    protected void styleSwipeRefreshLayoutWithCurrentTheme(@NonNull SwipeRefreshLayout swipeRefreshLayout, boolean needToolbarOffset) {
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), swipeRefreshLayout, needToolbarOffset);
     }
 
     private ProgressDialog mLoadingProgressDialog;

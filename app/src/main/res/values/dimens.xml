@@ -64,4 +64,7 @@
     <dimen name="card_corner_radius">12dp</dimen>
     <dimen name="toolbar_corner_radius">12dp</dimen>
     <dimen name="card_margin">8dp</dimen>
+    <dimen name="refresher_offset_start">40dp</dimen>
+    <dimen name="refresher_offset_end">72dp</dimen>
+    <dimen name="recyclerview_toolbar_offset">56dp</dimen>
 </resources>

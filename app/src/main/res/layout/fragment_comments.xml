@@ -13,8 +13,6 @@
 
     <FrameLayout
         android:layout_above="@+id/linearLayout"
-        android:layout_below="@id/toolbar_container"
-        android:background="?android:colorBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -38,6 +36,8 @@
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/recyclerview_toolbar_offset"
             android:scrollbars="vertical" />
 
     </FrameLayout>

@@ -89,7 +89,7 @@ public class TopicsFragment extends BaseMvpFragment<TopicsPresenter, ITopicsView
 
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout, true);
 
         fabCreate = root.findViewById(R.id.fragment_topics_create);
         fabCreate.setOnClickListener(view -> getPresenter().fireButtonCreateClick());

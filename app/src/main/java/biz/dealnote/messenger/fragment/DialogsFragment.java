@@ -107,7 +107,7 @@ public class DialogsFragment extends BaseMvpFragment<DialogsPresenter, IDialogsV
         mSwipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout, true);
 
         mFab = root.findViewById(R.id.fab);
         mFab.setOnClickListener(v -> createGroupChat());

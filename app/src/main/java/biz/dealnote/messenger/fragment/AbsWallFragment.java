@@ -108,7 +108,7 @@ public abstract class AbsWallFragment<V extends IWallView, P extends AbsWallPres
         mSwipeRefreshLayout = root.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
 
-        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
+        ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout, true);
 
         RecyclerView.LayoutManager manager;
         if (Utils.is600dp(requireActivity())) {

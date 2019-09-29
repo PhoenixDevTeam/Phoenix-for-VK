@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -20,12 +20,14 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="vertical"
-                android:background="?android:colorBackground" />
+                android:background="?android:colorBackground"
+                android:clipToPadding="false"
+                android:paddingTop="@dimen/recyclerview_toolbar_offset"
+                android:scrollbars="vertical" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <!--app:layout_anchor="@android:id/list"-->
     <!--app:layout_anchorGravity="bottom|right|end"-->
