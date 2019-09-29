@@ -9,7 +9,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorSurface"
+        android:background="@android:color/transparent"
         app:elevation="0dp">
 
         <biz.dealnote.messenger.view.MySearchView
@@ -24,7 +24,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
             app:cardCornerRadius="40dp"
             app:cardElevation="2dp"
             app:contentPadding="0dp">
