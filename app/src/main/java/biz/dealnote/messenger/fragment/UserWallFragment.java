@@ -163,7 +163,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
 //            setupCounter(mHeaderHolder.bFollowers, followers);
             setupCounter(mHeaderHolder.bGroups, groups);
             setupCounter(mHeaderHolder.bPhotos, photos);
-//            setupCounter(mHeaderHolder.bAudios, audios);
+            setupCounter(mHeaderHolder.bAudios, audios);
             setupCounter(mHeaderHolder.bVideos, videos);
         }
     }
@@ -335,6 +335,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
         TextView bGroups;
         TextView bPhotos;
         TextView bVideos;
+        TextView bAudios;
 
         FloatingActionButton fabMessage;
         FloatingActionButton fabMoreInfo;
@@ -354,6 +355,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
             bGroups = root.findViewById(R.id.fragment_user_profile_bgroups);
             bPhotos = root.findViewById(R.id.fragment_user_profile_bphotos);
             bVideos = root.findViewById(R.id.fragment_user_profile_bvideos);
+            bVideos = root.findViewById(R.id.fragment_user_profile_baudios);
             fabMessage = root.findViewById(R.id.header_user_profile_fab_message);
             fabMoreInfo = root.findViewById(R.id.info_btn);
             bPrimaryAction = root.findViewById(R.id.subscribe_btn);
@@ -373,6 +375,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
 
             root.findViewById(R.id.header_user_profile_photos_container).setOnClickListener(v -> getPresenter().fireHeaderPhotosClick());
             root.findViewById(R.id.header_user_profile_friends_container).setOnClickListener(v -> getPresenter().fireHeaderFriendsClick());
+            root.findViewById(R.id.header_user_profile_audios_container).setOnClickListener(v -> getPresenter().fireHeaderFriendsClick());
             root.findViewById(R.id.header_user_profile_groups_container).setOnClickListener(v -> getPresenter().fireHeaderGroupsClick());
             root.findViewById(R.id.header_user_profile_videos_container).setOnClickListener(v -> getPresenter().fireHeaderVideosClick());
         }

@@ -3,17 +3,13 @@ package biz.dealnote.messenger.plugins;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.dealnote.messenger.exception.NotFoundException;
 import biz.dealnote.messenger.model.Audio;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Single;
-
-import static biz.dealnote.messenger.util.Objects.isNull;
 
 /**
  * Created by admin on 2/3/2018.
@@ -58,12 +54,12 @@ public class AudioPluginConnector implements IAudioPluginConnector {
                         return;
                     }
 
-
                     int audioId = cursor.getInt(cursor.getColumnIndex("audio_id"));
                     int ownerId1 = cursor.getInt(cursor.getColumnIndex("owner_id"));
                     String title = cursor.getString(cursor.getColumnIndex("title"));
                     String artist = cursor.getString(cursor.getColumnIndex("artist"));
                     int duration = cursor.getInt(cursor.getColumnIndex("duration"));
+                    String url = cursor.getString(cursor.getColumnIndex("url"));
                     String cover = cursor.getString(cursor.getColumnIndex("cover_url"));
                     String bigCover = cursor.getString(cursor.getColumnIndex("cover_url_big"));
 
@@ -93,40 +89,9 @@ public class AudioPluginConnector implements IAudioPluginConnector {
             if(errorCodeIndex >= 0){
                 int code = cursor.getInt(errorCodeIndex);
                 String message = cursor.getString(cursor.getColumnIndex("error_message"));
-                Log.d("ASDLogin", code + " " + message);
                 throw new AudioPluginException(code, message);
             }
         }
-    }
-
-    @Override
-    public Single<String> findAudioUrl(int audioId, int ownerId) {
-        return Single.create(emitter -> {
-            Uri uri = new Uri.Builder()
-                    .scheme("content")
-                    .authority(AUTHORITY)
-                    .path("urls")
-                    .appendQueryParameter("owner_id", String.valueOf(ownerId))
-                    .appendQueryParameter("audio_id", String.valueOf(audioId))
-                    .build();
-
-            Cursor cursor = app.getContentResolver().query(uri, null, null, null, null);
-
-            String url = null;
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    url = cursor.getString(cursor.getColumnIndex("url"));
-                }
-
-                cursor.close();
-            }
-
-            if (isNull(url)) {
-                emitter.onError(new NotFoundException());
-            } else {
-                emitter.onSuccess(url);
-            }
-        });
     }
 
     @Override

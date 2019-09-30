@@ -76,10 +76,10 @@ public class AudioInteractor implements IAudioInteractor {
         return audioPluginConnector.get(ownerId, offset);
     }
 
-    @Override
-    public Single<String> findAudioUrl(int audioId, int ownerId) {
-        return audioPluginConnector.findAudioUrl(audioId, ownerId);
-    }
+//    @Override
+//    public Single<String> findAudioUrl(int audioId, int ownerId) {
+//        return audioPluginConnector.findAudioUrl(audioId, ownerId);
+//    }
 
     @Override
     public boolean isAudioPluginAvailable() {

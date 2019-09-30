@@ -52,12 +52,10 @@ import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Audio;
 import biz.dealnote.messenger.util.Logger;
-import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
-import static biz.dealnote.messenger.util.Utils.isEmpty;
 
 public class MusicPlaybackService extends Service {
 
@@ -1192,9 +1190,9 @@ public class MusicPlaybackService extends Service {
 
         /**
          * @param remoteUrl The path of the file, or the http/rtsp URL of the stream
-         *             you want to play
-         *             return True if the <code>player</code> has been prepared and is
-         *             ready to play, false otherwise
+         *                  you want to play
+         *                  return True if the <code>player</code> has been prepared and is
+         *                  ready to play, false otherwise
          */
         void setDataSource(final String remoteUrl) {
             final String url = firstNonEmptyString(remoteUrl, "https://vk.com/mp3/audio_api_unavailable.mp3");
@@ -1226,13 +1224,13 @@ public class MusicPlaybackService extends Service {
         }
 
         void setDataSource(int ownerId, int audioId, String url) {
-            if (isEmpty(url) || "https://vk.com/mp3/audio_api_unavailable.mp3".equals(url)) {
-                compositeDisposable.add(audioInteractor.findAudioUrl(audioId, ownerId)
-                        .compose(RxUtils.applySingleIOToMainSchedulers())
-                        .subscribe(this::setDataSource, ignored -> setDataSource(url)));
-            } else {
-                setDataSource(url);
-            }
+//            if (isEmpty(url) || "https://vk.com/mp3/audio_api_unavailable.mp3".equals(url)) {
+//                compositeDisposable.add(audioInteractor.findAudioUrl(audioId, ownerId)
+//                        .compose(RxUtils.applySingleIOToMainSchedulers())
+//                        .subscribe(this::setDataSource, ignored -> setDataSource(url)));
+//            } else {
+            setDataSource(url);
+//            }
         }
 
         void resetBufferPercent() {
