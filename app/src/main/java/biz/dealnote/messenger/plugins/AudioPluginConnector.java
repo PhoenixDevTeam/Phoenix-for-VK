@@ -69,6 +69,7 @@ public class AudioPluginConnector implements IAudioPluginConnector {
                             .setId(audioId)
                             .setOwnerId(ownerId1)
                             .setTitle(title)
+                            .setUrl(url)
                             .setBigCover(bigCover)
                             .setCover(cover);
 
