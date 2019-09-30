@@ -355,7 +355,7 @@ public class UserWallFragment extends AbsWallFragment<IUserWallView, UserWallPre
             bGroups = root.findViewById(R.id.fragment_user_profile_bgroups);
             bPhotos = root.findViewById(R.id.fragment_user_profile_bphotos);
             bVideos = root.findViewById(R.id.fragment_user_profile_bvideos);
-            bVideos = root.findViewById(R.id.fragment_user_profile_baudios);
+            bAudios = root.findViewById(R.id.fragment_user_profile_baudios);
             fabMessage = root.findViewById(R.id.header_user_profile_fab_message);
             fabMoreInfo = root.findViewById(R.id.info_btn);
             bPrimaryAction = root.findViewById(R.id.subscribe_btn);
