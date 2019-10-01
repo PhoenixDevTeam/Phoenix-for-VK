@@ -2,11 +2,12 @@ package biz.dealnote.messenger.place;
 
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.activity.VideoPlayerActivity;
 import biz.dealnote.messenger.dialog.ResolveDomainDialog;
@@ -40,9 +41,9 @@ import biz.dealnote.messenger.fragment.attachments.RepostFragment;
 import biz.dealnote.messenger.fragment.conversation.ConversationFragmentFactory;
 import biz.dealnote.messenger.fragment.fave.FaveTabsFragment;
 import biz.dealnote.messenger.fragment.friends.FriendsTabsFragment;
-import biz.dealnote.messenger.fragment.search.SeachTabsFragment;
 import biz.dealnote.messenger.fragment.search.SearchContentType;
-import biz.dealnote.messenger.fragment.search.SingleTabSeachFragment;
+import biz.dealnote.messenger.fragment.search.SearchTabsFragment;
+import biz.dealnote.messenger.fragment.search.SingleTabSearchFragment;
 import biz.dealnote.messenger.fragment.search.criteria.BaseSearchCriteria;
 import biz.dealnote.messenger.model.AbsModel;
 import biz.dealnote.messenger.model.Audio;
@@ -154,7 +155,7 @@ public class PlaceFactory {
 
     public static Place getSingleTabSearchPlace(int accountId, @SearchContentType int type, @Nullable BaseSearchCriteria criteria){
         return new Place(Place.SINGLE_SEARCH)
-                .setArguments(SingleTabSeachFragment.buildArgs(accountId, type, criteria));
+                .setArguments(SingleTabSearchFragment.buildArgs(accountId, type, criteria));
     }
 
     public static Place getLogsPlace(){
@@ -368,7 +369,7 @@ public class PlaceFactory {
     }
 
     public static Place getSearchPlace(int accountId, int tab, @Nullable BaseSearchCriteria criteria){
-        return new Place(Place.SEARCH).setArguments(SeachTabsFragment.buildArgs(accountId, tab, criteria));
+        return new Place(Place.SEARCH).setArguments(SearchTabsFragment.buildArgs(accountId, tab, criteria));
     }
 
     public static Place getCreatePostPlace(int accountId, int ownerId, @EditingPostType int editingType,

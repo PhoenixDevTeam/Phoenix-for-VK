@@ -25,6 +25,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.adapter.MyFragmentStatePagerAdapter;
 import biz.dealnote.messenger.fragment.AdditionalNavigationFragment;
+import biz.dealnote.messenger.fragment.search.criteria.AudioSearchCriteria;
 import biz.dealnote.messenger.fragment.search.criteria.BaseSearchCriteria;
 import biz.dealnote.messenger.fragment.search.criteria.DocumentSearchCriteria;
 import biz.dealnote.messenger.fragment.search.criteria.GroupSearchCriteria;
@@ -45,17 +46,18 @@ import biz.dealnote.messenger.view.MySearchView;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryTextListener,
+public class SearchTabsFragment extends Fragment implements MySearchView.OnQueryTextListener,
         MySearchView.OnBackButtonClickListener, MySearchView.OnAdditionalButtonClickListener {
 
-    private static final String TAG = SeachTabsFragment.class.getSimpleName();
+    public static final int TAB_AUDIOS = 3;
 
     public static final int TAB_PEOPLE = 0;
     public static final int TAB_COMMUNITIES = 1;
     public static final int TAB_NEWS = 2;
-    public static final int TAB_VIDEOS = 3;
-    public static final int TAB_MESSAGES = 4;
-    public static final int TAB_DOCUMENTS = 5;
+    public static final int TAB_VIDEOS = 4;
+    public static final int TAB_MESSAGES = 5;
+    public static final int TAB_DOCUMENTS = 6;
+    private static final String TAG = SearchTabsFragment.class.getSimpleName();
 
     public static Bundle buildArgs(int accountId, int tab, @Nullable BaseSearchCriteria criteria) {
         Bundle args = new Bundle();
@@ -65,8 +67,8 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
         return args;
     }
 
-    public static SeachTabsFragment newInstance(Bundle args) {
-        SeachTabsFragment fragment = new SeachTabsFragment();
+    public static SearchTabsFragment newInstance(Bundle args) {
+        SearchTabsFragment fragment = new SearchTabsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -329,6 +331,11 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
                             criteria instanceof GroupSearchCriteria ? (GroupSearchCriteria) criteria : null);
                     break;
 
+                case TAB_AUDIOS:
+                    fragment = AudiosSearchFragment.newInstance(accountId,
+                            criteria instanceof AudioSearchCriteria ? (AudioSearchCriteria) criteria : null);
+                    break;
+
                 case TAB_VIDEOS:
                     fragment = VideoSearchFragment.newInstance(accountId,
                             criteria instanceof VideoSearchCriteria ? (VideoSearchCriteria) criteria : null);
@@ -364,6 +371,8 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
                     return getString(R.string.people);
                 case TAB_COMMUNITIES:
                     return getString(R.string.communities);
+                case TAB_AUDIOS:
+                    return getString(R.string.audios);
                 case TAB_VIDEOS:
                     return getString(R.string.videos);
                 case TAB_DOCUMENTS:
@@ -379,7 +388,7 @@ public class SeachTabsFragment extends Fragment implements MySearchView.OnQueryT
 
         @Override
         public int getCount() {
-            return 6;
+            return 7;
         }
 
         int getRequiredBackgroundColor(int position) {

@@ -87,8 +87,8 @@ import biz.dealnote.messenger.fragment.attachments.RepostFragment;
 import biz.dealnote.messenger.fragment.conversation.ConversationFragmentFactory;
 import biz.dealnote.messenger.fragment.fave.FaveTabsFragment;
 import biz.dealnote.messenger.fragment.friends.FriendsTabsFragment;
-import biz.dealnote.messenger.fragment.search.SeachTabsFragment;
-import biz.dealnote.messenger.fragment.search.SingleTabSeachFragment;
+import biz.dealnote.messenger.fragment.search.SearchTabsFragment;
+import biz.dealnote.messenger.fragment.search.SingleTabSearchFragment;
 import biz.dealnote.messenger.link.LinkHelper;
 import biz.dealnote.messenger.listener.AppStyleable;
 import biz.dealnote.messenger.listener.BackPressCallback;
@@ -536,7 +536,7 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
                 openPlace(PlaceFactory.getBookmarksPlace(aid, FaveTabsFragment.TAB_PHOTOS));
                 break;
             case AdditionalNavigationFragment.PAGE_SEARCH:
-                openPlace(PlaceFactory.getSearchPlace(aid, SeachTabsFragment.TAB_PEOPLE, null));
+                openPlace(PlaceFactory.getSearchPlace(aid, SearchTabsFragment.TAB_PEOPLE, null));
                 break;
             case AdditionalNavigationFragment.PAGE_NEWSFEED_COMMENTS:
                 openPlace(PlaceFactory.getNewsfeedCommentsPlace(aid));
@@ -860,7 +860,7 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
                 break;
 
             case Place.SEARCH:
-                attachToFront(SeachTabsFragment.newInstance(args));
+                attachToFront(SearchTabsFragment.newInstance(args));
                 break;
 
             case Place.BUILD_NEW_POST:
@@ -1039,8 +1039,8 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
                 break;
 
             case Place.SINGLE_SEARCH:
-                SingleTabSeachFragment singleTabSeachFragment = SingleTabSeachFragment.newInstance(args);
-                attachToFront(singleTabSeachFragment);
+                SingleTabSearchFragment singleTabSearchFragment = SingleTabSearchFragment.newInstance(args);
+                attachToFront(singleTabSearchFragment);
                 break;
 
             case Place.NEWSFEED_COMMENTS:

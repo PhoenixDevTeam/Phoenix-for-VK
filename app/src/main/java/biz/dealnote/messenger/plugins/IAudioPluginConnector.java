@@ -11,5 +11,7 @@ import io.reactivex.Single;
  */
 public interface IAudioPluginConnector {
     Single<List<Audio>> get(int ownerId, int offset);
+
+    Single<List<Audio>> search(String query, boolean own, int offset);
     boolean isPluginAvailable();
 }

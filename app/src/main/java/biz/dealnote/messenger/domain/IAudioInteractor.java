@@ -20,6 +20,8 @@ public interface IAudioInteractor {
     Completable sendBroadcast(int accountId, int audioOwnerId, int audioId, @Nullable Collection<Integer> targetIds);
 
     Single<List<Audio>> get(int ownerId, int offset);
+
+    Single<List<Audio>> search(String query, boolean own, int offset);
 //    Single<String> findAudioUrl(int audioId, int ownerId);
 
     boolean isAudioPluginAvailable();

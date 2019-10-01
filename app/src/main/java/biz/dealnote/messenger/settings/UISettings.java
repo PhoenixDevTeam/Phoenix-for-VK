@@ -8,7 +8,7 @@ import android.preference.PreferenceManager;
 import biz.dealnote.messenger.fragment.PreferencesFragment;
 import biz.dealnote.messenger.fragment.fave.FaveTabsFragment;
 import biz.dealnote.messenger.fragment.friends.FriendsTabsFragment;
-import biz.dealnote.messenger.fragment.search.SeachTabsFragment;
+import biz.dealnote.messenger.fragment.search.SearchTabsFragment;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceFactory;
 
@@ -91,7 +91,7 @@ class UISettings implements ISettings.IUISettings {
                 case Place.BOOKMARKS:
                     return PlaceFactory.getBookmarksPlace(accountId, FaveTabsFragment.TAB_PHOTOS);
                 case Place.SEARCH:
-                    return PlaceFactory.getSearchPlace(accountId, SeachTabsFragment.TAB_PEOPLE, null);
+                    return PlaceFactory.getSearchPlace(accountId, SearchTabsFragment.TAB_PEOPLE, null);
                 case Place.VIDEOS:
                     return PlaceFactory.getVideosPlace(accountId, accountId, null);
                 case Place.PREFERENCES:

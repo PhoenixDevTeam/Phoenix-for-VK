@@ -24,7 +24,7 @@ import biz.dealnote.messenger.view.MySearchView;
  * Created by admin on 01.05.2017.
  * phoenix
  */
-public class SingleTabSeachFragment extends Fragment implements MySearchView.OnQueryTextListener, MySearchView.OnAdditionalButtonClickListener {
+public class SingleTabSearchFragment extends Fragment implements MySearchView.OnQueryTextListener, MySearchView.OnAdditionalButtonClickListener {
 
     public static Bundle buildArgs(int accountId, @SearchContentType int contentType, @Nullable BaseSearchCriteria criteria) {
         Bundle args = new Bundle();
@@ -34,8 +34,8 @@ public class SingleTabSeachFragment extends Fragment implements MySearchView.OnQ
         return args;
     }
 
-    public static SingleTabSeachFragment newInstance(Bundle args) {
-        SingleTabSeachFragment fragment = new SingleTabSeachFragment();
+    public static SingleTabSearchFragment newInstance(Bundle args) {
+        SingleTabSearchFragment fragment = new SingleTabSearchFragment();
         fragment.setArguments(args);
         return fragment;
     }
