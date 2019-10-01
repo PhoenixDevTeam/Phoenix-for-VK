@@ -1,27 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/additional_actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:padding="4dp">
+        android:layout_weight="6"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-        <biz.dealnote.messenger.view.CircleCounterButton
-            android:id="@+id/audio_translate"
+        <include layout="@layout/toolbar_transparent" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:contentPadding="0dp">
+
+            <biz.dealnote.messenger.view.AspectRatioImageView
+                android:id="@+id/cover"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/album_cover"
+                android:scaleType="fitStart"
+                android:src="@drawable/itunes"
+                app:aspectRatioEnabled="true"
+                app:aspectRatioH="1"
+                app:aspectRatioW="1" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/seekbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/audio_player_current_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:active="false"
-            app:active_background_color="?attr/icon_color_active"
-            app:button_icon="@drawable/ic_vk_share"
-            app:noactive_icon_color="?colorOnSurface" />
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+        <TextView
+            android:id="@+id/audio_player_total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+        <SeekBar
+            android:id="@android:id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/audio_player_current_time"
+            android:layout_marginTop="4dp"
+            android:max="1000" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/title_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <biz.dealnote.messenger.view.CircleCounterButton
             android:id="@+id/audio_add"
@@ -33,6 +96,31 @@
             app:active_background_color="?attr/icon_color_active"
             app:button_icon="@drawable/plus"
             app:noactive_icon_color="?colorOnSurface" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/audio_player_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                tools:text="Emin" />
+
+            <TextView
+                android:id="@+id/audio_player_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="Sunny" />
+
+        </LinearLayout>
 
         <biz.dealnote.messenger.view.CircleCounterButton
             android:id="@+id/audio_share"
@@ -47,23 +135,12 @@
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/additional_actions"
-        android:background="@drawable/dotted_back"
-        android:visibility="visible" />
-
     <LinearLayout
         android:id="@+id/audio_player_controls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/divider2"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:baselineAligned="false"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
         android:gravity="center"
         android:padding="4dp">
 
@@ -111,8 +188,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                app:fabSize="normal"
-                android:src="@drawable/play" />
+                android:src="@drawable/play"
+                app:fabSize="normal" />
         </FrameLayout>
 
         <FrameLayout
@@ -149,90 +226,4 @@
         </FrameLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/title_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/audio_player_controls"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp">
-
-        <TextView
-            android:id="@+id/audio_player_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            tools:text="Emin" />
-
-        <TextView
-            android:id="@+id/audio_player_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            tools:text="Sunny" />
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/seekbar_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/title_container"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp">
-
-        <TextView
-            android:id="@+id/audio_player_current_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:gravity="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
-
-        <TextView
-            android:id="@+id/audio_player_total_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="16dp"
-            android:gravity="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
-
-        <SeekBar
-            android:id="@android:id/progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/audio_player_current_time"
-            android:layout_marginTop="4dp"
-            android:max="1000" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/seekbar_container"
-        android:layout_marginBottom="24dp"
-        android:background="?attr/colorSurface">
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/album_cover"
-            android:scaleType="centerCrop"
-            android:src="@drawable/itunes"
-            android:tint="?attr/colorOnSurface" />
-
-        <include layout="@layout/toolbar_transparent" />
-
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>

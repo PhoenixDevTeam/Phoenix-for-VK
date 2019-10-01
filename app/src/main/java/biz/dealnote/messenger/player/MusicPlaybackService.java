@@ -18,6 +18,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.media.MediaPlayer;
@@ -39,6 +41,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -48,6 +53,7 @@ import java.util.Stack;
 
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Extra;
+import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Audio;
@@ -633,39 +639,36 @@ public class MusicPlaybackService extends Service {
     }
 
     private void fetchCoverAndUpdateMetadata() {
-        updateMetadata();
+        if (getAlbumCover() == null || getAlbumCover().isEmpty()) {
+            updateMetadata(null);
+            return;
+        }
 
-//        if (getAlbumCover() == null || getAlbumCover().isEmpty() ||
-//                !biz.dealnote.messenger.settings.Settings.get().ui().showLockscreenArt()){
-//            updateMetadata(null);
-//            return;
-//        }
-//
-//        PicassoInstance.with()
-//                .load(getAlbumCover())
-//                .into(new Target() {
-//                    @Override
-//                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-//                        updateMetadata(bitmap);
-//                    }
-//
-//                    @Override
-//                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-//                        updateMetadata(null);
-//                    }
-//
-//                    @Override
-//                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-//                    }
-//                });
+        PicassoInstance.with()
+                .load(getAlbumCover())
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        updateMetadata(bitmap);
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                        updateMetadata(null);
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                    }
+                });
     }
 
-    private void updateMetadata() {
+    private void updateMetadata(Bitmap cover) {
         mMediaMetadataCompat = new MediaMetadataCompat.Builder().
                 putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getArtistName())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, getAlbumName())
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, getTrackName())
-                //.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, albumCover)
+                .putBitmap(MediaMetadataCompat.METADATA_KEY_ART, cover)
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration())
                 .build();
         mMediaSession.setMetadata(mMediaMetadataCompat);
@@ -749,13 +752,23 @@ public class MusicPlaybackService extends Service {
      *
      * @return url
      */
-    public String getAlbumCover() {
+    public String getAlbumCoverBig() {
         synchronized (this) {
             if (getCurrentTrack() == null) {
                 return null;
             }
 
             return getCurrentTrack().getBigCover();
+        }
+    }
+
+    public String getAlbumCover() {
+        synchronized (this) {
+            if (getCurrentTrack() == null) {
+                return null;
+            }
+
+            return getCurrentTrack().getCover();
         }
     }
 
@@ -1465,7 +1478,7 @@ public class MusicPlaybackService extends Service {
 
         @Override
         public String getAlbumCover() {
-            return mService.get().getAlbumCover();
+            return mService.get().getAlbumCoverBig();
         }
 
         @Override

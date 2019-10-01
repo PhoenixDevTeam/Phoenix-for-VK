@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
 import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
+import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
@@ -93,6 +95,8 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
     private TextView tvTitle;
     private TextView tvSubtitle;
 
+    private ImageView ivCover;
+
     // Broadcast receiver
     private PlaybackStatus mPlaybackStatus;
 
@@ -141,12 +145,8 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         mAccountId = getArguments().getInt(Extra.ACCOUNT_ID);
         mAudioInteractor = InteractorFactory.createAudioInteractor();
 
-        // Initialize the handler used to update the current time
         mTimeHandler = new TimeHandler(this);
-
-        // Initialize the broadcast receiver
         mPlaybackStatus = new PlaybackStatus(this);
-
         mPlayerProgressStrings = getResources().getStringArray(R.array.player_progress_state);
 
         appendDisposable(observeServiceBinding()
@@ -206,6 +206,8 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         RepeatingImageButton mPreviousButton = root.findViewById(R.id.action_button_previous);
         RepeatingImageButton mNextButton = root.findViewById(R.id.action_button_next);
 
+        ivCover = root.findViewById(R.id.cover);
+
         mCurrentTime = root.findViewById(R.id.audio_player_current_time);
         mTotalTime = root.findViewById(R.id.audio_player_total_time);
         mProgress = root.findViewById(android.R.id.progress);
@@ -228,14 +230,9 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         CircleCounterButton ivShare = root.findViewById(R.id.audio_share);
         ivShare.setOnClickListener(v -> shareAudio());
 
-        ivTranslate = root.findViewById(R.id.audio_translate);
-        ivTranslate.setActive(isAudioStreaming());
-
-        ivTranslate.setOnClickListener(v -> onAudioBroadcastButtonClick());
-
-        if (isAudioStreaming()) {
-            broadcastAudio();
-        }
+//        if (isAudioStreaming()) {
+//            broadcastAudio();
+//        }
 
         resolveAddButton();
 
@@ -397,7 +394,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
 
         new ActivityFeatures.Builder()
                 .begin()
-                .setHideNavigationMenu(false)
+                .setHideNavigationMenu(true)
                 .setBarsColored(requireActivity(), true)
                 .build()
                 .apply(requireActivity());
@@ -477,7 +474,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
     private void updateNowPlayingInfo() {
         String artist = MusicUtils.getArtistName();
         String trackName = MusicUtils.getTrackName();
-//        String coverUrl = MusicUtils.getAlbumCover();
+        String coverUrl = MusicUtils.getAlbumCoverBig();
 
         if (tvTitle != null) {
             tvTitle.setText(artist == null ? null : artist.trim());
@@ -487,9 +484,9 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
             tvSubtitle.setText(trackName == null ? null : trackName.trim());
         }
 
-//        if (ivCover != null){
-//            PicassoInstance.with().load(coverUrl).into(ivCover);
-//        }
+        if (ivCover != null) {
+            PicassoInstance.with().load(coverUrl).into(ivCover);
+        }
 
         resolveAddButton();
 

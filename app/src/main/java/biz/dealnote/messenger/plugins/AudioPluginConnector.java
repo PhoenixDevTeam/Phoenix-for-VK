@@ -62,6 +62,7 @@ public class AudioPluginConnector implements IAudioPluginConnector {
                     String url = cursor.getString(cursor.getColumnIndex("url"));
                     String cover = cursor.getString(cursor.getColumnIndex("cover_url"));
                     String bigCover = cursor.getString(cursor.getColumnIndex("cover_url_big"));
+                    boolean isHq = cursor.getInt(cursor.getColumnIndex("is_hq")) == 1;
 
                     Audio audio = new Audio()
                             .setArtist(artist)
@@ -70,6 +71,7 @@ public class AudioPluginConnector implements IAudioPluginConnector {
                             .setOwnerId(ownerId1)
                             .setTitle(title)
                             .setUrl(url)
+                            .setHq(isHq)
                             .setBigCover(bigCover)
                             .setCover(cover);
 

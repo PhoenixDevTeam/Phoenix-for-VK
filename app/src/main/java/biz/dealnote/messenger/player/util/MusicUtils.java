@@ -330,7 +330,7 @@ public final class MusicUtils {
         return null;
     }
 
-    public static String getAlbumCover(){
+    public static String getAlbumCoverBig() {
         if (mService != null) {
             try {
                 return mService.getAlbumCover();
