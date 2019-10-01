@@ -319,15 +319,15 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     override fun setupPrimaryButtonAsEditing(canSave: Boolean) {
-        inputViewController?.swithModeToEditing(canSave)
+        inputViewController?.switchModeToEditing(canSave)
     }
 
     override fun setupPrimaryButtonAsRecording() {
-        inputViewController?.swithModeToRecording()
+        inputViewController?.switchModeToRecording()
     }
 
     override fun setupPrimaryButtonAsRegular(canSend: Boolean, canStartRecoring: Boolean) {
-        inputViewController?.swithModeToNormal(canSend, canStartRecoring)
+        inputViewController?.switchModeToNormal(canSend, canStartRecoring)
     }
 
     override fun requestRecordPermissions() {
@@ -359,6 +359,12 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
                 pinnedSubtitle?.text = body
                 buttonUnpin?.visibility = if (canChange) View.VISIBLE else View.GONE
             }
+        }
+    }
+
+    override fun hideInputView() {
+        inputViewController?.run {
+            switchModeToDisabled()
         }
     }
 

@@ -1,11 +1,12 @@
 package biz.dealnote.messenger.domain.mappers;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import biz.dealnote.messenger.db.model.entity.AudioEntity;
 import biz.dealnote.messenger.db.model.entity.AudioMessageEntity;
 import biz.dealnote.messenger.db.model.entity.CareerEntity;
@@ -341,7 +342,8 @@ public class Entity2Model {
                 .setMessage(message)
                 .setUnreadCount(entity.getUnreadCount())
                 .setOutRead(entity.getOutRead())
-                .setInRead(entity.getInRead());
+                .setInRead(entity.getInRead())
+                .setGroupChannel(entity.isGroupChannel());
 
         switch (Peer.getType(entity.getPeerId())) {
             case Peer.GROUP:

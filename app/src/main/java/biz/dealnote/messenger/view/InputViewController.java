@@ -32,6 +32,7 @@ public class InputViewController {
     private EmojiconsPopup emojiPopup;
     private ImageView ibEmoji;
     private ImageView ibAttach;
+    private ViewGroup vgInputViewHolder;
     private ViewGroup vgMessageInput;
     private ViewGroup vgVoiceInput;
 
@@ -66,6 +67,7 @@ public class InputViewController {
             }
         };
 
+        vgInputViewHolder = rootView.findViewById(R.id.fragment_input_container);
         vgMessageInput = rootView.findViewById(R.id.message_input_container);
         vgVoiceInput = rootView.findViewById(R.id.voice_input_container);
 
@@ -234,7 +236,7 @@ public class InputViewController {
         }
     }
 
-    private void swithModeTo(int mode) {
+    private void switсhModeTo(int mode) {
         if (mCurrentMode != mode) {
             mCurrentMode = mode;
             resolveModeViews();
@@ -267,12 +269,17 @@ public class InputViewController {
     private void resolveModeViews() {
         switch (mCurrentMode) {
             case Mode.NORMAL:
+//                vgInputViewHolder.setVisibility(View.VISIBLE);
                 vgVoiceInput.setVisibility(View.GONE);
                 vgMessageInput.setVisibility(View.VISIBLE);
                 break;
             case Mode.VOICE_RECORD:
+//                vgInputViewHolder.setVisibility(View.VISIBLE);
                 vgVoiceInput.setVisibility(View.VISIBLE);
                 vgMessageInput.setVisibility(View.GONE);
+                break;
+            case Mode.DISABLED:
+                vgInputViewHolder.setVisibility(View.GONE);
                 break;
         }
     }
@@ -307,22 +314,26 @@ public class InputViewController {
     private boolean canNormalSend;
     private boolean canStartRecording;
 
-    public void swithModeToEditing(boolean canSave) {
-        swithModeTo(Mode.EDITING);
+    public void switchModeToEditing(boolean canSave) {
+        switсhModeTo(Mode.EDITING);
         this.canEditingSave = canSave;
         resolveSendButton();
     }
 
-    public void swithModeToNormal(boolean canSend, boolean canStartRecoring) {
-        swithModeTo(Mode.NORMAL);
+    public void switchModeToNormal(boolean canSend, boolean canStartRecoring) {
+        switсhModeTo(Mode.NORMAL);
         this.canNormalSend = canSend;
         this.canStartRecording = canStartRecoring;
         resolveSendButton();
     }
 
-    public void swithModeToRecording() {
-        swithModeTo(Mode.VOICE_RECORD);
+    public void switchModeToRecording() {
+        switсhModeTo(Mode.VOICE_RECORD);
         resolveSendButton();
+    }
+
+    public void switchModeToDisabled() {
+        switсhModeTo(Mode.DISABLED);
     }
 
     public interface OnInputActionCallback {
@@ -355,6 +366,7 @@ public class InputViewController {
         public static final int NORMAL = 1;
         public static final int VOICE_RECORD = 2;
         public static final int EDITING = 3;
+        public static final int DISABLED = 4;
     }
 
     public void setRecordingDuration(long time) {

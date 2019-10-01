@@ -25,6 +25,7 @@ interface IChatView : IBasicMessageListView, IErrorView {
     fun setupPrimaryButtonAsRegular(canSend: Boolean, canStartRecoring: Boolean)
 
     fun displayPinnedMessage(pinned: Message?, canChange: Boolean)
+    fun hideInputView()
 
     fun goToMessageAttachmentsEditor(accountId: Int, messageOwnerId: Int, destination: UploadDestination,
                                      body: String?, attachments: ModelsBundle?)

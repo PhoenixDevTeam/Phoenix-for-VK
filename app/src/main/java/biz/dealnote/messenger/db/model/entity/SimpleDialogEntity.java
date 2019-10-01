@@ -22,6 +22,8 @@ public class SimpleDialogEntity {
 
     private int lastMessageId;
 
+    private boolean isGroupChannel;
+
     private int acl;
 
     public SimpleDialogEntity setAcl(int acl) {
@@ -119,6 +121,15 @@ public class SimpleDialogEntity {
 
     public SimpleDialogEntity setOutRead(int outRead) {
         this.outRead = outRead;
+        return this;
+    }
+
+    public boolean isGroupChannel() {
+        return isGroupChannel;
+    }
+
+    public SimpleDialogEntity setGroupChannel(boolean groupChannel) {
+        isGroupChannel = groupChannel;
         return this;
     }
 }

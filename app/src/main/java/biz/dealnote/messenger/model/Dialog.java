@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.model.Identificable;
 import biz.dealnote.messenger.util.Objects;
@@ -40,6 +41,8 @@ public class Dialog implements Identificable, Parcelable {
 
     private int outRead;
 
+    private boolean isGroupChannel;
+
     public Dialog() {
 
     }
@@ -63,6 +66,7 @@ public class Dialog implements Identificable, Parcelable {
         this.lastMessageId = in.readInt();
         this.inRead = in.readInt();
         this.outRead = in.readInt();
+        this.isGroupChannel = in.readInt() == 1;
     }
 
     public static final Creator<Dialog> CREATOR = new Creator<Dialog>() {
@@ -253,12 +257,17 @@ public class Dialog implements Identificable, Parcelable {
         return inRead;
     }
 
-    public boolean isLastMessageRead(){
+    public boolean isLastMessageRead() {
         return isLastMessageOut() ? getLastMessageId() <= outRead : getLastMessageId() <= inRead;
     }
 
     public int getOutRead() {
         return outRead;
+    }
+
+    public Dialog setGroupChannel(boolean groupChannel) {
+        isGroupChannel = groupChannel;
+        return this;
     }
 
     @Override
@@ -290,5 +299,6 @@ public class Dialog implements Identificable, Parcelable {
         dest.writeInt(lastMessageId);
         dest.writeInt(inRead);
         dest.writeInt(outRead);
+        dest.writeInt(isGroupChannel ? 1 : 0);
     }
 }

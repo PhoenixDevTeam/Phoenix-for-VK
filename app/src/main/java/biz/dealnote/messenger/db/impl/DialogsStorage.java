@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,7 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.VKApiChat;
 import biz.dealnote.messenger.db.MessengerContentProvider;
 import biz.dealnote.messenger.db.PeerStateEntity;
@@ -157,6 +158,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
         cv.put(DialogsColumns.PHOTO_200, entity.getPhoto200());
         cv.put(DialogsColumns.LAST_MESSAGE_ID, messageDbo.getId());
         cv.put(DialogsColumns.ACL, entity.getAcl());
+        cv.put(DialogsColumns.IS_GROUP_CHANNEL, entity.isGroupChannel());
         return cv;
     }
 
@@ -172,6 +174,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
         cv.put(PeersColumns.PHOTO_200, entity.getPhoto200());
         cv.put(PeersColumns.PINNED, serializeJson(entity.getPinned()));
         cv.put(PeersColumns.ACL, entity.getAcl());
+        cv.put(PeersColumns.IS_GROUP_CHANNEL, entity.isGroupChannel());
         return cv;
     }
 
@@ -236,7 +239,8 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                     PeersColumns.PHOTO_200,
                     PeersColumns.PINNED,
                     PeersColumns.LAST_MESSAGE_ID,
-                    PeersColumns.ACL
+                    PeersColumns.ACL,
+                    PeersColumns.IS_GROUP_CHANNEL
             };
 
             Uri uri = MessengerContentProvider.getPeersContentUriFor(accountId);
@@ -256,7 +260,8 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                             .setOutRead(cursor.getInt(cursor.getColumnIndex(PeersColumns.OUT_READ)))
                             .setPinned(deserializeJson(cursor, PeersColumns.PINNED, MessageEntity.class))
                             .setLastMessageId(cursor.getInt(cursor.getColumnIndex(PeersColumns.LAST_MESSAGE_ID)))
-                            .setAcl(cursor.getInt(cursor.getColumnIndex(PeersColumns.ACL)));
+                            .setAcl(cursor.getInt(cursor.getColumnIndex(PeersColumns.ACL)))
+                            .setGroupChannel(cursor.getInt(cursor.getColumnIndex(PeersColumns.IS_GROUP_CHANNEL)) == 1);
                 }
 
                 cursor.close();
@@ -351,11 +356,11 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                     peerscv.put(PeersColumns.LAST_MESSAGE_ID, patch.getLastMessage().getId());
                 }
 
-                if(nonNull(patch.getPin())){
+                if (nonNull(patch.getPin())) {
                     peerscv.put(PeersColumns.PINNED, serializeJson(patch.getPin().getPinned()));
                 }
 
-                if(nonNull(patch.getTitle())){
+                if (nonNull(patch.getTitle())) {
                     peerscv.put(PeersColumns.TITLE, patch.getTitle().getTitle());
                     dialogscv.put(DialogsColumns.TITLE, patch.getTitle().getTitle());
                 }
@@ -445,6 +450,7 @@ class DialogsStorage extends AbsStorage implements IDialogsStorage {
                 .setPhoto200(cursor.getString(cursor.getColumnIndex(DialogsColumns.PHOTO_200)))
                 .setUnreadCount(cursor.getInt(cursor.getColumnIndex(DialogsColumns.UNREAD)))
                 .setLastMessageId(cursor.getInt(cursor.getColumnIndex(DialogsColumns.LAST_MESSAGE_ID)))
-                .setAcl(cursor.getInt(cursor.getColumnIndex(DialogsColumns.ACL)));
+                .setAcl(cursor.getInt(cursor.getColumnIndex(DialogsColumns.ACL)))
+                .setGroupChannel(cursor.getInt(cursor.getColumnIndex(DialogsColumns.LAST_MESSAGE_ID)) == 1);
     }
 }

@@ -30,6 +30,8 @@ public class Conversation {
 
     private Message pinned;
 
+    private boolean isGroupChannel;
+
     private int acl;
 
     public Conversation setAcl(int acl) {
@@ -145,5 +147,14 @@ public class Conversation {
 
     public String getMaxSquareAvatar(){
         return firstNonEmptyString(photo200, photo100, photo200);
+    }
+
+    public boolean isGroupChannel() {
+        return isGroupChannel;
+    }
+
+    public Conversation setGroupChannel(boolean isGroupChannel) {
+        this.isGroupChannel = isGroupChannel;
+        return this;
     }
 }

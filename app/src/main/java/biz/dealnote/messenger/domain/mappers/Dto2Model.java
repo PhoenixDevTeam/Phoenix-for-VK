@@ -1,11 +1,12 @@
 package biz.dealnote.messenger.domain.mappers;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
 import biz.dealnote.messenger.api.model.FaveLinkDto;
 import biz.dealnote.messenger.api.model.PhotoSizeDto;
 import biz.dealnote.messenger.api.model.VKApiAttachment;
@@ -266,6 +267,7 @@ public class Dto2Model {
 
         if(nonNull(dto.conversation.settings)){
             dialog.setTitle(dto.conversation.settings.title);
+            dialog.setGroupChannel(dto.conversation.settings.is_group_channel);
 
             if(nonNull(dto.conversation.settings.photo)){
                 dialog.setPhoto50(dto.conversation.settings.photo.photo50)

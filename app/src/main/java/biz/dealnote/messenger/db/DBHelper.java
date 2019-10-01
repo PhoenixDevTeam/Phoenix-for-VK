@@ -6,11 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import androidx.annotation.NonNull;
 import biz.dealnote.messenger.crypt.AesKeyPair;
 import biz.dealnote.messenger.crypt.ver.Version;
 import biz.dealnote.messenger.db.column.AttachmentsColumns;
@@ -52,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 170;
+    private static final int DATABASE_VERSION = 171;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -616,7 +617,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "  [" + DialogsColumns.PHOTO_50 + "] TEXT, " +
                 "  [" + DialogsColumns.PHOTO_100 + "] TEXT, " +
                 "  [" + DialogsColumns.PHOTO_200 + "] TEXT, " +
-                "  [" + DialogsColumns.LAST_MESSAGE_ID + "] INTEGER);";
+                "  [" + DialogsColumns.LAST_MESSAGE_ID + "] INTEGER, " +
+                "  [" + DialogsColumns.IS_GROUP_CHANNEL + "] INTEGER);";
         db.execSQL(sql);
     }
 
@@ -632,7 +634,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "  [" + PeersColumns.ACL + "] INTEGER, " +
                 "  [" + PeersColumns.PHOTO_50 + "] TEXT, " +
                 "  [" + PeersColumns.PHOTO_100 + "] TEXT, " +
-                "  [" + PeersColumns.PHOTO_200 + "] TEXT);";
+                "  [" + PeersColumns.PHOTO_200 + "] TEXT, " +
+                "  [" + PeersColumns.IS_GROUP_CHANNEL + "] INTEGER);";
         db.execSQL(sql);
     }
 

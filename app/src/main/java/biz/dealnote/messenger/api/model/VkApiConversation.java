@@ -106,6 +106,9 @@ public class VkApiConversation {
         @SerializedName("state")
         public String state;
 
+        @SerializedName("is_group_channel")
+        public boolean is_group_channel;
+
         @SerializedName("acl")
         public Acl acl;
     }

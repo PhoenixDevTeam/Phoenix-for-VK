@@ -13,12 +13,13 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.db.column.AttachmentsColumns;
 import biz.dealnote.messenger.db.column.CommentsAttachmentsColumns;
@@ -436,6 +437,7 @@ public class MessengerContentProvider extends ContentProvider {
         sDialogsProjectionMap.put(DialogsColumns.PHOTO_200, DialogsColumns.FULL_PHOTO_200);
         sDialogsProjectionMap.put(DialogsColumns.ACL, DialogsColumns.FULL_ACL);
         sDialogsProjectionMap.put(DialogsColumns.LAST_MESSAGE_ID, DialogsColumns.FULL_LAST_MESSAGE_ID);
+        sDialogsProjectionMap.put(DialogsColumns.IS_GROUP_CHANNEL, DialogsColumns.FULL_IS_GROUP_CHANNEL);
 
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_FROM_ID, MessageColumns.FULL_FROM_ID + " AS " + DialogsColumns.FOREIGN_MESSAGE_FROM_ID);
         sDialogsProjectionMap.put(DialogsColumns.FOREIGN_MESSAGE_BODY, MessageColumns.FULL_BODY + " AS " + DialogsColumns.FOREIGN_MESSAGE_BODY);
@@ -459,6 +461,7 @@ public class MessengerContentProvider extends ContentProvider {
         sPeersProjectionMap.put(PeersColumns.PINNED, PeersColumns.FULL_PINNED);
         sPeersProjectionMap.put(PeersColumns.LAST_MESSAGE_ID, PeersColumns.FULL_LAST_MESSAGE_ID);
         sPeersProjectionMap.put(PeersColumns.ACL, PeersColumns.FULL_ACL);
+        sPeersProjectionMap.put(PeersColumns.IS_GROUP_CHANNEL, PeersColumns.FULL_IS_GROUP_CHANNEL);
 
         sDocsProjectionMap = new HashMap<>();
         sDocsProjectionMap.put(DocColumns._ID, DocColumns.FULL_ID);

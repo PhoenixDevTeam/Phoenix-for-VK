@@ -651,6 +651,7 @@ public class Dto2Entity {
 
         if(nonNull(dto.conversation.settings)){
             entity.setTitle(dto.conversation.settings.title);
+            entity.setGroupChannel(dto.conversation.settings.is_group_channel);
 
             if(nonNull(dto.conversation.settings.pinnedMesage)){
                 entity.setPinned(mapMessage(dto.conversation.settings.pinnedMesage));

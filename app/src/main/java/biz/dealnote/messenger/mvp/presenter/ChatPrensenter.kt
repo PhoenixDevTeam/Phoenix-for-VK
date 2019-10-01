@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.core.content.ContextCompat
 import biz.dealnote.messenger.*
 import biz.dealnote.messenger.crypt.AesKeyPair
@@ -296,6 +297,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         conversation = data
 
         resolvePinnedMessageView()
+        resolveInputView()
 
         lastReadId.incoming = data.inRead
         lastReadId.outgoing = data.outRead
@@ -393,6 +395,13 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             view?.displayPinnedMessage(pinned, hasFlag(acl, Conversation.AclFlags.CAN_CHANGE_PIN))
         } ?: run {
             view?.displayPinnedMessage(null, false)
+        }
+    }
+
+    private fun resolveInputView() {
+        Log.d("COCKOOOO", conversation?.isGroupChannel.toString())
+        conversation?.run {
+            if (isGroupChannel) view?.hideInputView()
         }
     }
 
@@ -922,7 +931,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
             Peer.USER -> appendDisposable(Stores.getInstance()
                     .owners()
                     .getLocalizedUserActivity(messagesOwnerId, Peer.toUserId(peerId))
-                    .compose(RxUtils.applyMaybeIOToMainSchedulers())
+                    .compose(applyMaybeIOToMainSchedulers())
                     .subscribe({ s ->
                         subtitle = s
                         resolveToolbarSubtitle()
@@ -988,7 +997,7 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
         appendDisposable(Stores.getInstance()
                 .messages()
                 .findDraftMessage(messagesOwnerId, peerId)
-                .compose(RxUtils.applyMaybeIOToMainSchedulers())
+                .compose(applyMaybeIOToMainSchedulers())
                 .subscribe({ draft -> onDraftMessageRestored(draft, ignoreBody) }, { Analytics.logUnexpectedError(it) }))
     }
 

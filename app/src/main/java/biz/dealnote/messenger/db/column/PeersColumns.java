@@ -18,6 +18,7 @@ public final class PeersColumns implements BaseColumns {
     public static final String PINNED = "pinned";
     public static final String LAST_MESSAGE_ID = "last_message_id";
     public static final String ACL = "acl";
+    public static final String IS_GROUP_CHANNEL = "is_group_channel";
 
     public static final String FULL_ID = TABLENAME + "." + _ID;
     public static final String FULL_UNREAD = TABLENAME + "." + UNREAD;
@@ -30,4 +31,5 @@ public final class PeersColumns implements BaseColumns {
     public static final String FULL_PINNED = TABLENAME + "." + PINNED;
     public static final String FULL_LAST_MESSAGE_ID = TABLENAME + "." + LAST_MESSAGE_ID;
     public static final String FULL_ACL = TABLENAME + "." + ACL;
+    public static final String FULL_IS_GROUP_CHANNEL = TABLENAME + "." + IS_GROUP_CHANNEL;
 }

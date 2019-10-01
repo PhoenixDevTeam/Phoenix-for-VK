@@ -2,6 +2,10 @@ package biz.dealnote.messenger.domain.impl;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,9 +21,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
 
-import androidx.annotation.MainThread;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.api.interfaces.IDocsApi;
@@ -411,7 +412,8 @@ public class MessagesRepository implements IMessagesRepository {
                 .setTitle(entity.getTitle())
                 .setInterlocutor(Peer.isGroup(entity.getPeerId()) || Peer.isUser(entity.getPeerId()) ? owners.getById(entity.getPeerId()) : null)
                 .setPinned(isNull(entity.getPinned()) ? null : Entity2Model.message(accountId, entity.getPinned(), owners))
-                .setAcl(entity.getAcl());
+                .setAcl(entity.getAcl())
+                .setGroupChannel(entity.isGroupChannel());
     }
 
     @Override

@@ -30,6 +30,8 @@ public class DialogEntity extends Entity {
 
     private int acl;
 
+    private boolean isGroupChannel;
+
     public DialogEntity setAcl(int acl) {
         this.acl = acl;
         return this;
@@ -112,7 +114,8 @@ public class DialogEntity extends Entity {
                 .setUnreadCount(unreadCount)
                 .setPinned(pinned)
                 .setLastMessageId(lastMessageId)
-                .setAcl(acl);
+                .setAcl(acl)
+                .setGroupChannel(isGroupChannel);
     }
 
     public String getPhoto100() {
@@ -148,6 +151,15 @@ public class DialogEntity extends Entity {
 
     public DialogEntity setLastMessageId(int lastMessageId) {
         this.lastMessageId = lastMessageId;
+        return this;
+    }
+
+    public boolean isGroupChannel() {
+        return isGroupChannel;
+    }
+
+    public DialogEntity setGroupChannel(boolean groupChannel) {
+        isGroupChannel = groupChannel;
         return this;
     }
 }
