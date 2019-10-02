@@ -5,20 +5,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
+import biz.dealnote.messenger.activity.ActivityFeatures;
+import biz.dealnote.messenger.activity.ActivityUtils;
 import biz.dealnote.messenger.adapter.AudioRecyclerAdapter;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.model.Audio;
+import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.player.MusicPlaybackService;
-import biz.dealnote.messenger.player.util.MusicUtils;
+import biz.dealnote.messenger.settings.Settings;
 
 /**
  * Created by golde on 27.09.2016.
@@ -82,7 +87,25 @@ public class PlaylistFragment extends BaseFragment implements AudioRecyclerAdapt
 
     @Override
     public void onClick(int position, Audio audio) {
-        MusicPlaybackService.startForPlayList(requireActivity(), (ArrayList) MusicUtils.getQueue(), position, false);
+        MusicPlaybackService.startForPlayList(requireActivity(), mData, position, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Settings.get().ui().notifyPlaceResumed(Place.AUDIO_CURRENT_PLAYLIST);
+
+        ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.playlist);
+            actionBar.setSubtitle(null);
+        }
+        new ActivityFeatures.Builder()
+                .begin()
+                .setHideNavigationMenu(false)
+                .setBarsColored(requireActivity(), true)
+                .build()
+                .apply(requireActivity());
     }
 
     @Override

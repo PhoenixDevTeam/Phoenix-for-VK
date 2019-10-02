@@ -60,6 +60,7 @@
         android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:background="@drawable/circle_back_white"
+        android:backgroundTint="?colorPrimary"
         android:padding="8dp"
         android:scaleType="centerCrop"
         android:src="@drawable/play" />

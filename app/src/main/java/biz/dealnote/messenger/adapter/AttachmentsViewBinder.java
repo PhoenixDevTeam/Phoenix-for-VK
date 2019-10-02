@@ -553,7 +553,7 @@ public class AttachmentsViewBinder {
             if (g < audios.size()) {
                 final Audio audio = audios.get(g);
 
-                AudioHolder holder = new AudioHolder(mContext, root);
+                AudioHolder holder = new AudioHolder(root);
 
                 holder.tvTitle.setText(audio.getArtist());
                 holder.tvSubtitle.setText(audio.getTitle());
@@ -603,11 +603,10 @@ public class AttachmentsViewBinder {
         TextView tvSubtitle;
         ImageView ibPlay;
 
-        AudioHolder(Context context, View root) {
+        AudioHolder(View root) {
             tvTitle = root.findViewById(R.id.dialog_message);
             tvSubtitle = root.findViewById(R.id.item_audio_subtitle);
             ibPlay = root.findViewById(R.id.item_audio_play);
-            ibPlay.getBackground().setColorFilter(CurrentTheme.getColorPrimary(context), PorterDuff.Mode.MULTIPLY);
         }
     }
 

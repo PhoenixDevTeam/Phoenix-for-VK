@@ -1,35 +1,28 @@
 package biz.dealnote.messenger.adapter;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.model.Audio;
-import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.util.AppTextUtils;
 
 public class AudioRecyclerAdapter extends RecyclerView.Adapter<AudioRecyclerAdapter.AudioHolder>{
 
     private Context mContext;
     private List<Audio> mData;
-    private Drawable unselectedDrawable;
 
     public AudioRecyclerAdapter(Context context, List<Audio> data) {
         this.mContext = context;
         this.mData = data;
-        this.unselectedDrawable = ContextCompat.getDrawable(context, R.drawable.circle_back_white);
-        this.unselectedDrawable.setColorFilter(CurrentTheme.getColorPrimary(context), PorterDuff.Mode.MULTIPLY);
     }
 
     @Override
@@ -44,8 +37,8 @@ public class AudioRecyclerAdapter extends RecyclerView.Adapter<AudioRecyclerAdap
         holder.artist.setText(item.getArtist());
         holder.title.setText(item.getTitle());
         holder.time.setText(AppTextUtils.getDurationString(item.getDuration()));
-        holder.play.setBackground(unselectedDrawable);
-        holder.play.setImageResource(R.drawable.play);
+
+//        holder.play.setImageResource(MusicUtils.isNowPlayingOrPreparing(item) ? R.drawable.pause : R.drawable.play);
 
         holder.play.setOnClickListener(v -> {
             if(mClickListener != null){

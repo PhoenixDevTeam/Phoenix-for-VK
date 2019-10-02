@@ -451,6 +451,10 @@ public final class MusicUtils {
         return 0;
     }
 
+    public static boolean isNowPlayingOrPreparing(Audio audio) {
+        return audio.equals(getCurrentAudio()) && (isPreparing() || isPlaying());
+    }
+
     private static final String TAG = MusicUtils.class.getSimpleName();
 
     /**

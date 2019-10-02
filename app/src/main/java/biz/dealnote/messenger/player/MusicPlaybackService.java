@@ -107,7 +107,6 @@ public class MusicPlaybackService extends Service {
     public static final String CMDNEXT = "next";
     public static final String CMDPLAYLIST = "playlist";
 
-
     public static final int SHUFFLE_NONE = 0;
     public static final int SHUFFLE = 1;
 
