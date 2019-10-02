@@ -108,7 +108,6 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
 
         if (dialog.isChat()) {
             String aurhorText = dialog.isLastMessageOut() ? mContext.getString(R.string.dialog_me) : dialog.getSenderShortName(mContext);
-
             Spannable spannable = SpannableStringBuilder.valueOf(aurhorText + " - " + lastMessage);
             spannable.setSpan(mForegroundColorSpan, 0, aurhorText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.mDialogMessage.setText(spannable);
@@ -117,7 +116,7 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
         }
 
         boolean lastMessageRead = dialog.isLastMessageRead();
-        int titleTextStyle = getTextStyle(dialog.isChat(), dialog.isLastMessageOut(), lastMessageRead);
+        int titleTextStyle = getTextStyle(dialog.isLastMessageOut(), lastMessageRead);
         holder.mDialogTitle.setTypeface(null, titleTextStyle);
 
         boolean online = false;
@@ -142,6 +141,8 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
             holder.ivOnline.setIcon(0);
         }
 
+        holder.ivDialogType.setImageResource(dialog.isGroupChannel() ? R.drawable.channel : R.drawable.person_multiple);
+        holder.ivDialogType.setVisibility(dialog.isChat() ? View.VISIBLE : View.GONE);
         holder.ivUnreadTicks.setVisibility(dialog.isLastMessageOut() ? View.VISIBLE : View.GONE);
         holder.ivUnreadTicks.setImageResource(lastMessageRead ? R.drawable.check_all : R.drawable.check);
 
@@ -198,12 +199,8 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
 
     public static final String PICASSO_TAG = "dialogs.adapter.tag";
 
-    private int getTextStyle(boolean chat, boolean out, boolean read) {
-        if (chat) {
-            return read || out ? Typeface.ITALIC : Typeface.BOLD_ITALIC;
-        } else {
-            return read || out ? Typeface.NORMAL : Typeface.BOLD;
-        }
+    private int getTextStyle(boolean out, boolean read) {
+        return read || out ? Typeface.NORMAL : Typeface.BOLD;
     }
 
     private static final int DIV_DISABLE = 0;
@@ -272,6 +269,7 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
         View mContentRoot;
         TextView mDialogTitle;
         TextView mDialogMessage;
+        ImageView ivDialogType;
         ImageView ivAvatar;
         TextView tvUnreadCount;
         ImageView ivUnreadTicks;
@@ -285,6 +283,7 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
             mContentRoot = view.findViewById(R.id.content_root);
             mDialogTitle = view.findViewById(R.id.dialog_title);
             mDialogMessage = view.findViewById(R.id.dialog_message);
+            ivDialogType = view.findViewById(R.id.dialog_type);
             ivUnreadTicks = view.findViewById(R.id.unread_ticks);
             ivAvatar = view.findViewById(R.id.item_chat_avatar);
             tvUnreadCount = view.findViewById(R.id.item_chat_unread_count);

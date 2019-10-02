@@ -270,6 +270,10 @@ public class Dialog implements Identificable, Parcelable {
         return this;
     }
 
+    public boolean isGroupChannel() {
+        return isGroupChannel;
+    }
+
     @Override
     public int getId() {
         return peerId;
@@ -301,4 +305,6 @@ public class Dialog implements Identificable, Parcelable {
         dest.writeInt(outRead);
         dest.writeInt(isGroupChannel ? 1 : 0);
     }
+
+
 }
