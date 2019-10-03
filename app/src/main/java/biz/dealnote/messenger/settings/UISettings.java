@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 
+import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.PreferencesFragment;
 import biz.dealnote.messenger.fragment.fave.FaveTabsFragment;
 import biz.dealnote.messenger.fragment.friends.FriendsTabsFragment;
@@ -36,6 +37,19 @@ class UISettings implements ISettings.IUISettings {
                 .edit()
                 .putInt(PreferencesFragment.KEY_AVATAR_STYLE, style)
                 .apply();
+    }
+
+    @Override
+    public int getMainTheme() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(app);
+        String theme = preferences.getString("app_theme", "fire");
+        switch (theme) {
+            case "ice":
+                return R.style.App_DayNight_Ice;
+            case "fire":
+            default:
+                return R.style.App_DayNight_Fire;
+        }
     }
 
     @Override

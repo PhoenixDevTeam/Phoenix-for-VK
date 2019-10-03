@@ -93,6 +93,14 @@
         app:iconSpaceReserved="false">
 
         <ListPreference
+            android:defaultValue="theme6"
+            android:entries="@array/array_theme_names"
+            android:entryValues="@array/array_theme_values"
+            android:key="app_theme"
+            android:title="@string/choose_theme_title"
+            app:iconSpaceReserved="false" />
+
+        <ListPreference
             android:defaultValue="1"
             android:entries="@array/array_chat_background_names"
             android:entryValues="@array/array_chat_background_items"

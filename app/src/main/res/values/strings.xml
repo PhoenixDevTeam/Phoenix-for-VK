@@ -20,6 +20,11 @@
 
     <string name="settings">Settings</string>
 
+    <string-array name="array_theme_names" translatable="false">
+        <item>Yellow Flames</item>
+        <item>Blue Flames</item>
+    </string-array>
+
     <string-array name="preview_preview_size" translatable="false">
         <item>S: 75px</item>
         <item>M: 130px</item>
@@ -50,6 +55,11 @@
         <item>•••• ••</item>
         <item>••••• •</item>
         <item>•••••• </item>
+    </string-array>
+
+    <string-array name="array_theme_values" translatable="false">
+        <item>fire</item>
+        <item>ice</item>
     </string-array>
 
     <string-array name="night_mode_names">
@@ -1173,5 +1183,6 @@
     <string name="audios">Audios</string>
     <string name="playlist">Playlist</string>
     <string name="phoenix_player">Phoenix Player</string>
+    <string name="choose_theme_title">Select application theme</string>
 
 </resources>

@@ -64,6 +64,7 @@ public class QuickAnswerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Settings.get().ui().getMainTheme());
 
         this.messagesRepository = Repository.INSTANCE.getMessages();
 

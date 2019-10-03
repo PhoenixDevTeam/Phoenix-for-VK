@@ -191,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Settings.get().ui().getMainTheme());
         getDelegate().applyDayNight();
 
         mCompositeDisposable.add(Settings.get()

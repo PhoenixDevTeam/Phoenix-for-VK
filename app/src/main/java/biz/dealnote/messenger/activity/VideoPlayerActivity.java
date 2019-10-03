@@ -12,12 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import java.io.IOException;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import java.io.IOException;
+
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.media.video.DefaultVideoPlayer;
@@ -54,6 +55,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements SurfaceHol
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Settings.get().ui().getMainTheme());
         setContentView(R.layout.activity_video);
 
         if (Utils.hasLollipop()) {

@@ -1,45 +1,53 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
-    android:name="vector"
     android:width="108dp"
     android:height="108dp"
-    android:viewportWidth="192.16556"
-    android:viewportHeight="192.16556">
+    android:name="vector"
+    android:viewportWidth="210.10101"
+    android:viewportHeight="210.10101">
     <group
-        android:translateX="46.08278"
-        android:translateY="46.08278">
+        android:translateX="55.050507"
+        android:translateY="55.050507">
         <path
             android:name="path"
             android:pathData="M 47.254 5.155 C 49.906 3.175 53.281 2.735 56.371 1.865 C 55.727 12.865 53.956 23.755 52.468 34.655 C 52.331 38.025 49.455 40.035 47.468 42.335 C 42.627 47.615 37.647 53.635 36.836 61.105 C 36.297 64.835 37.725 68.385 39.124 71.725 C 44.084 69.665 48.458 65.385 54.063 65.545 C 58.075 65.825 59.395 70.265 61.019 73.275 C 59.258 73.525 56.714 72.635 55.706 74.695 C 52.938 78.915 51.059 83.785 47.478 87.435 C 41.853 93.605 33.675 96.135 25.907 98.135 C 26.573 93.785 27.727 89.415 27.395 84.985 C 26.7 81.525 24.625 78.595 23.081 75.495 C 26.358 74.545 29.849 73.555 31.875 70.495 C 28.715 71.705 25.526 72.855 22.171 73.335 C 21.055 70.385 19.979 67.435 18.873 64.485 C 22.561 64.585 26.337 64.335 29.517 62.235 C 25.77 62.525 21.974 62.875 18.287 61.865 C 17.797 58.615 17.357 55.375 16.945 52.115 C 20.566 53.285 24.361 54.065 28.137 53.195 C 24.343 52.355 20.517 51.465 17.064 49.565 C 17.474 45.625 18.081 41.715 18.825 37.825 C 22.259 41.795 26.611 45.105 32.002 45.275 C 27.149 42.625 22.453 39.305 20.203 33.955 C 22.16 29.705 24.479 25.645 27.061 21.755 C 28.343 28.195 30.828 35.085 36.844 38.355 C 32.197 32.755 29.439 25.135 31.357 17.825 C 33.185 13.705 37.178 11.225 40.347 8.265 C 38.547 15.585 38.342 24.375 44.026 30.045 C 43.096 26.125 41.246 22.265 41.804 18.135 C 42.313 13.435 43.712 8.425 47.254 5.155 Z">
-
             <aapt:attr name="android:fillColor">
                 <gradient
-                    android:endY="75"
-                    android:startY="25"
-                    android:type="linear">
+                    android:centerX="30"
+                    android:centerY="90"
+                    android:gradientRadius="76.37"
+                    android:type="radial">
+                    <!-- 15% black from center to 32% stop -->
                     <item
-                        android:color="#90CAF9"
-                        android:offset="0.0" />
+                        android:color="#64B5F6"
+                        android:offset="0.1" />
                     <item
-                        android:color="#1565C0"
+                        android:color="#FFEB3B"
+                        android:offset="0.4" />
+                    <item
+                        android:color="#FB8C00"
                         android:offset="1.0" />
                 </gradient>
             </aapt:attr>
         </path>
-
         <path
             android:name="path_1"
             android:pathData="M 65.514 37.279 C 67.876 34.199 70.844 31.499 74.335 29.769 C 77.255 29.389 80.175 30.219 83.055 30.609 C 79.606 36.769 75.495 42.519 71.904 48.599 C 70.606 50.619 69.475 52.819 67.706 54.469 C 63.385 56.509 58.505 57.419 54.615 60.329 C 51.414 62.449 49.295 65.919 45.745 67.539 C 43.813 68.509 41.834 69.399 39.874 70.329 C 38.054 64.609 39.056 58.459 42.544 53.599 C 44.425 55.059 46.334 56.469 48.364 57.729 C 46.965 55.719 45.455 53.789 43.944 51.859 C 46.374 48.859 49.094 46.119 51.906 43.479 C 52.864 46.519 53.404 50.079 56.434 51.859 C 55.635 48.529 53.694 45.299 54.196 41.769 C 54.525 39.339 54.995 36.839 56.203 34.679 C 59.285 32.199 63.306 31.249 66.945 29.849 C 63.215 35.339 59.956 41.979 62.355 48.719 C 63.215 44.879 62.974 40.529 65.514 37.279 Z">
             <aapt:attr name="android:fillColor">
                 <gradient
-                    android:endY="75"
-                    android:startY="0"
-                    android:type="linear">
+                    android:centerX="30"
+                    android:centerY="90"
+                    android:gradientRadius="76.37"
+                    android:type="radial">
+                    <!-- 15% black from center to 32% stop -->
                     <item
-                        android:color="#90CAF9"
-                        android:offset="0.0" />
+                        android:color="#64B5F6"
+                        android:offset="0.1" />
                     <item
-                        android:color="#1565C0"
+                        android:color="#FFEB3B"
+                        android:offset="0.4" />
+                    <item
+                        android:color="#FB8C00"
                         android:offset="1.0" />
                 </gradient>
             </aapt:attr>

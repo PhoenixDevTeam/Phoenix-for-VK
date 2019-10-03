@@ -6,9 +6,11 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.AccountsFragment;
 import biz.dealnote.messenger.settings.CurrentTheme;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Utils;
 
 public class AccountsActivity extends AppCompatActivity {
@@ -16,6 +18,7 @@ public class AccountsActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Settings.get().ui().getMainTheme());
         setContentView(R.layout.activity_no_main);
 
         Window w = getWindow();

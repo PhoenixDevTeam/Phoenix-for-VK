@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.listener.BackPressCallback;
 import biz.dealnote.messenger.settings.CurrentTheme;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Objects;
 
 /**
@@ -25,6 +26,7 @@ public abstract class NoMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Settings.get().ui().getMainTheme());
         setContentView(R.layout.activity_no_main);
 
         Window w = getWindow();

@@ -6,14 +6,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.RecyclerMenuAdapter;
 import biz.dealnote.messenger.domain.IOwnersRepository;
@@ -50,6 +51,7 @@ public class PostPublishPrepareActivity extends AppCompatActivity implements Rec
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Settings.get().ui().getMainTheme());
         setContentView(R.layout.activity_post_publish_prepare);
 
         adapter = new RecyclerMenuAdapter(R.layout.item_advanced_menu_alternative, Collections.emptyList());

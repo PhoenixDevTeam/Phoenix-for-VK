@@ -16,11 +16,6 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
 
-        <item name="colorPrimary">#448AFF</item>
-        <item name="colorSecondary">#82B1FF</item>
-        <item name="colorOnPrimary">#FFF</item>
-        <item name="colorOnSecondary">#FFF</item>
-
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.AppTheme.SmallComponent
         </item>
         <item name="shapeAppearanceMediumComponent">
@@ -31,7 +26,7 @@
 
         <item name="materialCardViewStyle">@style/Theme.MaterialCardView</item>
         <item name="floatingActionButtonStyle">@style/Theme.FloatingActionButton</item>
-        <item name="icon_color_active">#448AFF</item>
+
 
         <item name="dividerColor">#E1E3E7</item>
 
@@ -48,6 +43,22 @@
         <item name="chat_background_lines">@drawable/lines_white</item>
 
         <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash_inverse</item>
+    </style>
+
+    <style name="App.DayNight.Ice" parent="App.DayNight">
+        <item name="colorPrimary">#448AFF</item>
+        <item name="colorSecondary">#82B1FF</item>
+        <item name="colorOnPrimary">#FFF</item>
+        <item name="colorOnSecondary">#FFF</item>
+        <item name="icon_color_active">#448AFF</item>
+    </style>
+
+    <style name="App.DayNight.Fire" parent="App.DayNight">
+        <item name="colorPrimary">#FF9800</item>
+        <item name="colorSecondary">#FFA726</item>
+        <item name="colorOnPrimary">#FFF</item>
+        <item name="colorOnSecondary">#FFF</item>
+        <item name="icon_color_active">#FF9800</item>
     </style>
 
     <style name="Theme.MaterialCardView" parent="Widget.MaterialComponents.CardView">

@@ -6,12 +6,14 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.fragment.VideosFragment;
 import biz.dealnote.messenger.fragment.VideosTabsFragment;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.place.PlaceProvider;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Objects;
 
 /**
@@ -23,6 +25,7 @@ public class VideoSelectActivity extends NoMainActivity implements PlaceProvider
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Settings.get().ui().getMainTheme());
 
         if (Objects.isNull(savedInstanceState)) {
             int accountId = super.getIntent().getExtras().getInt(Extra.ACCOUNT_ID);
