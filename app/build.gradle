@@ -43,6 +43,7 @@ android {
         debug {
             minifyEnabled false
             multiDexEnabled false
+            ext.enableCrashlytics = false
         }
     }
 
