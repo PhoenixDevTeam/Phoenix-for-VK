@@ -1,41 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="@string/general_settings" />
+    <PreferenceCategory
+        android:title="@string/general_settings"
+        app:iconSpaceReserved="false" />
 
     <SwitchPreference
         android:defaultValue="false"
         android:key="use_pin_for_security"
-        android:title="@string/use_pin_for_security_title" />
+        android:title="@string/use_pin_for_security_title"
+        app:iconSpaceReserved="false" />
 
     <SwitchPreference
         android:defaultValue="false"
         android:dependency="use_pin_for_security"
         android:key="use_pin_for_entrance"
         android:summary="@string/ask_for_pin_on_application_start_summary"
-        android:title="@string/ask_for_pin_on_application_start_title" />
+        android:title="@string/ask_for_pin_on_application_start_title"
+        app:iconSpaceReserved="false" />
 
     <CheckBoxPreference
         android:defaultValue="false"
         android:dependency="use_pin_for_security"
         android:key="allow_fingerprint"
-        android:title="@string/allow_fingerprint_title" />
+        android:title="@string/allow_fingerprint_title"
+        app:iconSpaceReserved="false" />
 
     <Preference
         android:dependency="use_pin_for_security"
         android:key="change_pin"
-        android:title="@string/change_pin_title" />
+        android:title="@string/change_pin_title"
+        app:iconSpaceReserved="false" />
 
-    <PreferenceCategory android:title="@string/secured_messages" />
+    <PreferenceCategory
+        android:title="@string/secured_messages"
+        app:iconSpaceReserved="false" />
 
     <Preference
         android:key="encryption_terms_of_use"
-        android:title="@string/encryption_terms_of_use_title"/>
+        android:title="@string/encryption_terms_of_use_title"
+        app:iconSpaceReserved="false" />
 
     <Preference
         android:key="delete_all_encryption_keys"
         android:title="@string/delete_keys"
-        android:summary="@string/clear_storage_of_encryption_keys"/>
+        android:summary="@string/clear_storage_of_encryption_keys"
+        app:iconSpaceReserved="false" />
 
     <!--<Preference
         android:key="export_encryption_keys"
@@ -48,12 +59,15 @@
         android:summary="@string/import_keys_summary"/>-->
 
 
-    <PreferenceCategory android:title="@string/other" />
+    <PreferenceCategory
+        android:title="@string/other"
+        app:iconSpaceReserved="false" />
 
     <CheckBoxPreference
         android:key="hide_notif_message_body"
         android:title="@string/hide_notif_message_body_title"
-        android:summary="@string/hide_notif_message_body_summary"/>
+        android:summary="@string/hide_notif_message_body_summary"
+        app:iconSpaceReserved="false" />
 
     <!--<switchpreference
         android:key="auto_message_decrypt"

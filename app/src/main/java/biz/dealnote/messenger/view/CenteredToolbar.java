@@ -54,6 +54,9 @@ public class CenteredToolbar extends MaterialToolbar {
 
     @Override
     public void setSubtitle(CharSequence subtitle) {
+        if (subtitle == null) {
+            return;
+        }
         tvSubtitle.setVisibility(VISIBLE);
         tvSubtitle.setText(subtitle);
     }
@@ -72,13 +75,13 @@ public class CenteredToolbar extends MaterialToolbar {
         tvTitle = new TextView(getContext());
         tvTitle.setSingleLine();
         tvTitle.setEllipsize(TextUtils.TruncateAt.END);
-        tvTitle.setTextAppearance(getContext(), R.style.TextAppearance_MaterialComponents_Headline6);
+        tvTitle.setTextAppearance(getContext(), R.style.TextAppearance_Toolbar_Title);
         tvTitle.setTypeface(ResourcesCompat.getFont(getContext(), R.font.open_sans));
 
         tvSubtitle = new TextView(getContext());
         tvSubtitle.setSingleLine();
         tvSubtitle.setEllipsize(TextUtils.TruncateAt.END);
-        tvSubtitle.setTextAppearance(getContext(), R.style.TextAppearance_MaterialComponents_Subtitle1);
+        tvSubtitle.setTextAppearance(getContext(), R.style.TextAppearance_MaterialComponents_Caption);
         tvSubtitle.setTypeface(ResourcesCompat.getFont(getContext(), R.font.open_sans));
 
         LinearLayout linear = new LinearLayout(getContext());
