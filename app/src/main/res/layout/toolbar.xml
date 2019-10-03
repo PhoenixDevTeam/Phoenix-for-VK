@@ -10,7 +10,6 @@
     android:background="@android:color/transparent"
     app:cardCornerRadius="@dimen/toolbar_corner_radius"
     app:cardBackgroundColor="?colorSurface"
-    app:cardElevation="2dp"
     app:contentPadding="0dp">
 
     <biz.dealnote.messenger.view.CenteredToolbar

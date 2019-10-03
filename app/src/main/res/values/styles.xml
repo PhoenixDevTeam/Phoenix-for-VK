@@ -28,6 +28,8 @@
         </item>
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.AppTheme.LargeComponent
         </item>
+
+        <item name="materialCardViewStyle">@style/Theme.MaterialCardView</item>
         <item name="floatingActionButtonStyle">@style/Theme.FloatingActionButton</item>
         <item name="icon_color_active">#448AFF</item>
 
@@ -48,6 +50,9 @@
         <item name="buttonAddPhotoBackground">@drawable/background_rectangle_dash_inverse</item>
     </style>
 
+    <style name="Theme.MaterialCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">5dp</item>
+    </style>
 
     <style name="QuickReply" parent="Theme.MaterialComponents.Dialog">
         <item name="windowActionBar">false</item>
