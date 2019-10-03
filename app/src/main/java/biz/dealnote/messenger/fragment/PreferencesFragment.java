@@ -88,6 +88,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
     public static final String KEY_DEFAULT_CATEGORY = "default_category";
     public static final String KEY_AVATAR_STYLE = "avatar_style";
+    private static final String KEY_APP_THEME = "app_theme";
     private static final String KEY_NIGHT_SWITCH = "night_switch";
     private static final String KEY_TALK_ABOUT = "talk_about";
     private static final String KEY_JOIN_APP_GROUP = "join_app_group";
@@ -136,6 +137,11 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         }
 
         final ListPreference nightPreference = findPreference(KEY_NIGHT_SWITCH);
+        final ListPreference themePreference = findPreference(KEY_APP_THEME);
+        themePreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            requireActivity().recreate();
+            return true;
+        });
 
         nightPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             switch (Integer.parseInt(newValue.toString())) {
