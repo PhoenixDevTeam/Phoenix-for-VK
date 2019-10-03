@@ -1,60 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <biz.dealnote.messenger.view.CenteredToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="6"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_height="48dp"
+        android:clipToPadding="true"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:subtitleTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        app:theme="@style/Theme.Toolbar.Surface"
+        app:titleTextAppearance="@style/TextAppearance.Toolbar.Title" />
 
-        <include layout="@layout/toolbar_transparent" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="30dp"
+        app:contentPadding="0dp"
+        app:layout_constraintBottom_toTopOf="@id/seekbar_container"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <biz.dealnote.messenger.view.AspectRatioImageView
+            android:id="@+id/cover"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:contentPadding="0dp">
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/album_cover"
+            android:scaleType="fitStart"
+            app:aspectRatioEnabled="true"
+            app:aspectRatioH="1"
+            app:aspectRatioW="1" />
 
-            <biz.dealnote.messenger.view.AspectRatioImageView
-                android:id="@+id/cover"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/album_cover"
-                android:scaleType="fitStart"
-                android:src="@drawable/itunes"
-                app:aspectRatioEnabled="true"
-                app:aspectRatioH="1"
-                app:aspectRatioW="1" />
 
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <RelativeLayout
         android:id="@+id/seekbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
+        android:padding="12dp"
+        app:layout_constraintBottom_toTopOf="@id/title_container">
 
         <TextView
             android:id="@+id/audio_player_current_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
@@ -63,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="12dp"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
@@ -77,20 +81,20 @@
 
     </RelativeLayout>
 
-
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/title_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@id/audio_player_controls">
 
         <biz.dealnote.messenger.view.CircleCounterButton
             android:id="@+id/audio_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:active="false"
             app:active_background_color="?attr/icon_color_active"
@@ -98,9 +102,10 @@
             app:noactive_icon_color="?colorOnSurface" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_toStartOf="@id/audio_share"
+            android:layout_toEndOf="@id/audio_add"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -108,7 +113,12 @@
                 android:id="@+id/audio_player_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 tools:text="Emin" />
 
@@ -116,7 +126,12 @@
                 android:id="@+id/audio_player_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 tools:text="Sunny" />
 
@@ -124,25 +139,26 @@
 
         <biz.dealnote.messenger.view.CircleCounterButton
             android:id="@+id/audio_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:active="false"
             app:active_background_color="?attr/icon_color_active"
             app:button_icon="@drawable/share_variant"
             app:noactive_icon_color="?colorOnSurface" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/audio_player_controls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_weight="1"
+        android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:padding="4dp">
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <FrameLayout
             android:layout_width="0dp"
@@ -226,4 +242,4 @@
         </FrameLayout>
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

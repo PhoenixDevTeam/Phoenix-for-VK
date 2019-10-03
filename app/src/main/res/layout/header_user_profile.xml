@@ -155,149 +155,156 @@
         app:contentPaddingRight="@dimen/card_margin"
         tools:ignore="UnusedAttribute">
 
-        <LinearLayout
-            android:id="@+id/profile_counter_container"
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:scrollbars="none">
 
             <LinearLayout
-                android:id="@+id/header_user_profile_friends_container"
+                android:id="@+id/profile_counter_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/fragment_user_profile_bfriends"
+                <LinearLayout
+                    android:id="@+id/header_user_profile_friends_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:fontFamily="@font/open_sans_light"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:text="@string/counter_friends"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/fragment_user_profile_bfriends"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-            <LinearLayout
-                android:id="@+id/header_user_profile_groups_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                <TextView
-                    android:id="@+id/fragment_user_profile_bgroups"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="center"
+                        android:text="@string/counter_friends"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/header_user_profile_groups_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:text="@string/counter_groups"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/header_user_profile_photos_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:orientation="vertical"
-
-                android:padding="8dp">
-
-                <TextView
-                    android:id="@+id/fragment_user_profile_bphotos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
+                    android:layout_marginStart="8dp"
                     android:gravity="center"
-                    android:text="@string/counter_photos"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/fragment_user_profile_bgroups"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-            <LinearLayout
-                android:id="@+id/header_user_profile_audios_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:text="@string/counter_groups"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
-                <TextView
-                    android:id="@+id/fragment_user_profile_baudios"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/header_user_profile_photos_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:text="@string/counter_audios"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+                    android:orientation="vertical"
 
-            </LinearLayout>
+                    android:padding="8dp">
 
-            <LinearLayout
-                android:id="@+id/header_user_profile_videos_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
+                    <TextView
+                        android:id="@+id/fragment_user_profile_bphotos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-                <TextView
-                    android:id="@+id/fragment_user_profile_bvideos"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="center"
+                        android:text="@string/counter_photos"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/header_user_profile_audios_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:text="@string/counter_videos"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/fragment_user_profile_baudios"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="center"
+                        android:text="@string/counter_audios"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/header_user_profile_videos_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/fragment_user_profile_bvideos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="center"
+                        android:text="@string/counter_videos"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </HorizontalScrollView>
 
     </com.google.android.material.card.MaterialCardView>
 

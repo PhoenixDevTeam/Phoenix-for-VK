@@ -1172,5 +1172,6 @@
     <string name="wall_comment_push_title">New wall comment</string>
     <string name="audios">Audios</string>
     <string name="playlist">Playlist</string>
+    <string name="phoenix_player">Phoenix Player</string>
 
 </resources>

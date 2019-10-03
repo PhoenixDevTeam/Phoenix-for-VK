@@ -52,6 +52,7 @@ import biz.dealnote.messenger.player.ui.RepeatButton;
 import biz.dealnote.messenger.player.ui.RepeatingImageButton;
 import biz.dealnote.messenger.player.ui.ShuffleButton;
 import biz.dealnote.messenger.player.util.MusicUtils;
+import biz.dealnote.messenger.settings.CurrentTheme;
 import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.AssertUtils;
 import biz.dealnote.messenger.util.RxUtils;
@@ -214,9 +215,13 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         tvTitle = root.findViewById(R.id.audio_player_title);
         tvSubtitle = root.findViewById(R.id.audio_player_subtitle);
 
+        //to animate running text
+        tvTitle.setSelected(true);
+        tvSubtitle.setSelected(true);
+
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
         if (actionBar != null) {
-            actionBar.setTitle(Utils.isLandscape(requireActivity()) ? getResources().getString(R.string.music) : null);
+            actionBar.setTitle(getString(R.string.phoenix_player));
             actionBar.setSubtitle(null);
         }
 
@@ -406,10 +411,10 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         boolean isLandLayout = Utils.isLandscape(requireActivity()) && !Utils.is600dp(requireActivity());
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
 
-        if (actionBar != null) {
+        if (actionBar != null && isLandLayout) {
             Audio current = MusicUtils.getCurrentAudio();
-            actionBar.setSubtitle(!isLandLayout || current == null ? null : current.getTitle());
-            actionBar.setTitle(!isLandLayout || current == null ? null : current.getArtist());
+            actionBar.setSubtitle(current == null ? null : current.getTitle());
+            actionBar.setTitle(current == null ? null : current.getArtist());
         }
     }
 
@@ -484,8 +489,13 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
             tvSubtitle.setText(trackName == null ? null : trackName.trim());
         }
 
-        if (ivCover != null) {
+        if (coverUrl != null) {
+            ivCover.setScaleType(ImageView.ScaleType.FIT_START);
             PicassoInstance.with().load(coverUrl).into(ivCover);
+        } else {
+            ivCover.setScaleType(ImageView.ScaleType.CENTER);
+            ivCover.setImageResource(R.drawable.itunes);
+            ivCover.getDrawable().setTint(CurrentTheme.getColorOnSurface(requireContext()));
         }
 
         resolveAddButton();
@@ -862,7 +872,7 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
             final String action = intent.getAction();
 
             AudioPlayerFragment fragment = mReference.get();
-            if(isNull(fragment) || isNull(action)) return;
+            if (isNull(fragment) || isNull(action)) return;
 
             switch (action) {
                 case MusicPlaybackService.META_CHANGED:
