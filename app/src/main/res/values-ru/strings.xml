@@ -1048,4 +1048,8 @@
     <string name="photo_comment_push_title">Новый комментарий к фото</string>
     <string name="video_comment_push_title">Новый комментарий к видео</string>
     <string name="wall_comment_push_title">Новый комментарий к записи</string>
+    <string name="audios">Аудио</string>
+    <string name="playlist">Плейлист</string>
+    <string name="phoenix_player">Phoenix Плеер</string>
+    <string name="choose_theme_title">Тема приложения</string>
 </resources>

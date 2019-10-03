@@ -1074,8 +1074,8 @@
     <string name="select_comment_author">Select author</string>
     <string name="add_to_my_videos">Add to My Videos</string>
     <string name="api_error_800">This video is already added</string>
-    <string name="user_blacklist_title">Black list</string>
-    <string name="add_to_blacklist">Add to black list</string>
+    <string name="user_blacklist_title">Blacklist</string>
+    <string name="add_to_blacklist">Add to blacklist</string>
     <string name="proxy_address_helper_text">Server address</string>
     <string name="proxy_port_helper_text">Port</string>
     <string name="proxy_manager_title">Proxy Manager</string>
@@ -1183,6 +1183,6 @@
     <string name="audios">Audios</string>
     <string name="playlist">Playlist</string>
     <string name="phoenix_player">Phoenix Player</string>
-    <string name="choose_theme_title">Select application theme</string>
+    <string name="choose_theme_title">Application theme</string>
 
 </resources>

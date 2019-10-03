@@ -49,11 +49,10 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
 public class SearchTabsFragment extends Fragment implements MySearchView.OnQueryTextListener,
         MySearchView.OnBackButtonClickListener, MySearchView.OnAdditionalButtonClickListener {
 
-    public static final int TAB_AUDIOS = 3;
-
     public static final int TAB_PEOPLE = 0;
     public static final int TAB_COMMUNITIES = 1;
     public static final int TAB_NEWS = 2;
+    public static final int TAB_MUSIC = 3;
     public static final int TAB_VIDEOS = 4;
     public static final int TAB_MESSAGES = 5;
     public static final int TAB_DOCUMENTS = 6;
@@ -331,7 +330,7 @@ public class SearchTabsFragment extends Fragment implements MySearchView.OnQuery
                             criteria instanceof GroupSearchCriteria ? (GroupSearchCriteria) criteria : null);
                     break;
 
-                case TAB_AUDIOS:
+                case TAB_MUSIC:
                     fragment = AudiosSearchFragment.newInstance(accountId,
                             criteria instanceof AudioSearchCriteria ? (AudioSearchCriteria) criteria : null);
                     break;
@@ -371,8 +370,8 @@ public class SearchTabsFragment extends Fragment implements MySearchView.OnQuery
                     return getString(R.string.people);
                 case TAB_COMMUNITIES:
                     return getString(R.string.communities);
-                case TAB_AUDIOS:
-                    return getString(R.string.audios);
+                case TAB_MUSIC:
+                    return getString(R.string.music);
                 case TAB_VIDEOS:
                     return getString(R.string.videos);
                 case TAB_DOCUMENTS:
