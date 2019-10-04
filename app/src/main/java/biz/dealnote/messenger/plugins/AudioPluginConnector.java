@@ -5,11 +5,16 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import biz.dealnote.messenger.model.Audio;
+import biz.dealnote.messenger.model.IdPair;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+
+import static biz.dealnote.messenger.util.Objects.isNull;
 
 /**
  * Created by admin on 2/3/2018.
@@ -25,6 +30,26 @@ public class AudioPluginConnector implements IAudioPluginConnector {
         this.app = context.getApplicationContext();
     }
 
+    protected static String join(Collection<IdPair> audios, String delimiter) {
+        if (isNull(audios)) {
+            return null;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        boolean firstTime = true;
+        for (IdPair pair : audios) {
+            if (firstTime) {
+                firstTime = false;
+            } else {
+                sb.append(delimiter);
+            }
+
+            sb.append(pair.ownerId + "_" + pair.id);
+        }
+
+        return sb.toString();
+    }
+
     @Override
     public Single<List<Audio>> get(int ownerId, int offset) {
         return Single.create(emitter -> {
@@ -32,56 +57,27 @@ public class AudioPluginConnector implements IAudioPluginConnector {
                     .scheme("content")
                     .authority(AUTHORITY)
                     .path("audios")
+                    .appendQueryParameter("request", "get")
                     .appendQueryParameter("owner_id", String.valueOf(ownerId))
                     .appendQueryParameter("offset", String.valueOf(offset))
                     .build();
 
-            Cursor cursor = app.getContentResolver().query(uri, null, null, null, null);
+            parseAndInsertToDb(emitter, uri);
+        });
+    }
 
-            List<Audio> audios = new ArrayList<>(Utils.safeCountOf(cursor));
+    @Override
+    public Single<List<Audio>> getById(List<IdPair> audios) {
+        return Single.create(emitter -> {
+            Uri uri = new Uri.Builder()
+                    .scheme("content")
+                    .authority(AUTHORITY)
+                    .path("audios")
+                    .appendQueryParameter("request", "getById")
+                    .appendQueryParameter("audios", join(audios, ","))
+                    .build();
 
-            if(cursor != null){
-                while (cursor.moveToNext()){
-                    if(emitter.isDisposed()){
-                        break;
-                    }
-
-                    try {
-                        checkAudioPluginError(cursor);
-                    } catch (Exception e) {
-                        cursor.close();
-                        emitter.onError(e);
-                        return;
-                    }
-
-                    int audioId = cursor.getInt(cursor.getColumnIndex("audio_id"));
-                    int ownerId1 = cursor.getInt(cursor.getColumnIndex("owner_id"));
-                    String title = cursor.getString(cursor.getColumnIndex("title"));
-                    String artist = cursor.getString(cursor.getColumnIndex("artist"));
-                    int duration = cursor.getInt(cursor.getColumnIndex("duration"));
-                    String url = cursor.getString(cursor.getColumnIndex("url"));
-                    String cover = cursor.getString(cursor.getColumnIndex("cover_url"));
-                    String bigCover = cursor.getString(cursor.getColumnIndex("cover_url_big"));
-                    boolean isHq = cursor.getInt(cursor.getColumnIndex("is_hq")) == 1;
-
-                    Audio audio = new Audio()
-                            .setArtist(artist)
-                            .setDuration(duration)
-                            .setId(audioId)
-                            .setOwnerId(ownerId1)
-                            .setTitle(title)
-                            .setUrl(url)
-                            .setHq(isHq)
-                            .setBigCover(bigCover)
-                            .setCover(cover);
-
-                    audios.add(audio);
-                }
-
-                cursor.close();
-            }
-
-            emitter.onSuccess(audios);
+            parseAndInsertToDb(emitter, uri);
         });
     }
 
@@ -96,57 +92,15 @@ public class AudioPluginConnector implements IAudioPluginConnector {
                     .appendQueryParameter("query", query)
                     .appendQueryParameter("offset", String.valueOf(offset))
                     .build();
-
-            Cursor cursor = app.getContentResolver().query(uri, null, null, null, null);
-
-            List<Audio> audios = new ArrayList<>(Utils.safeCountOf(cursor));
-
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    if (emitter.isDisposed()) {
-                        break;
-                    }
-
-                    try {
-                        checkAudioPluginError(cursor);
-                    } catch (Exception e) {
-                        cursor.close();
-                        emitter.onError(e);
-                        return;
-                    }
-
-                    int audioId = cursor.getInt(cursor.getColumnIndex("audio_id"));
-                    int ownerId1 = cursor.getInt(cursor.getColumnIndex("owner_id"));
-                    String title = cursor.getString(cursor.getColumnIndex("title"));
-                    String artist = cursor.getString(cursor.getColumnIndex("artist"));
-                    int duration = cursor.getInt(cursor.getColumnIndex("duration"));
-                    String url = cursor.getString(cursor.getColumnIndex("url"));
-                    String cover = cursor.getString(cursor.getColumnIndex("cover_url"));
-                    String bigCover = cursor.getString(cursor.getColumnIndex("cover_url_big"));
-
-                    Audio audio = new Audio()
-                            .setArtist(artist)
-                            .setDuration(duration)
-                            .setId(audioId)
-                            .setOwnerId(ownerId1)
-                            .setTitle(title)
-                            .setUrl(url)
-                            .setBigCover(bigCover)
-                            .setCover(cover);
-
-                    audios.add(audio);
-                }
-                cursor.close();
-            }
-            emitter.onSuccess(audios);
+            parseAndInsertToDb(emitter, uri);
         });
     }
 
     private static void checkAudioPluginError(Cursor cursor) throws AudioPluginException {
-        if(cursor.getPosition() == 0){
+        if (cursor.getPosition() == 0) {
             int errorCodeIndex = cursor.getColumnIndex("error_code");
 
-            if(errorCodeIndex >= 0){
+            if (errorCodeIndex >= 0) {
                 int code = cursor.getInt(errorCodeIndex);
                 String message = cursor.getString(cursor.getColumnIndex("error_message"));
                 throw new AudioPluginException(code, message);
@@ -166,17 +120,62 @@ public class AudioPluginConnector implements IAudioPluginConnector {
 
         try {
             Cursor cursor = app.getContentResolver().query(uri, null, null, null, null);
-            if(cursor != null){
-                if(cursor.moveToNext()){
+            if (cursor != null) {
+                if (cursor.moveToNext()) {
                     available = cursor.getInt(cursor.getColumnIndex("available")) == 1;
                 }
                 cursor.close();
             }
-        } catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
         return available;
+    }
+
+    private void parseAndInsertToDb(SingleEmitter<List<Audio>> emitter, Uri uri) {
+        Cursor cursor = app.getContentResolver().query(uri, null, null, null, null);
+
+        List<Audio> audios = new ArrayList<>(Utils.safeCountOf(cursor));
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                if (emitter.isDisposed()) {
+                    break;
+                }
+
+                try {
+                    checkAudioPluginError(cursor);
+                } catch (Exception e) {
+                    cursor.close();
+                    emitter.onError(e);
+                    return;
+                }
+
+                int audioId = cursor.getInt(cursor.getColumnIndex("audio_id"));
+                int ownerId1 = cursor.getInt(cursor.getColumnIndex("owner_id"));
+                String title = cursor.getString(cursor.getColumnIndex("title"));
+                String artist = cursor.getString(cursor.getColumnIndex("artist"));
+                int duration = cursor.getInt(cursor.getColumnIndex("duration"));
+                String url = cursor.getString(cursor.getColumnIndex("url"));
+                String cover = cursor.getString(cursor.getColumnIndex("cover_url"));
+                String bigCover = cursor.getString(cursor.getColumnIndex("cover_url_big"));
+
+                Audio audio = new Audio()
+                        .setArtist(artist)
+                        .setDuration(duration)
+                        .setId(audioId)
+                        .setOwnerId(ownerId1)
+                        .setTitle(title)
+                        .setUrl(url)
+                        .setBigCover(bigCover)
+                        .setCover(cover);
+
+                audios.add(audio);
+            }
+            cursor.close();
+        }
+        emitter.onSuccess(audios);
     }
 
     public static final class AudioPluginException extends Exception {

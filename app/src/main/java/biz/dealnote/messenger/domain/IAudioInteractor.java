@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import biz.dealnote.messenger.model.Audio;
+import biz.dealnote.messenger.model.IdPair;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.annotations.Nullable;
@@ -20,6 +21,8 @@ public interface IAudioInteractor {
     Completable sendBroadcast(int accountId, int audioOwnerId, int audioId, @Nullable Collection<Integer> targetIds);
 
     Single<List<Audio>> get(int ownerId, int offset);
+
+    Single<List<Audio>> getById(List<IdPair> audios);
 
     Single<List<Audio>> search(String query, boolean own, int offset);
 //    Single<String> findAudioUrl(int audioId, int ownerId);

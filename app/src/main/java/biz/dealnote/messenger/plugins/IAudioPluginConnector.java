@@ -3,6 +3,7 @@ package biz.dealnote.messenger.plugins;
 import java.util.List;
 
 import biz.dealnote.messenger.model.Audio;
+import biz.dealnote.messenger.model.IdPair;
 import io.reactivex.Single;
 
 /**
@@ -12,6 +13,7 @@ import io.reactivex.Single;
 public interface IAudioPluginConnector {
     Single<List<Audio>> get(int ownerId, int offset);
 
+    Single<List<Audio>> getById(List<IdPair> audios);
     Single<List<Audio>> search(String query, boolean own, int offset);
     boolean isPluginAvailable();
 }

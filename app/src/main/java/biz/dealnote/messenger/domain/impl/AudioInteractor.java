@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.List;
 
 import biz.dealnote.messenger.api.interfaces.INetworker;
-import biz.dealnote.messenger.api.model.IdPair;
 import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.model.Audio;
+import biz.dealnote.messenger.model.IdPair;
 import biz.dealnote.messenger.plugins.IAudioPluginConnector;
 import biz.dealnote.messenger.util.Objects;
 import io.reactivex.Completable;
@@ -67,13 +67,18 @@ public class AudioInteractor implements IAudioInteractor {
     public Completable sendBroadcast(int accountId, int audioOwnerId, int audioId, Collection<Integer> targetIds) {
         return networker.vkDefault(accountId)
                 .audio()
-                .setBroadcast(new IdPair(audioId, audioOwnerId), targetIds)
+                .setBroadcast(new biz.dealnote.messenger.api.model.IdPair(audioId, audioOwnerId), targetIds)
                 .ignoreElement();
     }
 
     @Override
     public Single<List<Audio>> get(int ownerId, int offset) {
         return audioPluginConnector.get(ownerId, offset);
+    }
+
+    @Override
+    public Single<List<Audio>> getById(List<IdPair> audios) {
+        return audioPluginConnector.getById(audios);
     }
 
     @Override

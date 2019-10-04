@@ -46,6 +46,7 @@ import com.squareup.picasso.Target;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -57,11 +58,14 @@ import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Audio;
+import biz.dealnote.messenger.model.IdPair;
 import biz.dealnote.messenger.util.Logger;
+import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
+import static biz.dealnote.messenger.util.Utils.isEmpty;
 
 public class MusicPlaybackService extends Service {
 
@@ -1232,17 +1236,20 @@ public class MusicPlaybackService extends Service {
             mService.get().sendBroadcast(intent);
 
             resetBufferPercent();
+
             mService.get().notifyChange(PLAYSTATE_CHANGED);
         }
 
         void setDataSource(int ownerId, int audioId, String url) {
-//            if (isEmpty(url) || "https://vk.com/mp3/audio_api_unavailable.mp3".equals(url)) {
-//                compositeDisposable.add(audioInteractor.findAudioUrl(audioId, ownerId)
-//                        .compose(RxUtils.applySingleIOToMainSchedulers())
-//                        .subscribe(this::setDataSource, ignored -> setDataSource(url)));
-//            } else {
-            setDataSource(url);
-//            }
+            if (isEmpty(url) || "https://vk.com/mp3/audio_api_unavailable.mp3".equals(url)) {
+
+                compositeDisposable.add(audioInteractor.getById(Collections.singletonList(new IdPair(audioId, ownerId)))
+                        .compose(RxUtils.applySingleIOToMainSchedulers())
+                        .map(e -> e.get(0).getUrl())
+                        .subscribe(this::setDataSource, ignored -> setDataSource(url)));
+            } else {
+                setDataSource(url);
+            }
         }
 
         void resetBufferPercent() {
