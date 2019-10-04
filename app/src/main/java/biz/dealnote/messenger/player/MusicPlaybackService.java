@@ -63,6 +63,7 @@ import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static biz.dealnote.messenger.util.Utils.firstNonEmptyString;
 import static biz.dealnote.messenger.util.Utils.isEmpty;
@@ -433,7 +434,25 @@ public class MusicPlaybackService extends Service {
 
     public static final int MAX_QUEUE_SIZE = 200;
 
+    private static List<IdPair> listToIdPair(ArrayList<Audio> audios) {
+        List<IdPair> result = new ArrayList<>();
+        for (Audio item : audios) {
+            result.add(new IdPair(item.getId(), item.getOwnerId()));
+        }
+        return result;
+    }
+
     public static void startForPlayList(Context context, @NonNull ArrayList<Audio> audios, int position, boolean forceShuffle) {
+        String url = audios.get(0).getUrl();
+        IAudioInteractor interactor = InteractorFactory.createAudioInteractor();
+
+        if (interactor.isAudioPluginAvailable() && (isEmpty(url) || "https://vk.com/mp3/audio_api_unavailable.mp3".equals(url))) {
+            audios = (ArrayList<Audio>) interactor
+                    .getById(listToIdPair(audios))
+                    .subscribeOn(Schedulers.io())
+                    .blockingGet();
+        }
+
         Logger.d(TAG, "startForPlayList, count: " + audios.size() + ", position: " + position);
 
         ArrayList<Audio> target;
