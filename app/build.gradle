@@ -13,11 +13,18 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "biz.dealnote.messenger"
+        applicationId "dev.ezorrio.phoenix"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 50200
         versionName '5.0.2'
+
+        buildConfigField 'int', 'VK_API_APP_ID', getProps("vk_app_id")
+        buildConfigField 'String', 'GCM_SENDER_ID', getProps("fcm_sender_id")
+        buildConfigField 'boolean', 'FULL_APP', 'true'
+        buildConfigField 'String', 'SERVICE_TOKEN', getProps("vk_service_token")
+        buildConfigField 'String', 'VK_CLIENT_SECRET', getProps("vk_client_secret")
+        buildConfigField 'String', 'YOUTUBE_DEV_KEY', getProps("youtube_dev_key")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -43,45 +50,6 @@ android {
         debug {
             minifyEnabled false
             multiDexEnabled false
-        }
-    }
-
-    /*applicationVariants.all { variant ->
-        def flavor = variant.mergedFlavor
-        def versionCode = flavor.versionCode
-
-        def versionName = flavor.versionName
-        if (variant.buildType.isDebuggable()) {
-            versionCode += 1
-            versionName = versionCode + "-d"
-        }
-
-        flavor.versionCode = versionCode
-        flavor.versionName = versionName
-    }*/
-
-    flavorDimensions "type"
-
-    productFlavors {
-        full {
-            applicationId "biz.dealnote.phoenix"
-            dimension "type"
-            buildConfigField 'int', 'VK_API_APP_ID', getProps("full_vk_app_id")
-            buildConfigField 'String', 'GCM_SENDER_ID', getProps("full_gcm_sender_id")
-            buildConfigField 'boolean', 'FULL_APP', 'true'
-            buildConfigField 'String', 'SERVICE_TOKEN', getProps("full_vk_service_token")
-            buildConfigField 'String', 'VK_CLIENT_SECRET', getProps("full_vk_client_secret")
-            buildConfigField 'String', 'YOUTUBE_DEV_KEY', getProps("full_youtube_dev_key")
-        }
-        lite {
-            applicationId "biz.dealnote.messenger"
-            dimension "type"
-            buildConfigField 'int', 'VK_API_APP_ID', getProps("lite_vk_app_id")
-            buildConfigField 'String', 'GCM_SENDER_ID', getProps("lite_gcm_sender_id")
-            buildConfigField 'boolean', 'FULL_APP', 'false'
-            buildConfigField 'String', 'SERVICE_TOKEN', getProps("lite_vk_service_token")
-            buildConfigField 'String', 'VK_CLIENT_SECRET', getProps("lite_vk_client_secret")
-            buildConfigField 'String', 'YOUTUBE_DEV_KEY', getProps("lite_youtube_dev_key")
         }
     }
 }
