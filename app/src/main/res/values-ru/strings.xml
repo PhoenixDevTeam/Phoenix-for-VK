@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Phoenix Lite</string>
+    <string name="app_name">Phoenix (R)</string>
 
     <!-- Dialogs-->
     <string name="dialogs">Диалоги</string>

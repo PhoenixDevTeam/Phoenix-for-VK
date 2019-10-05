@@ -5,7 +5,7 @@ import biz.dealnote.messenger.db.column.UserColumns;
 
 public class Constants {
 
-    public static final String PRIVACY_POLICY_LINK = "https://github.com/dealnotedev/Phoenix-For-VK/wiki/Privacy-Policy";
+    public static final String PRIVACY_POLICY_LINK = "https://github.com/PhoenixDevTeam/Phoenix-for-VK/wiki/Privacy-policy";
 
     public static final String FILE_PROVIDER_AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider";
 
@@ -13,7 +13,7 @@ public class Constants {
     public static final int PHOENIX_FULL_API_ID = 4994316;
 
     public static final int API_ID = BuildConfig.VK_API_APP_ID;
-    public static final String SENDER_ID = BuildConfig.GCM_SENDER_ID;
+    public static final String SENDER_ID = BuildConfig.FCM_SENDER_ID;
     public static final String SECRET = BuildConfig.VK_CLIENT_SECRET;
 
     public static final String MAIN_OWNER_FIELDS = UserColumns.API_FIELDS + "," + GroupColumns.API_FIELDS;
