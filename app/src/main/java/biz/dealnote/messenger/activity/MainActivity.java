@@ -1161,36 +1161,17 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
     }
 
     private void showCommunityInviteDialog() {
-        // чтобы при повторном вызове onWindowFocusChanged не отобразился этот диалог
-        Settings.get().main().incrementRunCount();
-
         new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.app_community_invite_title)
                 .setMessage(R.string.app_community_invite_message)
-                .setPositiveButton(R.string.button_go, (dialog, which) -> {
-                    Settings.get().main().setRunCount(1000);
-                    goToAppCommunity();
-                })
-                .setNegativeButton(R.string.never, (dialog, which) -> Settings.get().main().setRunCount(1000))
-                .setNeutralButton(R.string.later, null)
+                .setPositiveButton(R.string.button_go, (dialog, which) -> goToAppCommunity())
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
     private void goToAppCommunity() {
         PlaceFactory.getOwnerWallPlace(mAccountId, -PreferencesFragment.APP_GROUP_ID, null)
                 .tryOpenWith(this);
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
-        if (hasFocus) {
-            int runCount = Settings.get().main().getRunCount();
-            if (runCount % 10 == 0 && runCount < 35) {
-                showCommunityInviteDialog();
-            }
-        }
     }
 
     private void openPageAndCloseSheet(AbsMenuItem item) {

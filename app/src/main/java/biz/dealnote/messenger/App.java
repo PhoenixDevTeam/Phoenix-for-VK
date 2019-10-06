@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
+
 import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.service.ErrorLocalizer;
@@ -29,10 +30,6 @@ public class App extends Application {
         AppCompatDelegate.setDefaultNightMode(Settings.get().ui().getNightMode());
 
         super.onCreate();
-
-        Settings.get()
-                .main()
-                .incrementRunCount();
 
         PicassoInstance.init(this, Injection.provideProxySettings());
 

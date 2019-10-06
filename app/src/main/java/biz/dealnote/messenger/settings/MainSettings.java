@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
+
 import biz.dealnote.messenger.model.PhotoSize;
 import biz.dealnote.messenger.upload.Upload;
 import biz.dealnote.messenger.util.Optional;
@@ -27,25 +28,6 @@ class MainSettings implements ISettings.IMainSettings {
     MainSettings(Context context) {
         app = context.getApplicationContext();
         prefferedPhotoPreviewSize = Optional.empty();
-    }
-
-    @Override
-    public void incrementRunCount() {
-        int current = getRunCount();
-        setRunCount(current + 1);
-    }
-
-    @Override
-    public int getRunCount() {
-        return getDefaultPreferences().getInt(KEY_RUN_COUNT, 0);
-    }
-
-    @Override
-    public void setRunCount(int count) {
-        getDefaultPreferences()
-                .edit()
-                .putInt(KEY_RUN_COUNT, count)
-                .apply();
     }
 
     @Override

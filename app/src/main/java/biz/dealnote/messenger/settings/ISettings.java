@@ -94,12 +94,6 @@ public interface ISettings {
 
     interface IMainSettings {
 
-        void incrementRunCount();
-
-        int getRunCount();
-
-        void setRunCount(int count);
-
         boolean isSendByEnter();
 
         boolean isNeedDoublePressToExit();
