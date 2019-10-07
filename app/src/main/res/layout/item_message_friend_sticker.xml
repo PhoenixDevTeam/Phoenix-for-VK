@@ -35,7 +35,7 @@
         android:layout_toEndOf="@+id/item_message_avatar"
         android:orientation="vertical">
 
-        <ImageView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/sticker"
             android:layout_width="120dp"
             android:layout_height="120dp" />

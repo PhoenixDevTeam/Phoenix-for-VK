@@ -16,6 +16,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.squareup.picasso.Transformation;
 
 import java.lang.ref.WeakReference;
@@ -90,13 +91,15 @@ public class AttachmentsViewBinder {
         if (view != null) view.setVisibility(visibility);
     }
 
-    private static int generateHolderId(){
-        sHolderIdCounter++;
-        return sHolderIdCounter;
-    }
+    private static final byte[] DEFAUL_WAVEFORM = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     public void setOnHashTagClickListener(EmojiconTextView.OnHashTagClickListener onHashTagClickListener) {
         this.mOnHashTagClickListener = onHashTagClickListener;
+    }
+
+    private static int generateHolderId() {
+        sHolderIdCounter++;
+        return sHolderIdCounter;
     }
 
     public void displayAttachments(Attachments attachments, AttachmentsHolder containers, boolean postsAsLinks) {
@@ -113,7 +116,7 @@ public class AttachmentsViewBinder {
             displayVoiceMessages(attachments.getVoiceMessages(), containers.getVoiceMessageRoot());
             displayDocs(attachments.getDocLinks(postsAsLinks, true), containers.getVgDocs());
 
-            if(containers.getVgStickers() != null ){
+            if (containers.getVgStickers() != null) {
                 displayStickers(attachments.getStickers(), containers.getVgStickers());
             }
 
@@ -122,7 +125,7 @@ public class AttachmentsViewBinder {
     }
 
     private void displayVoiceMessages(final ArrayList<VoiceMessage> voices, ViewGroup container) {
-        if(Objects.isNull(container)) return;
+        if (Objects.isNull(container)) return;
 
         boolean empty = safeIsEmpty(voices);
         container.setVisibility(empty ? View.GONE : View.VISIBLE);
@@ -140,7 +143,7 @@ public class AttachmentsViewBinder {
 
             if (g < voices.size()) {
                 VoiceHolder holder = (VoiceHolder) root.getTag();
-                if(holder == null){
+                if (holder == null) {
                     holder = new VoiceHolder(root);
                     root.setTag(holder);
                 }
@@ -155,24 +158,10 @@ public class AttachmentsViewBinder {
         }
     }
 
-    public void bindVoiceHolderById(int holderId, boolean play, boolean paused, float progress, boolean amin){
+    public void bindVoiceHolderById(int holderId, boolean play, boolean paused, float progress, boolean amin) {
         VoiceHolder holder = mVoiceSharedHolders.findHolderByHolderId(holderId);
-        if(nonNull(holder)){
+        if (nonNull(holder)) {
             bindVoiceHolderPlayState(holder, play, paused, progress, amin);
-        }
-    }
-
-    public void disableVoiceMessagePlaying(){
-        SparseArray<Set<WeakReference<VoiceHolder>>> holders = mVoiceSharedHolders.getCache();
-        for (int i = 0; i < holders.size(); i++) {
-            int key = holders.keyAt(i);
-            Set<WeakReference<VoiceHolder>> set = holders.get(key);
-            for (WeakReference<VoiceHolder> reference : set) {
-                VoiceHolder holder = reference.get();
-                if (nonNull(holder)) {
-                    bindVoiceHolderPlayState(holder, false, false, 0f, false);
-                }
-            }
         }
     }
 
@@ -205,7 +194,19 @@ public class AttachmentsViewBinder {
         this.mVoiceActionListener = voiceActionListener;
     }
 
-    private static final byte[] DEFAUL_WAVEFORM = {0,0,0,0,0,0,0,0,0,0,0,0,0};
+    public void disableVoiceMessagePlaying() {
+        SparseArray<Set<WeakReference<VoiceHolder>>> holders = mVoiceSharedHolders.getCache();
+        for (int i = 0; i < holders.size(); i++) {
+            int key = holders.keyAt(i);
+            Set<WeakReference<VoiceHolder>> set = holders.get(key);
+            for (WeakReference<VoiceHolder> reference : set) {
+                VoiceHolder holder = reference.get();
+                if (nonNull(holder)) {
+                    bindVoiceHolderPlayState(holder, false, false, 0f, false);
+                }
+            }
+        }
+    }
 
     private void bindVoiceHolder(@NonNull VoiceHolder holder, @NonNull VoiceMessage voice) {
         int voiceMessageId = voice.getId();
@@ -214,14 +215,14 @@ public class AttachmentsViewBinder {
         holder.mDurationText.setText(AppTextUtils.getDurationString(voice.getDuration()));
 
         // can bee NULL/empty
-        if(nonNull(voice.getWaveform()) && voice.getWaveform().length > 0){
+        if (nonNull(voice.getWaveform()) && voice.getWaveform().length > 0) {
             holder.mWaveFormView.setWaveForm(voice.getWaveform());
         } else {
             holder.mWaveFormView.setWaveForm(DEFAUL_WAVEFORM);
         }
 
         holder.mButtonPlay.setOnClickListener(v -> {
-            if(nonNull(mVoiceActionListener)){
+            if (nonNull(mVoiceActionListener)) {
                 mVoiceActionListener.onVoicePlayButtonClick(holder.getHolderId(), voiceMessageId, voice);
             }
         });
@@ -231,41 +232,54 @@ public class AttachmentsViewBinder {
         }
     }
 
-    private static final class CopyHolder {
-
-        final ViewGroup itemView;
-        final ImageView ivAvatar;
-        final TextView ownerName;
-        final EmojiconTextView bodyView;
-        final View tvShowMore;
-        final View buttonDots;
-        final AttachmentsHolder attachmentsHolder;
-
-        CopyHolder(ViewGroup itemView, OnAttachmentsActionCallback callback){
-            this.itemView = itemView;
-            this.bodyView = itemView.findViewById(R.id.item_post_copy_text);
-            this.ivAvatar = itemView.findViewById(R.id.item_copy_history_post_avatar);
-            this.tvShowMore = itemView.findViewById(R.id.item_post_copy_show_more);
-            this.ownerName = itemView.findViewById(R.id.item_post_copy_owner_name);
-            this.buttonDots = itemView.findViewById(R.id.item_copy_history_post_dots);
-            this.attachmentsHolder = AttachmentsHolder.forCopyPost(itemView);
-            this.callback = callback;
-
-            this.buttonDots.setOnClickListener(v -> showDotsMenu());
+    private void displayStickers(List<Sticker> stickers, ViewGroup stickersContainer) {
+        stickersContainer.setVisibility(safeIsEmpty(stickers) ? View.GONE : View.VISIBLE);
+        if (isEmpty(stickers)) {
+            return;
         }
 
-        final OnAttachmentsActionCallback callback;
+        if (stickersContainer.getChildCount() == 0) {
+            LottieAnimationView localView = new LottieAnimationView(mContext);
+            stickersContainer.addView(localView);
+        }
 
-        void showDotsMenu(){
-            PopupMenu menu = new PopupMenu(itemView.getContext(), buttonDots);
-            menu.getMenu().add(R.string.open_post).setOnMenuItemClickListener(item -> {
-                Post copy = (Post) buttonDots.getTag();
-                callback.onPostOpen(copy);
+        LottieAnimationView imageView = (LottieAnimationView) stickersContainer.getChildAt(0);
+        Sticker sticker = stickers.get(0);
+
+        int prefferedStickerSize = (int) dpToPx(PREFFERED_STICKER_SIZE, mContext);
+        Sticker.Image image = sticker.getImage(256, true);
+
+        boolean horisontal = image.getHeight() < image.getWidth();
+        double proporsion = (double) image.getWidth() / (double) image.getHeight();
+
+        final float finalWidth;
+        final float finalHeihgt;
+
+        if (horisontal) {
+            finalWidth = prefferedStickerSize;
+            finalHeihgt = (float) (finalWidth / proporsion);
+        } else {
+            finalHeihgt = prefferedStickerSize;
+            finalWidth = (float) (finalHeihgt * proporsion);
+        }
+
+        imageView.getLayoutParams().height = (int) finalHeihgt;
+        imageView.getLayoutParams().width = (int) finalWidth;
+
+        if (sticker.isAnimated()) {
+            imageView.setAnimationFromUrl(sticker.getAnimationUrl());
+            imageView.setRepeatCount(3);
+            imageView.playAnimation();
+            stickersContainer.setOnLongClickListener(e -> {
+                imageView.playAnimation();
                 return true;
             });
-
-            menu.show();
+        } else {
+            PicassoInstance.with()
+                    .load(image.getUrl())
+                    .into(imageView);
         }
+        stickersContainer.setOnClickListener(e -> openSticker(sticker));
     }
 
     public void displayCopyHistory(List<Post> posts, ViewGroup container, boolean reduce, int layout) {
@@ -383,50 +397,6 @@ public class AttachmentsViewBinder {
         }
     }
 
-    private void displayStickers(List<Sticker> stickers, ViewGroup stickersContainer) {
-        stickersContainer.setVisibility(safeIsEmpty(stickers) ? View.GONE : View.VISIBLE);
-        if (isEmpty(stickers)) {
-            return;
-        }
-
-        if (stickersContainer.getChildCount() == 0) {
-            ImageView localView = new ImageView(mContext);
-            stickersContainer.addView(localView);
-        }
-
-        ImageView imageView = (ImageView) stickersContainer.getChildAt(0);
-        Sticker sticker = stickers.get(0);
-
-        int prefferedStickerSize = (int) dpToPx(PREFFERED_STICKER_SIZE, mContext);
-        Sticker.Image image = sticker.getImage(256, true);
-
-        boolean horisontal = image.getHeight() < image.getWidth();
-        double proporsion = (double) image.getWidth() / (double) image.getHeight();
-
-        final float finalWidth;
-        final float finalHeihgt;
-
-        if (horisontal) {
-            finalWidth = prefferedStickerSize;
-            finalHeihgt = (float) (finalWidth / proporsion);
-        } else {
-            finalHeihgt = prefferedStickerSize;
-            finalWidth = (float) (finalHeihgt * proporsion);
-        }
-
-        imageView.getLayoutParams().height = (int) finalHeihgt;
-        imageView.getLayoutParams().width = (int) finalWidth;
-
-        PicassoInstance.with()
-                .load(image.getUrl())
-                .into(imageView);
-        stickersContainer.setOnClickListener(e -> openSticker(sticker));
-    }
-
-    private void openSticker(Sticker sticker) {
-
-    }
-
     private void displayDocs(List<DocLink> docs, ViewGroup root) {
         root.setVisibility(safeIsEmpty(docs) ? View.GONE : View.VISIBLE);
         if (safeIsEmpty(docs)) {
@@ -463,7 +433,7 @@ public class AttachmentsViewBinder {
 
                 itemView.setOnClickListener(v -> openDocLink(doc));
 
-                switch (doc.getType()){
+                switch (doc.getType()) {
                     case Types.DOC:
                         if (imageUrl != null) {
                             ivType.setVisibility(View.GONE);
@@ -514,6 +484,16 @@ public class AttachmentsViewBinder {
                 itemView.setTag(null);
             }
         }
+    }
+
+    private void openSticker(Sticker sticker) {
+
+    }
+
+    public interface VoiceActionListener extends EventListener {
+        void onVoiceHolderBinded(int voiceMessageId, int voiceHolderId);
+
+        void onVoicePlayButtonClick(int voiceHolderId, int voiceMessageId, @NonNull VoiceMessage voiceMessage);
     }
 
     private void openDocLink(DocLink link) {
@@ -575,9 +555,41 @@ public class AttachmentsViewBinder {
         }
     }
 
-    public interface VoiceActionListener extends EventListener {
-        void onVoiceHolderBinded(int voiceMessageId, int voiceHolderId);
-        void onVoicePlayButtonClick(int voiceHolderId, int voiceMessageId, @NonNull VoiceMessage voiceMessage);
+    private static final class CopyHolder {
+
+        final ViewGroup itemView;
+        final ImageView ivAvatar;
+        final TextView ownerName;
+        final EmojiconTextView bodyView;
+        final View tvShowMore;
+        final View buttonDots;
+        final AttachmentsHolder attachmentsHolder;
+
+        CopyHolder(ViewGroup itemView, OnAttachmentsActionCallback callback) {
+            this.itemView = itemView;
+            this.bodyView = itemView.findViewById(R.id.item_post_copy_text);
+            this.ivAvatar = itemView.findViewById(R.id.item_copy_history_post_avatar);
+            this.tvShowMore = itemView.findViewById(R.id.item_post_copy_show_more);
+            this.ownerName = itemView.findViewById(R.id.item_post_copy_owner_name);
+            this.buttonDots = itemView.findViewById(R.id.item_copy_history_post_dots);
+            this.attachmentsHolder = AttachmentsHolder.forCopyPost(itemView);
+            this.callback = callback;
+
+            this.buttonDots.setOnClickListener(v -> showDotsMenu());
+        }
+
+        final OnAttachmentsActionCallback callback;
+
+        void showDotsMenu() {
+            PopupMenu menu = new PopupMenu(itemView.getContext(), buttonDots);
+            menu.getMenu().add(R.string.open_post).setOnMenuItemClickListener(item -> {
+                Post copy = (Post) buttonDots.getTag();
+                callback.onPostOpen(copy);
+                return true;
+            });
+
+            menu.show();
+        }
     }
 
     public interface OnAttachmentsActionCallback {
@@ -637,7 +649,7 @@ public class AttachmentsViewBinder {
         }
 
         @Override
-        public int getHolderId(){
+        public int getHolderId() {
             return (int) mWaveFormView.getTag();
         }
     }

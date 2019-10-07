@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.squareup.picasso.Transformation;
 
 import java.text.SimpleDateFormat;
@@ -114,11 +115,16 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
         bindBaseMessageHolder(holder, message);
 
         Sticker sticker = message.getAttachments().getStickers().get(0);
-        Sticker.Image image = sticker.getImage(256, true);
+        if (sticker.isAnimated()) {
+            holder.sticker.setAnimationFromUrl(sticker.getAnimationUrl());
+            holder.sticker.playAnimation();
+        } else {
+            Sticker.Image image = sticker.getImage(256, true);
 
-        PicassoInstance.with()
-                .load(image.getUrl())
-                .into(holder.sticker);
+            PicassoInstance.with()
+                    .load(image.getUrl())
+                    .into(holder.sticker);
+        }
     }
 
     private void bindStatusText(TextView textView, int status, long time, long updateTime) {
@@ -351,7 +357,7 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
 
     private class StickerMessageHolder extends BaseMessageHolder {
 
-        ImageView sticker;
+        LottieAnimationView sticker;
 
         StickerMessageHolder(View itemView) {
             super(itemView);
