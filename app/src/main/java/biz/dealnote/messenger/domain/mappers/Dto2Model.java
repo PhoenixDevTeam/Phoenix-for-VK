@@ -589,7 +589,8 @@ public class Dto2Model {
     public static Sticker transform(@NonNull VKApiSticker dto) {
         return new Sticker(dto.sticker_id)
                 .setImages(mapAll(dto.images, Dto2Model::map))
-                .setImagesWithBackground(mapAll(dto.images_with_background, Dto2Model::map));
+                .setImagesWithBackground(mapAll(dto.images_with_background, Dto2Model::map))
+                .setAnimationUrl(dto.animation_url);
     }
 
     public static FaveLink transform(@NonNull FaveLinkDto dto) {

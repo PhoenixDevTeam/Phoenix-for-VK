@@ -3,11 +3,12 @@ package biz.dealnote.messenger.fragment.base;
 import android.app.Activity;
 import android.content.Intent;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+
+import java.util.ArrayList;
+
 import biz.dealnote.messenger.activity.SendAttachmentsActivity;
 import biz.dealnote.messenger.adapter.AttachmentsViewBinder;
 import biz.dealnote.messenger.adapter.listener.OwnerClickListener;
@@ -25,6 +26,7 @@ import biz.dealnote.messenger.model.Peer;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.model.Post;
+import biz.dealnote.messenger.model.Sticker;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.model.WikiPage;
 import biz.dealnote.messenger.mvp.presenter.base.PlaceSupportPresenter;
@@ -114,6 +116,11 @@ public abstract class PlaceSupportMvpFragment<P extends PlaceSupportPresenter<V>
     public void openWikiPage(int accountId, @NonNull WikiPage page) {
         PlaceFactory.getWikiPagePlace(accountId, page.getViewUrl())
                 .tryOpenWith(requireActivity());
+    }
+
+    @Override
+    public void onStickerOpen(@NonNull Sticker sticker) {
+
     }
 
     @Override

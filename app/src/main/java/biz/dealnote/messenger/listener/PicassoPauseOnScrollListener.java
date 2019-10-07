@@ -1,6 +1,9 @@
 package biz.dealnote.messenger.listener;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
+
 import biz.dealnote.messenger.api.PicassoInstance;
 
 public class PicassoPauseOnScrollListener extends RecyclerView.OnScrollListener {
@@ -12,7 +15,7 @@ public class PicassoPauseOnScrollListener extends RecyclerView.OnScrollListener 
     }
 
     @Override
-    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+    public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
         if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
             PicassoInstance.with().resumeTag(tag);
         } else {

@@ -19,6 +19,8 @@ public class Sticker extends AbsModel implements Parcelable {
 
     private List<Image> imagesWithBackground;
 
+    private String animationUrl;
+
     public static final class Image implements Parcelable {
 
         private final String url;
@@ -113,14 +115,20 @@ public class Sticker extends AbsModel implements Parcelable {
         id = in.readInt();
         images = in.createTypedArrayList(Image.CREATOR);
         imagesWithBackground = in.createTypedArrayList(Image.CREATOR);
+        animationUrl = in.readString();
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
-        dest.writeInt(id);
-        dest.writeTypedList(images);
-        dest.writeTypedList(imagesWithBackground);
+    public String getAnimationUrl() {
+        return animationUrl;
+    }
+
+    public Sticker setAnimationUrl(String animationUrl) {
+        this.animationUrl = animationUrl;
+        return this;
+    }
+
+    public boolean isAnimated() {
+        return animationUrl != null && !animationUrl.isEmpty();
     }
 
     public static final Creator<Sticker> CREATOR = new Creator<Sticker>() {
@@ -151,6 +159,15 @@ public class Sticker extends AbsModel implements Parcelable {
     public Sticker setImagesWithBackground(List<Image> imagesWithBackground) {
         this.imagesWithBackground = imagesWithBackground;
         return this;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeInt(id);
+        dest.writeTypedList(images);
+        dest.writeTypedList(imagesWithBackground);
+        dest.writeString(animationUrl);
     }
 
     public int getId() {

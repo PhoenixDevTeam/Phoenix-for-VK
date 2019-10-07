@@ -41,6 +41,9 @@ public class VKApiSticker implements VKApiAttachment {
     @SerializedName("images_with_background")
     public List<Image> images_with_background;
 
+    @SerializedName("animation_url")
+    public String animation_url;
+
     public static final class Image {
         @SerializedName("url")
         public String url;

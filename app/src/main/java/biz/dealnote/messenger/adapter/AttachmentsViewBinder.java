@@ -420,6 +420,11 @@ public class AttachmentsViewBinder {
         PicassoInstance.with()
                 .load(image.getUrl())
                 .into(imageView);
+        stickersContainer.setOnClickListener(e -> openSticker(sticker));
+    }
+
+    private void openSticker(Sticker sticker) {
+
     }
 
     private void displayDocs(List<DocLink> docs, ViewGroup root) {
@@ -593,6 +598,8 @@ public class AttachmentsViewBinder {
         void onLinkOpen(@NonNull Link link);
 
         void onWikiPageOpen(@NonNull WikiPage page);
+
+        void onStickerOpen(@NonNull Sticker sticker);
 
         void onPhotosOpen(@NonNull ArrayList<Photo> photos, int index);
     }

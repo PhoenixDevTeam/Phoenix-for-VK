@@ -820,7 +820,8 @@ public class Dto2Entity {
     public static StickerEntity mapSticker(VKApiSticker sticker) {
         return new StickerEntity(sticker.sticker_id)
                 .setImages(mapAll(sticker.images, Dto2Entity::mapStickerImage))
-                .setImagesWithBackground(mapAll(sticker.images_with_background, Dto2Entity::mapStickerImage));
+                .setImagesWithBackground(mapAll(sticker.images_with_background, Dto2Entity::mapStickerImage))
+                .setAnimationUrl(sticker.animation_url);
     }
 
     public static StickerSetEntity mapStikerSet(VKApiStickerSet.Product dto){

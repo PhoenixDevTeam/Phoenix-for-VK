@@ -2,9 +2,10 @@ package biz.dealnote.messenger.dialog.base;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.adapter.AttachmentsViewBinder;
@@ -16,6 +17,7 @@ import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.Poll;
 import biz.dealnote.messenger.model.Post;
+import biz.dealnote.messenger.model.Sticker;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.model.WikiPage;
 import biz.dealnote.messenger.place.PlaceFactory;
@@ -143,6 +145,11 @@ public abstract class AccountDependencyDialogFragment extends BaseDialogFragment
     @Override
     public void onPhotosOpen(@NonNull ArrayList<Photo> photos, int index) {
         PlaceFactory.getSimpleGalleryPlace(getAccountId(), photos, index, true).tryOpenWith(requireActivity());
+    }
+
+    @Override
+    public void onStickerOpen(@NonNull Sticker sticker) {
+
     }
 
     protected void onAccountContextInvalidState() {

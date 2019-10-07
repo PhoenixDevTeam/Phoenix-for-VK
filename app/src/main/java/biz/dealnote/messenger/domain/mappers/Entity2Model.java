@@ -480,7 +480,8 @@ public class Entity2Model {
     public static Sticker buildStickerFromDbo(StickerEntity entity) {
         return new Sticker(entity.getId())
                 .setImages(mapAll(entity.getImages(), Entity2Model::map))
-                .setImagesWithBackground(mapAll(entity.getImagesWithBackground(), Entity2Model::map));
+                .setImagesWithBackground(mapAll(entity.getImagesWithBackground(), Entity2Model::map))
+                .setAnimationUrl(entity.getAnimationUrl());
     }
 
     public static StickerSet map(StickerSetEntity entity){

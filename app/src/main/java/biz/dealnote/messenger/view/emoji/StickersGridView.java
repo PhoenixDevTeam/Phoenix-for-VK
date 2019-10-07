@@ -1,10 +1,11 @@
 package biz.dealnote.messenger.view.emoji;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.GridView;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.model.Sticker;
@@ -16,10 +17,9 @@ public class StickersGridView {
     private EmojiconsPopup mEmojiconPopup;
 
     public StickersGridView(Context context, StickerSet set, EmojiconsPopup emojiconPopup) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        rootView = LayoutInflater.from(context).inflate(R.layout.stickers_grid, null);
         mEmojiconPopup = emojiconPopup;
-        rootView = inflater.inflate(R.layout.stickers_grid, null);
-        GridView gridView = rootView.findViewById(R.id.grid_stickers);
+        RecyclerView recyclerView = rootView.findViewById(R.id.grid_stickers);
 
         StickersAdapter mAdapter = new StickersAdapter(rootView.getContext(), set);
         mAdapter.setStickerClickedListener(stickerId -> {
@@ -28,7 +28,9 @@ public class StickersGridView {
             }
         });
 
-        gridView.setAdapter(mAdapter);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 4);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(mAdapter);
     }
 
     public interface OnStickerClickedListener {
