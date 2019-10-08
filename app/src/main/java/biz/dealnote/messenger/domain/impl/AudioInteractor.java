@@ -82,6 +82,11 @@ public class AudioInteractor implements IAudioInteractor {
     }
 
     @Override
+    public Single<List<Audio>> getPopular(int foreign, int genre) {
+        return audioPluginConnector.getPopular(foreign, genre);
+    }
+
+    @Override
     public Single<List<Audio>> search(String query, boolean own, int offset) {
         return audioPluginConnector.search(query, own, offset);
     }

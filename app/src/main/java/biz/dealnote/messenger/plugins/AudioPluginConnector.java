@@ -82,6 +82,22 @@ public class AudioPluginConnector implements IAudioPluginConnector {
     }
 
     @Override
+    public Single<List<Audio>> getPopular(int foreign, int genre) {
+        return Single.create(emitter -> {
+            Uri uri = new Uri.Builder()
+                    .scheme("content")
+                    .authority(AUTHORITY)
+                    .path("audios")
+                    .appendQueryParameter("request", "getPopular")
+                    .appendQueryParameter("foreign", String.valueOf(foreign))
+                    .appendQueryParameter("genre", String.valueOf(genre))
+                    .build();
+
+            parseAndInsertToDb(emitter, uri);
+        });
+    }
+
+    @Override
     public Single<List<Audio>> search(String query, boolean own, int offset) {
         return Single.create(emitter -> {
             Uri uri = new Uri.Builder()

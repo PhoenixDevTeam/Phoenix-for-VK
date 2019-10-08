@@ -1184,5 +1184,26 @@
     <string name="playlist">Playlist</string>
     <string name="phoenix_player">Phoenix Player</string>
     <string name="choose_theme_title">Application theme</string>
+    <string name="acoustic">Acoustic</string>
+    <string name="alternative">Alternative</string>
+    <string name="chanson">Chanson</string>
+    <string name="classical">Classical</string>
+    <string name="dance">Dance</string>
+    <string name="drum_and_bass">Drum\'n\'bass</string>
+    <string name="dubstep">Dubstep</string>
+    <string name="easy_listening">Easy</string>
+    <string name="disco">Disco</string>
+    <string name="ethnic">Ethnic</string>
+    <string name="indie_pop">Indie pop</string>
+    <string name="instrumental">Instrumental</string>
+    <string name="jazz">Jazz</string>
+    <string name="metal">Metal</string>
+    <string name="pop">Pop</string>
+    <string name="rap">Rap</string>
+    <string name="reggae">Reggae</string>
+    <string name="rock">Rock</string>
+    <string name="speech">Speech</string>
+    <string name="trance">Trance</string>
+    <string name="top">Top</string>
 
 </resources>

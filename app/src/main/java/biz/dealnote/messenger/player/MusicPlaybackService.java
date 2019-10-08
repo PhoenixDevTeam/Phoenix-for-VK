@@ -694,7 +694,6 @@ public class MusicPlaybackService extends Service {
     }
 
     private void updateMetadata(Bitmap cover) {
-        Log.d("SADASDSAD", "" + duration());
         updateNotification(cover);
         mMediaMetadataCompat = new MediaMetadataCompat.Builder()
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getArtistName())
