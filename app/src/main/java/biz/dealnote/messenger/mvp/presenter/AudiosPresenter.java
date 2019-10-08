@@ -157,7 +157,7 @@ public class AudiosPresenter extends AccountDependencyPresenter<IAudiosView> {
     public void fireRefresh() {
         if (audioAvailable) {
             audioListDisposable.clear();
-            if (currentFilter.isFilterNone()) {
+            if (currentFilter == null || currentFilter.isFilterNone()) {
                 requestList();
             } else {
                 getListByGenre(currentFilter.isEnglishOnly() == 1, currentFilter.getGenre());
