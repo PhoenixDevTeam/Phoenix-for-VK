@@ -264,7 +264,6 @@ public class MusicPlaybackService extends Service {
                 )
                 .setState(isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED, position(), 1.0f)
                 .build();
-
         mMediaSession.setPlaybackState(playbackStateCompat);
         mMediaSession.setCallback(mMediaSessionCallback);
         mMediaSession.setActive(true);
@@ -305,6 +304,12 @@ public class MusicPlaybackService extends Service {
             pause();
             Logger.d(getClass().getSimpleName(), "Stopping services. onStop()");
             stopSelf();
+        }
+
+        @Override
+        public void onSeekTo(long pos) {
+            super.onSeekTo(pos);
+            seek(pos);
         }
     };
 
@@ -347,7 +352,7 @@ public class MusicPlaybackService extends Service {
 
             if (intent.hasExtra(NOW_IN_FOREGROUND)) {
                 mAnyActivityInForeground = intent.getBooleanExtra(NOW_IN_FOREGROUND, false);
-                updateNotification();
+                updateNotification(null);
             }
 
             if (SHUTDOWN.equals(action)) {
@@ -498,9 +503,9 @@ public class MusicPlaybackService extends Service {
     /**
      * Updates the notification, considering the current play and activity state
      */
-    private void updateNotification() {
+    private void updateNotification(Bitmap cover) {
         mNotificationHelper.buildNotification(getApplicationContext(), getArtistName(),
-                getTrackName(), isPlaying(), mMediaSession.getSessionToken());
+                getTrackName(), isPlaying(), cover, mMediaSession.getSessionToken());
     }
 
     private void scheduleDelayedShutdown() {
@@ -571,7 +576,7 @@ public class MusicPlaybackService extends Service {
      */
     private int getNextPosition(final boolean force) {
         if (!force && mRepeatMode == REPEAT_CURRENT) {
-            return mPlayPos < 0 ? 0 : mPlayPos;
+            return Math.max(mPlayPos, 0);
         }
 
         if (mShuffleMode == SHUFFLE) {
@@ -644,14 +649,17 @@ public class MusicPlaybackService extends Service {
      * @param what The broadcast
      */
     private void updateRemoteControlClient(final String what) {
-        int playState = isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED;
-        PlaybackStateCompat pmc = new PlaybackStateCompat.Builder()
-                .setState(playState, position(), 1.0f)
-                .setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE | PlaybackStateCompat.ACTION_SKIP_TO_NEXT | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)
-                .build();
         switch (what) {
             case PLAYSTATE_CHANGED:
             case POSITION_CHANGED:
+                int playState = isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED;
+                PlaybackStateCompat pmc = new PlaybackStateCompat.Builder()
+                        .setState(playState, position(), 1.0f)
+                        .setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE |
+                                PlaybackStateCompat.ACTION_SKIP_TO_NEXT |
+                                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
+                                PlaybackStateCompat.ACTION_SEEK_TO)
+                        .build();
                 mMediaSession.setPlaybackState(pmc);
                 break;
             case META_CHANGED:
@@ -667,7 +675,7 @@ public class MusicPlaybackService extends Service {
         }
 
         PicassoInstance.with()
-                .load(getAlbumCover())
+                .load(getAlbumCoverBig())
                 .into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -686,8 +694,10 @@ public class MusicPlaybackService extends Service {
     }
 
     private void updateMetadata(Bitmap cover) {
-        mMediaMetadataCompat = new MediaMetadataCompat.Builder().
-                putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getArtistName())
+        Log.d("SADASDSAD", "" + duration());
+        updateNotification(cover);
+        mMediaMetadataCompat = new MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getArtistName())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, getAlbumName())
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, getTrackName())
                 .putBitmap(MediaMetadataCompat.METADATA_KEY_ART, cover)
@@ -936,7 +946,7 @@ public class MusicPlaybackService extends Service {
             }
 
             cancelShutdown();
-            updateNotification();
+            fetchCoverAndUpdateMetadata();
         }
     }
 
@@ -1147,7 +1157,7 @@ public class MusicPlaybackService extends Service {
                 case TRACK_WENT_TO_NEXT:
                     //service.mPlayPos = service.mNextPlayPos;
                     service.notifyChange(META_CHANGED);
-                    service.updateNotification();
+                    service.updateNotification(null);
                     break;
                 case TRACK_ENDED:
                     if (service.mRepeatMode == REPEAT_CURRENT) {

@@ -17,10 +17,12 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import androidx.core.app.NotificationCompat;
 import androidx.media.app.NotificationCompat.MediaStyle;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.MainActivity;
@@ -48,7 +50,7 @@ public class NotificationHelper {
     }
 
     public void buildNotification(Context context, final String artistName,
-                                  final String trackName, final boolean isPlaying,
+                                  final String trackName, final boolean isPlaying, final Bitmap cover,
                                   MediaSessionCompat.Token mediaSessionToken) {
 
         if (Utils.hasOreo()) {
@@ -63,6 +65,7 @@ public class NotificationHelper {
                 .setContentText(trackName)
                 .setContentIntent(getOpenIntent(context))
                 .setPriority(Notification.PRIORITY_MAX)
+                .setLargeIcon(cover)
                 .setStyle(new MediaStyle()
                         .setMediaSession(mediaSessionToken)
                         .setShowCancelButton(true)

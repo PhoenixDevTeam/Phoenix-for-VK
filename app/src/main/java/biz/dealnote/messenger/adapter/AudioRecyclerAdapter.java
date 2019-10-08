@@ -37,6 +37,7 @@ public class AudioRecyclerAdapter extends RecyclerView.Adapter<AudioRecyclerAdap
         holder.artist.setText(item.getArtist());
         holder.title.setText(item.getTitle());
         holder.time.setText(AppTextUtils.getDurationString(item.getDuration()));
+        holder.hq.setVisibility(item.isHq() ? View.VISIBLE : View.INVISIBLE);
 
 //        holder.play.setImageResource(MusicUtils.isNowPlayingOrPreparing(item) ? R.drawable.pause : R.drawable.play);
 
@@ -63,6 +64,7 @@ public class AudioRecyclerAdapter extends RecyclerView.Adapter<AudioRecyclerAdap
         TextView title;
         ImageView play;
         TextView time;
+        ImageView hq;
 
         AudioHolder(View itemView) {
             super(itemView);
@@ -70,6 +72,7 @@ public class AudioRecyclerAdapter extends RecyclerView.Adapter<AudioRecyclerAdap
             title = itemView.findViewById(R.id.dialog_message);
             play = itemView.findViewById(R.id.item_audio_play);
             time = itemView.findViewById(R.id.item_audio_time);
+            hq = itemView.findViewById(R.id.hq);
         }
     }
 

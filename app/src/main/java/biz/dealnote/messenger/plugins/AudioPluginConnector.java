@@ -160,6 +160,7 @@ public class AudioPluginConnector implements IAudioPluginConnector {
                 String url = cursor.getString(cursor.getColumnIndex("url"));
                 String cover = cursor.getString(cursor.getColumnIndex("cover_url"));
                 String bigCover = cursor.getString(cursor.getColumnIndex("cover_url_big"));
+                int isHq = cursor.getInt(cursor.getColumnIndex("is_hq"));
 
                 Audio audio = new Audio()
                         .setArtist(artist)
@@ -169,7 +170,8 @@ public class AudioPluginConnector implements IAudioPluginConnector {
                         .setTitle(title)
                         .setUrl(url)
                         .setBigCover(bigCover)
-                        .setCover(cover);
+                        .setCover(cover)
+                        .setHq(isHq == 1);
 
                 audios.add(audio);
             }

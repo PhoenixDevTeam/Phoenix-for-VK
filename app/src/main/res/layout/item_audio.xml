@@ -52,6 +52,15 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             tools:text="Time" />
 
+        <ImageView
+            android:id="@+id/hq"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_below="@id/item_audio_time"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/high_quality"
+            android:tint="?android:textColorSecondary" />
+
     </RelativeLayout>
 
     <ImageView
