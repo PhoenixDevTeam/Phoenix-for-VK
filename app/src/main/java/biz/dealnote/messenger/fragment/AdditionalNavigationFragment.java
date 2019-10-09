@@ -24,7 +24,6 @@ import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.adapter.MenuListAdapter;
 import biz.dealnote.messenger.api.PicassoInstance;
-import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.domain.IOwnersRepository;
 import biz.dealnote.messenger.domain.Repository;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
@@ -133,13 +132,6 @@ public class AdditionalNavigationFragment extends BaseFragment implements MenuLi
         throw new UnsupportedOperationException();
     }
 
-    private void onUnreadDialogsCountChange(int count) {
-        if (SECTION_ITEM_DIALOGS.getCount() != count) {
-            SECTION_ITEM_DIALOGS.setCount(count);
-            safellyNotifyDataSetChanged();
-        }
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,17 +151,6 @@ public class AdditionalNavigationFragment extends BaseFragment implements MenuLi
         mRecentChats = Settings.get()
                 .recentChats()
                 .get(mAccountId);
-
-        mCompositeDisposable.add(Stores.getInstance()
-                .dialogs()
-                .observeUnreadDialogsCount()
-                .filter(pair -> pair.getFirst() == mAccountId)
-                .compose(RxUtils.applyObservableIOToMainSchedulers())
-                .subscribe(pair -> onUnreadDialogsCountChange(pair.getSecond())));
-
-        SECTION_ITEM_DIALOGS.setCount(Stores.getInstance()
-                .dialogs()
-                .getUnreadDialogsCount(mAccountId));
 
         mCompositeDisposable.add(Settings.get().drawerSettings()
                 .observeChanges()

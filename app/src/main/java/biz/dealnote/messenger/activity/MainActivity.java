@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -36,6 +37,7 @@ import java.util.List;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
+import biz.dealnote.messenger.db.Stores;
 import biz.dealnote.messenger.dialog.ResolveDomainDialog;
 import biz.dealnote.messenger.fragment.AbsWallFragment;
 import biz.dealnote.messenger.fragment.AdditionalNavigationFragment;
@@ -200,6 +202,13 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
                 .observeOn(Injection.provideMainThreadScheduler())
                 .subscribe(this::onCurrentAccountChange));
 
+        mCompositeDisposable.add(Stores.getInstance()
+                .dialogs()
+                .observeUnreadDialogsCount()
+                .filter(pair -> pair.getFirst() == mAccountId)
+                .compose(RxUtils.applyObservableIOToMainSchedulers())
+                .subscribe(pair -> updateMessagesBagde(pair.getSecond())));
+
         bindToAudioPlayService();
 
         setContentView(mLayoutRes);
@@ -217,6 +226,10 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
 
         getSupportFragmentManager().addOnBackStackChangedListener(mOnBackStackChangedListener);
         resolveToolbarNavigationIcon();
+
+        updateMessagesBagde(Stores.getInstance()
+                .dialogs()
+                .getUnreadDialogsCount(mAccountId));
 
         if (isNull(savedInstanceState)) {
             boolean intentWasHandled = handleIntent(getIntent());
@@ -239,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
             }
         }
     }
+
 
     @Override
     protected void onPause() {
@@ -1180,6 +1194,19 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
             onSheetItemSelected(item, false);
         } else {
             openNavigationPage(item);
+        }
+    }
+
+    private void updateMessagesBagde(Integer count) {
+        if (mBottomNavigation != null) {
+            if (count > 0) {
+                BadgeDrawable badgeDrawable = mBottomNavigation.getOrCreateBadge(R.id.menu_messages);
+                badgeDrawable.setBackgroundColor(CurrentTheme.getColorPrimary(this));
+                badgeDrawable.setBadgeTextColor(CurrentTheme.getColorOnPrimary(this));
+                badgeDrawable.setNumber(count);
+            } else {
+                mBottomNavigation.removeBadge(R.id.menu_messages);
+            }
         }
     }
 
