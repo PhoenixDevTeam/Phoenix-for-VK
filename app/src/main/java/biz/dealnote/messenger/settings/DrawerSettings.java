@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.model.SwitchableCategory;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
@@ -67,6 +68,9 @@ class DrawerSettings implements ISettings.IDrawerSettings {
     public int[] getCategoriesOrder() {
         @SwitchableCategory
         int[] all = {FRIENDS, FEEDBACK, NEWSFEED_COMMENTS, GROUPS, PHOTOS, VIDEOS, MUSIC, DOCS, BOOKMARKS};
+        if (BuildConfig.VERSION_CODE == 10000) {
+            PreferenceManager.getDefaultSharedPreferences(app).edit().putString("drawer_categories_order", null).apply();
+        }
         String line = PreferenceManager.getDefaultSharedPreferences(app).getString("drawer_categories_order", null);
 
         String[] parts = isEmpty(line) ? new String[0] : line.split("-");

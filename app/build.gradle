@@ -16,7 +16,7 @@ android {
         applicationId "dev.ezorrio.phoenix"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 10000
+        versionCode 10011
         versionName '1.0.0'
 
         buildConfigField 'int', 'VK_API_APP_ID', getProps("vk_app_id")
