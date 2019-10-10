@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.core.content.ContextCompat
 import biz.dealnote.messenger.*
 import biz.dealnote.messenger.crypt.AesKeyPair
@@ -399,7 +398,6 @@ class ChatPrensenter(accountId: Int, private val messagesOwnerId: Int,
     }
 
     private fun resolveInputView() {
-        Log.d("COCKOOOO", conversation?.isGroupChannel.toString())
         conversation?.run {
             if (isGroupChannel) view?.hideInputView()
         }

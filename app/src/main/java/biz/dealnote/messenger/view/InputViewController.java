@@ -2,10 +2,12 @@ package biz.dealnote.messenger.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.InputType;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -91,16 +93,10 @@ public class InputViewController {
 
         mInputField.setOnClickListener(view -> showEmoji(false));
 
-        mInputField.setOnKeyListener((v, keyCode, event) -> {
-            if (sendOnEnter && event.getAction() == KeyEvent.ACTION_DOWN) {
-                switch (keyCode) {
-                    //case KeyEvent.KEYCODE_DPAD_CENTER:
-                    case KeyEvent.KEYCODE_ENTER:
-                        callback.onSendClicked(getTrimmedText());
-                        return true;
-                    default:
-                        break;
-                }
+        mInputField.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if (sendOnEnter && i == EditorInfo.IME_ACTION_SEND) {
+                callback.onSendClicked(getTrimmedText());
+                return true;
             }
             return false;
         });
@@ -148,6 +144,10 @@ public class InputViewController {
 
     public void setSendOnEnter(boolean sendOnEnter) {
         this.sendOnEnter = sendOnEnter;
+        if (sendOnEnter) {
+            mInputField.setImeOptions(EditorInfo.IME_ACTION_SEND);
+            mInputField.setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        }
     }
 
     private void showEmoji(boolean visible) {
@@ -171,7 +171,7 @@ public class InputViewController {
                 if (emojiOnScreen) {
                     showEmoji(false);
                 }
-                ibEmoji.setImageResource(R.drawable.keyboard_arrow_down);
+                ibEmoji.setImageResource(emojiOnScreen ? R.drawable.keyboard_arrow_down : R.drawable.emoticon);
             }
 
             @Override
@@ -181,7 +181,7 @@ public class InputViewController {
                     emojiNeed = false;
                 }
 
-                ibEmoji.setImageResource(R.drawable.emoticon);
+                ibEmoji.setImageResource(emojiOnScreen ? R.drawable.keyboard_arrow_down : R.drawable.emoticon);
             }
         });
 

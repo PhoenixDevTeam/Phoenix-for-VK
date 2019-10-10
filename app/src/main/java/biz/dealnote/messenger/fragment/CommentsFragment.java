@@ -125,6 +125,7 @@ public class CommentsFragment extends PlaceSupportMvpFragment<CommentsPresenter,
 
         mInputController = new CommentsInputViewController(requireActivity(), root, this);
         mInputController.setOnSickerClickListener(this);
+        mInputController.setSendOnEnter(Settings.get().main().isSendByEnter());
 
         mLinearLayoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, true);
 
@@ -335,8 +336,8 @@ public class CommentsFragment extends PlaceSupportMvpFragment<CommentsPresenter,
 
     @Override
     public void displayAuthorAvatar(String url) {
-        if(nonNull(mAuthorAvatar)){
-            if(nonEmpty(url)){
+        if (nonNull(mAuthorAvatar)) {
+            if (nonEmpty(url)) {
                 mAuthorAvatar.setVisibility(View.VISIBLE);
 
                 PicassoInstance.with()
