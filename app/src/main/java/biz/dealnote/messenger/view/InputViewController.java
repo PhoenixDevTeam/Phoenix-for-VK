@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.text.InputType;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.settings.CurrentTheme;
@@ -23,8 +26,6 @@ import biz.dealnote.messenger.view.emoji.EmojiconsPopup;
 import biz.dealnote.messenger.view.emoji.StickersGridView;
 
 public class InputViewController {
-
-    private static final String TAG = InputViewController.class.getSimpleName();
 
     private static final int BUTTON_COLOR_NOACTIVE = Color.parseColor("#A6A6A6");
     private Context mActivity;
@@ -40,7 +41,6 @@ public class InputViewController {
     private boolean emojiNeed;
     //private boolean mVoiceMessageSupport;
     //private boolean mCanSendNormalMessage;
-    private boolean sendOnEnter;
 
     private TextView tvAttCount;
     private ViewGroup attCountContainer;
@@ -97,21 +97,13 @@ public class InputViewController {
         mInputField.addTextChangedListener(mTextWatcher);
 
         mInputField.setOnClickListener(view -> showEmoji(false));
-
-        mInputField.setOnKeyListener((v, keyCode, event) -> {
-            if (sendOnEnter && event.getAction() == KeyEvent.ACTION_DOWN) {
-                switch (keyCode) {
-                    //case KeyEvent.KEYCODE_DPAD_CENTER:
-                    case KeyEvent.KEYCODE_ENTER:
-                        callback.onSendClicked(getTrimmedText());
-                        return true;
-                    default:
-                        break;
-                }
+        mInputField.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if (i == EditorInfo.IME_ACTION_SEND) {
+                callback.onSendClicked(getTrimmedText());
+                return true;
             }
             return false;
         });
-
 
         emojiPopup = new EmojiconsPopup(rootView, activity);
         setupEmojiView();
@@ -153,8 +145,9 @@ public class InputViewController {
         }
     }
 
-    public void setSendOnEnter(boolean sendOnEnter) {
-        this.sendOnEnter = sendOnEnter;
+    public void enableSendByEnter() {
+        mInputField.setImeOptions(EditorInfo.IME_ACTION_SEND);
+        mInputField.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
     }
 
     private void showEmoji(boolean visible) {

@@ -17,10 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +25,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.activity.ActivityFeatures;
@@ -124,6 +125,9 @@ public class CommentsFragment extends PlaceSupportMvpFragment<CommentsPresenter,
 
         mInputController = new CommentsInputViewController(requireActivity(), root, this);
         mInputController.setOnSickerClickListener(this);
+        if(Settings.get().main().isSendByEnter()){
+            mInputController.enableSendByEnter();
+        }
 
         mLinearLayoutManager = new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, true);
 
@@ -334,8 +338,8 @@ public class CommentsFragment extends PlaceSupportMvpFragment<CommentsPresenter,
 
     @Override
     public void displayAuthorAvatar(String url) {
-        if(nonNull(mAuthorAvatar)){
-            if(nonEmpty(url)){
+        if (nonNull(mAuthorAvatar)) {
+            if (nonEmpty(url)) {
                 mAuthorAvatar.setVisibility(View.VISIBLE);
 
                 PicassoInstance.with()

@@ -67,7 +67,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     private var headerView: View? = null
     private var loadMoreFooterHelper: LoadMoreFooterHelper? = null
 
-    private var recyclerView: androidx.recyclerview.widget.RecyclerView? = null
+    private var recyclerView: RecyclerView? = null
     private var adapter: MessagesAdapter? = null
 
     private var inputViewController: InputViewController? = null
@@ -124,7 +124,9 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
 
         inputViewController = InputViewController(requireActivity(), root, this)
                 .also {
-                    it.setSendOnEnter(Settings.get().main().isSendByEnter)
+                    if(Settings.get().main().isSendByEnter){
+                        it.enableSendByEnter()
+                    }
                     it.setRecordActionsCallback(this)
                     it.setOnSickerClickListener(this)
                 }
@@ -228,7 +230,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         inflater.inflate(R.menu.menu_chat, menu)
     }
 
-    private fun createLayoutManager(): androidx.recyclerview.widget.RecyclerView.LayoutManager {
+    private fun createLayoutManager(): RecyclerView.LayoutManager {
         return androidx.recyclerview.widget.LinearLayoutManager(activity, RecyclerView.VERTICAL, true)
     }
 
@@ -398,8 +400,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
     }
 
     private fun onEditLocalPhotosSelected(photos: List<LocalPhoto>) {
-        val defaultSize = Settings.get().main().uploadImageSize
-        when (defaultSize) {
+        when (val defaultSize = Settings.get().main().uploadImageSize) {
             null -> {
                 ImageSizeAlertDialog.Builder(activity)
                         .setOnSelectedCallback { size -> presenter?.fireEditLocalPhotosSelected(photos, size) }
@@ -443,8 +444,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         }
 
         if (requestCode == REQUEST_PHOTO_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
-            val defaultSize = Settings.get().main().uploadImageSize
-            when (defaultSize) {
+            when (val defaultSize = Settings.get().main().uploadImageSize) {
                 null -> {
                     ImageSizeAlertDialog.Builder(activity)
                             .setOnSelectedCallback { size -> presenter?.fireEditPhotoMaked(size) }
@@ -527,7 +527,7 @@ class ChatFragment : PlaceSupportMvpFragment<ChatPrensenter, IChatView>(), IChat
         }
 
         val reference = WeakReference(fragment)
-        val recyclerView: androidx.recyclerview.widget.RecyclerView = rootView.findViewById(R.id.recyclerView)
+        val recyclerView: RecyclerView = rootView.findViewById(R.id.recyclerView)
         val emptyView: View = rootView.findViewById(R.id.emptyRootView)
         val adapter = AttachmentsBottomSheetAdapter(rootView.context, attachments, this)
 

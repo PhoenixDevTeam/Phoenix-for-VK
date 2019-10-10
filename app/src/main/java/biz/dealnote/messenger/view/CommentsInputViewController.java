@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.text.InputType;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.listener.TextWatcherAdapter;
 import biz.dealnote.messenger.settings.CurrentTheme;
@@ -35,7 +38,6 @@ public class CommentsInputViewController {
     private boolean emojiOnScreen;
     private boolean emojiNeed;
     private boolean mCanSendNormalMessage;
-    private boolean sendOnEnter;
 
     private TextView tvAttCount;
     private ViewGroup attCountContainer;
@@ -83,17 +85,10 @@ public class CommentsInputViewController {
 
         mInputField.addTextChangedListener(mTextWatcher);
         mInputField.setOnClickListener(view -> showEmoji(false));
-        mInputField.setOnKeyListener((v, keyCode, event) -> {
-            if (sendOnEnter && event.getAction() == KeyEvent.ACTION_DOWN) {
-                switch (keyCode) {
-                    //case KeyEvent.KEYCODE_DPAD_CENTER:
-                    case KeyEvent.KEYCODE_ENTER:
-                        callback.onSendClicked();
-                        return true;
-
-                    default:
-                        break;
-                }
+        mInputField.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if (i == EditorInfo.IME_ACTION_SEND) {
+                callback.onSendClicked();
+                return true;
             }
             return false;
         });
@@ -120,8 +115,9 @@ public class CommentsInputViewController {
         }
     }
 
-    public void setSendOnEnter(boolean sendOnEnter) {
-        this.sendOnEnter = sendOnEnter;
+    public void enableSendByEnter() {
+        mInputField.setImeOptions(EditorInfo.IME_ACTION_SEND);
+        mInputField.setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
     }
 
     private void showEmoji(boolean visible) {
