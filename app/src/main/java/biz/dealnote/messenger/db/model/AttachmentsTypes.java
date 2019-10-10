@@ -4,6 +4,7 @@ import biz.dealnote.messenger.db.model.entity.AudioEntity;
 import biz.dealnote.messenger.db.model.entity.AudioMessageEntity;
 import biz.dealnote.messenger.db.model.entity.DocumentEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
+import biz.dealnote.messenger.db.model.entity.GiftItemEntity;
 import biz.dealnote.messenger.db.model.entity.LinkEntity;
 import biz.dealnote.messenger.db.model.entity.PageEntity;
 import biz.dealnote.messenger.db.model.entity.PhotoEntity;
@@ -19,7 +20,7 @@ import biz.dealnote.messenger.db.model.entity.VideoEntity;
  */
 public final class AttachmentsTypes {
 
-    private AttachmentsTypes(){}
+    public static final int GIFT = 32768;
 
     public static final int PHOTO = 1;
     public static final int VIDEO = 2;
@@ -33,6 +34,9 @@ public final class AttachmentsTypes {
     public static final int TOPIC = 8192;
     public static final int AUDIO_MESSAGE = 16384;
 
+    private AttachmentsTypes() {
+    }
+
     public static int typeForInstance(Entity entity) {
         if (entity instanceof PhotoEntity) {
             return PHOTO;
@@ -40,22 +44,24 @@ public final class AttachmentsTypes {
             return VIDEO;
         } else if (entity instanceof PostEntity) {
             return POST;
-        } else if(entity instanceof DocumentEntity){
+        } else if (entity instanceof DocumentEntity) {
             return DOC;
-        } else if(entity instanceof PollEntity){
+        } else if (entity instanceof PollEntity) {
             return POLL;
-        } else if(entity instanceof AudioEntity){
+        } else if (entity instanceof AudioEntity) {
             return AUDIO;
-        } else if(entity instanceof LinkEntity){
+        } else if (entity instanceof LinkEntity) {
             return LINK;
-        } else if(entity instanceof StickerEntity){
+        } else if (entity instanceof StickerEntity) {
             return STICKER;
-        } else if(entity instanceof PageEntity){
+        } else if (entity instanceof PageEntity) {
             return PAGE;
-        } else if(entity instanceof TopicEntity){
+        } else if (entity instanceof TopicEntity) {
             return TOPIC;
-        } else if(entity instanceof AudioMessageEntity){
+        } else if (entity instanceof AudioMessageEntity) {
             return AUDIO_MESSAGE;
+        } else if (entity instanceof GiftItemEntity) {
+            return GIFT;
         }
 
         throw new UnsupportedOperationException("Unsupported type: " + entity.getClass());
@@ -85,6 +91,8 @@ public final class AttachmentsTypes {
                 return TopicEntity.class;
             case AUDIO_MESSAGE:
                 return AudioMessageEntity.class;
+            case GIFT:
+                return GiftItemEntity.class;
             default:
                 throw new UnsupportedOperationException("Unsupported type: " + type);
         }

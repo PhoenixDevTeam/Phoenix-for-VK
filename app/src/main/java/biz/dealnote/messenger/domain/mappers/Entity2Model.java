@@ -17,6 +17,8 @@ import biz.dealnote.messenger.db.model.entity.CountryEntity;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.DocumentEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
+import biz.dealnote.messenger.db.model.entity.GiftEntity;
+import biz.dealnote.messenger.db.model.entity.GiftItemEntity;
 import biz.dealnote.messenger.db.model.entity.LinkEntity;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
 import biz.dealnote.messenger.db.model.entity.MilitaryEntity;
@@ -48,6 +50,8 @@ import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.CryptStatus;
 import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.Document;
+import biz.dealnote.messenger.model.Gift;
+import biz.dealnote.messenger.model.GiftItem;
 import biz.dealnote.messenger.model.IOwnersBundle;
 import biz.dealnote.messenger.model.IdPair;
 import biz.dealnote.messenger.model.Link;
@@ -88,7 +92,7 @@ import static biz.dealnote.messenger.util.Utils.safeCountOf;
  */
 public class Entity2Model {
 
-    public static VideoAlbum buildVideoAlbumFromDbo(VideoAlbumEntity dbo){
+    public static VideoAlbum buildVideoAlbumFromDbo(VideoAlbumEntity dbo) {
         return new VideoAlbum(dbo.getId(), dbo.getOwnerId())
                 .setTitle(dbo.getTitle())
                 .setCount(dbo.getCount())
@@ -98,7 +102,7 @@ public class Entity2Model {
                 .setUpdatedTime(dbo.getUpdateTime());
     }
 
-    public static Topic buildTopicFromDbo(TopicEntity dbo, IOwnersBundle owners){
+    public static Topic buildTopicFromDbo(TopicEntity dbo, IOwnersBundle owners) {
         Topic topic = new Topic(dbo.getId(), dbo.getOwnerId())
                 .setTitle(dbo.getTitle())
                 .setCreationTime(dbo.getCreatedTime())
@@ -111,27 +115,27 @@ public class Entity2Model {
                 .setFirstCommentBody(dbo.getFirstComment())
                 .setLastCommentBody(dbo.getLastComment());
 
-        if(dbo.getUpdatedBy() != 0){
+        if (dbo.getUpdatedBy() != 0) {
             topic.setUpdater(owners.getById(dbo.getUpdatedBy()));
         }
 
-        if(dbo.getCreatorId() != 0){
+        if (dbo.getCreatorId() != 0) {
             topic.setCreator(owners.getById(dbo.getCreatorId()));
         }
 
         return topic;
     }
 
-    public static List<Community> buildCommunitiesFromDbos(List<CommunityEntity> dbos){
+    public static List<Community> buildCommunitiesFromDbos(List<CommunityEntity> dbos) {
         List<Community> communities = new ArrayList<>(dbos.size());
-        for(CommunityEntity dbo : dbos){
+        for (CommunityEntity dbo : dbos) {
             communities.add(buildCommunityFromDbo(dbo));
         }
 
         return communities;
     }
 
-    public static Community buildCommunityFromDbo(CommunityEntity dbo){
+    public static Community buildCommunityFromDbo(CommunityEntity dbo) {
         return new Community(dbo.getId())
                 .setName(dbo.getName())
                 .setScreenName(dbo.getScreenName())
@@ -146,9 +150,9 @@ public class Entity2Model {
                 .setPhoto200(dbo.getPhoto200());
     }
 
-    public static List<User> buildUsersFromDbo(List<UserEntity> dbos){
+    public static List<User> buildUsersFromDbo(List<UserEntity> dbos) {
         List<User> users = new ArrayList<>(dbos.size());
-        for(UserEntity dbo : dbos){
+        for (UserEntity dbo : dbos) {
             users.add(map(dbo));
         }
 
@@ -276,7 +280,7 @@ public class Entity2Model {
                 .setRegion(entity.getRegion());
     }
 
-    public static User map(UserEntity entity){
+    public static User map(UserEntity entity) {
         return new User(entity.getId())
                 .setFirstName(entity.getFirstName())
                 .setLastName(entity.getLastName())
@@ -295,7 +299,7 @@ public class Entity2Model {
                 .setFriendStatus(entity.getFriendStatus());
     }
 
-    public static PhotoAlbum map(PhotoAlbumEntity entity){
+    public static PhotoAlbum map(PhotoAlbumEntity entity) {
         return new PhotoAlbum(entity.getId(), entity.getOwnerId())
                 .setSize(entity.getSize())
                 .setTitle(entity.getTitle())
@@ -310,7 +314,7 @@ public class Entity2Model {
                 .setCommentsDisabled(entity.isCommentsDisabled());
     }
 
-    public static Comment buildCommentFromDbo(CommentEntity dbo, IOwnersBundle owners){
+    public static Comment buildCommentFromDbo(CommentEntity dbo, IOwnersBundle owners) {
         Attachments attachments = buildAttachmentsFromDbos(dbo.getAttachments(), owners);
 
         return new Comment(new Commented(dbo.getSourceId(), dbo.getSourceOwnerId(), dbo.getSourceType(), dbo.getSourceAccessKey()))
@@ -447,22 +451,26 @@ public class Entity2Model {
             return buildStickerFromDbo((StickerEntity) entity);
         }
 
-        if(entity instanceof AudioEntity){
+        if (entity instanceof AudioEntity) {
             return buildAudioFromDbo((AudioEntity) entity);
         }
 
-        if(entity instanceof TopicEntity){
+        if (entity instanceof TopicEntity) {
             return buildTopicFromDbo((TopicEntity) entity, owners);
         }
 
-        if(entity instanceof AudioMessageEntity){
+        if (entity instanceof AudioMessageEntity) {
             return map((AudioMessageEntity) entity);
+        }
+
+        if (entity instanceof GiftItemEntity) {
+            return buildGiftItemFromDbo((GiftItemEntity) entity);
         }
 
         throw new UnsupportedOperationException("Unsupported DBO class: " + entity.getClass());
     }
 
-    public static Audio buildAudioFromDbo(AudioEntity dbo){
+    public static Audio buildAudioFromDbo(AudioEntity dbo) {
         return new Audio()
                 .setAccessKey(dbo.getAccessKey())
                 .setAlbumId(dbo.getAlbumId())
@@ -477,6 +485,22 @@ public class Entity2Model {
                 .setGenre(dbo.getGenre());
     }
 
+    public static Gift buildGiftFromDbo(GiftEntity entity) {
+        return new Gift(entity.getId())
+                .setFromId(entity.getFromId())
+                .setMessage(entity.getMessage())
+                .setDate(entity.getDate())
+                .setGiftItem(buildGiftItemFromDbo(entity.getGiftItem()))
+                .setPrivacy(entity.getPrivacy());
+    }
+
+    public static GiftItem buildGiftItemFromDbo(GiftItemEntity entity) {
+        return new GiftItem(entity.getId())
+                .setThumb48(entity.getThumb48())
+                .setThumb96(entity.getThumb96())
+                .setThumb256(entity.getThumb256());
+    }
+
     public static Sticker buildStickerFromDbo(StickerEntity entity) {
         return new Sticker(entity.getId())
                 .setImages(mapAll(entity.getImages(), Entity2Model::map))
@@ -484,11 +508,11 @@ public class Entity2Model {
                 .setAnimationUrl(entity.getAnimationUrl());
     }
 
-    public static StickerSet map(StickerSetEntity entity){
+    public static StickerSet map(StickerSetEntity entity) {
         return new StickerSet(entity.getPhoto70(), mapAll(entity.getStickers(), Entity2Model::buildStickerFromDbo));
     }
 
-    public static Sticker.Image map(StickerEntity.Img entity){
+    public static Sticker.Image map(StickerEntity.Img entity) {
         return new Sticker.Image(entity.getUrl(), entity.getWidth(), entity.getHeight());
     }
 
@@ -505,7 +529,7 @@ public class Entity2Model {
                 .setViewUrl(dbo.getViewUrl());
     }
 
-    public static VoiceMessage map(AudioMessageEntity entity){
+    public static VoiceMessage map(AudioMessageEntity entity) {
         return new VoiceMessage(entity.getId(), entity.getOwnerId())
                 .setAccessKey(entity.getAccessKey())
                 .setDuration(entity.getDuration())
@@ -546,7 +570,7 @@ public class Entity2Model {
         return document;
     }
 
-    public static Poll.Answer map(PollEntity.Answer entity){
+    public static Poll.Answer map(PollEntity.Answer entity) {
         return new Poll.Answer(entity.getId())
                 .setRate(entity.getRate())
                 .setText(entity.getText())
@@ -581,7 +605,7 @@ public class Entity2Model {
                 .setPhoto(nonNull(dbo.getPhoto()) ? map(dbo.getPhoto()) : null);
     }
 
-    public static News buildNewsFromDbo(NewsEntity dbo, IOwnersBundle owners){
+    public static News buildNewsFromDbo(NewsEntity dbo, IOwnersBundle owners) {
         News news = new News()
                 .setType(dbo.getType())
                 .setSourceId(dbo.getSourceId())
@@ -607,15 +631,15 @@ public class Entity2Model {
                 .setFriends(dbo.getFriendsTags())
                 .setViewCount(dbo.getViews());
 
-        if(nonEmpty(dbo.getAttachments())){
+        if (nonEmpty(dbo.getAttachments())) {
             news.setAttachments(buildAttachmentsFromDbos(dbo.getAttachments(), owners));
         } else {
             news.setAttachments(new Attachments());
         }
 
-        if(nonEmpty(dbo.getCopyHistory())){
+        if (nonEmpty(dbo.getCopyHistory())) {
             List<Post> copies = new ArrayList<>(dbo.getCopyHistory().size());
-            for(PostEntity copyDbo : dbo.getCopyHistory()){
+            for (PostEntity copyDbo : dbo.getCopyHistory()) {
                 copies.add(buildPostFromDbo(copyDbo, owners));
             }
 
@@ -655,7 +679,7 @@ public class Entity2Model {
                 .setViewCount(dbo.getViews());
 
         PostEntity.SourceDbo sourceDbo = dbo.getSource();
-        if(nonNull(sourceDbo)){
+        if (nonNull(sourceDbo)) {
             post.setSource(new PostSource(sourceDbo.getType(), sourceDbo.getPlatform(), sourceDbo.getData(), sourceDbo.getUrl()));
         }
 
@@ -764,7 +788,7 @@ public class Entity2Model {
     }
 
     public static void fillOwnerIds(@NonNull VKOwnIds ids, @Nullable List<? extends Entity> dbos) {
-        if(nonNull(dbos)){
+        if (nonNull(dbos)) {
             for (Entity entity : dbos) {
                 fillOwnerIds(ids, entity);
             }
@@ -772,7 +796,7 @@ public class Entity2Model {
     }
 
     public static void fillPostOwnerIds(@NonNull VKOwnIds ids, @Nullable PostEntity dbo) {
-        if(nonNull(dbo)){
+        if (nonNull(dbo)) {
             ids.append(dbo.getFromId());
             ids.append(dbo.getSignedId());
             ids.append(dbo.getCreatedBy());
@@ -782,7 +806,7 @@ public class Entity2Model {
         }
     }
 
-    public static void fillOwnerIds(@NonNull VKOwnIds ids, CommentEntity entity){
+    public static void fillOwnerIds(@NonNull VKOwnIds ids, CommentEntity entity) {
         fillCommentOwnerIds(ids, entity);
     }
 
@@ -794,19 +818,19 @@ public class Entity2Model {
         }
     }
 
-    public static void fillCommentOwnerIds(@NonNull VKOwnIds ids, @Nullable CommentEntity dbo){
-        if(nonNull(dbo)){
+    public static void fillCommentOwnerIds(@NonNull VKOwnIds ids, @Nullable CommentEntity dbo) {
+        if (nonNull(dbo)) {
             ids.append(dbo.getFromId());
             ids.append(dbo.getReplyToUserId());
 
-            if(nonNull(dbo.getAttachments())){
+            if (nonNull(dbo.getAttachments())) {
                 fillOwnerIds(ids, dbo.getAttachments());
             }
         }
     }
 
-    public static void fillOwnerIds(@NonNull VKOwnIds ids, @Nullable NewsEntity dbo){
-        if(nonNull(dbo)){
+    public static void fillOwnerIds(@NonNull VKOwnIds ids, @Nullable NewsEntity dbo) {
+        if (nonNull(dbo)) {
             ids.append(dbo.getSourceId());
 
             fillOwnerIds(ids, dbo.getAttachments());
@@ -815,7 +839,7 @@ public class Entity2Model {
     }
 
     public static void fillMessageOwnerIds(@NonNull VKOwnIds ids, @Nullable MessageEntity dbo) {
-        if(isNull(dbo)){
+        if (isNull(dbo)) {
             return;
         }
 

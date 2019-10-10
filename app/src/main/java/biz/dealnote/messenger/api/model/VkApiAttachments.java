@@ -10,89 +10,19 @@ import java.util.List;
  */
 public class VkApiAttachments {
 
-    /**
-     * Attachment is a photo.
-     *
-     * @see {@link VKApiPhoto}
-     */
     public static final String TYPE_PHOTO = "photo";
-
-    /**
-     * Attachment is a video.
-     *
-     * @see {@link VKApiVideo}
-     */
     public static final String TYPE_VIDEO = "video";
-
-    /**
-     * Attachment is an audio.
-     *
-     * @see {@link VKApiAudio}
-     */
     public static final String TYPE_AUDIO = "audio";
-
-    /**
-     * Attachment is a document.
-     *
-     * @see {@link VkApiDoc}
-     */
     public static final String TYPE_DOC = "doc";
-
-    /**
-     * Attachment is a wall post.
-     *
-     * @see {@link VKApiPost}
-     */
     public static final String TYPE_POST = "wall";
-
-    /**
-     * Attachment is a link
-     *
-     * @see {@link VKApiLink}
-     */
     public static final String TYPE_LINK = "link";
-
-    /**
-     * Attachment is a note
-     *
-     * @see {@link VKApiNote}
-     */
     public static final String TYPE_NOTE = "note";
-
-    /**
-     * Attachment is an application content
-     *
-     * @see {@link VKApiApplicationContent}
-     */
     public static final String TYPE_APP = "app";
-
-    /**
-     * Attachment is a poll
-     *
-     * @see {@link VKApiPoll}
-     */
     public static final String TYPE_POLL = "poll";
-
-    /**
-     * Attachment is a WikiPage
-     *
-     * @see {@link VKApiWikiPage}
-     */
     public static final String TYPE_WIKI_PAGE = "page";
-
-    /**
-     * Attachment is a PhotoAlbum
-     *
-     * @see {@link VKApiPhotoAlbum}
-     */
     public static final String TYPE_ALBUM = "album";
-
-    /**
-     * Attachment is a Sticker
-     *
-     * @see {@link VKApiSticker}
-     */
     public static final String TYPE_STICKER = "sticker";
+    public static final String TYPE_GIFT = "gift";
 
     public ArrayList<Entry> entries;
 

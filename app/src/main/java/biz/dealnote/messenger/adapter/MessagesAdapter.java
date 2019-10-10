@@ -31,6 +31,7 @@ import biz.dealnote.messenger.api.PicassoInstance;
 import biz.dealnote.messenger.link.internal.LinkActionAdapter;
 import biz.dealnote.messenger.link.internal.OwnerLinkSpanFactory;
 import biz.dealnote.messenger.model.CryptStatus;
+import biz.dealnote.messenger.model.GiftItem;
 import biz.dealnote.messenger.model.LastReadId;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.MessageStatus;
@@ -55,6 +56,8 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
     private static final int TYPE_DELETED = 4;
     private static final int TYPE_STICKER_MY = 5;
     private static final int TYPE_STICKER_FRIEND = 6;
+    private static final int TYPE_GIFT_MY = 7;
+    private static final int TYPE_GIFT_FRIEND = 8;
 
     private static final int ENCRYPTED_MESSAGE_BUBBLE_ALPHA = 150;
 
@@ -85,6 +88,15 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
         this.unreadColor = CurrentTheme.getMessageUnreadColor(context);
     }
 
+    private OwnerLinkSpanFactory.ActionListener ownerLinkAdapter = new LinkActionAdapter() {
+        @Override
+        public void onOwnerClick(int ownerId) {
+            if (nonNull(attachmentsActionCallback)) {
+                attachmentsActionCallback.onOpenOwner(ownerId);
+            }
+        }
+    };
+
     @Override
     protected void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, int position, int type) {
         Message message = getItem(position);
@@ -103,12 +115,11 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
             case TYPE_STICKER_MY:
                 bindStickerHolder((StickerMessageHolder) viewHolder, message);
                 break;
+            case TYPE_GIFT_FRIEND:
+            case TYPE_GIFT_MY:
+                bindGiftHolder((GiftMessageHolder) viewHolder, message);
+                break;
         }
-    }
-
-    public void setItems(List<Message> messages, LastReadId lastReadId){
-        this.lastReadId = lastReadId;
-        setItems(messages);
     }
 
     private void bindStickerHolder(StickerMessageHolder holder, final Message message) {
@@ -126,6 +137,23 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
                     .into(holder.sticker);
         }
     }
+
+    public void setItems(List<Message> messages, LastReadId lastReadId) {
+        this.lastReadId = lastReadId;
+        setItems(messages);
+    }
+
+    private void bindGiftHolder(GiftMessageHolder holder, final Message message) {
+        bindBaseMessageHolder(holder, message);
+
+        GiftItem giftItem = message.getAttachments().getGifts().get(0);
+
+        PicassoInstance.with()
+                .load(giftItem.getThumb256())
+                .into(holder.gift);
+    }
+
+    private static final Date DATE = new Date();
 
     private void bindStatusText(TextView textView, int status, long time, long updateTime) {
         switch (status) {
@@ -148,7 +176,7 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
             default:
                 String text = getDateFromUnixTime(time);
 
-                if(updateTime != 0){
+                if (updateTime != 0) {
                     DATE.setTime(updateTime * 1000);
                     text = text + " " + context.getString(R.string.message_edited_at, df.format(DATE));
                 }
@@ -158,17 +186,6 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
                 break;
         }
     }
-
-    private static final Date DATE = new Date();
-
-    private OwnerLinkSpanFactory.ActionListener ownerLinkAdapter = new LinkActionAdapter(){
-        @Override
-        public void onOwnerClick(int ownerId) {
-            if(nonNull(attachmentsActionCallback)){
-                attachmentsActionCallback.onOpenOwner(ownerId);
-            }
-        }
-    };
 
     private void bindReadState(View root, boolean read) {
         root.setBackgroundColor(read ? Color.TRANSPARENT : unreadColor);
@@ -217,7 +234,7 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
 
         String displayedBody = null;
 
-        switch (message.getCryptStatus()){
+        switch (message.getCryptStatus()) {
             case CryptStatus.NO_ENCRYPTION:
             case CryptStatus.ENCRYPTED:
             case CryptStatus.DECRYPT_FAILED:
@@ -228,7 +245,7 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
                 break;
         }
 
-        switch (message.getCryptStatus()){
+        switch (message.getCryptStatus()) {
             case CryptStatus.ENCRYPTED:
             case CryptStatus.DECRYPT_FAILED:
                 holder.bubble.setBubbleAlpha(ENCRYPTED_MESSAGE_BUBBLE_ALPHA);
@@ -278,6 +295,9 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
             case TYPE_STICKER_FRIEND:
             case TYPE_STICKER_MY:
                 return new StickerMessageHolder(view);
+            case TYPE_GIFT_FRIEND:
+            case TYPE_GIFT_MY:
+                return new GiftMessageHolder(view);
         }
 
         return null;
@@ -298,6 +318,10 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
                 return R.layout.item_message_friend_sticker;
             case TYPE_STICKER_MY:
                 return R.layout.item_message_my_sticker;
+            case TYPE_GIFT_FRIEND:
+                return R.layout.item_message_friend_gift;
+            case TYPE_GIFT_MY:
+                return R.layout.item_message_my_gift;
         }
 
         throw new IllegalArgumentException();
@@ -316,6 +340,10 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
 
         if (m.isSticker()) {
             return m.isOut() ? TYPE_STICKER_MY : TYPE_STICKER_FRIEND;
+        }
+
+        if (m.isGift()) {
+            return m.isOut() ? TYPE_GIFT_MY : TYPE_GIFT_FRIEND;
         }
 
         return m.isOut() ? TYPE_MY_MESSAGE : TYPE_FRIEND_MESSAGE;
@@ -353,6 +381,18 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
         boolean onMessageLongClick(@NonNull Message message);
 
         void onMessageClicked(@NonNull Message message);
+    }
+
+    private class GiftMessageHolder extends BaseMessageHolder {
+
+        ImageView gift;
+        TextView message;
+
+        GiftMessageHolder(View itemView) {
+            super(itemView);
+            this.gift = itemView.findViewById(R.id.gift);
+            this.message = itemView.findViewById(R.id.message);
+        }
     }
 
     private class StickerMessageHolder extends BaseMessageHolder {

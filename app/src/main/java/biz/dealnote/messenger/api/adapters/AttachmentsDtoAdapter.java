@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import biz.dealnote.messenger.api.model.VKApiAttachment;
 import biz.dealnote.messenger.api.model.VKApiAudio;
+import biz.dealnote.messenger.api.model.VKApiGiftItem;
 import biz.dealnote.messenger.api.model.VKApiLink;
 import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.VKApiPoll;
@@ -36,13 +37,13 @@ public class AttachmentsDtoAdapter extends AbsAdapter implements JsonDeserialize
         VkApiAttachments dto = new VkApiAttachments();
 
         dto.entries = new ArrayList<>(array.size());
-        for(int i = 0; i < array.size(); i++){
+        for (int i = 0; i < array.size(); i++) {
             JsonObject o = array.get(i).getAsJsonObject();
 
             String type = optString(o, "type");
             VKApiAttachment attachment = parse(type, o, context);
 
-            if(Objects.nonNull(attachment)){
+            if (Objects.nonNull(attachment)) {
                 dto.entries.add(new VkApiAttachments.Entry(type, attachment));
             }
         }
@@ -50,7 +51,7 @@ public class AttachmentsDtoAdapter extends AbsAdapter implements JsonDeserialize
         return dto;
     }
 
-    private VKApiAttachment parse(String type, JsonObject root, JsonDeserializationContext context){
+    private VKApiAttachment parse(String type, JsonObject root, JsonDeserializationContext context) {
         JsonElement o = root.get(type);
 
         //{"type":"photos_list","photos_list":["406536042_456239026"]}
@@ -65,24 +66,26 @@ public class AttachmentsDtoAdapter extends AbsAdapter implements JsonDeserialize
             return context.deserialize(o, VkApiDoc.class);
         } else if (VkApiAttachments.TYPE_POST.equals(type)) {
             return context.deserialize(o, VKApiPost.class);
-        //} else if (VkApiAttachments.TYPE_POSTED_PHOTO.equals(type)) {
-        //    return context.deserialize(o, VKApiPostedPhoto.class);
+            //} else if (VkApiAttachments.TYPE_POSTED_PHOTO.equals(type)) {
+            //    return context.deserialize(o, VKApiPostedPhoto.class);
         } else if (VkApiAttachments.TYPE_LINK.equals(type)) {
             return context.deserialize(o, VKApiLink.class);
-        //} else if (VkApiAttachments.TYPE_NOTE.equals(type)) {
-        //    return context.deserialize(o, VKApiNote.class);
-        //} else if (VkApiAttachments.TYPE_APP.equals(type)) {
-        //    return context.deserialize(o, VKApiApplicationContent.class);
+            //} else if (VkApiAttachments.TYPE_NOTE.equals(type)) {
+            //    return context.deserialize(o, VKApiNote.class);
+            //} else if (VkApiAttachments.TYPE_APP.equals(type)) {
+            //    return context.deserialize(o, VKApiApplicationContent.class);
         } else if (VkApiAttachments.TYPE_POLL.equals(type)) {
             return context.deserialize(o, VKApiPoll.class);
         } else if (VkApiAttachments.TYPE_WIKI_PAGE.equals(type)) {
             return context.deserialize(o, VKApiWikiPage.class);
-        //} else if (VkApiAttachments.TYPE_ALBUM.equals(type)) {
-        //    return context.deserialize(o, VKApiPhotoAlbum.class); // not supported yet
+            //} else if (VkApiAttachments.TYPE_ALBUM.equals(type)) {
+            //    return context.deserialize(o, VKApiPhotoAlbum.class); // not supported yet
         } else if (VkApiAttachments.TYPE_STICKER.equals(type)) {
             return context.deserialize(o, VKApiSticker.class);
-        } else if(VKApiAttachment.TYPE_AUDIO_MESSAGE.equals(type)){
+        } else if (VKApiAttachment.TYPE_AUDIO_MESSAGE.equals(type)) {
             return context.deserialize(o, VkApiAudioMessage.class);
+        } else if (VKApiAttachment.TYPE_GIFT.equals(type)) {
+            return context.deserialize(o, VKApiGiftItem.class);
         }
 
         return null;

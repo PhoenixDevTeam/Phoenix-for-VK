@@ -14,6 +14,8 @@ import biz.dealnote.messenger.api.model.VKApiCity;
 import biz.dealnote.messenger.api.model.VKApiComment;
 import biz.dealnote.messenger.api.model.VKApiCommunity;
 import biz.dealnote.messenger.api.model.VKApiCountry;
+import biz.dealnote.messenger.api.model.VKApiGift;
+import biz.dealnote.messenger.api.model.VKApiGiftItem;
 import biz.dealnote.messenger.api.model.VKApiLink;
 import biz.dealnote.messenger.api.model.VKApiMessage;
 import biz.dealnote.messenger.api.model.VKApiMilitary;
@@ -63,6 +65,8 @@ import biz.dealnote.messenger.db.model.entity.CountryEntity;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.DocumentEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
+import biz.dealnote.messenger.db.model.entity.GiftEntity;
+import biz.dealnote.messenger.db.model.entity.GiftItemEntity;
 import biz.dealnote.messenger.db.model.entity.LinkEntity;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
 import biz.dealnote.messenger.db.model.entity.MilitaryEntity;
@@ -259,7 +263,7 @@ public class Dto2Entity {
                 CopiesEntity copiesEntity = new CopiesEntity();
                 copiesEntity.setPairDbos(new ArrayList<>(copyPairs.size()));
 
-                for(Copies.IdPair idPair : copyPairs){
+                for (Copies.IdPair idPair : copyPairs) {
                     copiesEntity.getPairDbos().add(new IdPairEntity(idPair.id, idPair.owner_id));
                 }
 
@@ -592,7 +596,7 @@ public class Dto2Entity {
     public static CommentEntity mapComment(int sourceId, int sourceOwnerId, int sourceType, String sourceAccessKey, VKApiComment comment) {
         List<Entity> attachmentsEntities;
 
-        if(nonNull(comment.attachments)){
+        if (nonNull(comment.attachments)) {
             attachmentsEntities = mapAttachemntsList(comment.attachments);
         } else {
             attachmentsEntities = Collections.emptyList();
@@ -613,7 +617,7 @@ public class Dto2Entity {
                 .setAttachments(attachmentsEntities);
     }
 
-    public static SimpleDialogEntity mapConversation(VkApiConversation dto){
+    public static SimpleDialogEntity mapConversation(VkApiConversation dto) {
         SimpleDialogEntity entity = new SimpleDialogEntity(dto.peer.id)
                 .setInRead(dto.inRead)
                 .setOutRead(dto.outRead)
@@ -621,14 +625,14 @@ public class Dto2Entity {
                 .setLastMessageId(dto.lastMessageId)
                 .setAcl(calculateConversationAcl(dto));
 
-        if(nonNull(dto.settings)){
+        if (nonNull(dto.settings)) {
             entity.setTitle(dto.settings.title);
 
-            if(nonNull(dto.settings.pinnedMesage)){
+            if (nonNull(dto.settings.pinnedMesage)) {
                 entity.setPinned(mapMessage(dto.settings.pinnedMesage));
             }
 
-            if(nonNull(dto.settings.photo)){
+            if (nonNull(dto.settings.photo)) {
                 entity.setPhoto50(dto.settings.photo.photo50)
                         .setPhoto100(dto.settings.photo.photo100)
                         .setPhoto200(dto.settings.photo.photo200);
@@ -649,15 +653,15 @@ public class Dto2Entity {
                 .setUnreadCount(dto.conversation.unreadCount)
                 .setAcl(calculateConversationAcl(dto.conversation));
 
-        if(nonNull(dto.conversation.settings)){
+        if (nonNull(dto.conversation.settings)) {
             entity.setTitle(dto.conversation.settings.title);
             entity.setGroupChannel(dto.conversation.settings.is_group_channel);
 
-            if(nonNull(dto.conversation.settings.pinnedMesage)){
+            if (nonNull(dto.conversation.settings.pinnedMesage)) {
                 entity.setPinned(mapMessage(dto.conversation.settings.pinnedMesage));
             }
 
-            if(nonNull(dto.conversation.settings.photo)){
+            if (nonNull(dto.conversation.settings.photo)) {
                 entity.setPhoto50(dto.conversation.settings.photo.photo50)
                         .setPhoto100(dto.conversation.settings.photo.photo100)
                         .setPhoto200(dto.conversation.settings.photo.photo200);
@@ -681,7 +685,7 @@ public class Dto2Entity {
         List<Entity> entities = new ArrayList<>(entries.size());
 
         for (VkApiAttachments.Entry entry : entries) {
-            if(isNull(entry)){
+            if (isNull(entry)) {
                 // TODO: 04.10.2017
                 continue;
             }
@@ -729,9 +733,14 @@ public class Dto2Entity {
             return mapAudio((VKApiAudio) dto);
         }
 
-        if(dto instanceof VkApiAudioMessage){
+        if (dto instanceof VkApiAudioMessage) {
             return mapAudioMessage((VkApiAudioMessage) dto);
         }
+
+        if (dto instanceof VKApiGiftItem) {
+            return mapGiftItem((VKApiGiftItem) dto);
+        }
+
 
         throw new UnsupportedOperationException("Unsupported attachment, class: " + dto.getClass());
     }
@@ -748,7 +757,7 @@ public class Dto2Entity {
                 .setAccessKey(dto.access_key);
     }
 
-    public static PollEntity.Answer mapPollAnswer(VKApiPoll.Answer dto){
+    public static PollEntity.Answer mapPollAnswer(VKApiPoll.Answer dto) {
         return new PollEntity.Answer(dto.id, dto.text, dto.votes, dto.rate);
     }
 
@@ -824,7 +833,7 @@ public class Dto2Entity {
                 .setAnimationUrl(sticker.animation_url);
     }
 
-    public static StickerSetEntity mapStikerSet(VKApiStickerSet.Product dto){
+    public static StickerSetEntity mapStikerSet(VKApiStickerSet.Product dto) {
         return new StickerSetEntity(dto.id)
                 .setTitle(dto.title)
                 .setPromoted(dto.promoted)
@@ -836,7 +845,7 @@ public class Dto2Entity {
                 .setStickers(mapAll(dto.stickers, Dto2Entity::mapSticker));
     }
 
-    public static StickerEntity.Img mapStickerImage(VKApiSticker.Image dto){
+    public static StickerEntity.Img mapStickerImage(VKApiSticker.Image dto) {
         return new StickerEntity.Img(dto.url, dto.width, dto.height);
     }
 
@@ -861,7 +870,7 @@ public class Dto2Entity {
                 .setPhoto(nonNull(link.photo) ? mapPhoto(link.photo) : null);
     }
 
-    public static AudioMessageEntity mapAudioMessage(VkApiAudioMessage dto){
+    public static AudioMessageEntity mapAudioMessage(VkApiAudioMessage dto) {
         return new AudioMessageEntity(dto.id, dto.owner_id)
                 .setAccessKey(dto.access_key)
                 .setDuration(dto.duration)
@@ -993,6 +1002,22 @@ public class Dto2Entity {
 
     public static PrivacyEntity mapPrivacy(VkApiPrivacy dto) {
         return new PrivacyEntity(dto.category, mapAll(dto.entries, orig -> new PrivacyEntity.Entry(orig.type, orig.id, orig.allowed)));
+    }
+
+    public static GiftEntity mapGift(VKApiGift dto) {
+        return new GiftEntity(dto.id)
+                .setFromId(dto.from_id)
+                .setMessage(dto.message)
+                .setDate(dto.date)
+                .setGiftItem(mapGiftItem(dto.giftItem))
+                .setPrivacy(dto.privacy);
+    }
+
+    public static GiftItemEntity mapGiftItem(VKApiGiftItem dto) {
+        return new GiftItemEntity(dto.id)
+                .setThumb48(dto.thumb_48)
+                .setThumb96(dto.thumb_96)
+                .setThumb256(dto.thumb_256);
     }
 
     public static PhotoEntity mapPhoto(VKApiPhoto dto) {

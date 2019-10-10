@@ -40,6 +40,7 @@ public class Attachments implements Parcelable, Cloneable {
     private ArrayList<Poll> polls;
     private ArrayList<WikiPage> pages;
     private ArrayList<VoiceMessage> voiceMessages;
+    private ArrayList<GiftItem> gifts;
 
     public Attachments() {
     }
@@ -55,6 +56,7 @@ public class Attachments implements Parcelable, Cloneable {
         polls = in.createTypedArrayList(Poll.CREATOR);
         pages = in.createTypedArrayList(WikiPage.CREATOR);
         voiceMessages = in.createTypedArrayList(VoiceMessage.CREATOR);
+        gifts = in.createTypedArrayList(GiftItem.CREATOR);
     }
 
     public ArrayList<VoiceMessage> getVoiceMessages() {
@@ -73,6 +75,7 @@ public class Attachments implements Parcelable, Cloneable {
         dest.writeTypedList(polls);
         dest.writeTypedList(pages);
         dest.writeTypedList(voiceMessages);
+        dest.writeTypedList(gifts);
     }
 
     public void add(AbsModel model) {
@@ -124,6 +127,10 @@ public class Attachments implements Parcelable, Cloneable {
         if (model instanceof WikiPage) {
             prepareWikiPages().add((WikiPage) model);
         }
+
+        if (model instanceof GiftItem) {
+            prepareGifts().add((GiftItem) model);
+        }
     }
 
     public ArrayList<AbsModel> toList() {
@@ -166,6 +173,10 @@ public class Attachments implements Parcelable, Cloneable {
 
         if (nonEmpty(pages)) {
             result.addAll(pages);
+        }
+
+        if (nonEmpty(gifts)) {
+            result.addAll(gifts);
         }
 
         return result;
@@ -251,6 +262,14 @@ public class Attachments implements Parcelable, Cloneable {
         return posts;
     }
 
+    public ArrayList<GiftItem> prepareGifts() {
+        if (gifts == null) {
+            gifts = new ArrayList<>(1);
+        }
+
+        return gifts;
+    }
+
     public int size() {
         return Utils.safeCountOfMultiple(
                 audios,
@@ -262,7 +281,8 @@ public class Attachments implements Parcelable, Cloneable {
                 links,
                 polls,
                 pages,
-                voiceMessages
+                voiceMessages,
+                gifts
         );
     }
 
@@ -293,7 +313,8 @@ public class Attachments implements Parcelable, Cloneable {
                 safeIsEmpty(links) &&
                 safeIsEmpty(pages) &&
                 safeIsEmpty(polls) &&
-                safeIsEmpty(voiceMessages);
+                safeIsEmpty(voiceMessages) &&
+                safeIsEmpty(gifts);
     }
 
     @Override
@@ -426,6 +447,10 @@ public class Attachments implements Parcelable, Cloneable {
             line = line + " voiceMessages=" + safeCountOf(voiceMessages);
         }
 
+        if (nonNull(gifts)) {
+            line = line + " gifts=" + safeCountOf(gifts);
+        }
+
         return line.trim();
     }
 
@@ -467,5 +492,9 @@ public class Attachments implements Parcelable, Cloneable {
 
     public ArrayList<WikiPage> getPages() {
         return pages;
+    }
+
+    public ArrayList<GiftItem> getGifts() {
+        return gifts;
     }
 }

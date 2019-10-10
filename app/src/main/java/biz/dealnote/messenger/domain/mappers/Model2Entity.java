@@ -1,14 +1,16 @@
 package biz.dealnote.messenger.domain.mappers;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.Nullable;
 import biz.dealnote.messenger.db.model.entity.AudioEntity;
 import biz.dealnote.messenger.db.model.entity.AudioMessageEntity;
 import biz.dealnote.messenger.db.model.entity.DocumentEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
+import biz.dealnote.messenger.db.model.entity.GiftItemEntity;
 import biz.dealnote.messenger.db.model.entity.LinkEntity;
 import biz.dealnote.messenger.db.model.entity.MessageEntity;
 import biz.dealnote.messenger.db.model.entity.PageEntity;
@@ -24,6 +26,7 @@ import biz.dealnote.messenger.model.Attachments;
 import biz.dealnote.messenger.model.Audio;
 import biz.dealnote.messenger.model.CryptStatus;
 import biz.dealnote.messenger.model.Document;
+import biz.dealnote.messenger.model.GiftItem;
 import biz.dealnote.messenger.model.Link;
 import biz.dealnote.messenger.model.Message;
 import biz.dealnote.messenger.model.Photo;
@@ -87,6 +90,7 @@ public class Model2Entity {
         mapAndAdd(attachments.getLinks(), Model2Entity::buildLinkDbo, entities);
         mapAndAdd(attachments.getPolls(), Model2Entity::buildPollDbo, entities);
         mapAndAdd(attachments.getPages(), Model2Entity::buildPageEntity, entities);
+        mapAndAdd(attachments.getGifts(), Model2Entity::buildGiftItemEntity, entities);
         return entities;
     }
 
@@ -110,14 +114,23 @@ public class Model2Entity {
                 entities.add(buildLinkDbo((Link) model));
             } else if(model instanceof Poll){
                 entities.add(buildPollDbo((Poll) model));
-            } else if(model instanceof WikiPage){
+            } else if (model instanceof WikiPage) {
                 entities.add(buildPageEntity((WikiPage) model));
+            } else if (model instanceof GiftItem) {
+                entities.add(buildGiftItemEntity((GiftItem) model));
             } else {
                 throw new UnsupportedOperationException("Unsupported model");
             }
         }
 
         return entities;
+    }
+
+    public static GiftItemEntity buildGiftItemEntity(GiftItem giftItem) {
+        return new GiftItemEntity(giftItem.getId())
+                .setThumb256(giftItem.getThumb256())
+                .setThumb96(giftItem.getThumb96())
+                .setThumb48(giftItem.getThumb48());
     }
 
     public static PageEntity buildPageEntity(WikiPage page) {
