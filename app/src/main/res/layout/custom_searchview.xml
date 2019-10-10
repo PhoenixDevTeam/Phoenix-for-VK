@@ -3,8 +3,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp">
+    android:paddingStart="10dp"
+    android:paddingEnd="8dp">
 
     <ImageView
         android:id="@+id/button_back"
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="24dp"
         android:layout_toStartOf="@+id/right_buttons"
         android:layout_toEndOf="@+id/button_back"
         android:background="@null"

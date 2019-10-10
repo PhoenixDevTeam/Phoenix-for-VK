@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -99,10 +101,10 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
         FragmentActivity activity = requireActivity();
 
         try {
-            if (nonNull(activity) && nonNull(mSearchView)) {
+            if (nonNull(mSearchView)) {
                 int count = activity.getSupportFragmentManager().getBackStackEntryCount();
                 mSearchView.setLeftIcon(count == 1 && activity instanceof AppStyleable ?
-                        R.drawable.phoenix : R.drawable.arrow_left);
+                        R.drawable.phoenix_round : R.drawable.arrow_left);
             }
         } catch (Exception ignored) {
         }
@@ -111,7 +113,7 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
     private FragmentManager.OnBackStackChangedListener backStackChangedListener = this::resolveLeftButton;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (context instanceof AppCompatActivity) {
             ((AppCompatActivity) context).getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
@@ -120,10 +122,7 @@ public class CommunitiesFragment extends BaseMvpFragment<CommunitiesPresenter, I
 
     @Override
     public void onDetach() {
-        if (requireActivity() != null) {
-            requireActivity().getSupportFragmentManager().removeOnBackStackChangedListener(backStackChangedListener);
-        }
-
+        requireActivity().getSupportFragmentManager().removeOnBackStackChangedListener(backStackChangedListener);
         super.onDetach();
     }
 
