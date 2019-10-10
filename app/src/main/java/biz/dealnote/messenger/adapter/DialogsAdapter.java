@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -90,30 +91,39 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
 
         holder.mDialogTitle.setText(dialog.getDisplayTitle(mContext));
 
-        String lastMessage = dialog.getLastMessageBody();
+        SpannableStringBuilder lastMessage = SpannableStringBuilder.valueOf(dialog.getLastMessageBody());
         if (dialog.hasAttachments()) {
+            SpannableStringBuilder spannable = SpannableStringBuilder.valueOf(mContext.getString(R.string.attachments));
+            spannable.setSpan(new ForegroundColorSpan(CurrentTheme.getColorPrimary(mContext)), 0, spannable.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             lastMessage = TextUtils.isEmpty(lastMessage) ?
-                    mContext.getString(R.string.attachments) : lastMessage + " " + mContext.getString(R.string.attachments);
+                    spannable : lastMessage.append(" ").append(spannable);
         }
 
         if (dialog.hasForwardMessages()) {
+            SpannableStringBuilder spannable = SpannableStringBuilder.valueOf(mContext.getString(R.string.forward_messages));
+            spannable.setSpan(new ForegroundColorSpan(CurrentTheme.getColorPrimary(mContext)), 0, spannable.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
             lastMessage = TextUtils.isEmpty(lastMessage) ?
-                    mContext.getString(R.string.forward_messages) : lastMessage + " " + mContext.getString(R.string.forward_messages);
+                    spannable : lastMessage.append(" ").append(spannable);
         }
 
         Integer lastMessageAction = dialog.getLastMessageAction();
         if (Objects.nonNull(lastMessageAction) && dialog.getLastMessageAction() != ChatAction.NO_ACTION) {
-            lastMessage = mContext.getString(R.string.service_message);
+            SpannableStringBuilder spannable = SpannableStringBuilder.valueOf(mContext.getString(R.string.service_message));
+            spannable.setSpan(new ForegroundColorSpan(CurrentTheme.getColorPrimary(mContext)), 0, spannable.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+            lastMessage = spannable;
         }
 
         if (dialog.isChat()) {
-            String aurhorText = dialog.isLastMessageOut() ? mContext.getString(R.string.dialog_me) : dialog.getSenderShortName(mContext);
-            Spannable spannable = SpannableStringBuilder.valueOf(aurhorText + " - " + lastMessage);
-            spannable.setSpan(mForegroundColorSpan, 0, aurhorText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.mDialogMessage.setText(spannable);
-        } else {
-            holder.mDialogMessage.setText(lastMessage);
+            SpannableStringBuilder spannable = SpannableStringBuilder.valueOf(dialog.isLastMessageOut() ? mContext.getString(R.string.dialog_me) : dialog.getSenderShortName(mContext));
+            spannable.setSpan(mForegroundColorSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            lastMessage = spannable.append(" - ").append(lastMessage);
         }
+
+        holder.mDialogMessage.setText(lastMessage);
+
 
         boolean lastMessageRead = dialog.isLastMessageRead();
         int titleTextStyle = getTextStyle(dialog.isLastMessageOut(), lastMessageRead);
