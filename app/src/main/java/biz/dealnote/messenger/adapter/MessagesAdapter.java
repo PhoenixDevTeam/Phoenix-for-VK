@@ -146,6 +146,8 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
     private void bindGiftHolder(GiftMessageHolder holder, final Message message) {
         bindBaseMessageHolder(holder, message);
 
+        holder.message.setVisibility(TextUtils.isEmpty(message.getBody()) ? View.GONE : View.VISIBLE);
+        holder.message.setText(OwnerLinkSpanFactory.withSpans(message.getBody(), true, false, ownerLinkAdapter));
         GiftItem giftItem = message.getAttachments().getGifts().get(0);
 
         PicassoInstance.with()
@@ -386,12 +388,16 @@ public class MessagesAdapter extends RecyclerBindableAdapter<Message, RecyclerVi
     private class GiftMessageHolder extends BaseMessageHolder {
 
         ImageView gift;
-        TextView message;
+        EmojiconTextView message;
 
         GiftMessageHolder(View itemView) {
             super(itemView);
+            message = itemView.findViewById(R.id.item_message_text);
+            message.setMovementMethod(LinkMovementMethod.getInstance());
+            message.setOnHashTagClickListener(onHashTagClickListener);
+            message.setOnLongClickListener(v -> this.itemView.performLongClick());
+            message.setOnClickListener(v -> this.itemView.performClick());
             this.gift = itemView.findViewById(R.id.gift);
-            this.message = itemView.findViewById(R.id.message);
         }
     }
 
