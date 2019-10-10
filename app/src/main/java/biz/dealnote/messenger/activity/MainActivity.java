@@ -1178,14 +1178,21 @@ public class MainActivity extends AppCompatActivity implements AdditionalNavigat
         new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.app_community_invite_title)
                 .setMessage(R.string.app_community_invite_message)
-                .setPositiveButton(R.string.button_go, (dialog, which) -> goToAppCommunity())
-                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .setPositiveButton(R.string.group, (dialog, which) -> goToAppCommunity())
+                .setNeutralButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(R.string.chat, (dialog, which) -> openTelegramChat())
                 .show();
     }
 
     private void goToAppCommunity() {
         PlaceFactory.getOwnerWallPlace(mAccountId, -PreferencesFragment.APP_GROUP_ID, null)
                 .tryOpenWith(this);
+    }
+
+    private void openTelegramChat() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://tele.click/phoenix_vk"));
+        startActivity(intent);
     }
 
     private void openPageAndCloseSheet(AbsMenuItem item) {

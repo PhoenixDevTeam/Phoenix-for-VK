@@ -782,7 +782,7 @@
     <string name="never">Never</string>
     <string name="button_go">Go</string>
     <string name="app_community_invite_title">Thanks for using our app!</string>
-    <string name="app_community_invite_message"><![CDATA[We want to invite you to our app community. You can find some useful tips & tricks, read about new features and ask us any questions]]></string>
+    <string name="app_community_invite_message"><![CDATA[We want to invite you to our app community and Telegram Chat. You can find some useful tips & tricks, read about new features and ask us any questions]]></string>
     <string name="button_continue">Continue</string>
     <string name="description_hint">Description</string>
     <string name="additional_settings">Additional settings</string>
@@ -1188,9 +1188,9 @@
     <string name="alternative">Alternative</string>
     <string name="chanson">Chanson</string>
     <string name="classical">Classical</string>
-    <string name="dance">Dance</string>
-    <string name="drum_and_bass">Drum\'n\'bass</string>
-    <string name="dubstep">Dubstep</string>
+    <string name="dance" translatable="false">Dance</string>
+    <string name="drum_and_bass" translatable="false">Drum\'n\'bass</string>
+    <string name="dubstep" translatable="false">Dubstep</string>
     <string name="easy_listening">Easy</string>
     <string name="disco">Disco</string>
     <string name="ethnic">Ethnic</string>
@@ -1202,9 +1202,10 @@
     <string name="rap">Rap</string>
     <string name="reggae">Reggae</string>
     <string name="rock">Rock</string>
-    <string name="speech">Speech</string>
+    <string name="speech" translatable="false">Speech</string>
     <string name="trance">Trance</string>
     <string name="top">Top</string>
     <string name="gift">Gift</string>
+    <string name="chat">Chat</string>
 
 </resources>

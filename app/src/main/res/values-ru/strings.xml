@@ -668,7 +668,7 @@
     <string name="later">Позже</string>
     <string name="never">Никогда</string>
     <string name="app_community_invite_title">Спасибо, что Вы с нами!</string>
-    <string name="app_community_invite_message">Приглашаем Вас вступить в группу приложения.  Там Вы можете найти полезную информацию о приложении, узнать нововведения и задать нам вопросы</string>
+    <string name="app_community_invite_message">Приглашаем Вас вступить в группу приложения и чат в Telegram. Там Вы можете найти полезную информацию о приложении, узнать нововведения и задать нам вопросы</string>
     <string name="additional_settings">Дополнительные параметры</string>
     <string name="button_continue">Продолжить</string>
     <string name="create_album">Создать новый альбом</string>
@@ -1052,4 +1052,23 @@
     <string name="playlist">Плейлист</string>
     <string name="phoenix_player">Phoenix Плеер</string>
     <string name="choose_theme_title">Тема приложения</string>
+    <string name="acoustic">Акустика</string>
+    <string name="alternative">Альтернатива</string>
+    <string name="chanson">Шансон</string>
+    <string name="classical">Классика</string>
+    <string name="easy_listening">Легкое</string>
+    <string name="disco">Диско</string>
+    <string name="ethnic">Этническое</string>
+    <string name="indie_pop">Инди-поп</string>
+    <string name="instrumental">Инстурметальное</string>
+    <string name="jazz">Джаз</string>
+    <string name="metal">Метал</string>
+    <string name="pop">Поп</string>
+    <string name="rap">Рэп</string>
+    <string name="reggae">Рэгги</string>
+    <string name="rock">Рок</string>
+    <string name="trance">Транс</string>
+    <string name="top">Топ</string>
+    <string name="gift">Подарок</string>
+    <string name="chat">Чат</string>
 </resources>
