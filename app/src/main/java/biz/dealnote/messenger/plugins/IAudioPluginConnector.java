@@ -10,7 +10,7 @@ import io.reactivex.Single;
  * Phoenix-for-VK
  */
 public interface IAudioPluginConnector {
-    Single<List<Audio>> get(int ownerId, int offset);
-    Single<String> findAudioUrl(int audioId, int ownerId);
+    Single<List<Audio>> get(int accountId, int ownerId, int offset);
+    Single<String> findAudioUrl(int accountId, int audioId, int ownerId);
     boolean isPluginAvailable();
 }

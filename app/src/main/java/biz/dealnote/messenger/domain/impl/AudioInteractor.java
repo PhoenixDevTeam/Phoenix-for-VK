@@ -72,13 +72,13 @@ public class AudioInteractor implements IAudioInteractor {
     }
 
     @Override
-    public Single<List<Audio>> get(int ownerId, int offset) {
-        return audioPluginConnector.get(ownerId, offset);
+    public Single<List<Audio>> get(int accountId, int ownerId, int offset) {
+        return audioPluginConnector.get(accountId, ownerId, offset);
     }
 
     @Override
-    public Single<String> findAudioUrl(int audioId, int ownerId) {
-        return audioPluginConnector.findAudioUrl(audioId, ownerId);
+    public Single<String> findAudioUrl(int accountId, int audioId, int ownerId) {
+        return audioPluginConnector.findAudioUrl(accountId, audioId, ownerId);
     }
 
     @Override

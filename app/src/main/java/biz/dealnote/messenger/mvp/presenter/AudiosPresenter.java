@@ -3,11 +3,12 @@ package biz.dealnote.messenger.mvp.presenter;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Audio;
@@ -69,14 +70,14 @@ public class AudiosPresenter extends AccountDependencyPresenter<IAudiosView> {
     private void requestNext() {
         setLoadingNow(true);
         final int offset = audios.size();
-        audioListDisposable.add(audioInteractor.get(ownerId, offset)
+        audioListDisposable.add(audioInteractor.get(getAccountId(), ownerId, offset)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onNextListReceived, this::onListGetError));
     }
 
     private void requestList() {
         setLoadingNow(true);
-        audioListDisposable.add(audioInteractor.get(ownerId, 0)
+        audioListDisposable.add(audioInteractor.get(getAccountId(), ownerId, 0)
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(this::onListReceived, this::onListGetError));
     }

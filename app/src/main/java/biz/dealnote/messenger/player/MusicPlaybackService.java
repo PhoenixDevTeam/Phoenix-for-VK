@@ -51,6 +51,7 @@ import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.domain.IAudioInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.Audio;
+import biz.dealnote.messenger.settings.Settings;
 import biz.dealnote.messenger.util.Logger;
 import biz.dealnote.messenger.util.RxUtils;
 import biz.dealnote.messenger.util.Utils;
@@ -1227,7 +1228,9 @@ public class MusicPlaybackService extends Service {
 
         void setDataSource(int ownerId, int audioId, String url) {
             if (isEmpty(url) || "https://vk.com/mp3/audio_api_unavailable.mp3".equals(url)) {
-                compositeDisposable.add(audioInteractor.findAudioUrl(audioId, ownerId)
+                final int accountId = Settings.get().accounts().getCurrent();
+                // TODO: 10/10/2019 ???
+                compositeDisposable.add(audioInteractor.findAudioUrl(accountId, audioId, ownerId)
                         .compose(RxUtils.applySingleIOToMainSchedulers())
                         .subscribe(this::setDataSource, ignored -> setDataSource(url)));
             } else {

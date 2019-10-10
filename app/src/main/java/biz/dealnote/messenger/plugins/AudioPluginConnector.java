@@ -29,12 +29,14 @@ public class AudioPluginConnector implements IAudioPluginConnector {
     }
 
     @Override
-    public Single<List<Audio>> get(int ownerId, int offset) {
+    public Single<List<Audio>> get(int accountId, int ownerId, int offset) {
         return Single.create(emitter -> {
             Uri uri = new Uri.Builder()
                     .scheme("content")
                     .authority(AUTHORITY)
                     .path("audios")
+                    .appendQueryParameter("request", "get")
+                    .appendQueryParameter("account_id", String.valueOf(accountId))
                     .appendQueryParameter("owner_id", String.valueOf(ownerId))
                     .appendQueryParameter("offset", String.valueOf(offset))
                     .build();
@@ -57,25 +59,7 @@ public class AudioPluginConnector implements IAudioPluginConnector {
                         return;
                     }
 
-
-                    int audioId = cursor.getInt(cursor.getColumnIndex("audio_id"));
-                    int ownerId1 = cursor.getInt(cursor.getColumnIndex("owner_id"));
-                    String title = cursor.getString(cursor.getColumnIndex("title"));
-                    String artist = cursor.getString(cursor.getColumnIndex("artist"));
-                    int duration = cursor.getInt(cursor.getColumnIndex("duration"));
-                    String cover = cursor.getString(cursor.getColumnIndex("cover_url"));
-                    String bigCover = cursor.getString(cursor.getColumnIndex("cover_url_big"));
-
-                    Audio audio = new Audio()
-                            .setArtist(artist)
-                            .setDuration(duration)
-                            .setId(audioId)
-                            .setOwnerId(ownerId1)
-                            .setTitle(title)
-                            .setBigCover(bigCover)
-                            .setCover(cover);
-
-                    audios.add(audio);
+                    audios.add(map(cursor));
                 }
 
                 cursor.close();
@@ -83,6 +67,27 @@ public class AudioPluginConnector implements IAudioPluginConnector {
 
             emitter.onSuccess(audios);
         });
+    }
+
+    private static Audio map(Cursor cursor){
+        int audioId = cursor.getInt(cursor.getColumnIndex("audio_id"));
+        int ownerId = cursor.getInt(cursor.getColumnIndex("owner_id"));
+        String title = cursor.getString(cursor.getColumnIndex("title"));
+        String artist = cursor.getString(cursor.getColumnIndex("artist"));
+        String url = cursor.getString(cursor.getColumnIndex("url"));
+        int duration = cursor.getInt(cursor.getColumnIndex("duration"));
+        String cover = cursor.getString(cursor.getColumnIndex("cover_url"));
+        String bigCover = cursor.getString(cursor.getColumnIndex("cover_url_big"));
+
+        return new Audio()
+                .setUrl(url)
+                .setArtist(artist)
+                .setDuration(duration)
+                .setId(audioId)
+                .setOwnerId(ownerId)
+                .setTitle(title)
+                .setBigCover(bigCover)
+                .setCover(cover);
     }
 
     private static void checkAudioPluginError(Cursor cursor) throws AudioPluginException {
@@ -98,14 +103,17 @@ public class AudioPluginConnector implements IAudioPluginConnector {
     }
 
     @Override
-    public Single<String> findAudioUrl(int audioId, int ownerId) {
+    public Single<String> findAudioUrl(int accountId, int audioId, int ownerId) {
         return Single.create(emitter -> {
+            String audios = ownerId + "_" + audioId;
+
             Uri uri = new Uri.Builder()
                     .scheme("content")
                     .authority(AUTHORITY)
-                    .path("urls")
-                    .appendQueryParameter("owner_id", String.valueOf(ownerId))
-                    .appendQueryParameter("audio_id", String.valueOf(audioId))
+                    .path("audios")
+                    .appendQueryParameter("request", "getById")
+                    .appendQueryParameter("account_id", String.valueOf(accountId))
+                    .appendQueryParameter("audios", audios)
                     .build();
 
             Cursor cursor = app.getContentResolver().query(uri, null, null, null, null);
@@ -113,7 +121,7 @@ public class AudioPluginConnector implements IAudioPluginConnector {
             String url = null;
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-                    url = cursor.getString(cursor.getColumnIndex("url"));
+                    url = map(cursor).getUrl();
                 }
 
                 cursor.close();
