@@ -68,7 +68,7 @@ class DrawerSettings implements ISettings.IDrawerSettings {
     public int[] getCategoriesOrder() {
         @SwitchableCategory
         int[] all = {FRIENDS, FEEDBACK, NEWSFEED_COMMENTS, GROUPS, PHOTOS, VIDEOS, MUSIC, DOCS, BOOKMARKS};
-        if (BuildConfig.VERSION_CODE == 10000) {
+        if (BuildConfig.VERSION_CODE < 10100) {
             PreferenceManager.getDefaultSharedPreferences(app).edit().putString("drawer_categories_order", null).apply();
         }
         String line = PreferenceManager.getDefaultSharedPreferences(app).getString("drawer_categories_order", null);
