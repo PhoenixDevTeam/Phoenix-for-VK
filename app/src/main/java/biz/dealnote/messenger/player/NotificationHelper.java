@@ -11,6 +11,7 @@
 
 package biz.dealnote.messenger.player;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -49,9 +50,8 @@ public class NotificationHelper {
                 .getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    public void buildNotification(Context context, final String artistName,
-                                  final String trackName, final boolean isPlaying, final Bitmap cover,
-                                  MediaSessionCompat.Token mediaSessionToken) {
+    public void buildNotification(Context context, final String artistName, final String trackName,
+                                  final boolean isPlaying, final Bitmap cover, MediaSessionCompat.Token mediaSessionToken) {
 
         if (Utils.hasOreo()) {
             mNotificationManager.createNotificationChannel(AppNotificationChannels.getAudioChannel(context));
@@ -84,19 +84,12 @@ public class NotificationHelper {
         mService.startForeground(PHOENIX_MUSIC_SERVICE, mNotificationBuilder.build());
     }
 
-    /**
-     * Remove notification
-     */
     public void killNotification() {
         mService.stopForeground(true);
         mNotificationBuilder = null;
     }
 
-    /**
-     * Changes the playback controls in and out of a paused state
-     *
-     * @param isPlaying True if music is playing, false otherwise
-     */
+    @SuppressLint("RestrictedApi")
     public void updatePlayState(final boolean isPlaying) {
         if (mNotificationBuilder == null || mNotificationManager == null) {
             return;
@@ -107,11 +100,10 @@ public class NotificationHelper {
         }
         //Remove pause action
         mNotificationBuilder.mActions.remove(1);
-        mNotificationBuilder.mActions.add(1,
-                new androidx.core.app.NotificationCompat.Action(
-                        isPlaying ? R.drawable.pause_notification : R.drawable.play_notification,
-                        null,
-                        retreivePlaybackActions(1)));
+        mNotificationBuilder.mActions.add(1, new NotificationCompat.Action(
+                isPlaying ? R.drawable.pause_notification : R.drawable.play_notification,
+                null,
+                retreivePlaybackActions(1)));
 
         mNotificationManager.notify(PHOENIX_MUSIC_SERVICE, mNotificationBuilder.build());
     }

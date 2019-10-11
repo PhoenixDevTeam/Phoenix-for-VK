@@ -78,8 +78,9 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
         unregisterAdapterDataObserver(mDataObserver);
     }
 
+    @NonNull
     @Override
-    public DialogViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DialogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new DialogViewHolder(LayoutInflater.from(mContext)
                 .inflate(R.layout.item_dialog, parent, false));
     }
@@ -108,7 +109,7 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
         }
 
         Integer lastMessageAction = dialog.getLastMessageAction();
-        if (Objects.nonNull(lastMessageAction) && dialog.getLastMessageAction() != ChatAction.NO_ACTION) {
+        if (Objects.nonNull(lastMessageAction) && lastMessageAction != ChatAction.NO_ACTION) {
             SpannableStringBuilder spannable = SpannableStringBuilder.valueOf(mContext.getString(R.string.service_message));
             spannable.setSpan(new ForegroundColorSpan(CurrentTheme.getColorPrimary(mContext)), 0, spannable.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
@@ -145,11 +146,7 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
         }
 
         Integer iconRes = ViewUtils.getOnlineIcon(online, onlineMobile, platform, app);
-        if (iconRes != null) {
-            holder.ivOnline.setIcon(iconRes);
-        } else {
-            holder.ivOnline.setIcon(0);
-        }
+        holder.ivOnline.setIcon(iconRes != null ? iconRes : 0);
 
         holder.ivDialogType.setImageResource(dialog.isGroupChannel() ? R.drawable.channel : R.drawable.person_multiple);
         holder.ivDialogType.setVisibility(dialog.isChat() ? View.VISIBLE : View.GONE);
@@ -274,7 +271,7 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
         return mDialogs.size();
     }
 
-    class DialogViewHolder extends RecyclerView.ViewHolder {
+    static class DialogViewHolder extends RecyclerView.ViewHolder {
 
         View mContentRoot;
         TextView mDialogTitle;
