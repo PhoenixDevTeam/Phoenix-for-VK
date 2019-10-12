@@ -1,9 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="Base.App.DayNight" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:statusBarColor">?android:colorBackground</item>
-        <item name="android:navigationBarColor" tools:targetApi="o_mr1">?android:colorBackground
-        </item>
         <!--        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">?dividerColor</item>-->
         <item name="android:fontFamily">@font/open_sans</item>
         <item name="windowActionModeOverlay">true</item>
@@ -12,9 +9,11 @@
         <item name="toolbarElevation">@dimen/toolbar_with_elevation</item>
     </style>
 
-    <style name="App.DayNight" parent="Base.App.DayNight">
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+    <style name="Base.App.DayNight.LightSpecific" parent="Base.App.DayNight">
+        <item name="android:statusBarColor">#BBBBBB</item>
+    </style>
+
+    <style name="App.DayNight" parent="Base.App.DayNight.LightSpecific">
 
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.AppTheme.SmallComponent
         </item>
@@ -80,14 +79,14 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="Theme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+    <style name="Theme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
         <item name="android:tint">?colorOnSurface</item>
         <item name="actionMenuTextColor">?colorOnSurface</item>
         <item name="android:textColorPrimary">?colorOnSurface</item>
         <item name="android:textColorSecondary">?colorOnSurface</item>
     </style>
 
-    <style name="Theme.Toolbar.Surface" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+    <style name="Theme.Toolbar.Surface" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
         <item name="android:tint">?colorOnSurface</item>
         <item name="actionMenuTextColor">?colorOnSurface</item>
         <item name="android:textColorPrimary">?colorOnSurface</item>
@@ -104,10 +103,10 @@
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
-    <style name="Theme.Tablayout" parent="Widget.MaterialComponents.TabLayout.Colored">
+    <style name="Theme.Tablayout" parent="Widget.MaterialComponents.TabLayout.PrimarySurface">
         <item name="tabRippleColor">?colorPrimary</item>
         <item name="tabMode">scrollable</item>
-        <item name="tabTextColor">?colorOnSurface</item>
+        <item name="tabTextColor">?android:textColorSecondary</item>
         <item name="tabSelectedTextColor">?colorPrimary</item>
         <item name="tabIndicatorColor">?colorPrimary</item>
         <item name="enforceTextAppearance">true</item>

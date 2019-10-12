@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="App.DayNight" parent="Base.App.DayNight">
+    <style name="Base.App.DayNight.DarkSpecific" parent="Base.App.DayNight">
+        <item name="android:statusBarColor">?android:colorBackground</item>
+        <item name="android:navigationBarColor" tools:targetApi="o_mr1">?android:colorBackground
+        </item>
+    </style>
+
+    <style name="App.DayNight" parent="Base.App.DayNight.DarkSpecific">
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:windowLightStatusBar" tools:targetApi="o_mr1">false</item>
 
