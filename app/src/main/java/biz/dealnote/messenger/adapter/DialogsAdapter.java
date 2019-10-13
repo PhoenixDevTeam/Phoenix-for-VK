@@ -92,7 +92,8 @@ public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.DialogVi
 
         holder.mDialogTitle.setText(dialog.getDisplayTitle(mContext));
 
-        SpannableStringBuilder lastMessage = SpannableStringBuilder.valueOf(dialog.getLastMessageBody());
+        SpannableStringBuilder lastMessage = dialog.getLastMessageBody() != null ?
+                SpannableStringBuilder.valueOf(dialog.getLastMessageBody()) : new SpannableStringBuilder();
         if (dialog.hasAttachments()) {
             SpannableStringBuilder spannable = SpannableStringBuilder.valueOf(mContext.getString(R.string.attachments));
             spannable.setSpan(new ForegroundColorSpan(CurrentTheme.getColorPrimary(mContext)), 0, spannable.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);

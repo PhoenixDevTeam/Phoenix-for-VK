@@ -28,7 +28,7 @@
                 android:layout_weight="2"
                 android:gravity="center">
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                         app:aspectRatioW="1"
                         app:dominantMeasurement="width" />
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
             <RelativeLayout
