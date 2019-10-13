@@ -14,7 +14,6 @@
     </style>
 
     <style name="App.DayNight" parent="Base.App.DayNight.LightSpecific">
-
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.AppTheme.SmallComponent
         </item>
         <item name="shapeAppearanceMediumComponent">
@@ -25,7 +24,6 @@
 
         <item name="materialCardViewStyle">@style/Theme.MaterialCardView</item>
         <item name="floatingActionButtonStyle">@style/Theme.FloatingActionButton</item>
-
 
         <item name="dividerColor">#E1E3E7</item>
 
