@@ -1,5 +1,6 @@
 package biz.dealnote.messenger.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -19,6 +20,7 @@ public class BubbleLinearLayout extends LinearLayout {
     private float mAngle;
     private float mArrowHeight;
     private float mArrowPosition;
+    private float mRadius;
     private BubbleDrawable.ArrowLocation mArrowLocation;
     private int bubbleColor;
 
@@ -35,11 +37,12 @@ public class BubbleLinearLayout extends LinearLayout {
     private void initView(AttributeSet attrs) {
         setWillNotDraw(false); //R.Kolbasa
         if (attrs != null) {
-            TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.BubbleView);
+            @SuppressLint("CustomViewStyleable") TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.BubbleView);
             mArrowWidth = array.getDimension(R.styleable.BubbleView_arrowWidth, BubbleDrawable.Builder.DEFAULT_ARROW_WITH);
             mArrowHeight = array.getDimension(R.styleable.BubbleView_arrowHeight, BubbleDrawable.Builder.DEFAULT_ARROW_HEIGHT);
             mAngle = array.getDimension(R.styleable.BubbleView_angle, BubbleDrawable.Builder.DEFAULT_ANGLE);
             mArrowPosition = array.getDimension(R.styleable.BubbleView_arrowPosition, BubbleDrawable.Builder.DEFAULT_ARROW_POSITION);
+            mRadius = array.getDimension(R.styleable.BubbleView_cornerRadius, BubbleDrawable.Builder.DEFAULT_RADIUS);
             bubbleColor = array.getColor(R.styleable.BubbleView_bubbleColor, BubbleDrawable.Builder.DEFAULT_BUBBLE_COLOR);
             int location = array.getInt(R.styleable.BubbleView_arrowLocation, 0);
             mArrowLocation = BubbleDrawable.ArrowLocation.mapIntToValue(location);
@@ -58,7 +61,7 @@ public class BubbleLinearLayout extends LinearLayout {
     private void setUp(int left, int right, int top, int bottom) {
         //Logger.d(TAG, "setUp, left: " + left + ", right: " + right);
 
-        if (right < left || bottom < top){
+        if (right < left || bottom < top) {
             return;
         }
 
@@ -71,6 +74,7 @@ public class BubbleLinearLayout extends LinearLayout {
                 .arrowHeight(mArrowHeight)
                 .arrowWidth(mArrowWidth)
                 .arrowPosition(mArrowPosition)
+                .cornerRadius(mRadius)
                 .bubbleColor(bubbleColor)
                 .build();
     }
@@ -86,22 +90,21 @@ public class BubbleLinearLayout extends LinearLayout {
         //setBackgroundDrawable(bubbleDrawable); // comment by R.Kolbasa
     }
 
-    private void setUp(){
+    private void setUp() {
         setUp(getWidth(), getHeight());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (bubbleDrawable != null){
+        if (bubbleDrawable != null) {
             bubbleDrawable.draw(canvas);
         }
 
         super.onDraw(canvas);
     }
 
-    public void setBubbleAlpha(int alpha){
-        int newColor = Color.argb(alpha, Color.red(this.bubbleColor), Color.green(this.bubbleColor), Color.blue(this.bubbleColor));
-        this.bubbleColor = newColor;
+    public void setBubbleAlpha(int alpha) {
+        this.bubbleColor = Color.argb(alpha, Color.red(this.bubbleColor), Color.green(this.bubbleColor), Color.blue(this.bubbleColor));
         setUp();
     }
 }

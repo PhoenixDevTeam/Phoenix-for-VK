@@ -17,7 +17,6 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 
 public class BubbleDrawable extends Drawable {
-
     private RectF mRect;
     private Path mPath = new Path();
     private BitmapShader mBitmapShader;
@@ -26,10 +25,12 @@ public class BubbleDrawable extends Drawable {
     private float mAngle;
     private float mArrowHeight;
     private float mArrowPosition;
+    private float mRadius;
     private int bubbleColor;
     private Bitmap bubbleBitmap;
     private ArrowLocation mArrowLocation;
     private BubbleType bubbleType;
+    private boolean mArrowCenter;
 
     private BubbleDrawable(Builder builder) {
         this.mRect = builder.mRect;
@@ -37,10 +38,12 @@ public class BubbleDrawable extends Drawable {
         this.mArrowHeight = builder.mArrowHeight;
         this.mArrowWidth = builder.mArrowWidth;
         this.mArrowPosition = builder.mArrowPosition;
+        this.mRadius = builder.mRadius;
         this.bubbleColor = builder.bubbleColor;
         this.bubbleBitmap = builder.bubbleBitmap;
         this.mArrowLocation = builder.mArrowLocation;
         this.bubbleType = builder.bubbleType;
+        this.mArrowCenter = builder.arrowCenter;
     }
 
     @Override
@@ -101,95 +104,124 @@ public class BubbleDrawable extends Drawable {
                 setUpShaderMatrix();
                 break;
         }
-
         setUpPath(mArrowLocation, mPath);
         canvas.drawPath(mPath, mPaint);
     }
 
     private void setUpLeftPath(RectF rect, Path path) {
+
+        if (mArrowCenter) {
+            mArrowPosition = (rect.bottom - rect.top) / 2 - mArrowWidth / 2;
+        }
+
         path.moveTo(mArrowWidth + rect.left + mAngle, rect.top);
         path.lineTo(rect.width() - mAngle, rect.top);
-        path.arcTo(new RectF(rect.right - mAngle, rect.top, rect.right, mAngle + rect.top), 270, 90);
+        path.arcTo(new RectF(rect.right - mAngle - 2 * mRadius, rect.top, rect.right,
+                mAngle + rect.top + 2 * mRadius), 270, 90);
         path.lineTo(rect.right, rect.bottom - mAngle);
-        path.arcTo(new RectF(rect.right - mAngle, rect.bottom - mAngle, rect.right, rect.bottom), 0, 90);
+        path.arcTo(new RectF(rect.right - mAngle - 2 * mRadius, rect.bottom - mAngle - 2 * mRadius,
+                rect.right, rect.bottom), 0, 90);
         path.lineTo(rect.left + mArrowWidth + mAngle, rect.bottom);
-        path.arcTo(new RectF(rect.left + mArrowWidth, rect.bottom - mAngle, mAngle + rect.left + mArrowWidth, rect.bottom), 90, 90);
+        path.arcTo(new RectF(rect.left + mArrowWidth, rect.bottom - mAngle - 2 * mRadius,
+                mAngle + rect.left + mArrowWidth + 2 * mRadius, rect.bottom), 90, 90);
         path.lineTo(rect.left + mArrowWidth, mArrowHeight + mArrowPosition);
         path.lineTo(rect.left, mArrowPosition + mArrowHeight / 2);
         path.lineTo(rect.left + mArrowWidth, mArrowPosition);
         path.lineTo(rect.left + mArrowWidth, rect.top + mAngle);
-        path.arcTo(new RectF(rect.left + mArrowWidth, rect.top, mAngle + rect.left + mArrowWidth, mAngle + rect.top), 180, 90);
+        path.arcTo(new RectF(rect.left + mArrowWidth, rect.top, mAngle + 2 * mRadius
+                + rect.left + mArrowWidth, mAngle + rect.top + 2 * mRadius), 180, 90);
         path.close();
     }
 
     private void setUpTopPath(RectF rect, Path path) {
+
+        if (mArrowCenter) {
+            mArrowPosition = (rect.right - rect.left) / 2 - mArrowWidth / 2;
+        }
+
         path.moveTo(rect.left + Math.min(mArrowPosition, mAngle), rect.top + mArrowHeight);
         path.lineTo(rect.left + mArrowPosition, rect.top + mArrowHeight);
         path.lineTo(rect.left + mArrowWidth / 2 + mArrowPosition, rect.top);
         path.lineTo(rect.left + mArrowWidth + mArrowPosition, rect.top + mArrowHeight);
         path.lineTo(rect.right - mAngle, rect.top + mArrowHeight);
 
-        path.arcTo(new RectF(rect.right - mAngle, rect.top + mArrowHeight, rect.right, mAngle + rect.top + mArrowHeight), 270, 90);
+        path.arcTo(new RectF(rect.right - mAngle,
+                rect.top + mArrowHeight, rect.right, mAngle + rect.top + mArrowHeight), 270, 90);
         path.lineTo(rect.right, rect.bottom - mAngle);
 
-        path.arcTo(new RectF(rect.right - mAngle, rect.bottom - mAngle, rect.right, rect.bottom), 0, 90);
+        path.arcTo(new RectF(rect.right - mAngle, rect.bottom - mAngle,
+                rect.right, rect.bottom), 0, 90);
         path.lineTo(rect.left + mAngle, rect.bottom);
 
-        path.arcTo(new RectF(rect.left, rect.bottom - mAngle, mAngle + rect.left, rect.bottom), 90, 90);
+        path.arcTo(new RectF(rect.left, rect.bottom - mAngle,
+                mAngle + rect.left, rect.bottom), 90, 90);
         path.lineTo(rect.left, rect.top + mArrowHeight + mAngle);
-        path.arcTo(new RectF(rect.left, rect.top + mArrowHeight, mAngle + rect.left, mAngle + rect.top + mArrowHeight), 180, 90);
+        path.arcTo(new RectF(rect.left, rect.top + mArrowHeight, mAngle
+                + rect.left, mAngle + rect.top + mArrowHeight), 180, 90);
         path.close();
     }
 
     private void setUpRightPath(RectF rect, Path path) {
 
+        if (mArrowCenter) {
+            mArrowPosition = (rect.bottom - rect.top) / 2 - mArrowWidth / 2;
+        }
+
         path.moveTo(rect.left + mAngle, rect.top);
         path.lineTo(rect.width() - mAngle - mArrowWidth, rect.top);
-        path.arcTo(new RectF(rect.right - mAngle - mArrowWidth, rect.top, rect.right - mArrowWidth, mAngle + rect.top), 270, 90);
+        path.arcTo(new RectF(rect.right - mAngle - mArrowWidth,
+                rect.top, rect.right - mArrowWidth, mAngle + rect.top), 270, 90);
         path.lineTo(rect.right - mArrowWidth, mArrowPosition);
         path.lineTo(rect.right, mArrowPosition + mArrowHeight / 2);
         path.lineTo(rect.right - mArrowWidth, mArrowPosition + mArrowHeight);
         path.lineTo(rect.right - mArrowWidth, rect.bottom - mAngle);
 
-        path.arcTo(new RectF(rect.right - mAngle - mArrowWidth, rect.bottom - mAngle, rect.right - mArrowWidth, rect.bottom), 0, 90);
+        path.arcTo(new RectF(rect.right - mAngle - mArrowWidth, rect.bottom - mAngle,
+                rect.right - mArrowWidth, rect.bottom), 0, 90);
         path.lineTo(rect.left + mArrowWidth, rect.bottom);
 
-        path.arcTo(new RectF(rect.left, rect.bottom - mAngle, mAngle + rect.left, rect.bottom), 90, 90);
+        path.arcTo(new RectF(rect.left, rect.bottom - mAngle,
+                mAngle + rect.left, rect.bottom), 90, 90);
 
-        path.arcTo(new RectF(rect.left, rect.top, mAngle + rect.left, mAngle + rect.top), 180, 90);
+        path.arcTo(new RectF(rect.left, rect.top, mAngle
+                + rect.left, mAngle + rect.top), 180, 90);
         path.close();
     }
 
     private void setUpBottomPath(RectF rect, Path path) {
-
+        if (mArrowCenter) {
+            mArrowPosition = (rect.right - rect.left) / 2 - mArrowWidth / 2;
+        }
         path.moveTo(rect.left + mAngle, rect.top);
         path.lineTo(rect.width() - mAngle, rect.top);
-        path.arcTo(new RectF(rect.right - mAngle, rect.top, rect.right, mAngle + rect.top), 270, 90);
+        path.arcTo(new RectF(rect.right - mAngle,
+                rect.top, rect.right, mAngle + rect.top), 270, 90);
 
         path.lineTo(rect.right, rect.bottom - mArrowHeight - mAngle);
-        path.arcTo(new RectF(rect.right - mAngle, rect.bottom - mAngle - mArrowHeight, rect.right, rect.bottom - mArrowHeight), 0, 90);
+        path.arcTo(new RectF(rect.right - mAngle, rect.bottom - mAngle - mArrowHeight,
+                rect.right, rect.bottom - mArrowHeight), 0, 90);
 
         path.lineTo(rect.left + mArrowWidth + mArrowPosition, rect.bottom - mArrowHeight);
         path.lineTo(rect.left + mArrowPosition + mArrowWidth / 2, rect.bottom);
         path.lineTo(rect.left + mArrowPosition, rect.bottom - mArrowHeight);
         path.lineTo(rect.left + Math.min(mAngle, mArrowPosition), rect.bottom - mArrowHeight);
 
-        path.arcTo(new RectF(rect.left, rect.bottom - mAngle - mArrowHeight, mAngle + rect.left, rect.bottom - mArrowHeight), 90, 90);
+        path.arcTo(new RectF(rect.left, rect.bottom - mAngle - mArrowHeight,
+                mAngle + rect.left, rect.bottom - mArrowHeight), 90, 90);
         path.lineTo(rect.left, rect.top + mAngle);
-        path.arcTo(new RectF(rect.left, rect.top, mAngle + rect.left, mAngle + rect.top), 180, 90);
+        path.arcTo(new RectF(rect.left, rect.top, mAngle
+                + rect.left, mAngle + rect.top), 180, 90);
         path.close();
     }
 
     private void setUpShaderMatrix() {
-        float scale;
         Matrix mShaderMatrix = new Matrix();
         mShaderMatrix.set(null);
         int mBitmapWidth = bubbleBitmap.getWidth();
         int mBitmapHeight = bubbleBitmap.getHeight();
         float scaleX = getIntrinsicWidth() / (float) mBitmapWidth;
         float scaleY = getIntrinsicHeight() / (float) mBitmapHeight;
-        scale = Math.min(scaleX, scaleY);
-        mShaderMatrix.postScale(scale, scale);
+        mShaderMatrix.postScale(scaleX, scaleY);
         mShaderMatrix.postTranslate(mRect.left, mRect.top);
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
@@ -205,21 +237,23 @@ public class BubbleDrawable extends Drawable {
     }
 
     public static class Builder {
-
-        public static float DEFAULT_ARROW_WITH = 25;
-        public static float DEFAULT_ARROW_HEIGHT = 25;
-        public static float DEFAULT_ANGLE = 20;
-        public static float DEFAULT_ARROW_POSITION = 50;
-        public static int DEFAULT_BUBBLE_COLOR = Color.RED;
+        public static final float DEFAULT_ARROW_WITH = 25;
+        public static final float DEFAULT_ARROW_HEIGHT = 25;
+        public static final float DEFAULT_ANGLE = 20;
+        public static final float DEFAULT_ARROW_POSITION = 50;
+        public static final int DEFAULT_BUBBLE_COLOR = Color.RED;
+        public static final float DEFAULT_RADIUS = 25;
         private RectF mRect;
         private float mArrowWidth = DEFAULT_ARROW_WITH;
         private float mAngle = DEFAULT_ANGLE;
         private float mArrowHeight = DEFAULT_ARROW_HEIGHT;
         private float mArrowPosition = DEFAULT_ARROW_POSITION;
+        private float mRadius = DEFAULT_RADIUS;
         private int bubbleColor = DEFAULT_BUBBLE_COLOR;
         private Bitmap bubbleBitmap;
         private BubbleType bubbleType = BubbleType.COLOR;
         private ArrowLocation mArrowLocation = ArrowLocation.LEFT;
+        private boolean arrowCenter;
 
         public Builder rect(RectF rect) {
             this.mRect = rect;
@@ -246,6 +280,11 @@ public class BubbleDrawable extends Drawable {
             return this;
         }
 
+        public Builder cornerRadius(float mRadius) {
+            this.mRadius = mRadius;
+            return this;
+        }
+
         public Builder bubbleColor(int bubbleColor) {
             this.bubbleColor = bubbleColor;
             bubbleType(BubbleType.COLOR);
@@ -268,6 +307,11 @@ public class BubbleDrawable extends Drawable {
             return this;
         }
 
+        public Builder arrowCenter(boolean arrowCenter) {
+            this.arrowCenter = arrowCenter;
+            return this;
+        }
+
         public BubbleDrawable build() {
             if (mRect == null) {
                 throw new IllegalArgumentException("BubbleDrawable Rect can not be null");
@@ -277,7 +321,6 @@ public class BubbleDrawable extends Drawable {
     }
 
     public enum ArrowLocation {
-
         LEFT(0x00),
         RIGHT(0x01),
         TOP(0x02),
