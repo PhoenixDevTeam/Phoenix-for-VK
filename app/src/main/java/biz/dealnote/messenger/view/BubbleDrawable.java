@@ -145,19 +145,19 @@ public class BubbleDrawable extends Drawable {
         path.lineTo(rect.left + mArrowWidth + mArrowPosition, rect.top + mArrowHeight);
         path.lineTo(rect.right - mAngle, rect.top + mArrowHeight);
 
-        path.arcTo(new RectF(rect.right - mAngle,
-                rect.top + mArrowHeight, rect.right, mAngle + rect.top + mArrowHeight), 270, 90);
+        path.arcTo(new RectF(rect.right - mAngle - 2 * mRadius,
+                rect.top + mArrowHeight, rect.right, mAngle + rect.top + mArrowHeight + 2 * mRadius), 270, 90);
         path.lineTo(rect.right, rect.bottom - mAngle);
 
-        path.arcTo(new RectF(rect.right - mAngle, rect.bottom - mAngle,
+        path.arcTo(new RectF(rect.right - mAngle - 2 * mRadius, rect.bottom - mAngle - 2 * mRadius,
                 rect.right, rect.bottom), 0, 90);
         path.lineTo(rect.left + mAngle, rect.bottom);
 
-        path.arcTo(new RectF(rect.left, rect.bottom - mAngle,
-                mAngle + rect.left, rect.bottom), 90, 90);
+        path.arcTo(new RectF(rect.left, rect.bottom - mAngle - 2 * mRadius,
+                mAngle + rect.left + 2 * mRadius, rect.bottom), 90, 90);
         path.lineTo(rect.left, rect.top + mArrowHeight + mAngle);
         path.arcTo(new RectF(rect.left, rect.top + mArrowHeight, mAngle
-                + rect.left, mAngle + rect.top + mArrowHeight), 180, 90);
+                + rect.left + 2 * mRadius, mAngle + rect.top + mArrowHeight + 2 * mRadius), 180, 90);
         path.close();
     }
 
@@ -169,22 +169,22 @@ public class BubbleDrawable extends Drawable {
 
         path.moveTo(rect.left + mAngle, rect.top);
         path.lineTo(rect.width() - mAngle - mArrowWidth, rect.top);
-        path.arcTo(new RectF(rect.right - mAngle - mArrowWidth,
-                rect.top, rect.right - mArrowWidth, mAngle + rect.top), 270, 90);
+        path.arcTo(new RectF(rect.right - mAngle - mArrowWidth - 2 * mRadius,
+                rect.top, rect.right - mArrowWidth, mAngle + rect.top + 2 * mRadius), 270, 90);
         path.lineTo(rect.right - mArrowWidth, mArrowPosition);
         path.lineTo(rect.right, mArrowPosition + mArrowHeight / 2);
         path.lineTo(rect.right - mArrowWidth, mArrowPosition + mArrowHeight);
         path.lineTo(rect.right - mArrowWidth, rect.bottom - mAngle);
 
-        path.arcTo(new RectF(rect.right - mAngle - mArrowWidth, rect.bottom - mAngle,
+        path.arcTo(new RectF(rect.right - mAngle - mArrowWidth - 2 * mRadius, rect.bottom - mAngle - 2 * mRadius,
                 rect.right - mArrowWidth, rect.bottom), 0, 90);
         path.lineTo(rect.left + mArrowWidth, rect.bottom);
 
-        path.arcTo(new RectF(rect.left, rect.bottom - mAngle,
-                mAngle + rect.left, rect.bottom), 90, 90);
+        path.arcTo(new RectF(rect.left, rect.bottom - mAngle - 2 * mRadius,
+                mAngle + rect.left + 2 * mRadius, rect.bottom), 90, 90);
 
         path.arcTo(new RectF(rect.left, rect.top, mAngle
-                + rect.left, mAngle + rect.top), 180, 90);
+                + rect.left + 2 * mRadius, mAngle + rect.top + 2 * mRadius), 180, 90);
         path.close();
     }
 
@@ -194,11 +194,11 @@ public class BubbleDrawable extends Drawable {
         }
         path.moveTo(rect.left + mAngle, rect.top);
         path.lineTo(rect.width() - mAngle, rect.top);
-        path.arcTo(new RectF(rect.right - mAngle,
-                rect.top, rect.right, mAngle + rect.top), 270, 90);
+        path.arcTo(new RectF(rect.right - mAngle - 2 * mRadius,
+                rect.top, rect.right, mAngle + rect.top + 2 * mRadius), 270, 90);
 
         path.lineTo(rect.right, rect.bottom - mArrowHeight - mAngle);
-        path.arcTo(new RectF(rect.right - mAngle, rect.bottom - mAngle - mArrowHeight,
+        path.arcTo(new RectF(rect.right - mAngle - 2 * mRadius, rect.bottom - mAngle - mArrowHeight - 2 * mRadius,
                 rect.right, rect.bottom - mArrowHeight), 0, 90);
 
         path.lineTo(rect.left + mArrowWidth + mArrowPosition, rect.bottom - mArrowHeight);
@@ -206,11 +206,11 @@ public class BubbleDrawable extends Drawable {
         path.lineTo(rect.left + mArrowPosition, rect.bottom - mArrowHeight);
         path.lineTo(rect.left + Math.min(mAngle, mArrowPosition), rect.bottom - mArrowHeight);
 
-        path.arcTo(new RectF(rect.left, rect.bottom - mAngle - mArrowHeight,
-                mAngle + rect.left, rect.bottom - mArrowHeight), 90, 90);
+        path.arcTo(new RectF(rect.left, rect.bottom - mAngle - mArrowHeight - 2 * mRadius,
+                mAngle + rect.left + 2 * mRadius, rect.bottom - mArrowHeight), 90, 90);
         path.lineTo(rect.left, rect.top + mAngle);
         path.arcTo(new RectF(rect.left, rect.top, mAngle
-                + rect.left, mAngle + rect.top), 180, 90);
+                + rect.left + 2 * mRadius, mAngle + rect.top + 2 * mRadius), 180, 90);
         path.close();
     }
 
@@ -242,7 +242,7 @@ public class BubbleDrawable extends Drawable {
         public static final float DEFAULT_ANGLE = 20;
         public static final float DEFAULT_ARROW_POSITION = 50;
         public static final int DEFAULT_BUBBLE_COLOR = Color.RED;
-        public static final float DEFAULT_RADIUS = 25;
+        public static final float DEFAULT_RADIUS = 20;
         private RectF mRect;
         private float mArrowWidth = DEFAULT_ARROW_WITH;
         private float mAngle = DEFAULT_ANGLE;
