@@ -395,8 +395,6 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         // Current info
         updateNowPlayingInfo();
 
-        resolveActionBar();
-
         new ActivityFeatures.Builder()
                 .begin()
                 .setHideNavigationMenu(true)
@@ -404,20 +402,6 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
                 .build()
                 .apply(requireActivity());
     }
-
-    private void resolveActionBar() {
-        if (!isAdded()) return;
-
-        boolean isLandLayout = Utils.isLandscape(requireActivity()) && !Utils.is600dp(requireActivity());
-        ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
-
-        if (actionBar != null && isLandLayout) {
-            Audio current = MusicUtils.getCurrentAudio();
-            actionBar.setSubtitle(current == null ? null : current.getTitle());
-            actionBar.setTitle(current == null ? null : current.getArtist());
-        }
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -511,7 +495,6 @@ public class AudioPlayerFragment extends BaseFragment implements SeekBar.OnSeekB
         resolveTotalTime();
         // Update the current time
         queueNextRefresh(1);
-        resolveActionBar();
     }
 
 

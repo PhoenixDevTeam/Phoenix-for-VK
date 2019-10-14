@@ -16,8 +16,8 @@ android {
         applicationId "dev.ezorrio.phoenix"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 10300
-        versionName '1.0.3'
+        versionCode 10400
+        versionName '1.0.4'
 
         buildConfigField 'int', 'VK_API_APP_ID', getProps("vk_app_id")
         buildConfigField 'String', 'FCM_SENDER_ID', getProps("fcm_sender_id")
@@ -90,7 +90,7 @@ allprojects {
 
 ext {
     retrofitLibraryVersion = '2.6.2'
-    okhttpLibraryVersion = '4.2.1'
+    okhttpLibraryVersion = '4.2.2'
 }
 
 dependencies {
@@ -109,8 +109,8 @@ dependencies {
     implementation "androidx.exifinterface:exifinterface:1.0.0"
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.12'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.13'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     implementation project(path: ':mvpcore', configuration: 'default')
@@ -125,7 +125,7 @@ dependencies {
     releaseImplementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.8.4'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.airbnb.android:lottie:3.0.7'
+    implementation 'com.airbnb.android:lottie:3.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
