@@ -28,7 +28,7 @@ You can use one value for Lite and Full version if you wish.
 
   2) We also need to configure Google Services in order to get push-messages and crash reports. Following files you can find in your Google Play console.<br>
   <b>Create file:</b><br>
-    - app/src/google-services.json
+    - app/google-services.json
 
   All project variables are setup now.
 
