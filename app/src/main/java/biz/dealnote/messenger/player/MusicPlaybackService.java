@@ -40,6 +40,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.media.session.MediaButtonReceiver;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -269,7 +270,6 @@ public class MusicPlaybackService extends Service {
         mMediaSession.setActive(true);
         updateRemoteControlClient(META_CHANGED);
         mTransportController = mMediaSession.getController().getTransportControls();
-
     }
 
     private final MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback() {
@@ -362,6 +362,7 @@ public class MusicPlaybackService extends Service {
             }
 
             handleCommandIntent(intent);
+            MediaButtonReceiver.handleIntent(mMediaSession, intent);
         }
 
         scheduleDelayedShutdown();
