@@ -97,8 +97,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "com.google.android.material:material:1.1.0-beta01"
-    implementation 'androidx.core:core:1.2.0-alpha04'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta04'
+    implementation 'androidx.core:core:1.2.0-beta01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta05'
     implementation "androidx.viewpager:viewpager:1.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation "androidx.drawerlayout:drawerlayout:1.0.0"
@@ -120,7 +120,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttpLibraryVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLibraryVersion"
     implementation 'com.google.firebase:firebase-core:17.2.0'
-    implementation 'com.google.firebase:firebase-database:19.1.0'
+    implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
     releaseImplementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.8.4'

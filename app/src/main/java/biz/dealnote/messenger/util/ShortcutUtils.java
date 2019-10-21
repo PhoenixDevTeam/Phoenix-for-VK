@@ -36,7 +36,7 @@ public class ShortcutUtils {
     private static final String SHURTCUT_ACTION = "com.android.launcher.action.INSTALL_SHORTCUT";
 
     private static int getLauncherIconSize(Context context) {
-        return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher).getWidth();
+        return context.getDrawable(R.mipmap.ic_launcher).getIntrinsicWidth();
     }
 
     public static void createAccountShurtcut(Context context, int accountId, String title, String url) throws IOException {
