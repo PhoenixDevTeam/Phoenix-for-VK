@@ -49,7 +49,7 @@
         app:arrowLocation="right"
         app:arrowPosition="12dp"
         app:arrowWidth="8dp"
-        app:bubbleColor="?colorPrimary">
+        app:bubbleColor="?message_bubble_color">
 
         <biz.dealnote.messenger.view.emoji.EmojiconTextView
             android:id="@+id/item_message_text"

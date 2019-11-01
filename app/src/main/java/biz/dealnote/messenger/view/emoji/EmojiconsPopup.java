@@ -115,6 +115,9 @@ public class EmojiconsPopup {
         @Override
         public void onGlobalLayout() {
             Rect r = new Rect();
+            if (rootView == null){
+                return;
+            }
             rootView.getWindowVisibleDisplayFrame(r);
 
             int screenHeight = rootView.getRootView().getHeight();

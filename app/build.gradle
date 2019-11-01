@@ -16,8 +16,8 @@ android {
         applicationId "dev.ezorrio.phoenix"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 10400
-        versionName '1.0.4'
+        versionCode 10500
+        versionName '1.0.5'
 
         buildConfigField 'int', 'VK_API_APP_ID', getProps("vk_app_id")
         buildConfigField 'String', 'FCM_SENDER_ID', getProps("fcm_sender_id")
@@ -96,15 +96,15 @@ ext {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "com.google.android.material:material:1.1.0-beta01"
+    implementation 'com.google.android.material:material:1.2.0-alpha01'
     implementation 'androidx.core:core:1.2.0-beta01'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta05'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-rc01'
     implementation "androidx.viewpager:viewpager:1.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation "androidx.drawerlayout:drawerlayout:1.0.0"
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     implementation 'androidx.media:media:1.1.0'
-    implementation 'androidx.browser:browser:1.2.0-alpha08'
+    implementation 'androidx.browser:browser:1.2.0-alpha09'
     implementation "androidx.preference:preference:1.1.0"
     implementation "androidx.exifinterface:exifinterface:1.0.0"
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -113,13 +113,13 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.13'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
-    implementation project(path: ':mvpcore', configuration: 'default')
+    implementation project(path: ':mvpcore')
     implementation "com.squareup.retrofit2:retrofit:$retrofitLibraryVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitLibraryVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitLibraryVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpLibraryVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLibraryVersion"
-    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
     releaseImplementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'

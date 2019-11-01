@@ -78,17 +78,23 @@
     </style>
 
     <style name="Theme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
-        <item name="android:tint">?colorOnSurface</item>
+        <!--        <item name="android:tint">?colorOnSurface</item>-->
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
         <item name="actionMenuTextColor">?colorOnSurface</item>
         <item name="android:textColorPrimary">?colorOnSurface</item>
         <item name="android:textColorSecondary">?colorOnSurface</item>
     </style>
 
     <style name="Theme.Toolbar.Surface" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
-        <item name="android:tint">?colorOnSurface</item>
+        <!--        <item name="android:tint">?colorOnSurface</item>-->
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
         <item name="actionMenuTextColor">?colorOnSurface</item>
         <item name="android:textColorPrimary">?colorOnSurface</item>
         <item name="android:textColorSecondary">?colorOnSurface</item>
+    </style>
+
+    <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">?colorOnSurface</item>
     </style>
 
     <style name="TextAppearance.Toolbar.Title" parent="@style/TextAppearance.MaterialComponents.Headline6">
