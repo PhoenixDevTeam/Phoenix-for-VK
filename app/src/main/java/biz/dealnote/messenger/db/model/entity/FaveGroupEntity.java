@@ -21,12 +21,11 @@ public class FaveGroupEntity extends CommunityEntity {
         return this;
     }
 
-//    @Override
-//    public String getType() {
-//        return type;
-//    }
+    public String getFaveType() {
+        return type;
+    }
 
-    public FaveGroupEntity setType(String type) {
+    public FaveGroupEntity setFaveType(String type) {
         this.type = type;
         return this;
     }

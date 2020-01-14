@@ -26,6 +26,7 @@ public final class FaveUsersColumns implements BaseColumns {
 
     public static final String DESCRIPTION = "description";
     public static final String UPDATED_TIME = "updated_time";
+    public static final String FAVE_TYPE = "fave_type";
 
     public static final String FOREIGN_USER_ONLINE = "user_online";
     public static final String FOREIGN_USER_ONLINE_MOBILE = "user_online_mobile";

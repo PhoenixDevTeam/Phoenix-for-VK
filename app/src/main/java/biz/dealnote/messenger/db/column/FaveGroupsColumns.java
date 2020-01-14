@@ -12,6 +12,7 @@ public final class FaveGroupsColumns implements BaseColumns {
     public static final String IS_CLOSED = "is_closed";
     public static final String DESCRIPTION = "description";
     public static final String UPDATED_TIME = "updated_time";
+    public static final String FAVE_TYPE = "fave_type";
     public static final String PHOTO_50 = "photo_50";
     public static final String PHOTO_100 = "photo_100";
     public static final String PHOTO_200 = "photo_200";

@@ -397,7 +397,7 @@ public class Dto2Entity {
     public static FaveGroupEntity mapFaveCommunity(FavePageResponse page) {
         return (FaveGroupEntity) new FaveGroupEntity(page.group.id)
                 .setDescription(page.description)
-                .setType(page.type)
+                .setFaveType(page.type)
                 .setUpdateDate(page.updated_date)
                 .setName(page.group.name)
                 .setScreenName(page.group.screen_name)
@@ -431,7 +431,7 @@ public class Dto2Entity {
         return (FaveUserEntity) new FaveUserEntity(favePage.user.id)
                 .setDescription(favePage.description)
                 .setUpdateDate(favePage.updated_date)
-                .setType(favePage.type)
+                .setFaveType(favePage.type)
                 .setFirstName(favePage.user.first_name)
                 .setLastName(favePage.user.last_name)
                 .setOnline(favePage.user.online)

@@ -21,11 +21,11 @@ public class FaveUserEntity extends UserEntity {
         return this;
     }
 
-    public String getType() {
+    public String getFaveType() {
         return type;
     }
 
-    public FaveUserEntity setType(String type) {
+    public FaveUserEntity setFaveType(String type) {
         this.type = type;
         return this;
     }

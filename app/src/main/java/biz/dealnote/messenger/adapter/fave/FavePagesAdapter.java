@@ -38,6 +38,7 @@ public class FavePagesAdapter extends RecyclerView.Adapter<FavePagesAdapter.Hold
     @Override
     public void onBindViewHolder(@NonNull final Holder holder, int position) {
         final FavePage favePage = data.get(position);
+        holder.description.setText(favePage.getDescription());
         switch (favePage.getType()) {
             case "user":
                 holder.name.setText(favePage.getUser().getFullName());
@@ -82,6 +83,7 @@ public class FavePagesAdapter extends RecyclerView.Adapter<FavePagesAdapter.Hold
 
         ImageView avatar;
         TextView name;
+        TextView description;
 
         public Holder(View itemView) {
             super(itemView);
@@ -89,20 +91,21 @@ public class FavePagesAdapter extends RecyclerView.Adapter<FavePagesAdapter.Hold
 
             avatar = itemView.findViewById(R.id.avatar);
             name = itemView.findViewById(R.id.name);
+            description = itemView.findViewById(R.id.description);
         }
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             final int position = recyclerView.getChildAdapterPosition(v);
             final FavePage favePage = data.get(position);
-//            menu.setHeaderTitle(favePage.getUser().getFullName());
-//
-//            menu.add(0, v.getId(), 0, R.string.delete).setOnMenuItemClickListener(item -> {
-//                if(clickListener != null){
+            menu.setHeaderTitle(favePage.getUser().getFullName());
+
+            menu.add(0, v.getId(), 0, R.string.delete).setOnMenuItemClickListener(item -> {
+                if (clickListener != null) {
 //                    clickListener.onDelete(position, user);
-//                }
-//                return true;
-//            });
+                }
+                return true;
+            });
         }
     }
 

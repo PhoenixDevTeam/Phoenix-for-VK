@@ -180,7 +180,7 @@ public class Dto2Model {
         return new FavePage(page.group.id)
                 .setDescription(page.description)
                 .setUpdatedDate(page.updated_date)
-                .setType(page.type)
+                .setFaveType(page.type)
                 .setGroup(Dto2Model.transformCommunity(page.group));
     }
 
@@ -220,7 +220,7 @@ public class Dto2Model {
         return new FavePage(favePage.user.id)
                 .setUser(Dto2Model.transformUser(favePage.user))
                 .setDescription(favePage.description)
-                .setType(favePage.type)
+                .setFaveType(favePage.type)
                 .setUpdatedDate(favePage.updated_date);
     }
 

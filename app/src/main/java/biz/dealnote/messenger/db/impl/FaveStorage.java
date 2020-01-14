@@ -178,6 +178,9 @@ class FaveStorage extends AbsStorage implements IFaveStorage {
 
     private static FaveUserEntity mapFaveUserDbo(Cursor cursor) {
         return (FaveUserEntity) new FaveUserEntity(cursor.getInt(cursor.getColumnIndex(FaveUsersColumns._ID)))
+                .setDescription(cursor.getString(cursor.getColumnIndex(FaveUsersColumns.DESCRIPTION)))
+                .setUpdateDate(cursor.getLong(cursor.getColumnIndex(FaveUsersColumns.UPDATED_TIME)))
+                .setFaveType(cursor.getString(cursor.getColumnIndex(FaveUsersColumns.FAVE_TYPE)))
                 .setFirstName(cursor.getString(cursor.getColumnIndex(FaveUsersColumns.FOREIGN_USER_FIRST_NAME)))
                 .setLastName(cursor.getString(cursor.getColumnIndex(FaveUsersColumns.FOREIGN_USER_LAST_NAME)))
                 .setPhoto50(cursor.getString(cursor.getColumnIndex(FaveUsersColumns.FOREIGN_USER_PHOTO_50)))
@@ -197,6 +200,7 @@ class FaveStorage extends AbsStorage implements IFaveStorage {
         return (FaveGroupEntity) new FaveGroupEntity(cursor.getInt(cursor.getColumnIndex(FaveGroupsColumns._ID)))
                 .setDescription(cursor.getString(cursor.getColumnIndex(FaveGroupsColumns.DESCRIPTION)))
                 .setUpdateDate(cursor.getInt(cursor.getColumnIndex(FaveGroupsColumns.UPDATED_TIME)))
+                .setFaveType(cursor.getString(cursor.getColumnIndex(FaveGroupsColumns.FAVE_TYPE)))
                 .setName(cursor.getString(cursor.getColumnIndex(FaveGroupsColumns.NAME)))
                 .setScreenName(cursor.getString(cursor.getColumnIndex(FaveGroupsColumns.SCREEN_NAME)))
                 .setClosed(cursor.getInt(cursor.getColumnIndex(FaveGroupsColumns.IS_CLOSED)))

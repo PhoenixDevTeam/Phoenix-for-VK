@@ -236,6 +236,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DialogsColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + PeersColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + DocColumns.TABLENAME);
+        db.execSQL("DROP TABLE IF EXISTS " + FaveGroupsColumns.TABLENAME);
+        db.execSQL("DROP TABLE IF EXISTS " + FaveUsersColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + GroupColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + GroupContactsColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + GroupLinksColumns.TABLENAME);
@@ -444,6 +446,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " [" + FaveUsersColumns._ID + "] BIGINT NOT NULL UNIQUE, " +
                 " [" + FaveUsersColumns.DESCRIPTION + "] TEXT, " +
                 " [" + FaveUsersColumns.UPDATED_TIME + "] TEXT, " +
+                " [" + FaveUsersColumns.FAVE_TYPE + "] TEXT, " +
                 " CONSTRAINT [] PRIMARY KEY([" + FaveUsersColumns._ID + "]) ON CONFLICT REPLACE);";
         db.execSQL(create);
     }
@@ -458,6 +461,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " [" + FaveGroupsColumns._ID + "] BIGINT NOT NULL UNIQUE, " +
                 " [" + FaveGroupsColumns.DESCRIPTION + "] TEXT, " +
                 " [" + FaveGroupsColumns.UPDATED_TIME + "] TEXT, " +
+                " [" + FaveGroupsColumns.FAVE_TYPE + "] TEXT, " +
                 " CONSTRAINT [] PRIMARY KEY([" + FaveGroupsColumns._ID + "]) ON CONFLICT REPLACE);";
         db.execSQL(create);
     }

@@ -41,7 +41,7 @@ public class FavePage implements Identificable {
         return type;
     }
 
-    public FavePage setType(String type) {
+    public FavePage setFaveType(String type) {
         this.type = type;
         return this;
     }

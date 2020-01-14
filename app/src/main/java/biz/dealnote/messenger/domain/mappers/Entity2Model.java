@@ -324,15 +324,31 @@ public class Entity2Model {
         return new FavePage(entity.getId())
                 .setDescription(entity.getDescription())
                 .setUpdatedDate(entity.getUpdateDate())
-                .setType(entity.getType())
+                .setFaveType(entity.getFaveType())
                 .setUser(map((UserEntity) entity));
+    }
+
+    public static Community map(CommunityEntity entity) {
+        return new Community(entity.getId())
+                .setName(entity.getName())
+                .setScreenName(entity.getScreenName())
+                .setPhoto50(entity.getPhoto50())
+                .setPhoto100(entity.getPhoto100())
+                .setPhoto200(entity.getPhoto200())
+                .setAdmin(entity.isAdmin())
+                .setAdminLevel(entity.getAdminLevel())
+                .setClosed(entity.getClosed())
+                .setMember(entity.isMember())
+                .setMemberStatus(entity.getMemberStatus())
+                .setType(entity.getType());
     }
 
     public static FavePage map(FaveGroupEntity entity) {
         return new FavePage(entity.getId())
                 .setDescription(entity.getDescription())
-                .setUpdatedDate(entity.getUpdateDate());
-//                .setGroup(map((CommunityEntity) entity)); TODO 14.01.2020
+                .setUpdatedDate(entity.getUpdateDate())
+                .setFaveType(entity.getFaveType())
+                .setGroup(map((CommunityEntity) entity));
     }
 
     public static PhotoAlbum map(PhotoAlbumEntity entity) {
