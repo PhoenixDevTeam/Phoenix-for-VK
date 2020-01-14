@@ -6,21 +6,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Collections;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import java.util.Collections;
+import java.util.List;
+
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.Extra;
 import biz.dealnote.messenger.R;
-import biz.dealnote.messenger.adapter.fave.FaveUsersAdapter;
+import biz.dealnote.messenger.adapter.fave.FavePagesAdapter;
 import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
+import biz.dealnote.messenger.model.FavePage;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.FaveUsersPresenter;
 import biz.dealnote.messenger.mvp.view.IFaveUsersView;
@@ -30,7 +32,7 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFaveUsersView> implements IFaveUsersView, FaveUsersAdapter.ClickListener {
+public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFaveUsersView> implements IFaveUsersView, FavePagesAdapter.ClickListener {
 
     public static FaveUsersFragment newInstance(int accountId){
         Bundle args = new Bundle();
@@ -42,7 +44,7 @@ public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFave
 
     private TextView mEmpty;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private FaveUsersAdapter mAdapter;
+    private FavePagesAdapter mAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFave
         mSwipeRefreshLayout.setOnRefreshListener(() -> getPresenter().fireRefresh());
         ViewUtils.setupSwipeRefreshLayoutWithCurrentTheme(requireActivity(), mSwipeRefreshLayout);
 
-        mAdapter = new FaveUsersAdapter(Collections.emptyList(), requireActivity());
+        mAdapter = new FavePagesAdapter(Collections.emptyList(), requireActivity());
         mAdapter.setClickListener(this);
 
         recyclerView.setAdapter(mAdapter);
@@ -82,7 +84,7 @@ public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFave
     }
 
     @Override
-    public void displayData(List<User> users) {
+    public void displayData(List<FavePage> users) {
         if(nonNull(mAdapter)){
             mAdapter.setData(users);
             resolveEmptyText();

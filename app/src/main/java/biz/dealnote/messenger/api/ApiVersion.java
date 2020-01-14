@@ -6,7 +6,7 @@ package biz.dealnote.messenger.api;
  */
 public final class ApiVersion {
 
-    public static final String CURRENT = "5.87";
+    public static final String CURRENT = "5.95";
 
     private ApiVersion(){
 

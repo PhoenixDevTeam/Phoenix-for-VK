@@ -3,9 +3,9 @@ package biz.dealnote.messenger.api.services;
 import biz.dealnote.messenger.api.model.FaveLinkDto;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiPhoto;
-import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VKApiVideo;
 import biz.dealnote.messenger.api.model.response.BaseResponse;
+import biz.dealnote.messenger.api.model.response.FavePageResponse;
 import biz.dealnote.messenger.api.model.response.FavePostsResponse;
 import io.reactivex.Single;
 import retrofit2.http.Field;
@@ -19,10 +19,18 @@ import retrofit2.http.POST;
 public interface IFaveService {
 
     @FormUrlEncoded
-    @POST("fave.getUsers")
-    Single<BaseResponse<Items<VKApiUser>>> getUsers(@Field("offset") Integer offset,
-                                                    @Field("count") Integer count,
-                                                    @Field("fields") String fields);
+    @POST("fave.getPages")
+    Single<BaseResponse<Items<FavePageResponse>>> getUsers(@Field("offset") Integer offset,
+                                                           @Field("count") Integer count,
+                                                           @Field("type") String type,
+                                                           @Field("fields") String fields);
+
+    @FormUrlEncoded
+    @POST("fave.getPages")
+    Single<BaseResponse<Items<FavePageResponse>>> getGroups(@Field("offset") Integer offset,
+                                                            @Field("count") Integer count,
+                                                            @Field("type") String type,
+                                                            @Field("fields") String fields);
 
     @FormUrlEncoded
     @POST("fave.getPhotos")
@@ -56,8 +64,12 @@ public interface IFaveService {
 
     //https://vk.com/dev/fave.removeUser
     @FormUrlEncoded
-    @POST("fave.removeUser")
+    @POST("fave.removePage")
     Single<BaseResponse<Integer>> removeUser(@Field("user_id") int userId);
+
+    @FormUrlEncoded
+    @POST("fave.removePage")
+    Single<BaseResponse<Integer>> removeGroup(@Field("group_id") int groupId);
 
     @FormUrlEncoded
     @POST("fave.removeLink")

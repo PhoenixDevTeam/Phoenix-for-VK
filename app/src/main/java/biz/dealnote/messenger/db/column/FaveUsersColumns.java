@@ -24,6 +24,9 @@ public final class FaveUsersColumns implements BaseColumns {
     public static final String FOREIGN_USER_PHOTO_100 = "user_photo_100";
     public static final String FOREIGN_USER_PHOTO_200 = "user_photo_200";
 
+    public static final String DESCRIPTION = "description";
+    public static final String UPDATED_TIME = "updated_time";
+
     public static final String FOREIGN_USER_ONLINE = "user_online";
     public static final String FOREIGN_USER_ONLINE_MOBILE = "user_online_mobile";
 

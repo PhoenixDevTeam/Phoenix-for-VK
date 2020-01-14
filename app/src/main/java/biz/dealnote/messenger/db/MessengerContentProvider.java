@@ -27,6 +27,7 @@ import biz.dealnote.messenger.db.column.CommentsColumns;
 import biz.dealnote.messenger.db.column.CountriesColumns;
 import biz.dealnote.messenger.db.column.DialogsColumns;
 import biz.dealnote.messenger.db.column.DocColumns;
+import biz.dealnote.messenger.db.column.FaveGroupsColumns;
 import biz.dealnote.messenger.db.column.FaveLinksColumns;
 import biz.dealnote.messenger.db.column.FavePhotosColumns;
 import biz.dealnote.messenger.db.column.FavePostsColumns;
@@ -80,6 +81,7 @@ public class MessengerContentProvider extends ContentProvider {
     private static Map<String, String> sFavePhotosProjectionMap;
     private static Map<String, String> sFaveVideosProjectionMap;
     private static Map<String, String> sFaveUsersProjectionMap;
+    static final int URI_FAVE_GROUPS = 67;
     private static Map<String, String> sFaveLinksProjectionMap;
     private static Map<String, String> sFavePostsProjectionMap;
     private static Map<String, String> sCountriesProjectionMap;
@@ -133,6 +135,7 @@ public class MessengerContentProvider extends ContentProvider {
     static final int URI_FRIEND_LISTS = 64;
     static final int URI_KEYS = 65;
     static final int URI_PEERS = 66;
+    static final String FAVE_GROUPS_PATH = "fave_groups";
 
     // path
     static final String USER_PATH = "users";
@@ -159,6 +162,7 @@ public class MessengerContentProvider extends ContentProvider {
     static final String FAVE_PHOTOS_PATH = "fave_photos";
     static final String FAVE_VIDEOS_PATH = "fave_videos";
     static final String FAVE_USERS_PATH = "fave_users";
+    static final String FAVE_GROUPS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + FAVE_GROUPS_PATH;
     static final String FAVE_LINKS_PATH = "fave_links";
     static final String FAVE_POSTS_PATH = "fave_posts";
     static final String COUNTRIES_PATH = "countries";
@@ -168,53 +172,7 @@ public class MessengerContentProvider extends ContentProvider {
 
     // описание и создание UriMatcher
     private static final UriMatcher sUriMatcher;
-
-    static {
-        sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        sUriMatcher.addURI(AUTHORITY, USER_PATH, URI_USERS);
-        sUriMatcher.addURI(AUTHORITY, USER_PATH + "/#", URI_USERS_ID);
-        sUriMatcher.addURI(AUTHORITY, MESSAGES_PATH, URI_MESSAGES);
-        sUriMatcher.addURI(AUTHORITY, MESSAGES_PATH + "/#", URI_MESSAGES_ID);
-        sUriMatcher.addURI(AUTHORITY, ATTACHMENTS_PATH, URI_ATTACHMENTS);
-        sUriMatcher.addURI(AUTHORITY, ATTACHMENTS_PATH + "/#", URI_ATTACHMENTS_ID);
-        sUriMatcher.addURI(AUTHORITY, PHOTOS_PATH, URI_PHOTOS);
-        sUriMatcher.addURI(AUTHORITY, PHOTOS_PATH + "/#", URI_PHOTOS_ID);
-        sUriMatcher.addURI(AUTHORITY, DIALOGS_PATH, URI_DIALOGS);
-        sUriMatcher.addURI(AUTHORITY, PEERS_PATH, URI_PEERS);
-        sUriMatcher.addURI(AUTHORITY, DOCS_PATH, URI_DOCS);
-        sUriMatcher.addURI(AUTHORITY, DOCS_PATH + "/#", URI_DOCS_ID);
-        sUriMatcher.addURI(AUTHORITY, VIDEOS_PATH, URI_VIDEOS);
-        sUriMatcher.addURI(AUTHORITY, VIDEOS_PATH + "/#", URI_VIDEOS_ID);
-        sUriMatcher.addURI(AUTHORITY, POSTS_PATH, URI_POSTS);
-        sUriMatcher.addURI(AUTHORITY, POSTS_PATH + "/#", URI_POSTS_ID);
-        sUriMatcher.addURI(AUTHORITY, POSTS_ATTACHMENTS_PATH, URI_POST_ATTACHMENTS);
-        sUriMatcher.addURI(AUTHORITY, POSTS_ATTACHMENTS_PATH + "/#", URI_POST_ATTACHMENTS_ID);
-        sUriMatcher.addURI(AUTHORITY, GROUPS_PATH, URI_GROUPS);
-        sUriMatcher.addURI(AUTHORITY, GROUPS_PATH + "/#", URI_GROUPS_ID);
-        sUriMatcher.addURI(AUTHORITY, RELATIVESHIP_PATH, URI_RELATIVESHIP);
-        sUriMatcher.addURI(AUTHORITY, COMMENTS_PATH, URI_COMMENTS);
-        sUriMatcher.addURI(AUTHORITY, COMMENTS_PATH + "/#", URI_COMMENTS_ID);
-        sUriMatcher.addURI(AUTHORITY, COMMENTS_ATTACHMENTS_PATH, URI_COMMENTS_ATTACHMENTS);
-        sUriMatcher.addURI(AUTHORITY, COMMENTS_ATTACHMENTS_PATH + "/#", URI_COMMENTS_ATTACHMENTS_ID);
-        sUriMatcher.addURI(AUTHORITY, PHOTO_ALBUMS_PATH, URI_PHOTO_ALBUMS);
-        sUriMatcher.addURI(AUTHORITY, NEWS_PATH, URI_NEWS);
-        sUriMatcher.addURI(AUTHORITY, GROUPS_DET_PATH, URI_GROUPS_DET);
-        sUriMatcher.addURI(AUTHORITY, GROUPS_DET_PATH + "/#", URI_GROUPS_DET_ID);
-        sUriMatcher.addURI(AUTHORITY, VIDEO_ALBUMS_PATH, URI_VIDEO_ALBUMS);
-        sUriMatcher.addURI(AUTHORITY, TOPICS_PATH, URI_TOPICS);
-        sUriMatcher.addURI(AUTHORITY, NOTIFICATIONS_PATH, URI_NOTIFICATIONS);
-        sUriMatcher.addURI(AUTHORITY, USER_DET_PATH, URI_USER_DET);
-        sUriMatcher.addURI(AUTHORITY, USER_DET_PATH + "/#", URI_USER_DET_ID);
-        sUriMatcher.addURI(AUTHORITY, FAVE_PHOTOS_PATH, URI_FAVE_PHOTOS);
-        sUriMatcher.addURI(AUTHORITY, FAVE_VIDEOS_PATH, URI_FAVE_VIDEOS);
-        sUriMatcher.addURI(AUTHORITY, FAVE_USERS_PATH, URI_FAVE_USERS);
-        sUriMatcher.addURI(AUTHORITY, FAVE_LINKS_PATH, URI_FAVE_LINKS);
-        sUriMatcher.addURI(AUTHORITY, FAVE_POSTS_PATH, URI_FAVE_POSTS);
-        sUriMatcher.addURI(AUTHORITY, COUNTRIES_PATH, URI_COUNTRIES);
-        sUriMatcher.addURI(AUTHORITY, FEED_LISTS_PATH, URI_FEED_LISTS);
-        sUriMatcher.addURI(AUTHORITY, FRIEND_LISTS_PATH, URI_FRIEND_LISTS);
-        sUriMatcher.addURI(AUTHORITY, KEYS_PATH, URI_KEYS);
-    }
+    private static final Uri FAVE_GROUPS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FAVE_GROUPS_PATH);
 
     // Общий Uri
     private static final Uri USER_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + USER_PATH);
@@ -302,6 +260,55 @@ public class MessengerContentProvider extends ContentProvider {
 
     private static final Uri FAVE_USERS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FAVE_USERS_PATH);
     static final String FAVE_USERS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + FAVE_USERS_PATH;
+    private static Map<String, String> sFaveGroupsProjectionMap;
+
+    static {
+        sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        sUriMatcher.addURI(AUTHORITY, USER_PATH, URI_USERS);
+        sUriMatcher.addURI(AUTHORITY, USER_PATH + "/#", URI_USERS_ID);
+        sUriMatcher.addURI(AUTHORITY, MESSAGES_PATH, URI_MESSAGES);
+        sUriMatcher.addURI(AUTHORITY, MESSAGES_PATH + "/#", URI_MESSAGES_ID);
+        sUriMatcher.addURI(AUTHORITY, ATTACHMENTS_PATH, URI_ATTACHMENTS);
+        sUriMatcher.addURI(AUTHORITY, ATTACHMENTS_PATH + "/#", URI_ATTACHMENTS_ID);
+        sUriMatcher.addURI(AUTHORITY, PHOTOS_PATH, URI_PHOTOS);
+        sUriMatcher.addURI(AUTHORITY, PHOTOS_PATH + "/#", URI_PHOTOS_ID);
+        sUriMatcher.addURI(AUTHORITY, DIALOGS_PATH, URI_DIALOGS);
+        sUriMatcher.addURI(AUTHORITY, PEERS_PATH, URI_PEERS);
+        sUriMatcher.addURI(AUTHORITY, DOCS_PATH, URI_DOCS);
+        sUriMatcher.addURI(AUTHORITY, DOCS_PATH + "/#", URI_DOCS_ID);
+        sUriMatcher.addURI(AUTHORITY, VIDEOS_PATH, URI_VIDEOS);
+        sUriMatcher.addURI(AUTHORITY, VIDEOS_PATH + "/#", URI_VIDEOS_ID);
+        sUriMatcher.addURI(AUTHORITY, POSTS_PATH, URI_POSTS);
+        sUriMatcher.addURI(AUTHORITY, POSTS_PATH + "/#", URI_POSTS_ID);
+        sUriMatcher.addURI(AUTHORITY, POSTS_ATTACHMENTS_PATH, URI_POST_ATTACHMENTS);
+        sUriMatcher.addURI(AUTHORITY, POSTS_ATTACHMENTS_PATH + "/#", URI_POST_ATTACHMENTS_ID);
+        sUriMatcher.addURI(AUTHORITY, GROUPS_PATH, URI_GROUPS);
+        sUriMatcher.addURI(AUTHORITY, GROUPS_PATH + "/#", URI_GROUPS_ID);
+        sUriMatcher.addURI(AUTHORITY, RELATIVESHIP_PATH, URI_RELATIVESHIP);
+        sUriMatcher.addURI(AUTHORITY, COMMENTS_PATH, URI_COMMENTS);
+        sUriMatcher.addURI(AUTHORITY, COMMENTS_PATH + "/#", URI_COMMENTS_ID);
+        sUriMatcher.addURI(AUTHORITY, COMMENTS_ATTACHMENTS_PATH, URI_COMMENTS_ATTACHMENTS);
+        sUriMatcher.addURI(AUTHORITY, COMMENTS_ATTACHMENTS_PATH + "/#", URI_COMMENTS_ATTACHMENTS_ID);
+        sUriMatcher.addURI(AUTHORITY, PHOTO_ALBUMS_PATH, URI_PHOTO_ALBUMS);
+        sUriMatcher.addURI(AUTHORITY, NEWS_PATH, URI_NEWS);
+        sUriMatcher.addURI(AUTHORITY, GROUPS_DET_PATH, URI_GROUPS_DET);
+        sUriMatcher.addURI(AUTHORITY, GROUPS_DET_PATH + "/#", URI_GROUPS_DET_ID);
+        sUriMatcher.addURI(AUTHORITY, VIDEO_ALBUMS_PATH, URI_VIDEO_ALBUMS);
+        sUriMatcher.addURI(AUTHORITY, TOPICS_PATH, URI_TOPICS);
+        sUriMatcher.addURI(AUTHORITY, NOTIFICATIONS_PATH, URI_NOTIFICATIONS);
+        sUriMatcher.addURI(AUTHORITY, USER_DET_PATH, URI_USER_DET);
+        sUriMatcher.addURI(AUTHORITY, USER_DET_PATH + "/#", URI_USER_DET_ID);
+        sUriMatcher.addURI(AUTHORITY, FAVE_PHOTOS_PATH, URI_FAVE_PHOTOS);
+        sUriMatcher.addURI(AUTHORITY, FAVE_VIDEOS_PATH, URI_FAVE_VIDEOS);
+        sUriMatcher.addURI(AUTHORITY, FAVE_USERS_PATH, URI_FAVE_USERS);
+        sUriMatcher.addURI(AUTHORITY, FAVE_GROUPS_PATH, URI_FAVE_GROUPS);
+        sUriMatcher.addURI(AUTHORITY, FAVE_LINKS_PATH, URI_FAVE_LINKS);
+        sUriMatcher.addURI(AUTHORITY, FAVE_POSTS_PATH, URI_FAVE_POSTS);
+        sUriMatcher.addURI(AUTHORITY, COUNTRIES_PATH, URI_COUNTRIES);
+        sUriMatcher.addURI(AUTHORITY, FEED_LISTS_PATH, URI_FEED_LISTS);
+        sUriMatcher.addURI(AUTHORITY, FRIEND_LISTS_PATH, URI_FRIEND_LISTS);
+        sUriMatcher.addURI(AUTHORITY, KEYS_PATH, URI_KEYS);
+    }
 
     private static final Uri FAVE_LINKS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FAVE_LINKS_PATH);
     static final String FAVE_LINKS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + FAVE_LINKS_PATH;
@@ -738,7 +745,19 @@ public class MessengerContentProvider extends ContentProvider {
         sFaveUsersProjectionMap.put(FaveUsersColumns.FOREIGN_USER_PHOTO_100, "users." + UserColumns.PHOTO_100 + " AS " + FaveUsersColumns.FOREIGN_USER_PHOTO_100);
         sFaveUsersProjectionMap.put(FaveUsersColumns.FOREIGN_USER_PHOTO_50, "users." + UserColumns.PHOTO_50 + " AS " + FaveUsersColumns.FOREIGN_USER_PHOTO_50);
         sFaveUsersProjectionMap.put(FaveUsersColumns.FOREIGN_USER_ONLINE, "users." + UserColumns.ONLINE + " AS " + FaveUsersColumns.FOREIGN_USER_ONLINE);
-        sFaveUsersProjectionMap.put(FaveUsersColumns.FOREIGN_USER_ONLINE_MOBILE, "users." + UserColumns.ONLINE_MOBILE + " AS " + FaveUsersColumns.FOREIGN_USER_ONLINE_MOBILE);
+        sFaveUsersProjectionMap.put(FaveUsersColumns.UPDATED_TIME, FaveUsersColumns.UPDATED_TIME);
+        sFaveUsersProjectionMap.put(FaveUsersColumns.DESCRIPTION, FaveUsersColumns.DESCRIPTION);
+
+        sFaveGroupsProjectionMap = new HashMap<>();
+        sFaveGroupsProjectionMap.put(FaveGroupsColumns._ID, FaveGroupsColumns.FULL_ID);
+        sFaveGroupsProjectionMap.put(FaveGroupsColumns.NAME, "groups." + GroupColumns.NAME + " AS " + FaveGroupsColumns.NAME);
+        sFaveGroupsProjectionMap.put(FaveGroupsColumns.SCREEN_NAME, "groups." + GroupColumns.SCREEN_NAME + " AS " + FaveGroupsColumns.SCREEN_NAME);
+        sFaveGroupsProjectionMap.put(FaveGroupsColumns.IS_CLOSED, "groups." + GroupColumns.IS_CLOSED + " AS " + FaveGroupsColumns.IS_CLOSED);
+        sFaveGroupsProjectionMap.put(FaveGroupsColumns.PHOTO_200, "groups." + GroupColumns.PHOTO_200 + " AS " + FaveGroupsColumns.PHOTO_200);
+        sFaveGroupsProjectionMap.put(FaveGroupsColumns.PHOTO_100, "groups." + GroupColumns.PHOTO_100 + " AS " + FaveGroupsColumns.PHOTO_100);
+        sFaveGroupsProjectionMap.put(FaveGroupsColumns.PHOTO_50, "groups." + GroupColumns.PHOTO_50 + " AS " + FaveGroupsColumns.PHOTO_50);
+        sFaveGroupsProjectionMap.put(FaveGroupsColumns.UPDATED_TIME, FaveGroupsColumns.UPDATED_TIME);
+        sFaveGroupsProjectionMap.put(FaveGroupsColumns.DESCRIPTION, FaveGroupsColumns.DESCRIPTION);
 
         sFaveLinksProjectionMap = new HashMap<>();
         sFaveLinksProjectionMap.put(FaveLinksColumns._ID, FaveLinksColumns.FULL_ID);
@@ -781,39 +800,43 @@ public class MessengerContentProvider extends ContentProvider {
         sKeysProjectionMap.put(KeyColumns.IN_KEY, KeyColumns.FULL_IN_KEY);
     }
 
-    public static Uri getKeysContentUriFor(int aid){
+    public static Uri getKeysContentUriFor(int aid) {
         return appendAccountId(KEYS_CONTENT_URI, aid);
     }
 
-    public static Uri getGroupsDetContentUriFor(int aid){
+    public static Uri getGroupsDetContentUriFor(int aid) {
         return appendAccountId(GROUPS_DET_CONTENT_URI, aid);
     }
 
-    public static Uri getFavePostsContentUriFor(int aid){
+    public static Uri getFavePostsContentUriFor(int aid) {
         return appendAccountId(FAVE_POSTS_CONTENT_URI, aid);
     }
 
-    public static Uri getFaveLinksContentUriFor(int aid){
+    public static Uri getFaveLinksContentUriFor(int aid) {
         return appendAccountId(FAVE_LINKS_CONTENT_URI, aid);
     }
 
-    public static Uri getFavePhotosContentUriFor(int aid){
+    public static Uri getFavePhotosContentUriFor(int aid) {
         return appendAccountId(FAVE_PHOTOS_CONTENT_URI, aid);
     }
 
-    public static Uri getFaveUsersContentUriFor(int aid){
+    public static Uri getFaveUsersContentUriFor(int aid) {
         return appendAccountId(FAVE_USERS_CONTENT_URI, aid);
     }
 
-    public static Uri getFaveVideosContentUriFor(int aid){
+    public static Uri getFaveGroupsContentUriFor(int aid) {
+        return appendAccountId(FAVE_GROUPS_CONTENT_URI, aid);
+    }
+
+    public static Uri getFaveVideosContentUriFor(int aid) {
         return appendAccountId(FAVE_VIDEOS_CONTENT_URI, aid);
     }
 
-    public static Uri getTopicsContentUriFor(int aid){
+    public static Uri getTopicsContentUriFor(int aid) {
         return appendAccountId(TOPICS_CONTENT_URI, aid);
     }
 
-    public static Uri getAttachmentsContentUriFor(int aid){
+    public static Uri getAttachmentsContentUriFor(int aid) {
         return appendAccountId(ATTACHMENTS_CONTENT_URI, aid);
     }
 
@@ -821,35 +844,35 @@ public class MessengerContentProvider extends ContentProvider {
     //    return appendAccountId(POLL_CONTENT_URI, aid);
     //}
 
-    public static Uri getPostsAttachmentsContentUriFor(int aid){
+    public static Uri getPostsAttachmentsContentUriFor(int aid) {
         return appendAccountId(POSTS_ATTACHMENTS_CONTENT_URI, aid);
     }
 
-    public static Uri getPostsContentUriFor(int aid){
+    public static Uri getPostsContentUriFor(int aid) {
         return appendAccountId(POSTS_CONTENT_URI, aid);
     }
 
-    public static Uri getVideosContentUriFor(int aid){
+    public static Uri getVideosContentUriFor(int aid) {
         return appendAccountId(VIDEOS_CONTENT_URI, aid);
     }
 
-    public static Uri getVideoAlbumsContentUriFor(int aid){
+    public static Uri getVideoAlbumsContentUriFor(int aid) {
         return appendAccountId(VIDEO_ALBUMS_CONTENT_URI, aid);
     }
 
-    public static Uri getDocsContentUriFor(int aid){
+    public static Uri getDocsContentUriFor(int aid) {
         return appendAccountId(DOCS_CONTENT_URI, aid);
     }
 
-    public static Uri getPhotosContentUriFor(int aid){
+    public static Uri getPhotosContentUriFor(int aid) {
         return appendAccountId(PHOTOS_CONTENT_URI, aid);
     }
 
-    public static Uri getCommentsContentUriFor(int aid){
+    public static Uri getCommentsContentUriFor(int aid) {
         return appendAccountId(COMMENTS_CONTENT_URI, aid);
     }
 
-    public static Uri getCommentsAttachmentsContentUriFor(int aid){
+    public static Uri getCommentsAttachmentsContentUriFor(int aid) {
         return appendAccountId(COMMENTS_ATTACHMENTS_CONTENT_URI, aid);
     }
 
@@ -861,53 +884,53 @@ public class MessengerContentProvider extends ContentProvider {
         return appendAccountId(PEERS_CONTENT_URI, aid);
     }
 
-    public static Uri getRelativeshipContentUriFor(int aid){
+    public static Uri getRelativeshipContentUriFor(int aid) {
         return appendAccountId(RELATIVESHIP_CONTENT_URI, aid);
     }
 
-    public static Uri getUserContentUriFor(int aid){
+    public static Uri getUserContentUriFor(int aid) {
         return appendAccountId(USER_CONTENT_URI, aid);
     }
 
-    public static Uri getUserDetContentUriFor(int aid){
+    public static Uri getUserDetContentUriFor(int aid) {
         return appendAccountId(USER_DET_CONTENT_URI, aid);
     }
 
-    public static Uri getGroupsContentUriFor(int aid){
+    public static Uri getGroupsContentUriFor(int aid) {
         return appendAccountId(GROUPS_CONTENT_URI, aid);
     }
 
-    public static Uri getNewsContentUriFor(int aid){
+    public static Uri getNewsContentUriFor(int aid) {
         return appendAccountId(NEWS_CONTENT_URI, aid);
     }
 
-    public static Uri getMessageContentUriFor(int aid){
+    public static Uri getMessageContentUriFor(int aid) {
         return appendAccountId(MESSAGE_CONTENT_URI, aid);
     }
 
-    public static Uri getCountriesContentUriFor(int aid){
+    public static Uri getCountriesContentUriFor(int aid) {
         return appendAccountId(COUNTRIES_CONTENT_URI, aid);
     }
 
-    public static Uri getNotificationsContentUriFor(int aid){
+    public static Uri getNotificationsContentUriFor(int aid) {
         return appendAccountId(NOTIFICATIONS_CONTENT_URI, aid);
     }
 
-    public static Uri getFeedListsContentUriFor(int aid){
+    public static Uri getFeedListsContentUriFor(int aid) {
         return appendAccountId(FEED_LISTS_CONTENT_URI, aid);
     }
 
-    public static Uri getPhotoAlbumsContentUriFor(int aid){
+    public static Uri getPhotoAlbumsContentUriFor(int aid) {
         return appendAccountId(PHOTO_ALBUMS_CONTENT_URI, aid);
     }
 
-    public static Uri getFriendListsContentUriFor(int aid){
+    public static Uri getFriendListsContentUriFor(int aid) {
         return appendAccountId(FRIEND_LISTS_CONTENT_URI, aid);
     }
 
     private static final String AID = "aid";
 
-    private static Uri appendAccountId(@NonNull Uri uri, int aid){
+    private static Uri appendAccountId(@NonNull Uri uri, int aid) {
         return new Uri.Builder()
                 .scheme(uri.getScheme())
                 .authority(uri.getAuthority())
@@ -922,18 +945,18 @@ public class MessengerContentProvider extends ContentProvider {
     }
 
     @NonNull
-    private DBHelper getDbHelper(int aid){
+    private DBHelper getDbHelper(int aid) {
         return DBHelper.getInstance(getContext(), aid);
     }
 
-    private int extractAidFromUri(@NonNull Uri uri){
+    private int extractAidFromUri(@NonNull Uri uri) {
         String said = uri.getQueryParameter(AID);
-        if(TextUtils.isEmpty(said)){
+        if (TextUtils.isEmpty(said)) {
             throw new IllegalArgumentException("AID query parameter not found, uri: " + uri);
         }
 
         int targetAid = Integer.parseInt(said);
-        if(targetAid == 0){
+        if (targetAid == 0) {
             throw new IllegalArgumentException("Invalid account id=0, uri: " + uri);
         }
 
@@ -944,16 +967,16 @@ public class MessengerContentProvider extends ContentProvider {
      * Проверяем все операции на соответствие aid
      * Потому что будет открыватся транзакция только к одной базе данных
      */
-    private void validateUris(@NonNull List<ContentProviderOperation> operations){
+    private void validateUris(@NonNull List<ContentProviderOperation> operations) {
         Integer aid = null;
-        for(ContentProviderOperation operation : operations){
+        for (ContentProviderOperation operation : operations) {
             Uri uri = operation.getUri();
-            if(aid == null){
+            if (aid == null) {
                 aid = extractAidFromUri(uri);
             }
 
             int thisAid = extractAidFromUri(uri);
-            if(aid != thisAid){
+            if (aid != thisAid) {
                 throw new IllegalArgumentException("There are different aids in operations");
             }
         }
@@ -962,7 +985,7 @@ public class MessengerContentProvider extends ContentProvider {
     @NonNull
     @Override
     public ContentProviderResult[] applyBatch(@NonNull ArrayList<ContentProviderOperation> operations) {
-        if(Utils.safeIsEmpty(operations)) {
+        if (Utils.safeIsEmpty(operations)) {
             return new ContentProviderResult[0];
         }
 
@@ -1101,6 +1124,10 @@ public class MessengerContentProvider extends ContentProvider {
                 rowId = db.insert(FaveUsersColumns.TABLENAME, null, values);
                 resultUri = ContentUris.withAppendedId(FAVE_USERS_CONTENT_URI, rowId);
                 break;
+            case URI_FAVE_GROUPS:
+                rowId = db.insert(FaveGroupsColumns.TABLENAME, null, values);
+                resultUri = ContentUris.withAppendedId(FAVE_GROUPS_CONTENT_URI, rowId);
+                break;
             case URI_FAVE_LINKS:
                 rowId = db.insert(FaveLinksColumns.TABLENAME, null, values);
                 resultUri = ContentUris.withAppendedId(FAVE_LINKS_CONTENT_URI, rowId);
@@ -1182,16 +1209,16 @@ public class MessengerContentProvider extends ContentProvider {
 
             case URI_MESSAGES:
                 _QB.setTables(MessageColumns.TABLENAME);
-                        //" LEFT OUTER JOIN " + PeerColumns.TABLENAME + " ON " + MessageColumns.FULL_FROM_ID + " = " + PeerColumns.FULL_ID +
-                        //" LEFT OUTER JOIN " + UserColumns.TABLENAME + " ON " + MessageColumns.FULL_ACTION_MID + " = " + UserColumns.FULL_ID);
+                //" LEFT OUTER JOIN " + PeerColumns.TABLENAME + " ON " + MessageColumns.FULL_FROM_ID + " = " + PeerColumns.FULL_ID +
+                //" LEFT OUTER JOIN " + UserColumns.TABLENAME + " ON " + MessageColumns.FULL_ACTION_MID + " = " + UserColumns.FULL_ID);
                 _QB.setProjectionMap(sMessagesProjectionMap);
                 _TableType = URI_MESSAGES;
                 break;
 
             case URI_MESSAGES_ID:
                 _QB.setTables(MessageColumns.TABLENAME);
-                        //" LEFT OUTER JOIN " + PeerColumns.TABLENAME + " ON " + MessageColumns.FULL_FROM_ID + " = " + PeerColumns.FULL_ID +
-                        //" LEFT OUTER JOIN " + UserColumns.TABLENAME + " ON " + MessageColumns.FULL_ACTION_MID + " = " + UserColumns.FULL_ID);
+                //" LEFT OUTER JOIN " + PeerColumns.TABLENAME + " ON " + MessageColumns.FULL_FROM_ID + " = " + PeerColumns.FULL_ID +
+                //" LEFT OUTER JOIN " + UserColumns.TABLENAME + " ON " + MessageColumns.FULL_ACTION_MID + " = " + UserColumns.FULL_ID);
                 _QB.setProjectionMap(sMessagesProjectionMap);
                 _QB.appendWhere(MessageColumns.FULL_ID + "=" + uri.getPathSegments().get(1));
                 _TableType = URI_MESSAGES;
@@ -1199,24 +1226,24 @@ public class MessengerContentProvider extends ContentProvider {
 
             case URI_ATTACHMENTS:
                 _QB.setTables(AttachmentsColumns.TABLENAME);
-                        //" LEFT OUTER JOIN " + AudiosColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + AudiosColumns.FULL_AUDIO_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + AudiosColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + StickersColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + StickersColumns.FULL_ID +
-                        //" LEFT OUTER JOIN " + DocColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + DocColumns.FULL_DOC_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + DocColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + VideoColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + VideoColumns.FULL_VIDEO_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + VideoColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + PostsColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PostsColumns.FULL_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PostsColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + PhotosColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PhotosColumns.FULL_PHOTO_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PhotosColumns.FULL_OWNER_ID);
+                //" LEFT OUTER JOIN " + AudiosColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + AudiosColumns.FULL_AUDIO_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + AudiosColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + StickersColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + StickersColumns.FULL_ID +
+                //" LEFT OUTER JOIN " + DocColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + DocColumns.FULL_DOC_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + DocColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + VideoColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + VideoColumns.FULL_VIDEO_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + VideoColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + PostsColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PostsColumns.FULL_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PostsColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + PhotosColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PhotosColumns.FULL_PHOTO_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PhotosColumns.FULL_OWNER_ID);
                 _QB.setProjectionMap(sAttachmentsProjectionMap);
                 _TableType = URI_ATTACHMENTS;
                 break;
 
             case URI_ATTACHMENTS_ID:
                 _QB.setTables(AttachmentsColumns.TABLENAME);
-                        //" LEFT OUTER JOIN " + AudiosColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + AudiosColumns.FULL_AUDIO_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + AudiosColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + StickersColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + StickersColumns.FULL_ID +
-                        //" LEFT OUTER JOIN " + DocColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + DocColumns.FULL_DOC_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + DocColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + VideoColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + VideoColumns.FULL_VIDEO_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + VideoColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + PostsColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PostsColumns.FULL_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PostsColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + PhotosColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PhotosColumns.FULL_PHOTO_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PhotosColumns.FULL_OWNER_ID);
+                //" LEFT OUTER JOIN " + AudiosColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + AudiosColumns.FULL_AUDIO_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + AudiosColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + StickersColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + StickersColumns.FULL_ID +
+                //" LEFT OUTER JOIN " + DocColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + DocColumns.FULL_DOC_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + DocColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + VideoColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + VideoColumns.FULL_VIDEO_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + VideoColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + PostsColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PostsColumns.FULL_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PostsColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + PhotosColumns.TABLENAME + " ON " + AttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PhotosColumns.FULL_PHOTO_ID + " AND " + AttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PhotosColumns.FULL_OWNER_ID);
                 _QB.setProjectionMap(sAttachmentsProjectionMap);
                 _QB.appendWhere(AttachmentsColumns.FULL_ID + "=" + uri.getPathSegments().get(1));
                 _TableType = URI_ATTACHMENTS;
@@ -1322,24 +1349,24 @@ public class MessengerContentProvider extends ContentProvider {
 
             case URI_COMMENTS_ATTACHMENTS:
                 _QB.setTables(CommentsAttachmentsColumns.TABLENAME);
-                        //" LEFT OUTER JOIN " + AudiosColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + AudiosColumns.FULL_AUDIO_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + AudiosColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + StickersColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + StickersColumns.FULL_ID +
-                        //" LEFT OUTER JOIN " + DocColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + DocColumns.FULL_DOC_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + DocColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + VideoColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + VideoColumns.FULL_VIDEO_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + VideoColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + PostsColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PostsColumns.FULL_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PostsColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + PhotosColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PhotosColumns.FULL_PHOTO_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PhotosColumns.FULL_OWNER_ID);
+                //" LEFT OUTER JOIN " + AudiosColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + AudiosColumns.FULL_AUDIO_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + AudiosColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + StickersColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + StickersColumns.FULL_ID +
+                //" LEFT OUTER JOIN " + DocColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + DocColumns.FULL_DOC_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + DocColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + VideoColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + VideoColumns.FULL_VIDEO_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + VideoColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + PostsColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PostsColumns.FULL_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PostsColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + PhotosColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PhotosColumns.FULL_PHOTO_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PhotosColumns.FULL_OWNER_ID);
                 _QB.setProjectionMap(sCommentsAttachmentsProjectionMap);
                 _TableType = URI_COMMENTS_ATTACHMENTS;
                 break;
 
             case URI_COMMENTS_ATTACHMENTS_ID:
                 _QB.setTables(CommentsAttachmentsColumns.TABLENAME);
-                        //" LEFT OUTER JOIN " + AudiosColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + AudiosColumns.FULL_AUDIO_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + AudiosColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + StickersColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + StickersColumns.FULL_ID +
-                        //" LEFT OUTER JOIN " + DocColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + DocColumns.FULL_DOC_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + DocColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + VideoColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + VideoColumns.FULL_VIDEO_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + VideoColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + PostsColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PostsColumns.FULL_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PostsColumns.FULL_OWNER_ID +
-                        //" LEFT OUTER JOIN " + PhotosColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PhotosColumns.FULL_PHOTO_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PhotosColumns.FULL_OWNER_ID);
+                //" LEFT OUTER JOIN " + AudiosColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + AudiosColumns.FULL_AUDIO_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + AudiosColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + StickersColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + StickersColumns.FULL_ID +
+                //" LEFT OUTER JOIN " + DocColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + DocColumns.FULL_DOC_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + DocColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + VideoColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + VideoColumns.FULL_VIDEO_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + VideoColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + PostsColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PostsColumns.FULL_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PostsColumns.FULL_OWNER_ID +
+                //" LEFT OUTER JOIN " + PhotosColumns.TABLENAME + " ON " + CommentsAttachmentsColumns.FULL_ATTACHMENT_ID + " = " + PhotosColumns.FULL_PHOTO_ID + " AND " + CommentsAttachmentsColumns.FULL_ATTACHMENT_OWNER_ID + " = " + PhotosColumns.FULL_OWNER_ID);
                 _QB.setProjectionMap(sCommentsAttachmentsProjectionMap);
                 _QB.appendWhere(CommentsAttachmentsColumns.FULL_ID + "=" + uri.getPathSegments().get(1));
                 _TableType = URI_COMMENTS_ATTACHMENTS;
@@ -1429,6 +1456,13 @@ public class MessengerContentProvider extends ContentProvider {
                         " users ON " + FaveUsersColumns.FULL_ID + " = users." + UserColumns._ID);
                 _QB.setProjectionMap(sFaveUsersProjectionMap);
                 _TableType = URI_FAVE_USERS;
+                break;
+            case URI_FAVE_GROUPS:
+                _QB.setTables(FaveGroupsColumns.TABLENAME +
+                        " LEFT OUTER JOIN " + GroupColumns.TABLENAME +
+                        " users ON " + FaveGroupsColumns.FULL_ID + " = users." + GroupColumns._ID);
+                _QB.setProjectionMap(sFaveGroupsProjectionMap);
+                _TableType = URI_FAVE_GROUPS;
                 break;
             case URI_FAVE_LINKS:
                 _QB.setTables(FaveLinksColumns.TABLENAME);
@@ -1530,7 +1564,7 @@ public class MessengerContentProvider extends ContentProvider {
                     _OrderBy = PhotoAlbumsColumns.FULL_ID + " ASC";
                     break;
 
-               // case URI_POLL:
+                // case URI_POLL:
                 //    _OrderBy = PollColumns.FULL_ID + " ASC";
                 //    break;
 
@@ -1604,7 +1638,7 @@ public class MessengerContentProvider extends ContentProvider {
     }
 
     @NonNull
-    private DBHelper getDbHelper(Uri uri){
+    private DBHelper getDbHelper(Uri uri) {
         return getDbHelper(extractAidFromUri(uri));
     }
 
@@ -1689,6 +1723,8 @@ public class MessengerContentProvider extends ContentProvider {
                 return FAVE_VIDEOS_CONTENT_TYPE;
             case URI_FAVE_USERS:
                 return FAVE_USERS_CONTENT_TYPE;
+            case URI_FAVE_GROUPS:
+                return FAVE_GROUPS_CONTENT_TYPE;
             case URI_FAVE_LINKS:
                 return FAVE_LINKS_CONTENT_TYPE;
             case URI_FAVE_POSTS:

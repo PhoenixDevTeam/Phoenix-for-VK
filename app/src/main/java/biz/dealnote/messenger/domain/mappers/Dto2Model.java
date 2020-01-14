@@ -37,6 +37,7 @@ import biz.dealnote.messenger.api.model.VkApiPrivacy;
 import biz.dealnote.messenger.api.model.feedback.Copies;
 import biz.dealnote.messenger.api.model.feedback.UserArray;
 import biz.dealnote.messenger.api.model.longpoll.AddMessageUpdate;
+import biz.dealnote.messenger.api.model.response.FavePageResponse;
 import biz.dealnote.messenger.api.util.VKStringUtils;
 import biz.dealnote.messenger.crypt.CryptHelper;
 import biz.dealnote.messenger.crypt.MessageType;
@@ -51,6 +52,7 @@ import biz.dealnote.messenger.model.CryptStatus;
 import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.FaveLink;
+import biz.dealnote.messenger.model.FavePage;
 import biz.dealnote.messenger.model.FriendList;
 import biz.dealnote.messenger.model.IOwnersBundle;
 import biz.dealnote.messenger.model.Link;
@@ -174,6 +176,18 @@ public class Dto2Model {
         return details;
     }
 
+    public static FavePage transformFaveCommunity(FavePageResponse page) {
+        return new FavePage(page.group.id)
+                .setDescription(page.description)
+                .setUpdatedDate(page.updated_date)
+                .setType(page.type)
+                .setGroup(Dto2Model.transformCommunity(page.group));
+    }
+
+    public static List<FavePage> transformFaveCommunities(List<FavePageResponse> dtos) {
+        return mapAll(dtos, Dto2Model::transformFaveCommunity);
+    }
+
     public static Community transformCommunity(VKApiCommunity community) {
         return new Community(community.id)
                 .setName(community.name)
@@ -196,6 +210,18 @@ public class Dto2Model {
 
     public static List<User> transformUsers(List<VKApiUser> dtos) {
         return mapAll(dtos, Dto2Model::transformUser);
+    }
+
+    public static List<FavePage> transformFaveUsers(List<FavePageResponse> dtos) {
+        return mapAll(dtos, Dto2Model::transformFaveUser);
+    }
+
+    public static FavePage transformFaveUser(FavePageResponse favePage) {
+        return new FavePage(favePage.user.id)
+                .setUser(Dto2Model.transformUser(favePage.user))
+                .setDescription(favePage.description)
+                .setType(favePage.type)
+                .setUpdatedDate(favePage.updated_date);
     }
 
     public static User transformUser(VKApiUser user) {

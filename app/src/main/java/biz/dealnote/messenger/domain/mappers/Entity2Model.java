@@ -17,6 +17,8 @@ import biz.dealnote.messenger.db.model.entity.CountryEntity;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.DocumentEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
+import biz.dealnote.messenger.db.model.entity.FaveGroupEntity;
+import biz.dealnote.messenger.db.model.entity.FaveUserEntity;
 import biz.dealnote.messenger.db.model.entity.GiftEntity;
 import biz.dealnote.messenger.db.model.entity.GiftItemEntity;
 import biz.dealnote.messenger.db.model.entity.LinkEntity;
@@ -50,6 +52,7 @@ import biz.dealnote.messenger.model.Community;
 import biz.dealnote.messenger.model.CryptStatus;
 import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.Document;
+import biz.dealnote.messenger.model.FavePage;
 import biz.dealnote.messenger.model.Gift;
 import biz.dealnote.messenger.model.GiftItem;
 import biz.dealnote.messenger.model.IOwnersBundle;
@@ -153,6 +156,24 @@ public class Entity2Model {
     public static List<User> buildUsersFromDbo(List<UserEntity> dbos) {
         List<User> users = new ArrayList<>(dbos.size());
         for (UserEntity dbo : dbos) {
+            users.add(map(dbo));
+        }
+
+        return users;
+    }
+
+    public static List<FavePage> buildFaveUsersFromDbo(List<FaveUserEntity> dbos) {
+        List<FavePage> users = new ArrayList<>(dbos.size());
+        for (FaveUserEntity dbo : dbos) {
+            users.add(map(dbo));
+        }
+
+        return users;
+    }
+
+    public static List<FavePage> buildFaveCommunitiesFromDbo(List<FaveGroupEntity> dbos) {
+        List<FavePage> users = new ArrayList<>(dbos.size());
+        for (FaveGroupEntity dbo : dbos) {
             users.add(map(dbo));
         }
 
@@ -297,6 +318,21 @@ public class Entity2Model {
                 .setDomain(entity.getDomain())
                 .setFriend(entity.isFriend())
                 .setFriendStatus(entity.getFriendStatus());
+    }
+
+    public static FavePage map(FaveUserEntity entity) {
+        return new FavePage(entity.getId())
+                .setDescription(entity.getDescription())
+                .setUpdatedDate(entity.getUpdateDate())
+                .setType(entity.getType())
+                .setUser(map((UserEntity) entity));
+    }
+
+    public static FavePage map(FaveGroupEntity entity) {
+        return new FavePage(entity.getId())
+                .setDescription(entity.getDescription())
+                .setUpdatedDate(entity.getUpdateDate());
+//                .setGroup(map((CommunityEntity) entity)); TODO 14.01.2020
     }
 
     public static PhotoAlbum map(PhotoAlbumEntity entity) {

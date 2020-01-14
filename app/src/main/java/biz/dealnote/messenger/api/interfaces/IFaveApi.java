@@ -1,11 +1,12 @@
 package biz.dealnote.messenger.api.interfaces;
 
 import androidx.annotation.CheckResult;
+
 import biz.dealnote.messenger.api.model.FaveLinkDto;
 import biz.dealnote.messenger.api.model.Items;
 import biz.dealnote.messenger.api.model.VKApiPhoto;
-import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VKApiVideo;
+import biz.dealnote.messenger.api.model.response.FavePageResponse;
 import biz.dealnote.messenger.api.model.response.FavePostsResponse;
 import io.reactivex.Single;
 
@@ -16,7 +17,10 @@ import io.reactivex.Single;
 public interface IFaveApi {
 
     @CheckResult
-    Single<Items<VKApiUser>> getUsers(Integer offset, Integer count, String fields);
+    Single<Items<FavePageResponse>> getUsers(Integer offset, Integer count, String fields);
+
+    @CheckResult
+    Single<Items<FavePageResponse>> getGroups(Integer offset, Integer count, String fields);
 
     @CheckResult
     Single<Items<VKApiPhoto>> getPhotos(Integer offset, Integer count);
@@ -32,6 +36,9 @@ public interface IFaveApi {
 
     @CheckResult
     Single<Boolean> addGroup(int groupId);
+
+    @CheckResult
+    Single<Boolean> removeGroup(int groupId);
 
     @CheckResult
     Single<Boolean> addUser(int userId);

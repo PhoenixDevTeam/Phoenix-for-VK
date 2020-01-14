@@ -2,14 +2,16 @@ package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import biz.dealnote.messenger.domain.IFaveInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.EndlessData;
+import biz.dealnote.messenger.model.FavePage;
 import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IFaveUsersView;
@@ -26,7 +28,7 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  */
 public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersView> {
 
-    private final List<User> users;
+    private final List<FavePage> pages;
 
     private final IFaveInteractor faveInteractor;
 
@@ -36,7 +38,7 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
 
     public FaveUsersPresenter(int accountId, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
-        this.users = new ArrayList<>();
+        this.pages = new ArrayList<>();
         this.faveInteractor = InteractorFactory.createFaveInteractor();
 
         loadAllCachedData();
@@ -46,7 +48,7 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
     @Override
     public void onGuiCreated(@NonNull IFaveUsersView view) {
         super.onGuiCreated(view);
-        view.displayData(this.users);
+        view.displayData(this.pages);
     }
 
     private boolean cacheLoadingNow;
@@ -73,7 +75,7 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
         resolveRefreshingView();
     }
 
-    private void onActualDataReceived(int offset, EndlessData<User> data) {
+    private void onActualDataReceived(int offset, EndlessData<FavePage> data) {
         this.cacheDisposable.clear();
         this.cacheLoadingNow = false;
 
@@ -82,12 +84,12 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
         this.actualDataReceived = true;
 
         if (offset == 0) {
-            this.users.clear();
-            this.users.addAll(data.get());
+            this.pages.clear();
+            this.pages.addAll(data.get());
             callView(IFaveUsersView::notifyDataSetChanged);
         } else {
-            int startSize = this.users.size();
-            this.users.addAll(data.get());
+            int startSize = this.pages.size();
+            this.pages.addAll(data.get());
             callView(view -> view.notifyDataAdded(startSize, data.get().size()));
         }
 
@@ -118,11 +120,11 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
         showError(getView(), getCauseIfRuntime(t));
     }
 
-    private void onCachedDataReceived(List<User> data) {
+    private void onCachedDataReceived(List<FavePage> data) {
         this.cacheLoadingNow = false;
 
-        this.users.clear();
-        this.users.addAll(data);
+        this.pages.clear();
+        this.pages.addAll(data);
         callView(IFaveUsersView::notifyDataSetChanged);
     }
 
@@ -134,8 +136,8 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
     }
 
     public void fireScrollToEnd() {
-        if (!endOfContent && nonEmpty(users) && actualDataReceived && !cacheLoadingNow && !actualDataLoading) {
-            loadActualData(this.users.size());
+        if (!endOfContent && nonEmpty(pages) && actualDataReceived && !cacheLoadingNow && !actualDataLoading) {
+            loadActualData(this.pages.size());
         }
     }
 
@@ -158,10 +160,10 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
             return;
         }
 
-        int index = findIndexById(this.users, userId);
+        int index = findIndexById(this.pages, userId);
 
         if (index != -1) {
-            this.users.remove(index);
+            this.pages.remove(index);
             callView(view -> view.notifyItemRemoved(index));
         }
     }

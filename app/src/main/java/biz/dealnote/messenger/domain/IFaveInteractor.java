@@ -4,9 +4,9 @@ import java.util.List;
 
 import biz.dealnote.messenger.model.EndlessData;
 import biz.dealnote.messenger.model.FaveLink;
+import biz.dealnote.messenger.model.FavePage;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.Post;
-import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.Video;
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -25,8 +25,14 @@ public interface IFaveInteractor {
     Single<List<Video>> getCachedVideos(int accountId);
     Single<List<Video>> getVideos(int accountId, int count, int offset);
 
-    Single<List<User>> getCachedUsers(int accountId);
-    Single<EndlessData<User>> getUsers(int accountId, int count, int offset);
+    Single<List<FavePage>> getCachedUsers(int accountId);
+
+    Single<EndlessData<FavePage>> getUsers(int accountId, int count, int offset);
+
+    Single<List<FavePage>> getCachedGroups(int accountId);
+
+    Single<EndlessData<FavePage>> getGroups(int accountId, int count, int offset);
+
     Completable removeUser(int accountId, int userId);
 
     Single<List<FaveLink>> getCachedLinks(int accountId);

@@ -20,6 +20,7 @@ import biz.dealnote.messenger.db.column.CommentsColumns;
 import biz.dealnote.messenger.db.column.CountriesColumns;
 import biz.dealnote.messenger.db.column.DialogsColumns;
 import biz.dealnote.messenger.db.column.DocColumns;
+import biz.dealnote.messenger.db.column.FaveGroupsColumns;
 import biz.dealnote.messenger.db.column.FaveLinksColumns;
 import biz.dealnote.messenger.db.column.FavePhotosColumns;
 import biz.dealnote.messenger.db.column.FavePostsColumns;
@@ -53,7 +54,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 171;
+    private static final int DATABASE_VERSION = 172;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -184,6 +185,7 @@ public class DBHelper extends SQLiteOpenHelper {
         createFavePhotosTable(db);
         createFaveVideosTable(db);
         createFaveUsersTable(db);
+        createFaveGroupsTable(db);
         createFaveLinksTable(db);
         createFavePostsTable(db);
         createCountriesTable(db);
@@ -433,14 +435,30 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Создание таблицы закладок пользователей
+     * Создание таблицы закладок(пользователей) пользователей
      *
      * @param db БД
      */
     private void createFaveUsersTable(SQLiteDatabase db) {
         String create = "CREATE TABLE [" + FaveUsersColumns.TABLENAME + "] (" +
                 " [" + FaveUsersColumns._ID + "] BIGINT NOT NULL UNIQUE, " +
+                " [" + FaveUsersColumns.DESCRIPTION + "] TEXT, " +
+                " [" + FaveUsersColumns.UPDATED_TIME + "] TEXT, " +
                 " CONSTRAINT [] PRIMARY KEY([" + FaveUsersColumns._ID + "]) ON CONFLICT REPLACE);";
+        db.execSQL(create);
+    }
+
+    /**
+     * Создание таблицы закладок(групп) пользователей
+     *
+     * @param db БД
+     */
+    private void createFaveGroupsTable(SQLiteDatabase db) {
+        String create = "CREATE TABLE [" + FaveGroupsColumns.TABLENAME + "] (" +
+                " [" + FaveGroupsColumns._ID + "] BIGINT NOT NULL UNIQUE, " +
+                " [" + FaveGroupsColumns.DESCRIPTION + "] TEXT, " +
+                " [" + FaveGroupsColumns.UPDATED_TIME + "] TEXT, " +
+                " CONSTRAINT [] PRIMARY KEY([" + FaveGroupsColumns._ID + "]) ON CONFLICT REPLACE);";
         db.execSQL(create);
     }
 

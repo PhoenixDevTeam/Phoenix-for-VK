@@ -7,15 +7,17 @@ import biz.dealnote.messenger.api.interfaces.INetworker;
 import biz.dealnote.messenger.api.model.FaveLinkDto;
 import biz.dealnote.messenger.api.model.VKApiPhoto;
 import biz.dealnote.messenger.api.model.VKApiPost;
-import biz.dealnote.messenger.api.model.VKApiUser;
 import biz.dealnote.messenger.api.model.VKApiVideo;
+import biz.dealnote.messenger.api.model.response.FavePageResponse;
+import biz.dealnote.messenger.db.column.GroupColumns;
 import biz.dealnote.messenger.db.column.UserColumns;
 import biz.dealnote.messenger.db.interfaces.IStorages;
+import biz.dealnote.messenger.db.model.entity.FaveGroupEntity;
 import biz.dealnote.messenger.db.model.entity.FaveLinkEntity;
+import biz.dealnote.messenger.db.model.entity.FaveUserEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.PhotoEntity;
 import biz.dealnote.messenger.db.model.entity.PostEntity;
-import biz.dealnote.messenger.db.model.entity.UserEntity;
 import biz.dealnote.messenger.db.model.entity.VideoEntity;
 import biz.dealnote.messenger.domain.IFaveInteractor;
 import biz.dealnote.messenger.domain.IOwnersRepository;
@@ -24,10 +26,10 @@ import biz.dealnote.messenger.domain.mappers.Dto2Model;
 import biz.dealnote.messenger.domain.mappers.Entity2Model;
 import biz.dealnote.messenger.model.EndlessData;
 import biz.dealnote.messenger.model.FaveLink;
+import biz.dealnote.messenger.model.FavePage;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.model.Photo;
 import biz.dealnote.messenger.model.Post;
-import biz.dealnote.messenger.model.User;
 import biz.dealnote.messenger.model.Video;
 import biz.dealnote.messenger.model.criteria.FavePhotosCriteria;
 import biz.dealnote.messenger.model.criteria.FavePostsCriteria;
@@ -181,27 +183,52 @@ public class FaveInteractor implements IFaveInteractor {
     }
 
     @Override
-    public Single<List<User>> getCachedUsers(int accountId) {
+    public Single<List<FavePage>> getCachedUsers(int accountId) {
         return cache.fave()
                 .getFaveUsers(accountId)
-                .map(Entity2Model::buildUsersFromDbo);
+                .map(Entity2Model::buildFaveUsersFromDbo);
     }
 
     @Override
-    public Single<EndlessData<User>> getUsers(int accountId, int count, int offset) {
+    public Single<EndlessData<FavePage>> getUsers(int accountId, int count, int offset) {
         return networker.vkDefault(accountId)
                 .fave()
                 .getUsers(offset, count, UserColumns.API_FIELDS)
                 .flatMap(items -> {
                     boolean hasNext = count + offset < items.count;
 
-                    List<VKApiUser> dtos = listEmptyIfNull(items.getItems());
-                    List<UserEntity> entities = Dto2Entity.mapUsers(dtos);
-                    List<User> users = Dto2Model.transformUsers(dtos);
+                    List<FavePageResponse> dtos = listEmptyIfNull(items.getItems());
+                    List<FaveUserEntity> entities = Dto2Entity.mapFaveUsers(dtos);
+                    List<FavePage> users = Dto2Model.transformFaveUsers(dtos);
 
                     return cache.fave()
                             .storeUsers(accountId, entities, offset == 0)
                             .andThen(Single.just(EndlessData.create(users, hasNext)));
+                });
+    }
+
+    @Override
+    public Single<List<FavePage>> getCachedGroups(int accountId) {
+        return cache.fave()
+                .getFaveGroups(accountId)
+                .map(Entity2Model::buildFaveCommunitiesFromDbo);
+    }
+
+    @Override
+    public Single<EndlessData<FavePage>> getGroups(int accountId, int count, int offset) {
+        return networker.vkDefault(accountId)
+                .fave()
+                .getGroups(offset, count, GroupColumns.API_FIELDS)
+                .flatMap(items -> {
+                    boolean hasNext = count + offset < items.count;
+
+                    List<FavePageResponse> dtos = listEmptyIfNull(items.getItems());
+                    List<FaveGroupEntity> entities = Dto2Entity.mapFaveCommunities(dtos);
+                    List<FavePage> groups = Dto2Model.transformFaveCommunities(dtos);
+
+                    return cache.fave()
+                            .storeGroups(accountId, entities, offset == 0)
+                            .andThen(Single.just(EndlessData.create(groups, hasNext)));
                 });
     }
 
