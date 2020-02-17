@@ -37,11 +37,12 @@ public class FavePage implements Identificable {
         return this;
     }
 
+    @FavePageType
     public String getType() {
         return type;
     }
 
-    public FavePage setFaveType(String type) {
+    public FavePage setFaveType(@FavePageType String type) {
         this.type = type;
         return this;
     }
@@ -68,8 +69,21 @@ public class FavePage implements Identificable {
         return group;
     }
 
+    public Owner getOwner() {
+        switch (type) {
+            case FavePageType.USER:
+                return user;
+            case FavePageType.COMMUNITY:
+                return group;
+        }
+        return null;
+    }
+
     public FavePage setGroup(Community group) {
         this.group = group;
         return this;
     }
+
+
 }
+

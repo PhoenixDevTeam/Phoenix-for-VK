@@ -54,7 +54,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "DBHelper";
 
-    private static final int DATABASE_VERSION = 172;
+    private static final int DATABASE_VERSION = 173;
 
     private static volatile Map<Integer, DBHelper> dbHelperMap = new ConcurrentHashMap<>();
 
@@ -236,8 +236,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DialogsColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + PeersColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + DocColumns.TABLENAME);
-        db.execSQL("DROP TABLE IF EXISTS " + FaveGroupsColumns.TABLENAME);
-        db.execSQL("DROP TABLE IF EXISTS " + FaveUsersColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + GroupColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + GroupContactsColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + GroupLinksColumns.TABLENAME);
@@ -267,6 +265,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + StikerSetColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + FavePhotosColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + FaveVideosColumns.TABLENAME);
+        db.execSQL("DROP TABLE IF EXISTS " + FaveGroupsColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + FaveUsersColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + FaveLinksColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + FavePostsColumns.TABLENAME);

@@ -1,12 +1,14 @@
 package biz.dealnote.messenger.util;
 
+import androidx.annotation.Nullable;
+
 import java.io.Closeable;
 
-import androidx.annotation.Nullable;
 import biz.dealnote.messenger.BuildConfig;
 import biz.dealnote.messenger.Injection;
 import io.reactivex.Completable;
 import io.reactivex.CompletableTransformer;
+import io.reactivex.FlowableTransformer;
 import io.reactivex.MaybeTransformer;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Single;
@@ -74,6 +76,13 @@ public class RxUtils {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Injection.provideMainThreadScheduler());
     }
+
+    public static <T> FlowableTransformer<T, T> applyFlowableIOToMainSchedulers() {
+        return upstream -> upstream
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Injection.provideMainThreadScheduler());
+    }
+
 
     public static CompletableTransformer applyCompletableIOToMainSchedulers() {
         return completable -> completable.subscribeOn(Schedulers.io())

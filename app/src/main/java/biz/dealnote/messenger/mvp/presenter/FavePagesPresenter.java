@@ -12,7 +12,8 @@ import biz.dealnote.messenger.domain.IFaveInteractor;
 import biz.dealnote.messenger.domain.InteractorFactory;
 import biz.dealnote.messenger.model.EndlessData;
 import biz.dealnote.messenger.model.FavePage;
-import biz.dealnote.messenger.model.User;
+import biz.dealnote.messenger.model.FavePageType;
+import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.mvp.presenter.base.AccountDependencyPresenter;
 import biz.dealnote.messenger.mvp.view.IFaveUsersView;
 import biz.dealnote.messenger.util.RxUtils;
@@ -26,9 +27,12 @@ import static biz.dealnote.messenger.util.Utils.nonEmpty;
  * Created by Ruslan Kolbasa on 11.09.2017.
  * phoenix
  */
-public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersView> {
+public class FavePagesPresenter extends AccountDependencyPresenter<IFaveUsersView> {
 
     private final List<FavePage> pages;
+
+    @FavePageType
+    private final String type;
 
     private final IFaveInteractor faveInteractor;
 
@@ -36,9 +40,10 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
 
     private boolean endOfContent;
 
-    public FaveUsersPresenter(int accountId, @Nullable Bundle savedInstanceState) {
+    public FavePagesPresenter(int accountId, @FavePageType String type, @Nullable Bundle savedInstanceState) {
         super(accountId, savedInstanceState);
         this.pages = new ArrayList<>();
+        this.type = type;
         this.faveInteractor = InteractorFactory.createFaveInteractor();
 
         loadAllCachedData();
@@ -63,9 +68,19 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
         resolveRefreshingView();
 
         final int accountId = super.getAccountId();
-        actualDataDisposable.add(faveInteractor.getUsers(accountId, 50, offset)
-                .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(data -> onActualDataReceived(offset, data), this::onActualDataGetError));
+        switch (type) {
+            case FavePageType.USER:
+                actualDataDisposable.add(faveInteractor.getUsers(accountId, 50, offset)
+                        .compose(RxUtils.applySingleIOToMainSchedulers())
+                        .subscribe(data -> onActualDataReceived(offset, data), this::onActualDataGetError));
+                break;
+            case FavePageType.COMMUNITY:
+                actualDataDisposable.add(faveInteractor.getGroups(accountId, 50, offset)
+                        .compose(RxUtils.applySingleIOToMainSchedulers())
+                        .subscribe(data -> onActualDataReceived(offset, data), this::onActualDataGetError));
+                break;
+        }
+
     }
 
     private void onActualDataGetError(Throwable t) {
@@ -111,9 +126,19 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
     private void loadAllCachedData() {
         this.cacheLoadingNow = true;
         final int accountId = super.getAccountId();
-        cacheDisposable.add(faveInteractor.getCachedUsers(accountId)
-                .compose(RxUtils.applySingleIOToMainSchedulers())
-                .subscribe(this::onCachedDataReceived, this::onCachedGetError));
+        switch (type) {
+            case FavePageType.USER:
+                cacheDisposable.add(faveInteractor.getCachedUsers(accountId)
+                        .compose(RxUtils.applySingleIOToMainSchedulers())
+                        .subscribe(this::onCachedDataReceived, this::onCachedGetError));
+                break;
+            case FavePageType.COMMUNITY:
+                cacheDisposable.add(faveInteractor.getCachedGroups(accountId)
+                        .compose(RxUtils.applySingleIOToMainSchedulers())
+                        .subscribe(this::onCachedDataReceived, this::onCachedGetError));
+                break;
+        }
+
     }
 
     private void onCachedGetError(Throwable t) {
@@ -151,8 +176,8 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
         loadActualData(0);
     }
 
-    public void fireUserClick(User user) {
-        getView().openUserWall(getAccountId(), user);
+    public void fireOwnerClick(Owner owner) {
+        getView().openOwnerWall(getAccountId(), owner);
     }
 
     private void onUserRemoved(int accountId, int userId) {
@@ -168,9 +193,9 @@ public class FaveUsersPresenter extends AccountDependencyPresenter<IFaveUsersVie
         }
     }
 
-    public void fireUserDelete(User user) {
+    public void fireOwnerDelete(Owner owner) {
         final int accountId = super.getAccountId();
-        final int userId = user.getId();
+        final int userId = owner.getOwnerId();
         appendDisposable(faveInteractor.removeUser(accountId, userId)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
                 .subscribe(() -> onUserRemoved(accountId, userId), t -> showError(getView(), getCauseIfRuntime(t))));

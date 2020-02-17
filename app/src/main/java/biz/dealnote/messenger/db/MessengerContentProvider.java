@@ -161,8 +161,8 @@ public class MessengerContentProvider extends ContentProvider {
     static final String USER_DET_PATH = "user_det";
     static final String FAVE_PHOTOS_PATH = "fave_photos";
     static final String FAVE_VIDEOS_PATH = "fave_videos";
-    static final String FAVE_USERS_PATH = "fave_users";
     static final String FAVE_GROUPS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + FAVE_GROUPS_PATH;
+    static final String FAVE_USERS_PATH = "fave_users";
     static final String FAVE_LINKS_PATH = "fave_links";
     static final String FAVE_POSTS_PATH = "fave_posts";
     static final String COUNTRIES_PATH = "countries";
@@ -172,7 +172,6 @@ public class MessengerContentProvider extends ContentProvider {
 
     // описание и создание UriMatcher
     private static final UriMatcher sUriMatcher;
-    private static final Uri FAVE_GROUPS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FAVE_GROUPS_PATH);
 
     // Общий Uri
     private static final Uri USER_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + USER_PATH);
@@ -260,6 +259,7 @@ public class MessengerContentProvider extends ContentProvider {
 
     private static final Uri FAVE_USERS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FAVE_USERS_PATH);
     static final String FAVE_USERS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + FAVE_USERS_PATH;
+    private static final Uri FAVE_GROUPS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FAVE_GROUPS_PATH);
     private static Map<String, String> sFaveGroupsProjectionMap;
 
     static {
@@ -1460,7 +1460,7 @@ public class MessengerContentProvider extends ContentProvider {
             case URI_FAVE_GROUPS:
                 _QB.setTables(FaveGroupsColumns.TABLENAME +
                         " LEFT OUTER JOIN " + GroupColumns.TABLENAME +
-                        " users ON " + FaveGroupsColumns.FULL_ID + " = users." + GroupColumns._ID);
+                        " groups ON " + FaveGroupsColumns.FULL_ID + " = groups." + GroupColumns._ID);
                 _QB.setProjectionMap(sFaveGroupsProjectionMap);
                 _TableType = URI_FAVE_GROUPS;
                 break;
@@ -1599,6 +1599,9 @@ public class MessengerContentProvider extends ContentProvider {
                     break;
                 case URI_FAVE_USERS:
                     _OrderBy = FaveUsersColumns.FULL_ID + " ASC";
+                    break;
+                case URI_FAVE_GROUPS:
+                    _OrderBy = FaveGroupsColumns.FULL_ID + " ASC";
                     break;
                 case URI_FAVE_LINKS:
                     _OrderBy = FaveLinksColumns.FULL_ID + " ASC";
@@ -1860,6 +1863,9 @@ public class MessengerContentProvider extends ContentProvider {
             case URI_FAVE_USERS:
                 tbName = FaveUsersColumns.TABLENAME;
                 break;
+            case URI_FAVE_GROUPS:
+                tbName = FaveGroupsColumns.TABLENAME;
+                break;
             case URI_FAVE_LINKS:
                 tbName = FaveLinksColumns.TABLENAME;
                 break;
@@ -2041,6 +2047,9 @@ public class MessengerContentProvider extends ContentProvider {
                 break;
             case URI_FAVE_USERS:
                 tbName = FaveUsersColumns.TABLENAME;
+                break;
+            case URI_FAVE_GROUPS:
+                tbName = FaveGroupsColumns.TABLENAME;
                 break;
             case URI_FAVE_LINKS:
                 tbName = FaveLinksColumns.TABLENAME;

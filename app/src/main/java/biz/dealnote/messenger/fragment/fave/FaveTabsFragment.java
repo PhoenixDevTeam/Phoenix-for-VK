@@ -27,6 +27,7 @@ import biz.dealnote.messenger.fragment.AdditionalNavigationFragment;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
 import biz.dealnote.messenger.link.types.FaveLink;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
+import biz.dealnote.messenger.model.FavePageType;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.settings.Settings;
 
@@ -96,7 +97,8 @@ public class FaveTabsFragment extends BaseFragment {
         adapter.addFragment(FavePhotosFragment.newInstance(getAccountId()), getString(R.string.photos));
         adapter.addFragment(FaveVideosFragment.newInstance(getAccountId()), getString(R.string.videos));
         adapter.addFragment(FavePostsFragment.newInstance(getAccountId()), getString(R.string.posts));
-        adapter.addFragment(FaveUsersFragment.newInstance(getAccountId()), getString(R.string.people));
+        adapter.addFragment(FavePagesFragment.newInstance(getAccountId(), FavePageType.USER), getString(R.string.people));
+        adapter.addFragment(FavePagesFragment.newInstance(getAccountId(), FavePageType.COMMUNITY), getString(R.string.groups));
         adapter.addFragment(FaveLinksFragment.newInstance(getAccountId()), getString(R.string.links));
         viewPager.setAdapter(adapter);
     }

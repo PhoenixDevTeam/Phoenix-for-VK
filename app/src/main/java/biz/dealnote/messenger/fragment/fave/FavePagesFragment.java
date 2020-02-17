@@ -23,8 +23,9 @@ import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.FavePage;
-import biz.dealnote.messenger.model.User;
-import biz.dealnote.messenger.mvp.presenter.FaveUsersPresenter;
+import biz.dealnote.messenger.model.FavePageType;
+import biz.dealnote.messenger.model.Owner;
+import biz.dealnote.messenger.mvp.presenter.FavePagesPresenter;
 import biz.dealnote.messenger.mvp.view.IFaveUsersView;
 import biz.dealnote.messenger.place.PlaceFactory;
 import biz.dealnote.messenger.util.ViewUtils;
@@ -32,12 +33,13 @@ import biz.dealnote.mvp.core.IPresenterFactory;
 
 import static biz.dealnote.messenger.util.Objects.nonNull;
 
-public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFaveUsersView> implements IFaveUsersView, FavePagesAdapter.ClickListener {
+public class FavePagesFragment extends BaseMvpFragment<FavePagesPresenter, IFaveUsersView> implements IFaveUsersView, FavePagesAdapter.ClickListener {
 
-    public static FaveUsersFragment newInstance(int accountId){
+    public static FavePagesFragment newInstance(int accountId, @FavePageType String type) {
         Bundle args = new Bundle();
         args.putInt(Extra.ACCOUNT_ID, accountId);
-        FaveUsersFragment fragment = new FaveUsersFragment();
+        args.putString(Extra.TYPE, type);
+        FavePagesFragment fragment = new FavePagesFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,14 +80,14 @@ public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFave
     }
 
     private void resolveEmptyText() {
-        if(nonNull(mEmpty) && nonNull(mAdapter)){
+        if (nonNull(mEmpty) && nonNull(mAdapter)) {
             mEmpty.setVisibility(mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
         }
     }
 
     @Override
     public void displayData(List<FavePage> users) {
-        if(nonNull(mAdapter)){
+        if (nonNull(mAdapter)) {
             mAdapter.setData(users);
             resolveEmptyText();
         }
@@ -93,7 +95,7 @@ public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFave
 
     @Override
     public void notifyDataSetChanged() {
-        if(nonNull(mAdapter)){
+        if (nonNull(mAdapter)) {
             mAdapter.notifyDataSetChanged();
             resolveEmptyText();
         }
@@ -101,7 +103,7 @@ public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFave
 
     @Override
     public void notifyDataAdded(int position, int count) {
-        if(nonNull(mAdapter)){
+        if (nonNull(mAdapter)) {
             mAdapter.notifyItemRangeInserted(position, count);
             resolveEmptyText();
         }
@@ -109,39 +111,40 @@ public class FaveUsersFragment extends BaseMvpFragment<FaveUsersPresenter, IFave
 
     @Override
     public void showRefreshing(boolean refreshing) {
-        if(nonNull(mSwipeRefreshLayout)){
+        if (nonNull(mSwipeRefreshLayout)) {
             mSwipeRefreshLayout.setRefreshing(refreshing);
         }
     }
 
     @Override
-    public void openUserWall(int accountId, User user) {
-        PlaceFactory.getOwnerWallPlace(accountId, user).tryOpenWith(requireActivity());
+    public void openOwnerWall(int accountId, Owner owner) {
+        PlaceFactory.getOwnerWallPlace(accountId, owner).tryOpenWith(requireActivity());
     }
 
     @Override
     public void notifyItemRemoved(int index) {
-        if(nonNull(mAdapter)){
+        if (nonNull(mAdapter)) {
             mAdapter.notifyItemRemoved(index);
             resolveEmptyText();
         }
     }
 
     @Override
-    public IPresenterFactory<FaveUsersPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
-        return () -> new FaveUsersPresenter(
+    public IPresenterFactory<FavePagesPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
+        return () -> new FavePagesPresenter(
                 getArguments().getInt(Extra.ACCOUNT_ID),
+                getArguments().getString(Extra.TYPE),
                 saveInstanceState
         );
     }
 
     @Override
-    public void onUserClick(int index, User user) {
-        getPresenter().fireUserClick(user);
+    public void onPageClick(int index, Owner owner) {
+        getPresenter().fireOwnerClick(owner);
     }
 
     @Override
-    public void onDelete(int index, User user) {
-        getPresenter().fireUserDelete(user);
+    public void onDelete(int index, Owner owner) {
+        getPresenter().fireOwnerDelete(owner);
     }
 }

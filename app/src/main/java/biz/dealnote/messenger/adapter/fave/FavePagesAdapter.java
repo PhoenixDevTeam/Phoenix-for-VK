@@ -16,7 +16,7 @@ import java.util.List;
 import biz.dealnote.messenger.Constants;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.model.FavePage;
-import biz.dealnote.messenger.model.User;
+import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.util.ViewUtils;
 
 public class FavePagesAdapter extends RecyclerView.Adapter<FavePagesAdapter.Holder> {
@@ -39,20 +39,12 @@ public class FavePagesAdapter extends RecyclerView.Adapter<FavePagesAdapter.Hold
     public void onBindViewHolder(@NonNull final Holder holder, int position) {
         final FavePage favePage = data.get(position);
         holder.description.setText(favePage.getDescription());
-        switch (favePage.getType()) {
-            case "user":
-                holder.name.setText(favePage.getUser().getFullName());
-                ViewUtils.displayAvatar(holder.avatar, null, favePage.getUser().getMaxSquareAvatar(), Constants.PICASSO_TAG);
-                break;
-            case "group":
-                holder.name.setText(favePage.getGroup().getFullName());
-                ViewUtils.displayAvatar(holder.avatar, null, favePage.getGroup().getMaxSquareAvatar(), Constants.PICASSO_TAG);
-                break;
-        }
+        holder.name.setText(favePage.getOwner().getFullName());
+        ViewUtils.displayAvatar(holder.avatar, null, favePage.getOwner().getMaxSquareAvatar(), Constants.PICASSO_TAG);
 
         holder.itemView.setOnClickListener(v -> {
-            if(clickListener != null){
-//                clickListener.onUserClick(holder.getAdapterPosition(), user);
+            if (clickListener != null) {
+                clickListener.onPageClick(holder.getAdapterPosition(), favePage.getOwner());
             }
         });
     }
@@ -112,8 +104,9 @@ public class FavePagesAdapter extends RecyclerView.Adapter<FavePagesAdapter.Hold
     private RecyclerView recyclerView;
 
     public interface ClickListener {
-        void onUserClick(int index, User user);
-        void onDelete(int index, User user);
+        void onPageClick(int index, Owner owner);
+
+        void onDelete(int index, Owner owner);
     }
 
     private ClickListener clickListener;
