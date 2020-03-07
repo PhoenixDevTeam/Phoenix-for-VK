@@ -13,21 +13,17 @@ import java.util.List;
 
 import biz.dealnote.messenger.db.DatabaseIdRange;
 import biz.dealnote.messenger.db.MessengerContentProvider;
-import biz.dealnote.messenger.db.column.FaveGroupsColumns;
 import biz.dealnote.messenger.db.column.FaveLinksColumns;
+import biz.dealnote.messenger.db.column.FavePageColumns;
 import biz.dealnote.messenger.db.column.FavePhotosColumns;
 import biz.dealnote.messenger.db.column.FavePostsColumns;
-import biz.dealnote.messenger.db.column.FaveUsersColumns;
 import biz.dealnote.messenger.db.column.FaveVideosColumns;
 import biz.dealnote.messenger.db.interfaces.IFaveStorage;
-import biz.dealnote.messenger.db.model.entity.CommunityEntity;
-import biz.dealnote.messenger.db.model.entity.FaveGroupEntity;
 import biz.dealnote.messenger.db.model.entity.FaveLinkEntity;
-import biz.dealnote.messenger.db.model.entity.FaveUserEntity;
+import biz.dealnote.messenger.db.model.entity.FavePageEntity;
 import biz.dealnote.messenger.db.model.entity.OwnerEntities;
 import biz.dealnote.messenger.db.model.entity.PhotoEntity;
 import biz.dealnote.messenger.db.model.entity.PostEntity;
-import biz.dealnote.messenger.db.model.entity.UserEntity;
 import biz.dealnote.messenger.db.model.entity.VideoEntity;
 import biz.dealnote.messenger.model.criteria.FavePhotosCriteria;
 import biz.dealnote.messenger.model.criteria.FavePostsCriteria;
@@ -170,63 +166,42 @@ class FaveStorage extends AbsStorage implements IFaveStorage {
         });
     }
 
-    private static ContentValues createCv(CommunityEntity dbo) {
+    private static ContentValues createCv(FavePageEntity dbo) {
         ContentValues cv = new ContentValues();
-        cv.put(FaveGroupsColumns._ID, dbo.getId());
+        cv.put(FavePageColumns._ID, dbo.getId());
+        cv.put(FavePageColumns.DESCRIPTION, dbo.getDescription());
+        cv.put(FavePageColumns.FAVE_TYPE, dbo.getFaveType());
+        cv.put(FavePageColumns.UPDATED_TIME, dbo.getUpdateDate());
         return cv;
     }
 
-    private static ContentValues createCv(UserEntity dbo) {
-        ContentValues cv = new ContentValues();
-        cv.put(FaveUsersColumns._ID, dbo.getId());
-        return cv;
+
+    private static FavePageEntity mapFaveUserDbo(Cursor cursor) {
+        return new FavePageEntity(cursor.getInt(cursor.getColumnIndex(FavePageColumns._ID)))
+                .setDescription(cursor.getString(cursor.getColumnIndex(FavePageColumns.DESCRIPTION)))
+                .setUpdateDate(cursor.getLong(cursor.getColumnIndex(FavePageColumns.UPDATED_TIME)))
+                .setFaveType(cursor.getString(cursor.getColumnIndex(FavePageColumns.FAVE_TYPE)));
     }
 
-
-    private static FaveUserEntity mapFaveUserDbo(Cursor cursor) {
-        return (FaveUserEntity) new FaveUserEntity(cursor.getInt(cursor.getColumnIndex(FaveUsersColumns._ID)))
-                .setDescription(cursor.getString(cursor.getColumnIndex(FaveUsersColumns.DESCRIPTION)))
-                .setUpdateDate(cursor.getLong(cursor.getColumnIndex(FaveUsersColumns.UPDATED_TIME)))
-                .setFaveType(cursor.getString(cursor.getColumnIndex(FaveUsersColumns.FAVE_TYPE)))
-                .setFirstName(cursor.getString(cursor.getColumnIndex(FaveUsersColumns.FOREIGN_USER_FIRST_NAME)))
-                .setLastName(cursor.getString(cursor.getColumnIndex(FaveUsersColumns.FOREIGN_USER_LAST_NAME)))
-                .setPhoto50(cursor.getString(cursor.getColumnIndex(FaveUsersColumns.FOREIGN_USER_PHOTO_50)))
-                .setPhoto100(cursor.getString(cursor.getColumnIndex(FaveUsersColumns.FOREIGN_USER_PHOTO_100)))
-                .setPhoto200(cursor.getString(cursor.getColumnIndex(FaveUsersColumns.FOREIGN_USER_PHOTO_200)))
-                .setOnline(cursor.getInt(cursor.getColumnIndex(FaveUsersColumns.FOREIGN_USER_ONLINE)) == 1)
-                .setOnlineMobile(cursor.getInt(cursor.getColumnIndex(FaveUsersColumns.FOREIGN_USER_ONLINE_MOBILE)) == 1);
-    }
-
-    private static FaveGroupEntity mapFaveGroupDbo(Cursor cursor) {
-        return (FaveGroupEntity) new FaveGroupEntity(cursor.getInt(cursor.getColumnIndex(FaveGroupsColumns._ID)))
-                .setDescription(cursor.getString(cursor.getColumnIndex(FaveGroupsColumns.DESCRIPTION)))
-                .setUpdateDate(cursor.getInt(cursor.getColumnIndex(FaveGroupsColumns.UPDATED_TIME)))
-                .setFaveType(cursor.getString(cursor.getColumnIndex(FaveGroupsColumns.FAVE_TYPE)))
-                .setName(cursor.getString(cursor.getColumnIndex(FaveGroupsColumns.NAME)))
-                .setScreenName(cursor.getString(cursor.getColumnIndex(FaveGroupsColumns.SCREEN_NAME)))
-                .setClosed(cursor.getInt(cursor.getColumnIndex(FaveGroupsColumns.IS_CLOSED)))
-                .setPhoto50(cursor.getString(cursor.getColumnIndex(FaveGroupsColumns.PHOTO_50)))
-                .setPhoto100(cursor.getString(cursor.getColumnIndex(FaveGroupsColumns.PHOTO_100)))
-                .setPhoto200(cursor.getString(cursor.getColumnIndex(FaveGroupsColumns.PHOTO_200)));
-    }
 
     @Override
-    public Completable removeUser(int accountId, int userId) {
+    public Completable removePage(int accountId, int ownerId) {
         return Completable.fromAction(() -> {
             final Uri uri = MessengerContentProvider.getFaveUsersContentUriFor(accountId);
-            final String where = FaveUsersColumns._ID + " = ?";
-            final String[] args = {String.valueOf(userId)};
+            final String where = FavePageColumns._ID + " = ?";
+            final String[] args = {String.valueOf(ownerId)};
             getContentResolver().delete(uri, where, args);
         });
     }
 
+
     @Override
-    public Single<List<FaveUserEntity>> getFaveUsers(int accountId) {
+    public Single<List<FavePageEntity>> getFaveUsers(int accountId) {
         return Single.create(e -> {
             Uri uri = MessengerContentProvider.getFaveUsersContentUriFor(accountId);
             Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 
-            List<FaveUserEntity> dbos = new ArrayList<>(safeCountOf(cursor));
+            List<FavePageEntity> dbos = new ArrayList<>(safeCountOf(cursor));
             if (nonNull(cursor)) {
                 while (cursor.moveToNext()) {
                     if (e.isDisposed()) {
@@ -234,29 +209,6 @@ class FaveStorage extends AbsStorage implements IFaveStorage {
                     }
 
                     dbos.add(mapFaveUserDbo(cursor));
-                }
-
-                cursor.close();
-            }
-
-            e.onSuccess(dbos);
-        });
-    }
-
-    @Override
-    public Single<List<FaveGroupEntity>> getFaveGroups(int accountId) {
-        return Single.create(e -> {
-            Uri uri = MessengerContentProvider.getFaveGroupsContentUriFor(accountId);
-            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-
-            List<FaveGroupEntity> dbos = new ArrayList<>(safeCountOf(cursor));
-            if (nonNull(cursor)) {
-                while (cursor.moveToNext()) {
-                    if (e.isDisposed()) {
-                        break;
-                    }
-
-                    dbos.add(mapFaveGroupDbo(cursor));
                 }
 
                 cursor.close();
@@ -433,7 +385,7 @@ class FaveStorage extends AbsStorage implements IFaveStorage {
     }
 
     @Override
-    public Completable storeUsers(int accountId, List<FaveUserEntity> users, boolean clearBeforeStore) {
+    public Completable storePages(int accountId, List<FavePageEntity> users, boolean clearBeforeStore) {
         return Completable.create(e -> {
             Uri uri = MessengerContentProvider.getFaveUsersContentUriFor(accountId);
 
@@ -441,44 +393,6 @@ class FaveStorage extends AbsStorage implements IFaveStorage {
             if (clearBeforeStore) {
                 operations.add(ContentProviderOperation
                         .newDelete(uri)
-                        .build());
-            }
-
-//            appendUsersInsertOperation(operations, accountId, users);
-
-            for (FaveUserEntity dbo : users) {
-                operations.add(ContentProviderOperation
-                        .newInsert(uri)
-                        .withValues(createCv(dbo))
-                        .build());
-            }
-
-            if (!operations.isEmpty()) {
-                getContentResolver().applyBatch(MessengerContentProvider.AUTHORITY, operations);
-            }
-
-            e.onComplete();
-        });
-    }
-
-    @Override
-    public Completable storeGroups(int accountId, List<FaveGroupEntity> groups, boolean clearBeforeStore) {
-        return Completable.create(e -> {
-            Uri uri = MessengerContentProvider.getFaveGroupsContentUriFor(accountId);
-
-            ArrayList<ContentProviderOperation> operations = new ArrayList<>();
-            if (clearBeforeStore) {
-                operations.add(ContentProviderOperation
-                        .newDelete(uri)
-                        .build());
-            }
-
-//            appendCommunitiesInsertOperation(operations, accountId, groups);
-
-            for (FaveGroupEntity dbo : groups) {
-                operations.add(ContentProviderOperation
-                        .newInsert(uri)
-                        .withValues(createCv(dbo))
                         .build());
             }
 

@@ -23,11 +23,6 @@ public class FavePage implements Identificable {
         return id;
     }
 
-    public FavePage setId(int id) {
-        this.id = id;
-        return this;
-    }
-
     public String getDescription() {
         return description;
     }

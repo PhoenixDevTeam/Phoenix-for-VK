@@ -1,8 +1,8 @@
 package biz.dealnote.messenger.mvp.view;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public interface IUserWallView extends IWallView, IProgressView, ISnackbarView {
     void displayWallFilters(List<PostFilter> filters);
     void notifyWallFiltersChanged();
 
-    void setupPrimaryActionButton(@DrawableRes Integer resourceId);
+    void setupPrimaryActionButton(@StringRes Integer resourceId);
 
     void openFriends(int accountId, int userId, int tab, FriendsCounters counters);
 

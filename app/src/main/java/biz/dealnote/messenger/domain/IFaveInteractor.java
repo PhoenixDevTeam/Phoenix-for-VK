@@ -17,27 +17,28 @@ import io.reactivex.Single;
  */
 public interface IFaveInteractor {
     Single<List<Post>> getPosts(int accountId, int count, int offset);
+
     Single<List<Post>> getCachedPosts(int accountId);
 
     Single<List<Photo>> getCachedPhotos(int accountId);
+
     Single<List<Photo>> getPhotos(int accountId, int count, int offset);
 
     Single<List<Video>> getCachedVideos(int accountId);
+
     Single<List<Video>> getVideos(int accountId, int count, int offset);
 
-    Single<List<FavePage>> getCachedUsers(int accountId);
+    Single<List<FavePage>> getCachedPages(int accountId);
 
-    Single<EndlessData<FavePage>> getUsers(int accountId, int count, int offset);
+    Single<EndlessData<FavePage>> getPages(int accountId, int count, int offset);
 
-    Single<List<FavePage>> getCachedGroups(int accountId);
-
-    Single<EndlessData<FavePage>> getGroups(int accountId, int count, int offset);
-
-    Completable removeUser(int accountId, int userId);
+    Completable removePage(int accountId, int ownerId);
 
     Single<List<FaveLink>> getCachedLinks(int accountId);
+
     Single<EndlessData<FaveLink>> getLinks(int accountId, int count, int offset);
+
     Completable removeLink(int accountId, String id);
 
-    Completable addUser(int accountId, int userId);
+    Completable addPage(int accountId, int ownerId);
 }

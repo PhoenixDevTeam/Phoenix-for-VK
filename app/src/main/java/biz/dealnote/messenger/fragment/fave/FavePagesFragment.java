@@ -23,7 +23,6 @@ import biz.dealnote.messenger.fragment.base.BaseMvpFragment;
 import biz.dealnote.messenger.listener.EndlessRecyclerOnScrollListener;
 import biz.dealnote.messenger.listener.PicassoPauseOnScrollListener;
 import biz.dealnote.messenger.model.FavePage;
-import biz.dealnote.messenger.model.FavePageType;
 import biz.dealnote.messenger.model.Owner;
 import biz.dealnote.messenger.mvp.presenter.FavePagesPresenter;
 import biz.dealnote.messenger.mvp.view.IFaveUsersView;
@@ -35,10 +34,9 @@ import static biz.dealnote.messenger.util.Objects.nonNull;
 
 public class FavePagesFragment extends BaseMvpFragment<FavePagesPresenter, IFaveUsersView> implements IFaveUsersView, FavePagesAdapter.ClickListener {
 
-    public static FavePagesFragment newInstance(int accountId, @FavePageType String type) {
+    public static FavePagesFragment newInstance(int accountId) {
         Bundle args = new Bundle();
         args.putInt(Extra.ACCOUNT_ID, accountId);
-        args.putString(Extra.TYPE, type);
         FavePagesFragment fragment = new FavePagesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -133,7 +131,6 @@ public class FavePagesFragment extends BaseMvpFragment<FavePagesPresenter, IFave
     public IPresenterFactory<FavePagesPresenter> getPresenterFactory(@Nullable Bundle saveInstanceState) {
         return () -> new FavePagesPresenter(
                 getArguments().getInt(Extra.ACCOUNT_ID),
-                getArguments().getString(Extra.TYPE),
                 saveInstanceState
         );
     }

@@ -27,7 +27,6 @@ import biz.dealnote.messenger.fragment.AdditionalNavigationFragment;
 import biz.dealnote.messenger.fragment.base.BaseFragment;
 import biz.dealnote.messenger.link.types.FaveLink;
 import biz.dealnote.messenger.listener.OnSectionResumeCallback;
-import biz.dealnote.messenger.model.FavePageType;
 import biz.dealnote.messenger.place.Place;
 import biz.dealnote.messenger.settings.Settings;
 
@@ -37,7 +36,7 @@ public class FaveTabsFragment extends BaseFragment {
     public static final int TAB_PHOTOS = 0;
     public static final int TAB_VIDEOS = 1;
     public static final int TAB_POSTS = 2;
-    public static final int TAB_PEOPLE = 3;
+    public static final int TAB_PAGES = 3;
     public static final int TAB_LINKS = 4;
 
     public static Bundle buildArgs(int accountId, int tab){
@@ -85,22 +84,32 @@ public class FaveTabsFragment extends BaseFragment {
         TabLayout tabLayout = view.findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
 
-        if(getArguments().containsKey(Extra.TAB)){
+        if (getArguments().containsKey(Extra.TAB)) {
             int tab = getArguments().getInt(Extra.TAB);
             getArguments().remove(Extra.TAB);
             viewPager.setCurrentItem(tab);
         }
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(FavePhotosFragment.newInstance(getAccountId()), getString(R.string.photos));
-        adapter.addFragment(FaveVideosFragment.newInstance(getAccountId()), getString(R.string.videos));
-        adapter.addFragment(FavePostsFragment.newInstance(getAccountId()), getString(R.string.posts));
-        adapter.addFragment(FavePagesFragment.newInstance(getAccountId(), FavePageType.USER), getString(R.string.people));
-        adapter.addFragment(FavePagesFragment.newInstance(getAccountId(), FavePageType.COMMUNITY), getString(R.string.groups));
-        adapter.addFragment(FaveLinksFragment.newInstance(getAccountId()), getString(R.string.links));
-        viewPager.setAdapter(adapter);
+    public static int getTabByLinkSection(String linkSection) {
+        if (TextUtils.isEmpty(linkSection)) {
+            return TAB_PHOTOS;
+        }
+
+        switch (linkSection) {
+            case FaveLink.SECTION_PHOTOS:
+                return TAB_PHOTOS;
+            case FaveLink.SECTION_VIDEOS:
+                return TAB_VIDEOS;
+            case FaveLink.SECTION_POSTS:
+                return TAB_POSTS;
+            case FaveLink.SECTION_PAGES:
+                return TAB_PAGES;
+            case FaveLink.SECTION_LINKS:
+                return TAB_LINKS;
+            default:
+                return TAB_UNKNOWN;
+        }
     }
 
     @Override
@@ -110,7 +119,7 @@ public class FaveTabsFragment extends BaseFragment {
 
         ActionBar actionBar = ActivityUtils.supportToolbarFor(this);
 
-        if(actionBar != null){
+        if (actionBar != null) {
             actionBar.setTitle(R.string.bookmarks);
             actionBar.setSubtitle(null);
         }
@@ -157,24 +166,13 @@ public class FaveTabsFragment extends BaseFragment {
         }
     }
 
-    public static int getTabByLinkSection(String linkSection){
-        if(TextUtils.isEmpty(linkSection)){
-            return TAB_PHOTOS;
-        }
-
-        switch (linkSection){
-            case FaveLink.SECTION_PHOTOS:
-                return TAB_PHOTOS;
-            case FaveLink.SECTION_VIDEOS:
-                return TAB_VIDEOS;
-            case FaveLink.SECTION_POSTS:
-                return TAB_POSTS;
-            case FaveLink.SECTION_USERS:
-                return TAB_PEOPLE;
-            case FaveLink.SECTION_LINKS:
-                return TAB_LINKS;
-            default:
-                return TAB_UNKNOWN;
-        }
+    private void setupViewPager(ViewPager viewPager) {
+        Adapter adapter = new Adapter(getChildFragmentManager());
+        adapter.addFragment(FavePhotosFragment.newInstance(getAccountId()), getString(R.string.photos));
+        adapter.addFragment(FaveVideosFragment.newInstance(getAccountId()), getString(R.string.videos));
+        adapter.addFragment(FavePostsFragment.newInstance(getAccountId()), getString(R.string.posts));
+        adapter.addFragment(FavePagesFragment.newInstance(getAccountId()), getString(R.string.page));
+        adapter.addFragment(FaveLinksFragment.newInstance(getAccountId()), getString(R.string.links));
+        viewPager.setAdapter(adapter);
     }
 }

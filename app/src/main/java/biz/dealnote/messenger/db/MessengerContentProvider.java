@@ -27,11 +27,10 @@ import biz.dealnote.messenger.db.column.CommentsColumns;
 import biz.dealnote.messenger.db.column.CountriesColumns;
 import biz.dealnote.messenger.db.column.DialogsColumns;
 import biz.dealnote.messenger.db.column.DocColumns;
-import biz.dealnote.messenger.db.column.FaveGroupsColumns;
 import biz.dealnote.messenger.db.column.FaveLinksColumns;
+import biz.dealnote.messenger.db.column.FavePageColumns;
 import biz.dealnote.messenger.db.column.FavePhotosColumns;
 import biz.dealnote.messenger.db.column.FavePostsColumns;
-import biz.dealnote.messenger.db.column.FaveUsersColumns;
 import biz.dealnote.messenger.db.column.FaveVideosColumns;
 import biz.dealnote.messenger.db.column.FeedListsColumns;
 import biz.dealnote.messenger.db.column.FriendListsColumns;
@@ -127,7 +126,7 @@ public class MessengerContentProvider extends ContentProvider {
     static final int URI_USER_DET_ID = 47;
     static final int URI_FAVE_PHOTOS = 55;
     static final int URI_FAVE_VIDEOS = 56;
-    static final int URI_FAVE_USERS = 57;
+    static final int URI_FAVE_PAGES = 57;
     static final int URI_FAVE_LINKS = 58;
     static final int URI_FAVE_POSTS = 59;
     static final int URI_COUNTRIES = 61;
@@ -135,7 +134,6 @@ public class MessengerContentProvider extends ContentProvider {
     static final int URI_FRIEND_LISTS = 64;
     static final int URI_KEYS = 65;
     static final int URI_PEERS = 66;
-    static final String FAVE_GROUPS_PATH = "fave_groups";
 
     // path
     static final String USER_PATH = "users";
@@ -161,8 +159,7 @@ public class MessengerContentProvider extends ContentProvider {
     static final String USER_DET_PATH = "user_det";
     static final String FAVE_PHOTOS_PATH = "fave_photos";
     static final String FAVE_VIDEOS_PATH = "fave_videos";
-    static final String FAVE_GROUPS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + FAVE_GROUPS_PATH;
-    static final String FAVE_USERS_PATH = "fave_users";
+    static final String FAVE_PAGES_PATH = "fave_pages";
     static final String FAVE_LINKS_PATH = "fave_links";
     static final String FAVE_POSTS_PATH = "fave_posts";
     static final String COUNTRIES_PATH = "countries";
@@ -256,11 +253,8 @@ public class MessengerContentProvider extends ContentProvider {
 
     private static final Uri FAVE_VIDEOS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FAVE_VIDEOS_PATH);
     static final String FAVE_VIDEOS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + FAVE_VIDEOS_PATH;
-
-    private static final Uri FAVE_USERS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FAVE_USERS_PATH);
-    static final String FAVE_USERS_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + FAVE_USERS_PATH;
-    private static final Uri FAVE_GROUPS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FAVE_GROUPS_PATH);
-    private static Map<String, String> sFaveGroupsProjectionMap;
+    static final String FAVE_PAGES_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + FAVE_PAGES_PATH;
+    private static final Uri FAVE_PAGES_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + FAVE_PAGES_PATH);
 
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -300,8 +294,7 @@ public class MessengerContentProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, USER_DET_PATH + "/#", URI_USER_DET_ID);
         sUriMatcher.addURI(AUTHORITY, FAVE_PHOTOS_PATH, URI_FAVE_PHOTOS);
         sUriMatcher.addURI(AUTHORITY, FAVE_VIDEOS_PATH, URI_FAVE_VIDEOS);
-        sUriMatcher.addURI(AUTHORITY, FAVE_USERS_PATH, URI_FAVE_USERS);
-        sUriMatcher.addURI(AUTHORITY, FAVE_GROUPS_PATH, URI_FAVE_GROUPS);
+        sUriMatcher.addURI(AUTHORITY, FAVE_PAGES_PATH, URI_FAVE_PAGES);
         sUriMatcher.addURI(AUTHORITY, FAVE_LINKS_PATH, URI_FAVE_LINKS);
         sUriMatcher.addURI(AUTHORITY, FAVE_POSTS_PATH, URI_FAVE_POSTS);
         sUriMatcher.addURI(AUTHORITY, COUNTRIES_PATH, URI_COUNTRIES);
@@ -738,26 +731,10 @@ public class MessengerContentProvider extends ContentProvider {
         sFaveVideosProjectionMap.put(FaveVideosColumns.VIDEO, FaveVideosColumns.FULL_VIDEO);
 
         sFaveUsersProjectionMap = new HashMap<>();
-        sFaveUsersProjectionMap.put(FaveUsersColumns._ID, FaveUsersColumns.FULL_ID);
-        sFaveUsersProjectionMap.put(FaveUsersColumns.FOREIGN_USER_FIRST_NAME, "users." + UserColumns.FIRST_NAME + " AS " + FaveUsersColumns.FOREIGN_USER_FIRST_NAME);
-        sFaveUsersProjectionMap.put(FaveUsersColumns.FOREIGN_USER_LAST_NAME, "users." + UserColumns.LAST_NAME + " AS " + FaveUsersColumns.FOREIGN_USER_LAST_NAME);
-        sFaveUsersProjectionMap.put(FaveUsersColumns.FOREIGN_USER_PHOTO_200, "users." + UserColumns.PHOTO_200 + " AS " + FaveUsersColumns.FOREIGN_USER_PHOTO_200);
-        sFaveUsersProjectionMap.put(FaveUsersColumns.FOREIGN_USER_PHOTO_100, "users." + UserColumns.PHOTO_100 + " AS " + FaveUsersColumns.FOREIGN_USER_PHOTO_100);
-        sFaveUsersProjectionMap.put(FaveUsersColumns.FOREIGN_USER_PHOTO_50, "users." + UserColumns.PHOTO_50 + " AS " + FaveUsersColumns.FOREIGN_USER_PHOTO_50);
-        sFaveUsersProjectionMap.put(FaveUsersColumns.FOREIGN_USER_ONLINE, "users." + UserColumns.ONLINE + " AS " + FaveUsersColumns.FOREIGN_USER_ONLINE);
-        sFaveUsersProjectionMap.put(FaveUsersColumns.UPDATED_TIME, FaveUsersColumns.UPDATED_TIME);
-        sFaveUsersProjectionMap.put(FaveUsersColumns.DESCRIPTION, FaveUsersColumns.DESCRIPTION);
-
-        sFaveGroupsProjectionMap = new HashMap<>();
-        sFaveGroupsProjectionMap.put(FaveGroupsColumns._ID, FaveGroupsColumns.FULL_ID);
-        sFaveGroupsProjectionMap.put(FaveGroupsColumns.NAME, "groups." + GroupColumns.NAME + " AS " + FaveGroupsColumns.NAME);
-        sFaveGroupsProjectionMap.put(FaveGroupsColumns.SCREEN_NAME, "groups." + GroupColumns.SCREEN_NAME + " AS " + FaveGroupsColumns.SCREEN_NAME);
-        sFaveGroupsProjectionMap.put(FaveGroupsColumns.IS_CLOSED, "groups." + GroupColumns.IS_CLOSED + " AS " + FaveGroupsColumns.IS_CLOSED);
-        sFaveGroupsProjectionMap.put(FaveGroupsColumns.PHOTO_200, "groups." + GroupColumns.PHOTO_200 + " AS " + FaveGroupsColumns.PHOTO_200);
-        sFaveGroupsProjectionMap.put(FaveGroupsColumns.PHOTO_100, "groups." + GroupColumns.PHOTO_100 + " AS " + FaveGroupsColumns.PHOTO_100);
-        sFaveGroupsProjectionMap.put(FaveGroupsColumns.PHOTO_50, "groups." + GroupColumns.PHOTO_50 + " AS " + FaveGroupsColumns.PHOTO_50);
-        sFaveGroupsProjectionMap.put(FaveGroupsColumns.UPDATED_TIME, FaveGroupsColumns.UPDATED_TIME);
-        sFaveGroupsProjectionMap.put(FaveGroupsColumns.DESCRIPTION, FaveGroupsColumns.DESCRIPTION);
+        sFaveUsersProjectionMap.put(FavePageColumns._ID, FavePageColumns.FULL_ID);
+        sFaveUsersProjectionMap.put(FavePageColumns.UPDATED_TIME, FavePageColumns.UPDATED_TIME);
+        sFaveUsersProjectionMap.put(FavePageColumns.DESCRIPTION, FavePageColumns.DESCRIPTION);
+        sFaveUsersProjectionMap.put(FavePageColumns.FAVE_TYPE, FavePageColumns.FAVE_TYPE);
 
         sFaveLinksProjectionMap = new HashMap<>();
         sFaveLinksProjectionMap.put(FaveLinksColumns._ID, FaveLinksColumns.FULL_ID);
@@ -821,11 +798,7 @@ public class MessengerContentProvider extends ContentProvider {
     }
 
     public static Uri getFaveUsersContentUriFor(int aid) {
-        return appendAccountId(FAVE_USERS_CONTENT_URI, aid);
-    }
-
-    public static Uri getFaveGroupsContentUriFor(int aid) {
-        return appendAccountId(FAVE_GROUPS_CONTENT_URI, aid);
+        return appendAccountId(FAVE_PAGES_CONTENT_URI, aid);
     }
 
     public static Uri getFaveVideosContentUriFor(int aid) {
@@ -1120,13 +1093,9 @@ public class MessengerContentProvider extends ContentProvider {
                 rowId = db.insert(FaveVideosColumns.TABLENAME, null, values);
                 resultUri = ContentUris.withAppendedId(FAVE_VIDEOS_CONTENT_URI, rowId);
                 break;
-            case URI_FAVE_USERS:
-                rowId = db.insert(FaveUsersColumns.TABLENAME, null, values);
-                resultUri = ContentUris.withAppendedId(FAVE_USERS_CONTENT_URI, rowId);
-                break;
-            case URI_FAVE_GROUPS:
-                rowId = db.insert(FaveGroupsColumns.TABLENAME, null, values);
-                resultUri = ContentUris.withAppendedId(FAVE_GROUPS_CONTENT_URI, rowId);
+            case URI_FAVE_PAGES:
+                rowId = db.insert(FavePageColumns.TABLENAME, null, values);
+                resultUri = ContentUris.withAppendedId(FAVE_PAGES_CONTENT_URI, rowId);
                 break;
             case URI_FAVE_LINKS:
                 rowId = db.insert(FaveLinksColumns.TABLENAME, null, values);
@@ -1450,19 +1419,12 @@ public class MessengerContentProvider extends ContentProvider {
                 _QB.setProjectionMap(sFaveVideosProjectionMap);
                 _TableType = URI_FAVE_VIDEOS;
                 break;
-            case URI_FAVE_USERS:
-                _QB.setTables(FaveUsersColumns.TABLENAME +
+            case URI_FAVE_PAGES:
+                _QB.setTables(FavePageColumns.TABLENAME +
                         " LEFT OUTER JOIN " + UserColumns.TABLENAME +
-                        " users ON " + FaveUsersColumns.FULL_ID + " = users." + UserColumns._ID);
+                        " users ON " + FavePageColumns.FULL_ID + " = users." + UserColumns._ID);
                 _QB.setProjectionMap(sFaveUsersProjectionMap);
-                _TableType = URI_FAVE_USERS;
-                break;
-            case URI_FAVE_GROUPS:
-                _QB.setTables(FaveGroupsColumns.TABLENAME +
-                        " LEFT OUTER JOIN " + GroupColumns.TABLENAME +
-                        " groups ON " + FaveGroupsColumns.FULL_ID + " = groups." + GroupColumns._ID);
-                _QB.setProjectionMap(sFaveGroupsProjectionMap);
-                _TableType = URI_FAVE_GROUPS;
+                _TableType = URI_FAVE_PAGES;
                 break;
             case URI_FAVE_LINKS:
                 _QB.setTables(FaveLinksColumns.TABLENAME);
@@ -1597,11 +1559,8 @@ public class MessengerContentProvider extends ContentProvider {
                 case URI_FAVE_VIDEOS:
                     _OrderBy = FaveVideosColumns.FULL_ID + " ASC";
                     break;
-                case URI_FAVE_USERS:
-                    _OrderBy = FaveUsersColumns.FULL_ID + " ASC";
-                    break;
-                case URI_FAVE_GROUPS:
-                    _OrderBy = FaveGroupsColumns.FULL_ID + " ASC";
+                case URI_FAVE_PAGES:
+                    _OrderBy = FavePageColumns.FULL_ID + " ASC";
                     break;
                 case URI_FAVE_LINKS:
                     _OrderBy = FaveLinksColumns.FULL_ID + " ASC";
@@ -1724,10 +1683,8 @@ public class MessengerContentProvider extends ContentProvider {
                 return FAVE_PHOTOS_CONTENT_TYPE;
             case URI_FAVE_VIDEOS:
                 return FAVE_VIDEOS_CONTENT_TYPE;
-            case URI_FAVE_USERS:
-                return FAVE_USERS_CONTENT_TYPE;
-            case URI_FAVE_GROUPS:
-                return FAVE_GROUPS_CONTENT_TYPE;
+            case URI_FAVE_PAGES:
+                return FAVE_PAGES_CONTENT_TYPE;
             case URI_FAVE_LINKS:
                 return FAVE_LINKS_CONTENT_TYPE;
             case URI_FAVE_POSTS:
@@ -1860,11 +1817,8 @@ public class MessengerContentProvider extends ContentProvider {
             case URI_FAVE_VIDEOS:
                 tbName = FaveVideosColumns.TABLENAME;
                 break;
-            case URI_FAVE_USERS:
-                tbName = FaveUsersColumns.TABLENAME;
-                break;
-            case URI_FAVE_GROUPS:
-                tbName = FaveGroupsColumns.TABLENAME;
+            case URI_FAVE_PAGES:
+                tbName = FavePageColumns.TABLENAME;
                 break;
             case URI_FAVE_LINKS:
                 tbName = FaveLinksColumns.TABLENAME;
@@ -2045,11 +1999,8 @@ public class MessengerContentProvider extends ContentProvider {
             case URI_FAVE_VIDEOS:
                 tbName = FaveVideosColumns.TABLENAME;
                 break;
-            case URI_FAVE_USERS:
-                tbName = FaveUsersColumns.TABLENAME;
-                break;
-            case URI_FAVE_GROUPS:
-                tbName = FaveGroupsColumns.TABLENAME;
+            case URI_FAVE_PAGES:
+                tbName = FavePageColumns.TABLENAME;
                 break;
             case URI_FAVE_LINKS:
                 tbName = FaveLinksColumns.TABLENAME;

@@ -2,12 +2,13 @@ package biz.dealnote.messenger.mvp.presenter;
 
 import android.os.Bundle;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import biz.dealnote.messenger.Injection;
 import biz.dealnote.messenger.R;
 import biz.dealnote.messenger.api.Apis;
@@ -465,7 +466,7 @@ public class GroupWallPresenter extends AbsWallPresenter<IGroupWallView> {
         appendDisposable(Apis.get()
                 .vkDefault(accountId)
                 .fave()
-                .addGroup(Math.abs(ownerId))
+                .addPage(null, Math.abs(ownerId))
                 .compose(RxUtils.applySingleIOToMainSchedulers())
                 .subscribe(ignore -> safeShowToast(getView(), R.string.success, false),
                         throwable -> showError(getView(), getCauseIfRuntime(throwable))));

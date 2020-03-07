@@ -53,6 +53,7 @@ import biz.dealnote.messenger.model.Dialog;
 import biz.dealnote.messenger.model.Document;
 import biz.dealnote.messenger.model.FaveLink;
 import biz.dealnote.messenger.model.FavePage;
+import biz.dealnote.messenger.model.FavePageType;
 import biz.dealnote.messenger.model.FriendList;
 import biz.dealnote.messenger.model.IOwnersBundle;
 import biz.dealnote.messenger.model.Link;
@@ -138,13 +139,13 @@ public class Dto2Model {
         return owners;
     }
 
-    public static CommunityDetails transformCommunityDetails(VKApiCommunity dto){
+    public static CommunityDetails transformCommunityDetails(VKApiCommunity dto) {
         final CommunityDetails details = new CommunityDetails()
                 .setCanMessage(dto.can_message)
                 .setStatus(dto.status)
                 .setStatusAudio(nonNull(dto.status_audio) ? transform(dto.status_audio) : null);
 
-        if(nonNull(dto.counters)){
+        if (nonNull(dto.counters)) {
             details.setAllWallCount(dto.counters.all_wall)
                     .setOwnerWallCount(dto.counters.owner_wall)
                     .setPostponedWallCount(dto.counters.postponed_wall)
@@ -157,13 +158,13 @@ public class Dto2Model {
                     .setVideosCount(dto.counters.videos);
         }
 
-        if(nonNull(dto.cover)){
+        if (nonNull(dto.cover)) {
             CommunityDetails.Cover cover = new CommunityDetails.Cover()
                     .setEnabled(dto.cover.enabled)
                     .setImages(new ArrayList<>(safeCountOf(dto.cover.images)));
 
-            if(nonNull(dto.cover.images)){
-                for(VkApiCover.Image imageDto : dto.cover.images){
+            if (nonNull(dto.cover.images)) {
+                for (VkApiCover.Image imageDto : dto.cover.images) {
                     cover.getImages().add(new CommunityDetails.CoverImage(imageDto.url, imageDto.height, imageDto.width));
                 }
             }
@@ -174,18 +175,6 @@ public class Dto2Model {
         }
 
         return details;
-    }
-
-    public static FavePage transformFaveCommunity(FavePageResponse page) {
-        return new FavePage(page.group.id)
-                .setDescription(page.description)
-                .setUpdatedDate(page.updated_date)
-                .setFaveType(page.type)
-                .setGroup(Dto2Model.transformCommunity(page.group));
-    }
-
-    public static List<FavePage> transformFaveCommunities(List<FavePageResponse> dtos) {
-        return mapAll(dtos, Dto2Model::transformFaveCommunity);
     }
 
     public static Community transformCommunity(VKApiCommunity community) {
@@ -212,16 +201,31 @@ public class Dto2Model {
         return mapAll(dtos, Dto2Model::transformUser);
     }
 
-    public static List<FavePage> transformFaveUsers(List<FavePageResponse> dtos) {
-        return mapAll(dtos, Dto2Model::transformFaveUser);
-    }
-
     public static FavePage transformFaveUser(FavePageResponse favePage) {
-        return new FavePage(favePage.user.id)
-                .setUser(Dto2Model.transformUser(favePage.user))
+        int id = 0;
+        switch (favePage.type) {
+            case FavePageType.USER:
+                id = favePage.user.id;
+                break;
+            case FavePageType.COMMUNITY:
+                id = favePage.group.id;
+                break;
+        }
+
+        FavePage page = new FavePage(id)
                 .setDescription(favePage.description)
                 .setFaveType(favePage.type)
                 .setUpdatedDate(favePage.updated_date);
+
+        if (favePage.user != null) {
+            page.setUser(Dto2Model.transformUser(favePage.user));
+        }
+
+        if (favePage.group != null) {
+            page.setGroup(Dto2Model.transformCommunity(favePage.group));
+        }
+
+        return page;
     }
 
     public static User transformUser(VKApiUser user) {
@@ -291,11 +295,11 @@ public class Dto2Model {
                 .setLastMessageId(message.id)
                 .setInterlocutor(interlocutor);
 
-        if(nonNull(dto.conversation.settings)){
+        if (nonNull(dto.conversation.settings)) {
             dialog.setTitle(dto.conversation.settings.title);
             dialog.setGroupChannel(dto.conversation.settings.is_group_channel);
 
-            if(nonNull(dto.conversation.settings.photo)){
+            if (nonNull(dto.conversation.settings.photo)) {
                 dialog.setPhoto50(dto.conversation.settings.photo.photo50)
                         .setPhoto100(dto.conversation.settings.photo.photo100)
                         .setPhoto200(dto.conversation.settings.photo.photo200);
@@ -608,7 +612,7 @@ public class Dto2Model {
                 .setPhoto(Objects.isNull(link.photo) ? null : transform(link.photo));
     }
 
-    public static Sticker.Image map(VKApiSticker.Image dto){
+    public static Sticker.Image map(VKApiSticker.Image dto) {
         return new Sticker.Image(dto.url, dto.width, dto.height);
     }
 
@@ -628,7 +632,7 @@ public class Dto2Model {
                 .setPhoto100(dto.photo_100);
     }
 
-    public static VoiceMessage transform(VkApiAudioMessage dto){
+    public static VoiceMessage transform(VkApiAudioMessage dto) {
         return new VoiceMessage(dto.id, dto.owner_id)
                 .setDuration(dto.duration)
                 .setWaveform(dto.waveform)

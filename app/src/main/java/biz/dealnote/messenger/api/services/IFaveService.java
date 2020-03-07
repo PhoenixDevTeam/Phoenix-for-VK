@@ -55,21 +55,15 @@ public interface IFaveService {
                                                       @Field("count") Integer count);
 
     @FormUrlEncoded
-    @POST("fave.addGroup")
-    Single<BaseResponse<Integer>> addGroup(@Field("group_id") int groupId);
+    @POST("fave.addPage")
+    Single<BaseResponse<Integer>> addPage(@Field("user_id") Integer userId,
+                                          @Field("group_id") Integer groupId);
 
-    @FormUrlEncoded
-    @POST("fave.addUser")
-    Single<BaseResponse<Integer>> addUser(@Field("user_id") int userId);
-
-    //https://vk.com/dev/fave.removeUser
+    //https://vk.com/dev/fave.removePage
     @FormUrlEncoded
     @POST("fave.removePage")
-    Single<BaseResponse<Integer>> removeUser(@Field("user_id") int userId);
-
-    @FormUrlEncoded
-    @POST("fave.removePage")
-    Single<BaseResponse<Integer>> removeGroup(@Field("group_id") int groupId);
+    Single<BaseResponse<Integer>> removePage(@Field("user_id") Integer userId,
+                                             @Field("group_id") Integer groupId);
 
     @FormUrlEncoded
     @POST("fave.removeLink")

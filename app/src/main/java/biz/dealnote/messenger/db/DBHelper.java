@@ -20,11 +20,10 @@ import biz.dealnote.messenger.db.column.CommentsColumns;
 import biz.dealnote.messenger.db.column.CountriesColumns;
 import biz.dealnote.messenger.db.column.DialogsColumns;
 import biz.dealnote.messenger.db.column.DocColumns;
-import biz.dealnote.messenger.db.column.FaveGroupsColumns;
 import biz.dealnote.messenger.db.column.FaveLinksColumns;
+import biz.dealnote.messenger.db.column.FavePageColumns;
 import biz.dealnote.messenger.db.column.FavePhotosColumns;
 import biz.dealnote.messenger.db.column.FavePostsColumns;
-import biz.dealnote.messenger.db.column.FaveUsersColumns;
 import biz.dealnote.messenger.db.column.FaveVideosColumns;
 import biz.dealnote.messenger.db.column.FeedListsColumns;
 import biz.dealnote.messenger.db.column.FriendListsColumns;
@@ -184,8 +183,7 @@ public class DBHelper extends SQLiteOpenHelper {
         createStickerSetTable(db);
         createFavePhotosTable(db);
         createFaveVideosTable(db);
-        createFaveUsersTable(db);
-        createFaveGroupsTable(db);
+        createFavePageTable(db);
         createFaveLinksTable(db);
         createFavePostsTable(db);
         createCountriesTable(db);
@@ -265,8 +263,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + StikerSetColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + FavePhotosColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + FaveVideosColumns.TABLENAME);
-        db.execSQL("DROP TABLE IF EXISTS " + FaveGroupsColumns.TABLENAME);
-        db.execSQL("DROP TABLE IF EXISTS " + FaveUsersColumns.TABLENAME);
+        db.execSQL("DROP TABLE IF EXISTS " + FavePageColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + FaveLinksColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + FavePostsColumns.TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + "peers");
@@ -440,28 +437,13 @@ public class DBHelper extends SQLiteOpenHelper {
      *
      * @param db БД
      */
-    private void createFaveUsersTable(SQLiteDatabase db) {
-        String create = "CREATE TABLE [" + FaveUsersColumns.TABLENAME + "] (" +
-                " [" + FaveUsersColumns._ID + "] BIGINT NOT NULL UNIQUE, " +
-                " [" + FaveUsersColumns.DESCRIPTION + "] TEXT, " +
-                " [" + FaveUsersColumns.UPDATED_TIME + "] TEXT, " +
-                " [" + FaveUsersColumns.FAVE_TYPE + "] TEXT, " +
-                " CONSTRAINT [] PRIMARY KEY([" + FaveUsersColumns._ID + "]) ON CONFLICT REPLACE);";
-        db.execSQL(create);
-    }
-
-    /**
-     * Создание таблицы закладок(групп) пользователей
-     *
-     * @param db БД
-     */
-    private void createFaveGroupsTable(SQLiteDatabase db) {
-        String create = "CREATE TABLE [" + FaveGroupsColumns.TABLENAME + "] (" +
-                " [" + FaveGroupsColumns._ID + "] BIGINT NOT NULL UNIQUE, " +
-                " [" + FaveGroupsColumns.DESCRIPTION + "] TEXT, " +
-                " [" + FaveGroupsColumns.UPDATED_TIME + "] TEXT, " +
-                " [" + FaveGroupsColumns.FAVE_TYPE + "] TEXT, " +
-                " CONSTRAINT [] PRIMARY KEY([" + FaveGroupsColumns._ID + "]) ON CONFLICT REPLACE);";
+    private void createFavePageTable(SQLiteDatabase db) {
+        String create = "CREATE TABLE [" + FavePageColumns.TABLENAME + "] (" +
+                " [" + FavePageColumns._ID + "] BIGINT NOT NULL UNIQUE, " +
+                " [" + FavePageColumns.DESCRIPTION + "] TEXT, " +
+                " [" + FavePageColumns.UPDATED_TIME + "] BIGINT, " +
+                " [" + FavePageColumns.FAVE_TYPE + "] TEXT, " +
+                " CONSTRAINT [] PRIMARY KEY([" + FavePageColumns._ID + "]) ON CONFLICT REPLACE);";
         db.execSQL(create);
     }
 

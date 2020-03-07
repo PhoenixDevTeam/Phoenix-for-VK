@@ -22,16 +22,9 @@ class FaveApi extends AbsApi implements IFaveApi {
     }
 
     @Override
-    public Single<Items<FavePageResponse>> getUsers(Integer offset, Integer count, String fields) {
+    public Single<Items<FavePageResponse>> getPages(Integer offset, Integer count, String fields) {
         return provideService(IFaveService.class)
-                .flatMap(service -> service.getUsers(offset, count, "users", fields)
-                        .map(extractResponseWithErrorHandling()));
-    }
-
-    @Override
-    public Single<Items<FavePageResponse>> getGroups(Integer offset, Integer count, String fields) {
-        return provideService(IFaveService.class)
-                .flatMap(service -> service.getGroups(offset, count, "groups", fields)
+                .flatMap(service -> service.getUsers(offset, count, null, fields)
                         .map(extractResponseWithErrorHandling()));
     }
 
@@ -64,33 +57,17 @@ class FaveApi extends AbsApi implements IFaveApi {
     }
 
     @Override
-    public Single<Boolean> addGroup(int groupId) {
+    public Single<Boolean> addPage(Integer userId, Integer groupId) {
         return provideService(IFaveService.class)
-                .flatMap(service -> service.addGroup(groupId)
+                .flatMap(service -> service.addPage(userId, groupId)
                         .map(extractResponseWithErrorHandling())
                         .map(response -> response == 1));
     }
 
     @Override
-    public Single<Boolean> removeGroup(int groupId) {
+    public Single<Boolean> removePage(Integer userId, Integer groupId) {
         return provideService(IFaveService.class)
-                .flatMap(service -> service.removeGroup(groupId)
-                        .map(extractResponseWithErrorHandling())
-                        .map(response -> response == 1));
-    }
-
-    @Override
-    public Single<Boolean> addUser(int userId) {
-        return provideService(IFaveService.class)
-                .flatMap(service -> service.addUser(userId)
-                        .map(extractResponseWithErrorHandling())
-                        .map(response -> response == 1));
-    }
-
-    @Override
-    public Single<Boolean> removeUser(int userId) {
-        return provideService(IFaveService.class)
-                .flatMap(service -> service.removeUser(userId)
+                .flatMap(service -> service.removePage(userId, groupId)
                         .map(extractResponseWithErrorHandling())
                         .map(response -> response == 1));
     }

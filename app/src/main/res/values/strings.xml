@@ -662,7 +662,7 @@
     <string name="videos_count">%1$d videos</string>
     <string name="documents_count">%1$d documents</string>
     <string name="audios_count">%1$d audios</string>
-    <string name="save_yourself">Save yourself</string>
+    <string name="add_to_saved_album">Add to \"Saved photos\"</string>
     <string name="photo_saved_yourself">Saved to album \"Saved photos\"</string>
     <string name="share_photo_title">Share photo</string>
     <string name="communities">Communities</string>
@@ -1207,5 +1207,7 @@
     <string name="top">Top</string>
     <string name="gift">Gift</string>
     <string name="chat">Chat</string>
+
+    <string name="pages">Pages</string>
 
 </resources>

@@ -1,31 +1,40 @@
 package biz.dealnote.messenger.db.model.entity;
 
-public class FaveGroupEntity extends CommunityEntity {
+import biz.dealnote.messenger.model.FavePageType;
+
+public class FavePageEntity {
+    private int id;
 
     private String description;
 
+    @FavePageType
     private String type;
 
     private long updateDate;
 
-    public FaveGroupEntity(int id) {
-        super(id);
+    public FavePageEntity(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public FaveGroupEntity setDescription(String description) {
+    public FavePageEntity setDescription(String description) {
         this.description = description;
         return this;
     }
+
 
     public String getFaveType() {
         return type;
     }
 
-    public FaveGroupEntity setFaveType(String type) {
+    public FavePageEntity setFaveType(String type) {
         this.type = type;
         return this;
     }
@@ -34,7 +43,7 @@ public class FaveGroupEntity extends CommunityEntity {
         return updateDate;
     }
 
-    public FaveGroupEntity setUpdateDate(long updateDate) {
+    public FavePageEntity setUpdateDate(long updateDate) {
         this.updateDate = updateDate;
         return this;
     }

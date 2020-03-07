@@ -389,7 +389,7 @@ public class UserWallPresenter extends AbsWallPresenter<IUserWallView> {
 
     public void fireAddToBookmarks() {
         final int accountId = super.getAccountId();
-        appendDisposable(faveInteractor.addUser(accountId, ownerId)
+        appendDisposable(faveInteractor.addPage(accountId, ownerId)
                 .compose(RxUtils.applyCompletableIOToMainSchedulers())
                 .subscribe(this::onUserAddedToBookmarks, t -> showError(getView(), getCauseIfRuntime(t))));
     }

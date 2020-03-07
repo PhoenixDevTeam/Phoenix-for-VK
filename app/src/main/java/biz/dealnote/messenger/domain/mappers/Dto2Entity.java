@@ -66,8 +66,7 @@ import biz.dealnote.messenger.db.model.entity.CountryEntity;
 import biz.dealnote.messenger.db.model.entity.DialogEntity;
 import biz.dealnote.messenger.db.model.entity.DocumentEntity;
 import biz.dealnote.messenger.db.model.entity.Entity;
-import biz.dealnote.messenger.db.model.entity.FaveGroupEntity;
-import biz.dealnote.messenger.db.model.entity.FaveUserEntity;
+import biz.dealnote.messenger.db.model.entity.FavePageEntity;
 import biz.dealnote.messenger.db.model.entity.GiftEntity;
 import biz.dealnote.messenger.db.model.entity.GiftItemEntity;
 import biz.dealnote.messenger.db.model.entity.LinkEntity;
@@ -378,38 +377,12 @@ public class Dto2Entity {
         return new OwnerEntities(mapUsers(users), mapCommunities(communities));
     }
 
-    public static List<FaveGroupEntity> mapFaveCommunities(List<FavePageResponse> pages) {
-        return mapAll(pages, Dto2Entity::mapFaveCommunity);
-    }
-
     public static List<CommunityEntity> mapCommunities(List<VKApiCommunity> communities) {
         return mapAll(communities, Dto2Entity::mapCommunity);
     }
 
-    public static List<FaveUserEntity> mapFaveUsers(List<FavePageResponse> users) {
-        return mapAll(users, Dto2Entity::mapFaveUser, true);
-    }
-
     public static List<UserEntity> mapUsers(List<VKApiUser> users) {
         return mapAll(users, Dto2Entity::mapUser, true);
-    }
-
-    public static FaveGroupEntity mapFaveCommunity(FavePageResponse page) {
-        return (FaveGroupEntity) new FaveGroupEntity(page.group.id)
-                .setDescription(page.description)
-                .setFaveType(page.type)
-                .setUpdateDate(page.updated_date)
-                .setName(page.group.name)
-                .setScreenName(page.group.screen_name)
-                .setClosed(page.group.is_closed)
-                .setAdmin(page.group.is_admin)
-                .setAdminLevel(page.group.admin_level)
-                .setMember(page.group.is_member)
-                .setMemberStatus(page.group.member_status)
-                .setType(page.group.type)
-                .setPhoto50(page.group.photo_50)
-                .setPhoto100(page.group.photo_100)
-                .setPhoto200(page.group.photo_200);
     }
 
     public static CommunityEntity mapCommunity(VKApiCommunity community) {
@@ -427,26 +400,19 @@ public class Dto2Entity {
                 .setPhoto200(community.photo_200);
     }
 
-    public static FaveUserEntity mapFaveUser(FavePageResponse favePage) {
-        return (FaveUserEntity) new FaveUserEntity(favePage.user.id)
+    public static FavePageEntity mapFavePage(FavePageResponse favePage) {
+        int id = 0;
+        if (favePage.user != null) {
+            id = favePage.user.id;
+        }
+        if (favePage.group != null) {
+            id = -favePage.group.id;
+        }
+
+        return new FavePageEntity(id)
                 .setDescription(favePage.description)
                 .setUpdateDate(favePage.updated_date)
-                .setFaveType(favePage.type)
-                .setFirstName(favePage.user.first_name)
-                .setLastName(favePage.user.last_name)
-                .setOnline(favePage.user.online)
-                .setOnlineMobile(favePage.user.online_mobile)
-                .setOnlineApp(favePage.user.online_app)
-                .setPhoto50(favePage.user.photo_50)
-                .setPhoto100(favePage.user.photo_100)
-                .setPhoto200(favePage.user.photo_200)
-                .setLastSeen(favePage.user.last_seen)
-                .setPlatform(favePage.user.platform)
-                .setStatus(favePage.user.status)
-                .setSex(favePage.user.sex)
-                .setDomain(favePage.user.domain)
-                .setFriend(favePage.user.is_friend)
-                .setFriendStatus(favePage.user.friend_status);
+                .setFaveType(favePage.type);
     }
 
     public static UserEntity mapUser(VKApiUser user) {

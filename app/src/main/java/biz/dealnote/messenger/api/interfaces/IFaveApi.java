@@ -17,10 +17,7 @@ import io.reactivex.Single;
 public interface IFaveApi {
 
     @CheckResult
-    Single<Items<FavePageResponse>> getUsers(Integer offset, Integer count, String fields);
-
-    @CheckResult
-    Single<Items<FavePageResponse>> getGroups(Integer offset, Integer count, String fields);
+    Single<Items<FavePageResponse>> getPages(Integer offset, Integer count, String fields);
 
     @CheckResult
     Single<Items<VKApiPhoto>> getPhotos(Integer offset, Integer count);
@@ -35,16 +32,10 @@ public interface IFaveApi {
     Single<Items<FaveLinkDto>> getLinks(Integer offset, Integer count);
 
     @CheckResult
-    Single<Boolean> addGroup(int groupId);
+    Single<Boolean> addPage(Integer userId, Integer groupId);
 
     @CheckResult
-    Single<Boolean> removeGroup(int groupId);
-
-    @CheckResult
-    Single<Boolean> addUser(int userId);
-
-    @CheckResult
-    Single<Boolean> removeUser(int userId);
+    Single<Boolean> removePage(Integer userId, Integer groupId);
 
     @CheckResult
     Single<Boolean> removeLink(String linkId);

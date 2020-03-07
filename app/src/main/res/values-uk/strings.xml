@@ -554,7 +554,7 @@
     <string name="videos_count">%1$d відео</string>
     <string name="communities">Спільноти</string>
     <string name="share_photo_title">Поділитися фотографією</string>
-    <string name="save_yourself">Зберегти собі</string>
+    <string name="add_to_saved_album">Зберегти собі</string>
     <string name="photo_saved_yourself">Збережено в альбом "Збережені фотографії"</string>
     <string name="documents">Документи</string>
     <string name="search_options">Опції пошуку</string>

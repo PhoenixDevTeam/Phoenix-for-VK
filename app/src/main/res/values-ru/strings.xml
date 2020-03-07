@@ -555,7 +555,7 @@
     <string name="videos_count">%1$d видео</string>
     <string name="communities">Сообщества</string>
     <string name="share_photo_title">Поделиться фотографией</string>
-    <string name="save_yourself">Сохранить себе</string>
+    <string name="add_to_saved_album">Сохранить себе</string>
     <string name="photo_saved_yourself">Сохранено в альбом "Сохраненные фотографии"</string>
     <string name="documents">Документы</string>
     <string name="search_options">Опции поиска</string>
@@ -1071,4 +1071,6 @@
     <string name="top">Топ</string>
     <string name="gift">Подарок</string>
     <string name="chat">Чат</string>
+
+    <string name="pages">Страницы</string>
 </resources>
